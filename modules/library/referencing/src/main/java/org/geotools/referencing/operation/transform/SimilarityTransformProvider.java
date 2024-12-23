@@ -44,68 +44,59 @@ public class SimilarityTransformProvider extends MathTransformProvider {
     // necessarily SI.METRE.
 
     /** "Ordinate 1 of evaluation point in target CRS" EPSG::8621 */
-    public static final ParameterDescriptor<Double> TRANSLATION_1 =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG, "Ordinate 1 of evaluation point in target CRS"),
-                        new NamedIdentifier(Citations.EPSG, "8621")
-                    },
-                    0,
-                    Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY,
-                    SI.METRE);
+    public static final ParameterDescriptor<Double> TRANSLATION_1 = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Ordinate 1 of evaluation point in target CRS"),
+                new NamedIdentifier(Citations.EPSG, "8621")
+            },
+            0,
+            Double.NEGATIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            SI.METRE);
 
     /** "Ordinate 2 of evaluation point in target CRS" EPSG::8622 */
-    public static final ParameterDescriptor<Double> TRANSLATION_2 =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG, "Ordinate 2 of evaluation point in target CRS"),
-                        new NamedIdentifier(Citations.EPSG, "8622")
-                    },
-                    0,
-                    Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY,
-                    SI.METRE);
+    public static final ParameterDescriptor<Double> TRANSLATION_2 = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Ordinate 2 of evaluation point in target CRS"),
+                new NamedIdentifier(Citations.EPSG, "8622")
+            },
+            0,
+            Double.NEGATIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            SI.METRE);
 
     /** "Scale difference" EPSG::8611 */
-    public static final ParameterDescriptor<Double> SCALE =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.EPSG, "Scale difference"),
-                        new NamedIdentifier(Citations.EPSG, "8611")
-                    },
-                    1,
-                    Double.MIN_NORMAL,
-                    Double.POSITIVE_INFINITY,
-                    AbstractUnit.ONE);
+    public static final ParameterDescriptor<Double> SCALE = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Scale difference"), new NamedIdentifier(Citations.EPSG, "8611")
+            },
+            1,
+            Double.MIN_NORMAL,
+            Double.POSITIVE_INFINITY,
+            AbstractUnit.ONE);
 
     /** "Rotation angle of source coordinate reference system axes" EPSG::8614 */
-    public static final ParameterDescriptor<Double> ROTATION =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.EPSG, "Rotation angle of source CRS axes"),
-                        new NamedIdentifier(Citations.EPSG, "8614")
-                    },
-                    0,
-                    0,
-                    360 * 60 * 60,
-                    NonSI.SECOND_ANGLE);
+    public static final ParameterDescriptor<Double> ROTATION = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Rotation angle of source CRS axes"),
+                new NamedIdentifier(Citations.EPSG, "8614")
+            },
+            0,
+            0,
+            360 * 60 * 60,
+            NonSI.SECOND_ANGLE);
 
     /**
      * The parameter group for "Similarity transformation" EPSG::9621.
      *
-     * <p>Includes {@link #TRANSLATION_1}, {@link #TRANSLATION_2}, {@link #SCALE}, {@link
-     * #ROTATION}.
+     * <p>Includes {@link #TRANSLATION_1}, {@link #TRANSLATION_2}, {@link #SCALE}, {@link #ROTATION}.
      */
-    static final ParameterDescriptorGroup PARAMETERS =
-            createDescriptorGroup(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.EPSG, "Similarity transformation"),
-                        new NamedIdentifier(Citations.EPSG, "9621")
-                    },
-                    new ParameterDescriptor[] {TRANSLATION_1, TRANSLATION_2, SCALE, ROTATION});
+    static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Similarity transformation"),
+                new NamedIdentifier(Citations.EPSG, "9621")
+            },
+            new ParameterDescriptor[] {TRANSLATION_1, TRANSLATION_2, SCALE, ROTATION});
 
     /**
      * Creates a two-dimensional similarity transform.
@@ -117,8 +108,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
     }
 
     /**
-     * Constructs an {@link AffineTransform2D} math transform from the specified group of parameter
-     * values.
+     * Constructs an {@link AffineTransform2D} math transform from the specified group of parameter values.
      *
      * <p>The similarity transform is a particular case of Affine Transform 2D where:
      *
@@ -140,8 +130,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
     @Override
-    protected MathTransform createMathTransform(ParameterValueGroup values)
-            throws ParameterNotFoundException {
+    protected MathTransform createMathTransform(ParameterValueGroup values) throws ParameterNotFoundException {
 
         // The four parameters
         double t1 = doubleValue(TRANSLATION_1, values);

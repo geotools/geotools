@@ -55,8 +55,8 @@ public class BackgroundMBLayerTest {
 
     @Test
     public void parsedGraphicBackground() {
-        ExternalGraphic eg =
-                (ExternalGraphic) graphicFill.getGraphicFill().graphicalSymbols().get(0);
+        ExternalGraphic eg = (ExternalGraphic)
+                graphicFill.getGraphicFill().graphicalSymbols().get(0);
         assertEquals(
                 "mapbox://sprites/testuser/ciz48dnnj004l2rplkpqsra81#icon=${strURLEncode('owl')}&size=${strURLEncode('1')}",
                 eg.getURI());

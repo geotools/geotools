@@ -106,8 +106,7 @@ public class KMLConfiguration extends Configuration {
         // container.registerComponentImplementation(KML.colorModeEnum, ColorModeEnumBinding.class);
         container.registerComponentImplementation(KML.ColorStyleType, ColorStyleTypeBinding.class);
         container.registerComponentImplementation(KML.ContainerType, ContainerTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.CoordinatesType, CoordinatesTypeBinding.class);
+        container.registerComponentImplementation(KML.CoordinatesType, CoordinatesTypeBinding.class);
         // container.registerComponentImplementation(KML.CreateType, CreateTypeBinding.class);
         container.registerComponentImplementation(KML.dateTimeType, DateTimeTypeBinding.class);
         // container.registerComponentImplementation(KML.DeleteType, DeleteTypeBinding.class);
@@ -143,8 +142,7 @@ public class KMLConfiguration extends Configuration {
         container.registerComponentImplementation(KML.LookAtType, LookAtTypeBinding.class);
         container.registerComponentImplementation(KML.MetadataType, MetadataTypeBinding.class);
         // container.registerComponentImplementation(KML.ModelType, ModelTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.MultiGeometryType, MultiGeometryTypeBinding.class);
+        container.registerComponentImplementation(KML.MultiGeometryType, MultiGeometryTypeBinding.class);
         // container.registerComponentImplementation(KML.NetworkLinkControlType,
         //    NetworkLinkControlTypeBinding.class);
         // container.registerComponentImplementation(KML.NetworkLinkType,

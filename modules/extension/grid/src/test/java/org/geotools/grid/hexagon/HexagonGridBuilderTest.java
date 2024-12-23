@@ -83,15 +83,9 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
 
         for (Case c : cases) {
             if (c.o == HexagonOrientation.ANGLED) {
-                assertEquals(
-                        "Failed for case: " + c.o + " " + c.n,
-                        c.valid,
-                        angledBuilder.isValidNeighbor(c.n));
+                assertEquals("Failed for case: " + c.o + " " + c.n, c.valid, angledBuilder.isValidNeighbor(c.n));
             } else {
-                assertEquals(
-                        "Failed for case: " + c.o + " " + c.n,
-                        c.valid,
-                        flatBuilder.isValidNeighbor(c.n));
+                assertEquals("Failed for case: " + c.o + " " + c.n, c.valid, flatBuilder.isValidNeighbor(c.n));
             }
         }
     }
@@ -134,8 +128,7 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         table.put(HexagonOrientation.ANGLED, angledShifts);
 
         for (HexagonOrientation o : HexagonOrientation.values()) {
-            PolygonBuilder gridBuilder =
-                    o == HexagonOrientation.ANGLED ? angledBuilder : flatBuilder;
+            PolygonBuilder gridBuilder = o == HexagonOrientation.ANGLED ? angledBuilder : flatBuilder;
 
             Hexagon h0 = Hexagons.create(0.0, 0.0, SIDE_LEN, o, null);
 

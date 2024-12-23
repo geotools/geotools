@@ -30,11 +30,10 @@ import org.geotools.swing.JMapFrame;
  * @author Roar Brænden
  */
 public class WMTSMapViewer {
-    private static final String[] WMTS_SERVERS =
-            new String[] {
-                "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
-                "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Basiskart_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-            };
+    private static final String[] WMTS_SERVERS = new String[] {
+        "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+        "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Basiskart_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+    };
 
     public static void main(String[] args) throws Exception {
         URL serverURL = showChooseWMTS();
@@ -62,13 +61,8 @@ public class WMTSMapViewer {
 
         Object[] message = {"Choose a WMTS Server", combo};
         do {
-            int done =
-                    JOptionPane.showConfirmDialog(
-                            null,
-                            message,
-                            "Web Map Tile Server",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
+            int done = JOptionPane.showConfirmDialog(
+                    null, message, "Web Map Tile Server", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (done == JOptionPane.CANCEL_OPTION) {
                 return null;
             }
@@ -87,12 +81,8 @@ public class WMTSMapViewer {
             names[i] = layers.get(i).getName();
         }
         JComboBox<String> combo = new JComboBox<>(names);
-        int done =
-                JOptionPane.showConfirmDialog(
-                        null,
-                        new Object[] {"Choose a WMTS Layer", combo},
-                        "Layer",
-                        JOptionPane.OK_CANCEL_OPTION);
+        int done = JOptionPane.showConfirmDialog(
+                null, new Object[] {"Choose a WMTS Layer", combo}, "Layer", JOptionPane.OK_CANCEL_OPTION);
         if (done == JOptionPane.CANCEL_OPTION) {
             return null;
         }

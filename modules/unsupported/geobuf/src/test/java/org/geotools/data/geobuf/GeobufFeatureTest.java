@@ -34,7 +34,8 @@ import org.locationtech.jts.io.WKTReader;
 
 public class GeobufFeatureTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void encodeDecode() throws Exception {
@@ -42,8 +43,7 @@ public class GeobufFeatureTest {
         File file = temporaryFolder.newFile("feature.pbf");
 
         SimpleFeatureType featureType =
-                DataUtilities.createType(
-                        "test2", "name:String,geom:String,geometry:String,id:int,g:Point");
+                DataUtilities.createType("test2", "name:String,geom:String,geometry:String,id:int,g:Point");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         WKTReader wkt = new WKTReader();
         featureBuilder.set("name", "Name");

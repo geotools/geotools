@@ -32,10 +32,7 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     private final CollectionMapper mapper;
     private MongoDBObjectFeature current;
 
-    public MongoFeatureWriter(
-            DBCollection collection,
-            SimpleFeatureType featureType,
-            MongoFeatureStore featureStore) {
+    public MongoFeatureWriter(DBCollection collection, SimpleFeatureType featureType, MongoFeatureStore featureStore) {
         this.collection = collection;
         this.featureType = featureType;
         mapper = featureStore.getMapper();

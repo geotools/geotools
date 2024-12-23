@@ -29,14 +29,12 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.util.Utilities;
 
 /**
- * A math transform which delegates part of its work to an other math transform. This is used as a
- * starting point for subclass wanting to modifies only some aspect of an existing math transform,
- * or to attach additional informations to it. The default implementation delegates all method calls
- * to the {@linkplain #transform underlying transform}. Subclasses typically override some of those
- * methods.
+ * A math transform which delegates part of its work to an other math transform. This is used as a starting point for
+ * subclass wanting to modifies only some aspect of an existing math transform, or to attach additional informations to
+ * it. The default implementation delegates all method calls to the {@linkplain #transform underlying transform}.
+ * Subclasses typically override some of those methods.
  *
- * <p>This class is serializable if the {@linkplain #transform underlying transform} is serializable
- * too.
+ * <p>This class is serializable if the {@linkplain #transform underlying transform} is serializable too.
  *
  * @since 2.2
  * @version $Id$
@@ -73,8 +71,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /**
      * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}.
      *
-     * @throws MismatchedDimensionException if {@code ptSrc} or {@code ptDst} doesn't have the
-     *     expected dimension.
+     * @throws MismatchedDimensionException if {@code ptSrc} or {@code ptDst} doesn't have the expected dimension.
      * @throws TransformException if the point can't be transformed.
      */
     @Override
@@ -86,11 +83,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /** Transforms a list of coordinate point ordinal values. */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -98,11 +91,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /** Transforms a list of coordinate point ordinal values. */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -110,16 +99,11 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /**
      * Transforms a list of coordinate point ordinal values.
      *
-     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of
-     *     GeoAPI.
+     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of GeoAPI.
      */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -127,16 +111,11 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /**
      * Transforms a list of coordinate point ordinal values.
      *
-     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of
-     *     GeoAPI.
+     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of GeoAPI.
      */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -179,8 +158,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
      * Compares the specified object with this inverse math transform for equality.
      *
      * @param object The object to compare with this transform.
-     * @return {@code true} if the given object is of the same class and if the wrapped transforms
-     *     are equal.
+     * @return {@code true} if the given object is of the same class and if the wrapped transforms are equal.
      */
     @Override
     public boolean equals(final Object object) {

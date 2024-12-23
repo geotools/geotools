@@ -35,8 +35,8 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 
 /**
  * Parser for {@linkplain MathTransform math transform} <A
- * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
- * Known Text</cite> (WKT)</A> of math transform.
+ * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+ * Text</cite> (WKT)</A> of math transform.
  *
  * @since 2.0
  * @version $Id$
@@ -48,9 +48,7 @@ public class MathTransformParser extends AbstractParser {
     /** The factory to use for creating math transforms. */
     protected final MathTransformFactory mtFactory;
 
-    /**
-     * The classification of the last math transform or projection parsed, or {@code null} if none.
-     */
+    /** The classification of the last math transform or projection parsed, or {@code null} if none. */
     private String classification;
 
     /**
@@ -113,16 +111,14 @@ public class MathTransformParser extends AbstractParser {
     }
 
     /**
-     * Parses the next element (a {@link MathTransform}) in the specified <cite>Well Know
-     * Text</cite> (WKT) tree.
+     * Parses the next element (a {@link MathTransform}) in the specified <cite>Well Know Text</cite> (WKT) tree.
      *
      * @param element The parent element.
      * @param required True if parameter is required and false in other case.
      * @return The next element as a {@link MathTransform} object.
      * @throws ParseException if the next element can't be parsed.
      */
-    final MathTransform parseMathTransform(final Element element, final boolean required)
-            throws ParseException {
+    final MathTransform parseMathTransform(final Element element, final boolean required) throws ParseException {
         lastMethod = null;
         classification = null;
         final Object key = element.peek();
@@ -284,8 +280,8 @@ public class MathTransformParser extends AbstractParser {
     }
 
     /**
-     * Returns the operation method for the last math transform parsed. This is used by {@link
-     * Parser} in order to built {@link org.geotools.api.referencing.crs.DerivedCRS}.
+     * Returns the operation method for the last math transform parsed. This is used by {@link Parser} in order to built
+     * {@link org.geotools.api.referencing.crs.DerivedCRS}.
      */
     final OperationMethod getOperationMethod() {
         if (lastMethod == null) {
@@ -294,8 +290,7 @@ public class MathTransformParser extends AbstractParser {
              * getLastMethod(). Performs a slower and less robust check as a fallback.
              */
             if (classification != null) {
-                for (final OperationMethod method :
-                        mtFactory.getAvailableMethods(Operation.class)) {
+                for (final OperationMethod method : mtFactory.getAvailableMethods(Operation.class)) {
                     if (AbstractIdentifiedObject.nameMatches(method, classification)) {
                         lastMethod = method;
                         break;

@@ -51,14 +51,12 @@ public final class MrSIDTest extends GDALTestCase {
     /**
      * file name of a valid MrSID sample data to be used for tests.
      *
-     * <p>We suggest to download a valid MrSID sample file from this site:
-     * https://zulu.ssc.nasa.gov/mrsid/
+     * <p>We suggest to download a valid MrSID sample file from this site: https://zulu.ssc.nasa.gov/mrsid/
      *
-     * <p>For each .SID file, a .MET file exists. Use the last one to build a valid .PRJ for the
-     * sample. If you are only interested in reading/rendering capabilities, or displaying coverages
-     * as simple rasters, the .PRJ is not necessary. However, a valid .PRJ file is required anytime
-     * you need to use the sample data as a coherently GeoReferenced coverage, by means of, as an
-     * instance, uDIG.
+     * <p>For each .SID file, a .MET file exists. Use the last one to build a valid .PRJ for the sample. If you are only
+     * interested in reading/rendering capabilities, or displaying coverages as simple rasters, the .PRJ is not
+     * necessary. However, a valid .PRJ file is required anytime you need to use the sample data as a coherently
+     * GeoReferenced coverage, by means of, as an instance, uDIG.
      */
     private static final String fileName = "n13250i.sid";
 
@@ -73,11 +71,10 @@ public final class MrSIDTest extends GDALTestCase {
     public void test() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info(
-                    "==================================================================\n"
-                            + " Warning! No valid test File has been specified.\n"
-                            + " Please provide a valid sample in the source code and repeat this test!\n"
-                            + "========================================================================");
+            LOGGER.info("==================================================================\n"
+                    + " Warning! No valid test File has been specified.\n"
+                    + " Please provide a valid sample in the source code and repeat this test!\n"
+                    + "========================================================================");
 
             return;
         }
@@ -110,39 +107,30 @@ public final class MrSIDTest extends GDALTestCase {
         final int originalH = gc.getRenderedImage().getHeight();
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralBounds originalEnvelope = reader.getOriginalEnvelope();
-        final GeneralBounds reducedEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            originalEnvelope.getLowerCorner().getOrdinate(0),
-                            originalEnvelope.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            originalEnvelope.getMedian().getOrdinate(0),
-                            originalEnvelope.getMedian().getOrdinate(1)
-                        });
+        final GeneralBounds reducedEnvelope = new GeneralBounds(
+                new double[] {
+                    originalEnvelope.getLowerCorner().getOrdinate(0),
+                    originalEnvelope.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    originalEnvelope.getMedian().getOrdinate(0),
+                    originalEnvelope.getMedian().getOrdinate(1)
+                });
         reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
-        final ParameterValue gg =
-                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(
-                                        0,
-                                        0,
-                                        (int) (range.width / 2.0),
-                                        (int) (range.height / 2.0))),
-                        reducedEnvelope));
+        final ParameterValue gg = ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(0, 0, (int) (range.width / 2.0), (int) (range.height / 2.0))),
+                reducedEnvelope));
         gc = reader.read(new GeneralParameterValue[] {gg});
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
-        Assert.assertTrue(
-                reducedEnvelope.equals(
-                        gc.getEnvelope(),
-                        XAffineTransform.getScale(
-                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                                / 2,
-                        true));
+        Assert.assertTrue(reducedEnvelope.equals(
+                gc.getEnvelope(),
+                XAffineTransform.getScale(
+                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
+                        / 2,
+                true));
         // this should be fine since we give 1 pixel tolerance
         Assert.assertEquals(originalW / 2.0, gc.getRenderedImage().getWidth(), 1);
         Assert.assertEquals(originalH / 2.0, gc.getRenderedImage().getHeight(), 1);
@@ -155,8 +143,7 @@ public final class MrSIDTest extends GDALTestCase {
         // and customized tilesize
         //
         // /////////////////////////////////////////////////////////////////////
-        final ParameterValue policy =
-                ((AbstractGridFormat) reader.getFormat()).OVERVIEW_POLICY.createValue();
+        final ParameterValue policy = ((AbstractGridFormat) reader.getFormat()).OVERVIEW_POLICY.createValue();
         policy.setValue(OverviewPolicy.IGNORE);
 
         // //
@@ -164,8 +151,7 @@ public final class MrSIDTest extends GDALTestCase {
         // Customizing Tile Size
         //
         // //
-        final ParameterValue tilesize =
-                ((BaseGDALGridFormat) reader.getFormat()).SUGGESTED_TILE_SIZE.createValue();
+        final ParameterValue tilesize = ((BaseGDALGridFormat) reader.getFormat()).SUGGESTED_TILE_SIZE.createValue();
         tilesize.setValue("512,512");
 
         // //
@@ -173,21 +159,19 @@ public final class MrSIDTest extends GDALTestCase {
         // Setting read type: use JAI ImageRead
         //
         // //
-        final ParameterValue useJaiRead =
-                ((BaseGDALGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue useJaiRead = ((BaseGDALGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
         useJaiRead.setValue(true);
 
         gc = reader.read(new GeneralParameterValue[] {gg, policy, tilesize, useJaiRead});
 
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
-        Assert.assertTrue(
-                reducedEnvelope.equals(
-                        gc.getEnvelope(),
-                        XAffineTransform.getScale(
-                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                                / 2,
-                        true));
+        Assert.assertTrue(reducedEnvelope.equals(
+                gc.getEnvelope(),
+                XAffineTransform.getScale(
+                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
+                        / 2,
+                true));
         // this should be fine since we give 1 pixel tolerance
         Assert.assertEquals(originalW / 2, gc.getRenderedImage().getWidth(), 1);
         Assert.assertEquals(originalH / 2, gc.getRenderedImage().getHeight(), 1);
@@ -206,11 +190,10 @@ public final class MrSIDTest extends GDALTestCase {
     public void test2() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info(
-                    "==================================================================\n"
-                            + " Warning! No valid test File has been specified.\n"
-                            + " Please provide a valid sample in the source code and repeat this test!\n"
-                            + "========================================================================");
+            LOGGER.info("==================================================================\n"
+                    + " Warning! No valid test File has been specified.\n"
+                    + " Please provide a valid sample in the source code and repeat this test!\n"
+                    + "========================================================================");
             return;
         }
 

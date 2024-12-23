@@ -74,71 +74,36 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
         assertTrue(factory.isAvailable());
 
-        assertFalse(
-                factory.canProcess(
-                        ImmutableMap.of(
-                                ElasticDataStoreFactory.HOSTNAME.key,
-                                "localhost",
-                                ElasticDataStoreFactory.HOSTPORT.key,
-                                port)));
-        assertFalse(
-                factory.canProcess(
-                        ImmutableMap.of(
-                                ElasticDataStoreFactory.HOSTNAME.key,
-                                "localhost",
-                                ElasticDataStoreFactory.INDEX_NAME.key,
-                                "test")));
-        assertFalse(
-                factory.canProcess(
-                        ImmutableMap.of(ElasticDataStoreFactory.HOSTNAME.key, "localhost")));
-        assertFalse(
-                factory.canProcess(
-                        ImmutableMap.of(
-                                ElasticDataStoreFactory.HOSTPORT.key,
-                                port,
-                                ElasticDataStoreFactory.INDEX_NAME.key,
-                                "test")));
-        assertFalse(
-                factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.HOSTPORT.key, port)));
-        assertFalse(
-                factory.canProcess(
-                        ImmutableMap.of(ElasticDataStoreFactory.INDEX_NAME.key, "test")));
+        assertFalse(factory.canProcess(ImmutableMap.of(
+                ElasticDataStoreFactory.HOSTNAME.key, "localhost", ElasticDataStoreFactory.HOSTPORT.key, port)));
+        assertFalse(factory.canProcess(ImmutableMap.of(
+                ElasticDataStoreFactory.HOSTNAME.key, "localhost", ElasticDataStoreFactory.INDEX_NAME.key, "test")));
+        assertFalse(factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.HOSTNAME.key, "localhost")));
+        assertFalse(factory.canProcess(ImmutableMap.of(
+                ElasticDataStoreFactory.HOSTPORT.key, port, ElasticDataStoreFactory.INDEX_NAME.key, "test")));
+        assertFalse(factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.HOSTPORT.key, port)));
+        assertFalse(factory.canProcess(ImmutableMap.of(ElasticDataStoreFactory.INDEX_NAME.key, "test")));
     }
 
     @Test
     public void testCreateRestClient() throws IOException {
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", port, "http")), getHosts("localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "http")), getHosts("localhost"));
         assertEquals(
                 ImmutableList.of(new HttpHost("localhost.localdomain", port, "http")),
                 getHosts("localhost.localdomain"));
 
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", 9201, "http")),
-                getHosts("localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("localhost:9201"));
         assertEquals(
                 ImmutableList.of(new HttpHost("localhost.localdomain", 9201, "http")),
                 getHosts("localhost.localdomain:9201"));
 
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", port, "http")),
-                getHosts("http://localhost"));
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", 9200, "http")),
-                getHosts("http://localhost:9200"));
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", 9201, "http")),
-                getHosts("http://localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "http")), getHosts("http://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "http")), getHosts("http://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("http://localhost:9201"));
 
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", port, "https")),
-                getHosts("https://localhost"));
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", 9200, "https")),
-                getHosts("https://localhost:9200"));
-        assertEquals(
-                ImmutableList.of(new HttpHost("localhost", 9201, "https")),
-                getHosts("https://localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "https")), getHosts("https://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "https")), getHosts("https://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "https")), getHosts("https://localhost:9201"));
 
         assertEquals(
                 ImmutableList.of(
@@ -149,32 +114,21 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
                 ImmutableList.of(
                         new HttpHost("somehost.somedomain", port, "https"),
                         new HttpHost("anotherhost.somedomain", port, "https")),
-                getHosts(
-                        "https://somehost.somedomain:"
-                                + port
-                                + ",https://anotherhost.somedomain:"
-                                + port));
+                getHosts("https://somehost.somedomain:" + port + ",https://anotherhost.somedomain:" + port));
         assertEquals(
                 ImmutableList.of(
                         new HttpHost("somehost.somedomain", port, "https"),
                         new HttpHost("anotherhost.somedomain", port, "https")),
-                getHosts(
-                        "https://somehost.somedomain:"
-                                + port
-                                + ", https://anotherhost.somedomain:"
-                                + port));
+                getHosts("https://somehost.somedomain:" + port + ", https://anotherhost.somedomain:" + port));
         assertEquals(
                 ImmutableList.of(
                         new HttpHost("somehost.somedomain", port, "https"),
                         new HttpHost("anotherhost.somedomain", port, "http")),
-                getHosts(
-                        "https://somehost.somedomain:" + port + ",anotherhost.somedomain:" + port));
+                getHosts("https://somehost.somedomain:" + port + ",anotherhost.somedomain:" + port));
     }
 
     private List<HttpHost> getHosts(String hosts) throws IOException {
-        return getRestClient(hosts).getNodes().stream()
-                .map(Node::getHost)
-                .collect(Collectors.toList());
+        return getRestClient(hosts).getNodes().stream().map(Node::getHost).collect(Collectors.toList());
     }
 
     private RestClient getRestClient(String hosts) throws IOException {

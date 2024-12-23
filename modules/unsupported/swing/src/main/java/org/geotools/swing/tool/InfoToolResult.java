@@ -26,8 +26,7 @@ import java.util.Map.Entry;
 import org.geotools.api.feature.type.Name;
 
 /**
- * Used by {@code InfoToolHelper} classes to pass feature data to the parent {@code InfoTool}
- * object.
+ * Used by {@code InfoToolHelper} classes to pass feature data to the parent {@code InfoTool} object.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -76,8 +75,8 @@ public class InfoToolResult {
     }
 
     /**
-     * Adds a new feature entry to this result. This <strong>must</strong> be called prior to
-     * calling the {@code setFeatureValue} methods.
+     * Adds a new feature entry to this result. This <strong>must</strong> be called prior to calling the
+     * {@code setFeatureValue} methods.
      */
     public void newFeature(String id) {
         currentItem = new ResultItem(id);

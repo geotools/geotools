@@ -57,8 +57,7 @@ public class AStarShortestPathFinder implements GraphWalker {
     }
 
     /**
-     * Performs the graph traversal and calculates the shortest path from the source node to destiny
-     * node in the graph.
+     * Performs the graph traversal and calculates the shortest path from the source node to destiny node in the graph.
      */
     public void calculate() {
         m_traversal.init();
@@ -76,9 +75,8 @@ public class AStarShortestPathFinder implements GraphWalker {
     }
 
     /**
-     * Returns a path <B>from</B> the target <B>to</B> the source. If the desired path is the
-     * opposite (from the source to the target), the <i>reverse</i> or the <i>riterator</i> methods
-     * from the <b>Path<b> class can be used.
+     * Returns a path <B>from</B> the target <B>to</B> the source. If the desired path is the opposite (from the source
+     * to the target), the <i>reverse</i> or the <i>riterator</i> methods from the <b>Path<b> class can be used.
      *
      * @see Path#riterator()
      * @see Path#reverse()

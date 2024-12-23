@@ -32,12 +32,12 @@ import org.geotools.util.OptionalDependencies;
 import org.geotools.util.Utilities;
 
 /**
- * Represents the metadata property as a tree made from {@linkplain TreeNode tree nodes}. Note that
- * while {@link TreeNode} is defined in the {@link javax.swing.tree} package, it can be seen as a
- * data structure independent of Swing.
+ * Represents the metadata property as a tree made from {@linkplain TreeNode tree nodes}. Note that while
+ * {@link TreeNode} is defined in the {@link javax.swing.tree} package, it can be seen as a data structure independent
+ * of Swing.
  *
- * <p>Note: this method is called {@code PropertyTree} because it may implements {@link
- * javax.swing.tree.TreeModel} in some future Geotools implementation.
+ * <p>Note: this method is called {@code PropertyTree} because it may implements {@link javax.swing.tree.TreeModel} in
+ * some future Geotools implementation.
  *
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
@@ -50,8 +50,8 @@ final class PropertyTree {
     private final MetadataStandard standard;
 
     /**
-     * The locale to use for {@linkplain Date date}, {@linkplain Number number} and {@linkplain
-     * InternationalString international string} formatting.
+     * The locale to use for {@linkplain Date date}, {@linkplain Number number} and {@linkplain InternationalString
+     * international string} formatting.
      */
     private final Locale locale;
 
@@ -85,18 +85,17 @@ final class PropertyTree {
     /** Creates a tree for the specified metadata. */
     public MutableTreeNode asTree(final Object metadata) {
         final String name = Classes.getShortName(standard.getInterface(metadata.getClass()));
-        final DefaultMutableTreeNode root =
-                OptionalDependencies.createTreeNode(localize(name), metadata, true);
+        final DefaultMutableTreeNode root = OptionalDependencies.createTreeNode(localize(name), metadata, true);
         append(root, metadata);
         return root;
     }
 
     /**
-     * Appends the specified value to a branch. The value may be a metadata (treated {@linkplain
-     * AbstractMetadata#asMap as a Map} - see below), a collection or a singleton.
+     * Appends the specified value to a branch. The value may be a metadata (treated {@linkplain AbstractMetadata#asMap
+     * as a Map} - see below), a collection or a singleton.
      *
-     * <p>Map or metadata are constructed as a sub tree where every nodes is a property name, and
-     * the childs are the value(s) for that property.
+     * <p>Map or metadata are constructed as a sub tree where every nodes is a property name, and the childs are the
+     * value(s) for that property.
      */
     private void append(final DefaultMutableTreeNode branch, final Object value) {
         if (value instanceof Map) {
@@ -138,10 +137,9 @@ final class PropertyTree {
     }
 
     /**
-     * Appends the specified map (usually a metadata) to a branch. Each map keys is a child in the
-     * specified {@code branch}, and each value is a child of the map key. There is often only one
-     * value for a map key, but not always; some are collections, which are formatted as many childs
-     * for the same key.
+     * Appends the specified map (usually a metadata) to a branch. Each map keys is a child in the specified
+     * {@code branch}, and each value is a child of the map key. There is often only one value for a map key, but not
+     * always; some are collections, which are formatted as many childs for the same key.
      */
     private void appendMap(final DefaultMutableTreeNode branch, final Map asMap) {
         for (Object o : asMap.entrySet()) {
@@ -149,8 +147,7 @@ final class PropertyTree {
             final Object value = entry.getValue();
             if (!PropertyAccessor.isEmpty(value)) {
                 final String name = localize((String) entry.getKey());
-                final DefaultMutableTreeNode child =
-                        OptionalDependencies.createTreeNode(name, value, true);
+                final DefaultMutableTreeNode child = OptionalDependencies.createTreeNode(name, value, true);
                 append(child, value);
                 branch.add(child);
             }
@@ -193,8 +190,8 @@ final class PropertyTree {
     }
 
     /**
-     * Localize the specified property name. In current version, this is merely a hook for future
-     * development. For now we reformat the programatic name.
+     * Localize the specified property name. In current version, this is merely a hook for future development. For now
+     * we reformat the programatic name.
      */
     private String localize(String name) {
         name = name.trim();
@@ -233,8 +230,8 @@ final class PropertyTree {
     }
 
     /**
-     * Localize the specified property name. In current version, this is merely a hook for future
-     * development. For now we reformat the programatic name.
+     * Localize the specified property name. In current version, this is merely a hook for future development. For now
+     * we reformat the programatic name.
      */
     private String localize(final CodeList code) {
         return code.name().trim().replace('_', ' ').toLowerCase(locale);
@@ -249,10 +246,7 @@ final class PropertyTree {
 
     /** Append a string representation of the specified node to the specified buffer. */
     private static void toString(
-            final TreeNode node,
-            final StringBuilder buffer,
-            final int indent,
-            final String lineSeparator) {
+            final TreeNode node, final StringBuilder buffer, final int indent, final String lineSeparator) {
         final int count = node.getChildCount();
         if (count == 0) {
             if (node.isLeaf()) {

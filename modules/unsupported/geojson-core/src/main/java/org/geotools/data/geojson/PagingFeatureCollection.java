@@ -28,9 +28,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
 import org.geotools.util.logging.Logging;
 
-/**
- * A GeoJSON specific feature collection that can follow "next" links in order to retrieve all data
- */
+/** A GeoJSON specific feature collection that can follow "next" links in order to retrieve all data */
 public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
 
     protected static final Logger LOGGER = Logging.getLogger(PagingFeatureCollection.class);
@@ -39,8 +37,7 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
     SimpleFeatureCollection first;
     ObjectNode next;
 
-    public PagingFeatureCollection(
-            SimpleFeatureCollection first, ObjectNode next, Integer matched) {
+    public PagingFeatureCollection(SimpleFeatureCollection first, ObjectNode next, Integer matched) {
         super(first.getSchema());
         this.first = first;
         this.next = next;
@@ -64,8 +61,8 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
     }
 
     /**
-     * Reads the next feature collection, or return null if there is none. Subclasses can override
-     * if they need a different logic for fetching the next page.
+     * Reads the next feature collection, or return null if there is none. Subclasses can override if they need a
+     * different logic for fetching the next page.
      */
     protected SimpleFeatureCollection readNext(ObjectNode next) throws IOException {
         if (next == null) return null;

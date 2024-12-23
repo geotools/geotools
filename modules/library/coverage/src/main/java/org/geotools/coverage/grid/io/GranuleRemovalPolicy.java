@@ -20,15 +20,11 @@ import org.geotools.api.filter.Filter;
 
 /**
  * Policy to be used while running a removal on {@link GranuleStore#removeGranules(Filter,
- * org.geotools.util.factory.Hints)}. Needs to be specified as part of the {@link
- * org.geotools.util.factory.Hints}
+ * org.geotools.util.factory.Hints)}. Needs to be specified as part of the {@link org.geotools.util.factory.Hints}
  */
 public enum GranuleRemovalPolicy {
 
-    /**
-     * Do not remove granule data nor metadata, simply un-register granules from the {@link
-     * GranuleStore}
-     */
+    /** Do not remove granule data nor metadata, simply un-register granules from the {@link GranuleStore} */
     NONE,
 
     /** Remove metadata, but not data */

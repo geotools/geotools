@@ -68,14 +68,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ABSTRACTCT_CATALOGUE_TYPE_TYPE =
-            build_ABSTRACTCT_CATALOGUE_TYPE_TYPE();
+    public static final ComplexType ABSTRACTCT_CATALOGUE_TYPE_TYPE = build_ABSTRACTCT_CATALOGUE_TYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCT_CATALOGUE_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "AbstractCT_Catalogue_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "AbstractCT_Catalogue_Type"),
                         false,
                         true,
                         null,
@@ -88,86 +86,69 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "name"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "scope"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "fieldOfApplication"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "versionNumber"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.DATE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "versionDate"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "language"),
-                                        0,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.MD_CHARACTERSETCODE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "characterSet"),
-                                        0,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CATALOGUE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "subCatalogue"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "name"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "scope"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "fieldOfApplication"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "versionNumber"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.DATE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "versionDate"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "language"),
+                                0,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.MD_CHARACTERSETCODE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "characterSet"),
+                                0,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CATALOGUE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "subCatalogue"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -214,34 +195,27 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        FILENAME_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "fileName"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "fileDescription"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MIMEFILETYPE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "fileType"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                FILENAME_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "fileName"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CHARACTERSTRING_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "fileDescription"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MIMEFILETYPE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "fileType"),
+                                1,
+                                1,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -283,23 +257,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ANCHOR_TYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "Anchor"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ANCHOR_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "Anchor"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -329,11 +300,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ANCHOR_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "Anchor_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "Anchor_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return XSSchema.STRING_TYPE;
@@ -342,62 +309,55 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -440,87 +400,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.BASEUNITTYPE_TYPE,
-                                        new NameImpl("http://www.opengis.net/gml/3.2", "BaseUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.BASEUNITTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "BaseUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -563,88 +507,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTCRSTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2", "AbstractCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTCRSTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -669,14 +596,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_CATALOGUE_PROPERTYTYPE_TYPE =
-            build_CT_CATALOGUE_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_CATALOGUE_PROPERTYTYPE_TYPE = build_CT_CATALOGUE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_CATALOGUE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_Catalogue_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_Catalogue_PropertyType"),
                         false,
                         false,
                         null,
@@ -689,89 +614,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ABSTRACTCT_CATALOGUE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "AbstractCT_Catalogue"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ABSTRACTCT_CATALOGUE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "AbstractCT_Catalogue"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -802,9 +709,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CT_CODELISTCATALOGUE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_CodelistCatalogue_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CodelistCatalogue_PropertyType"),
                         false,
                         false,
                         null,
@@ -817,89 +722,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CODELISTCATALOGUE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CT_CodelistCatalogue"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CODELISTCATALOGUE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CodelistCatalogue"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -926,14 +813,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_CODELISTCATALOGUE_TYPE_TYPE =
-            build_CT_CODELISTCATALOGUE_TYPE_TYPE();
+    public static final ComplexType CT_CODELISTCATALOGUE_TYPE_TYPE = build_CT_CODELISTCATALOGUE_TYPE_TYPE();
 
     private static ComplexType build_CT_CODELISTCATALOGUE_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_CodelistCatalogue_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CodelistCatalogue_Type"),
                         false,
                         false,
                         null,
@@ -946,15 +831,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CODELIST_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "codelistItem"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CODELIST_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "codelistItem"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -979,15 +862,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_CODELISTVALUE_PROPERTYTYPE_TYPE =
-            build_CT_CODELISTVALUE_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_CODELISTVALUE_PROPERTYTYPE_TYPE = build_CT_CODELISTVALUE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_CODELISTVALUE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_CodelistValue_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CodelistValue_PropertyType"),
                         false,
                         false,
                         null,
@@ -1000,89 +880,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODEDEFINITION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CodeDefinition"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODEDEFINITION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CodeDefinition"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1107,14 +969,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_CODELIST_PROPERTYTYPE_TYPE =
-            build_CT_CODELIST_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_CODELIST_PROPERTYTYPE_TYPE = build_CT_CODELIST_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_CODELIST_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_Codelist_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_Codelist_PropertyType"),
                         false,
                         false,
                         null,
@@ -1127,89 +987,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODELISTDICTIONARY_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CodeListDictionary"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODELISTDICTIONARY_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CodeListDictionary"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1240,9 +1082,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CT_COORDINATESYSTEMAXIS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_CoordinateSystemAxis_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CoordinateSystemAxis_PropertyType"),
                         false,
                         false,
                         null,
@@ -1255,89 +1095,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.COORDINATESYSTEMAXISTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "CoordinateSystemAxis"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.COORDINATESYSTEMAXISTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "CoordinateSystemAxis"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1368,9 +1190,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CT_COORDINATESYSTEM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_CoordinateSystem_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CoordinateSystem_PropertyType"),
                         false,
                         false,
                         null,
@@ -1383,89 +1203,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "AbstractCoordinateSystem"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTCOORDINATESYSTEMTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractCoordinateSystem"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1490,14 +1292,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_CRSCATALOGUE_PROPERTYTYPE_TYPE =
-            build_CT_CRSCATALOGUE_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_CRSCATALOGUE_PROPERTYTYPE_TYPE = build_CT_CRSCATALOGUE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_CRSCATALOGUE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_CrsCatalogue_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CrsCatalogue_PropertyType"),
                         false,
                         false,
                         null,
@@ -1510,89 +1310,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CRSCATALOGUE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CT_CrsCatalogue"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CRSCATALOGUE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CT_CrsCatalogue"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1653,87 +1435,69 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CRS_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "crs"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_COORDINATESYSTEM_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "coordinateSystem"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_COORDINATESYSTEMAXIS_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "axis"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_DATUM_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "datum"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_ELLIPSOID_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ellipsoid"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "primeMeridian"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_OPERATION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "operation"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "operationMethod"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_OPERATIONPARAMETERS_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "parameters"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CRS_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "crs"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_COORDINATESYSTEM_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "coordinateSystem"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_COORDINATESYSTEMAXIS_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "axis"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_DATUM_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "datum"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_ELLIPSOID_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ellipsoid"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "primeMeridian"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_OPERATION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "operation"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "operationMethod"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_OPERATIONPARAMETERS_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "parameters"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1776,88 +1540,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTDATUMTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2", "AbstractDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTDATUMTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -1882,14 +1629,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_ELLIPSOID_PROPERTYTYPE_TYPE =
-            build_CT_ELLIPSOID_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_ELLIPSOID_PROPERTYTYPE_TYPE = build_CT_ELLIPSOID_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_ELLIPSOID_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_Ellipsoid_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_Ellipsoid_PropertyType"),
                         false,
                         false,
                         null,
@@ -1902,87 +1647,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ELLIPSOIDTYPE_TYPE,
-                                        new NameImpl("http://www.opengis.net/gml/3.2", "Ellipsoid"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ELLIPSOIDTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "Ellipsoid"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2007,15 +1736,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE =
-            build_CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE = build_CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_OPERATIONMETHOD_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_OperationMethod_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_OperationMethod_PropertyType"),
                         false,
                         false,
                         null,
@@ -2028,89 +1754,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.OPERATIONMETHODTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "OperationMethod"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.OPERATIONMETHODTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "OperationMethod"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2141,9 +1849,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CT_OPERATIONPARAMETERS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_OperationParameters_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_OperationParameters_PropertyType"),
                         false,
                         false,
                         null,
@@ -2156,89 +1862,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "AbstractGeneralOperationParameter"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractGeneralOperationParameter"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2263,14 +1951,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_OPERATION_PROPERTYTYPE_TYPE =
-            build_CT_OPERATION_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_OPERATION_PROPERTYTYPE_TYPE = build_CT_OPERATION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_OPERATION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_Operation_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_Operation_PropertyType"),
                         false,
                         false,
                         null,
@@ -2283,89 +1969,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "AbstractCoordinateOperation"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTCOORDINATEOPERATIONTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractCoordinateOperation"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2390,15 +2058,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE =
-            build_CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE = build_CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_PRIMEMERIDIAN_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CT_PrimeMeridian_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_PrimeMeridian_PropertyType"),
                         false,
                         false,
                         null,
@@ -2411,88 +2076,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.PRIMEMERIDIANTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2", "PrimeMeridian"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.PRIMEMERIDIANTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "PrimeMeridian"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2517,14 +2165,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CT_UOMCATALOGUE_PROPERTYTYPE_TYPE =
-            build_CT_UOMCATALOGUE_PROPERTYTYPE_TYPE();
+    public static final ComplexType CT_UOMCATALOGUE_PROPERTYTYPE_TYPE = build_CT_UOMCATALOGUE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CT_UOMCATALOGUE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CT_UomCatalogue_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CT_UomCatalogue_PropertyType"),
                         false,
                         false,
                         null,
@@ -2537,89 +2183,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_UOMCATALOGUE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CT_UomCatalogue"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_UOMCATALOGUE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CT_UomCatalogue"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2664,14 +2292,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UNITDEFINITION_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "uomItem"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UNITDEFINITION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "uomItem"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2702,9 +2329,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CLALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ClAlternativeExpression_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ClAlternativeExpression_PropertyType"),
                         false,
                         false,
                         null,
@@ -2717,89 +2342,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CLALTERNATIVEEXPRESSION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ClAlternativeExpression"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CLALTERNATIVEEXPRESSION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ClAlternativeExpression"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -2830,14 +2437,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CLALTERNATIVEEXPRESSION_TYPE_TYPE =
-            build_CLALTERNATIVEEXPRESSION_TYPE_TYPE();
+    public static final ComplexType CLALTERNATIVEEXPRESSION_TYPE_TYPE = build_CLALTERNATIVEEXPRESSION_TYPE_TYPE();
 
     private static ComplexType build_CLALTERNATIVEEXPRESSION_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ClAlternativeExpression_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ClAlternativeExpression_Type"),
                         false,
                         false,
                         null,
@@ -2850,22 +2455,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -2896,9 +2494,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CODEALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CodeAlternativeExpression_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CodeAlternativeExpression_PropertyType"),
                         false,
                         false,
                         null,
@@ -2911,89 +2507,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODEALTERNATIVEEXPRESSION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CodeAlternativeExpression"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODEALTERNATIVEEXPRESSION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CodeAlternativeExpression"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3024,15 +2602,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CODEALTERNATIVEEXPRESSION_TYPE_TYPE =
-            build_CODEALTERNATIVEEXPRESSION_TYPE_TYPE();
+    public static final ComplexType CODEALTERNATIVEEXPRESSION_TYPE_TYPE = build_CODEALTERNATIVEEXPRESSION_TYPE_TYPE();
 
     private static ComplexType build_CODEALTERNATIVEEXPRESSION_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CodeAlternativeExpression_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CodeAlternativeExpression_Type"),
                         false,
                         false,
                         null,
@@ -3045,22 +2620,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        0,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                0,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -3085,14 +2653,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CODEDEFINITION_PROPERTYTYPE_TYPE =
-            build_CODEDEFINITION_PROPERTYTYPE_TYPE();
+    public static final ComplexType CODEDEFINITION_PROPERTYTYPE_TYPE = build_CODEDEFINITION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CODEDEFINITION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CodeDefinition_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CodeDefinition_PropertyType"),
                         false,
                         false,
                         null,
@@ -3105,89 +2671,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODEDEFINITION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CodeDefinition"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODEDEFINITION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CodeDefinition"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3251,15 +2799,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CODELISTDICTIONARY_PROPERTYTYPE_TYPE =
-            build_CODELISTDICTIONARY_PROPERTYTYPE_TYPE();
+    public static final ComplexType CODELISTDICTIONARY_PROPERTYTYPE_TYPE = build_CODELISTDICTIONARY_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CODELISTDICTIONARY_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CodeListDictionary_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CodeListDictionary_PropertyType"),
                         false,
                         false,
                         null,
@@ -3272,89 +2817,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODELISTDICTIONARY_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CodeListDictionary"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODELISTDICTIONARY_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CodeListDictionary"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3384,8 +2911,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CODELISTDICTIONARY_TYPE_TYPE =
-            build_CODELISTDICTIONARY_TYPE_TYPE();
+    public static final ComplexType CODELISTDICTIONARY_TYPE_TYPE = build_CODELISTDICTIONARY_TYPE_TYPE();
 
     private static ComplexType build_CODELISTDICTIONARY_TYPE_TYPE() {
         ComplexType builtType =
@@ -3403,15 +2929,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODEDEFINITION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "codeEntry"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODEDEFINITION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "codeEntry"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3436,15 +2960,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType CONVENTIONALUNIT_PROPERTYTYPE_TYPE =
-            build_CONVENTIONALUNIT_PROPERTYTYPE_TYPE();
+    public static final ComplexType CONVENTIONALUNIT_PROPERTYTYPE_TYPE = build_CONVENTIONALUNIT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_CONVENTIONALUNIT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ConventionalUnit_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ConventionalUnit_PropertyType"),
                         false,
                         false,
                         null,
@@ -3457,89 +2978,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.CONVENTIONALUNITTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "ConventionalUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.CONVENTIONALUNITTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "ConventionalUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3570,9 +3073,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_COORDINATESYSTEMALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CoordinateSystemAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -3585,89 +3086,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CoordinateSystemAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3699,14 +3182,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType COORDINATESYSTEMALT_TYPE_TYPE =
-            build_COORDINATESYSTEMALT_TYPE_TYPE();
+    public static final ComplexType COORDINATESYSTEMALT_TYPE_TYPE = build_COORDINATESYSTEMALT_TYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMALT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CoordinateSystemAlt_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAlt_Type"),
                         false,
                         false,
                         null,
@@ -3719,30 +3200,17 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.AGGREGATIONTYPE_TYPE,
-                                        new NameImpl("aggregationType"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.AGGREGATIONTYPE_TYPE, new NameImpl("aggregationType"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -3773,9 +3241,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_COORDINATESYSTEMAXISALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "CoordinateSystemAxisAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAxisAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -3788,89 +3254,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMAXISALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "CoordinateSystemAxisAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMAXISALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAxisAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -3901,14 +3349,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType COORDINATESYSTEMAXISALT_TYPE_TYPE =
-            build_COORDINATESYSTEMAXISALT_TYPE_TYPE();
+    public static final ComplexType COORDINATESYSTEMAXISALT_TYPE_TYPE = build_COORDINATESYSTEMAXISALT_TYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMAXISALT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "CoordinateSystemAxisAlt_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CoordinateSystemAxisAlt_Type"),
                         false,
                         false,
                         null,
@@ -3921,22 +3367,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -3979,87 +3418,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_TYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "CrsAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "CrsAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4095,11 +3518,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_CRSALT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "CrsAlt_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "CrsAlt_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return GMLSchema.ABSTRACTCRSTYPE_TYPE;
@@ -4108,22 +3527,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -4166,88 +3578,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "DatumAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "DatumAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4283,11 +3678,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_DATUMALT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "DatumAlt_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "DatumAlt_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return GMLSchema.ABSTRACTDATUMTYPE_TYPE;
@@ -4296,22 +3687,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -4336,14 +3720,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType DERIVEDUNIT_PROPERTYTYPE_TYPE =
-            build_DERIVEDUNIT_PROPERTYTYPE_TYPE();
+    public static final ComplexType DERIVEDUNIT_PROPERTYTYPE_TYPE = build_DERIVEDUNIT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_DERIVEDUNIT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "DerivedUnit_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "DerivedUnit_PropertyType"),
                         false,
                         false,
                         null,
@@ -4356,88 +3738,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.DERIVEDUNITTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2", "DerivedUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.DERIVEDUNITTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "DerivedUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4462,14 +3827,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ELLIPSOIDALT_PROPERTYTYPE_TYPE =
-            build_ELLIPSOIDALT_PROPERTYTYPE_TYPE();
+    public static final ComplexType ELLIPSOIDALT_PROPERTYTYPE_TYPE = build_ELLIPSOIDALT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "EllipsoidAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "EllipsoidAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -4482,88 +3845,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ELLIPSOIDALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "EllipsoidAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ELLIPSOIDALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "EllipsoidAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4612,22 +3958,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -4669,24 +4008,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        FILENAME_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "FileName"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                FILENAME_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "FileName"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4716,11 +4051,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_FILENAME_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "FileName_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "FileName_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return XSSchema.STRING_TYPE;
@@ -4729,14 +4060,8 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("src"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("src"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -4761,14 +4086,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_AFFINECS_PROPERTYTYPE_TYPE =
-            build_ML_AFFINECS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_AFFINECS_PROPERTYTYPE_TYPE = build_ML_AFFINECS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_AFFINECS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_AffineCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_AffineCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -4781,88 +4104,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_AFFINECS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_AffineCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_AFFINECS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_AffineCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4908,16 +4214,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -4942,14 +4245,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_BASEUNIT_PROPERTYTYPE_TYPE =
-            build_ML_BASEUNIT_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_BASEUNIT_PROPERTYTYPE_TYPE = build_ML_BASEUNIT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_BASEUNIT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_BaseUnit_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_BaseUnit_PropertyType"),
                         false,
                         false,
                         null,
@@ -4962,88 +4263,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_BASEUNIT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_BaseUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_BASEUNIT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_BaseUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5089,16 +4373,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5123,14 +4404,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CARTESIANCS_PROPERTYTYPE_TYPE =
-            build_ML_CARTESIANCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_CARTESIANCS_PROPERTYTYPE_TYPE = build_ML_CARTESIANCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_CARTESIANCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_CartesianCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CartesianCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -5143,89 +4422,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CARTESIANCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CartesianCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CARTESIANCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CartesianCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5271,16 +4532,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5305,15 +4563,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CODEDEFINITION_PROPERTYTYPE_TYPE =
-            build_ML_CODEDEFINITION_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_CODEDEFINITION_PROPERTYTYPE_TYPE = build_ML_CODEDEFINITION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_CODEDEFINITION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_CodeDefinition_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CodeDefinition_PropertyType"),
                         false,
                         false,
                         null,
@@ -5326,89 +4581,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CODEDEFINITION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CodeDefinition"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CODEDEFINITION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CodeDefinition"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5436,8 +4673,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CODEDEFINITION_TYPE_TYPE =
-            build_ML_CODEDEFINITION_TYPE_TYPE();
+    public static final ComplexType ML_CODEDEFINITION_TYPE_TYPE = build_ML_CODEDEFINITION_TYPE_TYPE();
 
     private static ComplexType build_ML_CODEDEFINITION_TYPE_TYPE() {
         ComplexType builtType =
@@ -5455,16 +4691,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CODEALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CODEALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5495,9 +4728,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_CODELISTDICTIONARY_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_CodeListDictionary_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CodeListDictionary_PropertyType"),
                         false,
                         false,
                         null,
@@ -5510,89 +4741,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CODELISTDICTIONARY_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CodeListDictionary"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CODELISTDICTIONARY_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CodeListDictionary"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5623,14 +4836,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CODELISTDICTIONARY_TYPE_TYPE =
-            build_ML_CODELISTDICTIONARY_TYPE_TYPE();
+    public static final ComplexType ML_CODELISTDICTIONARY_TYPE_TYPE = build_ML_CODELISTDICTIONARY_TYPE_TYPE();
 
     private static ComplexType build_ML_CODELISTDICTIONARY_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_CodeListDictionary_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CodeListDictionary_Type"),
                         false,
                         false,
                         null,
@@ -5643,16 +4854,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CLALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CLALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5677,14 +4885,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_COMPOUNDCRS_PROPERTYTYPE_TYPE =
-            build_ML_COMPOUNDCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_COMPOUNDCRS_PROPERTYTYPE_TYPE = build_ML_COMPOUNDCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_COMPOUNDCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_CompoundCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CompoundCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -5697,89 +4903,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_COMPOUNDCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CompoundCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_COMPOUNDCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CompoundCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5825,16 +5013,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5865,9 +5050,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_CONCATENATEDOPERATION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_ConcatenatedOperation_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConcatenatedOperation_PropertyType"),
                         false,
                         false,
                         null,
@@ -5880,89 +5063,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CONCATENATEDOPERATION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_ConcatenatedOperation"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CONCATENATEDOPERATION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConcatenatedOperation"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -5990,15 +5155,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CONCATENATEDOPERATION_TYPE_TYPE =
-            build_ML_CONCATENATEDOPERATION_TYPE_TYPE();
+    public static final ComplexType ML_CONCATENATEDOPERATION_TYPE_TYPE = build_ML_CONCATENATEDOPERATION_TYPE_TYPE();
 
     private static ComplexType build_ML_CONCATENATEDOPERATION_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_ConcatenatedOperation_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConcatenatedOperation_Type"),
                         false,
                         false,
                         null,
@@ -6011,16 +5173,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6051,9 +5210,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_CONVENTIONALUNIT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_ConventionalUnit_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConventionalUnit_PropertyType"),
                         false,
                         false,
                         null,
@@ -6066,89 +5223,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CONVENTIONALUNIT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_ConventionalUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CONVENTIONALUNIT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConventionalUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6176,14 +5315,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CONVENTIONALUNIT_TYPE_TYPE =
-            build_ML_CONVENTIONALUNIT_TYPE_TYPE();
+    public static final ComplexType ML_CONVENTIONALUNIT_TYPE_TYPE = build_ML_CONVENTIONALUNIT_TYPE_TYPE();
 
     private static ComplexType build_ML_CONVENTIONALUNIT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_ConventionalUnit_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ConventionalUnit_Type"),
                         false,
                         false,
                         null,
@@ -6196,16 +5333,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6230,14 +5364,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CONVERSION_PROPERTYTYPE_TYPE =
-            build_ML_CONVERSION_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_CONVERSION_PROPERTYTYPE_TYPE = build_ML_CONVERSION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_CONVERSION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_Conversion_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Conversion_PropertyType"),
                         false,
                         false,
                         null,
@@ -6250,89 +5382,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CONVERSION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_Conversion"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CONVERSION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Conversion"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6378,16 +5492,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6418,9 +5529,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_COORDINATESYSTEMAXIS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_CoordinateSystemAxis_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CoordinateSystemAxis_PropertyType"),
                         false,
                         false,
                         null,
@@ -6433,89 +5542,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_COORDINATESYSTEMAXIS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CoordinateSystemAxis"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_COORDINATESYSTEMAXIS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CoordinateSystemAxis"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6543,14 +5634,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_COORDINATESYSTEMAXIS_TYPE_TYPE =
-            build_ML_COORDINATESYSTEMAXIS_TYPE_TYPE();
+    public static final ComplexType ML_COORDINATESYSTEMAXIS_TYPE_TYPE = build_ML_COORDINATESYSTEMAXIS_TYPE_TYPE();
 
     private static ComplexType build_ML_COORDINATESYSTEMAXIS_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_CoordinateSystemAxis_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CoordinateSystemAxis_Type"),
                         false,
                         false,
                         null,
@@ -6563,16 +5652,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMAXISALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMAXISALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6597,15 +5683,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_CYLINDRICALCS_PROPERTYTYPE_TYPE =
-            build_ML_CYLINDRICALCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_CYLINDRICALCS_PROPERTYTYPE_TYPE = build_ML_CYLINDRICALCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_CYLINDRICALCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_CylindricalCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CylindricalCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -6618,89 +5701,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_CYLINDRICALCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_CylindricalCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_CYLINDRICALCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_CylindricalCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6746,16 +5811,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6780,14 +5842,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_DERIVEDCRS_PROPERTYTYPE_TYPE =
-            build_ML_DERIVEDCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_DERIVEDCRS_PROPERTYTYPE_TYPE = build_ML_DERIVEDCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_DERIVEDCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_DerivedCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_DerivedCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -6800,89 +5860,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_DERIVEDCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_DerivedCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_DERIVEDCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_DerivedCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6928,16 +5970,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -6962,14 +6001,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_DERIVEDUNIT_PROPERTYTYPE_TYPE =
-            build_ML_DERIVEDUNIT_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_DERIVEDUNIT_PROPERTYTYPE_TYPE = build_ML_DERIVEDUNIT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_DERIVEDUNIT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_DerivedUnit_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_DerivedUnit_PropertyType"),
                         false,
                         false,
                         null,
@@ -6982,89 +6019,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_DERIVEDUNIT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_DerivedUnit"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_DERIVEDUNIT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_DerivedUnit"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7110,16 +6129,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7144,14 +6160,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_ELLIPSOID_PROPERTYTYPE_TYPE =
-            build_ML_ELLIPSOID_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_ELLIPSOID_PROPERTYTYPE_TYPE = build_ML_ELLIPSOID_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_ELLIPSOID_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_Ellipsoid_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Ellipsoid_PropertyType"),
                         false,
                         false,
                         null,
@@ -7164,88 +6178,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_ELLIPSOID_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_Ellipsoid"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_ELLIPSOID_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Ellipsoid"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7291,16 +6288,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ELLIPSOIDALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ELLIPSOIDALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7325,15 +6319,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_ELLIPSOIDALCS_PROPERTYTYPE_TYPE =
-            build_ML_ELLIPSOIDALCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_ELLIPSOIDALCS_PROPERTYTYPE_TYPE = build_ML_ELLIPSOIDALCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_ELLIPSOIDALCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_EllipsoidalCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EllipsoidalCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -7346,89 +6337,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_ELLIPSOIDALCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_EllipsoidalCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_ELLIPSOIDALCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EllipsoidalCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7474,16 +6447,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7508,15 +6478,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_ENGINEERINGCRS_PROPERTYTYPE_TYPE =
-            build_ML_ENGINEERINGCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_ENGINEERINGCRS_PROPERTYTYPE_TYPE = build_ML_ENGINEERINGCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_ENGINEERINGCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_EngineeringCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EngineeringCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -7529,89 +6496,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_ENGINEERINGCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_EngineeringCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_ENGINEERINGCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EngineeringCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7639,8 +6588,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_ENGINEERINGCRS_TYPE_TYPE =
-            build_ML_ENGINEERINGCRS_TYPE_TYPE();
+    public static final ComplexType ML_ENGINEERINGCRS_TYPE_TYPE = build_ML_ENGINEERINGCRS_TYPE_TYPE();
 
     private static ComplexType build_ML_ENGINEERINGCRS_TYPE_TYPE() {
         ComplexType builtType =
@@ -7658,16 +6606,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7698,9 +6643,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_ENGINEERINGDATUM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_EngineeringDatum_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EngineeringDatum_PropertyType"),
                         false,
                         false,
                         null,
@@ -7713,89 +6656,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_ENGINEERINGDATUM_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_EngineeringDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_ENGINEERINGDATUM_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EngineeringDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7823,14 +6748,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_ENGINEERINGDATUM_TYPE_TYPE =
-            build_ML_ENGINEERINGDATUM_TYPE_TYPE();
+    public static final ComplexType ML_ENGINEERINGDATUM_TYPE_TYPE = build_ML_ENGINEERINGDATUM_TYPE_TYPE();
 
     private static ComplexType build_ML_ENGINEERINGDATUM_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_EngineeringDatum_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_EngineeringDatum_Type"),
                         false,
                         false,
                         null,
@@ -7843,16 +6766,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -7877,14 +6797,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_GEODETICCRS_PROPERTYTYPE_TYPE =
-            build_ML_GEODETICCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_GEODETICCRS_PROPERTYTYPE_TYPE = build_ML_GEODETICCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_GEODETICCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_GeodeticCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_GeodeticCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -7897,89 +6815,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_GEODETICCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_GeodeticCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_GEODETICCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_GeodeticCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8025,16 +6925,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8059,15 +6956,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_GEODETICDATUM_PROPERTYTYPE_TYPE =
-            build_ML_GEODETICDATUM_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_GEODETICDATUM_PROPERTYTYPE_TYPE = build_ML_GEODETICDATUM_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_GEODETICDATUM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_GeodeticDatum_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_GeodeticDatum_PropertyType"),
                         false,
                         false,
                         null,
@@ -8080,89 +6974,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_GEODETICDATUM_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_GeodeticDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_GEODETICDATUM_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_GeodeticDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8208,16 +7084,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8242,14 +7115,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_IMAGECRS_PROPERTYTYPE_TYPE =
-            build_ML_IMAGECRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_IMAGECRS_PROPERTYTYPE_TYPE = build_ML_IMAGECRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_IMAGECRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_ImageCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ImageCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -8262,88 +7133,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_IMAGECRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_ImageCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_IMAGECRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ImageCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8389,16 +7243,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8423,14 +7274,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_IMAGEDATUM_PROPERTYTYPE_TYPE =
-            build_ML_IMAGEDATUM_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_IMAGEDATUM_PROPERTYTYPE_TYPE = build_ML_IMAGEDATUM_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_IMAGEDATUM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_ImageDatum_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ImageDatum_PropertyType"),
                         false,
                         false,
                         null,
@@ -8443,89 +7292,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_IMAGEDATUM_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_ImageDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_IMAGEDATUM_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ImageDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8571,16 +7402,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8605,14 +7433,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_LINEARCS_PROPERTYTYPE_TYPE =
-            build_ML_LINEARCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_LINEARCS_PROPERTYTYPE_TYPE = build_ML_LINEARCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_LINEARCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_LinearCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_LinearCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -8625,88 +7451,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_LINEARCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_LinearCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_LINEARCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_LinearCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8752,16 +7561,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8786,15 +7592,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_OPERATIONMETHOD_PROPERTYTYPE_TYPE =
-            build_ML_OPERATIONMETHOD_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_OPERATIONMETHOD_PROPERTYTYPE_TYPE = build_ML_OPERATIONMETHOD_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_OPERATIONMETHOD_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_OperationMethod_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationMethod_PropertyType"),
                         false,
                         false,
                         null,
@@ -8807,89 +7610,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_OPERATIONMETHOD_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_OperationMethod"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_OPERATIONMETHOD_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationMethod"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8917,8 +7702,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_OPERATIONMETHOD_TYPE_TYPE =
-            build_ML_OPERATIONMETHOD_TYPE_TYPE();
+    public static final ComplexType ML_OPERATIONMETHOD_TYPE_TYPE = build_ML_OPERATIONMETHOD_TYPE_TYPE();
 
     private static ComplexType build_ML_OPERATIONMETHOD_TYPE_TYPE() {
         ComplexType builtType =
@@ -8936,16 +7720,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONMETHODALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONMETHODALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -8976,9 +7757,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_OPERATIONPARAMETERGROUP_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_OperationParameterGroup_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameterGroup_PropertyType"),
                         false,
                         false,
                         null,
@@ -8991,89 +7770,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_OPERATIONPARAMETERGROUP_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_OperationParameterGroup"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_OPERATIONPARAMETERGROUP_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameterGroup"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9101,15 +7862,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_OPERATIONPARAMETERGROUP_TYPE_TYPE =
-            build_ML_OPERATIONPARAMETERGROUP_TYPE_TYPE();
+    public static final ComplexType ML_OPERATIONPARAMETERGROUP_TYPE_TYPE = build_ML_OPERATIONPARAMETERGROUP_TYPE_TYPE();
 
     private static ComplexType build_ML_OPERATIONPARAMETERGROUP_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_OperationParameterGroup_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameterGroup_Type"),
                         false,
                         false,
                         null,
@@ -9122,16 +7880,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONPARAMETERALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONPARAMETERALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9162,9 +7917,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_OPERATIONPARAMETER_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_OperationParameter_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameter_PropertyType"),
                         false,
                         false,
                         null,
@@ -9177,89 +7930,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_OPERATIONPARAMETER_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_OperationParameter"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_OPERATIONPARAMETER_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameter"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9287,14 +8022,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_OPERATIONPARAMETER_TYPE_TYPE =
-            build_ML_OPERATIONPARAMETER_TYPE_TYPE();
+    public static final ComplexType ML_OPERATIONPARAMETER_TYPE_TYPE = build_ML_OPERATIONPARAMETER_TYPE_TYPE();
 
     private static ComplexType build_ML_OPERATIONPARAMETER_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_OperationParameter_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_OperationParameter_Type"),
                         false,
                         false,
                         null,
@@ -9307,16 +8040,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONPARAMETERALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONPARAMETERALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9347,9 +8077,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_PASSTHROUGHOPERATION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_PassThroughOperation_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PassThroughOperation_PropertyType"),
                         false,
                         false,
                         null,
@@ -9362,89 +8090,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_PASSTHROUGHOPERATION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_PassThroughOperation"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_PASSTHROUGHOPERATION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PassThroughOperation"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9472,14 +8182,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_PASSTHROUGHOPERATION_TYPE_TYPE =
-            build_ML_PASSTHROUGHOPERATION_TYPE_TYPE();
+    public static final ComplexType ML_PASSTHROUGHOPERATION_TYPE_TYPE = build_ML_PASSTHROUGHOPERATION_TYPE_TYPE();
 
     private static ComplexType build_ML_PASSTHROUGHOPERATION_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_PassThroughOperation_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PassThroughOperation_Type"),
                         false,
                         false,
                         null,
@@ -9492,16 +8200,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9526,8 +8231,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_POLARCS_PROPERTYTYPE_TYPE =
-            build_ML_POLARCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_POLARCS_PROPERTYTYPE_TYPE = build_ML_POLARCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_POLARCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
@@ -9545,88 +8249,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_POLARCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_PolarCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_POLARCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PolarCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9659,11 +8346,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_POLARCS_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PolarCS_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PolarCS_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return GMLSchema.POLARCSTYPE_TYPE;
@@ -9672,16 +8355,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9706,15 +8386,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_PRIMEMERIDIAN_PROPERTYTYPE_TYPE =
-            build_ML_PRIMEMERIDIAN_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_PRIMEMERIDIAN_PROPERTYTYPE_TYPE = build_ML_PRIMEMERIDIAN_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_PRIMEMERIDIAN_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_PrimeMeridian_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PrimeMeridian_PropertyType"),
                         false,
                         false,
                         null,
@@ -9727,89 +8404,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_PRIMEMERIDIAN_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_PrimeMeridian"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_PRIMEMERIDIAN_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_PrimeMeridian"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9855,16 +8514,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        PRIMEMERIDIANALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                PRIMEMERIDIANALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -9889,14 +8545,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_PROJECTEDCRS_PROPERTYTYPE_TYPE =
-            build_ML_PROJECTEDCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_PROJECTEDCRS_PROPERTYTYPE_TYPE = build_ML_PROJECTEDCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_PROJECTEDCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_ProjectedCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ProjectedCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -9909,89 +8563,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_PROJECTEDCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_ProjectedCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_PROJECTEDCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_ProjectedCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10037,16 +8673,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10071,14 +8704,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_SPHERICALCS_PROPERTYTYPE_TYPE =
-            build_ML_SPHERICALCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_SPHERICALCS_PROPERTYTYPE_TYPE = build_ML_SPHERICALCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_SPHERICALCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_SphericalCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_SphericalCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -10091,89 +8722,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_SPHERICALCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_SphericalCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_SPHERICALCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_SphericalCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10219,16 +8832,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10253,14 +8863,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_TEMPORALCRS_PROPERTYTYPE_TYPE =
-            build_ML_TEMPORALCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_TEMPORALCRS_PROPERTYTYPE_TYPE = build_ML_TEMPORALCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_TEMPORALCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_TemporalCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TemporalCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -10273,89 +8881,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_TEMPORALCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_TemporalCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_TEMPORALCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TemporalCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10401,16 +8991,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10435,15 +9022,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_TEMPORALDATUM_PROPERTYTYPE_TYPE =
-            build_ML_TEMPORALDATUM_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_TEMPORALDATUM_PROPERTYTYPE_TYPE = build_ML_TEMPORALDATUM_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_TEMPORALDATUM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_TemporalDatum_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TemporalDatum_PropertyType"),
                         false,
                         false,
                         null,
@@ -10456,89 +9040,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_TEMPORALDATUM_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_TemporalDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_TEMPORALDATUM_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TemporalDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10584,16 +9150,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10618,8 +9181,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_TIMECS_PROPERTYTYPE_TYPE =
-            build_ML_TIMECS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_TIMECS_PROPERTYTYPE_TYPE = build_ML_TIMECS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_TIMECS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
@@ -10637,88 +9199,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_TIMECS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "ML_TimeCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_TIMECS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TimeCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10751,11 +9296,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_ML_TIMECS_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TimeCS_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_TimeCS_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return GMLSchema.TIMECSTYPE_TYPE;
@@ -10764,16 +9305,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10798,15 +9336,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_TRANSFORMATION_PROPERTYTYPE_TYPE =
-            build_ML_TRANSFORMATION_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_TRANSFORMATION_PROPERTYTYPE_TYPE = build_ML_TRANSFORMATION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_TRANSFORMATION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_Transformation_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Transformation_PropertyType"),
                         false,
                         false,
                         null,
@@ -10819,89 +9354,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_TRANSFORMATION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_Transformation"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_TRANSFORMATION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_Transformation"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10929,8 +9446,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_TRANSFORMATION_TYPE_TYPE =
-            build_ML_TRANSFORMATION_TYPE_TYPE();
+    public static final ComplexType ML_TRANSFORMATION_TYPE_TYPE = build_ML_TRANSFORMATION_TYPE_TYPE();
 
     private static ComplexType build_ML_TRANSFORMATION_TYPE_TYPE() {
         ComplexType builtType =
@@ -10948,16 +9464,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -10982,15 +9495,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_UNITDEFINITION_PROPERTYTYPE_TYPE =
-            build_ML_UNITDEFINITION_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_UNITDEFINITION_PROPERTYTYPE_TYPE = build_ML_UNITDEFINITION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_UNITDEFINITION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_UnitDefinition_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_UnitDefinition_PropertyType"),
                         false,
                         false,
                         null,
@@ -11003,89 +9513,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_UNITDEFINITION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_UnitDefinition"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_UNITDEFINITION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_UnitDefinition"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11113,8 +9605,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_UNITDEFINITION_TYPE_TYPE =
-            build_ML_UNITDEFINITION_TYPE_TYPE();
+    public static final ComplexType ML_UNITDEFINITION_TYPE_TYPE = build_ML_UNITDEFINITION_TYPE_TYPE();
 
     private static ComplexType build_ML_UNITDEFINITION_TYPE_TYPE() {
         ComplexType builtType =
@@ -11132,16 +9623,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11166,15 +9654,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_USERDEFINEDCS_PROPERTYTYPE_TYPE =
-            build_ML_USERDEFINEDCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_USERDEFINEDCS_PROPERTYTYPE_TYPE = build_ML_USERDEFINEDCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_USERDEFINEDCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_UserDefinedCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_UserDefinedCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -11187,89 +9672,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_USERDEFINEDCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_UserDefinedCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_USERDEFINEDCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_UserDefinedCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11315,16 +9782,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11349,14 +9813,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_VERTICALCRS_PROPERTYTYPE_TYPE =
-            build_ML_VERTICALCRS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_VERTICALCRS_PROPERTYTYPE_TYPE = build_ML_VERTICALCRS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_VERTICALCRS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_VerticalCRS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalCRS_PropertyType"),
                         false,
                         false,
                         null,
@@ -11369,89 +9831,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_VERTICALCRS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_VerticalCRS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_VERTICALCRS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalCRS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11497,16 +9941,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CRSALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CRSALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11531,14 +9972,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_VERTICALCS_PROPERTYTYPE_TYPE =
-            build_ML_VERTICALCS_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_VERTICALCS_PROPERTYTYPE_TYPE = build_ML_VERTICALCS_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_VERTICALCS_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "ML_VerticalCS_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalCS_PropertyType"),
                         false,
                         false,
                         null,
@@ -11551,89 +9990,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_VERTICALCS_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_VerticalCS"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_VERTICALCS_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalCS"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11679,16 +10100,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                COORDINATESYSTEMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11713,15 +10131,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ML_VERTICALDATUM_PROPERTYTYPE_TYPE =
-            build_ML_VERTICALDATUM_PROPERTYTYPE_TYPE();
+    public static final ComplexType ML_VERTICALDATUM_PROPERTYTYPE_TYPE = build_ML_VERTICALDATUM_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_ML_VERTICALDATUM_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "ML_VerticalDatum_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalDatum_PropertyType"),
                         false,
                         false,
                         null,
@@ -11734,89 +10149,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ML_VERTICALDATUM_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "ML_VerticalDatum"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ML_VERTICALDATUM_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "ML_VerticalDatum"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11862,16 +10259,13 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        DATUMALT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "alternativeExpression"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                DATUMALT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "alternativeExpression"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -11896,14 +10290,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MX_AGGREGATE_PROPERTYTYPE_TYPE =
-            build_MX_AGGREGATE_PROPERTYTYPE_TYPE();
+    public static final ComplexType MX_AGGREGATE_PROPERTYTYPE_TYPE = build_MX_AGGREGATE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MX_AGGREGATE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "MX_Aggregate_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_Aggregate_PropertyType"),
                         false,
                         false,
                         null,
@@ -11916,88 +10308,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_AGGREGATE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "MX_Aggregate"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_AGGREGATE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MX_Aggregate"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12045,26 +10420,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CATALOGUE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "aggregateCatalogue"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_SUPPORTFILE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "aggregateFile"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CATALOGUE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "aggregateCatalogue"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_SUPPORTFILE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "aggregateFile"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12089,14 +10458,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MX_DATAFILE_PROPERTYTYPE_TYPE =
-            build_MX_DATAFILE_PROPERTYTYPE_TYPE();
+    public static final ComplexType MX_DATAFILE_PROPERTYTYPE_TYPE = build_MX_DATAFILE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MX_DATAFILE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "MX_DataFile_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_DataFile_PropertyType"),
                         false,
                         false,
                         null,
@@ -12109,88 +10476,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_DATAFILE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "MX_DataFile"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_DATAFILE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MX_DataFile"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12237,24 +10587,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.GENERICNAME_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "featureTypes"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.MD_FORMAT_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "fileFormat"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.GENERICNAME_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "featureTypes"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.MD_FORMAT_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "fileFormat"),
+                                1,
+                                1,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12279,8 +10625,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MX_DATASET_PROPERTYTYPE_TYPE =
-            build_MX_DATASET_PROPERTYTYPE_TYPE();
+    public static final ComplexType MX_DATASET_PROPERTYTYPE_TYPE = build_MX_DATASET_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MX_DATASET_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
@@ -12298,88 +10643,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_DATASET_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "MX_DataSet"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_DATASET_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MX_DataSet"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12415,11 +10743,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_MX_DATASET_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_DataSet_Type"),
-                        false,
-                        false,
-                        null,
-                        null) {
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_DataSet_Type"), false, false, null, null) {
                     @Override
                     public AttributeType buildSuper() {
                         return GMDSchema.DS_DATASET_TYPE_TYPE;
@@ -12428,34 +10752,27 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_DATAFILE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "dataFile"),
-                                        1,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        CT_CATALOGUE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "datasetCatalogue"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_SUPPORTFILE_PROPERTYTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "supportFile"),
-                                        0,
-                                        2147483647,
-                                        false,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_DATAFILE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "dataFile"),
+                                1,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                CT_CATALOGUE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "datasetCatalogue"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_SUPPORTFILE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "supportFile"),
+                                0,
+                                2147483647,
+                                false,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12498,89 +10815,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        ABSTRACTMX_FILE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "AbstractMX_File"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                ABSTRACTMX_FILE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "AbstractMX_File"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12604,14 +10903,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MX_SCOPECODE_PROPERTYTYPE_TYPE =
-            build_MX_SCOPECODE_PROPERTYTYPE_TYPE();
+    public static final ComplexType MX_SCOPECODE_PROPERTYTYPE_TYPE = build_MX_SCOPECODE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MX_SCOPECODE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "MX_ScopeCode_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_ScopeCode_PropertyType"),
                         false,
                         false,
                         null,
@@ -12624,24 +10921,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GCOSchema.CODELISTVALUE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "MX_ScopeCode"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GCOSchema.CODELISTVALUE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MX_ScopeCode"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12666,14 +10959,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MX_SUPPORTFILE_PROPERTYTYPE_TYPE =
-            build_MX_SUPPORTFILE_PROPERTYTYPE_TYPE();
+    public static final ComplexType MX_SUPPORTFILE_PROPERTYTYPE_TYPE = build_MX_SUPPORTFILE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MX_SUPPORTFILE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "MX_SupportFile_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MX_SupportFile_PropertyType"),
                         false,
                         false,
                         null,
@@ -12686,89 +10977,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MX_SUPPORTFILE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "MX_SupportFile"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MX_SUPPORTFILE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MX_SupportFile"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12831,14 +11104,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType MIMEFILETYPE_PROPERTYTYPE_TYPE =
-            build_MIMEFILETYPE_PROPERTYTYPE_TYPE();
+    public static final ComplexType MIMEFILETYPE_PROPERTYTYPE_TYPE = build_MIMEFILETYPE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_MIMEFILETYPE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "MimeFileType_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "MimeFileType_PropertyType"),
                         false,
                         false,
                         null,
@@ -12851,24 +11122,20 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        MIMEFILETYPE_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "MimeFileType"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                MIMEFILETYPE_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "MimeFileType"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -12911,14 +11178,8 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("type"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -12943,14 +11204,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType OPERATIONALT_PROPERTYTYPE_TYPE =
-            build_OPERATIONALT_PROPERTYTYPE_TYPE();
+    public static final ComplexType OPERATIONALT_PROPERTYTYPE_TYPE = build_OPERATIONALT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_OPERATIONALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "OperationAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "OperationAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -12963,88 +11222,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx", "OperationAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "OperationAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13093,22 +11335,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -13133,15 +11368,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType OPERATIONMETHODALT_PROPERTYTYPE_TYPE =
-            build_OPERATIONMETHODALT_PROPERTYTYPE_TYPE();
+    public static final ComplexType OPERATIONMETHODALT_PROPERTYTYPE_TYPE = build_OPERATIONMETHODALT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_OPERATIONMETHODALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "OperationMethodAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "OperationMethodAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -13154,89 +11386,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONMETHODALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "OperationMethodAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONMETHODALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "OperationMethodAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13267,8 +11481,7 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType OPERATIONMETHODALT_TYPE_TYPE =
-            build_OPERATIONMETHODALT_TYPE_TYPE();
+    public static final ComplexType OPERATIONMETHODALT_TYPE_TYPE = build_OPERATIONMETHODALT_TYPE_TYPE();
 
     private static ComplexType build_OPERATIONMETHODALT_TYPE_TYPE() {
         ComplexType builtType =
@@ -13286,22 +11499,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -13332,9 +11538,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_OPERATIONPARAMETERALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "OperationParameterAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "OperationParameterAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -13347,89 +11551,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        OPERATIONPARAMETERALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "OperationParameterAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                OPERATIONPARAMETERALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "OperationParameterAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13460,14 +11646,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType OPERATIONPARAMETERALT_TYPE_TYPE =
-            build_OPERATIONPARAMETERALT_TYPE_TYPE();
+    public static final ComplexType OPERATIONPARAMETERALT_TYPE_TYPE = build_OPERATIONPARAMETERALT_TYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERALT_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "OperationParameterAlt_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "OperationParameterAlt_Type"),
                         false,
                         false,
                         null,
@@ -13480,22 +11664,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -13520,15 +11697,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType PRIMEMERIDIANALT_PROPERTYTYPE_TYPE =
-            build_PRIMEMERIDIANALT_PROPERTYTYPE_TYPE();
+    public static final ComplexType PRIMEMERIDIANALT_PROPERTYTYPE_TYPE = build_PRIMEMERIDIANALT_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_PRIMEMERIDIANALT_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "PrimeMeridianAlt_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "PrimeMeridianAlt_PropertyType"),
                         false,
                         false,
                         null,
@@ -13541,89 +11715,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        PRIMEMERIDIANALT_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "PrimeMeridianAlt"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                PRIMEMERIDIANALT_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "PrimeMeridianAlt"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13672,22 +11828,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -13712,14 +11861,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType UNITDEFINITION_PROPERTYTYPE_TYPE =
-            build_UNITDEFINITION_PROPERTYTYPE_TYPE();
+    public static final ComplexType UNITDEFINITION_PROPERTYTYPE_TYPE = build_UNITDEFINITION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_UNITDEFINITION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx", "UnitDefinition_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "UnitDefinition_PropertyType"),
                         false,
                         false,
                         null,
@@ -13732,88 +11879,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.UNITDEFINITIONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2", "UnitDefinition"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.UNITDEFINITIONTYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "UnitDefinition"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13844,9 +11974,7 @@ public class GMXSchema extends SchemaImpl {
     private static ComplexType build_UOMALTERNATIVEEXPRESSION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "UomAlternativeExpression_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "UomAlternativeExpression_PropertyType"),
                         false,
                         false,
                         null,
@@ -13859,89 +11987,71 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        UOMALTERNATIVEEXPRESSION_TYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gmx",
-                                                "UomAlternativeExpression"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                UOMALTERNATIVEEXPRESSION_TYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "UomAlternativeExpression"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -13972,15 +12082,12 @@ public class GMXSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType UOMALTERNATIVEEXPRESSION_TYPE_TYPE =
-            build_UOMALTERNATIVEEXPRESSION_TYPE_TYPE();
+    public static final ComplexType UOMALTERNATIVEEXPRESSION_TYPE_TYPE = build_UOMALTERNATIVEEXPRESSION_TYPE_TYPE();
 
     private static ComplexType build_UOMALTERNATIVEEXPRESSION_TYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gmx",
-                                "UomAlternativeExpression_Type"),
+                        new NameImpl("http://www.isotc211.org/2005/gmx", "UomAlternativeExpression_Type"),
                         false,
                         false,
                         null,
@@ -13993,22 +12100,15 @@ public class GMXSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
-                                        new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("codeSpace"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMDSchema.PT_LOCALE_PROPERTYTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gmx", "locale"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE, new NameImpl("codeSpace"), 0, 1, true, null));
                         return descriptors;
                     }
                 };
@@ -14168,11 +12268,10 @@ public class GMXSchema extends SchemaImpl {
     /**
      * Complete the definition of a type and store it in the schema.
      *
-     * <p>This method calls {@link AttributeType#getSuper()} (and {@link
-     * ComplexType#getDescriptors()} where applicable) to ensure the construction of the type (a
-     * concrete {@link AbstractLazyAttributeTypeImpl} or {@link AbstractLazyComplexTypeImpl}
-     * sublass) is complete. This should be sufficient to avoid any nasty thread-safety surprises in
-     * code using this schema.
+     * <p>This method calls {@link AttributeType#getSuper()} (and {@link ComplexType#getDescriptors()} where applicable)
+     * to ensure the construction of the type (a concrete {@link AbstractLazyAttributeTypeImpl} or
+     * {@link AbstractLazyComplexTypeImpl} sublass) is complete. This should be sufficient to avoid any nasty
+     * thread-safety surprises in code using this schema.
      *
      * @param type the type to complete and store
      */

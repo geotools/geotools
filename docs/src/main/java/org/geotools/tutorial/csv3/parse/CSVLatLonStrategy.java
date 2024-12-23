@@ -56,8 +56,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
         this(csvFileState, latField, lngField, "location");
     }
 
-    public CSVLatLonStrategy(
-            CSVFileState csvFileState, String latField, String lngField, String pointField) {
+    public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField, String pointField) {
         super(csvFileState);
         this.latField = latField;
         this.lngField = lngField;
@@ -149,8 +148,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 header.add(this.latField);
             }
         } else {
-            throw new IOException(
-                    "Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
+            throw new IOException("Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;

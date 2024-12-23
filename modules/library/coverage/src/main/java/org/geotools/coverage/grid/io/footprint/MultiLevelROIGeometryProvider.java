@@ -20,9 +20,7 @@ import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.locationtech.jts.geom.Geometry;
 
-/**
- * A {@link MultiLevelROIProvider} implementation used for returning {@link MultiLevelROIGeometry}s
- */
+/** A {@link MultiLevelROIProvider} implementation used for returning {@link MultiLevelROIGeometry}s */
 public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
 
     private final FootprintGeometryProvider geometryProvider;
@@ -33,8 +31,8 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
     private final FootprintInsetPolicy insetPolicy;
 
     /**
-     * The optional granuleBounds to be used as a default value when there is no need to do ROI
-     * lookup against specific features. Specify that when dealing with single granules store
+     * The optional granuleBounds to be used as a default value when there is no need to do ROI lookup against specific
+     * features. Specify that when dealing with single granules store
      */
     private final Geometry defaultGranuleBounds;
 
@@ -52,9 +50,7 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
 
     /** Geometry provider constructor based on per feature granuleBounds */
     public MultiLevelROIGeometryProvider(
-            FootprintGeometryProvider geometryProvider,
-            double inset,
-            FootprintInsetPolicy insetPolicy) {
+            FootprintGeometryProvider geometryProvider, double inset, FootprintInsetPolicy insetPolicy) {
         this(geometryProvider, inset, insetPolicy, null);
     }
 
@@ -65,9 +61,7 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
             return null;
         } else {
             Geometry granuleBounds =
-                    defaultGranuleBounds != null
-                            ? defaultGranuleBounds
-                            : (Geometry) sf.getDefaultGeometry();
+                    defaultGranuleBounds != null ? defaultGranuleBounds : (Geometry) sf.getDefaultGeometry();
             return new MultiLevelROIGeometry(footprint, granuleBounds, inset, insetPolicy);
         }
     }

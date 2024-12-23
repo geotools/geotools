@@ -42,39 +42,36 @@ import org.geotools.util.factory.Hints;
  * myFeatureSource.getFeatures(query);
  * </code></pre>
  *
- * The query class is based on the Web Feature Server specification and offers a few interesting
- * capabilities such as the ability to sort results and use a filter (similar to the WHERE clause in
- * SQL).
+ * The query class is based on the Web Feature Server specification and offers a few interesting capabilities such as
+ * the ability to sort results and use a filter (similar to the WHERE clause in SQL).
  *
  * <p>Additional capabilities:
  *
  * <ul>
- *   <li>{@linkplain #setMaxFeatures(int)} and {@linkplain #setStartIndex(Integer)} can be used
- *       implement 'paging' through the data source's content. This is useful if, for example, the
- *       FeatureSource has an upper limit on the number of features it can return in a single
- *       request or you are working with limited memory.
- *   <li>{@linkplain #setHandle(String)} can be used to give the query a mnemonic name which will
- *       appear in error reporing and logs.
- *   <li>{@linkplain #setCoordinateSystem(CoordinateReferenceSystem)} is used to to specify the
- *       coordinate system that retrieved features will be "forced" into. This is often used to
- *       correct a feature source when the application and the data format have different ideas
- *       about the coordinate system (for example, the "axis order" issue).
- *   <li>{@linkplain #setCoordinateSystemReproject(CoordinateReferenceSystem)} is used to ask for
- *       the retrieved features to be reproejcted.
+ *   <li>{@linkplain #setMaxFeatures(int)} and {@linkplain #setStartIndex(Integer)} can be used implement 'paging'
+ *       through the data source's content. This is useful if, for example, the FeatureSource has an upper limit on the
+ *       number of features it can return in a single request or you are working with limited memory.
+ *   <li>{@linkplain #setHandle(String)} can be used to give the query a mnemonic name which will appear in error
+ *       reporing and logs.
+ *   <li>{@linkplain #setCoordinateSystem(CoordinateReferenceSystem)} is used to to specify the coordinate system that
+ *       retrieved features will be "forced" into. This is often used to correct a feature source when the application
+ *       and the data format have different ideas about the coordinate system (for example, the "axis order" issue).
+ *   <li>{@linkplain #setCoordinateSystemReproject(CoordinateReferenceSystem)} is used to ask for the retrieved features
+ *       to be reproejcted.
  * </ul>
  *
  * Vendor specific:
  *
  * <ul>
- *   <li>{@linkplain setHints(Hints)} is used to specify venfor specific capabilities provided by a
- *       feature source implementation.
+ *   <li>{@linkplain setHints(Hints)} is used to specify venfor specific capabilities provided by a feature source
+ *       implementation.
  * </ul>
  *
  * Joins:
  *
- * <p>The Query class supports the concepts of joins in that a query can result in a join of the
- * feature type to other feature types in the same datastore. For example, the following would be a
- * spatial join that selected the country that contain a particular city.
+ * <p>The Query class supports the concepts of joins in that a query can result in a join of the feature type to other
+ * feature types in the same datastore. For example, the following would be a spatial join that selected the country
+ * that contain a particular city.
  *
  * <pre><code>
  * Query query = new Query("countries");
@@ -99,22 +96,22 @@ import org.geotools.util.factory.Hints;
 public class Query {
 
     /**
-     * When specifying properties to select, setting this hint flag true tells the datastore to
-     * include mandatory properties (i.e. properties with minOccurs >= 1) in the end result,
-     * irrespective of whether they are not included in the list of properties.
+     * When specifying properties to select, setting this hint flag true tells the datastore to include mandatory
+     * properties (i.e. properties with minOccurs >= 1) in the end result, irrespective of whether they are not included
+     * in the list of properties.
      *
-     * <p>Datastores may implement adding all mandatory properties to the end result when this flag
-     * is set to true. For example:
+     * <p>Datastores may implement adding all mandatory properties to the end result when this flag is set to true. For
+     * example:
      *
-     * <p>Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS); if
-     * (includeProps instanceof Boolean && ((Boolean)includeProps).booleanValue()) {
-     * query.setProperties (DataUtilities.addMandatoryProperties(type, query.getProperties())); }
+     * <p>Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS); if (includeProps instanceof Boolean
+     * && ((Boolean)includeProps).booleanValue()) { query.setProperties (DataUtilities.addMandatoryProperties(type,
+     * query.getProperties())); }
      */
     public static Hints.Key INCLUDE_MANDATORY_PROPS = new Hints.Key(Boolean.class);
 
     /**
-     * Constant (actually null) used to represent no namespace restrictions on the returned result,
-     * should be considered ANY_URI
+     * Constant (actually null) used to represent no namespace restrictions on the returned result, should be considered
+     * ANY_URI
      */
     public static final URI NO_NAMESPACE = null;
 
@@ -122,44 +119,42 @@ public class Query {
     public static final int DEFAULT_MAX = Integer.MAX_VALUE;
 
     /**
-     * Implements a query that will fetch all features from a datasource. This query should retrieve
-     * all properties, with no maxFeatures, no filtering, and the default featureType.
+     * Implements a query that will fetch all features from a datasource. This query should retrieve all properties,
+     * with no maxFeatures, no filtering, and the default featureType.
      */
     public static final Query ALL = new ALLQuery();
 
     /**
-     * Implements a query that will fetch all the FeatureIDs from a datasource. This query should
-     * retrieve no properties, with no maxFeatures, no filtering, and the a featureType with no
-     * attribtues.
+     * Implements a query that will fetch all the FeatureIDs from a datasource. This query should retrieve no
+     * properties, with no maxFeatures, no filtering, and the a featureType with no attribtues.
      */
     public static final Query FIDS = new FIDSQuery();
 
     /**
-     * A constant (empty String array) that can be used with {@linkplain
-     * #setPropertyNames(String[])} to indicate that no properties are to be retrieved.
+     * A constant (empty String array) that can be used with {@linkplain #setPropertyNames(String[])} to indicate that
+     * no properties are to be retrieved.
      *
      * <p>Note the query will still return a result - limited to FeatureIDs.
      */
     public static final String[] NO_NAMES = new String[0];
 
     /**
-     * A constant (value {@code null}) that can be used with {@linkplain
-     * #setPropertyNames(String[])} to indicate that all properties are to be retrieved.
+     * A constant (value {@code null}) that can be used with {@linkplain #setPropertyNames(String[])} to indicate that
+     * all properties are to be retrieved.
      */
     public static final String[] ALL_NAMES = null;
 
     /**
-     * A constant (empty String array) that can be used with {@linkplain
-     * #setProperties(Collection<PropertyName>)} to indicate that no properties are to be retrieved.
+     * A constant (empty String array) that can be used with {@linkplain #setProperties(Collection<PropertyName>)} to
+     * indicate that no properties are to be retrieved.
      *
      * <p>Note the query will still return a result - limited to FeatureIDs.
      */
     public static final List<PropertyName> NO_PROPERTIES = Collections.emptyList();
 
     /**
-     * A constant (value {@code null}) that can be used with {@linkplain
-     * #setProperties(Collection<PropertyName>)} to indicate that all properties are to be
-     * retrieved.
+     * A constant (value {@code null}) that can be used with {@linkplain #setProperties(Collection<PropertyName>)} to
+     * indicate that all properties are to be retrieved.
      */
     public static final List<PropertyName> ALL_PROPERTIES = null;
 
@@ -206,8 +201,8 @@ public class Query {
     protected List<Join> joins = new ArrayList<>();
 
     /**
-     * Default constructor. Use setter methods to configure the Query before use (the default Query
-     * will retrieve all features).
+     * Default constructor. Use setter methods to configure the Query before use (the default Query will retrieve all
+     * features).
      */
     public Query() {
         // no arg
@@ -263,8 +258,7 @@ public class Query {
      * @param propNames an array of the properties to fetch.
      * @param handle the name to associate with this query.
      */
-    public Query(
-            String typeName, Filter filter, int maxFeatures, String[] propNames, String handle) {
+    public Query(String typeName, Filter filter, int maxFeatures, String[] propNames, String handle) {
         this(typeName, null, filter, maxFeatures, propNames, handle);
     }
 
@@ -277,12 +271,7 @@ public class Query {
      * @param properties a list of the properties to fetch.
      * @param handle the name to associate with this query.
      */
-    public Query(
-            String typeName,
-            Filter filter,
-            int maxFeatures,
-            List<PropertyName> properties,
-            String handle) {
+    public Query(String typeName, Filter filter, int maxFeatures, List<PropertyName> properties, String handle) {
         this(typeName, null, filter, maxFeatures, properties, handle);
     }
 
@@ -296,13 +285,7 @@ public class Query {
      * @param propNames an array of the properties to fetch.
      * @param handle the name to associate with the query.
      */
-    public Query(
-            String typeName,
-            URI namespace,
-            Filter filter,
-            int maxFeatures,
-            String[] propNames,
-            String handle) {
+    public Query(String typeName, URI namespace, Filter filter, int maxFeatures, String[] propNames, String handle) {
         this.typeName = typeName;
         this.filter = filter;
         this.namespace = namespace;
@@ -368,8 +351,8 @@ public class Query {
      *
      * @return the attributes to be used in the returned FeatureCollection.
      * @see #retrieveAllProperties()
-     * @task REVISIT: make a FidProperties object, instead of an array size 0. I think Query.FIDS
-     *     fills this role to some degree. Query.FIDS.equals( filter ) would meet this need?
+     * @task REVISIT: make a FidProperties object, instead of an array size 0. I think Query.FIDS fills this role to
+     *     some degree. Query.FIDS.equals( filter ) would meet this need?
      */
     public String[] getPropertyNames() {
         if (properties == null) {
@@ -389,17 +372,16 @@ public class Query {
 
     /**
      * Set the names of the properties that this Query should retrieve as part of the returned
-     * {@linkplain org.geotools.feature.FeatureCollection}. As well as an array of names, the
-     * following constants can be used:
+     * {@linkplain org.geotools.feature.FeatureCollection}. As well as an array of names, the following constants can be
+     * used:
      *
      * <ul>
      *   <li>{@linkplain #ALL_NAMES} to retrieve all properties.
      *   <li>{@linkplain #NO_NAMES} to indicate no properties are required, just feature IDs.
      * </ul>
      *
-     * The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If
-     * properties that are not part of the source's schema are requested an exception will be
-     * thrown.
+     * The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If properties that are
+     * not part of the source's schema are requested an exception will be thrown.
      *
      * @param propNames the names of the properties to retrieve or one of {@linkplain #ALL_NAMES} or
      *     {@linkplain #NO_NAMES}.
@@ -420,8 +402,8 @@ public class Query {
     }
 
     /**
-     * Get the names of the properties that this Query will retrieve values for as part of the
-     * returned {@linkplain org.geotools.feature.FeatureCollection}.
+     * Get the names of the properties that this Query will retrieve values for as part of the returned
+     * {@linkplain org.geotools.feature.FeatureCollection}.
      *
      * @return the xpath expressions to be used in the returned FeatureCollection.
      * @see #retrieveAllProperties()
@@ -435,20 +417,19 @@ public class Query {
 
     /**
      * Set the names of the properties that this Query should retrieve as part of the returned
-     * {@linkplain org.geotools.feature.FeatureCollection}. As well as an array of names, the
-     * following constants can be used:
+     * {@linkplain org.geotools.feature.FeatureCollection}. As well as an array of names, the following constants can be
+     * used:
      *
      * <ul>
      *   <li>{@linkplain #ALL_PROPERTIES} to retrieve all properties.
      *   <li>{@linkplain #NO_PROPERTIES} to indicate no properties are required, just feature IDs.
      * </ul>
      *
-     * The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If
-     * properties that are not part of the source's schema are requested an exception will be
-     * thrown.
+     * The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If properties that are
+     * not part of the source's schema are requested an exception will be thrown.
      *
-     * @param propNames the names of the properties to retrieve or one of {@linkplain
-     *     #ALL_PROPERTIES} or {@linkplain #NO_PROPERTIES}.
+     * @param propNames the names of the properties to retrieve or one of {@linkplain #ALL_PROPERTIES} or
+     *     {@linkplain #NO_PROPERTIES}.
      */
     public void setProperties(List<PropertyName> propNames) {
         this.properties = propNames == ALL_PROPERTIES ? ALL_PROPERTIES : new ArrayList<>(propNames);
@@ -458,15 +439,13 @@ public class Query {
      * Set the names of the properties that this Query should retrieve as part of the returned
      * {@linkplain org.geotools.feature.FeatureCollection}.
      *
-     * <p>The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If
-     * properties that are not part of the source's schema are requested an exception will be
-     * thrown.
+     * <p>The available properties can be determined with {@linkplain FeatureSource#getSchema()}. If properties that are
+     * not part of the source's schema are requested an exception will be thrown.
      *
-     * @param propNames the names of the properties to retrieve or {@linkplain #ALL_NAMES}; an empty
-     *     List can be passed in to indicate that only feature IDs should be retrieved
-     * @task REVISIT: This syntax is really obscure. Consider having an fid or featureID
-     *     propertyName that datasource implementors look for instead of looking to see if the list
-     *     size is 0.
+     * @param propNames the names of the properties to retrieve or {@linkplain #ALL_NAMES}; an empty List can be passed
+     *     in to indicate that only feature IDs should be retrieved
+     * @task REVISIT: This syntax is really obscure. Consider having an fid or featureID propertyName that datasource
+     *     implementors look for instead of looking to see if the list size is 0.
      */
     public void setPropertyNames(List<String> propNames) {
         if (propNames == null) {
@@ -485,9 +464,8 @@ public class Query {
     }
 
     /**
-     * Convenience method to determine if the query should retrieve all properties defined in the
-     * schema of the feature data source. This is equivalent to testing if {@linkplain
-     * #getPropertyNames()} returns {@linkplain #ALL_NAMES}.
+     * Convenience method to determine if the query should retrieve all properties defined in the schema of the feature
+     * data source. This is equivalent to testing if {@linkplain #getPropertyNames()} returns {@linkplain #ALL_NAMES}.
      *
      * @return true if all properties will be retrieved by this Query; false otherwise
      */
@@ -498,12 +476,11 @@ public class Query {
     /**
      * Get the maximum number of features that will be retrieved by this Query.
      *
-     * <p>Note: This is the only method that is not directly out of the Query element in the WFS
-     * specification. It is instead a part of a GetFeature request, which can hold one or more
-     * queries. But each of those in turn will need a maxFeatures, so it is needed here.
+     * <p>Note: This is the only method that is not directly out of the Query element in the WFS specification. It is
+     * instead a part of a GetFeature request, which can hold one or more queries. But each of those in turn will need a
+     * maxFeatures, so it is needed here.
      *
-     * <p>If the value returned here is max integer then the number of features should not be
-     * limited.
+     * <p>If the value returned here is max integer then the number of features should not be limited.
      *
      * @return the maximum number of features that will be retrieved by this query
      */
@@ -523,8 +500,8 @@ public class Query {
     }
 
     /**
-     * Sets the maximum number of features that should be retrieved by this query. The default is to
-     * retrieve all features.
+     * Sets the maximum number of features that should be retrieved by this query. The default is to retrieve all
+     * features.
      *
      * @param maxFeatures the maximum number of features to retrieve
      */
@@ -535,8 +512,7 @@ public class Query {
     /**
      * Get the index of the first feature to retrieve.
      *
-     * @return the index of the first feature to retrieve or {@code null} if no start index is
-     *     defined.
+     * @return the index of the first feature to retrieve or {@code null} if no start index is defined.
      */
     public Integer getStartIndex() {
         return this.startIndex;
@@ -546,21 +522,18 @@ public class Query {
      * Set the index of the first feature to retrieve. This can be used in conjuction with
      * {@linkplain #setMaxFeatures(int) } to 'page' through a feature data source.
      *
-     * @param startIndex index of the first feature to retrieve or {@code null} to indicate no start
-     *     index
+     * @param startIndex index of the first feature to retrieve or {@code null} to indicate no start index
      * @throws IllegalArgumentException if startIndex is less than 0
      */
     public void setStartIndex(Integer startIndex) {
         if (startIndex != null && startIndex.intValue() < 0) {
-            throw new IllegalArgumentException(
-                    "startIndex shall be a positive integer: " + startIndex);
+            throw new IllegalArgumentException("startIndex shall be a positive integer: " + startIndex);
         }
         this.startIndex = startIndex;
     }
 
     /**
-     * Gets the filter used to define constraints on the features that will be retrieved by this
-     * Query.
+     * Gets the filter used to define constraints on the features that will be retrieved by this Query.
      *
      * @return The filter that defines constraints on the query.
      */
@@ -569,9 +542,9 @@ public class Query {
     }
 
     /**
-     * Sets the filter to constrain the features that will be retrieved by this Query. If no filter
-     * is set all features will be retrieved (taking into account any bounds set via {@linkplain
-     * #setMaxFeatures(int) } and {@linkplain #setStartIndex(java.lang.Integer) }).
+     * Sets the filter to constrain the features that will be retrieved by this Query. If no filter is set all features
+     * will be retrieved (taking into account any bounds set via {@linkplain #setMaxFeatures(int) } and
+     * {@linkplain #setStartIndex(java.lang.Integer) }).
      *
      * <p>The default is {@linkplain Filter#INCLUDE}.
      *
@@ -591,9 +564,9 @@ public class Query {
     }
 
     /**
-     * Sets the name of the feature type to be queried. If no typename is specified, then the data
-     * source's default type will be used. When working with sources such as shapefiles that only
-     * support one feature type this method can be ignored.
+     * Sets the name of the feature type to be queried. If no typename is specified, then the data source's default type
+     * will be used. When working with sources such as shapefiles that only support one feature type this method can be
+     * ignored.
      *
      * @param typeName the name of the featureType to retrieve.
      */
@@ -604,8 +577,8 @@ public class Query {
     /**
      * An alias substitutable for {@link #getTypeName()}.
      *
-     * <p>This value is typically used in a join query in which the join filter requires
-     * disambiguation due to property name overlaps between joined types.
+     * <p>This value is typically used in a join query in which the join filter requires disambiguation due to property
+     * name overlaps between joined types.
      *
      * @since 8.0
      */
@@ -638,8 +611,8 @@ public class Query {
     }
 
     /**
-     * Get the handle (mnemonic name) that will be associated with this Query. The handle is used in
-     * logging and error reporting.
+     * Get the handle (mnemonic name) that will be associated with this Query. The handle is used in logging and error
+     * reporting.
      *
      * @return the name to refer to this query.
      */
@@ -648,8 +621,8 @@ public class Query {
     }
 
     /**
-     * Set the handle (mnemonic name) that will be associated with this Query. The handle is used in
-     * logging and error reporting.
+     * Set the handle (mnemonic name) that will be associated with this Query. The handle is used in logging and error
+     * reporting.
      *
      * @param handle the name to refer to this query.
      */
@@ -719,8 +692,7 @@ public class Query {
         }
     }
     /**
-     * Set the version of features to retrieve where this is supported by the data source being
-     * queried.
+     * Set the version of features to retrieve where this is supported by the data source being queried.
      *
      * @see #getVersion() getVersion() for explanation
      * @since 2.4
@@ -732,8 +704,7 @@ public class Query {
     /**
      * Get the coordinate system to use as an override for features retrieved by this Query.
      *
-     * @return The coordinate system to be returned for Features from this Query (override the set
-     *     coordinate system).
+     * @return The coordinate system to be returned for Features from this Query (override the set coordinate system).
      */
     public CoordinateReferenceSystem getCoordinateSystem() {
         return coordinateSystem;
@@ -742,13 +713,13 @@ public class Query {
     /**
      * Provide an override coordinate system to apply to features retrieved by this Query.
      *
-     * <p>This denotes a request to <b>temporarily</b> override the coordinate system contained in
-     * the feature data source being queried. The same coordinate values will be used, but the
-     * features retrieved will appear in this Coordinate System.
+     * <p>This denotes a request to <b>temporarily</b> override the coordinate system contained in the feature data
+     * source being queried. The same coordinate values will be used, but the features retrieved will appear in this
+     * Coordinate System.
      *
-     * <p>This change is not persistent and only applies to the features returned by this Query. If
-     * used in conjunction with {@link #getCoordinateSystemReproject()} the reprojection will occur
-     * from {@link #getCoordinateSystem()} to {@link #getCoordinateSystemReproject()}.
+     * <p>This change is not persistent and only applies to the features returned by this Query. If used in conjunction
+     * with {@link #getCoordinateSystemReproject()} the reprojection will occur from {@link #getCoordinateSystem()} to
+     * {@link #getCoordinateSystemReproject()}.
      *
      * @param system the coordinate system to apply to features retrieved by this Query
      */
@@ -757,8 +728,8 @@ public class Query {
     }
 
     /**
-     * If reprojection has been requested, this returns the coordinate system that features
-     * retrieved by this Query will be reprojected into.
+     * If reprojection has been requested, this returns the coordinate system that features retrieved by this Query will
+     * be reprojected into.
      *
      * @return the coordinate system that features will be reprojected into (if set)
      * @see #setCoordinateSystemReproject( CoordinateReferenceSystem )
@@ -768,11 +739,10 @@ public class Query {
     }
 
     /**
-     * Request that features retrieved by this Query be reprojected into the given coordinate
-     * system.
+     * Request that features retrieved by this Query be reprojected into the given coordinate system.
      *
-     * <p>If used in conjunction with {@link #setCoordinateSystem(CoordinateReferenceSystem)} the
-     * reprojection will occur from the overridden coordinate system to the system specified here.
+     * <p>If used in conjunction with {@link #setCoordinateSystem(CoordinateReferenceSystem)} the reprojection will
+     * occur from the overridden coordinate system to the system specified here.
      */
     public void setCoordinateSystemReproject(CoordinateReferenceSystem system) {
         coordinateSystemReproject = system;
@@ -781,9 +751,8 @@ public class Query {
     /**
      * SortBy results according to indicated property and order.
      *
-     * <p>SortBy is part of the Filter 1.1 specification, it is referenced by WFS1.1 and Catalog
-     * 2.0.x specifications and is used to organize results. The SortBy's are ment to be applied in
-     * order:
+     * <p>SortBy is part of the Filter 1.1 specification, it is referenced by WFS1.1 and Catalog 2.0.x specifications
+     * and is used to organize results. The SortBy's are ment to be applied in order:
      *
      * <ul>
      *   <li>SortBy( year, ascending )
@@ -797,11 +766,11 @@ public class Query {
      * [year=2002 month=1],[year=2003 month=12],[year=2002 month=4],
      * </code></pre>
      *
-     * <p>SortBy should be considered at the same level of abstraction as Filter, and like Filter
-     * you may sort using properties not listed in getPropertyNames.
+     * <p>SortBy should be considered at the same level of abstraction as Filter, and like Filter you may sort using
+     * properties not listed in getPropertyNames.
      *
-     * <p>At a technical level the interface SortBy2 is used to indicate the additional requirements
-     * of a GeoTools implementation. The pure WFS 1.1 specification itself is limited to SortBy.
+     * <p>At a technical level the interface SortBy2 is used to indicate the additional requirements of a GeoTools
+     * implementation. The pure WFS 1.1 specification itself is limited to SortBy.
      *
      * @return SortBy array or order of application
      */
@@ -838,11 +807,10 @@ public class Query {
      *   <li>the fetch size to be used in JDBC queries
      * </ul>
      *
-     * The set of hints supported can be found by calling {@linkplain
-     * FeatureSource#getSupportedHints() }.
+     * The set of hints supported can be found by calling {@linkplain FeatureSource#getSupportedHints() }.
      *
-     * <p>Note: Data sources may ignore hints (depending on their values) and no mechanism currently
-     * exists to discover which hints where actually used during the query's execution.
+     * <p>Note: Data sources may ignore hints (depending on their values) and no mechanism currently exists to discover
+     * which hints where actually used during the query's execution.
      *
      * @see Hints#FEATURE_DETACHED
      * @see Hints#JTS_GEOMETRY_FACTORY
@@ -909,13 +877,10 @@ public class Query {
                         : getCoordinateSystem().equals(other.getCoordinateSystem()))
                 && ((getCoordinateSystemReproject() == null)
                         ? (other.getCoordinateSystemReproject() == null)
-                        : getCoordinateSystemReproject()
-                                .equals(other.getCoordinateSystemReproject()))
+                        : getCoordinateSystemReproject().equals(other.getCoordinateSystemReproject()))
                 && isSortEquals(other)
                 && Objects.equals(getStartIndex(), other.getStartIndex())
-                && (getHints() == null
-                        ? (other.getHints() == null)
-                        : getHints().equals(other.getHints()));
+                && (getHints() == null ? (other.getHints() == null) : getHints().equals(other.getHints()));
     }
 
     /** Compares the sortby by their effect (null and empty arrays are considered the same) */
@@ -1001,8 +966,8 @@ public class Query {
     /**
      * The list of joins for this query.
      *
-     * <p>Each {@link Join} object specifies a feature type to join to. The join may only reference
-     * a feature type from within the same datastore.
+     * <p>Each {@link Join} object specifies a feature type to join to. The join may only reference a feature type from
+     * within the same datastore.
      *
      * @see Join
      */

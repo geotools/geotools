@@ -34,11 +34,7 @@ public class AttributeGroupGT implements AttributeGroup {
 
     /** Creates a new AttributeGroupGT object. */
     public AttributeGroupGT(
-            String id,
-            String name,
-            URI namespace,
-            Attribute[] attributes,
-            String anyAttributeNamespace) {
+            String id, String name, URI namespace, Attribute[] attributes, String anyAttributeNamespace) {
         this.id = id;
         this.name = name;
         this.namespace = namespace;

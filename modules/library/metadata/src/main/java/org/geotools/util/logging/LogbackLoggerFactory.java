@@ -23,11 +23,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A factory for loggers that redirect all Java logging events to <A HREF="">logback framework</A>
- * (using the <AHREF="https://www.slf4j.org/">sl4j</A> API).
+ * A factory for loggers that redirect all Java logging events to <A HREF="">logback framework</A> (using the
+ * <AHREF="https://www.slf4j.org/">sl4j</A> API).
  *
- * <p>The sl4j api is used to all interactions excepting {@link LogbackLogger#setLevel(Level)}
- * (which is primarily used during test cases).
+ * <p>The sl4j api is used to all interactions excepting {@link LogbackLogger#setLevel(Level)} (which is primarily used
+ * during test cases).
  *
  * @since 27
  * @version $Id$
@@ -40,8 +40,7 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
     /**
      * Constructs a default factory.
      *
-     * @throws NoClassDefFoundError if sl4j's {@code org.slf4j.Logger} class was not found on the
-     *     classpath.
+     * @throws NoClassDefFoundError if sl4j's {@code org.slf4j.Logger} class was not found on the classpath.
      */
     protected LogbackLoggerFactory() throws NoClassDefFoundError {
         super(org.slf4j.Logger.class);
@@ -50,8 +49,7 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
     /**
      * Returns the unique instance of this factory.
      *
-     * @throws NoClassDefFoundError if sl4j's {@code org.slf4j.Logger} class was not found on the
-     *     classpath.
+     * @throws NoClassDefFoundError if sl4j's {@code org.slf4j.Logger} class was not found on the classpath.
      */
     public static synchronized LogbackLoggerFactory getInstance() throws NoClassDefFoundError {
         if (factory == null) {
@@ -61,8 +59,8 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegate to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if the logger would
+     * delegate to Java logging anyway.
      */
     @Override
     protected org.slf4j.Logger getImplementation(final String name) {
@@ -76,8 +74,8 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
     }
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none.
      */
     @Override
     protected org.slf4j.Logger unwrap(final Logger logger) {

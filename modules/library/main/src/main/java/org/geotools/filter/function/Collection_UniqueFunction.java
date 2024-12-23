@@ -42,17 +42,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class Collection_UniqueFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_UniqueFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_UniqueFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object unique = null;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Unique",
-                    parameter("unique", Object.class),
-                    parameter("expression", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Unique", parameter("unique", Object.class), parameter("expression", Object.class));
 
     /** Creates a new instance of Collection_UniqueFunction */
     public Collection_UniqueFunction() {
@@ -77,8 +73,8 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
     /**
      * The provided arguments are evaulated with respect to the FeatureCollection.
      *
-     * <p>For an aggregate function (like unique) please use the WFS mandated XPath syntax to refer
-     * to featureMember content.
+     * <p>For an aggregate function (like unique) please use the WFS mandated XPath syntax to refer to featureMember
+     * content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
@@ -86,9 +82,8 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.geotools.api.filter.expression.Expression expr = args.get(0);
-        expr =
-                (org.geotools.api.filter.expression.Expression)
-                        expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
+        expr = (org.geotools.api.filter.expression.Expression)
+                expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);
     }

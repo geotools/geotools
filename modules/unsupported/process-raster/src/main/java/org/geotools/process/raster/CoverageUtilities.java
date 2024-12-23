@@ -49,8 +49,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
- * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous;
- * must of them should be seen as temporary implementations.
+ * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous; must of them should
+ * be seen as temporary implementations.
  *
  * @author Simone Giannecchini, GeoSolutions
  */
@@ -80,24 +80,21 @@ public class CoverageUtilities {
     private CoverageUtilities() {}
 
     /**
-     * Utility method for transforming a geometry ROI into the raster space, using the provided
-     * affine transformation.
+     * Utility method for transforming a geometry ROI into the raster space, using the provided affine transformation.
      *
      * @param roi a {@link Geometry} in model space.
-     * @param mt2d an {@link AffineTransform} that maps from raster to model space. This is already
-     *     referred to the pixel corner.
+     * @param mt2d an {@link AffineTransform} that maps from raster to model space. This is already referred to the
+     *     pixel corner.
      * @return a {@link ROI} suitable for using with JAI.
-     * @throws ProcessException in case there are problems with ivnerting the provided {@link
-     *     AffineTransform}. Very unlikely to happen.
+     * @throws ProcessException in case there are problems with ivnerting the provided {@link AffineTransform}. Very
+     *     unlikely to happen.
      */
     public static ROI prepareROI(Geometry roi, AffineTransform mt2d) throws ProcessException {
         // transform the geometry to raster space so that we can use it as a ROI source
         Geometry rasterSpaceGeometry;
         try {
             rasterSpaceGeometry = JTS.transform(roi, new AffineTransform2D(mt2d.createInverse()));
-        } catch (MismatchedDimensionException
-                | NoninvertibleTransformException
-                | TransformException e) {
+        } catch (MismatchedDimensionException | NoninvertibleTransformException | TransformException e) {
             throw new ProcessException(e);
         }
         // System.out.println(rasterSpaceGeometry);
@@ -112,15 +109,14 @@ public class CoverageUtilities {
     }
 
     /**
-     * Creates a {@link SimpleFeatureType} that exposes a coverage as a collections of feature
-     * points, mapping the centre of each pixel as a point plus all the bands as attributes.
+     * Creates a {@link SimpleFeatureType} that exposes a coverage as a collections of feature points, mapping the
+     * centre of each pixel as a point plus all the bands as attributes.
      *
      * <p>The FID is the long that combines x+y*width.
      *
      * @param gc2d the {@link GridCoverage2D} to wrap.
      * @param geometryClass the class for the geometry.
-     * @return a {@link SimpleFeatureType} or <code>null</code> in case we are unable to wrap the
-     *     coverage
+     * @return a {@link SimpleFeatureType} or <code>null</code> in case we are unable to wrap the coverage
      */
     public static SimpleFeatureType createFeatureType(
             final GridCoverage2D gc2d, final Class<? extends Geometry> geometryClass) {
@@ -191,11 +187,8 @@ public class CoverageUtilities {
     }
 
     public static RangeLookupTable getRangeLookupTable(
-            final List<Range> classificationRanges,
-            final int[] outputPixelValues,
-            final Number noDataValue) {
-        return getRangeLookupTable(
-                classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
+            final List<Range> classificationRanges, final int[] outputPixelValues, final Number noDataValue) {
+        return getRangeLookupTable(classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -206,8 +199,7 @@ public class CoverageUtilities {
             final Class<? extends Number> clazz) {
         final RangeLookupTable.Builder rltBuilder = new RangeLookupTable.Builder();
         final int size = classificationRanges.size();
-        final boolean useCustomOutputPixelValues =
-                outputPixelValues != null && outputPixelValues.length == size;
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
 
         Class<? extends Number> widestClass = noDataValue.getClass();
 
@@ -225,9 +217,7 @@ public class CoverageUtilities {
         }
 
         // Add the largest range that contains the no data value
-        rltBuilder.add(
-                new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true),
-                noDataValue);
+        rltBuilder.add(new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
 
         return rltBuilder.build();
     }
@@ -241,11 +231,9 @@ public class CoverageUtilities {
         final it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder rltBuilder =
                 new it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder();
         final int size = classificationRanges.size();
-        final boolean useCustomOutputPixelValues =
-                outputPixelValues != null && outputPixelValues.length == size;
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
 
-        Class<? extends Number> noDataClass =
-                it.geosolutions.jaiext.range.Range.DataType.classFromType(transferType);
+        Class<? extends Number> noDataClass = it.geosolutions.jaiext.range.Range.DataType.classFromType(transferType);
 
         Class<? extends Number> widestClass = noDataClass;
         for (int i = 0; i < size; i++) {
@@ -255,29 +243,26 @@ public class CoverageUtilities {
             if (widestClass != rangeClass) {
                 widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
             }
-            int rangeType =
-                    it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(rangeClass);
+            int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(rangeClass);
 
             final int reference = useCustomOutputPixelValues ? outputPixelValues[i] : i + 1;
-            it.geosolutions.jaiext.range.Range rangeJaiext =
-                    RangeFactory.convert(
-                            RangeFactory.create(
-                                    range.getMin().doubleValue(),
-                                    range.isMinIncluded(),
-                                    range.getMax().doubleValue(),
-                                    range.isMaxIncluded()),
-                            rangeType);
+            it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                    RangeFactory.create(
+                            range.getMin().doubleValue(),
+                            range.isMinIncluded(),
+                            range.getMax().doubleValue(),
+                            range.isMaxIncluded()),
+                    rangeType);
             rltBuilder.add(rangeJaiext, convert(reference, noDataClass));
         }
 
         // Add the largest range that contains the no data value
         int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(widestClass);
-        it.geosolutions.jaiext.range.Range rangeJaiext =
-                RangeFactory.convert(
-                        RangeFactory.create(
-                                getClassMinimum(widestClass).doubleValue(),
-                                getClassMaximum(widestClass).doubleValue()),
-                        rangeType);
+        it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                RangeFactory.create(
+                        getClassMinimum(widestClass).doubleValue(),
+                        getClassMaximum(widestClass).doubleValue()),
+                rangeType);
         rltBuilder.add(rangeJaiext, noDataValue);
 
         return rltBuilder.build();
@@ -300,8 +285,7 @@ public class CoverageUtilities {
             return Byte.MIN_VALUE;
         }
 
-        throw new UnsupportedOperationException(
-                "Class " + numberClass + " can't be used in a value Range");
+        throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
     }
 
     private static Number getClassMaximum(Class<? extends Number> numberClass) {
@@ -321,8 +305,7 @@ public class CoverageUtilities {
             return Byte.MAX_VALUE;
         }
 
-        throw new UnsupportedOperationException(
-                "Class " + numberClass + " can't be used in a value Range");
+        throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
     }
 
     public static Number convert(Number val, Class<? extends Number> type) {
@@ -354,8 +337,7 @@ public class CoverageUtilities {
             }
             return Short.valueOf(val.shortValue());
         } else {
-            throw new UnsupportedOperationException(
-                    "Class " + type + " can't be used in a value Range");
+            throw new UnsupportedOperationException("Class " + type + " can't be used in a value Range");
         }
     }
 
@@ -363,11 +345,10 @@ public class CoverageUtilities {
      * Get the parameters of the region covered by the {@link GridCoverage2D coverage}.
      *
      * @param gridCoverage the coverage.
-     * @return the {@link HashMap map} of parameters. ( {@link #NORTH} and the other static vars can
-     *     be used to retrieve them.
+     * @return the {@link HashMap map} of parameters. ( {@link #NORTH} and the other static vars can be used to retrieve
+     *     them.
      */
-    public static HashMap<String, Double> getRegionParamsFromGridCoverage(
-            GridCoverage2D gridCoverage) {
+    public static HashMap<String, Double> getRegionParamsFromGridCoverage(GridCoverage2D gridCoverage) {
         HashMap<String, Double> envelopeParams = new HashMap<>();
 
         Bounds envelope = gridCoverage.getEnvelope();

@@ -37,17 +37,16 @@ public final class UnitFormat {
 
     private UnitFormat() {}
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.GEOTOOLS)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.GEOTOOLS)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
 
     private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
 }

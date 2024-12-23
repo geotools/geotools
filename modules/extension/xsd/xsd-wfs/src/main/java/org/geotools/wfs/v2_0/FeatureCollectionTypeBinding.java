@@ -62,14 +62,12 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         this(factory, configuration, null);
     }
 
-    public FeatureCollectionTypeBinding(
-            Wfs20Factory factory, Configuration configuration, Encoder encoder) {
+    public FeatureCollectionTypeBinding(Wfs20Factory factory, Configuration configuration, Encoder encoder) {
         super(factory);
         this.generateBounds = true;
         this.encoder = encoder;
         if (configuration != null) {
-            this.generateBounds =
-                    !configuration.getProperties().contains(GMLConfiguration.NO_FEATURE_BOUNDS);
+            this.generateBounds = !configuration.getProperties().contains(GMLConfiguration.NO_FEATURE_BOUNDS);
         }
     }
 
@@ -101,10 +99,8 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         if (!WFSParsingUtils.features((EObject) object).isEmpty()) {
             result = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
             if (result instanceof SimpleFeatureCollection
-                    && encoder.getConfiguration()
-                            .hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
-                return new WFS20FeatureCollectionEncoderDelegate(
-                        (SimpleFeatureCollection) result, encoder);
+                    && encoder.getConfiguration().hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
+                return new WFS20FeatureCollectionEncoderDelegate((SimpleFeatureCollection) result, encoder);
             }
         }
         if (result == null) {

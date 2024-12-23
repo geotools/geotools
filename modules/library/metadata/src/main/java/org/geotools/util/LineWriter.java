@@ -21,11 +21,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * Writes characters to a stream while replacing various EOL by a unique string. This class catches
- * all occurrences of {@code "\r"}, {@code "\n"} and {@code "\r\n"}, and replaces them by the
- * platform depend EOL string ({@code "\r\n"} on Windows, {@code "\n"} on Unix), or any other EOL
- * explicitly set at construction time. This writer also remove trailing blanks before end of lines,
- * but this behavior can be changed by overriding {@link #isWhitespace}.
+ * Writes characters to a stream while replacing various EOL by a unique string. This class catches all occurrences of
+ * {@code "\r"}, {@code "\n"} and {@code "\r\n"}, and replaces them by the platform depend EOL string ({@code "\r\n"} on
+ * Windows, {@code "\n"} on Unix), or any other EOL explicitly set at construction time. This writer also remove
+ * trailing blanks before end of lines, but this behavior can be changed by overriding {@link #isWhitespace}.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -36,16 +35,16 @@ public class LineWriter extends FilterWriter {
     private String lineSeparator;
 
     /**
-     * Tells if the next '\n' character must be ignored. This field is used in order to avoid
-     * writing two EOL in place of "\r\n".
+     * Tells if the next '\n' character must be ignored. This field is used in order to avoid writing two EOL in place
+     * of "\r\n".
      */
     private boolean skipCR;
 
     /**
-     * Temporary buffer containing blanks to write. Whitespaces are put in this buffer before to be
-     * written. If whitespaces are followed by a character, they are written to the underlying
-     * stream before the character. Otherwise, if whitespaces are followed by a line separator, then
-     * they are discarted. The buffer capacity will be expanded as needed.
+     * Temporary buffer containing blanks to write. Whitespaces are put in this buffer before to be written. If
+     * whitespaces are followed by a character, they are written to the underlying stream before the character.
+     * Otherwise, if whitespaces are followed by a line separator, then they are discarted. The buffer capacity will be
+     * expanded as needed.
      */
     private char[] buffer = new char[64];
 
@@ -87,8 +86,8 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Changes the line separator. This is the string to insert in place of every occurences of
-     * {@code "\r"}, {@code "\n"} or {@code "\r\n"}.
+     * Changes the line separator. This is the string to insert in place of every occurences of {@code "\r"},
+     * {@code "\n"} or {@code "\r\n"}.
      *
      * @param lineSeparator The new line separator.
      * @throws IllegalArgumentException If {@code lineSeparator} is {@code null}.
@@ -114,8 +113,8 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Returns {@code true} if {@link #buffer} contains only white spaces. It should always be the
-     * case. This method is used for assertions only.
+     * Returns {@code true} if {@link #buffer} contains only white spaces. It should always be the case. This method is
+     * used for assertions only.
      */
     private boolean bufferBlank() throws IOException {
         for (int i = count; --i >= 0; ) {
@@ -140,8 +139,7 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Writes a portion of an array of characters. This portion must <strong>not</strong> contains
-     * any line separator.
+     * Writes a portion of an array of characters. This portion must <strong>not</strong> contains any line separator.
      */
     private void writeLine(final char[] cbuf, final int lower, int upper) throws IOException {
         while (upper != lower) {
@@ -160,8 +158,7 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Writes a portion of an array of characters. This portion must <strong>not</strong> contains
-     * any line separator.
+     * Writes a portion of an array of characters. This portion must <strong>not</strong> contains any line separator.
      */
     private void writeLine(final String str, final int lower, int upper) throws IOException {
         while (upper != lower) {
@@ -188,40 +185,35 @@ public class LineWriter extends FilterWriter {
     public void write(final int c) throws IOException {
         synchronized (lock) {
             switch (c) {
-                case '\r':
-                    {
+                case '\r': {
+                    assert bufferBlank();
+                    count = 0; // Discard whitespaces
+                    writeEOL();
+                    skipCR = true;
+                    break;
+                }
+                case '\n': {
+                    if (!skipCR) {
                         assert bufferBlank();
                         count = 0; // Discard whitespaces
                         writeEOL();
-                        skipCR = true;
-                        break;
                     }
-                case '\n':
-                    {
-                        if (!skipCR) {
-                            assert bufferBlank();
-                            count = 0; // Discard whitespaces
-                            writeEOL();
+                    skipCR = false;
+                    break;
+                }
+                default: {
+                    if (c >= Character.MIN_VALUE && c <= Character.MAX_VALUE && isWhitespace((char) c)) {
+                        if (count >= buffer.length) {
+                            buffer = XArray.resize(buffer, count + Math.min(8192, count));
                         }
-                        skipCR = false;
-                        break;
+                        buffer[count++] = (char) c;
+                    } else {
+                        flushBuffer();
+                        out.write(c);
                     }
-                default:
-                    {
-                        if (c >= Character.MIN_VALUE
-                                && c <= Character.MAX_VALUE
-                                && isWhitespace((char) c)) {
-                            if (count >= buffer.length) {
-                                buffer = XArray.resize(buffer, count + Math.min(8192, count));
-                            }
-                            buffer[count++] = (char) c;
-                        } else {
-                            flushBuffer();
-                            out.write(c);
-                        }
-                        skipCR = false;
-                        break;
-                    }
+                    skipCR = false;
+                    break;
+                }
             }
         }
     }
@@ -250,24 +242,22 @@ public class LineWriter extends FilterWriter {
             int upper = offset;
             for (; length != 0; length--) {
                 switch (cbuf[upper++]) {
-                    case '\r':
-                        {
-                            writeLine(cbuf, offset, upper - 1);
-                            writeEOL();
-                            if (length > 1 && cbuf[upper] == '\n') {
-                                upper++;
-                                length--;
-                            }
-                            offset = upper;
-                            break;
+                    case '\r': {
+                        writeLine(cbuf, offset, upper - 1);
+                        writeEOL();
+                        if (length > 1 && cbuf[upper] == '\n') {
+                            upper++;
+                            length--;
                         }
-                    case '\n':
-                        {
-                            writeLine(cbuf, offset, upper - 1);
-                            writeEOL();
-                            offset = upper;
-                            break;
-                        }
+                        offset = upper;
+                        break;
+                    }
+                    case '\n': {
+                        writeLine(cbuf, offset, upper - 1);
+                        writeEOL();
+                        offset = upper;
+                        break;
+                    }
                 }
             }
             skipCR = (cbuf[upper - 1] == '\r');
@@ -315,24 +305,22 @@ public class LineWriter extends FilterWriter {
             int upper = offset;
             for (; length != 0; length--) {
                 switch (string.charAt(upper++)) {
-                    case '\r':
-                        {
-                            writeLine(string, offset, upper - 1);
-                            writeEOL();
-                            if (length > 1 && string.charAt(upper) == '\n') {
-                                upper++;
-                                length--;
-                            }
-                            offset = upper;
-                            break;
+                    case '\r': {
+                        writeLine(string, offset, upper - 1);
+                        writeEOL();
+                        if (length > 1 && string.charAt(upper) == '\n') {
+                            upper++;
+                            length--;
                         }
-                    case '\n':
-                        {
-                            writeLine(string, offset, upper - 1);
-                            writeEOL();
-                            offset = upper;
-                            break;
-                        }
+                        offset = upper;
+                        break;
+                    }
+                    case '\n': {
+                        writeLine(string, offset, upper - 1);
+                        writeEOL();
+                        offset = upper;
+                        break;
+                    }
                 }
             }
             skipCR = (string.charAt(upper - 1) == '\r');
@@ -359,9 +347,8 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Flushs the stream's content to the underlying stream. This method flush completly all
-     * internal buffers, including any whitespace characters that should have been skipped if the
-     * next non-blank character is a line separator.
+     * Flushs the stream's content to the underlying stream. This method flush completly all internal buffers, including
+     * any whitespace characters that should have been skipped if the next non-blank character is a line separator.
      *
      * @throws IOException If an I/O error occurs.
      */
@@ -374,9 +361,9 @@ public class LineWriter extends FilterWriter {
     }
 
     /**
-     * Returns {@code true} if the specified character is a white space that can be ignored on end
-     * of line. The default implementation returns {@link Character#isSpaceChar(char)}. Subclasses
-     * can override this method in order to change the criterion.
+     * Returns {@code true} if the specified character is a white space that can be ignored on end of line. The default
+     * implementation returns {@link Character#isSpaceChar(char)}. Subclasses can override this method in order to
+     * change the criterion.
      *
      * @param c The character to test.
      * @return {@code true} if {@code c} is a character that can be ignored on end of line.

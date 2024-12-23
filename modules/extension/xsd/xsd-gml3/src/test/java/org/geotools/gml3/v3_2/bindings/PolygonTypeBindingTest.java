@@ -49,8 +49,6 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
         assertEquals("gml:Polygon", dom.getDocumentElement().getNodeName());
 
         assertThat(dom, hasXPath("/gml:Polygon/gml:exterior", notNullValue(String.class)));
-        assertThat(
-                dom,
-                hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class)));
+        assertThat(dom, hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class)));
     }
 }

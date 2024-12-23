@@ -78,17 +78,15 @@ public class VPFCoverage {
      * @throws IOException if the directory does not contain a valid FCS file
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFCoverage(
-            VPFLibrary cLibrary, SimpleFeature feature, String cDirectoryName, URI namespace)
+    public VPFCoverage(VPFLibrary cLibrary, SimpleFeature feature, String cDirectoryName, URI namespace)
             throws IOException, SchemaException {
         topologyLevel = Short.parseShort(feature.getAttribute(FIELD_LEVEL).toString());
         library = cLibrary;
         description = feature.getAttribute(VPFCoverageIfc.FIELD_DESCRIPTION).toString();
         this.namespace = namespace;
-        pathName =
-                cDirectoryName
-                        .concat(File.separator)
-                        .concat(feature.getAttribute(FIELD_COVERAGE_NAME).toString().toUpperCase());
+        pathName = cDirectoryName
+                .concat(File.separator)
+                .concat(feature.getAttribute(FIELD_COVERAGE_NAME).toString().toUpperCase());
         discoverFeatureClasses();
         discoverFeatureTypes();
     }
@@ -117,14 +115,13 @@ public class VPFCoverage {
     }
 
     /**
-     * The point of this block of code is to scan the CHAR.VDT file for FACC codes. There is a one
-     * to one relationship between FACC codes and feature types, but there is a one to many
-     * relationship between feature classes and feature types/FACC codes. Since objects are stored
-     * in the file system by feature class, this mechanism allows us to separate features of
-     * different feature types in the same feature class.
+     * The point of this block of code is to scan the CHAR.VDT file for FACC codes. There is a one to one relationship
+     * between FACC codes and feature types, but there is a one to many relationship between feature classes and feature
+     * types/FACC codes. Since objects are stored in the file system by feature class, this mechanism allows us to
+     * separate features of different feature types in the same feature class.
      *
-     * <p>Some coverages do not have a CHAR.VDT file. In these cases, there is a 1:1:1 relationship
-     * between the coverage, feature class, and feature type.
+     * <p>Some coverages do not have a CHAR.VDT file. In these cases, there is a 1:1:1 relationship between the
+     * coverage, feature class, and feature type.
      */
     private void discoverFeatureTypes() {
         try {
@@ -137,7 +134,8 @@ public class VPFCoverage {
 
                 // if (!ALLOWED_FCODE_ATTRIBUTES_LIST.contains(attr)) continue;
 
-                String tableFileName = row.getAttribute("table").toString().trim().toUpperCase();
+                String tableFileName =
+                        row.getAttribute("table").toString().trim().toUpperCase();
 
                 // We need to go through all of this
                 // so that entries match what is in FCS
@@ -239,12 +237,6 @@ public class VPFCoverage {
      */
     @Override
     public String toString() {
-        return "VPF Coverage "
-                + getName()
-                + ". "
-                + description
-                + "\n"
-                + "Topology level "
-                + topologyLevel;
+        return "VPF Coverage " + getName() + ". " + description + "\n" + "Topology level " + topologyLevel;
     }
 }

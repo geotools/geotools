@@ -90,8 +90,8 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     }
 
     /**
-     * Tests case where filter is makes use of 2 different attributes but Query object only requests
-     * 1 of the two attributes. This is a fix for a bug that has occurred.
+     * Tests case where filter is makes use of 2 different attributes but Query object only requests 1 of the two
+     * attributes. This is a fix for a bug that has occurred.
      */
     @Test
     public void testFeatureReaderWithQueryFilter() throws Exception {
@@ -104,8 +104,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         Query query = new Query("tiger_tiger_roads", filter);
         int expected = 0;
         try (Transaction t = new DefaultTransaction();
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        wfs.getFeatureReader(query, t)) {
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader = wfs.getFeatureReader(query, t)) {
 
             while (reader.hasNext()) {
                 expected++;
@@ -114,8 +113,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         }
         query = new Query("tiger_tiger_roads", filter, 100, new String[] {"CFCC"}, "");
         try (Transaction t = new DefaultTransaction();
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        wfs.getFeatureReader(query, t)) {
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader = wfs.getFeatureReader(query, t)) {
             int count = 0;
             while (reader.hasNext()) {
                 count++;
@@ -135,9 +133,9 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     /**
      * Writing test that only engages against a remote geoserver.
      *
-     * <p>Makes reference to the standard featureTypes that geoserver ships with. NOTE: Ignoring
-     * this test for now because it edits topp:states and GeoServer doesn't return the correct
-     * Feature IDs on transactions against shapefiles
+     * <p>Makes reference to the standard featureTypes that geoserver ships with. NOTE: Ignoring this test for now
+     * because it edits topp:states and GeoServer doesn't return the correct Feature IDs on transactions against
+     * shapefiles
      */
     @Test
     @Ignore
@@ -150,32 +148,23 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         try {
             GeometryFactory gf = new GeometryFactory();
-            MultiPolygon mp =
-                    gf.createMultiPolygon(
-                            new Polygon[] {
-                                gf.createPolygon(
-                                        gf.createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(-88.071564, 37.51099),
-                                                    new Coordinate(-88.467644, 37.400757),
-                                                    new Coordinate(-90.638329, 42.509361),
-                                                    new Coordinate(-89.834618, 42.50346),
-                                                    new Coordinate(-88.071564, 37.51099)
-                                                }),
-                                        new LinearRing[] {})
-                            });
+            MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {
+                gf.createPolygon(
+                        gf.createLinearRing(new Coordinate[] {
+                            new Coordinate(-88.071564, 37.51099),
+                            new Coordinate(-88.467644, 37.400757),
+                            new Coordinate(-90.638329, 42.509361),
+                            new Coordinate(-89.834618, 42.50346),
+                            new Coordinate(-88.071564, 37.51099)
+                        }),
+                        new LinearRing[] {})
+            });
             mp.setUserData("http://www.opengis.net/gml/srs/epsg.xml#" + EPSG_CODE);
 
             PropertyName geometryAttributeExpression =
                     filterFac.property(ft.getGeometryDescriptor().getLocalName());
             PropertyIsNull geomNullCheck = filterFac.isNull(geometryAttributeExpression);
-            Query query =
-                    new Query(
-                            testType.FEATURETYPENAME,
-                            filterFac.not(geomNullCheck),
-                            1,
-                            Query.ALL_NAMES,
-                            null);
+            Query query = new Query(testType.FEATURETYPENAME, filterFac.not(geomNullCheck), 1, Query.ALL_NAMES, null);
             SimpleFeature f, f2;
             try (SimpleFeatureIterator inStore = fs.getFeatures(query).features()) {
                 SimpleFeature feature = inStore.next();

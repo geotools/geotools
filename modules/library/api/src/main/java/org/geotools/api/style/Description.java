@@ -13,11 +13,11 @@ package org.geotools.api.style;
 import org.geotools.api.util.InternationalString;
 
 /**
- * A Description is used to store various informations who describe an element. Description values
- * are mostly used in User Interfaces (Lists, trees, ...).
+ * A Description is used to store various informations who describe an element. Description values are mostly used in
+ * User Interfaces (Lists, trees, ...).
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2

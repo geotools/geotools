@@ -25,10 +25,7 @@ public class FilterFactoryImplNamespaceAware extends FilterFactoryImpl {
 
     private NamespaceSupport namespaceContext;
 
-    /**
-     * Empty constructor, no namespace context received, behaves exactly like {@link
-     * FilterFactoryImpl}
-     */
+    /** Empty constructor, no namespace context received, behaves exactly like {@link FilterFactoryImpl} */
     public FilterFactoryImplNamespaceAware() {
         super();
     }

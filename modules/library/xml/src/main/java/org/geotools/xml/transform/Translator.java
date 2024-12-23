@@ -51,9 +51,8 @@ public interface Translator {
     SchemaLocationSupport getSchemaLocationSupport();
 
     /**
-     * Abort any translating activity. This is needed as some translators iterate internally on a
-     * data structure. The abort method should silently fail or succeed based upon the state of a
-     * translation.
+     * Abort any translating activity. This is needed as some translators iterate internally on a data structure. The
+     * abort method should silently fail or succeed based upon the state of a translation.
      */
     void abort();
 }

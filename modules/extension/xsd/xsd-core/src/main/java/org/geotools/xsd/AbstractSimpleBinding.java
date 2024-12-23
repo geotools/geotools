@@ -42,8 +42,7 @@ public abstract class AbstractSimpleBinding implements SimpleBinding {
      * Performs the encoding of the object as a String.
      *
      * @param object The object being encoded, never null.
-     * @param value The string returned from another binding in the type hierachy, which could be
-     *     null.
+     * @param value The string returned from another binding in the type hierachy, which could be null.
      * @return A String representing the object.
      */
     @Override

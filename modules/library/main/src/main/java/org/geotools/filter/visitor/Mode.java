@@ -20,8 +20,8 @@ package org.geotools.filter.visitor;
 /**
  * Interpolation mode used by interpolate function.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
 public enum Mode {

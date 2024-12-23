@@ -28,8 +28,8 @@ import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
 /**
- * A two- or three-dimensional coordinate system with straight axes that are not necessarily
- * orthogonal. An {@code AffineCS} shall have two or three {@linkplain #getAxis axis}.
+ * A two- or three-dimensional coordinate system with straight axes that are not necessarily orthogonal. An
+ * {@code AffineCS} shall have two or three {@linkplain #getAxis axis}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -48,10 +48,10 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
     private static final long serialVersionUID = 7977674229369042440L;
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy constructor provides a
+     * way to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in
+     * order to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties
+     * are not cloned.
      *
      * @param cs The coordinate system to copy.
      * @since 2.2
@@ -67,8 +67,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultAffineCS(
-            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
+    public DefaultAffineCS(final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, axis0, axis1);
     }
 
@@ -89,24 +88,21 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
     }
 
     /**
-     * Constructs a two-dimensional coordinate system from a set of properties. The properties map
-     * is given unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[])
-     * super-class constructor}.
+     * Constructs a two-dimensional coordinate system from a set of properties. The properties map is given unchanged to
+     * the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
     public DefaultAffineCS(
-            final Map<String, ?> properties,
-            final CoordinateSystemAxis axis0,
-            final CoordinateSystemAxis axis1) {
+            final Map<String, ?> properties, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(properties, axis0, axis1);
     }
 
     /**
-     * Constructs a three-dimensional coordinate system from a set of properties. The properties map
-     * is given unchanged to the superclass constructor.
+     * Constructs a three-dimensional coordinate system from a set of properties. The properties map is given unchanged
+     * to the superclass constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
@@ -127,9 +123,9 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
     }
 
     /**
-     * Returns {@code true} if the specified axis direction is allowed for this coordinate system.
-     * The default implementation accepts all directions except temporal ones (i.e. {@link
-     * AxisDirection#FUTURE FUTURE} and {@link AxisDirection#PAST PAST}).
+     * Returns {@code true} if the specified axis direction is allowed for this coordinate system. The default
+     * implementation accepts all directions except temporal ones (i.e. {@link AxisDirection#FUTURE FUTURE} and
+     * {@link AxisDirection#PAST PAST}).
      */
     @Override
     protected boolean isCompatibleDirection(final AxisDirection direction) {
@@ -137,9 +133,9 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
     }
 
     /**
-     * Returns {@code true} if the specified unit is compatible with {@linkplain SI#METER meters}.
-     * In addition, this method also accepts {@link Unit#ONE}, which is used for coordinates in a
-     * grid. This method is invoked at construction time for checking units compatibility.
+     * Returns {@code true} if the specified unit is compatible with {@linkplain SI#METER meters}. In addition, this
+     * method also accepts {@link Unit#ONE}, which is used for coordinates in a grid. This method is invoked at
+     * construction time for checking units compatibility.
      *
      * @since 2.2
      */

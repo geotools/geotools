@@ -74,8 +74,7 @@ public class DefaultCalendarDateTest {
     @Test
     public void testSetCalendarEraName() {
         InternationalString result = calendarDate1.getCalendarEraName();
-        ((DefaultCalendarDate) calendarDate1)
-                .setCalendarEraName(new SimpleInternationalString("new Era"));
+        ((DefaultCalendarDate) calendarDate1).setCalendarEraName(new SimpleInternationalString("new Era"));
         assertNotEquals(calendarDate1.getCalendarEraName(), result);
     }
 

@@ -66,54 +66,41 @@ public abstract class MongoSchemaStoreTest<S extends MongoSchemaStore> {
             store.storeSchema(dummy0);
             List<String> typeNames = store.typeNames();
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0"))));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
 
             // store a second, retreive then test all for equality
             store.storeSchema(dummy1);
             Collections.sort(typeNames = store.typeNames()); // FIFO isn't in API contract
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0", "dummy1"))));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
 
             // replace the second with itself, retreive then test all for equality
             store.storeSchema(dummy1);
             Collections.sort(typeNames = store.typeNames()); // FIFO isn't in API contract
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0", "dummy1"))));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
 
             // store a third, retreive then test all for equality
             store.storeSchema(dummy2);
             Collections.sort(typeNames = store.typeNames()); // FIFO isn't in API contract
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0", "dummy1", "dummy2"))));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy1")), dummy1, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
 
             // remove the second, retreive then test all for equality
             store.deleteSchema(new NameImpl("dummy1"));
             Collections.sort(typeNames = store.typeNames()); // FIFO isn't in API contract
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0", "dummy2"))));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);
             assertThat(store.retrieveSchema(new NameImpl("dummy1")), is(nullValue()));
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
 
             // show that we can replace a schema with one of same name and it overwrites existing
-            SimpleFeatureType dummy0_replace =
-                    FeatureTypeDBObjectTest.buildDummyFeatureType("dummy0");
-            dummy0_replace
-                    .getUserData()
-                    .put("dummyKey", "something different than what dummy0 contains");
+            SimpleFeatureType dummy0_replace = FeatureTypeDBObjectTest.buildDummyFeatureType("dummy0");
+            dummy0_replace.getUserData().put("dummyKey", "something different than what dummy0 contains");
 
             // replace dummy0 with a slightly different entry, retreive then test all for equality
             store.storeSchema(dummy0_replace);
@@ -121,8 +108,7 @@ public abstract class MongoSchemaStoreTest<S extends MongoSchemaStore> {
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0", "dummy2"))));
             FeatureTypeDBObjectTest.compareFeatureTypes(
                     store.retrieveSchema(new NameImpl("dummy0")), dummy0_replace, false);
-            FeatureTypeDBObjectTest.compareFeatureTypes(
-                    store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
+            FeatureTypeDBObjectTest.compareFeatureTypes(store.retrieveSchema(new NameImpl("dummy2")), dummy2, false);
 
             store.deleteSchema(new NameImpl("dummy0"));
             store.deleteSchema(new NameImpl("dummy2"));

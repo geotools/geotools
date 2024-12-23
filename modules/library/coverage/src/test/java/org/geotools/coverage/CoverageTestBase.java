@@ -45,26 +45,25 @@ import org.geotools.test.TestData;
  */
 public class CoverageTestBase {
     /**
-     * {@code true} if the result of coverage operations should be displayed. This is sometime
-     * useful for debugging purpose.
+     * {@code true} if the result of coverage operations should be displayed. This is sometime useful for debugging
+     * purpose.
      */
     protected static boolean SHOW = TestData.isInteractiveTest();
 
     /**
-     * Small value for comparaison of sample values. Since most grid coverage implementations in
-     * Geotools 2 store geophysics values as {@code float} numbers, this {@code EPS} value must be
-     * of the order of {@code float} relative precision, not {@code double}.
+     * Small value for comparaison of sample values. Since most grid coverage implementations in Geotools 2 store
+     * geophysics values as {@code float} numbers, this {@code EPS} value must be of the order of {@code float} relative
+     * precision, not {@code double}.
      */
     protected static final float EPS = 1E-5f;
 
     /**
-     * Returns the "Sample to geophysics" transform as an affine transform, or {@code null} if none.
-     * Note that the returned instance may be an immutable one, not necessarly the default Java2D
-     * implementation.
+     * Returns the "Sample to geophysics" transform as an affine transform, or {@code null} if none. Note that the
+     * returned instance may be an immutable one, not necessarly the default Java2D implementation.
      *
      * @param coverage The coverage for which to get the "grid to CRS" affine transform.
-     * @return The "grid to CRS" affine transform of the given coverage, or {@code null} if none or
-     *     if the transform is not affine.
+     * @return The "grid to CRS" affine transform of the given coverage, or {@code null} if none or if the transform is
+     *     not affine.
      */
     protected static AffineTransform getAffineTransform(final Coverage coverage) {
         if (coverage instanceof GridCoverage) {
@@ -104,8 +103,7 @@ public class CoverageTestBase {
     protected static GeneralBounds getGeneralEnvelope(final Coverage coverage) {
         final Bounds envelope = coverage.getEnvelope();
         assertNotNull(envelope);
-        assertEquals(
-                coverage.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem());
+        assertEquals(coverage.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem());
         if (coverage instanceof GeneralBounds) {
             return (GeneralBounds) envelope;
         } else {
@@ -114,8 +112,8 @@ public class CoverageTestBase {
     }
 
     /**
-     * Compares the envelopes of two coverages for equality using the smallest scale factor of their
-     * "grid to world" transform as the tolerance.
+     * Compares the envelopes of two coverages for equality using the smallest scale factor of their "grid to world"
+     * transform as the tolerance.
      *
      * @param expected The coverage having the expected envelope.
      * @param actual The coverage having the actual envelope.
@@ -168,8 +166,7 @@ public class CoverageTestBase {
      * @param expected The image containing the expected pixel values.
      * @param actual The image containing the actual pixel values.
      */
-    protected static void assertRasterEquals(
-            final RenderedImage expected, final RenderedImage actual) {
+    protected static void assertRasterEquals(final RenderedImage expected, final RenderedImage actual) {
         final RectIter e = RectIterFactory.create(expected, null);
         final RectIter a = RectIterFactory.create(actual, null);
         if (!e.finishedLines())

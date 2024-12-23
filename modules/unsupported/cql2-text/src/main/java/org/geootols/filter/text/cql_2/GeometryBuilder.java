@@ -32,8 +32,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 /**
  * Builds Geometry
  *
- * <p>This builder is responsible to make the geometry using the elements pushed in the parsing
- * process in the stack. Copied from gt-cql, should be removed once the modules * are merged.
+ * <p>This builder is responsible to make the geometry using the elements pushed in the parsing process in the stack.
+ * Copied from gt-cql, should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

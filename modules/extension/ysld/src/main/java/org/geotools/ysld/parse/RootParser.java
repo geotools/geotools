@@ -31,9 +31,8 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * {@link YsldParseHandler} for the root of a {@link YamlObject}. This is the "entrypoint" {@link
- * YsldParseHandler} for parsing Ysld into GeoTools-style objects. The resulting sld is accessible
- * via the {{@link #sld()} method.
+ * {@link YsldParseHandler} for the root of a {@link YamlObject}. This is the "entrypoint" {@link YsldParseHandler} for
+ * parsing Ysld into GeoTools-style objects. The resulting sld is accessible via the {{@link #sld()} method.
  */
 public class RootParser extends YsldParseHandler {
 
@@ -85,8 +84,7 @@ public class RootParser extends YsldParseHandler {
             }
             if (root.has("user-remote")) {
                 RemoteOWS remote =
-                        factory.style.createRemoteOWS(
-                                root.strOr("user-service", "WMS"), root.str("user-remote"));
+                        factory.style.createRemoteOWS(root.strOr("user-service", "WMS"), root.str("user-remote"));
                 layer.setRemoteOWS(remote);
             }
         } else {

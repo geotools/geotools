@@ -27,8 +27,8 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 
 /**
- * Wraps the coordinates at the discontinuity so that they are always moved towards East
- * (fundamental in order to have all pieces of a complex geometry moved into the same direction).
+ * Wraps the coordinates at the discontinuity so that they are always moved towards East (fundamental in order to have
+ * all pieces of a complex geometry moved into the same direction).
  *
  * @author Andrea Aime - OpenGeo
  */
@@ -52,19 +52,15 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     /**
      * Builds a new wrapper
      *
-     * @param wrapLimit Subsequent coordinates whose X differ from more than {@code wrapLimit} are
-     *     supposed to be wrapping the dateline and need to be offsetted
+     * @param wrapLimit Subsequent coordinates whose X differ from more than {@code wrapLimit} are supposed to be
+     *     wrapping the dateline and need to be offsetted
      * @param offset The offset to be applied to coordinates to unwrap them
      * @param mt The math transform to use to detect the wrapping
      * @param wrapOnY If true, the wrapping is supposed to happen on the Y axis, otherwise on the X
      * @param isPreFlipped If true, the coordinates are already flipped and wrapping is needed
      */
     public WrappingCoordinateFilter(
-            double wrapLimit,
-            double offset,
-            MathTransform mt,
-            boolean wrapOnY,
-            boolean isPreFlipped) {
+            double wrapLimit, double offset, MathTransform mt, boolean wrapOnY, boolean isPreFlipped) {
         this.wrapLimit = wrapLimit;
         this.offset = offset;
         this.mt = mt;
@@ -82,9 +78,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             int direction = getDisconinuityDirection(cs);
             if (direction == NOWRAP) return;
 
-            boolean ring =
-                    geom instanceof LinearRing
-                            || cs.getCoordinate(0).equals(cs.getCoordinate(cs.size() - 1));
+            boolean ring = geom instanceof LinearRing || cs.getCoordinate(0).equals(cs.getCoordinate(cs.size() - 1));
             applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2, ring, isPreFlipped);
         }
     }
@@ -110,8 +104,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
      * @param ring If true, the sequence is supposed to be a ring
      * @param preFlipped If true, the coordinates are already flipped
      */
-    private void applyOffset(
-            CoordinateSequence cs, double offset, boolean ring, boolean preFlipped) {
+    private void applyOffset(CoordinateSequence cs, double offset, boolean ring, boolean preFlipped) {
         final double maxWrap = wrapLimit * 1.9;
         double lastOrdinate = cs.getOrdinate(0, ordinateIdx);
         int last = ring ? cs.size() - 1 : cs.size();
@@ -144,15 +137,11 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                         // and convert back again
                         mt.inverse().transform(src, 0, dest, 0, 1);
                         // if the midpoint isn't between the two end points, it's a wrap
-                        wraps =
-                                !(dest[ordinateIdx] > Math.min(lastOrdinate, ordinate)
-                                        && dest[ordinateIdx] < Math.max(lastOrdinate, ordinate));
+                        wraps = !(dest[ordinateIdx] > Math.min(lastOrdinate, ordinate)
+                                && dest[ordinateIdx] < Math.max(lastOrdinate, ordinate));
                     } catch (TransformException ex) {
                         Logging.getLogger(WrappingCoordinateFilter.class)
-                                .log(
-                                        Level.WARNING,
-                                        "Unable to perform transform to detect dateline wrapping",
-                                        ex);
+                                .log(Level.WARNING, "Unable to perform transform to detect dateline wrapping", ex);
                     }
                 }
                 // toggle between offset

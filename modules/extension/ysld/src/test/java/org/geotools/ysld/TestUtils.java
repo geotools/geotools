@@ -89,8 +89,7 @@ public enum TestUtils {
     /** Matches as an attribute expression for a named attribute. */
     public static Matcher<Expression> attribute(String name) {
         return Matchers.allOf(
-                Matchers.instanceOf(PropertyName.class),
-                Matchers.hasProperty("propertyName", equalTo(name)));
+                Matchers.instanceOf(PropertyName.class), Matchers.hasProperty("propertyName", equalTo(name)));
     }
 
     /** Matches a function with the given name and parameters matching the given matchers. */
@@ -100,8 +99,7 @@ public enum TestUtils {
     }
 
     /** Matches a function with the given name and a parameter list matching the given matcher. */
-    public static Matcher<Expression> function(
-            String name, Matcher<? extends Iterable<Expression>> parameters) {
+    public static Matcher<Expression> function(String name, Matcher<? extends Iterable<Expression>> parameters) {
         return allOf(
                 instanceOf(Function.class),
                 hasProperty("functionName", hasProperty("name", equalTo(name))),
@@ -128,8 +126,8 @@ public enum TestUtils {
     }
 
     /**
-     * Converts a Number to double, otherwise converts to string and then parses as double then
-     * matches to the given value.
+     * Converts a Number to double, otherwise converts to string and then parses as double then matches to the given
+     * value.
      */
     public static Matcher<? extends Object> numEqualTo(final double value, final double epsilon) {
         return new BaseMatcher<Object>() {
@@ -154,8 +152,8 @@ public enum TestUtils {
     }
 
     /**
-     * Converts a Number to long, otherwise converts to string and then parses as double then
-     * matches to the given value.
+     * Converts a Number to long, otherwise converts to string and then parses as double then matches to the given
+     * value.
      */
     public static Matcher<? extends Object> numEqualTo(final long value) {
         return new BaseMatcher<Object>() {
@@ -220,8 +218,7 @@ public enum TestUtils {
                 anyOf(
                         (Matcher) allOf(instanceOf(String.class), asColor(equalTo(c))),
                         (Matcher) allOf(instanceOf(Color.class), equalTo(c)),
-                        (Matcher)
-                                allOf(instanceOf(Integer.class), equalTo(c.getRGB() & 0x00FFFFFF))),
+                        (Matcher) allOf(instanceOf(Integer.class), equalTo(c.getRGB() & 0x00FFFFFF))),
                 hex,
                 c);
     }

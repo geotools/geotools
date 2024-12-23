@@ -26,15 +26,14 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.SoftValueHashMap;
 
 /**
- * Helper class that allows the extraction of CQL expressions out of a plain text string using
- * special separators. Parsing rules are:
+ * Helper class that allows the extraction of CQL expressions out of a plain text string using special separators.
+ * Parsing rules are:
  *
  * <ul>
  *   <li>whatever is between <code>${</code> and <code>}</code> is considered a CQL expression
- *   <li><code>$</code> and <code>}</code> can be used stand alone only escaped with <code>\</code>
- *       (e.g. <code>\$</code> and <code>\}</code>)
- *   <li><code>\</code> can be used stand alone only escaped with another <code>\</code> (e.g.
- *       <code>\\</code>)
+ *   <li><code>$</code> and <code>}</code> can be used stand alone only escaped with <code>\</code> (e.g. <code>\$
+ *       </code> and <code>\}</code>)
+ *   <li><code>\</code> can be used stand alone only escaped with another <code>\</code> (e.g. <code>\\</code>)
  * </ul>
  *
  * Examples of valid expressions:
@@ -61,9 +60,9 @@ public class ExpressionExtractor {
             new SoftValueHashMap<>(EXPRESSION_CACHE_HARD_REFERENCES);
 
     /**
-     * Parses the original string and returns an array or parsed expressions, in particular, the
-     * result of parsing each embedded cql expression and string literals in between the cql
-     * expressions, in the order they appear in the original string
+     * Parses the original string and returns an array or parsed expressions, in particular, the result of parsing each
+     * embedded cql expression and string literals in between the cql expressions, in the order they appear in the
+     * original string
      */
     static List<Expression> splitCqlExpressions(String expression) {
         boolean inCqlExpression = false;
@@ -85,11 +84,9 @@ public class ExpressionExtractor {
                 // skip the next character
                 i++;
             } else if (curr == '$') {
-                if (last || next != '{')
-                    throw new IllegalArgumentException("Unescaped $ at position " + (i + 1));
+                if (last || next != '{') throw new IllegalArgumentException("Unescaped $ at position " + (i + 1));
                 if (inCqlExpression)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
+                    throw new IllegalArgumentException("Already found a ${ sequence before the one at " + (i + 1));
 
                 // if we extracted a literal in between two expressions, add it to the result
                 if (sb.length() > 0) {
@@ -102,12 +99,10 @@ public class ExpressionExtractor {
                 i++;
             } else if (curr == '}') {
                 if (!inCqlExpression)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
+                    throw new IllegalArgumentException("Already found a ${ sequence before the one at " + (i + 1));
 
                 if (sb.length() == 0)
-                    throw new IllegalArgumentException(
-                            "Invalid empty cql expression ${} at " + (i - 1));
+                    throw new IllegalArgumentException("Invalid empty cql expression ${} at " + (i - 1));
 
                 try {
                     result.add(ECQL.toExpression(sb.toString()));
@@ -133,8 +128,7 @@ public class ExpressionExtractor {
     /** Given an expression list will create an expression concatenating them. */
     static Expression catenateExpressions(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty())
-            throw new IllegalArgumentException(
-                    "You should provide at least one expression in the list");
+            throw new IllegalArgumentException("You should provide at least one expression in the list");
 
         if (expressions.size() == 1) {
             return expressions.get(0);
@@ -144,8 +138,8 @@ public class ExpressionExtractor {
     }
 
     /**
-     * Builds a CQL expression equivalent to the specified string, see class javadocs for rules on
-     * how to build the expression in string form
+     * Builds a CQL expression equivalent to the specified string, see class javadocs for rules on how to build the
+     * expression in string form
      */
     public static Expression extractCqlExpressions(String expression) {
         Expression result = EXPRESSION_CACHE.get(expression);

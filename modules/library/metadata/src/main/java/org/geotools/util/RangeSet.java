@@ -39,15 +39,13 @@ import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * An ordered set of ranges. {@code RangeSet} objects store an arbitrary number of {@linkplain Range
- * ranges} in any Java's primitives ({@code int}, {@code float}, etc.) or any {@linkplain Comparable
- * comparable} objects. Ranges may be added in any order. When a range is added, {@code RangeSet}
- * first looks for an existing range overlapping the specified range. If an overlapping range is
- * found, ranges are merged as of {@link Range#union}. Consequently, ranges returned by {@link
- * #iterator} may not be the same than added ranges.
+ * An ordered set of ranges. {@code RangeSet} objects store an arbitrary number of {@linkplain Range ranges} in any
+ * Java's primitives ({@code int}, {@code float}, etc.) or any {@linkplain Comparable comparable} objects. Ranges may be
+ * added in any order. When a range is added, {@code RangeSet} first looks for an existing range overlapping the
+ * specified range. If an overlapping range is found, ranges are merged as of {@link Range#union}. Consequently, ranges
+ * returned by {@link #iterator} may not be the same than added ranges.
  *
- * <p>All entries in this set can be seen as {@link Range} objects. This class is
- * <strong>not</strong> thread-safe.
+ * <p>All entries in this set can be seen as {@link Range} objects. This class is <strong>not</strong> thread-safe.
  *
  * @param <T> The type of range elements.
  * @since 2.0
@@ -61,99 +59,91 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     private static final long serialVersionUID = 2439002271813328080L;
 
     /**
-     * The comparator for ranges. Defined only in order to comply to {@link #comparator} contract,
-     * but not used for internal working in this class.
+     * The comparator for ranges. Defined only in order to comply to {@link #comparator} contract, but not used for
+     * internal working in this class.
      */
     @SuppressWarnings("unchecked")
-    private static final Comparator<Range> COMPARATOR =
-            (r1, r2) -> {
-                int cmin = r1.getMinValue().compareTo(r2.getMinValue());
-                int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
-                if (cmin == 0) cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
-                if (cmax == 0) cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
-                if (cmin == cmax)
-                    return cmax; // Easy case: min and max are both greater, smaller or eq.
-                if (cmin == 0) return cmax; // Easy case: only max value differ.
-                if (cmax == 0) return cmin; // Easy case: only min value differ.
-                // One range is included in the other.
-                throw new IllegalArgumentException("Unordered ranges");
-            };
+    private static final Comparator<Range> COMPARATOR = (r1, r2) -> {
+        int cmin = r1.getMinValue().compareTo(r2.getMinValue());
+        int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
+        if (cmin == 0) cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
+        if (cmax == 0) cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
+        if (cmin == cmax) return cmax; // Easy case: min and max are both greater, smaller or eq.
+        if (cmin == 0) return cmax; // Easy case: only max value differ.
+        if (cmax == 0) return cmin; // Easy case: only min value differ.
+        // One range is included in the other.
+        throw new IllegalArgumentException("Unordered ranges");
+    };
 
     /** The {@linkplain #getElementClass element class} of ranges. */
     private final Class<T> elementClass;
 
     /**
-     * Identical to {@code elementClass} except if the later is a {@link Number} subclass. In the
-     * later case, this field is set to <code>{@link Number}.class</code>.
+     * Identical to {@code elementClass} except if the later is a {@link Number} subclass. In the later case, this field
+     * is set to <code>{@link Number}.class</code>.
      */
     private final Class<?> relaxedClass;
 
     /**
-     * Identical to {@code elementClass} except if the later is the wrapper of some primitive type.
-     * In the later case this field is set to that primitive type. This is the type to be used in
-     * arrays.
+     * Identical to {@code elementClass} except if the later is the wrapper of some primitive type. In the later case
+     * this field is set to that primitive type. This is the type to be used in arrays.
      */
     private final Class<?> arrayElementClass;
 
     /**
-     * The primitive type, as one of {@code DOUBLE}, {@code FLOAT}, {@code LONG}, {@code INTEGER},
-     * {@code SHORT}, {@code BYTE}, {@code CHARACTER} or {@code OTHER} enumeration.
+     * The primitive type, as one of {@code DOUBLE}, {@code FLOAT}, {@code LONG}, {@code INTEGER}, {@code SHORT},
+     * {@code BYTE}, {@code CHARACTER} or {@code OTHER} enumeration.
      */
     private final byte arrayElementCode;
 
     /**
-     * Tableau d'intervalles. Il peut s'agir d'un tableau d'un des types primitifs du Java (par
-     * exemple {@code int[]} ou {@code float[]}), ou d'un tableau de type {@code Comparable[]}. Les
-     * éléments de ce tableau doivent obligatoirement être en ordre strictement croissant et sans
-     * doublon.
+     * Tableau d'intervalles. Il peut s'agir d'un tableau d'un des types primitifs du Java (par exemple {@code int[]} ou
+     * {@code float[]}), ou d'un tableau de type {@code Comparable[]}. Les éléments de ce tableau doivent
+     * obligatoirement être en ordre strictement croissant et sans doublon.
      *
-     * <p>La longueur de ce tableau est le double du nombre d'intervalles. Il aurait été plus
-     * efficace d'utiliser une variable séparée (pour ne pas être obligé d'agrandir ce tableau à
-     * chaque ajout d'un intervalle), mais malheureusement le J2SE 1.4 ne nous fournit pas de
-     * méthode {@code Arrays.binarySearch} qui nous permettent de spécifier les limites du tableau
-     * (voir RFE #4306897 à http://developer.java.sun.com/developer/bugParade/bugs/4306897.html).
+     * <p>La longueur de ce tableau est le double du nombre d'intervalles. Il aurait été plus efficace d'utiliser une
+     * variable séparée (pour ne pas être obligé d'agrandir ce tableau à chaque ajout d'un intervalle), mais
+     * malheureusement le J2SE 1.4 ne nous fournit pas de méthode {@code Arrays.binarySearch} qui nous permettent de
+     * spécifier les limites du tableau (voir RFE #4306897 à
+     * http://developer.java.sun.com/developer/bugParade/bugs/4306897.html).
      *
      * @todo Revisit when we will be allowed to compile for Java 6.
      */
     private Object array;
 
     /**
-     * Compte le nombre de modifications apportées au tableau des intervalles. Ce comptage sert à
-     * vérifier si une modification survient pendant qu'un itérateur balayait les intervalles.
+     * Compte le nombre de modifications apportées au tableau des intervalles. Ce comptage sert à vérifier si une
+     * modification survient pendant qu'un itérateur balayait les intervalles.
      */
     private int modCount;
 
     /**
-     * {@code true} if and only if the element class represents a primitive type. This is
-     * equivalents to {@code primitiveType.isPrimitive()} and is computed once for ever for
-     * performance reason.
+     * {@code true} if and only if the element class represents a primitive type. This is equivalents to
+     * {@code primitiveType.isPrimitive()} and is computed once for ever for performance reason.
      */
     private final boolean isPrimitive;
 
     /**
-     * {@code true} if we should invoke {@link ClassChanger#toNumber} before to store a value into
-     * the array. It will be the case if the array {@code array} contains primitive elements and the
-     * type {@code type} is not the corresponding wrapper.
+     * {@code true} if we should invoke {@link ClassChanger#toNumber} before to store a value into the array. It will be
+     * the case if the array {@code array} contains primitive elements and the type {@code type} is not the
+     * corresponding wrapper.
      */
     private final boolean useClassChanger;
 
-    /**
-     * {@code true} if instances of {@link NumberRange} should be created instead of {@link Range}.
-     */
+    /** {@code true} if instances of {@link NumberRange} should be created instead of {@link Range}. */
     private final boolean isNumeric;
 
     /**
      * Constructs an empty set of range.
      *
-     * @param type The class of the range elements. It must be a primitive type or a class
-     *     implementing {@link Comparable}.
-     * @throws IllegalArgumentException if {@code type} is not a primitive type or a class
-     *     implementing {@link Comparable}.
+     * @param type The class of the range elements. It must be a primitive type or a class implementing
+     *     {@link Comparable}.
+     * @throws IllegalArgumentException if {@code type} is not a primitive type or a class implementing
+     *     {@link Comparable}.
      */
     public RangeSet(final Class<T> type) throws IllegalArgumentException {
         if (!Comparable.class.isAssignableFrom(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
         }
         Class<?> elementType = ClassChanger.getTransformedClass(type); // e.g. change Date --> Long
         useClassChanger = (elementType != type);
@@ -172,8 +162,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             throw new IllegalArgumentException(
                     value == null
                             ? MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value")
-                            : MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
+                            : MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
         }
         if (useClassChanger)
             try {
@@ -183,12 +172,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
                  * Should not happen since the constructor should have make sure
                  * that this operation is legal for value of class 'type'.
                  */
-                final ClassCastException exception =
-                        new ClassCastException(
-                                MessageFormat.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        value.getClass(),
-                                        elementClass));
+                final ClassCastException exception = new ClassCastException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
                 exception.initCause(cause);
                 throw exception;
             }
@@ -216,11 +201,11 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range to this set. Range may be added in any order. If the specified range overlap an
-     * existing range, the two range will be merged as of {@link Range#union}.
+     * Add a range to this set. Range may be added in any order. If the specified range overlap an existing range, the
+     * two range will be merged as of {@link Range#union}.
      *
-     * <p>Note: current version do not support open interval (i.e. {@code
-     * Range.is[Min/Max]Included()} must return {@code true}).
+     * <p>Note: current version do not support open interval (i.e. {@code Range.is[Min/Max]Included()} must return
+     * {@code true}).
      *
      * @param range The range to add.
      * @return {@code true} if this set changed as a result of the call.
@@ -235,8 +220,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Adds a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Adds a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param min The lower value, inclusive.
      * @param max The upper value, inclusive.
@@ -249,8 +234,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) > 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
         }
         if (array == null) {
             modCount++;
@@ -374,8 +358,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -387,8 +371,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -400,8 +384,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -413,8 +397,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -426,8 +410,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -439,8 +423,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Add a range of values to this set. Range may be added in any order. If the specified range
-     * overlap an existing range, the two ranges will be merged.
+     * Add a range of values to this set. Range may be added in any order. If the specified range overlap an existing
+     * range, the two ranges will be merged.
      *
      * @param lower The lower value, inclusive.
      * @param upper The upper value, inclusive.
@@ -466,8 +450,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) >= 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
         }
         // if already empty, or range outside the current set, nothing to change
         if (array == null) {
@@ -652,12 +635,12 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Retourne l'index de l'élément {@code value} dans le tableau {@code array}. Cette méthode
-     * interprète le tableau {@code array} comme un tableau d'un des types intrinsèques du Java, et
-     * appelle la méthode {@code Arrays.binarySearch} appropriée.
+     * Retourne l'index de l'élément {@code value} dans le tableau {@code array}. Cette méthode interprète le tableau
+     * {@code array} comme un tableau d'un des types intrinsèques du Java, et appelle la méthode
+     * {@code Arrays.binarySearch} appropriée.
      *
-     * @param value The value to search. This value must have been converted with {@link #toNumber}
-     *     prior to call this method.
+     * @param value The value to search. This value must have been converted with {@link #toNumber} prior to call this
+     *     method.
      */
     private int binarySearch(final Comparable value) {
         switch (arrayElementCode) {
@@ -697,10 +680,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         }
     }
 
-    /**
-     * Returns the value at the specified index. Even index are lower bounds, while odd index are
-     * upper bounds.
-     */
+    /** Returns the value at the specified index. Even index are lower bounds, while odd index are upper bounds. */
     private T get(final int index) {
         Comparable value = (Comparable) Array.get(array, index);
         if (useClassChanger)
@@ -715,44 +695,37 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a {@linkplain Range#getMinValue range's minimum value} as a {@code double}. The
-     * {@code index} can be any value from 0 inclusive to the set's {@link #size size} exclusive.
-     * The returned values always increase with {@code index}.
+     * Returns a {@linkplain Range#getMinValue range's minimum value} as a {@code double}. The {@code index} can be any
+     * value from 0 inclusive to the set's {@link #size size} exclusive. The returned values always increase with
+     * {@code index}.
      *
      * @param index The range index, from 0 inclusive to {@link #size size} exclusive.
      * @return The minimum value for the range at the specified index.
      * @throws IndexOutOfBoundsException if {@code index} is out of bounds.
      * @throws ClassCastException if range elements are not convertible to numbers.
      */
-    public final double getMinValueAsDouble(int index)
-            throws IndexOutOfBoundsException, ClassCastException {
+    public final double getMinValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index *= 2;
-        return (isPrimitive)
-                ? Array.getDouble(array, index)
-                : ((Number) Array.get(array, index)).doubleValue();
+        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
-     * Returns a {@linkplain Range#getMaxValue range's maximum value} as a {@code double}. The
-     * {@code index} can be any value from 0 inclusive to the set's {@link #size size} exclusive.
-     * The returned values always increase with {@code index}.
+     * Returns a {@linkplain Range#getMaxValue range's maximum value} as a {@code double}. The {@code index} can be any
+     * value from 0 inclusive to the set's {@link #size size} exclusive. The returned values always increase with
+     * {@code index}.
      *
      * @param index The range index, from 0 inclusive to {@link #size size} exclusive.
      * @return The maximum value for the range at the specified index.
      * @throws IndexOutOfBoundsException if {@code index} is out of bounds.
      * @throws ClassCastException if range elements are not convertible to numbers.
      */
-    public final double getMaxValueAsDouble(int index)
-            throws IndexOutOfBoundsException, ClassCastException {
+    public final double getMaxValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index = 2 * index + 1;
-        return (isPrimitive)
-                ? Array.getDouble(array, index)
-                : ((Number) Array.get(array, index)).doubleValue();
+        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
-     * If the specified value is inside a range, returns the index of this range. Otherwise, returns
-     * {@code -1}.
+     * If the specified value is inside a range, returns the index of this range. Otherwise, returns {@code -1}.
      *
      * @param value The value to search.
      * @return The index of the range which contains this value, or -1 if there is no such range.
@@ -784,8 +757,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         final Range<T> range = (Range<T>) object;
         if (elementClass.equals(range.elementClass)) {
             if (range.isMinIncluded() && range.isMaxIncluded()) {
-                final int index =
-                        binarySearch(toArrayElement((Comparable<? super T>) range.getMinValue()));
+                final int index = binarySearch(toArrayElement((Comparable<? super T>) range.getMinValue()));
                 if (index >= 0 && (index & 1) == 0) {
                     final int c = get(index + 1).compareTo(range.getMaxValue());
                     return c == 0;
@@ -825,8 +797,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a view of the portion of this sorted set whose elements range from {@code lower},
-     * inclusive, to {@code upper}, exclusive.
+     * Returns a view of the portion of this sorted set whose elements range from {@code lower}, inclusive, to
+     * {@code upper}, exclusive.
      *
      * @param lower Low endpoint (inclusive) of the sub set.
      * @param upper High endpoint (exclusive) of the sub set.
@@ -838,8 +810,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a view of the portion of this sorted set whose elements are strictly less than {@code
-     * upper}.
+     * Returns a view of the portion of this sorted set whose elements are strictly less than {@code upper}.
      *
      * @param upper High endpoint (exclusive) of the headSet.
      * @return A view of the specified initial range of this sorted set.
@@ -850,8 +821,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a view of the portion of this sorted set whose elements are greater than or equal to
-     * {@code lower}.
+     * Returns a view of the portion of this sorted set whose elements are greater than or equal to {@code lower}.
      *
      * @param lower Low endpoint (inclusive) of the tailSet.
      * @return A view of the specified final range of this sorted set.
@@ -861,18 +831,14 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    /**
-     * Returns an iterator over the elements in this set of ranges. All elements are {@link Range}
-     * objects.
-     */
+    /** Returns an iterator over the elements in this set of ranges. All elements are {@link Range} objects. */
     @Override
     public java.util.Iterator<Range<T>> iterator() {
         return new Iterator();
     }
 
     /**
-     * An iterator for iterating through ranges in a {@link RangeSet}. All elements are {@link
-     * Range} objects.
+     * An iterator for iterating through ranges in a {@link RangeSet}. All elements are {@link Range} objects.
      *
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
@@ -929,8 +895,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a hash value for this set of ranges. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this set of ranges. This value need not remain consistent between different
+     * implementations of the same class.
      */
     @Override
     public int hashCode() {
@@ -1021,8 +987,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /**
-     * Returns a string representation of this set of ranges. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes.
+     * Returns a string representation of this set of ranges. The returned string is implementation dependent. It is
+     * usually provided for debugging purposes.
      */
     @Override
     public String toString() {

@@ -41,14 +41,13 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     private static final String HTTPS_PROTOCOLS = "https.protocols";
 
     /**
-     * Downloaded files are stored in this directory. We intentionally use a non-canonical cache
-     * directory to test that resolved locations are canonical.
+     * Downloaded files are stored in this directory. We intentionally use a non-canonical cache directory to test that
+     * resolved locations are canonical.
      */
     private static final File CACHE_DIRECTORY = new File("target/schema-cache/../schema-cache");
 
     /** Schema that is downloaded. */
-    private static final String SCHEMA_LOCATION =
-            "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd";
+    private static final String SCHEMA_LOCATION = "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd";
 
     /** Filename of the schema. */
     private static final String SCHEMA_FILENAME;
@@ -159,7 +158,8 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
             // test that cache path is not canonical
             Assert.assertNotEquals(
-                    CACHE_DIRECTORY.toString(), CACHE_DIRECTORY.getCanonicalFile().toString());
+                    CACHE_DIRECTORY.toString(),
+                    CACHE_DIRECTORY.getCanonicalFile().toString());
             // test that resolved location is canonical, despite cache directory not being canonical
             Assert.assertEquals(
                     location,
@@ -176,8 +176,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // this url has the header with a redirect
         Assert.assertNotNull(conn.getHeaderField("Location"));
-        byte[] responseBody =
-                SchemaCache.download("http://inspire.ec.europa.eu/schemas/common/1.0");
+        byte[] responseBody = SchemaCache.download("http://inspire.ec.europa.eu/schemas/common/1.0");
         Assert.assertNotNull(responseBody);
         Assert.assertTrue(responseBody.length > 0);
     }

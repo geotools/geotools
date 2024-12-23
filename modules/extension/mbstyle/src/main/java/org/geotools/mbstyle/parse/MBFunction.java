@@ -37,14 +37,13 @@ import org.json.simple.parser.ParseException;
 /**
  * MBFunction json wrapper, allowing conversion of function to a GeoTools Expression.
  *
- * <p>As of v0.41.0, data expressions are the preferred method for styling features based on zoom
- * level or the feature's properties.
+ * <p>As of v0.41.0, data expressions are the preferred method for styling features based on zoom level or the feature's
+ * properties.
  *
- * <p>Each function is evaluated according type: {@link FunctionType#IDENTITY}, {@link
- * FunctionType#INTERVAL}, {@link FunctionType#CATEGORICAL}, {@link FunctionType#EXPONENTIAL}.
+ * <p>Each function is evaluated according type: {@link FunctionType#IDENTITY}, {@link FunctionType#INTERVAL},
+ * {@link FunctionType#CATEGORICAL}, {@link FunctionType#EXPONENTIAL}.
  *
- * <p>We have several methods that intelligently review {@link #getType()} and produce the correct
- * expression:
+ * <p>We have several methods that intelligently review {@link #getType()} and produce the correct expression:
  *
  * <ul>
  *   <li>{@link #color()}
@@ -78,20 +77,17 @@ public class MBFunction {
         /** Functions return their input as their output. */
         IDENTITY,
         /**
-         * Functions generate an output by interpolating between stops just less than and just
-         * greater than the function input. The domain must be numeric. This is the default for
-         * properties marked with "exponential" symbol.
+         * Functions generate an output by interpolating between stops just less than and just greater than the function
+         * input. The domain must be numeric. This is the default for properties marked with "exponential" symbol.
          *
          * <p>This is the default function type for continuous value (such as color or line width).
          *
-         * <p>Maps to {@link Interpolate}, requiring use of {@link FilterFunction_pow} for base
-         * other that 1.
+         * <p>Maps to {@link Interpolate}, requiring use of {@link FilterFunction_pow} for base other that 1.
          */
         EXPONENTIAL,
         /**
-         * Functions return the output value of the stop just less than the function input. The
-         * domain must be numeric. This is the default for properties marked with thie "interval"
-         * symbol.
+         * Functions return the output value of the stop just less than the function input. The domain must be numeric.
+         * This is the default for properties marked with thie "interval" symbol.
          *
          * <p>This is the default function type for enums values (such as line_cap).
          *
@@ -110,9 +106,9 @@ public class MBFunction {
     /**
      * Access the function 'type', or null if not specified.
      *
-     * <p>Depending on the domain you are working with ( {@link #enumeration(Class)}, {@link
-     * #color()}, {@link #enumeration(Class)}} ) the default value to use is different. These
-     * functions check for null and use the appropriate setting.
+     * <p>Depending on the domain you are working with ( {@link #enumeration(Class)}, {@link #color()},
+     * {@link #enumeration(Class)}} ) the default value to use is different. These functions check for null and use the
+     * appropriate setting.
      *
      * @return function type, or null if not defined.
      */
@@ -131,27 +127,24 @@ public class MBFunction {
             case "categorical":
                 return FunctionType.CATEGORICAL;
             default:
-                throw new MBFormatException(
-                        "Function type \""
-                                + type
-                                + "\" invalid - expected identity, exponential, interval, categorical");
+                throw new MBFormatException("Function type \""
+                        + type
+                        + "\" invalid - expected identity, exponential, interval, categorical");
         }
     }
 
     /**
-     * A value to serve as a fallback function result when a value isn't otherwise available. It is
-     * used in the following circumstances:
+     * A value to serve as a fallback function result when a value isn't otherwise available. It is used in the
+     * following circumstances:
      *
      * <ul>
-     *   <li>In categorical functions, when the feature value does not match any of the stop domain
-     *       values.
-     *   <li>In property and zoom-and-property functions, when a feature does not contain a value
-     *       for the specified property.
-     *   <li>In identity functions, when the feature value is not valid for the style property (for
-     *       example, if the function is being used for a circle-color property but the feature
-     *       property value is not a string or not a valid color).
-     *   <li>In interval or exponential property and zoom-and-property functions, when the feature
-     *       value is not numeric.
+     *   <li>In categorical functions, when the feature value does not match any of the stop domain values.
+     *   <li>In property and zoom-and-property functions, when a feature does not contain a value for the specified
+     *       property.
+     *   <li>In identity functions, when the feature value is not valid for the style property (for example, if the
+     *       function is being used for a circle-color property but the feature property value is not a string or not a
+     *       valid color).
+     *   <li>In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.
      * </ul>
      *
      * <p>If no default is provided, the style property's default is used in these circumstances.
@@ -167,9 +160,9 @@ public class MBFunction {
     }
 
     /**
-     * Return the function type, falling back to the default function type for the provided {@link
-     * Class} if no function type is explicitly declared. The parameter is necessary because
-     * different output classes will have different default function types.
+     * Return the function type, falling back to the default function type for the provided {@link Class} if no function
+     * type is explicitly declared. The parameter is necessary because different output classes will have different
+     * default function types.
      *
      * <p>Examples (For a function with no explicitly declared type):
      *
@@ -178,11 +171,10 @@ public class MBFunction {
      * getTypeWithDefault(Number.class); // "exponential" function type
      * </pre>
      *
-     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type"
-     *     header under Mapbox Spec: Functions</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type" header under Mapbox
+     *     Spec: Functions</a>
      * @param clazz The class for which to return the default function type
-     * @return The function type, falling back to the default when the provided {@link Class} is the
-     *     return type.
+     * @return The function type, falling back to the default when the provided {@link Class} is the return type.
      */
     public FunctionType getTypeWithDefault(Class<?> clazz) {
 
@@ -202,8 +194,8 @@ public class MBFunction {
     }
 
     /**
-     * If specified, the function will take the specified feature property as an input. See Zoom
-     * Functions and Property Functions for more information.
+     * If specified, the function will take the specified feature property as an input. See Zoom Functions and Property
+     * Functions for more information.
      *
      * @return property evaluated by function, optional (may be null for zoom functions).
      */
@@ -215,9 +207,9 @@ public class MBFunction {
      * Function category property, zoom, or property and zoom. Defined as:
      *
      * <ul>
-     *   <li>property: Each stop is an array with two elements, the first is a property input value
-     *       and the second is a function output value. Note that support for property functions is
-     *       not available across all properties and platforms at this time.
+     *   <li>property: Each stop is an array with two elements, the first is a property input value and the second is a
+     *       function output value. Note that support for property functions is not available across all properties and
+     *       platforms at this time.
      *       <pre>
      * {  "circle-color": {
      *      "property": "temperature",
@@ -228,8 +220,8 @@ public class MBFunction {
      *    }
      *  }
      * </pre>
-     *   <li>zoom: Each stop is an array with two elements: the first is a zoom level and the second
-     *       is a function output value.
+     *   <li>zoom: Each stop is an array with two elements: the first is a zoom level and the second is a function
+     *       output value.
      *       <pre>
      * {  "circle-radius": {
      *      "stops": [
@@ -239,9 +231,9 @@ public class MBFunction {
      *    }
      *  }
      * </pre>
-     *   <li>zoom and property: Each stop is an array with two elements, the first is a property
-     *       input value and the second is a function output value. Note that support for property
-     *       functions is not available across all properties and platforms at this time.
+     *   <li>zoom and property: Each stop is an array with two elements, the first is a property input value and the
+     *       second is a function output value. Note that support for property functions is not available across all
+     *       properties and platforms at this time.
      *       <pre>
      * {  "circle-radius": {
      *      "property": "rating",
@@ -258,24 +250,22 @@ public class MBFunction {
      */
     public enum FunctionCategory {
         /**
-         * Property functions allow the appearance of a map feature to change with its properties.
-         * Property functions can be used to visually differentate types of features within the same
-         * layer or create data visualizations.
+         * Property functions allow the appearance of a map feature to change with its properties. Property functions
+         * can be used to visually differentate types of features within the same layer or create data visualizations.
          */
         PROPERTY,
         /**
-         * Zoom functions allow the appearance of a map feature to change with map’s zoom level.
-         * Zoom functions can be used to create the illusion of depth and control data density.
+         * Zoom functions allow the appearance of a map feature to change with map’s zoom level. Zoom functions can be
+         * used to create the illusion of depth and control data density.
          */
         ZOOM
     }
 
     /**
-     * Programmatically look at the structure of the function and determine if it is a Zoom
-     * function, Property function or Zoom-and-property functions.
+     * Programmatically look at the structure of the function and determine if it is a Zoom function, Property function
+     * or Zoom-and-property functions.
      *
-     * @return Classify function as {@link FunctionCategory#PROPERTY}, {@link FunctionCategory#ZOOM}
-     *     or both.
+     * @return Classify function as {@link FunctionCategory#PROPERTY}, {@link FunctionCategory#ZOOM} or both.
      */
     public EnumSet<FunctionCategory> category() {
         String property = getProperty();
@@ -295,8 +285,8 @@ public class MBFunction {
     }
 
     /**
-     * Functions are defined in terms of input and output values. A set of one input value and one
-     * output value is known as a "stop."
+     * Functions are defined in terms of input and output values. A set of one input value and one output value is known
+     * as a "stop."
      *
      * @return stops definition, optional may be null.
      */
@@ -305,9 +295,9 @@ public class MBFunction {
     }
 
     /**
-     * (Optional) Number. Default is 1. The exponential base of the interpolation curve. It controls
-     * the rate at which the function output increases. Higher values make the output increase more
-     * towards the high end of the range. With values close to 1 the output increases linearly.
+     * (Optional) Number. Default is 1. The exponential base of the interpolation curve. It controls the rate at which
+     * the function output increases. Higher values make the output increase more towards the high end of the range.
+     * With values close to 1 the output increases linearly.
      *
      * @return The exponential base of the interpolation curve.
      */
@@ -321,14 +311,12 @@ public class MBFunction {
      * <p>The value is determined by:
      *
      * <ul>
-     *   <li>{@link FunctionCategory#ZOOM}: uses zoomLevel function with wms_scale_denominator evn
-     *       variable
-     *   <li>{@link FunctionCategory#PROPERTY}: uses the provided property to extract value from
-     *       each feature
+     *   <li>{@link FunctionCategory#ZOOM}: uses zoomLevel function with wms_scale_denominator evn variable
+     *   <li>{@link FunctionCategory#PROPERTY}: uses the provided property to extract value from each feature
      * </ul>
      *
-     * Zoom and Property functions are not supported and are expected to be reduced by the current
-     * zoom level prior to use.
+     * Zoom and Property functions are not supported and are expected to be reduced by the current zoom level prior to
+     * use.
      *
      * @return expression function is evaluated against
      */
@@ -339,9 +327,7 @@ public class MBFunction {
             throw new IllegalStateException("Reduce zoom and property function prior to use.");
         } else if (category.contains(FunctionCategory.ZOOM)) {
             return ff.function(
-                    "zoomLevel",
-                    ff.function("env", ff.literal("wms_scale_denominator")),
-                    ff.literal("EPSG:3857"));
+                    "zoomLevel", ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"));
         } else {
             return ff.property(getProperty());
         }
@@ -350,9 +336,8 @@ public class MBFunction {
     /**
      * Function as defined by json.
      *
-     * <p>The value for any layout or paint property may be specified as a function. Functions allow
-     * you to make the appearance of a map feature change with the current zoom level and/or the
-     * feature's properties.
+     * <p>The value for any layout or paint property may be specified as a function. Functions allow you to make the
+     * appearance of a map feature change with the current zoom level and/or the feature's properties.
      *
      * @param json Definition of Function
      * @return Function as defined by json
@@ -365,15 +350,15 @@ public class MBFunction {
     // Color
     //
     /**
-     * GeoTools {@link Expression} from json definition that evaluates to a color, used for
-     * properties such as 'color' and 'fill-color'.
+     * GeoTools {@link Expression} from json definition that evaluates to a color, used for properties such as 'color'
+     * and 'fill-color'.
      *
-     * <p>This is the same as {@link #numeric()} except we can make some assumptions about the
-     * values (converting hex to color, looking up color names).
+     * <p>This is the same as {@link #numeric()} except we can make some assumptions about the values (converting hex to
+     * color, looking up color names).
      *
      * <ul>
-     *   <li>{@link FunctionType#IDENTITY}: input is directly converted to a color, providing a way
-     *       to process attribute data into colors.
+     *   <li>{@link FunctionType#IDENTITY}: input is directly converted to a color, providing a way to process attribute
+     *       data into colors.
      *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input value
      *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input value
      *   <li>{@link FunctionType#EXPONENTIAL}: interpolates an output color between two stops
@@ -406,28 +391,21 @@ public class MBFunction {
     }
 
     /**
-     * Generates a color expression for the output of this {@link MBFunction} (as a {@link
-     * MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * Generates a color expression for the output of this {@link MBFunction} (as a
+     * {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
      *
      * @param expression The expression for the function input
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#CATEGORICAL} function)
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL}
+     *     function)
      */
     private Expression colorGenerateCategorize(Expression expression) {
-        return generateCategorize(
-                expression,
-                (value, stop) -> {
-                    Expression color = parse.color((String) value);
-                    if (color == null) {
-                        throw new MBFormatException(
-                                "Could not convert stop "
-                                        + stop
-                                        + " color "
-                                        + value
-                                        + " into a color");
-                    }
-                    return color;
-                });
+        return generateCategorize(expression, (value, stop) -> {
+            Expression color = parse.color((String) value);
+            if (color == null) {
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
+            }
+            return color;
+        });
     }
     /**
      * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
@@ -446,19 +424,17 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value); // handles web colors
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
-     * Generates a color expression for the output of this {@link MBFunction} (as a interpolate
-     * function), based on the provided input Expression.
+     * Generates a color expression for the output of this {@link MBFunction} (as a interpolate function), based on the
+     * provided input Expression.
      *
      * @param expression The expression for the function input
      * @return The expression for the output of this function (as an interpolate function)
@@ -472,20 +448,18 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value); // handles web colors
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
         parameters.add(ff.literal("color"));
-        return withFallback(
-                ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
-     * Generates a color expression for the output of this {@link MBFunction} (as an exponential
-     * function), based on the provided input Expression.
+     * Generates a color expression for the output of this {@link MBFunction} (as an exponential function), based on the
+     * provided input Expression.
      *
      * @param expression The expression for the function input
      * @return The expression for the output of this function (as an exponential function)
@@ -500,28 +474,24 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value);
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return withFallback(
-                ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
 
     //
     // Font
     //
     /**
-     * GeoTools {@link Expression} from json definition that evaluates to a font string, used for
-     * 'text-font'.
+     * GeoTools {@link Expression} from json definition that evaluates to a font string, used for 'text-font'.
      *
      * <p>Fonts only use interval functions
      *
      * <ul>
-     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop
-     *       value as a number
+     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value as a number
      * </ul>
      *
      * @return Expression providing font string (used for `text-font`)
@@ -532,38 +502,29 @@ public class MBFunction {
     }
 
     private Expression fontGenerateCategorize(Expression expression) {
-        return generateCategorize(
-                expression,
-                (value, stop) -> {
-                    Expression font = parse.ff.literal(((JSONArray) value).get(0));
-                    if (font == null) {
-                        throw new MBFormatException(
-                                "Could not convert stop "
-                                        + stop
-                                        + " font "
-                                        + value
-                                        + " into a font");
-                    }
-                    return font;
-                });
+        return generateCategorize(expression, (value, stop) -> {
+            Expression font = parse.ff.literal(((JSONArray) value).get(0));
+            if (font == null) {
+                throw new MBFormatException("Could not convert stop " + stop + " font " + value + " into a font");
+            }
+            return font;
+        });
     }
     //
     // Numeric
     //
 
     /**
-     * GeoTools {@link Expression} from json definition that evaluates to a numeric, used for
-     * properties such as 'line-width' and 'opacity'.
+     * GeoTools {@link Expression} from json definition that evaluates to a numeric, used for properties such as
+     * 'line-width' and 'opacity'.
      *
-     * <p>This is the same as {@link #color()} except we can make some assumptions about the values
-     * (converting "50%" to 0.5).
+     * <p>This is the same as {@link #color()} except we can make some assumptions about the values (converting "50%" to
+     * 0.5).
      *
      * <ul>
      *   <li>{@link FunctionType#IDENTITY}: input is directly converted to a numeric output
-     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value
-     *       as a number
-     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop
-     *       value as a number
+     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a number
+     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value as a number
      *   <li>{@link FunctionType#EXPONENTIAL}: interpolates a numeric output between two stops
      * </ul>
      *
@@ -596,8 +557,7 @@ public class MBFunction {
     /**
      * Used to calculate a numeric value.
      *
-     * <p>Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and
-     * 22.
+     * <p>Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and 22.
      *
      * <pre><code>'circle-radius': {
      *   'stops': [[12, 2], [22, 180]]
@@ -614,22 +574,19 @@ public class MBFunction {
             Object stop = entry.get(0);
             Object value = entry.get(1);
             if (!(value instanceof Number)) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a numeric");
             }
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
         parameters.add(ff.literal("numeric"));
-        return withFallback(
-                ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
      * Used to calculate a numeric value.
      *
-     * <p>Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and
-     * 22.
+     * <p>Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and 22.
      *
      * <pre><code>'circle-radius': {
      *   'base': 1.75,
@@ -649,14 +606,12 @@ public class MBFunction {
             Object stop = entry.get(0);
             Object value = entry.get(1);
             if (!(value instanceof Number)) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a numeric");
             }
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        return withFallback(
-                ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
 
     //
@@ -665,15 +620,13 @@ public class MBFunction {
     /**
      * GeoTools {@link Expression} from json definition.
      *
-     * <p>Delegates handling of Color, Number and Enum - for generic values (such as String) the
-     * following are available:
+     * <p>Delegates handling of Color, Number and Enum - for generic values (such as String) the following are
+     * available:
      *
      * <ul>
      *   <li>{@link FunctionType#IDENTITY}: input is directly converted to a literal
-     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value
-     *       as a literal
-     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop
-     *       value a literal
+     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a literal
+     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value a literal
      * </ul>
      *
      * If type is unspecified interval is used as a default.
@@ -711,14 +664,12 @@ public class MBFunction {
     }
 
     /**
-     * Takes an expression and wraps it with a function that falls back to this {@link MBFunction}'s
-     * default return value.
+     * Takes an expression and wraps it with a function that falls back to this {@link MBFunction}'s default return
+     * value.
      *
-     * <p>If the input expression evaluates to null, the wrapper function will return the fallback
-     * value instead.
+     * <p>If the input expression evaluates to null, the wrapper function will return the fallback value instead.
      *
-     * @param expression The expression to wrap with a fallback to this {@link MBFunction}'s return
-     *     value.
+     * @param expression The expression to wrap with a fallback to this {@link MBFunction}'s return value.
      */
     private Expression withFallback(Expression expression) {
         Object defaultValue = getDefault();
@@ -730,27 +681,22 @@ public class MBFunction {
     }
 
     /**
-     * Generates an expression for the output of this {@link MBFunction} (as an {@link
-     * MBFunction.FunctionType#INTERVAL} function), based on the provided input Expression.
+     * Generates an expression for the output of this {@link MBFunction} (as an {@link MBFunction.FunctionType#INTERVAL}
+     * function), based on the provided input Expression.
      *
-     * <p>Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function,
-     * hence the name of this method.
+     * <p>Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this
+     * method.
      *
      * @param expression The expression for the function input
-     * @param parseValue A function of two arguments (stopValue, stop) that parses the stop value
-     *     into an Expression.
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#INTERVAL} function)
+     * @param parseValue A function of two arguments (stopValue, stop) that parses the stop value into an Expression.
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
      */
     private Expression generateCategorize(
-            Expression expression,
-            java.util.function.BiFunction<Object, Object, Expression> parseValue) {
+            Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
 
         JSONArray stopsJson = getStops();
-        List<Expression> parameters =
-                new ArrayList<>(
-                        stopsJson.size() * 2
-                                + 3); // each stop is 2, plus property name, leading interval value,
+        List<Expression> parameters = new ArrayList<>(
+                stopsJson.size() * 2 + 3); // each stop is 2, plus property name, leading interval value,
         // and "succeeding"
         parameters.add(expression);
         for (int i = 0; i < stopsJson.size(); i++) {
@@ -780,21 +726,20 @@ public class MBFunction {
         }
         parameters.add(ff.literal("succeeding"));
 
-        Function categorizeFunction =
-                ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        Function categorizeFunction = ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(categorizeFunction);
     }
 
     /**
-     * Generates an expression for the output of this {@link MBFunction} (as a {@link
-     * MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * Generates an expression for the output of this {@link MBFunction} (as a
+     * {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
      *
-     * <p>Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function,
-     * hence the name of this method.
+     * <p>Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this
+     * method.
      *
      * @param input The expression for the function input
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#CATEGORICAL} function)
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL}
+     *     function)
      */
     private Expression generateRecode(Expression input) {
         List<Expression> parameters = new ArrayList<>();
@@ -806,8 +751,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        Function recodeFn =
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        Function recodeFn = ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(recodeFn);
     }
 
@@ -815,15 +759,13 @@ public class MBFunction {
     // Enumerations
     //
     /**
-     * GeoTools {@link Expression} from json definition that evaluates to the provided Enum, used
-     * for properties such as 'line-cap' and 'text-transform'.
+     * GeoTools {@link Expression} from json definition that evaluates to the provided Enum, used for properties such as
+     * 'line-cap' and 'text-transform'.
      *
      * <ul>
      *   <li>{@link FunctionType#IDENTITY}: input is directly converted to an appropriate literal
-     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value
-     *       as a literal
-     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop
-     *       value a literal
+     *   <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a literal
+     *   <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value a literal
      * </ul>
      *
      * If type is unspecified internval is used as a default.
@@ -844,17 +786,16 @@ public class MBFunction {
                 "Unable to support '" + type + "' function for " + enumeration.getSimpleName());
     }
     /**
-     * Generates an expression (based on a mapbox enumeration property) for the output of this
-     * {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the
-     * provided input Expression.
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a
+     * {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
      *
-     * <p>Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function,
-     * hence the name of this method.
+     * <p>Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this
+     * method.
      *
      * @param input The expression for the function input
      * @param enumeration The type of the enumeration for the mapbox style property
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#CATEGORICAL} function)
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL}
+     *     function)
      */
     private Expression enumGenerateRecode(Expression input, Class<? extends Enum<?>> enumeration) {
         List<Expression> parameters = new ArrayList<>();
@@ -867,41 +808,33 @@ public class MBFunction {
             parameters.add(parse.constant(value, enumeration));
         }
 
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
-     * Generates an expression (based on a mapbox enumeration property) for the output of this
-     * {@link MBFunction} (as a {@link MBFunction.FunctionType#INTERVAL} function), based on the
-     * provided input Expression.
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a
+     * {@link MBFunction.FunctionType#INTERVAL} function), based on the provided input Expression.
      *
-     * <p>Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function,
-     * hence the name of this method.
+     * <p>Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this
+     * method.
      *
      * @param input The expression for the function input
      * @param enumeration The type of the enumeration for the mapbox style property
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#INTERVAL} function)
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
      */
-    private Expression enumGenerateCategorize(
-            Expression input, Class<? extends Enum<?>> enumeration) {
-        return withFallback(
-                generateCategorize(input, (value, stop) -> parse.constant(value, enumeration)));
+    private Expression enumGenerateCategorize(Expression input, Class<? extends Enum<?>> enumeration) {
+        return withFallback(generateCategorize(input, (value, stop) -> parse.constant(value, enumeration)));
     }
 
     /**
-     * Generates an expression (based on a mapbox enumeration property) for the output of this
-     * {@link MBFunction} (as a {@link MBFunction.FunctionType#IDENTITY} function), based on the
-     * provided input Expression.
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a
+     * {@link MBFunction.FunctionType#IDENTITY} function), based on the provided input Expression.
      *
      * @param input The expression for the function input
      * @param enumeration The type of the enumeration for the mapbox style property
-     * @return The expression for the output of this function (as a {@link
-     *     MBFunction.FunctionType#IDENTITY} function)
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#IDENTITY} function)
      */
-    private Expression enumGenerateIdentity(
-            Expression input, Class<? extends Enum<?>> enumeration) {
+    private Expression enumGenerateIdentity(Expression input, Class<? extends Enum<?>> enumeration) {
         // this is an interesting challenge, we need to generate a recode mapping
         // mapbox constants defined by the enum, to appropriate geotools literals
         List<Expression> parameters = new ArrayList<>();
@@ -911,8 +844,7 @@ public class MBFunction {
             parameters.add(ff.literal(value));
             parameters.add(parse.constant(value, enumeration));
         }
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -957,8 +889,7 @@ public class MBFunction {
     }
 
     /**
-     * Splits an array function into multiple functions, one for each dimension in the function's
-     * stop value arrays.
+     * Splits an array function into multiple functions, one for each dimension in the function's stop value arrays.
      *
      * <p>For example, for the following array function:
      *
@@ -1022,8 +953,7 @@ public class MBFunction {
             if (o instanceof JSONArray) {
                 parsedStops.add(new MBArrayStop((JSONArray) o));
             } else {
-                throw new MBFormatException(
-                        "Exception handling array function: encountered non-array stop value.");
+                throw new MBFormatException("Exception handling array function: encountered non-array stop value.");
             }
         }
 

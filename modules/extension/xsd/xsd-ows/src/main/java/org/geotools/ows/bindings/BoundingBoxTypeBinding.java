@@ -112,8 +112,7 @@ public class BoundingBoxTypeBinding extends ComplexEMFBinding {
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if ("LowerCorner".equals(name.getLocalPart())
-                || "UpperCorner".equals(name.getLocalPart())) {
+        if ("LowerCorner".equals(name.getLocalPart()) || "UpperCorner".equals(name.getLocalPart())) {
             // JD: this is a hack to get around the fact that the encoder won't match up simple list
             // types with a binding
             Object value = super.getProperty(object, name);

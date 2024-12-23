@@ -34,12 +34,11 @@ import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.util.logging.Logging;
 
 /**
- * A cursor tool to retrieve information about features that the user clicks on with the mouse. It
- * works with {@linkplain InfoToolHelper} objects which do the work of querying feature data.
+ * A cursor tool to retrieve information about features that the user clicks on with the mouse. It works with
+ * {@linkplain InfoToolHelper} objects which do the work of querying feature data.
  *
- * <p>Feature information is displayed on screen using a {@linkplain JTextReporter} dialog. If you
- * want to access the displayed text programmatically you can override the {@linkplain
- * #onReporterUpdated()} method as shown here:
+ * <p>Feature information is displayed on screen using a {@linkplain JTextReporter} dialog. If you want to access the
+ * displayed text programmatically you can override the {@linkplain #onReporterUpdated()} method as shown here:
  *
  * <pre><code>
  * InfoTool tool = new InfoTool() {
@@ -87,14 +86,13 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     }
 
     /**
-     * Respond to a mouse click by querying each of the {@code Layers}. The details of features
-     * lying within the threshold distance of the mouse position are reported on screen using a
-     * {@code JTextReporter} dialog.
+     * Respond to a mouse click by querying each of the {@code Layers}. The details of features lying within the
+     * threshold distance of the mouse position are reported on screen using a {@code JTextReporter} dialog.
      *
-     * <p><b>Implementation note:</b> An instance of {@code InfoToolHelper} is created and cached
-     * for each of the {@code Layers}. The helpers are created using reflection to avoid direct
-     * references to grid coverage classes here that would required JAI (Java Advanced Imaging) to
-     * be on the classpath even when only vector layers are being used.
+     * <p><b>Implementation note:</b> An instance of {@code InfoToolHelper} is created and cached for each of the
+     * {@code Layers}. The helpers are created using reflection to avoid direct references to grid coverage classes here
+     * that would required JAI (Java Advanced Imaging) to be on the classpath even when only vector layers are being
+     * used.
      *
      * @param ev mouse event
      * @see JTextReporter
@@ -156,15 +154,14 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     }
 
     /**
-     * Gets the connection to the text reporter displayed by this tool. Returns {@code null} if the
-     * reporter dialog is not currently displayed. The connection should not be stored because it
-     * will expire when the reporter dialog is closed.
+     * Gets the connection to the text reporter displayed by this tool. Returns {@code null} if the reporter dialog is
+     * not currently displayed. The connection should not be stored because it will expire when the reporter dialog is
+     * closed.
      *
-     * <p>This method was added for unit test purposes but may be useful for applications wishing to
-     * access the feature data report text, e.g. by overriding {@linkplain #onReporterUpdated()}.
+     * <p>This method was added for unit test purposes but may be useful for applications wishing to access the feature
+     * data report text, e.g. by overriding {@linkplain #onReporterUpdated()}.
      *
-     * @return the text reporter connection or {@code null} if the reporter dialog is not currently
-     *     displayed
+     * @return the text reporter connection or {@code null} if the reporter dialog is not currently displayed
      */
     public JTextReporter.Connection getTextReporterConnection() {
         return textReporterConnection;
@@ -179,14 +176,11 @@ public class InfoTool extends CursorTool implements TextReporterListener {
         textReporterConnection.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
     }
 
-    /**
-     * Creates and shows a {@code JTextReporter}. Does nothing if the reporter is already active.
-     */
+    /** Creates and shows a {@code JTextReporter}. Does nothing if the reporter is already active. */
     private void createReporter() {
         if (textReporterConnection == null) {
             textReporterConnection =
-                    JTextReporter.showDialog(
-                            "Feature info", null, JTextReporter.DEFAULT_FLAGS, 20, 40);
+                    JTextReporter.showDialog("Feature info", null, JTextReporter.DEFAULT_FLAGS, 20, 40);
 
             textReporterConnection.addListener(this);
         }
@@ -214,8 +208,8 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     }
 
     /**
-     * Called when text is updated in a {@linkplain JTextReporter} dialog being used by this tool.
-     * This is an empty method but may be useful to override.
+     * Called when text is updated in a {@linkplain JTextReporter} dialog being used by this tool. This is an empty
+     * method but may be useful to override.
      */
     @Override
     public void onReporterUpdated() {}

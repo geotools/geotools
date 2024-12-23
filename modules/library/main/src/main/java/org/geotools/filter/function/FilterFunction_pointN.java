@@ -27,12 +27,8 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_pointN extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "pointN",
-                    Geometry.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("index", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "pointN", Geometry.class, parameter("geometry", Geometry.class), parameter("index", Integer.class));
 
     public FilterFunction_pointN() {
         super(NAME);

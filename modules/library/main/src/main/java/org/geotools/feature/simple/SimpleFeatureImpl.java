@@ -80,19 +80,16 @@ public class SimpleFeatureImpl implements SimpleFeature {
     /**
      * Fast construction of a new feature.
      *
-     * <p>The object takes ownership of the provided value array, do not modify after calling the
-     * constructor
+     * <p>The object takes ownership of the provided value array, do not modify after calling the constructor
      */
-    public SimpleFeatureImpl(
-            Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
+    public SimpleFeatureImpl(Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
         this(values, featureType, id, validating, index(featureType));
     }
 
     /**
      * Fast construction of a new feature.
      *
-     * <p>The object takes ownership of the provided value array, do not modify after calling the
-     * constructor
+     * <p>The object takes ownership of the provided value array, do not modify after calling the constructor
      *
      * @param index - attribute name to value index mapping
      */
@@ -120,8 +117,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * <ul>
      *   <li>SimpleFeatureTypeImpl.index; or
      *   <li>Check getUserData().get("indexLookup");
-     *   <li>or call {@link SimpleFeatureTypeImpl#buildIndex(SimpleFeatureType)} to generate the
-     *       required index
+     *   <li>or call {@link SimpleFeatureTypeImpl#buildIndex(SimpleFeatureType)} to generate the required index
      * </ul>
      *
      * @return mapping between attribute name to attribute index
@@ -138,8 +134,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
                 if (cache instanceof Map) {
                     return (Map<String, Integer>) cache;
                 } else {
-                    Map<String, Integer> generatedIndex =
-                            SimpleFeatureTypeImpl.buildIndex(featureType);
+                    Map<String, Integer> generatedIndex = SimpleFeatureTypeImpl.buildIndex(featureType);
                     featureType.getUserData().put("indexLookup", generatedIndex);
                     return generatedIndex;
                 }
@@ -198,7 +193,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
         if (defaultGeometry == null) {
             GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
             if (geometryDescriptor != null) {
-                Integer defaultGeomIndex = index.get(geometryDescriptor.getName().getLocalPart());
+                Integer defaultGeomIndex =
+                        index.get(geometryDescriptor.getName().getLocalPart());
                 defaultGeometry = getAttribute(defaultGeomIndex.intValue());
             }
         }
@@ -219,9 +215,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
     @Override
     public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
         // first do conversion
-        Object converted =
-                Converters.convert(
-                        value, getFeatureType().getDescriptor(index).getType().getBinding());
+        Object converted = Converters.convert(
+                value, getFeatureType().getDescriptor(index).getType().getBinding());
         // if necessary, validation too
         if (validating) Types.validate(featureType.getDescriptor(index), converted);
         // finally set the value into the feature
@@ -288,8 +283,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         GeometryAttribute geometryAttribute = null;
         if (geometryDescriptor != null) {
             Object defaultGeometry = getDefaultGeometry();
-            geometryAttribute =
-                    new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
+            geometryAttribute = new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
         }
         return geometryAttribute;
     }
@@ -336,8 +330,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
             int index = idx.intValue();
             AttributeDescriptor descriptor = featureType.getDescriptor(index);
             if (descriptor instanceof GeometryDescriptor) {
-                return new GeometryAttributeImpl(
-                        values[index], (GeometryDescriptor) descriptor, null);
+                return new GeometryAttributeImpl(values[index], (GeometryDescriptor) descriptor, null);
             } else {
                 return new Attribute(index);
             }
@@ -367,8 +360,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     /** @see org.geotools.api.feature.Attribute#getDescriptor() */
     @Override
     public AttributeDescriptor getDescriptor() {
-        return new AttributeDescriptorImpl(
-                featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
+        return new AttributeDescriptorImpl(featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
     }
 
     /**
@@ -456,8 +448,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
                 if (values[i] instanceof Geometry) {
                     if (!(otherAtt instanceof Geometry)) {
                         return false;
-                    } else if (!CoordinateSequences.equalsND(
-                            (Geometry) values[i], (Geometry) otherAtt)) {
+                    } else if (!CoordinateSequences.equalsND((Geometry) values[i], (Geometry) otherAtt)) {
                         return false;
                     }
                 } else if (!values[i].equals(otherAtt)) {
@@ -645,8 +636,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
         @Override
         public BoundingBox getBounds() {
-            ReferencedEnvelope bounds =
-                    new ReferencedEnvelope(featureType.getCoordinateReferenceSystem());
+            ReferencedEnvelope bounds = new ReferencedEnvelope(featureType.getCoordinateReferenceSystem());
             Object value = getAttribute(index);
             if (value instanceof Geometry) {
                 bounds.init(((Geometry) value).getEnvelopeInternal());

@@ -26,9 +26,9 @@ import org.geotools.referencing.factory.epsg.FactoryUsingAnsiSQL;
 import org.geotools.util.factory.Hints;
 
 /**
- * Adapts SQL statements for HSQL. The HSQL database engine doesn't understand the parenthesis in
- * (INNER JOIN ... ON) statements for the "BursaWolfParameters" query. Unfortunatly, those
- * parenthesis are required by MS-Access. We need to removes them programmatically here.
+ * Adapts SQL statements for HSQL. The HSQL database engine doesn't understand the parenthesis in (INNER JOIN ... ON)
+ * statements for the "BursaWolfParameters" query. Unfortunatly, those parenthesis are required by MS-Access. We need to
+ * removes them programmatically here.
  *
  * @since 2.2
  * @version $Id$
@@ -36,11 +36,10 @@ import org.geotools.util.factory.Hints;
  */
 class FactoryUsingHSQL extends FactoryUsingAnsiSQL {
     /**
-     * The regular expression pattern for searching the "FROM (" clause. This is the pattern for the
-     * opening parenthesis.
+     * The regular expression pattern for searching the "FROM (" clause. This is the pattern for the opening
+     * parenthesis.
      */
-    private static final Pattern OPENING_PATTERN =
-            Pattern.compile("\\s+FROM\\s*\\(", Pattern.CASE_INSENSITIVE);
+    private static final Pattern OPENING_PATTERN = Pattern.compile("\\s+FROM\\s*\\(", Pattern.CASE_INSENSITIVE);
 
     /** Constructs the factory for the given connection to the HSQL database. */
     public FactoryUsingHSQL(final Hints hints, final Connection connection) {
@@ -81,17 +80,14 @@ class FactoryUsingHSQL extends FactoryUsingAnsiSQL {
                     break;
                 }
             }
-            query =
-                    query.substring(0, opening)
-                            + query.substring(opening + 1, closing)
-                            + query.substring(closing + 1);
+            query = query.substring(0, opening) + query.substring(opening + 1, closing) + query.substring(closing + 1);
         }
         return query;
     }
 
     /**
-     * Shutdown the HSQL database engine. This method is invoked automatically at JVM shutdown time
-     * just before to close the connection.
+     * Shutdown the HSQL database engine. This method is invoked automatically at JVM shutdown time just before to close
+     * the connection.
      */
     @Override
     protected void shutdown(final boolean active) throws SQLException {

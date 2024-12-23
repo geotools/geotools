@@ -34,17 +34,16 @@ public final class EpsgUnitFormat {
 
     private EpsgUnitFormat() {}
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.EPSG)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.EPSG)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
 
     private static final BaseUnitFormatter INSTANCE = new BaseUnitFormatter(UNIT_DEFINITIONS);
 }

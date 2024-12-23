@@ -34,8 +34,8 @@ import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
 /**
- * A helper class for parsing command-line arguments. Instance of this class are usually created
- * inside {@code main} methods. For example:
+ * A helper class for parsing command-line arguments. Instance of this class are usually created inside {@code main}
+ * methods. For example:
  *
  * <blockquote>
  *
@@ -47,11 +47,10 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  *
  * </blockquote>
  *
- * Then, method likes {@link #getRequiredString} or {@link #getOptionalString} can be used. If a
- * parameter is badly formatted or if a required parameter is not presents, then the method {@link
- * #illegalArgument} will be invoked with a message that describes the error. The default
- * implementation print the localized error message to standard output {@link #out} and exits the
- * virtual machine with a call to {@link System#exit} with error code 1.
+ * Then, method likes {@link #getRequiredString} or {@link #getOptionalString} can be used. If a parameter is badly
+ * formatted or if a required parameter is not presents, then the method {@link #illegalArgument} will be invoked with a
+ * message that describes the error. The default implementation print the localized error message to standard output
+ * {@link #out} and exits the virtual machine with a call to {@link System#exit} with error code 1.
  *
  * @since 2.0
  * @version $Id$
@@ -63,8 +62,8 @@ public class Arguments {
     private final String[] arguments;
 
     /**
-     * Output stream to the console. This output stream may use encoding specified in the {@code
-     * "-encoding"} argument, if presents.
+     * Output stream to the console. This output stream may use encoding specified in the {@code "-encoding"} argument,
+     * if presents.
      */
     public final PrintWriter out;
 
@@ -72,8 +71,8 @@ public class Arguments {
     public final PrintWriter err;
 
     /**
-     * The locale. Locale will be fetch from the {@code "-locale"} argument, if presents. Otherwise,
-     * the default locale will be used.
+     * The locale. Locale will be fetch from the {@code "-locale"} argument, if presents. Otherwise, the default locale
+     * will be used.
      */
     public final Locale locale;
 
@@ -83,8 +82,8 @@ public class Arguments {
     /**
      * Constructs a set of arguments.
      *
-     * @param args Command line arguments. Arguments {@code "-encoding"} and {@code "-locale"} will
-     *     be automatically parsed.
+     * @param args Command line arguments. Arguments {@code "-encoding"} and {@code "-locale"} will be automatically
+     *     parsed.
      */
     @SuppressWarnings("PMD.CloseResource") // we don't close System.out
     public Arguments(final String... args) {
@@ -128,24 +127,22 @@ public class Arguments {
                     return new Locale(s[0], s[1], s[2]);
                 default:
                     illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
+                            new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
             }
         }
         return Locale.getDefault();
     }
 
     /**
-     * Returns an optional string value from the command line. This method should be called exactly
-     * once for each parameter. Second invocation for the same parameter will returns {@code null},
-     * unless the same parameter appears many times on the command line.
+     * Returns an optional string value from the command line. This method should be called exactly once for each
+     * parameter. Second invocation for the same parameter will returns {@code null}, unless the same parameter appears
+     * many times on the command line.
      *
-     * <p>Paramater may be instructions like "-encoding cp850" or "-encoding=cp850". Both forms
-     * (with or without "=") are accepted. Spaces around the '=' character, if any, are ignored.
+     * <p>Paramater may be instructions like "-encoding cp850" or "-encoding=cp850". Both forms (with or without "=")
+     * are accepted. Spaces around the '=' character, if any, are ignored.
      *
      * @param name The parameter name (e.g. "-encoding"). Name are case-insensitive.
-     * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     *     name.
+     * @return The parameter value, of {@code null} if there is no parameter given for the specified name.
      */
     public String getOptionalString(final String name) {
         for (int i = 0; i < arguments.length; i++) {
@@ -178,10 +175,8 @@ public class Arguments {
                         }
                         split = 0;
                     }
-                    illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(
-                                            ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
+                    illegalArgument(new IllegalArgumentException(
+                            MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
                     return null;
                 }
             }
@@ -190,9 +185,8 @@ public class Arguments {
     }
 
     /**
-     * Returns an required string value from the command line. This method works like {@link
-     * #getOptionalString}, except that it will invokes {@link #illegalArgument} if the specified
-     * parameter was not given on the command line.
+     * Returns an required string value from the command line. This method works like {@link #getOptionalString}, except
+     * that it will invokes {@link #illegalArgument} if the specified parameter was not given on the command line.
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value.
@@ -200,21 +194,18 @@ public class Arguments {
     public String getRequiredString(final String name) {
         final String value = getOptionalString(name);
         if (value == null) {
-            illegalArgument(
-                    new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name)));
+            illegalArgument(new IllegalArgumentException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name)));
         }
         return value;
     }
 
     /**
-     * Returns an optional integer value from the command line. Numbers are parsed as of the {@link
-     * Integer#parseInt(String)} method, which means that the parsing is locale-insensitive. Locale
-     * insensitive parsing is required in order to use arguments in portable scripts.
+     * Returns an optional integer value from the command line. Numbers are parsed as of the
+     * {@link Integer#parseInt(String)} method, which means that the parsing is locale-insensitive. Locale insensitive
+     * parsing is required in order to use arguments in portable scripts.
      *
      * @param name The parameter name. Name are case-insensitive.
-     * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     *     name.
+     * @return The parameter value, of {@code null} if there is no parameter given for the specified name.
      */
     public Integer getOptionalInteger(final String name) {
         final String value = getOptionalString(name);
@@ -228,9 +219,9 @@ public class Arguments {
     }
 
     /**
-     * Returns a required integer value from the command line. Numbers are parsed as of the {@link
-     * Integer#parseInt(String)} method, which means that the parsing is locale-insensitive. Locale
-     * insensitive parsing is required in order to use arguments in portable scripts.
+     * Returns a required integer value from the command line. Numbers are parsed as of the
+     * {@link Integer#parseInt(String)} method, which means that the parsing is locale-insensitive. Locale insensitive
+     * parsing is required in order to use arguments in portable scripts.
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value.
@@ -248,13 +239,11 @@ public class Arguments {
 
     /**
      * Returns an optional floating-point value from the command line. Numbers are parsed as of the
-     * {@link Double#parseDouble(String)} method, which means that the parsing is
-     * locale-insensitive. Locale insensitive parsing is required in order to use arguments in
-     * portable scripts.
+     * {@link Double#parseDouble(String)} method, which means that the parsing is locale-insensitive. Locale insensitive
+     * parsing is required in order to use arguments in portable scripts.
      *
      * @param name The parameter name. Name are case-insensitive.
-     * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     *     name.
+     * @return The parameter value, of {@code null} if there is no parameter given for the specified name.
      */
     public Double getOptionalDouble(final String name) {
         final String value = getOptionalString(name);
@@ -269,9 +258,8 @@ public class Arguments {
 
     /**
      * Returns a required floating-point value from the command line. Numbers are parsed as of the
-     * {@link Double#parseDouble(String)} method, which means that the parsing is
-     * locale-insensitive. Locale insensitive parsing is required in order to use arguments in
-     * portable scripts.
+     * {@link Double#parseDouble(String)} method, which means that the parsing is locale-insensitive. Locale insensitive
+     * parsing is required in order to use arguments in portable scripts.
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value.
@@ -288,12 +276,10 @@ public class Arguments {
     }
 
     /**
-     * Returns an optional boolean value from the command line. The value, if defined, must be
-     * "true" or "false".
+     * Returns an optional boolean value from the command line. The value, if defined, must be "true" or "false".
      *
      * @param name The parameter name. Name are case-insensitive.
-     * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     *     name.
+     * @return The parameter value, of {@code null} if there is no parameter given for the specified name.
      */
     public Boolean getOptionalBoolean(final String name) {
         final String value = getOptionalString(name);
@@ -322,9 +308,9 @@ public class Arguments {
     }
 
     /**
-     * Returns {@code true} if the specified flag is set on the command line. This method should be
-     * called exactly once for each flag. Second invocation for the same flag will returns {@code
-     * false} (unless the same flag appears many times on the command line).
+     * Returns {@code true} if the specified flag is set on the command line. This method should be called exactly once
+     * for each flag. Second invocation for the same flag will returns {@code false} (unless the same flag appears many
+     * times on the command line).
      *
      * @param name The flag name.
      * @return {@code true} if this flag appears on the command line, or {@code false} otherwise.
@@ -392,8 +378,8 @@ public class Arguments {
     }
 
     /**
-     * Returns the list of unprocessed arguments. If the number of remaining arguments is greater
-     * than the specified maximum, then this method invokes {@link #illegalArgument}.
+     * Returns the list of unprocessed arguments. If the number of remaining arguments is greater than the specified
+     * maximum, then this method invokes {@link #illegalArgument}.
      *
      * @param max Maximum remaining arguments autorized.
      * @return An array of remaining arguments. Will never be longer than {@code max}.
@@ -405,8 +391,7 @@ public class Arguments {
             if (arg != null) {
                 if (count >= max) {
                     illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
+                            new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
                 }
                 left[count++] = arg;
             }
@@ -415,11 +400,10 @@ public class Arguments {
     }
 
     /**
-     * Returns the list of unprocessed arguments, which should not begin by the specified prefix.
-     * This method invokes <code>{@linkplain #getRemainingArguments(int) getRemainingArguments}(max)
-     * </code> and verifies that none of the remaining arguments start with {@code forbiddenPrefix}.
-     * The forbidden prefix is usually {@code '-'}, the character used for options as in "{@code
-     * -locale}", <cite>etc.</cite>
+     * Returns the list of unprocessed arguments, which should not begin by the specified prefix. This method invokes
+     * <code>{@linkplain #getRemainingArguments(int) getRemainingArguments}(max)
+     * </code> and verifies that none of the remaining arguments start with {@code forbiddenPrefix}. The forbidden
+     * prefix is usually {@code '-'}, the character used for options as in "{@code -locale}", <cite>etc.</cite>
      *
      * @param max Maximum remaining arguments autorized.
      * @param forbiddenPrefix The forbidden prefix, usually {@code '-'}.
@@ -434,10 +418,8 @@ public class Arguments {
                 argument = argument.trim();
                 if (argument.length() != 0) {
                     if (argument.charAt(0) == forbiddenPrefix) {
-                        illegalArgument(
-                                new IllegalArgumentException(
-                                        MessageFormat.format(
-                                                ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
+                        illegalArgument(new IllegalArgumentException(
+                                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
                     }
                 }
             }
@@ -446,9 +428,9 @@ public class Arguments {
     }
 
     /**
-     * Prints a summary of the specified exception, without stack trace. This method is invoked when
-     * a non-fatal (and somewhat expected) error occured, for example {@link
-     * java.io.FileNotFoundException} when the file were specified in argument.
+     * Prints a summary of the specified exception, without stack trace. This method is invoked when a non-fatal (and
+     * somewhat expected) error occured, for example {@link java.io.FileNotFoundException} when the file were specified
+     * in argument.
      *
      * @param exception An exception with a message describing the user's error.
      * @since 2.3
@@ -467,13 +449,13 @@ public class Arguments {
     }
 
     /**
-     * Invoked when an the user has specified an illegal parameter. The default implementation
-     * prints the localized error message to the standard output {@link #out}, and then exit the
-     * virtual machine. User may override this method if they want a different behavior.
+     * Invoked when an the user has specified an illegal parameter. The default implementation prints the localized
+     * error message to the standard output {@link #out}, and then exit the virtual machine. User may override this
+     * method if they want a different behavior.
      *
-     * <p>This method <em>is not</em> invoked when an anormal error occured (for example an
-     * unexpected {@code NullPointerException} in some of developper's module). If such an error
-     * occurs, the normal exception mechanism will be used.
+     * <p>This method <em>is not</em> invoked when an anormal error occured (for example an unexpected
+     * {@code NullPointerException} in some of developper's module). If such an error occurs, the normal exception
+     * mechanism will be used.
      *
      * @param exception An exception with a message describing the user's error.
      */

@@ -39,8 +39,7 @@ public class GranuleDescriptorTest {
     public void testBounds() throws SchemaException, ParseException {
 
         SimpleFeatureType schema =
-                DataUtilities.createType(
-                        "index", "geom:Polygon:4326,location:String,geom2:Polygon:4326");
+                DataUtilities.createType("index", "geom:Polygon:4326,location:String,geom2:Polygon:4326");
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
         Geometry geometry = new WKTReader().read("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
         fb.add(geometry);
@@ -63,14 +62,15 @@ public class GranuleDescriptorTest {
                 assertEquals(10, granuleBBOX.getMaximum(0), 0d);
                 assertEquals(0, granuleBBOX.getMinimum(1), 0d);
                 assertEquals(10, granuleBBOX.getMaximum(1), 0d);
-            };
+            }
+            ;
         };
     }
 
     /**
-     * Testing the ImageReaderSpi coming out of {@link CatalogConfigurationBean#suggestedSPI()}.
-     * Usually used when initializing GranuleDescriptor. ClassName put into
-     * CatalogConfigurationBean.setSuggestedSPI should be part of the classpath.
+     * Testing the ImageReaderSpi coming out of {@link CatalogConfigurationBean#suggestedSPI()}. Usually used when
+     * initializing GranuleDescriptor. ClassName put into CatalogConfigurationBean.setSuggestedSPI should be part of the
+     * classpath.
      */
     @Test
     public void testSuggestedImageReaderSPI() throws Exception {

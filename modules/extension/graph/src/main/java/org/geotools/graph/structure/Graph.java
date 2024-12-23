@@ -24,29 +24,28 @@ import java.util.List;
  *
  * <p>A graph is a collection of nodes (verticies) connected by links called edges (arcs). <br>
  * <br>
- * In most applications nodes of a graph represent the objects being modelled, and the edges
- * represent the relationships between the objects. An example could be a polygon coverage in which
- * one wishes to model a boundary sharing relationship. The following is an illustration.<br>
+ * In most applications nodes of a graph represent the objects being modelled, and the edges represent the relationships
+ * between the objects. An example could be a polygon coverage in which one wishes to model a boundary sharing
+ * relationship. The following is an illustration.<br>
  * <br>
  * <IMG src="doc-files/poly_coverage.gif"><br>
  * <br>
- * In the above figure, the objects (nodes) are the polygons themselves, and the relationship
- * (edges) between them is boundary sharing.<br>
+ * In the above figure, the objects (nodes) are the polygons themselves, and the relationship (edges) between them is
+ * boundary sharing.<br>
  * <br>
- * However, there exists types of graphs in which the roles are reversed and the edges are the
- * objects, and the nodes are the relationships. An example of such a graph is the stream network
- * shown below.<br>
+ * However, there exists types of graphs in which the roles are reversed and the edges are the objects, and the nodes
+ * are the relationships. An example of such a graph is the stream network shown below.<br>
  * <br>
  * <IMG src="doc-files/stream_network.gif"><br>
  * <br>
- * In the above figure, the objects (edges) are the stream segments and the relationship (nodes)
- * between them is endpoint sharing. However, if desirable one could model the second case similar
- * to the first. The resulting graph is shown below.<br>
+ * In the above figure, the objects (edges) are the stream segments and the relationship (nodes) between them is
+ * endpoint sharing. However, if desirable one could model the second case similar to the first. The resulting graph is
+ * shown below.<br>
  * <br>
  * <IMG src="doc-files/stream_network2.gif"><br>
  * <br>
- * The Graph object is intended to serve as a container for a collection of nodes and edges. It does
- * dont define or manage the relationship among the components it contains.
+ * The Graph object is intended to serve as a container for a collection of nodes and edges. It does dont define or
+ * manage the relationship among the components it contains.
  *
  * @see Node
  * @see Edge
@@ -55,21 +54,18 @@ import java.util.List;
 public interface Graph {
 
     /**
-     * Signal to indicate that a graph component meets the requirements of a query against a graph
-     * and that the query should continue.
+     * Signal to indicate that a graph component meets the requirements of a query against a graph and that the query
+     * should continue.
      */
     public static final int PASS_AND_CONTINUE = 1;
 
     /**
-     * Signal to indicate that a graph component meets the requirements of a query against a graph
-     * and that the query should end.
+     * Signal to indicate that a graph component meets the requirements of a query against a graph and that the query
+     * should end.
      */
     public static final int PASS_AND_STOP = 2;
 
-    /**
-     * Signal to indicate that a graph component does NOT meet the requirements of a query made
-     * against the graph.
-     */
+    /** Signal to indicate that a graph component does NOT meet the requirements of a query made against the graph. */
     public static final int FAIL_QUERY = 0;
 
     /**
@@ -89,13 +85,12 @@ public interface Graph {
     public Collection<Edge> getEdges();
 
     /**
-     * Performs a query against the nodes of the graph. Each Node object contained in the graph is
-     * passed to a GraphVisitor to determine if it meets the query criteria.
+     * Performs a query against the nodes of the graph. Each Node object contained in the graph is passed to a
+     * GraphVisitor to determine if it meets the query criteria.
      *
-     * @param visitor Determines if node meets query criteria. Returns MEET_AND_CONTINUE to signal
-     *     that the node meets the query criteria and the query should continue.<br>
-     *     Returns MEET_AND_STOP to signal that the node meest the query criteria and the query
-     *     should stop.<br>
+     * @param visitor Determines if node meets query criteria. Returns MEET_AND_CONTINUE to signal that the node meets
+     *     the query criteria and the query should continue.<br>
+     *     Returns MEET_AND_STOP to signal that the node meest the query criteria and the query should stop.<br>
      *     FAIL_QUERY to signal that the node does NOT meet the query criteria.
      * @return A collection of nodes that meet the query criteria.
      * @see Node
@@ -104,14 +99,12 @@ public interface Graph {
     public List<Node> queryNodes(GraphVisitor visitor);
 
     /**
-     * Performs a query against the edges of the graph. Each Edge object contained in the graph is
-     * passed to a GraphVisitor to determine if it meets the query criteria.
+     * Performs a query against the edges of the graph. Each Edge object contained in the graph is passed to a
+     * GraphVisitor to determine if it meets the query criteria.
      *
      * @param visitor Determines if the meets the query criteria. <br>
-     *     Returns MEET_AND_CONTINUE to signal that the edge meets the query criteria and the query
-     *     should continue.<br>
-     *     Returns MEET_AND_STOP to signal that the edge meest the query criteria and the query
-     *     should stop.<br>
+     *     Returns MEET_AND_CONTINUE to signal that the edge meets the query criteria and the query should continue.<br>
+     *     Returns MEET_AND_STOP to signal that the edge meest the query criteria and the query should stop.<br>
      *     FAIL_QUERY to signal that the edge does NOT meet the query criteria.
      * @return A collection of edges that meet the query criteria.
      * @see Edge
@@ -126,8 +119,8 @@ public interface Graph {
     public void visitEdges(GraphVisitor visitor);
 
     /**
-     * Returns all the nodes in the graph of a specified degree. The degree of a node is the number
-     * of edges that are adjacent to the node.
+     * Returns all the nodes in the graph of a specified degree. The degree of a node is the number of edges that are
+     * adjacent to the node.
      *
      * @param n The desired degree of nodes to be returned.
      * @return A collection of nodes of degree n.

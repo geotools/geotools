@@ -25,9 +25,8 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.AbstractStyleVisitor;
 
 /**
- * Checks if an AlphaComposite is used anywhere in the style. AlphaComposite is special, as it works
- * properly only if the target for merging also has an alpha channel. BlendComposite does not have
- * such requirements instead.
+ * Checks if an AlphaComposite is used anywhere in the style. AlphaComposite is special, as it works properly only if
+ * the target for merging also has an alpha channel. BlendComposite does not have such requirements instead.
  *
  * @author Andrea Aime - GeoSolutions
  */

@@ -66,39 +66,37 @@ public class JTSTest extends JTSTestBase {
     private static final double EPS = 0.000001;
 
     /** A CRS for testing purpose. */
-    static final String UTM_ZONE_10N =
-            "PROJCS[\"NAD_1983_UTM_Zone_10N\",\n"
-                    + "  GEOGCS[\"GCS_North_American_1983\",\n"
-                    + "    DATUM[\"D_North_American_1983\",\n"
-                    + "      TOWGS84[0,0,0,0,0,0,0],\n"
-                    + "      SPHEROID[\"GRS_1980\",6378137,298.257222101]],\n"
-                    + "    PRIMEM[\"Greenwich\",0],\n"
-                    + "    UNIT[\"Degree\",0.017453292519943295]],\n"
-                    + "  PROJECTION[\"Transverse_Mercator\"],\n"
-                    + "    PARAMETER[\"False_Easting\",500000],\n"
-                    + "    PARAMETER[\"False_Northing\",0],\n"
-                    + "    PARAMETER[\"Central_Meridian\",-123],\n"
-                    + "    PARAMETER[\"Scale_Factor\",0.9996],\n"
-                    + "    PARAMETER[\"Latitude_Of_Origin\",0],\n"
-                    + "  UNIT[\"Meter\",1]]";
+    static final String UTM_ZONE_10N = "PROJCS[\"NAD_1983_UTM_Zone_10N\",\n"
+            + "  GEOGCS[\"GCS_North_American_1983\",\n"
+            + "    DATUM[\"D_North_American_1983\",\n"
+            + "      TOWGS84[0,0,0,0,0,0,0],\n"
+            + "      SPHEROID[\"GRS_1980\",6378137,298.257222101]],\n"
+            + "    PRIMEM[\"Greenwich\",0],\n"
+            + "    UNIT[\"Degree\",0.017453292519943295]],\n"
+            + "  PROJECTION[\"Transverse_Mercator\"],\n"
+            + "    PARAMETER[\"False_Easting\",500000],\n"
+            + "    PARAMETER[\"False_Northing\",0],\n"
+            + "    PARAMETER[\"Central_Meridian\",-123],\n"
+            + "    PARAMETER[\"Scale_Factor\",0.9996],\n"
+            + "    PARAMETER[\"Latitude_Of_Origin\",0],\n"
+            + "  UNIT[\"Meter\",1]]";
     /** A CRS for testing purpose. */
-    static final String NAD83_BC =
-            "PROJCS[\"NAD83 / BC Albers\",\n"
-                    + "  GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",\n"
-                    + "    SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],\n"
-                    + "    TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],\n"
-                    + "    PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                    + "    UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],\n"
-                    + "    AUTHORITY[\"EPSG\",\"4269\"]],\n"
-                    + "  PROJECTION[\"Albers_Conic_Equal_Area\"],\n"
-                    + "  PARAMETER[\"standard_parallel_1\",50],\n"
-                    + "  PARAMETER[\"standard_parallel_2\",58.5],\n"
-                    + "  PARAMETER[\"latitude_of_center\",45],\n"
-                    + "  PARAMETER[\"longitude_of_center\",-126],\n"
-                    + "  PARAMETER[\"false_easting\",1000000],\n"
-                    + "  PARAMETER[\"false_northing\",0],\n"
-                    + "  UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],\n"
-                    + "  AUTHORITY[\"EPSG\",\"3005\"]]";
+    static final String NAD83_BC = "PROJCS[\"NAD83 / BC Albers\",\n"
+            + "  GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",\n"
+            + "    SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],\n"
+            + "    TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],\n"
+            + "    PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
+            + "    UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],\n"
+            + "    AUTHORITY[\"EPSG\",\"4269\"]],\n"
+            + "  PROJECTION[\"Albers_Conic_Equal_Area\"],\n"
+            + "  PARAMETER[\"standard_parallel_1\",50],\n"
+            + "  PARAMETER[\"standard_parallel_2\",58.5],\n"
+            + "  PARAMETER[\"latitude_of_center\",45],\n"
+            + "  PARAMETER[\"longitude_of_center\",-126],\n"
+            + "  PARAMETER[\"false_easting\",1000000],\n"
+            + "  PARAMETER[\"false_northing\",0],\n"
+            + "  UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],\n"
+            + "  AUTHORITY[\"EPSG\",\"3005\"]]";
 
     @Test
     public void testJTSFactory() {
@@ -111,10 +109,8 @@ public class JTSTest extends JTSTestBase {
     public void testTransformCoordinate() throws FactoryException, TransformException {
         Coordinate coord = new Coordinate(10, 10);
         AffineTransform at = AffineTransform.getScaleInstance(0.5, 1);
-        MathTransform2D t =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getMathTransformFactory(null)
-                                .createAffineTransform(new GeneralMatrix(at));
+        MathTransform2D t = (MathTransform2D)
+                ReferencingFactoryFinder.getMathTransformFactory(null).createAffineTransform(new GeneralMatrix(at));
         coord = JTS.transform(coord, coord, t);
         assertEquals(new Coordinate(5, 10), coord);
         coord = JTS.transform(coord, coord, t.inverse());
@@ -122,11 +118,9 @@ public class JTSTest extends JTSTestBase {
 
         CoordinateReferenceSystem crs =
                 ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(UTM_ZONE_10N);
-        t =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                .createOperation(DefaultGeographicCRS.WGS84, crs)
-                                .getMathTransform();
+        t = (MathTransform2D) ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(DefaultGeographicCRS.WGS84, crs)
+                .getMathTransform();
         coord = new Coordinate(-123, 55);
         coord = JTS.transform(coord, coord, t);
         coord = JTS.transform(coord, coord, t.inverse());
@@ -141,10 +135,8 @@ public class JTSTest extends JTSTestBase {
     public void testTransformEnvelopeMathTransform() throws FactoryException, TransformException {
         Envelope envelope = new Envelope(0, 10, 0, 10);
         AffineTransform at = AffineTransform.getScaleInstance(0.5, 1);
-        MathTransform2D t =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getMathTransformFactory(null)
-                                .createAffineTransform(new GeneralMatrix(at));
+        MathTransform2D t = (MathTransform2D)
+                ReferencingFactoryFinder.getMathTransformFactory(null).createAffineTransform(new GeneralMatrix(at));
         envelope = JTS.transform(envelope, t);
         assertEquals(new Envelope(0, 5, 0, 10), envelope);
         envelope = JTS.transform(envelope, t.inverse());
@@ -157,11 +149,9 @@ public class JTSTest extends JTSTestBase {
 
         CoordinateReferenceSystem crs =
                 ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(UTM_ZONE_10N);
-        t =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                .createOperation(DefaultGeographicCRS.WGS84, crs)
-                                .getMathTransform();
+        t = (MathTransform2D) ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(DefaultGeographicCRS.WGS84, crs)
+                .getMathTransform();
         envelope = new Envelope(-123, -133, 55, 60);
         envelope = JTS.transform(envelope, t);
         envelope = JTS.transform(envelope, t.inverse());
@@ -181,11 +171,10 @@ public class JTSTest extends JTSTestBase {
     public void testOrthodromicDistance() throws Exception {
         final Parser parser = new Parser();
         final DefaultProjectedCRS crs = (DefaultProjectedCRS) parser.parseObject(NAD83_BC);
-        double d =
-                JTS.orthodromicDistance(
-                        new Coordinate(1402848.1938534670, 651571.1729878788),
-                        new Coordinate(1389481.3104009738, 641990.9430108378),
-                        crs);
+        double d = JTS.orthodromicDistance(
+                new Coordinate(1402848.1938534670, 651571.1729878788),
+                new Coordinate(1389481.3104009738, 641990.9430108378),
+                crs);
         double realValue = 16451.33114;
         assertEquals(realValue, d, 0.1);
     }
@@ -284,8 +273,7 @@ public class JTSTest extends JTSTestBase {
 
     @Test
     public void toGeometry_ReferencedEnvelope() {
-        ReferencedEnvelope refEnv =
-                new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope refEnv = new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
         Geometry geom = JTS.toGeometry(refEnv);
         assertTrue(geom instanceof org.locationtech.jts.geom.Polygon);
 
@@ -332,8 +320,8 @@ public class JTSTest extends JTSTestBase {
     }
 
     /**
-     * Added this test after a bug was reported in JTS.transform for converting between WGS84 (2D)
-     * and DefaultGeocentric.CARTESIAN (3D).
+     * Added this test after a bug was reported in JTS.transform for converting between WGS84 (2D) and
+     * DefaultGeocentric.CARTESIAN (3D).
      */
     @Test
     public void transformCoordinate2DCRSTo3D() throws Exception {
@@ -356,59 +344,46 @@ public class JTSTest extends JTSTestBase {
 
     @Test
     public void testTransformToWGS84() throws Exception {
-        String wkt =
-                "GEOGCS[\"GDA94\","
-                        + " DATUM[\"Geocentric Datum of Australia 1994\","
-                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                        + " UNIT[\"degree\", 0.017453292519943295], "
-                        + " AXIS[\"Geodetic longitude\", EAST], "
-                        + " AXIS[\"Geodetic latitude\", NORTH], "
-                        + " AXIS[\"Ellipsoidal height\", UP], "
-                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Ellipsoidal height\", UP], "
+                + " AUTHORITY[\"EPSG\",\"4939\"]]";
 
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope3D(
-                        130.875825803896,
-                        130.898939990319,
-                        -16.4491956225999,
-                        -16.4338185791628,
-                        0.0,
-                        0.0,
-                        gda94);
+        ReferencedEnvelope bounds = new ReferencedEnvelope3D(
+                130.875825803896, 130.898939990319, -16.4491956225999, -16.4338185791628, 0.0, 0.0, gda94);
 
         ReferencedEnvelope worldBounds = JTS.toGeographic(bounds);
         assertEquals(DefaultGeographicCRS.WGS84, worldBounds.getCoordinateReferenceSystem());
 
-        Envelope envelope =
-                new Envelope(
-                        130.875825803896, 130.898939990319, -16.4491956225999, -16.4338185791628);
+        Envelope envelope = new Envelope(130.875825803896, 130.898939990319, -16.4491956225999, -16.4338185791628);
 
         Envelope worldBounds2 = JTS.toGeographic(envelope, gda94);
         if (worldBounds2 instanceof BoundingBox) {
-            assertEquals(
-                    DefaultGeographicCRS.WGS84,
-                    ((BoundingBox) worldBounds2).getCoordinateReferenceSystem());
+            assertEquals(DefaultGeographicCRS.WGS84, ((BoundingBox) worldBounds2).getCoordinateReferenceSystem());
         }
     }
 
     @Test
     public void testToGeographic() throws Exception {
-        String wkt =
-                "GEOGCS[\"GDA94\","
-                        + " DATUM[\"Geocentric Datum of Australia 1994\","
-                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                        + " UNIT[\"degree\", 0.017453292519943295], "
-                        + " AXIS[\"Geodetic longitude\", EAST], "
-                        + " AXIS[\"Geodetic latitude\", NORTH], "
-                        + " AXIS[\"Ellipsoidal height\", UP], "
-                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Ellipsoidal height\", UP], "
+                + " AUTHORITY[\"EPSG\",\"4939\"]]";
 
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
         GeometryFactory gf = new GeometryFactory();
@@ -422,24 +397,21 @@ public class JTSTest extends JTSTestBase {
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
-        String wkt =
-                "GEOGCS[\"GDA94\","
-                        + " DATUM[\"Geocentric Datum of Australia 1994\","
-                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                        + " UNIT[\"degree\", 0.017453292519943295], "
-                        + " AXIS[\"Geodetic latitude\", NORTH], "
-                        + " AXIS[\"Geodetic longitude\", EAST], "
-                        + " AXIS[\"Ellipsoidal height\", UP], "
-                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Ellipsoidal height\", UP], "
+                + " AUTHORITY[\"EPSG\",\"4939\"]]";
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
 
         GeometryFactory gf = new GeometryFactory();
-        Point point =
-                gf.createPoint(
-                        new Coordinate(-16.4463909341494, 130.882672103999, 97.009018073082));
+        Point point = gf.createPoint(new Coordinate(-16.4463909341494, 130.882672103999, 97.009018073082));
 
         Point world = (Point) JTS.toGeographic(point, gda94);
         assertEquals(point.getX(), world.getY(), 0.00000005);

@@ -48,9 +48,7 @@ public final class BandMergeTest extends GridProcessingTestBase {
         final List<GridCoverage2D> coverages = new ArrayList<>();
         final RenderedImage byteImage =
                 new ImageWorker(source.getRenderedImage()).rescaleToBytes().getRenderedImage();
-        source =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create("sample", byteImage, source.getEnvelope());
+        source = CoverageFactoryFinder.getGridCoverageFactory(null).create("sample", byteImage, source.getEnvelope());
 
         coverages.add(source);
         coverages.add(source);
@@ -69,7 +67,8 @@ public final class BandMergeTest extends GridProcessingTestBase {
 
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(merged.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(merged.getRenderedImage()).getTiles());
         }
 
         RenderedImage raster = merged.getRenderedImage();

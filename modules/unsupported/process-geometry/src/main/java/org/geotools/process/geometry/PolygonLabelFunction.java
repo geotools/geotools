@@ -30,12 +30,11 @@ import org.locationtech.jts.awt.PointShapeFactory.Point;
 import org.locationtech.jts.geom.Geometry;
 
 public class PolygonLabelFunction implements Function {
-    static FunctionName NAME =
-            new FunctionNameImpl(
-                    "labelPoint",
-                    Point.class,
-                    FunctionNameImpl.parameter("polygon", Geometry.class),
-                    FunctionNameImpl.parameter("tolerance", double.class));
+    static FunctionName NAME = new FunctionNameImpl(
+            "labelPoint",
+            Point.class,
+            FunctionNameImpl.parameter("polygon", Geometry.class),
+            FunctionNameImpl.parameter("tolerance", double.class));
 
     private final List<Expression> parameters;
 
@@ -46,8 +45,7 @@ public class PolygonLabelFunction implements Function {
             throw new NullPointerException("parameters required");
         }
         if (parameters.size() != 2) {
-            throw new IllegalArgumentException(
-                    "labelPoint((multi)polygon, tolerance) requires two parameters only");
+            throw new IllegalArgumentException("labelPoint((multi)polygon, tolerance) requires two parameters only");
         }
         this.parameters = parameters;
         this.fallback = fallback;

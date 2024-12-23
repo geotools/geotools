@@ -42,8 +42,7 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
     @Override
     public void encode(Envelope e, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(box, atts);
-        handler.coordinates(
-                new LiteCoordinateSequence(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()));
+        handler.coordinates(new LiteCoordinateSequence(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()));
         handler.endElement(box);
     }
 }

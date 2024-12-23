@@ -33,8 +33,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests {@link FactoryUsingWKT} as a fallback after the default factory. This method performs the
- * tests through the {@link CRS#decode} method.
+ * Tests {@link FactoryUsingWKT} as a fallback after the default factory. This method performs the tests through the
+ * {@link CRS#decode} method.
  *
  * @version $Id$
  * @author Jody Garnett
@@ -42,10 +42,7 @@ import org.junit.Test;
  */
 public class EpsgFallbackTest {
 
-    /**
-     * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
-     */
+    /** A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}. */
     @Test
     public void test26910() throws FactoryException {
         final String code = "EPSG:26910";
@@ -56,8 +53,8 @@ public class EpsgFallbackTest {
     }
 
     /**
-     * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default
-     * EPSG authority factory}.
+     * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority
+     * factory}.
      */
     @Test
     public void test4326() throws FactoryException {
@@ -69,8 +66,8 @@ public class EpsgFallbackTest {
     }
 
     /**
-     * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default
-     * EPSG authority factory}.
+     * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority
+     * factory}.
      */
     @Test
     public void test4269() throws FactoryException {
@@ -98,10 +95,7 @@ public class EpsgFallbackTest {
         assertTrue(identifiers.contains(expected));
     }
 
-    /**
-     * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
-     */
+    /** A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}. */
     @Test
     public void test26910Lower() throws FactoryException {
         final String code = "epsg:26910";
@@ -111,10 +105,7 @@ public class EpsgFallbackTest {
         Assert.assertFalse(CRS.equalsIgnoreMetadata(crs, CRS.decode(code, true)));
     }
 
-    /**
-     * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
-     */
+    /** A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}. */
     @Test
     public void test26986Lower() throws FactoryException {
         final String code = "epsg:26986";
@@ -125,8 +116,7 @@ public class EpsgFallbackTest {
     }
 
     /**
-     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
+     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}.
      */
     @Test
     public void test4326Lower() throws FactoryException {
@@ -138,8 +128,7 @@ public class EpsgFallbackTest {
     }
 
     /**
-     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
+     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}.
      */
     @Test
     public void test26742Lower() throws FactoryException {
@@ -151,8 +140,7 @@ public class EpsgFallbackTest {
     }
 
     /**
-     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
-     * authority factory}.
+     * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG authority factory}.
      */
     @Test
     public void test4269Lower() throws FactoryException {
@@ -199,8 +187,7 @@ public class EpsgFallbackTest {
         Assert.assertEquals("World_Mercator", String.valueOf(factory.getDescriptionText(code)));
 
         // Equivalent standard ESPG
-        Assert.assertEquals(
-                "WGS 84 / World Mercator", String.valueOf(factory.getDescriptionText("EPSG:3395")));
+        Assert.assertEquals("WGS 84 / World Mercator", String.valueOf(factory.getDescriptionText("EPSG:3395")));
         // TODO: enable if we implement more intelligent 'equalsIgnoreMetadata'
         // final CoordinateReferenceSystem standard =
         // factory.createCoordinateReferenceSystem("EPSG:3395");
@@ -221,7 +208,6 @@ public class EpsgFallbackTest {
         Assert.assertFalse(codes.contains("EPSG:4326")); // This is a GeographicCRS, not a
         // ProjectedCRS
         assertTrue(codes.contains("EPSG:100002")); // Defined in unnamed database
-        Assert.assertFalse(
-                codes.contains("EPSG:100001")); // This is a GeographicCRS, not a ProjectedCRS
+        Assert.assertFalse(codes.contains("EPSG:100001")); // This is a GeographicCRS, not a ProjectedCRS
     }
 }

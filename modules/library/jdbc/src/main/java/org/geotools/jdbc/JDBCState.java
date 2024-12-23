@@ -20,8 +20,7 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
 
 /**
- * State for jdbc datastore providing additional cached values such as primary key and database
- * connection.
+ * State for jdbc datastore providing additional cached values such as primary key and database connection.
  *
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
@@ -57,18 +56,12 @@ public final class JDBCState extends ContentState {
         this.primaryKey = primaryKey;
     }
 
-    /**
-     * Returns the flag indicating if columns which compose the primary key are exposed via the
-     * feature type.
-     */
+    /** Returns the flag indicating if columns which compose the primary key are exposed via the feature type. */
     public boolean isExposePrimaryKeyColumns() {
         return exposePrimaryKeyColumns;
     }
 
-    /**
-     * Sets the flag indicating if columns which compose the primary key are exposed via the feature
-     * type.
-     */
+    /** Sets the flag indicating if columns which compose the primary key are exposed via the feature type. */
     public void setExposePrimaryKeyColumns(boolean exposePrimaryKeyColumns) {
         if (exposePrimaryKeyColumns != this.exposePrimaryKeyColumns) {
             // need to clear the feature type cache, as it will need to be rebuilt

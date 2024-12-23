@@ -36,10 +36,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 4920157673337669241L;
 
-    /**
-     * Telephone numbers by which individuals can speak to the responsible organization or
-     * individual.
-     */
+    /** Telephone numbers by which individuals can speak to the responsible organization or individual. */
     private Collection<String> voices;
 
     /** Telephone numbers of a facsimile machine for the responsible organization or individual. */
@@ -64,8 +61,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Returns the telephone numbers by which individuals can speak to the responsible organization
-     * or individual.
+     * Returns the telephone numbers by which individuals can speak to the responsible organization or individual.
      *
      * @since 2.4
      */
@@ -75,8 +71,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Set the telephone numbers by which individuals can speak to the responsible organization or
-     * individual.
+     * Set the telephone numbers by which individuals can speak to the responsible organization or individual.
      *
      * @since 2.4
      */
@@ -85,8 +80,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Returns the telephone numbers of a facsimile machine for the responsible organization or
-     * individual.
+     * Returns the telephone numbers of a facsimile machine for the responsible organization or individual.
      *
      * @since 2.4
      */
@@ -96,8 +90,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Set the telephone number of a facsimile machine for the responsible organization or
-     * individual.
+     * Set the telephone number of a facsimile machine for the responsible organization or individual.
      *
      * @since 2.4
      */

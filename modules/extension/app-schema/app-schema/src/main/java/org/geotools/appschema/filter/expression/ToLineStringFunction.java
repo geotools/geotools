@@ -37,9 +37,9 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
 /**
- * This function converts double values to 1D LineString geometry object. This is needed when the
- * data store doesn't have geometry type columns (or they want to use custom CRS). If custom SRS
- * name is used, a 1D CRS will be created. This function expects:
+ * This function converts double values to 1D LineString geometry object. This is needed when the data store doesn't
+ * have geometry type columns (or they want to use custom CRS). If custom SRS name is used, a 1D CRS will be created.
+ * This function expects:
  *
  * <ol>
  *   <li>Expression: SRS name (could be custom SRS name)
@@ -57,12 +57,11 @@ public class ToLineStringFunction implements Function {
 
     private static final String USAGE = "Usage: toLineString(srsName, point 1, point 2)";
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "toLineString",
-                    FunctionNameImpl.parameter("return", LineString.class),
-                    FunctionNameImpl.parameter("parameter", String.class, 1, 1),
-                    FunctionNameImpl.parameter("parameter", Double.class, 2, 3));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "toLineString",
+            FunctionNameImpl.parameter("return", LineString.class),
+            FunctionNameImpl.parameter("parameter", String.class, 1, 1),
+            FunctionNameImpl.parameter("parameter", Double.class, 2, 3));
 
     public ToLineStringFunction() {
         this(new ArrayList<>(), null);
@@ -111,10 +110,7 @@ public class ToLineStringFunction implements Function {
                 || parameters.get(1) == null
                 || parameters.get(2) == null) {
             throw new IllegalArgumentException(
-                    "Invalid parameters for toLineString function: "
-                            + parameters.toString()
-                            + ". "
-                            + USAGE);
+                    "Invalid parameters for toLineString function: " + parameters.toString() + ". " + USAGE);
         }
         Object srs = parameters.get(0).evaluate(object, String.class);
         String srsName = String.valueOf(srs);
@@ -123,16 +119,12 @@ public class ToLineStringFunction implements Function {
             crs = CRS.decode(srsName);
         } catch (FactoryException e) {
             // custom CRS
-            crs =
-                    new DefaultVerticalCRS(
-                            srsName, DefaultVerticalDatum.GEOIDAL, DefaultVerticalCS.DEPTH);
+            crs = new DefaultVerticalCRS(srsName, DefaultVerticalDatum.GEOIDAL, DefaultVerticalCS.DEPTH);
         }
 
         // just in case
         if (crs == null) {
-            crs =
-                    new DefaultVerticalCRS(
-                            srsName, DefaultVerticalDatum.GEOIDAL, DefaultVerticalCS.DEPTH);
+            crs = new DefaultVerticalCRS(srsName, DefaultVerticalDatum.GEOIDAL, DefaultVerticalCS.DEPTH);
         }
 
         LineString linestring = null;

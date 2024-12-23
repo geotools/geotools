@@ -60,7 +60,8 @@ public class NetCDFAuxiliaryTest {
         assertEquals(5, type.getAttributeCount());
 
         assertEquals("the_geom", type.getAttributeDescriptors().get(0).getName().getLocalPart());
-        assertEquals("imageindex", type.getAttributeDescriptors().get(1).getName().getLocalPart());
+        assertEquals(
+                "imageindex", type.getAttributeDescriptors().get(1).getName().getLocalPart());
         assertEquals("time", type.getAttributeDescriptors().get(2).getName().getLocalPart());
         assertEquals("z", type.getAttributeDescriptors().get(3).getName().getLocalPart());
         assertEquals("runtime", type.getAttributeDescriptors().get(4).getName().getLocalPart());

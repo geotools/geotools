@@ -53,37 +53,20 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
         Name attName = new NameImpl("codeSpace");
         // Name name, Class<?> binding, boolean isAbstract, List<Filter> restrictions,
         // PropertyType superType, InternationalString description
-        AttributeType p =
-                new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
+        AttributeType p = new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
         AttributeDescriptor pd = new AttributeDescriptorImpl(p, attName, 0, 0, false, null);
 
         propertyDescriptors.add(pd);
         properties.add(new AttributeImpl(codeSpace, pd, null));
 
-        p =
-                new AttributeTypeImpl(
-                        new NameImpl("simpleContent"),
-                        String.class,
-                        false,
-                        false,
-                        null,
-                        null,
-                        null);
-        AttributeDescriptor pd2 =
-                new AttributeDescriptorImpl(p, new NameImpl("simpleContent"), 0, 0, false, null);
+        p = new AttributeTypeImpl(new NameImpl("simpleContent"), String.class, false, false, null, null, null);
+        AttributeDescriptor pd2 = new AttributeDescriptorImpl(p, new NameImpl("simpleContent"), 0, 0, false, null);
 
         properties.add(new AttributeImpl(value, pd2, null));
         propertyDescriptors.add(pd2);
 
         ComplexTypeImpl at =
-                new ComplexTypeImpl(
-                        myType,
-                        propertyDescriptors,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        null,
-                        null);
+                new ComplexTypeImpl(myType, propertyDescriptors, false, false, Collections.emptyList(), null, null);
 
         AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, myType, 0, 0, false, null);
 
@@ -101,37 +84,20 @@ public abstract class ComplexAttributeTestSupport extends GML3TestSupport {
         Name attName = new NameImpl("uom");
         // Name name, Class<?> binding, boolean isAbstract, List<Filter> restrictions,
         // PropertyType superType, InternationalString description
-        AttributeType p =
-                new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
+        AttributeType p = new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
         AttributeDescriptor pd = new AttributeDescriptorImpl(p, attName, 0, 0, false, null);
 
         propertyDescriptors.add(pd);
         properties.add(new AttributeImpl(uom, pd, null));
 
-        p =
-                new AttributeTypeImpl(
-                        new NameImpl("simpleContent"),
-                        String.class,
-                        false,
-                        false,
-                        null,
-                        null,
-                        null);
-        AttributeDescriptor pd2 =
-                new AttributeDescriptorImpl(p, new NameImpl("simpleContent"), 0, 0, false, null);
+        p = new AttributeTypeImpl(new NameImpl("simpleContent"), String.class, false, false, null, null, null);
+        AttributeDescriptor pd2 = new AttributeDescriptorImpl(p, new NameImpl("simpleContent"), 0, 0, false, null);
 
         properties.add(new AttributeImpl(value, pd2, null));
         propertyDescriptors.add(pd2);
 
         ComplexTypeImpl at =
-                new ComplexTypeImpl(
-                        myType,
-                        propertyDescriptors,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        null,
-                        null);
+                new ComplexTypeImpl(myType, propertyDescriptors, false, false, Collections.emptyList(), null, null);
 
         AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, myType, 0, 0, false, null);
 

@@ -38,15 +38,14 @@ public class FolderTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<Folder>"
-                        + "<name>folder</name>"
-                        + "<Placemark>"
-                        + "<Point>"
-                        + "<coordinates>0,0</coordinates>"
-                        + "</Point>"
-                        + "</Placemark>"
-                        + "</Folder>";
+        String xml = "<Folder>"
+                + "<name>folder</name>"
+                + "<Placemark>"
+                + "<Point>"
+                + "<coordinates>0,0</coordinates>"
+                + "</Point>"
+                + "</Placemark>"
+                + "</Folder>";
         buildDocument(xml);
 
         SimpleFeature document = (SimpleFeature) parse();

@@ -31,8 +31,8 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
     final double ratio;
 
     /**
-     * Create a zoom context where zoom level 0 has a scale denominator of {@code initial}, and each
-     * subsequent level is {@code ratio} times that.
+     * Create a zoom context where zoom level 0 has a scale denominator of {@code initial}, and each subsequent level is
+     * {@code ratio} times that.
      *
      * @param initialScale scale denominator at level 0
      * @param ratio ratio between zoom levels
@@ -42,13 +42,13 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
     }
 
     /**
-     * Create a zoom context where zoom level {@code initialLevel} has a scale denominator of {@code
-     * initial}, and each subsequent level is {@code ratio} times that.
+     * Create a zoom context where zoom level {@code initialLevel} has a scale denominator of {@code initial}, and each
+     * subsequent level is {@code ratio} times that.
      *
      * @param initialLevel Level to use as initial
      * @param initialScale scale denominator at level {@code initialLevel}
-     * @param ratio ratio between the scale at consecutive zoom levels. Zoom level z+1 has a scale
-     *     ratio times that of z and a scale denominator 1/ratio times that of z.
+     * @param ratio ratio between the scale at consecutive zoom levels. Zoom level z+1 has a scale ratio times that of z
+     *     and a scale denominator 1/ratio times that of z.
      */
     public RatioZoomContext(final int initialLevel, final double initialScale, final double ratio) {
         super();

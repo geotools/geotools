@@ -31,11 +31,10 @@ import org.geotools.xsd.EncoderDelegate;
 import org.geotools.xsd.Node;
 
 /**
- * &lt;complexType name="ComplexDataType" mixed="true"> &lt;annotation> &lt;documentation>Complex
- * data (such as an image), including a definition of the complex value data structure (i.e.,
- * schema, format, and encoding). May be an ows:Manifest data structure.&lt;/documentation>
- * &lt;/annotation> &lt;complexContent mixed="true"> &lt;extension base="anyType">
- * &lt;attributeGroup ref="wps:ComplexDataEncoding"/> &lt;/extension> &lt;/complexContent>
+ * &lt;complexType name="ComplexDataType" mixed="true"> &lt;annotation> &lt;documentation>Complex data (such as an
+ * image), including a definition of the complex value data structure (i.e., schema, format, and encoding). May be an
+ * ows:Manifest data structure.&lt;/documentation> &lt;/annotation> &lt;complexContent mixed="true"> &lt;extension
+ * base="anyType"> &lt;attributeGroup ref="wps:ComplexDataEncoding"/> &lt;/extension> &lt;/complexContent>
  * &lt;/complexType>
  *
  * @author Justin Deoliveira, OpenGEO
@@ -107,8 +106,7 @@ public class ComplexDataTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         ComplexDataType complex = (ComplexDataType) object;
         if (!complex.getData().isEmpty() && complex.getData().get(0) instanceof EncoderDelegate) {
             EncoderDelegate delegate = (EncoderDelegate) complex.getData().get(0);

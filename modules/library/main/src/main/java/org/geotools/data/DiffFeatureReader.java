@@ -46,14 +46,13 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * A FeatureReader that considers differences.
  *
- * <p>Used to implement In-Process Transaction support. This implementation will need to peek ahead
- * in order to check for deletetions.
+ * <p>Used to implement In-Process Transaction support. This implementation will need to peek ahead in order to check
+ * for deletetions.
  *
  * @author Jody Garnett, Refractions Research
  */
 @SuppressWarnings("unchecked") // Diff is coded against SimpleFeature, while this is generified
-public class DiffFeatureReader<T extends FeatureType, F extends Feature>
-        implements FeatureReader<T, F> {
+public class DiffFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F> {
     FeatureReader<T, F> reader;
     Diff diff;
 
@@ -74,8 +73,8 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     /**
      * This constructor grabs a "copy" of the current diff.
      *
-     * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
-     * not always stable of the course of modifications)
+     * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are not always stable of
+     * the course of modifications)
      *
      * @param diff2 Differences of Feature by FID
      */
@@ -86,8 +85,8 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     /**
      * This constructor grabs a "copy" of the current diff.
      *
-     * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are
-     * not always stable of the course of modifications)
+     * <p>This reader is not "live" to changes over the course of the Transaction. (Iterators are not always stable of
+     * the course of modifications)
      *
      * @param diff2 Differences of Feature by FID
      */
@@ -271,10 +270,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     protected boolean isDefaultGeometry(PropertyName ae) {
-        return reader.getFeatureType()
-                .getGeometryDescriptor()
-                .getLocalName()
-                .equals(ae.getPropertyName());
+        return reader.getFeatureType().getGeometryDescriptor().getLocalName().equals(ae.getPropertyName());
     }
 
     protected boolean isSubsetOfBboxFilter(Filter f) {

@@ -28,8 +28,8 @@ public class ExternalGraphicImplTest {
     private static final String TEST_FORMAT = "image/png";
 
     /**
-     * The Url of OnlineResource could be set by three independent set'ers. Test that they all ends
-     * up in the location field of onlineResource
+     * The Url of OnlineResource could be set by three independent set'ers. Test that they all ends up in the location
+     * field of onlineResource
      */
     @Test
     public void testOnlineResourceConsistency() throws Exception {

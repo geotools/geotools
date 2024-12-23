@@ -51,8 +51,7 @@ public class URIs {
         return buildURL(baseURL, null, kvp, "UTF-8");
     }
 
-    public static String buildURL(
-            final String baseURL, String path, Map<String, String> kvp, String encoding) {
+    public static String buildURL(final String baseURL, String path, Map<String, String> kvp, String encoding) {
 
         // prepare modifiable parameters
         StringBuilder baseURLBuffer = new StringBuilder(baseURL);
@@ -132,11 +131,10 @@ public class URIs {
     /**
      * Appends a query string to a url.
      *
-     * <p>This method checks <code>url</code> to see if the appended query string requires a '?' or
-     * '&amp;' to be prepended.
+     * <p>This method checks <code>url</code> to see if the appended query string requires a '?' or '&amp;' to be
+     * prepended.
      *
-     * <p>This code can be used to make sure the url ends with ? or &amp; by calling
-     * appendQueryString(url, "")
+     * <p>This code can be used to make sure the url ends with ? or &amp; by calling appendQueryString(url, "")
      *
      * @param url The base url.
      * @param queryString The query string to be appended, should not contain the '?' character.

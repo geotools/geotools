@@ -82,7 +82,8 @@ public final class VRTTest extends GDALTestCase {
     public void testService() throws NoSuchAuthorityCodeException, FactoryException {
         GridFormatFinder.scanForPlugins();
 
-        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        Iterator<GridFormatFactorySpi> list =
+                GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
         GridFormatFactorySpi fac = null;
 
@@ -131,9 +132,7 @@ public final class VRTTest extends GDALTestCase {
         assertEquals(1, sd.getCategories().size());
         Category noDataCategory = sd.getCategories().get(0);
         assertEquals("No data", noDataCategory.getName().toString());
-        assertEquals(
-                new NumberRange<>(Double.class, NO_DATA_VALUE, NO_DATA_VALUE),
-                noDataCategory.getRange());
+        assertEquals(new NumberRange<>(Double.class, NO_DATA_VALUE, NO_DATA_VALUE), noDataCategory.getRange());
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -147,36 +146,28 @@ public final class VRTTest extends GDALTestCase {
         assertEquals(121, oldW);
         assertEquals(121, oldH);
         // check for expected data type
-        assertEquals(DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
+        assertEquals(
+                DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
 
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
 
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getLowerCorner().getOrdinate(0)
-                                    + (oldEnvelope.getSpan(0) / cropFactor),
-                            oldEnvelope.getLowerCorner().getOrdinate(1)
-                                    + (oldEnvelope.getSpan(1) / cropFactor)
-                        },
-                        new double[] {
-                            oldEnvelope.getUpperCorner().getOrdinate(0),
-                            oldEnvelope.getUpperCorner().getOrdinate(1)
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                },
+                new double[] {
+                    oldEnvelope.getUpperCorner().getOrdinate(0),
+                    oldEnvelope.getUpperCorner().getOrdinate(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
-        final ParameterValue gg =
-                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(
-                                        0,
-                                        0,
-                                        (int) (range.width / 2.0 / cropFactor),
-                                        (int) (range.height / 2.0 / cropFactor))),
-                        cropEnvelope));
+        final ParameterValue gg = ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(
+                        0, 0, (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
+                cropEnvelope));
         gc.dispose(true);
         gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
@@ -286,10 +277,8 @@ public final class VRTTest extends GDALTestCase {
 
         // load the source PAM files
         PAMParser parser = new PAMParser();
-        PAMDataset pam1 =
-                parser.parsePAM(TestData.file(this, "BlueTopo_BH4JS577_20230918.tiff.aux.xml"));
-        PAMDataset pam2 =
-                parser.parsePAM(TestData.file(this, "BlueTopo_BH4JS578_20230918.tiff.aux.xml"));
+        PAMDataset pam1 = parser.parsePAM(TestData.file(this, "BlueTopo_BH4JS577_20230918.tiff.aux.xml"));
+        PAMDataset pam2 = parser.parsePAM(TestData.file(this, "BlueTopo_BH4JS578_20230918.tiff.aux.xml"));
         PAMDataset.PAMRasterBand band_1_2 = pam1.getPAMRasterBand().get(2);
         PAMDataset.PAMRasterBand band_2_2 = pam2.getPAMRasterBand().get(2);
 
@@ -320,8 +309,10 @@ public final class VRTTest extends GDALTestCase {
         // now check the rows are a union of the two, there are some overlaps
         // so the union has less overall rows
         List<PAMDataset.PAMRasterBand.Row> rows = rat.getRow();
-        List<PAMDataset.PAMRasterBand.Row> rows1 = band_1_2.getGdalRasterAttributeTable().getRow();
-        List<PAMDataset.PAMRasterBand.Row> rows2 = band_2_2.getGdalRasterAttributeTable().getRow();
+        List<PAMDataset.PAMRasterBand.Row> rows1 =
+                band_1_2.getGdalRasterAttributeTable().getRow();
+        List<PAMDataset.PAMRasterBand.Row> rows2 =
+                band_2_2.getGdalRasterAttributeTable().getRow();
         assertTrue(rows.size() < rows1.size() + rows2.size());
 
         // pick a row that's present in both files, index=0

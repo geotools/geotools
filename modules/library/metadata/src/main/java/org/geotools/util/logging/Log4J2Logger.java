@@ -20,11 +20,11 @@ import java.util.logging.Level;
 import org.apache.logging.log4j.spi.StandardLevel;
 
 /**
- * An adapter that redirect all Java logging events to the Apache's <A
- * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
+ * An adapter that redirect all Java logging events to the Apache's <A HREF="http://logging.apache.org/log4j">Log4J</A>
+ * framework.
  *
- * <p>Level conversions align with <a
- * href="https://logging.apache.org/log4j/2.x/log4j-jul/index.html">Log4j JDK Logging Adapter</a>:
+ * <p>Level conversions align with <a href="https://logging.apache.org/log4j/2.x/log4j-jul/index.html">Log4j JDK Logging
+ * Adapter</a>:
  *
  * <ul>
  *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.logging.log4j.Level#OFF}
@@ -57,21 +57,20 @@ public final class Log4J2Logger extends LoggerAdapter {
     final org.apache.logging.log4j.Logger logger;
 
     /**
-     * Define a Log4j Level mapping to java util logging {@link Level#CONFIG} (using StandardLevel
-     * value 450).
+     * Define a Log4j Level mapping to java util logging {@link Level#CONFIG} (using StandardLevel value 450).
      *
-     * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#INFO}
-     * if using a log4j adapter (StandardLevel value 550 between Level.INFO and Level.DEBUG).
+     * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#INFO} if using a log4j
+     * adapter (StandardLevel value 550 between Level.INFO and Level.DEBUG).
      */
     public static final org.apache.logging.log4j.Level CONFIG =
             org.apache.logging.log4j.Level.forName("CONFIG", StandardLevel.INFO.intLevel() + 50);
 
     /**
-     * Define a Log4j Level mapping to java util logging {@link Level#FINEST} Level (using
-     * StandardLevel value 700 which is higher the DEBUG).
+     * Define a Log4j Level mapping to java util logging {@link Level#FINEST} Level (using StandardLevel value 700 which
+     * is higher the DEBUG).
      *
-     * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#DEBUG}
-     * if using a log4j adapter.
+     * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#DEBUG} if using a log4j
+     * adapter.
      */
     public static final org.apache.logging.log4j.Level FINEST =
             org.apache.logging.log4j.Level.forName("FINEST", StandardLevel.TRACE.intLevel() + 100);
@@ -118,22 +117,19 @@ public final class Log4J2Logger extends LoggerAdapter {
             case 1: // (not allocated)
             case 0:
                 return org.apache.logging.log4j.Level.ALL; // ALL
-            default:
-                {
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, log to fatal since we are greater than SEVERE.
-                    switch (n) {
-                        case Integer.MIN_VALUE:
-                            return org.apache.logging.log4j.Level.ALL;
-                        case Integer.MAX_VALUE:
-                            return org.apache.logging.log4j.Level.OFF;
-                        default:
-                            if (n >= 0)
-                                return org.apache.logging.log4j.Level
-                                        .FATAL; // fallthrough ALL otherwise.
-                            else return org.apache.logging.log4j.Level.ALL;
-                    }
+            default: {
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, log to fatal since we are greater than SEVERE.
+                switch (n) {
+                    case Integer.MIN_VALUE:
+                        return org.apache.logging.log4j.Level.ALL;
+                    case Integer.MAX_VALUE:
+                        return org.apache.logging.log4j.Level.OFF;
+                    default:
+                        if (n >= 0) return org.apache.logging.log4j.Level.FATAL; // fallthrough ALL otherwise.
+                        else return org.apache.logging.log4j.Level.ALL;
                 }
+            }
         }
     }
 

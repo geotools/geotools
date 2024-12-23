@@ -26,8 +26,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.util.logging.Logging;
 
 /**
- * Defines the complex feature iterator implementation class. It's responsible for exposing an
- * iterator-style interface for complex features.
+ * Defines the complex feature iterator implementation class. It's responsible for exposing an iterator-style interface
+ * for complex features.
  *
  * @author Adam Brown (Curtin University of Technology)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)

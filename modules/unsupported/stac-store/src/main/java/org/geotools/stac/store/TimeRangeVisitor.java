@@ -68,17 +68,16 @@ import org.geotools.util.DateRange;
 import org.geotools.util.Range;
 
 /**
- * Returns a {@link DateRange} if the filter is equivalent to a date range on the "datetime"
- * property, <code>null</code> otherwise, meaning there is more filtering included. <br>
- * The visitor is not thread safe, call <code>reset</code> in case you want to re-use and need to
- * check the "exact" property.
+ * Returns a {@link DateRange} if the filter is equivalent to a date range on the "datetime" property, <code>null</code>
+ * otherwise, meaning there is more filtering included. <br>
+ * The visitor is not thread safe, call <code>reset</code> in case you want to re-use and need to check the "exact"
+ * property.
  */
 public class TimeRangeVisitor extends NullFilterVisitor {
 
     public static final Date DATE_NEGATIVE_INFINITE = new Date(Long.MIN_VALUE);
     public static final Date DATE_POSITIVE_INFINITE = new Date(Long.MAX_VALUE);
-    static final DateRange INFINITY =
-            new DateRange(DATE_NEGATIVE_INFINITE, false, DATE_POSITIVE_INFINITE, false);
+    static final DateRange INFINITY = new DateRange(DATE_NEGATIVE_INFINITE, false, DATE_POSITIVE_INFINITE, false);
 
     private static final String DATETIME = "datetime";
 
@@ -96,8 +95,7 @@ public class TimeRangeVisitor extends NullFilterVisitor {
     }
 
     /**
-     * Returns true if the date range exactly represents the filter, false if there are other
-     * components
+     * Returns true if the date range exactly represents the filter, false if there are other components
      *
      * @return
      */
@@ -114,15 +112,14 @@ public class TimeRangeVisitor extends NullFilterVisitor {
     }
 
     /**
-     * Checks if a property is a time property, users can override if they have more sophisticated
-     * logic than matching a single property name
+     * Checks if a property is a time property, users can override if they have more sophisticated logic than matching a
+     * single property name
      *
      * @param expression
      * @return
      */
     protected boolean isTimeProperty(Expression expression) {
-        return expression instanceof PropertyName
-                && timeProperty.equals(((PropertyName) expression).getPropertyName());
+        return expression instanceof PropertyName && timeProperty.equals(((PropertyName) expression).getPropertyName());
     }
 
     private DateRange infinity() {
@@ -159,8 +156,7 @@ public class TimeRangeVisitor extends NullFilterVisitor {
     }
 
     private DateRange toDateRange(Range<Date> in) {
-        return new DateRange(
-                in.getMinValue(), in.isMinIncluded(), in.getMaxValue(), in.isMaxIncluded());
+        return new DateRange(in.getMinValue(), in.isMinIncluded(), in.getMaxValue(), in.isMaxIncluded());
     }
 
     @Override

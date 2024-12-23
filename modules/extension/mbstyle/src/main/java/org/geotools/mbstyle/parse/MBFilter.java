@@ -144,18 +144,15 @@ public class MBFilter {
     }
 
     public MBFilter(JSONArray json, MBObjectParser parse, SemanticType semanticType) {
-        this.parse =
-                parse == null
-                        ? new MBObjectParser(MBFilter.class)
-                        : new MBObjectParser(MBFilter.class, parse);
+        this.parse = parse == null ? new MBObjectParser(MBFilter.class) : new MBObjectParser(MBFilter.class, parse);
         this.ff = this.parse.getFilterFactory();
         this.json = json;
         this.semanticType = semanticType;
     }
 
     /**
-     * Translate "$type": the feature type we need This key may be used with the "==", "!=", "in",
-     * and "!in" operators. Possible values are "Point", "LineString", and "Polygon".
+     * Translate "$type": the feature type we need This key may be used with the "==", "!=", "in", and "!in" operators.
+     * Possible values are "Point", "LineString", and "Polygon".
      *
      * @return Set of GeoTools SemanticType (Point, LineString, Polygon).
      */
@@ -183,8 +180,7 @@ public class MBFilter {
     /**
      * Utility method to convert json to set of {@link SemanticType}.
      *
-     * <p>This method is called recursively to handle <code>all</code> and <code>any</code> filter
-     * operators.
+     * <p>This method is called recursively to handle <code>all</code> and <code>any</code> filter operators.
      *
      * @param array JSON array defining filter
      * @return SemanticTypes from provided json, may be nested
@@ -194,10 +190,7 @@ public class MBFilter {
             throw new MBFormatException("MBFilter expected");
         }
         String operator = parse.get(array, 0);
-        if (("==".equals(operator)
-                        || "!=".equals(operator)
-                        || "in".equals(operator)
-                        || "!in".equals(operator))
+        if (("==".equals(operator) || "!=".equals(operator) || "in".equals(operator) || "!in".equals(operator))
                 && parse.isString(array, 1)
                 && "$type".equals(parse.get(array, 1))) {
             return semanticTypeByGeometryType(array, operator);
@@ -259,8 +252,7 @@ public class MBFilter {
                     semanticTypes.add(semanticType);
                 } else {
                     throw new MBFormatException(
-                            "[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: "
-                                    + type);
+                            "[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: " + type);
                 }
             }
             if ("==".equals(operator) && types.size() != 1) {
@@ -278,8 +270,7 @@ public class MBFilter {
                     semanticTypes.remove(semanticType);
                 } else {
                     throw new MBFormatException(
-                            "[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: "
-                                    + type);
+                            "[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: " + type);
                 }
             }
             if ("!=".equals(operator) && types.size() != 1) {
@@ -304,8 +295,7 @@ public class MBFilter {
                         ff.equals(dimension, ff.literal(2)),
                         ff.not(ff.equals(ff.function("isCoverage"), ff.literal(true))));
             default:
-                throw new MBFormatException(
-                        "MBStyle restricted to testing Point, LineString, Polygon: " + jsonText);
+                throw new MBFormatException("MBStyle restricted to testing Point, LineString, Polygon: " + jsonText);
         }
     }
 
@@ -330,8 +320,7 @@ public class MBFilter {
     /**
      * Generate GeoTools {@link Filter} from json definition.
      *
-     * <p>This filter specifying conditions on source features. Only features that match the filter
-     * are displayed.
+     * <p>This filter specifying conditions on source features. Only features that match the filter are displayed.
      *
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
@@ -343,10 +332,7 @@ public class MBFilter {
         //
         // TYPE
         //
-        if (("==".equals(operator)
-                        || "!=".equals(operator)
-                        || "in".equals(operator)
-                        || "!in".equals(operator))
+        if (("==".equals(operator) || "!=".equals(operator) || "in".equals(operator) || "!in".equals(operator))
                 && parse.isString(json, 1)
                 && "$type".equals(parse.get(json, 1))) {
             return filterByGeometryType(json, operator);
@@ -419,11 +405,10 @@ public class MBFilter {
             Expression within = MBExpression.transformExpression(json);
             return ff.equals(within, ff.literal(true));
         } else {
-            throw new MBFormatException(
-                    "Data expression or filter \""
-                            + operator
-                            + "\" invalid. It may be misspelled or not supported by this implementation:"
-                            + json);
+            throw new MBFormatException("Data expression or filter \""
+                    + operator
+                    + "\" invalid. It may be misspelled or not supported by this implementation:"
+                    + json);
         }
     }
 
@@ -438,8 +423,7 @@ public class MBFilter {
                     none.add(ff.not(filter));
                 }
             } else {
-                throw new MBFormatException(
-                        "None filter does not support: \"" + json.get(i) + "\"");
+                throw new MBFormatException("None filter does not support: \"" + json.get(i) + "\"");
             }
         }
         return ff.and(none);
@@ -515,8 +499,7 @@ public class MBFilter {
                 typeFilter = translateType((String) type);
             }
             if (typeFilter == null) {
-                throw new MBFormatException(
-                        "\"$type\" limited to Point, LineString, Polygon: " + type);
+                throw new MBFormatException("\"$type\" limited to Point, LineString, Polygon: " + type);
             }
             typeFilters.add(typeFilter);
         }
@@ -542,9 +525,9 @@ public class MBFilter {
     }
 
     /**
-     * Returns true if the input values are equal, false otherwise. The inputs must be numbers,
-     * strings, or booleans, and both of the same type. Examples: ["==", number, number]: boolean
-     * ["==", string, string]: boolean ["==", boolean, boolean]: boolean ["==", null, null]: boolean
+     * Returns true if the input values are equal, false otherwise. The inputs must be numbers, strings, or booleans,
+     * and both of the same type. Examples: ["==", number, number]: boolean ["==", string, string]: boolean ["==",
+     * boolean, boolean]: boolean ["==", null, null]: boolean
      *
      * @return equal to expression
      */
@@ -558,9 +541,9 @@ public class MBFilter {
     }
 
     /**
-     * Returns true if the input values are not equal, false otherwise. The inputs must be numbers,
-     * strings, or booleans, and both of the same type. Examples:["!=", number, number]: boolean
-     * ["!=", string, string]: boolean ["!=", boolean, boolean]: boolean ["!=", null, null]: boolean
+     * Returns true if the input values are not equal, false otherwise. The inputs must be numbers, strings, or
+     * booleans, and both of the same type. Examples:["!=", number, number]: boolean ["!=", string, string]: boolean
+     * ["!=", boolean, boolean]: boolean ["!=", null, null]: boolean
      *
      * @return Not equals expression
      */
@@ -609,12 +592,9 @@ public class MBFilter {
         return ff.greater(expression1, expression2);
     }
 
-    private void throwUnexpectedArgumentCount(String expression, int argCount)
-            throws MBFormatException {
+    private void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format(
-                        "Expression \"%s\" should have exactly %d argument(s)",
-                        expression, argCount));
+                String.format("Expression \"%s\" should have exactly %d argument(s)", expression, argCount));
     }
 
     /**

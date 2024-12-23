@@ -30,8 +30,8 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Specific {@link Callable} implementation that can be used to load the result of a request on a
- * single {@link GranuleDescriptor} via {@link GranuleLoadingResult}.
+ * Specific {@link Callable} implementation that can be used to load the result of a request on a single
+ * {@link GranuleDescriptor} via {@link GranuleLoadingResult}.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
@@ -109,8 +109,7 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
             return granuleDescriptor.loadRaster(
                     readParameters, imageIndex, cropBBox, mosaicWorldToGrid, request, hints);
         } catch (Exception e) {
-            throw new GranuleLoadingException(
-                    "Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
+            throw new GranuleLoadingException("Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
         }
     }
 }

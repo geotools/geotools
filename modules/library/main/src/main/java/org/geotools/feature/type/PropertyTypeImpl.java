@@ -54,8 +54,7 @@ public abstract class PropertyTypeImpl implements PropertyType {
                 // FIXME: This should be optional as the superType may have the required
                 // information?
                 throw new NullPointerException(
-                        "Binding to a Java class, did you mean to bind to "
-                                + superType.getBinding());
+                        "Binding to a Java class, did you mean to bind to " + superType.getBinding());
             }
             throw new NullPointerException("Binding to a Java class is required");
         }
@@ -149,8 +148,8 @@ public abstract class PropertyTypeImpl implements PropertyType {
     }
 
     /**
-     * Convenience method for testing two lists for equality. One or both objects may be null, and
-     * considers null and empty list as equal
+     * Convenience method for testing two lists for equality. One or both objects may be null, and considers null and
+     * empty list as equal
      */
     private boolean equals(final List object1, final List object2) {
         if ((object1 == object2) || (object1 != null && object1.equals(object2))) return true;

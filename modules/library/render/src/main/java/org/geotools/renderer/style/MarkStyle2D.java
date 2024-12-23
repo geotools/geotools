@@ -66,8 +66,8 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     }
 
     /**
-     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated
-     * rotation and size (according to the current style)
+     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated rotation and size
+     * (according to the current style)
      *
      * @param x the x coordinate where the mark will be drawn
      * @param y the y coordinate where the mark will be drawn
@@ -78,8 +78,8 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     }
 
     /**
-     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated
-     * rotation and size (according to the current style)
+     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated rotation and size
+     * (according to the current style)
      *
      * @param x the x coordinate where the mark will be drawn
      * @param y the y coordinate where the mark will be drawn
@@ -91,9 +91,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
             double shapeSize =
-                    (maxMarkSizeEnabled
-                            ? Math.max(bounds.getWidth(), bounds.getHeight())
-                            : bounds.getHeight());
+                    (maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight());
             double scale = size / shapeSize;
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;
@@ -155,9 +153,8 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     }
 
     /**
-     * When true makes the mark scale itself to size using the max between the original width and
-     * height, otherwise it defaults to the mark height (which has been the original behavior of
-     * this class)
+     * When true makes the mark scale itself to size using the max between the original width and height, otherwise it
+     * defaults to the mark height (which has been the original behavior of this class)
      *
      * @since 2.7.3
      */

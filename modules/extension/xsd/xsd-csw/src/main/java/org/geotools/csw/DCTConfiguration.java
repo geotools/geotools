@@ -93,9 +93,7 @@ public class DCTConfiguration extends Configuration {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0
                     && f.getType().equals(QName.class)) {
                 System.out.println(
-                        "bindings.put(DCT."
-                                + f.getName()
-                                + ", new SimpleLiteralBinding(DC.SimpleLiteral));");
+                        "bindings.put(DCT." + f.getName() + ", new SimpleLiteralBinding(DC.SimpleLiteral));");
             }
         }
     }

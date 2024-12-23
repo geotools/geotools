@@ -21,9 +21,8 @@ package org.geotools.data.shapefile.shp.xml;
  *
  * <p>To create please use the included ShpXmlFileReader, this is only a data object.
  *
- * <p>Note: This bean currently extends MetadataEntity to allow for uses with Discovery.search(
- * QueryRequest ). When QueryRequest can actually handle normal java beans we can remove this
- * restrictions.
+ * <p>Note: This bean currently extends MetadataEntity to allow for uses with Discovery.search( QueryRequest ). When
+ * QueryRequest can actually handle normal java beans we can remove this restrictions.
  *
  * @author jgarnett
  * @since 0.3

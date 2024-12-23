@@ -68,8 +68,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Creates a matrix of size {@code numRow}&nbsp;&times;&nbsp;{@code numCol}. Elements on the
-     * diagonal <var>j==i</var> are set to 1.
+     * Creates a matrix of size {@code numRow}&nbsp;&times;&nbsp;{@code numCol}. Elements on the diagonal
+     * <var>j==i</var> are set to 1.
      *
      * @param numRow Number of rows.
      * @param numCol Number of columns.
@@ -80,11 +80,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Constructs a {@code numRow}&nbsp;&times;&nbsp;{@code numCol} matrix initialized to the values
-     * in the {@code matrix} array. The array values are copied in one row at a time in row major
-     * fashion. The array should be exactly <code>numRow*numCol</code> in length. Note that because
-     * row and column numbering begins with zero, {@code numRow} and {@code numCol} will be one
-     * larger than the maximum possible matrix index values.
+     * Constructs a {@code numRow}&nbsp;&times;&nbsp;{@code numCol} matrix initialized to the values in the
+     * {@code matrix} array. The array values are copied in one row at a time in row major fashion. The array should be
+     * exactly <code>numRow*numCol</code> in length. Note that because row and column numbering begins with zero,
+     * {@code numRow} and {@code numCol} will be one larger than the maximum possible matrix index values.
      *
      * @param numRow Number of rows.
      * @param numCol Number of columns.
@@ -98,11 +97,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Constructs a {@code numRow}&nbsp;&times;&nbsp;{@code numCol} matrix initialized to the values
-     * in the {@code matrix} array. The array values are copied in one row at a time in row major
-     * fashion. The array should be exactly <code>numRow*numCol</code> in length. Note that because
-     * row and column numbering begins with zero, {@code numRow} and {@code numCol} will be one
-     * larger than the maximum possible matrix index values.
+     * Constructs a {@code numRow}&nbsp;&times;&nbsp;{@code numCol} matrix initialized to the values in the
+     * {@code matrix} array. The array values are copied in one row at a time in row major fashion. The array should be
+     * exactly <code>numRow*numCol</code> in length. Note that because row and column numbering begins with zero,
+     * {@code numRow} and {@code numCol} will be one larger than the maximum possible matrix index values.
      *
      * @param numRow Number of rows.
      * @param numCol Number of columns.
@@ -124,8 +122,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * Constructs a new matrix from a two-dimensional array of doubles.
      *
      * @param matrix Array of rows. Each row must have the same length.
-     * @throws IllegalArgumentException if the specified matrix is not regular (i.e. if all rows
-     *     doesn't have the same length).
+     * @throws IllegalArgumentException if the specified matrix is not regular (i.e. if all rows doesn't have the same
+     *     length).
      */
     public GeneralMatrix(final double[][] matrix) throws IllegalArgumentException {
         mat = new DMatrixRMaj(matrix);
@@ -177,37 +175,31 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param transform The matrix to copy.
      */
     public GeneralMatrix(final AffineTransform transform) {
-        mat =
-                new DMatrixRMaj(
-                        3,
-                        3,
-                        true,
-                        new double[] {
-                            transform.getScaleX(),
-                            transform.getShearX(),
-                            transform.getTranslateX(),
-                            transform.getShearY(),
-                            transform.getScaleY(),
-                            transform.getTranslateY(),
-                            0,
-                            0,
-                            1
-                        });
+        mat = new DMatrixRMaj(3, 3, true, new double[] {
+            transform.getScaleX(),
+            transform.getShearX(),
+            transform.getTranslateX(),
+            transform.getShearY(),
+            transform.getScaleY(),
+            transform.getTranslateY(),
+            0,
+            0,
+            1
+        });
         assert isAffine() : this;
     }
 
     /**
-     * Constructs a transform that maps a source region to a destination region. Axis order and
-     * direction are left unchanged.
+     * Constructs a transform that maps a source region to a destination region. Axis order and direction are left
+     * unchanged.
      *
-     * <p>If the source dimension is equals to the destination dimension, then the transform is
-     * affine. However, the following special cases are also handled:
+     * <p>If the source dimension is equals to the destination dimension, then the transform is affine. However, the
+     * following special cases are also handled:
      *
      * <UL>
-     *   <LI>If the target dimension is smaller than the source dimension, then extra dimensions are
-     *       dropped.
-     *   <LI>If the target dimension is greater than the source dimension, then the coordinates in
-     *       the new dimensions are set to 0.
+     *   <LI>If the target dimension is smaller than the source dimension, then extra dimensions are dropped.
+     *   <LI>If the target dimension is greater than the source dimension, then the coordinates in the new dimensions
+     *       are set to 0.
      * </UL>
      *
      * @param srcRegion The source region.
@@ -230,49 +222,48 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Constructs a transform changing axis order and/or direction. For example, the transform may
-     * converts (NORTH,WEST) coordinates into (EAST,NORTH). Axis direction can be inversed only. For
-     * example, it is illegal to transform (NORTH,WEST) coordinates into (NORTH,DOWN).
+     * Constructs a transform changing axis order and/or direction. For example, the transform may converts (NORTH,WEST)
+     * coordinates into (EAST,NORTH). Axis direction can be inversed only. For example, it is illegal to transform
+     * (NORTH,WEST) coordinates into (NORTH,DOWN).
      *
-     * <p>If the source dimension is equals to the destination dimension, then the transform is
-     * affine. However, the following special cases are also handled: <br>
+     * <p>If the source dimension is equals to the destination dimension, then the transform is affine. However, the
+     * following special cases are also handled: <br>
      *
      * <UL>
-     *   <LI>If the target dimension is smaller than the source dimension, extra axis are dropped.
-     *       An exception is thrown if the target contains some axis not found in the source.
+     *   <LI>If the target dimension is smaller than the source dimension, extra axis are dropped. An exception is
+     *       thrown if the target contains some axis not found in the source.
      * </UL>
      *
      * @param srcAxis The set of axis direction for source coordinate system.
      * @param dstAxis The set of axis direction for destination coordinate system.
-     * @throws IllegalArgumentException If {@code dstAxis} contains some axis not found in {@code
-     *     srcAxis}, or if some colinear axis were found.
+     * @throws IllegalArgumentException If {@code dstAxis} contains some axis not found in {@code srcAxis}, or if some
+     *     colinear axis were found.
      */
     public GeneralMatrix(final AxisDirection[] srcAxis, final AxisDirection[] dstAxis) {
         this(null, srcAxis, null, dstAxis, false);
     }
 
     /**
-     * Constructs a transform mapping a source region to a destination region. Axis order and/or
-     * direction can be changed during the process. For example, the transform may convert
-     * (NORTH,WEST) coordinates into (EAST,NORTH). Axis direction can be inversed only. For example,
-     * it is illegal to transform (NORTH,WEST) coordinates into (NORTH,DOWN).
+     * Constructs a transform mapping a source region to a destination region. Axis order and/or direction can be
+     * changed during the process. For example, the transform may convert (NORTH,WEST) coordinates into (EAST,NORTH).
+     * Axis direction can be inversed only. For example, it is illegal to transform (NORTH,WEST) coordinates into
+     * (NORTH,DOWN).
      *
-     * <p>If the source dimension is equals to the destination dimension, then the transform is
-     * affine. However, the following special cases are also handled: <br>
+     * <p>If the source dimension is equals to the destination dimension, then the transform is affine. However, the
+     * following special cases are also handled: <br>
      *
      * <UL>
-     *   <LI>If the target dimension is smaller than the source dimension, extra axis are dropped.
-     *       An exception is thrown if the target contains some axis not found in the source.
+     *   <LI>If the target dimension is smaller than the source dimension, extra axis are dropped. An exception is
+     *       thrown if the target contains some axis not found in the source.
      * </UL>
      *
      * @param srcRegion The source region.
      * @param srcAxis Axis direction for each dimension of the source region.
      * @param dstRegion The destination region.
      * @param dstAxis Axis direction for each dimension of the destination region.
-     * @throws MismatchedDimensionException if the envelope dimension doesn't matches the axis
-     *     direction array length.
-     * @throws IllegalArgumentException If {@code dstAxis} contains some axis not found in {@code
-     *     srcAxis}, or if some colinear axis were found.
+     * @throws MismatchedDimensionException if the envelope dimension doesn't matches the axis direction array length.
+     * @throws IllegalArgumentException If {@code dstAxis} contains some axis not found in {@code srcAxis}, or if some
+     *     colinear axis were found.
      */
     public GeneralMatrix(
             final Bounds srcRegion,
@@ -285,8 +276,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     /**
      * Implementation of constructors expecting envelope and/or axis directions.
      *
-     * @param validRegions {@code true} if source and destination regions must be taken in account.
-     *     If {@code false}, then source and destination regions will be ignored and may be null.
+     * @param validRegions {@code true} if source and destination regions must be taken in account. If {@code false},
+     *     then source and destination regions will be ignored and may be null.
      */
     private GeneralMatrix(
             final Bounds srcRegion,
@@ -317,8 +308,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     if (hasFound) {
                         // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                         throw new IllegalArgumentException(
-                                MessageFormat.format(
-                                        ErrorKeys.COLINEAR_AXIS_$2, srcAxe.name(), dstAxe.name()));
+                                MessageFormat.format(ErrorKeys.COLINEAR_AXIS_$2, srcAxe.name(), dstAxe.name()));
                     }
                     hasFound = true;
                     /*
@@ -330,10 +320,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     double scale = (normal) ? +1 : -1;
                     double translate = 0;
                     if (validRegions) {
-                        translate =
-                                (normal)
-                                        ? dstRegion.getMinimum(dstIndex)
-                                        : dstRegion.getMaximum(dstIndex);
+                        translate = (normal) ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
                         scale *= dstRegion.getSpan(dstIndex) / srcRegion.getSpan(srcIndex);
                         translate -= srcRegion.getMinimum(srcIndex) * scale;
                     }
@@ -344,8 +331,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             if (!hasFound) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
+                        MessageFormat.format(ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
             }
         }
         setElement(dstAxis.length, srcAxis.length, 1);
@@ -355,9 +341,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
     //
     // In-place operations
     //
-    /**
-     * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDRM.
-     */
+    /** Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDRM. */
     private DMatrixRMaj internal(Matrix matrix) {
         if (matrix instanceof GeneralMatrix) {
             return ((GeneralMatrix) matrix).mat;
@@ -373,16 +357,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Convenience method for checking object dimension validity. This method is usually invoked for
-     * argument checking.
+     * Convenience method for checking object dimension validity. This method is usually invoked for argument checking.
      *
      * @param name The name of the argument to check.
      * @param envelope The envelope to check.
      * @param dimension The expected dimension for the object.
      * @throws MismatchedDimensionException if the envelope doesn't have the expected dimension.
      */
-    private static void ensureDimensionMatch(
-            final String name, final Bounds envelope, final int dimension)
+    private static void ensureDimensionMatch(final String name, final Bounds envelope, final int dimension)
             throws MismatchedDimensionException {
         final int dim = envelope.getDimension();
         if (dimension != dim) {
@@ -392,10 +374,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Retrieves the specifiable values in the transformation matrix into a 2-dimensional array of
-     * double precision values. The values are stored into the 2-dimensional array using the row
-     * index as the first subscript and the column index as the second. Values are copied; changes
-     * to the returned array will not change this matrix.
+     * Retrieves the specifiable values in the transformation matrix into a 2-dimensional array of double precision
+     * values. The values are stored into the 2-dimensional array using the row index as the first subscript and the
+     * column index as the second. Values are copied; changes to the returned array will not change this matrix.
      *
      * @param matrix The matrix to extract elements from.
      * @return The matrix elements.
@@ -417,10 +398,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Retrieves the specifiable values in the transformation matrix into a 2-dimensional array of
-     * double precision values. The values are stored into the 2-dimensional array using the row
-     * index as the first subscript and the column index as the second. Values are copied; changes
-     * to the returned array will not change this matrix.
+     * Retrieves the specifiable values in the transformation matrix into a 2-dimensional array of double precision
+     * values. The values are stored into the 2-dimensional array using the row index as the first subscript and the
+     * column index as the second. Values are copied; changes to the returned array will not change this matrix.
      *
      * @return The matrix elements.
      */
@@ -536,15 +516,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
         for (int i = 0; i < values.length; i++) {
             mat.set(i, column, values[i]);
@@ -554,15 +533,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
 
         for (int i = 0; i < values.length; i++) {
@@ -704,18 +682,15 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Returns an affine transform for this matrix. This is a convenience method for
-     * interoperability with Java2D.
+     * Returns an affine transform for this matrix. This is a convenience method for interoperability with Java2D.
      *
      * @return The affine transform for this matrix.
-     * @throws IllegalStateException if this matrix is not 3&times;3, or if the last row is not
-     *     {@code [0 0 1]}.
+     * @throws IllegalStateException if this matrix is not 3&times;3, or if the last row is not {@code [0 0 1]}.
      */
     public final AffineTransform toAffineTransform2D() throws IllegalStateException {
         int check;
         if ((check = getNumRow()) != 3 || (check = getNumCol()) != 3) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
         }
         if (isAffine()) {
             return new AffineTransform(
@@ -752,8 +727,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @throws IOException if an error occured while reading the stream.
      * @since 2.2
      */
-    public static GeneralMatrix load(final BufferedReader in, final Locale locale)
-            throws IOException {
+    public static GeneralMatrix load(final BufferedReader in, final Locale locale) throws IOException {
         final LineFormat parser = new LineFormat(locale);
         double[] data = null;
         double[] row = null;
@@ -792,8 +766,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this matrix. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes only.
      */
     @Override
     public String toString() {
@@ -801,8 +775,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Returns a string representation of the specified matrix. The returned string is
-     * implementation dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of the specified matrix. The returned string is implementation dependent. It is
+     * usually provided for debugging purposes only.
      */
     static String toString(final Matrix matrix) {
         final int numRow = matrix.getNumRow();
@@ -837,17 +811,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
 
     /** Extract a subMatrix to the provided target */
     public void copySubMatrix(
-            int rowSource,
-            int colSource,
-            int numRows,
-            int numCol,
-            int rowDest,
-            int colDest,
-            GeneralMatrix target) {
+            int rowSource, int colSource, int numRows, int numCol, int rowDest, int colDest, GeneralMatrix target) {
         int rowLimit = rowSource + numRows;
         int colLimit = colSource + numCol;
-        CommonOps_DDRM.extract(
-                mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
+        CommonOps_DDRM.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
     /** Extract col to provided array. */
@@ -931,8 +898,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
 
     /**
-     * Resize the matrix to the specified number of rows and columns (preserving remaining
-     * elements).
+     * Resize the matrix to the specified number of rows and columns (preserving remaining elements).
      *
      * @param numRows The new number of rows in the matrix.
      * @param numCols The new number of columns in the matrix.

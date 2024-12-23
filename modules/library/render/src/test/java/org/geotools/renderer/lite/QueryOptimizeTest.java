@@ -18,8 +18,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the optimized data loading does merge the filters properly (was never released, but a
- * certain point in time only the first one was passed down to the datastore)
+ * Tests the optimized data loading does merge the filters properly (was never released, but a certain point in time
+ * only the first one was passed down to the datastore)
  */
 public class QueryOptimizeTest {
 
@@ -58,17 +58,16 @@ public class QueryOptimizeTest {
         mc.addLayer(new FeatureLayer(squareFS, style));
 
         renderer.setMapContent(mc);
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        count++;
-                    }
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                count++;
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {}
-                });
+            @Override
+            public void errorOccurred(Exception e) {}
+        });
 
         RendererBaseTest.showRender("OneSquare", renderer, TIME, bounds);
         Assert.assertEquals(2, count);

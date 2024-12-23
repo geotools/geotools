@@ -62,8 +62,8 @@ public class PartialIndexedMappingFeatureIterator extends IndexedMappingFeatureI
     }
 
     /**
-     * Build the query for execute on index source partial Implementation manages pagination by
-     * itself, so remove bounds from query
+     * Build the query for execute on index source partial Implementation manages pagination by itself, so remove bounds
+     * from query
      *
      * @return Query
      */
@@ -101,9 +101,8 @@ public class PartialIndexedMappingFeatureIterator extends IndexedMappingFeatureI
         nextQuery.setMaxFeatures(Integer.MAX_VALUE);
         // instance appschema feature iterator:
         try {
-            sourceIterator =
-                    MappingFeatureIteratorFactory.getInstance(
-                            store, mapping, nextQuery, unrolledFilter, transaction, false);
+            sourceIterator = MappingFeatureIteratorFactory.getInstance(
+                    store, mapping, nextQuery, unrolledFilter, transaction, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

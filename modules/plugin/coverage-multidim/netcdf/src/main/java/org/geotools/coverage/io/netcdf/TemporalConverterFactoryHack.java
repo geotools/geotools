@@ -40,8 +40,7 @@ import org.geotools.util.factory.Hints;
  *   <li>{@link XMLGregorianCalendar} to {@link to {@link String}}
  * </ul>
  *
- * <p>The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be
- * applied.
+ * <p>The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be applied.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 9.0
@@ -58,55 +57,47 @@ class TemporalConverterFactoryHack implements ConverterFactory {
         return df;
     }
 
-    private static final Converter DATE_STRING =
-            new Converter() {
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    if (source instanceof Date) {
-                        return (T) getDateFormat().format((Date) source);
-                    }
-                    return null;
-                }
-            };
+    private static final Converter DATE_STRING = new Converter() {
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            if (source instanceof Date) {
+                return (T) getDateFormat().format((Date) source);
+            }
+            return null;
+        }
+    };
 
-    private static final Converter CALENDAR_STRING =
-            new Converter() {
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    if (source instanceof Calendar) {
-                        return (T) getDateFormat().format(((Calendar) source).getTime());
-                    }
-                    return null;
-                }
-            };
+    private static final Converter CALENDAR_STRING = new Converter() {
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            if (source instanceof Calendar) {
+                return (T) getDateFormat().format(((Calendar) source).getTime());
+            }
+            return null;
+        }
+    };
 
-    private static final Converter XML_CALENDAR_STRING =
-            new Converter() {
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    if (source instanceof XMLGregorianCalendar) {
-                        GregorianCalendar date =
-                                ((XMLGregorianCalendar) source)
-                                        .toGregorianCalendar(
-                                                TimeZone.getTimeZone("GMT"),
-                                                Locale.getDefault(),
-                                                null);
-                        return (T) getDateFormat().format(date.getTime());
-                    }
-                    return null;
-                }
-            };
+    private static final Converter XML_CALENDAR_STRING = new Converter() {
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            if (source instanceof XMLGregorianCalendar) {
+                GregorianCalendar date = ((XMLGregorianCalendar) source)
+                        .toGregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.getDefault(), null);
+                return (T) getDateFormat().format(date.getTime());
+            }
+            return null;
+        }
+    };
 
     @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
 
         if (Date.class.isAssignableFrom(source) && String.class.equals(target)) return DATE_STRING;
 
-        if (Calendar.class.isAssignableFrom(source) && String.class.equals(target))
-            return CALENDAR_STRING;
+        if (Calendar.class.isAssignableFrom(source) && String.class.equals(target)) return CALENDAR_STRING;
 
         if (XMLGregorianCalendar.class.isAssignableFrom(source) && String.class.equals(target))
             return XML_CALENDAR_STRING;

@@ -73,8 +73,8 @@ public abstract class WMTSOnlineTestCase extends OnlineTestCase {
         return wmtsReader.read(getGeneralParameterValues(grid)).getRenderedImage();
     }
 
-    protected RenderedImage getRenderImageResult(
-            WMTSCoverageReader wmtsReader, ReferencedEnvelope requested) throws IOException {
+    protected RenderedImage getRenderImageResult(WMTSCoverageReader wmtsReader, ReferencedEnvelope requested)
+            throws IOException {
 
         Rectangle rectangle = new Rectangle(0, 0, 768, 589);
         GridGeometry2D grid = new GridGeometry2D(new GridEnvelope2D(rectangle), requested);
@@ -83,10 +83,7 @@ public abstract class WMTSOnlineTestCase extends OnlineTestCase {
     }
 
     protected WMTSCoverageReader wmtsCoverageReader(
-            WebMapTileServer wmts,
-            WMTSCapabilities capabilities,
-            ReferencedEnvelope bboxes,
-            String layerName) {
+            WebMapTileServer wmts, WMTSCapabilities capabilities, ReferencedEnvelope bboxes, String layerName) {
         WMTSLayer layer = capabilities.getLayer(layerName);
         assertNotNull(layer);
         layer.setBoundingBoxes(new CRSEnvelope(bboxes));

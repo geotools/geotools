@@ -57,31 +57,20 @@ public class TWKBReaderTest {
 
     @Test
     public void testGeometriesWithDecimalDigits() throws ParseException, IOException {
-        checkTWKBGeometry(
-                "020002b88f75ba928c061600", "LINESTRING(959452 6390941,959463 6390941)", 2);
+        checkTWKBGeometry("020002b88f75ba928c061600", "LINESTRING(959452 6390941,959463 6390941)", 2);
+
+        checkTWKBGeometry("220002b89a9309d6b8f93ce40103", "LINESTRING(959452.4 6390941.9,959463.8 6390941.7)", 2);
+
+        checkTWKBGeometry("420002c088c05be6b6bee104ea1127", "LINESTRING(959452.48 6390941.95,959463.89 6390941.75)", 2);
 
         checkTWKBGeometry(
-                "220002b89a9309d6b8f93ce40103",
-                "LINESTRING(959452.4 6390941.9,959463.8 6390941.7)",
-                2);
-
-        checkTWKBGeometry(
-                "420002c088c05be6b6bee104ea1127",
-                "LINESTRING(959452.48 6390941.95,959463.89 6390941.75)",
-                2);
-
-        checkTWKBGeometry(
-                "62000286d58093078ea4f0ce2fa2b201a103",
-                "LINESTRING(959452.483 6390941.959,959463.892 6390941.750)",
-                2);
+                "62000286d58093078ea4f0ce2fa2b201a103", "LINESTRING(959452.483 6390941.959,959463.892 6390941.750)", 2);
     }
 
     @Test
     public void testNonPointGeometries() throws ParseException, IOException {
         checkTWKBGeometry("a20002c09a0c80b51880b51880b518", "LINESTRING(1 2, 3 4)");
-        checkTWKBGeometry(
-                "a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930",
-                "POLYGON((1 2,3 4,5 6,1 2))");
+        checkTWKBGeometry("a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930", "POLYGON((1 2,3 4,5 6,1 2))");
         checkTWKBGeometry(
                 "a3000204c09a0c80b51880b51880b51880b51880b518ffe930ffe9300480897a80897a80b51880b51880b51880b518ffe930ffe930",
                 "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12))");
@@ -90,9 +79,7 @@ public class TWKBReaderTest {
                 "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12),(21 22,23 24,25 26,21 22))");
 
         checkTWKBGeometry("a40001c09a0c80b518", "MULTIPOINT(1 2)");
-        checkTWKBGeometry(
-                "a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930",
-                "POLYGON((1 2,3 4,5 6,1 2))");
+        checkTWKBGeometry("a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930", "POLYGON((1 2,3 4,5 6,1 2))");
         checkTWKBGeometry(
                 "a3000204c09a0c80b51880b51880b51880b51880b518ffe930ffe9300480897a80897a80b51880b51880b51880b518ffe930ffe930",
                 "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12))");
@@ -108,9 +95,7 @@ public class TWKBReaderTest {
         checkTWKBGeometry("a210", "LINESTRING EMPTY");
         checkTWKBGeometry("a20002c09a0c80b51880b51880b518", "LINESTRING(1 2,3 4)");
         checkTWKBGeometry("a310", "POLYGON EMPTY");
-        checkTWKBGeometry(
-                "a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930",
-                "POLYGON((1 2,3 4,5 6,1 2))");
+        checkTWKBGeometry("a3000104c09a0c80b51880b51880b51880b51880b518ffe930ffe930", "POLYGON((1 2,3 4,5 6,1 2))");
         checkTWKBGeometry(
                 "a3000204c09a0c80b51880b51880b51880b51880b518ffe930ffe9300480897a80897a80b51880b51880b51880b518ffe930ffe930",
                 "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12))");
@@ -123,12 +108,10 @@ public class TWKBReaderTest {
         checkTWKBGeometry("a510", "MULTILINESTRING EMPTY");
         checkTWKBGeometry("a5000102c09a0c80b51880b51880b518", "MULTILINESTRING((1 2,3 4))");
         checkTWKBGeometry(
-                "a5000202c09a0c80b51880b51880b5180280b51880b51880b51880b518",
-                "MULTILINESTRING((1 2,3 4),(5 6,7 8))");
+                "a5000202c09a0c80b51880b51880b5180280b51880b51880b51880b518", "MULTILINESTRING((1 2,3 4),(5 6,7 8))");
         checkTWKBGeometry("a610", "MULTIPOLYGON EMPTY");
         checkTWKBGeometry(
-                "a600010104c09a0c80b51880b51880b51880b51880b518ffe930ffe930",
-                "MULTIPOLYGON(((1 2,3 4,5 6,1 2)))");
+                "a600010104c09a0c80b51880b51880b51880b51880b518ffe930ffe930", "MULTIPOLYGON(((1 2,3 4,5 6,1 2)))");
         checkTWKBGeometry(
                 "a600020104c09a0c80b51880b51880b51880b51880b518ffe930ffe9300304000080b51880b51880b51880b518ffe930ffe9300480897a80897a80b51880b51880b51880b518ffe930ffe9300480897a80897a80b51880b51880b51880b518ffe930ffe930",
                 "MULTIPOLYGON(((1 2,3 4,5 6,1 2)),((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12),(21 22,23 24,25 26,21 22)))");
@@ -165,8 +148,7 @@ public class TWKBReaderTest {
         checkTWKBGeometry("a4080201c09a0c80b51802", "MULTIPOINT M (1 2 1)", 3);
         checkTWKBGeometry("a4080202c09a0c80b5180280b51880b51802", "MULTIPOINT M (1 2 1,3 4 2)", 3);
         checkTWKBGeometry("a51802", "MULTILINESTRING M EMPTY", 3);
-        checkTWKBGeometry(
-                "a508020102c09a0c80b5180280b51880b51802", "MULTILINESTRING M ((1 2 1,3 4 2))", 3);
+        checkTWKBGeometry("a508020102c09a0c80b5180280b51880b51802", "MULTILINESTRING M ((1 2 1,3 4 2))", 3);
         checkTWKBGeometry(
                 "a508020202c09a0c80b5180280b51880b518020280b51880b5180280b51880b51802",
                 "MULTILINESTRING M ((1 2 1,3 4 2),(5 6 3,7 8 4))",
@@ -182,8 +164,7 @@ public class TWKBReaderTest {
                         + "13 14 5,15 16 6,11 12 4),(21 22 7,23 24 8,25 26 9,21 22 7)))",
                 3);
         checkTWKBGeometry("a71802", "GEOMETRYCOLLECTION M EMPTY", 3);
-        checkTWKBGeometry(
-                "a7080201a10802c09a0c80b51802", "GEOMETRYCOLLECTION M (POINT M (1 2 1))", 3);
+        checkTWKBGeometry("a7080201a10802c09a0c80b51802", "GEOMETRYCOLLECTION M (POINT M (1 2 1))", 3);
         checkTWKBGeometry(
                 "a7080202a10802c09a0c80b51802a2080202c09a0c80b5180280b51880b51802",
                 "GEOMETRYCOLLECTION M (POINT M (1 2 1),LINESTRING M (1 2 1,3 4 2))",
@@ -217,8 +198,7 @@ public class TWKBReaderTest {
         checkTWKBGeometry("a4080101c09a0c80b51802", "MULTIPOINT Z (1 2 1)", 3);
         checkTWKBGeometry("a4080102c09a0c80b5180280b51880b51802", "MULTIPOINT Z (1 2 1,3 4 2)", 3);
         checkTWKBGeometry("a51801", "MULTILINESTRING Z EMPTY", 3);
-        checkTWKBGeometry(
-                "a508010102c09a0c80b5180280b51880b51802", "MULTILINESTRING Z ((1 2 1,3 4 2))", 3);
+        checkTWKBGeometry("a508010102c09a0c80b5180280b51880b51802", "MULTILINESTRING Z ((1 2 1,3 4 2))", 3);
         checkTWKBGeometry(
                 "a508010202c09a0c80b5180280b51880b518020280b51880b5180280b51880b51802",
                 "MULTILINESTRING Z ((1 2 1,3 4 2),(5 6 3,7 8 4))",
@@ -233,8 +213,7 @@ public class TWKBReaderTest {
                 "MULTIPOLYGON Z (((1 2 1,3 4 2,5 6 3,1 2 1)),((1 2 1,3 4 2,5 6 3,1 2 1),(11 12 4,13 14 5,15 16 6,11 12 4),(21 22 7,23 24 8,25 26 9,21 22 7)))",
                 3);
         checkTWKBGeometry("a71801", "GEOMETRYCOLLECTION Z EMPTY", 3);
-        checkTWKBGeometry(
-                "a7080101a10801c09a0c80b51802", "GEOMETRYCOLLECTION Z (POINT Z (1 2 1))", 3);
+        checkTWKBGeometry("a7080101a10801c09a0c80b51802", "GEOMETRYCOLLECTION Z (POINT Z (1 2 1))", 3);
         checkTWKBGeometry(
                 "a7080102a10801c09a0c80b51802a2080102c09a0c80b5180280b51880b51802",
                 "GEOMETRYCOLLECTION Z (POINT Z (1 2 1),LINESTRING Z (1 2 1,3 4 2))",
@@ -250,8 +229,7 @@ public class TWKBReaderTest {
         checkTWKBGeometry("a11803", "POINT ZM EMPTY", 4);
         checkTWKBGeometry("a10803c09a0c80b5180608", "POINT ZM (1 2 3 4)", 4);
         checkTWKBGeometry("a21803", "LINESTRING ZM EMPTY", 4);
-        checkTWKBGeometry(
-                "a2080302c09a0c80b518020480b51880b5180404", "LINESTRING ZM (1 2 1 2,3 4 3 4)", 4);
+        checkTWKBGeometry("a2080302c09a0c80b518020480b51880b5180404", "LINESTRING ZM (1 2 1 2,3 4 3 4)", 4);
         checkTWKBGeometry("a31803", "POLYGON ZM EMPTY", 4);
 
         checkTWKBGeometry(
@@ -270,13 +248,9 @@ public class TWKBReaderTest {
                 4);
         checkTWKBGeometry("a41803", "MULTIPOINT ZM EMPTY", 4);
         checkTWKBGeometry("a4080301c09a0c80b5180204", "MULTIPOINT ZM (1 2 1 2)", 4);
-        checkTWKBGeometry(
-                "a4080302c09a0c80b518020480b51880b5180404", "MULTIPOINT ZM (1 2 1 2,3 4 3 4)", 4);
+        checkTWKBGeometry("a4080302c09a0c80b518020480b51880b5180404", "MULTIPOINT ZM (1 2 1 2,3 4 3 4)", 4);
         checkTWKBGeometry("a51803", "MULTILINESTRING ZM EMPTY", 4);
-        checkTWKBGeometry(
-                "a508030102c09a0c80b518020480b51880b5180404",
-                "MULTILINESTRING ZM((1 2 1 2,3 4 3 4))",
-                4);
+        checkTWKBGeometry("a508030102c09a0c80b518020480b51880b5180404", "MULTILINESTRING ZM((1 2 1 2,3 4 3 4))", 4);
 
         checkTWKBGeometry(
                 "a508030202c09a0c80b518020480b51880b51804040280b51880b518040480b51880b5180404",
@@ -294,8 +268,7 @@ public class TWKBReaderTest {
                 "MULTIPOLYGON ZM (((1 2 1 2,3 4 3 4,5 6 5 6,1 2 1 2)),((1 2 1 2,3 4 3 4,5 6 5 6,1 2 1 2),(11 12 11 12,13 14 13 14,15 16 15 16,11 12 11 12),(21 22 21 22,23 24 23 24,25 26 25 26,21 22 21 22)))",
                 4);
         checkTWKBGeometry("a71803", "GEOMETRYCOLLECTION ZM EMPTY", 4);
-        checkTWKBGeometry(
-                "a7080301a10803c09a0c80b5180204", "GEOMETRYCOLLECTION ZM (POINT ZM(1 2 1 2))", 4);
+        checkTWKBGeometry("a7080301a10803c09a0c80b5180204", "GEOMETRYCOLLECTION ZM (POINT ZM(1 2 1 2))", 4);
 
         checkTWKBGeometry(
                 "a7080302a10803c09a0c80b5180204a2080302c09a0c80b518020480b51880b5180404",
@@ -317,8 +290,7 @@ public class TWKBReaderTest {
                 4);
     }
 
-    private void checkTWKBGeometry(String wkbHex, String expectedWKT)
-            throws IOException, ParseException {
+    private void checkTWKBGeometry(String wkbHex, String expectedWKT) throws IOException, ParseException {
         checkTWKBGeometry(wkbHex, expectedWKT, 2);
     }
 
@@ -349,9 +321,6 @@ public class TWKBReaderTest {
         }
 
         int result = expected.compareTo(actual, comp);
-        assertEquals(
-                "\nExpected:" + expected.getCoordinate() + "\nActual:  " + actual.getCoordinate(),
-                0,
-                result);
+        assertEquals("\nExpected:" + expected.getCoordinate() + "\nActual:  " + actual.getCoordinate(), 0, result);
     }
 }

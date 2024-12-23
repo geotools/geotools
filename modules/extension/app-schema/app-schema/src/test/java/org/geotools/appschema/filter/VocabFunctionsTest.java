@@ -51,9 +51,8 @@ import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * This is the test for vocabulary functions used in mapping file, ie. CategorizeFunction,
- * RecodeFunction and InterpolateFunction. This also tests the new VocabFunction, using a properties
- * file as the lookup table.
+ * This is the test for vocabulary functions used in mapping file, ie. CategorizeFunction, RecodeFunction and
+ * InterpolateFunction. This also tests the new VocabFunction, using a properties file as the lookup table.
  *
  * @author Jody Garnett (GeoServer)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
@@ -98,8 +97,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     /** Test RecodeFunction */
     @Test
     public void testRecodeFunction() throws IOException {
-        final Map<String, String> VALUE_MAP =
-                Map.ofEntries(entry("sc.1", "a"), entry("sc.2", "b"), entry("sc.3", "c"));
+        final Map<String, String> VALUE_MAP = Map.ofEntries(entry("sc.1", "a"), entry("sc.2", "b"), entry("sc.3", "c"));
 
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
@@ -111,9 +109,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 // 'c')</OCQL>
                 ComplexAttribute complexAttribute =
                         (ComplexAttribute) ff.property("gml:name[3]").evaluate(feature);
-                String value =
-                        Converters.convert(
-                                GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
+                String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(recodedName, value);
             }
         }
@@ -133,11 +129,8 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     /** Test CategorizeFunction */
     @Test
     public void testCategorizeFunction() {
-        final Map<String, String> VALUE_MAP =
-                Map.ofEntries(
-                        entry("sc.1", "missing value"),
-                        entry("sc.2", "a valid value"),
-                        entry("sc.3", "a valid value"));
+        final Map<String, String> VALUE_MAP = Map.ofEntries(
+                entry("sc.1", "missing value"), entry("sc.2", "a valid value"), entry("sc.3", "a valid value"));
 
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
@@ -157,14 +150,11 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         assertNotNull(file);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Function function =
-                ff.function(
-                        "Vocab", ff.literal("1LIST"), ff.literal(URLs.urlToFile(file).getPath()));
+        Function function = ff.function(
+                "Vocab", ff.literal("1LIST"), ff.literal(URLs.urlToFile(file).getPath()));
 
         Object value = function.evaluate(null);
-        assertEquals(
-                "urn:cgi:classifier:CGI:SimpleLithology:2008:calcareous_carbonate_sedimentary_rock",
-                value);
+        assertEquals("urn:cgi:classifier:CGI:SimpleLithology:2008:calcareous_carbonate_sedimentary_rock", value);
     }
 
     @Test
@@ -183,11 +173,10 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     /** Test VocabFunction in a mapping file */
     @Test
     public void testVocabFunctionInMappingFile() {
-        final Map<String, String> VALUE_MAP =
-                Map.ofEntries(
-                        entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
-                        entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
-                        entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
+        final Map<String, String> VALUE_MAP = Map.ofEntries(
+                entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
+                entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
+                entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
@@ -197,26 +186,20 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 // .properties')</OCQL>
                 ComplexAttribute complexAttribute =
                         (ComplexAttribute) ff.property("gml:name[2]").evaluate(feature);
-                String value =
-                        Converters.convert(
-                                GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
+                String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(VALUE_MAP.get(fId), value);
             }
         }
     }
 
-    /**
-     * Test VocabFunction in a mapping file with the <code>${config.parent}</code> interpolation
-     * property.
-     */
+    /** Test VocabFunction in a mapping file with the <code>${config.parent}</code> interpolation property. */
     @Test
     public void testVocabFunctionInMappingFileWithConfigParent() {
         @SuppressWarnings("serial")
-        final Map<String, String> expectedValues =
-                Map.ofEntries(
-                        entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
-                        entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
-                        entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
+        final Map<String, String> expectedValues = Map.ofEntries(
+                entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
+                entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
+                entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
 
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
@@ -224,9 +207,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 String fid = feature.getIdentifier().getID();
                 ComplexAttribute complexAttribute =
                         (ComplexAttribute) ff.property("gml:name[4]").evaluate(feature);
-                String value =
-                        Converters.convert(
-                                GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
+                String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
                 assertEquals(expectedValues.get(fid), value);
             }
         }

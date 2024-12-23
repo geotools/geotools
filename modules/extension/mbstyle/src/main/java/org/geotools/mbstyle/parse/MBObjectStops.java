@@ -34,9 +34,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * This class provides the ability to find all the zoom levels within a MapBox Style and returns a
- * reduced list of only the layers and properties containing Base and Stops values. This class is
- * only used with "zoom" and "zoom-and-property" and excludes the use of "property".
+ * This class provides the ability to find all the zoom levels within a MapBox Style and returns a reduced list of only
+ * the layers and properties containing Base and Stops values. This class is only used with "zoom" and
+ * "zoom-and-property" and excludes the use of "property".
  *
  * @author David Vick (Boundless)
  */
@@ -53,10 +53,9 @@ public class MBObjectStops {
     public List<double[]> ranges = new ArrayList<>();
 
     /**
-     * Data structure for pre-processing a MBLayer determining whether the layer contains zoom and
-     * zoom-and-property functions and if so, getting the distinct stops for each, building a list
-     * of MBLayers (one for each stop) and setting ranges that are used to set min/max scale
-     * denominators for each MBLayer.
+     * Data structure for pre-processing a MBLayer determining whether the layer contains zoom and zoom-and-property
+     * functions and if so, getting the distinct stops for each, building a list of MBLayers (one for each stop) and
+     * setting ranges that are used to set min/max scale denominators for each MBLayer.
      *
      * @param layer Layer being processed for stops
      */
@@ -116,14 +115,12 @@ public class MBObjectStops {
     }
 
     /**
-     * This method creates a copy of the incoming layer to be used for creating the unique layer for
-     * each stop.
+     * This method creates a copy of the incoming layer to be used for creating the unique layer for each stop.
      *
      * @return Split layer based on zoom-level stops
      */
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
-    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
-            throws ParseException {
+    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops) throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
 
         for (int i = 0; i < layerStops.size(); i++) {
@@ -193,8 +190,8 @@ public class MBObjectStops {
     /**
      * Take a web mercator zoom level, and return the equivalent scale denominator (at the equator).
      *
-     * <p>Converting to a scale denominator at the equator is consistent with the conversion
-     * elsewhere in GeoTools, e.g., in the GeoTools YSLD ZoomContextFinder.
+     * <p>Converting to a scale denominator at the equator is consistent with the conversion elsewhere in GeoTools,
+     * e.g., in the GeoTools YSLD ZoomContextFinder.
      *
      * @param zoomLevel The zoom level
      * @return The equivalent scale denominator (at the equator)
@@ -316,8 +313,7 @@ public class MBObjectStops {
                     for (Object value : stops) {
                         JSONArray stop = (JSONArray) value;
                         if (stop.get(0) instanceof JSONObject) {
-                            double zoomValue =
-                                    ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
+                            double zoomValue = ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
                             if (zoomEquals(zoomValue, range[0])) {
                                 objectsToEdit.add((JSONArray) value);
                             } else {
@@ -387,12 +383,9 @@ public class MBObjectStops {
                         if (stop.get(0) instanceof Number) {
                             layerZoomLevels.add(((Number) stop.get(0)).doubleValue());
                         } else if (stop.get(0) instanceof JSONObject) {
-                            layerZoomLevels.add(
-                                    ((Number) ((JSONObject) stop.get(0)).get("zoom"))
-                                            .doubleValue());
+                            layerZoomLevels.add(((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue());
                         } else {
-                            throw new MBFormatException(
-                                    "The \"property\" field missing for stops or invalid zoom.");
+                            throw new MBFormatException("The \"property\" field missing for stops or invalid zoom.");
                         }
                     }
                 }

@@ -77,10 +77,8 @@ public class GeneralizationInfosTest {
                 "GenFeature1", info1.getGeneralizationForDistance(100.0).getFeatureName());
         Assert.assertEquals(
                 "GenFeature1", info1.getGeneralizationForDistance(999.0).getFeatureName());
-        Assert.assertEquals(
-                "DSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceName());
-        Assert.assertEquals(
-                "WSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
+        Assert.assertEquals("DSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceName());
+        Assert.assertEquals("WSInfo", info1.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
 
         Assert.assertEquals(
                 "GenFeature2", info1.getGeneralizationForDistance(1000.0).getFeatureName());
@@ -101,10 +99,8 @@ public class GeneralizationInfosTest {
         Assert.assertEquals(
                 "the_geom2", info2.getGeneralizationForDistance(10000.0).getGeomPropertyName());
 
-        Assert.assertEquals(
-                "DSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceName());
-        Assert.assertEquals(
-                "WSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
+        Assert.assertEquals("DSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceName());
+        Assert.assertEquals("WSInfos", info2.getGeneralizationForDistance(100.0).getDataSourceNameSpace());
 
         GeneralizationInfo gi = infos.getGeneralizationInfoForFeatureName("GenFeature1");
         Assert.assertNotNull(gi);

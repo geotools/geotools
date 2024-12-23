@@ -32,12 +32,11 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * An IAU authority factory using (<var>longitude</var>, <var>latitude</var>) axis order. This
- * factory wraps a {@link IAUAuthorityFactory} into an {@link OrderedAxisAuthorityFactory} when
- * first needed.
+ * An IAU authority factory using (<var>longitude</var>, <var>latitude</var>) axis order. This factory wraps a
+ * {@link IAUAuthorityFactory} into an {@link OrderedAxisAuthorityFactory} when first needed.
  *
- * <p>Users don't need to create explicitly an instance of this class. Instead, one can get an
- * instance using the following code:
+ * <p>Users don't need to create explicitly an instance of this class. Instead, one can get an instance using the
+ * following code:
  *
  * <blockquote>
  *
@@ -48,13 +47,12 @@ import org.geotools.util.factory.Hints;
  *
  * </blockquote>
  *
- * Copied and adapted from {@link org.geotools.referencing.factory.epsg.LongitudeFirstFactory},
- * which provides the same service for the EPSG database.
+ * Copied and adapted from {@link org.geotools.referencing.factory.epsg.LongitudeFirstFactory}, which provides the same
+ * service for the EPSG database.
  *
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
  */
-public class IAULongitudeFirstFactory extends DeferredAuthorityFactory
-        implements CRSAuthorityFactory {
+public class IAULongitudeFirstFactory extends DeferredAuthorityFactory implements CRSAuthorityFactory {
     /*
      * Implementation note: in theory the DatumAuthorityFactory interface is useless here, since
      * "axis order" doesn't make any sense for them. However if we do not register this class for
@@ -63,12 +61,11 @@ public class IAULongitudeFirstFactory extends DeferredAuthorityFactory
      */
 
     /**
-     * Creates a default factory. The {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
-     * FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint is always set to {@link Boolean#TRUE TRUE}. The {@link
-     * Hints#FORCE_STANDARD_AXIS_DIRECTIONS FORCE_STANDARD_AXIS_DIRECTIONS} and {@link
-     * Hints#FORCE_STANDARD_AXIS_UNITS FORCE_STANDARD_AXIS_UNITS} hints are set to {@link
-     * Boolean#FALSE FALSE} by default. A different value for those two hints can be specified using
-     * the {@linkplain IAULongitudeFirstFactory (Hints) constructor below}.
+     * Creates a default factory. The {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER}
+     * hint is always set to {@link Boolean#TRUE TRUE}. The {@link Hints#FORCE_STANDARD_AXIS_DIRECTIONS
+     * FORCE_STANDARD_AXIS_DIRECTIONS} and {@link Hints#FORCE_STANDARD_AXIS_UNITS FORCE_STANDARD_AXIS_UNITS} hints are
+     * set to {@link Boolean#FALSE FALSE} by default. A different value for those two hints can be specified using the
+     * {@linkplain IAULongitudeFirstFactory (Hints) constructor below}.
      */
     public IAULongitudeFirstFactory() {
         this(null);
@@ -100,10 +97,9 @@ public class IAULongitudeFirstFactory extends DeferredAuthorityFactory
     }
 
     /**
-     * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default
-     * priority should be lower, except if the <code>
-     * {@value GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property is set to {@code
-     * true}.
+     * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default priority should be
+     * lower, except if the <code>
+     * {@value GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property is set to {@code true}.
      */
     private static int relativePriority() {
         return -7;
@@ -115,8 +111,7 @@ public class IAULongitudeFirstFactory extends DeferredAuthorityFactory
     }
 
     /**
-     * Returns the factory instance (usually {@link ThreadedEpsgFactory}) to be used as the backing
-     * store.
+     * Returns the factory instance (usually {@link ThreadedEpsgFactory}) to be used as the backing store.
      *
      * @throws FactoryException If no suitable factory instance was found.
      */
@@ -136,17 +131,14 @@ public class IAULongitudeFirstFactory extends DeferredAuthorityFactory
          * false since forcing axis directions / units is handled by OrderedAxisAuthorityFactory
          * and we don't want the backing store to interfer with that.
          */
-        final Hints backingStoreHints =
-                new Hints(Hints.CRS_AUTHORITY_FACTORY, IAUAuthorityFactory.class);
+        final Hints backingStoreHints = new Hints(Hints.CRS_AUTHORITY_FACTORY, IAUAuthorityFactory.class);
         backingStoreHints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         final AbstractAuthorityFactory factory;
         try {
-            factory =
-                    (AbstractAuthorityFactory)
-                            ReferencingFactoryFinder.getCRSAuthorityFactory(
-                                    "IAU", backingStoreHints);
+            factory = (AbstractAuthorityFactory)
+                    ReferencingFactoryFinder.getCRSAuthorityFactory("IAU", backingStoreHints);
         } catch (FactoryNotFoundException exception) {
             throw new org.geotools.referencing.factory.FactoryNotFoundException(exception);
         } catch (FactoryRegistryException exception) {

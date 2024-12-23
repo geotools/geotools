@@ -14,11 +14,10 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException; // For javadoc
 
 /**
- * Creates {@linkplain CoordinateReferenceSystem coordinate reference systems} using authority
- * codes. External authorities are used to manage definitions of objects used in this interface. The
- * definitions of these objects are referenced using code strings. A commonly used authority is <A
- * HREF="http://www.epsg.org">EPSG</A>, which is also used in the <A
- * HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> standard.
+ * Creates {@linkplain CoordinateReferenceSystem coordinate reference systems} using authority codes. External
+ * authorities are used to manage definitions of objects used in this interface. The definitions of these objects are
+ * referenced using code strings. A commonly used authority is <A HREF="http://www.epsg.org">EPSG</A>, which is also
+ * used in the <A HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> standard.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
@@ -28,12 +27,12 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException; // For javadoc
  */
 public interface CRSAuthorityFactory extends AuthorityFactory {
     /**
-     * Returns an arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system} from
-     * a code. If the coordinate reference system type is know at compile time, it is recommended to
-     * invoke the most precise method instead of this one (for example <code>
-     * &nbsp;{@linkplain #createGeographicCRS createGeographicCRS}(code)&nbsp;</code> instead of
-     * <code>&nbsp;createCoordinateReferenceSystem(code)&nbsp;</code> if the caller know he is
-     * asking for a {@linkplain GeographicCRS geographic coordinate reference system}).
+     * Returns an arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system} from a code. If the
+     * coordinate reference system type is know at compile time, it is recommended to invoke the most precise method
+     * instead of this one (for example <code>
+     * &nbsp;{@linkplain #createGeographicCRS createGeographicCRS}(code)&nbsp;</code> instead of <code>
+     * &nbsp;createCoordinateReferenceSystem(code)&nbsp;</code> if the caller know he is asking for a
+     * {@linkplain GeographicCRS geographic coordinate reference system}).
      *
      * @param code Value allocated by authority.
      * @return The coordinate reference system for the given code.
@@ -56,8 +55,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CompoundCRS createCompoundCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CompoundCRS createCompoundCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a derived coordinate reference system from a code.
@@ -77,8 +75,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    EngineeringCRS createEngineeringCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    EngineeringCRS createEngineeringCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns a {@linkplain GeographicCRS geographic coordinate reference system} from a code.
@@ -89,8 +86,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createGeodeticDatum
      */
-    GeographicCRS createGeographicCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    GeographicCRS createGeographicCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns a {@linkplain GeocentricCRS geocentric coordinate reference system} from a code.
@@ -101,8 +97,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createGeodeticDatum
      */
-    GeocentricCRS createGeocentricCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    GeocentricCRS createGeocentricCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Create a {@linkplain ImageCRS image coordinate reference system} from a code.
@@ -123,8 +118,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createGeodeticDatum
      */
-    ProjectedCRS createProjectedCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    ProjectedCRS createProjectedCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Create a {@linkplain TemporalCRS temporal coordinate reference system} from a code.
@@ -135,8 +129,7 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createTemporalDatum
      */
-    TemporalCRS createTemporalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    TemporalCRS createTemporalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Create a {@linkplain VerticalCRS vertical coordinate reference system} from a code.
@@ -147,6 +140,5 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createVerticalDatum
      */
-    VerticalCRS createVerticalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    VerticalCRS createVerticalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 }

@@ -68,8 +68,8 @@ public abstract class CSVStrategy {
     }
 
     /**
-     * Originally in a strategy support class - giving a chance to override them to improve
-     * efficiency and utilise the different strategies
+     * Originally in a strategy support class - giving a chance to override them to improve efficiency and utilise the
+     * different strategies
      */
     public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState) {
         Map<String, Class<?>> typesFromData;
@@ -99,11 +99,11 @@ public abstract class CSVStrategy {
     }
 
     /**
-     * Performs a full file scan attempting to guess the type of each column Specific strategy
-     * implementations will expand this functionality by overriding the buildFeatureType() method.
+     * Performs a full file scan attempting to guess the type of each column Specific strategy implementations will
+     * expand this functionality by overriding the buildFeatureType() method.
      */
-    protected static Map<String, Class<?>> findMostSpecificTypesFromData(
-            CSVReader csvReader, String[] headers) throws IOException {
+    protected static Map<String, Class<?>> findMostSpecificTypesFromData(CSVReader csvReader, String[] headers)
+            throws IOException {
         Map<String, Class<?>> result = new HashMap<>();
         // start off assuming Integers for everything
         for (String header : headers) {

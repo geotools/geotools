@@ -21,8 +21,7 @@ import javax.xml.namespace.QName;
 /**
  * Creates the binding for a qualified name.
  *
- * <p>An instance of this factory is placed in the context and available to bindings via constructor
- * injection.
+ * <p>An instance of this factory is placed in the context and available to bindings via constructor injection.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

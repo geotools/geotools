@@ -21,8 +21,7 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFilter;
 
 /**
- * Extracts the maximum dimension value from the geometry coordinate sequences (assumes 2 as the
- * starting point)
+ * Extracts the maximum dimension value from the geometry coordinate sequences (assumes 2 as the starting point)
  *
  * @author Andrea Aime - GeoSolutions
  */

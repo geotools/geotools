@@ -81,16 +81,16 @@ public class ProgressTask implements Runnable, Progress {
     }
 
     /**
-     * This protected method is invoked when this process transitions to state isDone (whether
-     * normally or via cancellation). The default implementation does nothing. Subclasses may
-     * override this method to invoke completion callbacks. You can query status inside the
-     * implementation of this method to determine whether this task has been canceled.
+     * This protected method is invoked when this process transitions to state isDone (whether normally or via
+     * cancellation). The default implementation does nothing. Subclasses may override this method to invoke completion
+     * callbacks. You can query status inside the implementation of this method to determine whether this task has been
+     * canceled.
      */
     protected void done() {}
 
     /**
-     * Sets the result of this ProgressTask to the given value unless this ProgressTask has already
-     * been set or has been canceled.
+     * Sets the result of this ProgressTask to the given value unless this ProgressTask has already been set or has been
+     * canceled.
      *
      * @param value the value to set
      */
@@ -99,8 +99,8 @@ public class ProgressTask implements Runnable, Progress {
     }
 
     /**
-     * Causes this ProgressTask to report an ExecutionException with the given throwable as its
-     * cause, unless this ProgressTask has already been set or has been canceled.
+     * Causes this ProgressTask to report an ExecutionException with the given throwable as its cause, unless this
+     * ProgressTask has already been set or has been canceled.
      *
      * @param t the cause of failure.
      */
@@ -115,9 +115,9 @@ public class ProgressTask implements Runnable, Progress {
     }
 
     /**
-     * Executes the process without setting its result, and then resets this ProgressTask to its
-     * initial state, failing to do so if the computation encounters an exception or is canceled.
-     * This is designed for use with processes that execute more than once.
+     * Executes the process without setting its result, and then resets this ProgressTask to its initial state, failing
+     * to do so if the computation encounters an exception or is canceled. This is designed for use with processes that
+     * execute more than once.
      *
      * @return true if successfully run and reset
      */
@@ -128,13 +128,12 @@ public class ProgressTask implements Runnable, Progress {
     /**
      * Synchronization control for ProgressTask.
      *
-     * <p>This must be a non-static inner class in order to invoke the protected done method. For
-     * clarity, all inner class support methods are same as outer, prefixed with "inner".
+     * <p>This must be a non-static inner class in order to invoke the protected done method. For clarity, all inner
+     * class support methods are same as outer, prefixed with "inner".
      *
      * <p>Uses AQS synchronizer state to represent run status
      */
-    private final class Synchronizer extends AbstractQueuedSynchronizer
-            implements ProgressListener {
+    private final class Synchronizer extends AbstractQueuedSynchronizer implements ProgressListener {
 
         private static final long serialVersionUID = 6633428077533811475L;
 
@@ -158,8 +157,8 @@ public class ProgressTask implements Runnable, Progress {
         private Throwable exception;
 
         /**
-         * The thread running process. When it is nulled after set/cancel, this indicates that the
-         * results are now accessible. This must be volatile to ensure visibility upon completion.
+         * The thread running process. When it is nulled after set/cancel, this indicates that the results are now
+         * accessible. This must be volatile to ensure visibility upon completion.
          */
         private volatile Thread runningThread;
 
@@ -182,8 +181,7 @@ public class ProgressTask implements Runnable, Progress {
         }
 
         /**
-         * Implements AQS base release to always signal after setting final done status by nulling
-         * the runningThread.
+         * Implements AQS base release to always signal after setting final done status by nulling the runningThread.
          */
         @Override
         protected boolean tryReleaseShared(int ignore) {

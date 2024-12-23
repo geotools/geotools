@@ -58,8 +58,7 @@ public class PermissiveValidator extends StatefulValidator {
             }
         } else {
             context.error(
-                    "Unexpected End of "
-                            + ((evt instanceof MappingEndEvent) ? "Mapping" : "Sequence"),
+                    "Unexpected End of " + ((evt instanceof MappingEndEvent) ? "Mapping" : "Sequence"),
                     evt.getStartMark());
         }
     }
@@ -108,9 +107,7 @@ public class PermissiveValidator extends StatefulValidator {
             case STARTED:
                 break;
             default:
-                context.error(
-                        String.format("Unexpected alias '%s'", evt.getAnchor()),
-                        evt.getStartMark());
+                context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
                 break;
         }
     }

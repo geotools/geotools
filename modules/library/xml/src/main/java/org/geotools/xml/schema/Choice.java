@@ -17,10 +17,9 @@
 package org.geotools.xml.schema;
 
 /**
- * This interface is intended to represent a Choice in an XML Schema. The children of this choice
- * are ElementGroupings which may involve Element declarations, Sequence, Groups ... or even another
- * Choices. We recommend flattening child Choices with the parent, creating a semantically
- * equivalent choice in it's place.
+ * This interface is intended to represent a Choice in an XML Schema. The children of this choice are ElementGroupings
+ * which may involve Element declarations, Sequence, Groups ... or even another Choices. We recommend flattening child
+ * Choices with the parent, creating a semantically equivalent choice in it's place.
  *
  * @author dzwiers www.refractions.net
  */
@@ -37,10 +36,9 @@ public interface Choice extends ElementGrouping {
     public int getMinOccurs();
 
     /**
-     * This method returns a list of children which repreensts the options for the element which
-     * this choice is representing in an XML Schema. Although the list is semantically a set, we
-     * encourage you to add elements to the list as they apear, to allow Schema writers to optimize
-     * the search order.
+     * This method returns a list of children which repreensts the options for the element which this choice is
+     * representing in an XML Schema. Although the list is semantically a set, we encourage you to add elements to the
+     * list as they apear, to allow Schema writers to optimize the search order.
      */
     public ElementGrouping[] getChildren();
 }

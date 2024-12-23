@@ -28,8 +28,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 
 /**
- * Allows creation of a subtype of a STAC item that references a property inside the "assets" top
- * level JSON object (the SimpleFeatureType machinery would have otherwise failed)
+ * Allows creation of a subtype of a STAC item that references a property inside the "assets" top level JSON object (the
+ * SimpleFeatureType machinery would have otherwise failed)
  */
 class STACFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
 
@@ -61,8 +61,7 @@ class STACFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
 
         @Override
         public AttributeDescriptor getDescriptor(String name) {
-            if (name.startsWith(STACFeatureSource.ASSETS + "/"))
-                return super.getDescriptor(STACFeatureSource.ASSETS);
+            if (name.startsWith(STACFeatureSource.ASSETS + "/")) return super.getDescriptor(STACFeatureSource.ASSETS);
             return super.getDescriptor(name);
         }
     }

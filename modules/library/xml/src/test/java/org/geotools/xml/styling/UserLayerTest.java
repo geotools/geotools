@@ -57,16 +57,15 @@ import org.locationtech.jts.geom.PrecisionModel;
 
 public class UserLayerTest {
 
-    private static final String CRS_WKT =
-            "GEOGCS[\"WGS 84\", "
-                    + "  DATUM[\"WGS_1984\","
-                    + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
-                    + "    AUTHORITY[\"EPSG\",\"6326\"]],"
-                    + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                    + "  UNIT[\"degree\", 0.017453292519943295],"
-                    + "  AXIS[\"Lon\", EAST],"
-                    + "  AXIS[\"Lat\", NORTH],"
-                    + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+    private static final String CRS_WKT = "GEOGCS[\"WGS 84\", "
+            + "  DATUM[\"WGS_1984\","
+            + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
+            + "    AUTHORITY[\"EPSG\",\"6326\"]],"
+            + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+            + "  UNIT[\"degree\", 0.017453292519943295],"
+            + "  AXIS[\"Lon\", EAST],"
+            + "  AXIS[\"Lat\", NORTH],"
+            + "  AUTHORITY[\"EPSG\",\"4326\"]]";
 
     private static final int SRID = 4326;
 
@@ -187,9 +186,7 @@ public class UserLayerTest {
         Assert.assertEquals("Styled layers array MUST be 1-element long", 1, layers.length);
         final StyledLayer sLayer = layers[0];
         Assert.assertNotNull("Single styled layer MUST NOT be null", sLayer);
-        Assert.assertTrue(
-                "Single layer MUST be a UserLayer",
-                UserLayer.class.isAssignableFrom(sLayer.getClass()));
+        Assert.assertTrue("Single layer MUST be a UserLayer", UserLayer.class.isAssignableFrom(sLayer.getClass()));
         final UserLayer uLayer = (UserLayer) sLayer;
         final String lName = uLayer.getName();
         Assert.assertEquals("Read layer name MUST match", LAYER_NAME, lName);
@@ -197,8 +194,7 @@ public class UserLayerTest {
         Assert.assertNotNull("Unmarshalled feature type MUST NOT be null", ft);
         final String fName = ft.getTypeName();
         Assert.assertEquals("Read feature type name MUST match", MY_FEATURE, fName);
-        Assert.assertEquals(
-                CRS.decode("EPSG:4326"), ft.getGeometryDescriptor().getCoordinateReferenceSystem());
+        Assert.assertEquals(CRS.decode("EPSG:4326"), ft.getGeometryDescriptor().getCoordinateReferenceSystem());
     }
 
     @Test

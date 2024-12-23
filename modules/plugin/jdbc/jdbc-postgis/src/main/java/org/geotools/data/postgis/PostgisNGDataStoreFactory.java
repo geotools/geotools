@@ -42,32 +42,20 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     static final Logger LOGGER = Logging.getLogger(PostgisNGDataStoreFactory.class);
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "postgis",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "postgis", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** enables using && in bbox queries */
     public static final Param LOOSEBBOX =
-            new Param(
-                    "Loose bbox",
-                    Boolean.class,
-                    "Perform only primary filter on bbox",
-                    false,
-                    Boolean.TRUE);
+            new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /** parameter that enables estimated extends instead of exact ones */
-    public static final Param ESTIMATED_EXTENTS =
-            new Param(
-                    "Estimated extends",
-                    Boolean.class,
-                    "Use the spatial index information to quickly get an estimate of the data bounds",
-                    false,
-                    Boolean.TRUE);
+    public static final Param ESTIMATED_EXTENTS = new Param(
+            "Estimated extends",
+            Boolean.class,
+            "Use the spatial index information to quickly get an estimate of the data bounds",
+            false,
+            Boolean.TRUE);
 
     /** parameter for database port */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 5432);
@@ -76,80 +64,68 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
 
     /** attempt to create the database if missing */
-    public static final Param CREATE_DB_IF_MISSING =
-            new Param(
-                    "create database",
-                    Boolean.class,
-                    "Creates the database if it does not exist yet",
-                    false,
-                    false,
-                    Param.LEVEL,
-                    "advanced");
+    public static final Param CREATE_DB_IF_MISSING = new Param(
+            "create database",
+            Boolean.class,
+            "Creates the database if it does not exist yet",
+            false,
+            false,
+            Param.LEVEL,
+            "advanced");
 
     /** attempt to create the database if missing */
-    public static final Param CREATE_PARAMS =
-            new Param(
-                    "create database params",
-                    String.class,
-                    "Extra specifications appeneded to the CREATE DATABASE command",
-                    false,
-                    "",
-                    Param.LEVEL,
-                    "advanced");
+    public static final Param CREATE_PARAMS = new Param(
+            "create database params",
+            String.class,
+            "Extra specifications appeneded to the CREATE DATABASE command",
+            false,
+            "",
+            Param.LEVEL,
+            "advanced");
 
     /** Wheter a prepared statements based dialect should be used, or not */
     public static final Param PREPARED_STATEMENTS =
-            new Param(
-                    "preparedStatements",
-                    Boolean.class,
-                    "Use prepared statements",
-                    false,
-                    Boolean.FALSE);
+            new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
 
     /** Enables direct encoding of selected filter functions in sql */
-    public static final Param ENCODE_FUNCTIONS =
-            new Param(
-                    "encode functions",
-                    Boolean.class,
-                    "set to true to have a set of filter functions be translated directly in SQL. "
-                            + "Due to differences in the type systems the result might not be the same as evaluating "
-                            + "them in memory, including the SQL failing with errors while the in memory version works fine. "
-                            + "However this allows to push more of the filter into the database, increasing performance."
-                            + "the postgis table.",
-                    false,
-                    Boolean.TRUE,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param ENCODE_FUNCTIONS = new Param(
+            "encode functions",
+            Boolean.class,
+            "set to true to have a set of filter functions be translated directly in SQL. "
+                    + "Due to differences in the type systems the result might not be the same as evaluating "
+                    + "them in memory, including the SQL failing with errors while the in memory version works fine. "
+                    + "However this allows to push more of the filter into the database, increasing performance."
+                    + "the postgis table.",
+            false,
+            Boolean.TRUE,
+            new KVP(Param.LEVEL, "advanced"));
 
     /**
-     * Enables usage of a simplification function, when the queries contain geometry simplification
-     * hints The simplification function used depends on SIMPLIFICATION_METHOD setting, and is
-     * ST_Simplify by default
+     * Enables usage of a simplification function, when the queries contain geometry simplification hints The
+     * simplification function used depends on SIMPLIFICATION_METHOD setting, and is ST_Simplify by default
      */
-    public static final Param SIMPLIFY =
-            new Param(
-                    "Support on the fly geometry simplification",
-                    Boolean.class,
-                    "When enabled, operations such as map rendering will pass a hint that will enable the usage of a simplification function",
-                    false,
-                    Boolean.TRUE);
+    public static final Param SIMPLIFY = new Param(
+            "Support on the fly geometry simplification",
+            Boolean.class,
+            "When enabled, operations such as map rendering will pass a hint that will enable the usage of a simplification function",
+            false,
+            Boolean.TRUE);
     /** Simplification method to use if SIMPLIFY is true. By default ST_Simplify is used. */
-    public static final Param SIMPLIFICATION_METHOD =
-            new Param(
-                    "Method used to simplify geometries",
-                    SimplificationMethod.class,
-                    "Allows choosing the PostGIS simplification function to use, between ST_Simplify and ST_SimplifyPreserveTopology",
-                    false,
-                    SimplificationMethod.FAST,
-                    new KVP(Param.OPTIONS, Arrays.asList(SimplificationMethod.values())));
+    public static final Param SIMPLIFICATION_METHOD = new Param(
+            "Method used to simplify geometries",
+            SimplificationMethod.class,
+            "Allows choosing the PostGIS simplification function to use, between ST_Simplify and ST_SimplifyPreserveTopology",
+            false,
+            SimplificationMethod.FAST,
+            new KVP(Param.OPTIONS, Arrays.asList(SimplificationMethod.values())));
 
-    public static final Param SSL_MODE =
-            new Param(
-                    "SSL mode",
-                    SslMode.class,
-                    "The connectin SSL mode",
-                    false,
-                    SslMode.DISABLE,
-                    new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
+    public static final Param SSL_MODE = new Param(
+            "SSL mode",
+            SslMode.class,
+            "The connectin SSL mode",
+            false,
+            SslMode.DISABLE,
+            new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
@@ -214,8 +190,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
 
         // setup loose bbox
         SQLDialect genericDialect = dataStore.getSQLDialect();
@@ -246,15 +221,12 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
         dialect.setSimplifyEnabled(simplify == null || simplify);
         // check preserving topology when simplifying geometries (off by default)
-        SimplificationMethod simplificationMethod =
-                (SimplificationMethod) SIMPLIFICATION_METHOD.lookUp(params);
-        dialect.setTopologyPreserved(
-                SimplificationMethod.PRESERVETOPOLOGY.equals(simplificationMethod));
+        SimplificationMethod simplificationMethod = (SimplificationMethod) SIMPLIFICATION_METHOD.lookUp(params);
+        dialect.setTopologyPreserved(SimplificationMethod.PRESERVETOPOLOGY.equals(simplificationMethod));
 
         // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
         Boolean encodeBBOXAsEnvelope = false;
-        String largeGeometriesOptimized =
-                System.getProperty("org.geotools.data.postgis.largeGeometriesOptimize");
+        String largeGeometriesOptimized = System.getProperty("org.geotools.data.postgis.largeGeometriesOptimize");
         if (largeGeometriesOptimized != null) {
             encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");
         }
@@ -312,8 +284,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         DataSource ds = super.createDataSource(params, dialect);
         JDBCDataStore store = new JDBCDataStore();
 
@@ -346,11 +317,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     // create the database
 
                     String createParams = (String) CREATE_PARAMS.lookUp(params);
-                    String sql =
-                            "CREATE DATABASE \""
-                                    + db
-                                    + "\" "
-                                    + (createParams == null ? "" : createParams);
+                    String sql = "CREATE DATABASE \"" + db + "\" " + (createParams == null ? "" : createParams);
                     st = cx.createStatement();
                     st.execute(sql);
                 } catch (SQLException e) {
@@ -404,8 +371,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /**
-     * Drops the database specified in the connection params. The database must not be in use, and
-     * the user must have the necessary privileges
+     * Drops the database specified in the connection params. The database must not be in use, and the user must have
+     * the necessary privileges
      */
     public void dropDatabase(Map<String, Object> params) throws IOException {
         JDBCDataStore store = new JDBCDataStore();

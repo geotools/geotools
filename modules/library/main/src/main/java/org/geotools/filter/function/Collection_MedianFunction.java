@@ -45,18 +45,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class Collection_MedianFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_MedianFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_MedianFunction.class);
 
     FeatureCollection<? extends FeatureType, ? extends Feature> previousFeatureCollection = null;
     Object median = null;
 
     // public static FunctionName NAME = new FunctionNameImpl("Collection_Median","value");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Median",
-                    parameter("median", Comparable.class),
-                    parameter("expression", Comparable.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Median", parameter("median", Comparable.class), parameter("expression", Comparable.class));
     /** Creates a new instance of Collection_MedianFunction */
     public Collection_MedianFunction() {
         super(NAME);
@@ -70,8 +66,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
      * @return An object containing the median value of the attributes
      */
     static CalcResult calculateMedian(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection,
-            Expression expression)
+            FeatureCollection<? extends FeatureType, ? extends Feature> collection, Expression expression)
             throws IllegalFilterException, IOException {
         MedianVisitor medianVisitor = new MedianVisitor(expression);
         collection.accepts(medianVisitor, null);
@@ -82,8 +77,8 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
     /**
      * The provided arguments are evaulated with respect to the FeatureCollection.
      *
-     * <p>For an aggregate function (like median) please use the WFS mandated XPath syntax to refer
-     * to featureMember content.
+     * <p>For an aggregate function (like median) please use the WFS mandated XPath syntax to refer to featureMember
+     * content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
@@ -91,9 +86,8 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.geotools.api.filter.expression.Expression expr = args.get(0);
-        expr =
-                (org.geotools.api.filter.expression.Expression)
-                        expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
+        expr = (org.geotools.api.filter.expression.Expression)
+                expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);
     }

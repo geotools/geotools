@@ -81,8 +81,7 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         if (unset) {
             return null;
         }
-        LinePlacement linePlacement =
-                sf.linePlacement(offset, initialGap, gap, repeated, aligned, generalizedLine);
+        LinePlacement linePlacement = sf.linePlacement(offset, initialGap, gap, repeated, aligned, generalizedLine);
         if (parent == null) {
             reset();
         }

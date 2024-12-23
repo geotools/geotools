@@ -58,28 +58,16 @@ public interface FileConstants {
     /** <code>COLUMN_MANDATORY</code> stores code for mandatory column. */
     public static final String COLUMN_MANDATORY = "M";
 
-    /**
-     * <code>COLUMN_MANDATORY_AT_LEVEL_0</code> stores code for mandatory column at topology level
-     * 0.
-     */
+    /** <code>COLUMN_MANDATORY_AT_LEVEL_0</code> stores code for mandatory column at topology level 0. */
     public static final String COLUMN_MANDATORY_AT_LEVEL_0 = "M0";
 
-    /**
-     * <code>COLUMN_MANDATORY_AT_LEVEL_1</code> stores code for mandatory column at topology level
-     * 1.
-     */
+    /** <code>COLUMN_MANDATORY_AT_LEVEL_1</code> stores code for mandatory column at topology level 1. */
     public static final String COLUMN_MANDATORY_AT_LEVEL_1 = "M1";
 
-    /**
-     * <code>COLUMN_MANDATORY_AT_LEVEL_2</code> stores code for mandatory column at topology level
-     * 2.
-     */
+    /** <code>COLUMN_MANDATORY_AT_LEVEL_2</code> stores code for mandatory column at topology level 2. */
     public static final String COLUMN_MANDATORY_AT_LEVEL_2 = "M2";
 
-    /**
-     * <code>COLUMN_MANDATORY_AT_LEVEL_3</code> stores code for mandatory column at topology level
-     * 3.
-     */
+    /** <code>COLUMN_MANDATORY_AT_LEVEL_3</code> stores code for mandatory column at topology level 3. */
     public static final String COLUMN_MANDATORY_AT_LEVEL_3 = "M3";
 
     /** <code>COLUMN_MANDATORY_IF_TILES</code> stores code for mandatory column if tiles exists. */

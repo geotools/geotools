@@ -22,31 +22,27 @@ import org.geotools.api.temporal.TemporalReferenceSystem;
 import org.geotools.util.Utilities;
 
 /**
- * A data type that shall be used for identifying temporal position within a temporal coordinate
- * system.
+ * A data type that shall be used for identifying temporal position within a temporal coordinate system.
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
-public class DefaultTemporalCoordinate extends DefaultTemporalPosition
-        implements TemporalCoordinate {
+public class DefaultTemporalCoordinate extends DefaultTemporalPosition implements TemporalCoordinate {
 
     /**
-     * This is the distance from the scale origin expressed as a multiple of the standard interval
-     * associated with the temporal coordinate system.
+     * This is the distance from the scale origin expressed as a multiple of the standard interval associated with the
+     * temporal coordinate system.
      */
     private Number coordinateValue;
 
     public DefaultTemporalCoordinate(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number coordinateValue) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue) {
         super(frame, indeterminatePosition);
         this.coordinateValue = coordinateValue;
     }
 
     /**
-     * Returns the distance from the scale origin expressed as a multiple of the standard interval
-     * associated with the temporal coordinate system.
+     * Returns the distance from the scale origin expressed as a multiple of the standard interval associated with the
+     * temporal coordinate system.
      *
      * @todo Should we return a primitive type?
      */

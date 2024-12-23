@@ -23,9 +23,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 /**
  * Defines required attributes for Annotations.
  *
- * <p>Annotations represent a text based geographic feature. The geometry stored in the feature
- * indicates where the text should be drawn and the attribute indicated by the {@link
- * #ANNOTATION_ATTRIBUTE_NAME} attribute holds the text to be displayed for the feature.
+ * <p>Annotations represent a text based geographic feature. The geometry stored in the feature indicates where the text
+ * should be drawn and the attribute indicated by the {@link #ANNOTATION_ATTRIBUTE_NAME} attribute holds the text to be
+ * displayed for the feature.
  *
  * <p>Example:
  *
@@ -46,8 +46,8 @@ public class AnnotationFeatureType {
     public static final SimpleFeatureType ANNOTATION;
 
     /**
-     * The attribute name used to store the attribute name containing the annotation text. This is
-     * basically just a level of redirection.
+     * The attribute name used to store the attribute name containing the annotation text. This is basically just a
+     * level of redirection.
      */
     public static final String ANNOTATION_ATTRIBUTE_NAME = "annotation_attribute_name";
 

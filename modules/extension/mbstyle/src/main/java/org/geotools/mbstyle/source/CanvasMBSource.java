@@ -45,8 +45,8 @@ public class CanvasMBSource extends MediaMBSource {
     }
 
     /**
-     * (Optional) Defaults to true. Whether the canvas source is animated. If the canvas is static,
-     * animate should be set to false to improve performance.
+     * (Optional) Defaults to true. Whether the canvas source is animated. If the canvas is static, animate should be
+     * set to false to improve performance.
      *
      * @return Boolean for whether the source is animated, defaulting to true.
      */

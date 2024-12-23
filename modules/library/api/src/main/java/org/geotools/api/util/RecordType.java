@@ -13,17 +13,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The type definition of a {@linkplain Record record}. A {@code RecordType} defines dynamically
- * constructed data type. This interface has methods for data access, but no methods to dynamically
- * add members. This approach ensures that once a {@code RecordType} is constructed, it is
- * immutable.
+ * The type definition of a {@linkplain Record record}. A {@code RecordType} defines dynamically constructed data type.
+ * This interface has methods for data access, but no methods to dynamically add members. This approach ensures that
+ * once a {@code RecordType} is constructed, it is immutable.
  *
- * <p>A {@code RecordType} is {@linkplain #getTypeName identified} by a {@link TypeName}. It
- * contains an arbitrary amount of {@linkplain #getAttributeTypes attribute types} which are also
- * identified by {@link TypeName}. A {@code RecordType} may therefore contain another {@code
- * RecordType} as a member. This is a limited association because a named member may be defined to
- * be a single instance of some externally defined {@code RecordType}. This does not permit
- * aggregation of any kind.
+ * <p>A {@code RecordType} is {@linkplain #getTypeName identified} by a {@link TypeName}. It contains an arbitrary
+ * amount of {@linkplain #getAttributeTypes attribute types} which are also identified by {@link TypeName}. A
+ * {@code RecordType} may therefore contain another {@code RecordType} as a member. This is a limited association
+ * because a named member may be defined to be a single instance of some externally defined {@code RecordType}. This
+ * does not permit aggregation of any kind.
  *
  * <p>This class can be think as the equivalent of the Java {@link Class} class.
  *
@@ -35,9 +33,9 @@ import java.util.Set;
  */
 public interface RecordType {
     /**
-     * Returns the name that identifies this record type. If this {@code RecordType} is contained in
-     * a {@linkplain RecordSchema record schema}, then the record type name should be a valid in the
-     * {@linkplain NameSpace name space} of the record schema:
+     * Returns the name that identifies this record type. If this {@code RecordType} is contained in a
+     * {@linkplain RecordSchema record schema}, then the record type name should be a valid in the {@linkplain NameSpace
+     * name space} of the record schema:
      *
      * <blockquote>
      *
@@ -56,44 +54,40 @@ public interface RecordType {
     RecordSchema getContainer();
 
     /**
-     * Returns the dictionary of all (<var>name</var>, <var>type</var>) pairs in this record type.
-     * The dictionary shall be {@linkplain java.util.Collections#unmodifiableMap unmodifiable}.
+     * Returns the dictionary of all (<var>name</var>, <var>type</var>) pairs in this record type. The dictionary shall
+     * be {@linkplain java.util.Collections#unmodifiableMap unmodifiable}.
      *
      * @see Record#getAttributes
      */
     Map<MemberName, TypeName> getAttributeTypes();
 
     /**
-     * Returns the set of attribute names defined in this {@code RecordType}'s dictionary. If there
-     * are no attributes, this method returns the empty set. This method is functionally equivalent
-     * to <code>{@linkplain #getAttributeTypes()}.{@linkplain Map#keySet() keySet()}</code>.
+     * Returns the set of attribute names defined in this {@code RecordType}'s dictionary. If there are no attributes,
+     * this method returns the empty set. This method is functionally equivalent to <code>
+     * {@linkplain #getAttributeTypes()}.{@linkplain Map#keySet() keySet()}</code>.
      *
-     * <p>The {@linkplain NameSpace name space} associated with a {@code RecordType} contains only
-     * members of this {@code RecordType}. There is no potential for conflict with subpackages.
+     * <p>The {@linkplain NameSpace name space} associated with a {@code RecordType} contains only members of this
+     * {@code RecordType}. There is no potential for conflict with subpackages.
      *
      * <p>This method can be think as the equivalent of the Java {@link Class#getFields()} method.
      */
     Set<MemberName> getMembers();
 
     /**
-     * Looks up the provided attribute name and returns the associated type name. If the attribute
-     * name is not defined in this record type, then this method returns {@code null}. This method
-     * is functionnaly equivalent to <code>
+     * Looks up the provided attribute name and returns the associated type name. If the attribute name is not defined
+     * in this record type, then this method returns {@code null}. This method is functionnaly equivalent to <code>
      * {@linkplain #getAttributeTypes()}.{@linkplain Map#get get}(name)</code>.
      *
-     * <p>This method can be think as the equivalent of the Java {@link Class#getField(String)}
-     * method.
+     * <p>This method can be think as the equivalent of the Java {@link Class#getField(String)} method.
      *
      * @see Record#locate
-     * @todo Does it make sense given that {@link MemberName#getAttributeType} already provides this
-     *     information?
+     * @todo Does it make sense given that {@link MemberName#getAttributeType} already provides this information?
      */
     TypeName locate(MemberName name);
 
     /**
-     * Determines if the specified record is compatible with this record type. This method returns
-     * {@code true} if the specified {@code record} argument is non-null and the following condition
-     * holds:
+     * Determines if the specified record is compatible with this record type. This method returns {@code true} if the
+     * specified {@code record} argument is non-null and the following condition holds:
      *
      * <p>
      *
@@ -104,8 +98,7 @@ public interface RecordType {
      *   <li>Any other implementation-specific conditions.
      * </ul>
      *
-     * <p>This method can be think as the equivalent of the Java {@link Class#isInstance(Object)}
-     * method.
+     * <p>This method can be think as the equivalent of the Java {@link Class#isInstance(Object)} method.
      */
     boolean isInstance(Record record);
 }

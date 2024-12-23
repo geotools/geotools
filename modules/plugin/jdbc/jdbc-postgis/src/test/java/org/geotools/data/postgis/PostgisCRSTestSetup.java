@@ -60,18 +60,14 @@ public class PostgisCRSTestSetup extends JDBCDelegatingTestSetup {
                             + "AXIS[\"Northing\",SOUTH],AUTHORITY[\"ESRI\",\"102017\"]]",
                     "+proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs");
         } catch (Exception e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "We were unable to add test data to spatial_ref_sys, and tests might fail",
-                    e);
+            LOGGER.log(Level.WARNING, "We were unable to add test data to spatial_ref_sys, and tests might fail", e);
         }
     }
 
     private void insertTestCRS(int srid, String auth, String wkt, String proj) throws Exception {
-        run(
-                String.format(
-                        "INSERT INTO SPATIAL_REF_SYS (srid, auth_name, auth_srid, srtext, proj4text)"
-                                + " VALUES (%d,'%s',%d,'%s','%s') ON CONFLICT DO NOTHING",
-                        srid, auth, srid, wkt, proj));
+        run(String.format(
+                "INSERT INTO SPATIAL_REF_SYS (srid, auth_name, auth_srid, srtext, proj4text)"
+                        + " VALUES (%d,'%s',%d,'%s','%s') ON CONFLICT DO NOTHING",
+                srid, auth, srid, wkt, proj));
     }
 }

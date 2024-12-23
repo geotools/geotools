@@ -21,11 +21,9 @@ public class DB2LobTestSetup extends JDBCLobTestSetup {
                                     + ".\"testlob\" (\"fid\" int not null , \"blob_field\" BLOB(32) , \"clob_field\" CLOB(32), \"raw_field\" BLOB(32), PRIMARY KEY(\"fid\"))")
                     .execute();
 
-            try (PreparedStatement ps =
-                    con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"testlob\" (\"fid\",\"blob_field\",\"clob_field\",\"raw_field\")  VALUES (?,?,?,?)")) {
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO "
+                    + DB2TestUtil.SCHEMA_QUOTED
+                    + ".\"testlob\" (\"fid\",\"blob_field\",\"clob_field\",\"raw_field\")  VALUES (?,?,?,?)")) {
                 ps.setInt(1, 0);
                 ps.setBytes(2, new byte[] {1, 2, 3, 4, 5});
                 ps.setString(3, "small clob");

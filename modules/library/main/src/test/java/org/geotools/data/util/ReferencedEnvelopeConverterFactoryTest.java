@@ -43,46 +43,34 @@ public class ReferencedEnvelopeConverterFactoryTest {
 
     @Test
     public void testReferencedEnvelopeToString() throws Exception {
-        String text =
-                factory.createConverter(ReferencedEnvelope.class, String.class, null)
-                        .convert(
-                                new ReferencedEnvelope(
-                                        -180, 180, -90, 90, DefaultGeographicCRS.WGS84),
-                                String.class);
+        String text = factory.createConverter(ReferencedEnvelope.class, String.class, null)
+                .convert(new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84), String.class);
         Assert.assertNotNull(text);
-        Assert.assertEquals(
-                "[-180.0 : 180.0, -90.0 : 90.0] {" + DefaultGeographicCRS.WGS84.toWKT() + "}",
-                text);
+        Assert.assertEquals("[-180.0 : 180.0, -90.0 : 90.0] {" + DefaultGeographicCRS.WGS84.toWKT() + "}", text);
     }
 
     @Test
     public void testStringToReferencedEnvelope() throws Exception {
-        Envelope envelope =
-                factory.createConverter(String.class, ReferencedEnvelope.class, null)
-                        .convert(
-                                "[-180.0 : 180.0, -90.0 : 90.0] {"
-                                        + DefaultGeographicCRS.WGS84.toWKT()
-                                        + "}",
-                                ReferencedEnvelope.class);
+        Envelope envelope = factory.createConverter(String.class, ReferencedEnvelope.class, null)
+                .convert(
+                        "[-180.0 : 180.0, -90.0 : 90.0] {" + DefaultGeographicCRS.WGS84.toWKT() + "}",
+                        ReferencedEnvelope.class);
 
-        Assert.assertEquals(
-                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84), envelope);
+        Assert.assertEquals(new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84), envelope);
     }
 
     @Test
     public void testReferencedEnvelopeConverterFactory() {
 
         // make sure the class is registered and assigned
-        Set<ConverterFactory> set =
-                Converters.getConverterFactories(String.class, ReferencedEnvelope.class);
+        Set<ConverterFactory> set = Converters.getConverterFactories(String.class, ReferencedEnvelope.class);
         assertNotNull(set);
         assertFalse(set.isEmpty());
         assertEquals(set.size(), 1);
         assertSame(set.iterator().next().getClass(), ReferencedEnvelopeConverterFactory.class);
 
         // make sure the class is registered also for the inverse process
-        Set<ConverterFactory> set1 =
-                Converters.getConverterFactories(ReferencedEnvelope.class, String.class);
+        Set<ConverterFactory> set1 = Converters.getConverterFactories(ReferencedEnvelope.class, String.class);
         assertNotNull(set1);
         assertFalse(set1.isEmpty());
         assertEquals(set1.size(), 1);

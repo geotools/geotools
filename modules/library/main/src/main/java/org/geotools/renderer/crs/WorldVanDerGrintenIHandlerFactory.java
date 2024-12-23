@@ -25,9 +25,8 @@ import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.WorldVanDerGrintenI;
 
 /**
- * Returns a {@link ProjectionHandler} for the {@link WorldVanDerGrintenI} projection that will cut
- * geometries going above or below the poles, this projection will fail with latitudes out of range
- * (but not longitudes)
+ * Returns a {@link ProjectionHandler} for the {@link WorldVanDerGrintenI} projection that will cut geometries going
+ * above or below the poles, this projection will fail with latitudes out of range (but not longitudes)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -35,24 +34,15 @@ public class WorldVanDerGrintenIHandlerFactory implements ProjectionHandlerFacto
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
         if (renderingEnvelope == null) {
             return null;
         }
-        MapProjection mapProjection =
-                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
         if (mapProjection instanceof WorldVanDerGrintenI) {
             ReferencedEnvelope validArea =
-                    new ReferencedEnvelope(
-                            -Integer.MAX_VALUE,
-                            Integer.MAX_VALUE,
-                            -90,
-                            90,
-                            DefaultGeographicCRS.WGS84);
+                    new ReferencedEnvelope(-Integer.MAX_VALUE, Integer.MAX_VALUE, -90, 90, DefaultGeographicCRS.WGS84);
 
             return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
         }

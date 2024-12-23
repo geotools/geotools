@@ -24,8 +24,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
 /**
- * A ellipsoid which is spherical. This ellipsoid implements a faster {@link #orthodromicDistance}
- * method.
+ * A ellipsoid which is spherical. This ellipsoid implements a faster {@link #orthodromicDistance} method.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -43,21 +42,13 @@ final class Spheroid extends DefaultEllipsoid {
      * @param ivfDefinitive {@code true} if the inverse flattening is definitive.
      * @param unit The units of the radius value.
      */
-    protected Spheroid(
-            Map<String, ?> properties, double radius, boolean ivfDefinitive, Unit<Length> unit) {
-        super(
-                properties,
-                check("radius", radius),
-                radius,
-                Double.POSITIVE_INFINITY,
-                ivfDefinitive,
-                unit);
+    protected Spheroid(Map<String, ?> properties, double radius, boolean ivfDefinitive, Unit<Length> unit) {
+        super(properties, check("radius", radius), radius, Double.POSITIVE_INFINITY, ivfDefinitive, unit);
     }
 
     /**
-     * Returns the orthodromic distance between two geographic coordinates. The orthodromic distance
-     * is the shortest distance between two points on a sphere's surface. The orthodromic path is
-     * always on a great circle.
+     * Returns the orthodromic distance between two geographic coordinates. The orthodromic distance is the shortest
+     * distance between two points on a sphere's surface. The orthodromic path is always on a great circle.
      *
      * @param x1 Longitude of first point (in decimal degrees).
      * @param y1 Latitude of first point (in decimal degrees).
@@ -90,8 +81,7 @@ final class Spheroid extends DefaultEllipsoid {
          */
         try {
             double delta;
-            assert (delta = Math.abs(getElliposoidalDistance(x1, y1, x2, y2) - distance))
-                            < getSemiMajorAxis() / 1E+9
+            assert (delta = Math.abs(getElliposoidalDistance(x1, y1, x2, y2) - distance)) < getSemiMajorAxis() / 1E+9
                     : delta;
         } catch (ArithmeticException exception) {
             // The ellipsoidal model do not converge. Give up the assertion test.

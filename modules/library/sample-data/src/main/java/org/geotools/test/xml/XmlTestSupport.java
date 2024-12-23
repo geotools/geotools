@@ -76,17 +76,16 @@ public abstract class XmlTestSupport {
     }
 
     /**
-     * Simply a wrapper around {@link EvaluateXPathMatcher#hasXPath(String, Matcher)} that sets the
-     * namespaces here, so that by omitting them from the assertions used in the tests, those
-     * assertions are more compact and hopefully more readable.
+     * Simply a wrapper around {@link EvaluateXPathMatcher#hasXPath(String, Matcher)} that sets the namespaces here, so
+     * that by omitting them from the assertions used in the tests, those assertions are more compact and hopefully more
+     * readable.
      *
      * @param xPath the xpath to evaluate
      * @param valueMatcher the result of the xpath evaluation to match
      * @return an XPath Matcher
      */
     protected EvaluateXPathMatcher hasXPath(String xPath, Matcher<String> valueMatcher) {
-        EvaluateXPathMatcher evaluateXPathMatcher =
-                EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
+        EvaluateXPathMatcher evaluateXPathMatcher = EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
         return evaluateXPathMatcher.withNamespaceContext(getNamespaces());
     }
 

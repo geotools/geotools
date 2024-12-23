@@ -34,30 +34,25 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Static utilities methods. Those methods operate on geometric shapes from the {@code
- * java.awt.geom} package.
+ * Static utilities methods. Those methods operate on geometric shapes from the {@code java.awt.geom} package.
  *
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class ShapeUtilities {
-    /**
-     * Valeur limite pour détecter si des points sont colinéaires ou si des coordonnées sont
-     * identiques.
-     */
+    /** Valeur limite pour détecter si des points sont colinéaires ou si des coordonnées sont identiques. */
     private static final double EPS = 1E-6;
 
     /**
-     * Constante pour les calculs de paraboles. Cette constante indique que l'axe des <var>x</var>
-     * de la parabole doit être parallèle à la droite joignant les points P0 et P2.
+     * Constante pour les calculs de paraboles. Cette constante indique que l'axe des <var>x</var> de la parabole doit
+     * être parallèle à la droite joignant les points P0 et P2.
      */
     public static final int PARALLEL = 0;
 
     /**
-     * Constante pour les calculs de paraboles. Cette constante indique que l'axe des <var>x</var>
-     * de la parabole doit être horizontale, quelle que soit la pente de la droite joignant les
-     * points P0 et P2.
+     * Constante pour les calculs de paraboles. Cette constante indique que l'axe des <var>x</var> de la parabole doit
+     * être horizontale, quelle que soit la pente de la droite joignant les points P0 et P2.
      */
     public static final int HORIZONTAL = 1;
 
@@ -65,27 +60,24 @@ public final class ShapeUtilities {
     private ShapeUtilities() {}
 
     /**
-     * Retourne le point d'intersection de deux segments de droites. Cette méthode ne prolonge pas
-     * les segments de droites à l'infini. Si les deux segments ne s'interceptent pas (soit par ce
-     * qu'ils sont parallèles, ou soit parce qu'ils ne se prolongent pas assez loin pour se
-     * toucher), alors cette méthode retourne {@code null}.
+     * Retourne le point d'intersection de deux segments de droites. Cette méthode ne prolonge pas les segments de
+     * droites à l'infini. Si les deux segments ne s'interceptent pas (soit par ce qu'ils sont parallèles, ou soit parce
+     * qu'ils ne se prolongent pas assez loin pour se toucher), alors cette méthode retourne {@code null}.
      *
      * @param a Première ligne.
      * @param b Deuxième ligne.
-     * @return Si une intersection fut trouvée, les coordonnées de cette intersection. Si aucune
-     *     intersection n'a été trouvée, alors cette méthode retourne {@code null}.
+     * @return Si une intersection fut trouvée, les coordonnées de cette intersection. Si aucune intersection n'a été
+     *     trouvée, alors cette méthode retourne {@code null}.
      */
     public static Point2D intersectionPoint(final Line2D a, final Line2D b) {
         return intersectionPoint(
-                a.getX1(), a.getY1(), a.getX2(), a.getY2(), b.getX1(), b.getY1(), b.getX2(),
-                b.getY2());
+                a.getX1(), a.getY1(), a.getX2(), a.getY2(), b.getX1(), b.getY1(), b.getX2(), b.getY2());
     }
 
     /**
-     * Retourne le point d'intersection de deux segments de droites. Cette méthode ne prolonge pas
-     * les segments de droites à l'infini. Si les deux segments ne s'interceptent pas (soit par ce
-     * qu'ils sont parallèles, ou soit parce qu'ils ne se prolongent pas assez loin pour se
-     * toucher), alors cette méthode retourne {@code null}.
+     * Retourne le point d'intersection de deux segments de droites. Cette méthode ne prolonge pas les segments de
+     * droites à l'infini. Si les deux segments ne s'interceptent pas (soit par ce qu'ils sont parallèles, ou soit parce
+     * qu'ils ne se prolongent pas assez loin pour se toucher), alors cette méthode retourne {@code null}.
      *
      * @param ax1 <var>x</var> value of the first point on the first line.
      * @param ay1 <var>y</var> value of the first point on the first line.
@@ -95,8 +87,8 @@ public final class ShapeUtilities {
      * @param by1 <var>y</var> value of the first point on the second line.
      * @param bx2 <var>x</var> value of the last point on the second line.
      * @param by2 <var>y</var> value of the last point on the second line.
-     * @return Si une intersection fut trouvée, les coordonnées de cette intersection. Si aucune
-     *     intersection n'a été trouvée, alors cette méthode retourne {@code null}.
+     * @return Si une intersection fut trouvée, les coordonnées de cette intersection. Si aucune intersection n'a été
+     *     trouvée, alors cette méthode retourne {@code null}.
      */
     public static Point2D intersectionPoint(
             final double ax1,
@@ -125,29 +117,24 @@ public final class ShapeUtilities {
          * d'erreurs d'arrondissement lorsqu'un segment est vertical ou horizontal. Les
          * '!' qui suivent sont importants pour un fonctionnement correct avec NaN.
          */
-        if (ax2 != 0 && !(ax2 < 0 ? (x <= ax1 && x >= ax1 + ax2) : (x >= ax1 && x <= ax1 + ax2)))
-            return null;
-        if (bx2 != 0 && !(bx2 < 0 ? (x <= bx1 && x >= bx1 + bx2) : (x >= bx1 && x <= bx1 + bx2)))
-            return null;
-        if (ay2 != 0 && !(ay2 < 0 ? (y <= ay1 && y >= ay1 + ay2) : (y >= ay1 && y <= ay1 + ay2)))
-            return null;
-        if (by2 != 0 && !(by2 < 0 ? (y <= by1 && y >= by1 + by2) : (y >= by1 && y <= by1 + by2)))
-            return null;
+        if (ax2 != 0 && !(ax2 < 0 ? (x <= ax1 && x >= ax1 + ax2) : (x >= ax1 && x <= ax1 + ax2))) return null;
+        if (bx2 != 0 && !(bx2 < 0 ? (x <= bx1 && x >= bx1 + bx2) : (x >= bx1 && x <= bx1 + bx2))) return null;
+        if (ay2 != 0 && !(ay2 < 0 ? (y <= ay1 && y >= ay1 + ay2) : (y >= ay1 && y <= ay1 + ay2))) return null;
+        if (by2 != 0 && !(by2 < 0 ? (y <= by1 && y >= by1 + by2) : (y >= by1 && y <= by1 + by2))) return null;
         return new Point2D.Double(x, y);
     }
 
     /**
-     * Retourne le point sur le segment de droite {@code line} qui se trouve le plus près du point
-     * {@code point} spécifié. Appellons {@code result} le point retourné par cette méthode. Il est
-     * garanti que {@code result} répond aux conditions suivantes (aux erreurs d'arrondissements
-     * près):
+     * Retourne le point sur le segment de droite {@code line} qui se trouve le plus près du point {@code point}
+     * spécifié. Appellons {@code result} le point retourné par cette méthode. Il est garanti que {@code result} répond
+     * aux conditions suivantes (aux erreurs d'arrondissements près):
      *
      * <ul>
-     *   <li>{@code result} est un point du segment de droite {@code line}. Il ne trouve pas au delà
-     *       des points extrêmes P1 et P2 de ce segment.
-     *   <li>La distance entre les points {@code result} et {@code point} est la plus courte
-     *       distance possible pour les points qui respectent la condition précédente. Cette
-     *       distance peut être calculée par {@code point.distance(result)}.
+     *   <li>{@code result} est un point du segment de droite {@code line}. Il ne trouve pas au delà des points extrêmes
+     *       P1 et P2 de ce segment.
+     *   <li>La distance entre les points {@code result} et {@code point} est la plus courte distance possible pour les
+     *       points qui respectent la condition précédente. Cette distance peut être calculée par
+     *       {@code point.distance(result)}.
      * </ul>
      *
      * @param segment The line on which to search for a point.
@@ -157,26 +144,20 @@ public final class ShapeUtilities {
      */
     public static Point2D nearestColinearPoint(final Line2D segment, final Point2D point) {
         return nearestColinearPoint(
-                segment.getX1(),
-                segment.getY1(),
-                segment.getX2(),
-                segment.getY2(),
-                point.getX(),
-                point.getY());
+                segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point.getX(), point.getY());
     }
 
     /**
-     * Retourne le point sur le segment de droite {@code (x1,y1)-(x2,y2)} qui se trouve le plus près
-     * du point {@code (x,y)} spécifié. Appellons {@code result} le point retourné par cette
-     * méthode. Il est garanti que {@code result} répond aux conditions suivantes (aux erreurs
-     * d'arrondissements près):
+     * Retourne le point sur le segment de droite {@code (x1,y1)-(x2,y2)} qui se trouve le plus près du point
+     * {@code (x,y)} spécifié. Appellons {@code result} le point retourné par cette méthode. Il est garanti que
+     * {@code result} répond aux conditions suivantes (aux erreurs d'arrondissements près):
      *
      * <ul>
-     *   <li>{@code result} est un point du segment de droite {@code (x1,y1)-(x2,y2)}. Il ne trouve
-     *       pas au delà des points extrêmes {@code (x1,y1)} et {@code (x2,y2)} de ce segment.
-     *   <li>La distance entre les points {@code result} et {@code (x,y)} est la plus courte
-     *       distance possible pour les points qui respectent la condition précédente. Cette
-     *       distance peut être calculée par <code>new&nbsp;Point2D.Double(x,y).distance(result)
+     *   <li>{@code result} est un point du segment de droite {@code (x1,y1)-(x2,y2)}. Il ne trouve pas au delà des
+     *       points extrêmes {@code (x1,y1)} et {@code (x2,y2)} de ce segment.
+     *   <li>La distance entre les points {@code result} et {@code (x,y)} est la plus courte distance possible pour les
+     *       points qui respectent la condition précédente. Cette distance peut être calculée par <code>
+     *       new&nbsp;Point2D.Double(x,y).distance(result)
      *       </code>.
      * </ul>
      *
@@ -190,12 +171,7 @@ public final class ShapeUtilities {
      * @see #colinearPoint(double,double , double,double , double,double , double)
      */
     public static Point2D nearestColinearPoint(
-            final double x1,
-            final double y1,
-            final double x2,
-            final double y2,
-            double x,
-            double y) {
+            final double x1, final double y1, final double x2, final double y2, double x, double y) {
         final double slope = (y2 - y1) / (x2 - x1);
         if (!Double.isInfinite(slope)) {
             final double y0 = (y2 - slope * x2);
@@ -222,22 +198,20 @@ public final class ShapeUtilities {
     }
 
     /**
-     * Retourne le point sur le segment de droite {@code line} qui se trouve à la distance {@code
-     * distance} spécifiée du point {@code point}. Appellons {@code result} le point retourné par
-     * cette méthode. Si {@code result} est non-nul, alors il est garanti qu'il répond aux
-     * conditions suivantes (aux erreurs d'arrondissements près):
+     * Retourne le point sur le segment de droite {@code line} qui se trouve à la distance {@code distance} spécifiée du
+     * point {@code point}. Appellons {@code result} le point retourné par cette méthode. Si {@code result} est non-nul,
+     * alors il est garanti qu'il répond aux conditions suivantes (aux erreurs d'arrondissements près):
      *
      * <ul>
-     *   <li>{@code result} est un point du segment de droite {@code line}. Il ne trouve pas au delà
-     *       des points extrêmes P1 et P2 de ce segment.
-     *   <li>La distance entre les points {@code result} et {@code point} est exactement {@code
-     *       distance} (aux erreurs d'arrondissements près). Cette distance peut être calculée par
-     *       {@code point.distance(result)}.
+     *   <li>{@code result} est un point du segment de droite {@code line}. Il ne trouve pas au delà des points extrêmes
+     *       P1 et P2 de ce segment.
+     *   <li>La distance entre les points {@code result} et {@code point} est exactement {@code distance} (aux erreurs
+     *       d'arrondissements près). Cette distance peut être calculée par {@code point.distance(result)}.
      * </ul>
      *
-     * Si aucun point ne peut répondre à ces conditions, alors cette méthode retourne {@code null}.
-     * Si deux points peuvent répondre à ces conditions, alors par convention cette méthode retourne
-     * le point le plus près du point {@code line.getP1()}.
+     * Si aucun point ne peut répondre à ces conditions, alors cette méthode retourne {@code null}. Si deux points
+     * peuvent répondre à ces conditions, alors par convention cette méthode retourne le point le plus près du point
+     * {@code line.getP1()}.
      *
      * @param line The line on which to searh for a point.
      * @param point A point close to the given line.
@@ -247,32 +221,24 @@ public final class ShapeUtilities {
      */
     public static Point2D colinearPoint(Line2D line, Point2D point, double distance) {
         return colinearPoint(
-                line.getX1(),
-                line.getY1(),
-                line.getX2(),
-                line.getY2(),
-                point.getX(),
-                point.getY(),
-                distance);
+                line.getX1(), line.getY1(), line.getX2(), line.getY2(), point.getX(), point.getY(), distance);
     }
 
     /**
-     * Retourne le point sur le segment de droite {@code (x1,y1)-(x2,y2)} qui se trouve à la
-     * distance {@code distance} spécifiée du point {@code point}. Appellons {@code result} le point
-     * retourné par cette méthode. Si {@code result} est non-nul, alors il est garantit qu'il répond
-     * aux conditions suivantes (aux erreurs d'arrondissements près):
+     * Retourne le point sur le segment de droite {@code (x1,y1)-(x2,y2)} qui se trouve à la distance {@code distance}
+     * spécifiée du point {@code point}. Appellons {@code result} le point retourné par cette méthode. Si {@code result}
+     * est non-nul, alors il est garantit qu'il répond aux conditions suivantes (aux erreurs d'arrondissements près):
      *
      * <ul>
-     *   <li>{@code result} est un point du segment de droite {@code (x1,y1)-(x2,y2)}. Il ne trouve
-     *       pas au delà des points extrêmes {@code (x1,y1)} et {@code (x2,y2)} de ce segment.
-     *   <li>La distance entre les points {@code result} et {@code point} est exactement {@code
-     *       distance} (aux erreurs d'arrondissements près). Cette distance peut être calculée par
-     *       {@code point.distance(result)}.
+     *   <li>{@code result} est un point du segment de droite {@code (x1,y1)-(x2,y2)}. Il ne trouve pas au delà des
+     *       points extrêmes {@code (x1,y1)} et {@code (x2,y2)} de ce segment.
+     *   <li>La distance entre les points {@code result} et {@code point} est exactement {@code distance} (aux erreurs
+     *       d'arrondissements près). Cette distance peut être calculée par {@code point.distance(result)}.
      * </ul>
      *
-     * Si aucun point ne peut répondre à ces conditions, alors cette méthode retourne {@code null}.
-     * Si deux points peuvent répondre à ces conditions, alors par convention cette méthode retourne
-     * le point le plus près du point {@code (x1,y1)}.
+     * Si aucun point ne peut répondre à ces conditions, alors cette méthode retourne {@code null}. Si deux points
+     * peuvent répondre à ces conditions, alors par convention cette méthode retourne le point le plus près du point
+     * {@code (x1,y1)}.
      *
      * @param x1 <var>x</var> value of the first point on the line.
      * @param y1 <var>y</var> value of the first point on the line.
@@ -343,53 +309,44 @@ public final class ShapeUtilities {
     }
 
     /**
-     * Retourne une courbe quadratique passant par les trois points spécifiés. Il peut exister une
-     * infinité de courbes quadratiques passant par trois points. On peut voir les choses en disant
-     * qu'une courbe quadratique correspond à une parabole produite par une équation de la forme
-     * <code>y=ax²+bx+c</code>, mais que l'axe des <var>x</var> de cette équation n'est pas
-     * nécessairement horizontal. La direction de cet axe des <var>x</var> dépend du paramètre
-     * {@code orientation} spécifié à cette méthode. La valeur {@link #HORIZONTAL} signifie que
-     * l'axe des <var>x</var> de la parabole sera toujours horizontal. La courbe quadratique
-     * produite ressemblera alors à une parabole classique telle qu'on en voit dans les ouvrages de
-     * mathématiques élémentaires. La valeur {@link #PARALLEL} indique plutôt que l'axe des
-     * <var>x</var> de la parabole doit être parallèle à la droite joignant les points {@code P0} et
-     * {@code P2}. Ce dernier type produira le même résultat que {@link #HORIZONTAL} si {@code
-     * P0.y==P2.y}.
+     * Retourne une courbe quadratique passant par les trois points spécifiés. Il peut exister une infinité de courbes
+     * quadratiques passant par trois points. On peut voir les choses en disant qu'une courbe quadratique correspond à
+     * une parabole produite par une équation de la forme <code>y=ax²+bx+c</code>, mais que l'axe des <var>x</var> de
+     * cette équation n'est pas nécessairement horizontal. La direction de cet axe des <var>x</var> dépend du paramètre
+     * {@code orientation} spécifié à cette méthode. La valeur {@link #HORIZONTAL} signifie que l'axe des <var>x</var>
+     * de la parabole sera toujours horizontal. La courbe quadratique produite ressemblera alors à une parabole
+     * classique telle qu'on en voit dans les ouvrages de mathématiques élémentaires. La valeur {@link #PARALLEL}
+     * indique plutôt que l'axe des <var>x</var> de la parabole doit être parallèle à la droite joignant les points
+     * {@code P0} et {@code P2}. Ce dernier type produira le même résultat que {@link #HORIZONTAL} si
+     * {@code P0.y==P2.y}.
      *
      * @param P0 Premier point de la courbe quadratique.
-     * @param P1 Point par lequel la courbe quadratique doit passer. Il n'est pas obligatoire que ce
-     *     point soit situé entre {@code P0} et {@code P1}. Toutefois, il ne doit pas être
-     *     colinéaire avec {@code P0} et {@code P1}.
+     * @param P1 Point par lequel la courbe quadratique doit passer. Il n'est pas obligatoire que ce point soit situé
+     *     entre {@code P0} et {@code P1}. Toutefois, il ne doit pas être colinéaire avec {@code P0} et {@code P1}.
      * @param P2 Dernier point de la courbe quadratique.
      * @param orientation Orientation de l'axe des <var>x</var> de la parabole: {@link #PARALLEL} ou
      *     {@link #HORIZONTAL}.
-     * @return Une courbe quadratique passant par les trois points spécifiés. La courbe commencera
-     *     au point {@code P0} et se terminera au point {@code P2}. Si deux points ont des
-     *     coordonnées presque identiques, ou si les trois points sont colinéaires, alors cette
-     *     méthode retourne {@code null}.
-     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des
-     *     constantes valides.
+     * @return Une courbe quadratique passant par les trois points spécifiés. La courbe commencera au point {@code P0}
+     *     et se terminera au point {@code P2}. Si deux points ont des coordonnées presque identiques, ou si les trois
+     *     points sont colinéaires, alors cette méthode retourne {@code null}.
+     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des constantes valides.
      */
-    public static QuadCurve2D fitParabol(
-            final Point2D P0, final Point2D P1, final Point2D P2, final int orientation)
+    public static QuadCurve2D fitParabol(final Point2D P0, final Point2D P1, final Point2D P2, final int orientation)
             throws IllegalArgumentException {
-        return fitParabol(
-                P0.getX(), P0.getY(), P1.getX(), P1.getY(), P2.getX(), P2.getY(), orientation);
+        return fitParabol(P0.getX(), P0.getY(), P1.getX(), P1.getY(), P2.getX(), P2.getY(), orientation);
     }
 
     /**
-     * Retourne une courbe quadratique passant par les trois points spécifiés. Il peut exister une
-     * infinité de courbes quadratiques passant par trois points. On peut voir les choses en disant
-     * qu'une courbe quadratique correspond à une parabole produite par une équation de la forme
-     * <code>y=ax²+bx+c</code>, mais que l'axe des <var>x</var> de cette équation n'est pas
-     * nécessairement horizontal. La direction de cet axe des <var>x</var> dépend du paramètre
-     * {@code orientation} spécifié à cette méthode. La valeur {@link #HORIZONTAL} signifie que
-     * l'axe des <var>x</var> de la parabole sera toujours horizontal. La courbe quadratique
-     * produite ressemblera alors à une parabole classique telle qu'on en voit dans les ouvrages de
-     * mathématiques élémentaires. La valeur {@link #PARALLEL} indique plutôt que l'axe des
-     * <var>x</var> de la parabole doit être parallèle à la droite joignant les points {@code
-     * (x0,y0)} et {@code (x2,y2)}. Ce dernier type produira le même résultat que {@link
-     * #HORIZONTAL} si {@code y0==y2}.
+     * Retourne une courbe quadratique passant par les trois points spécifiés. Il peut exister une infinité de courbes
+     * quadratiques passant par trois points. On peut voir les choses en disant qu'une courbe quadratique correspond à
+     * une parabole produite par une équation de la forme <code>y=ax²+bx+c</code>, mais que l'axe des <var>x</var> de
+     * cette équation n'est pas nécessairement horizontal. La direction de cet axe des <var>x</var> dépend du paramètre
+     * {@code orientation} spécifié à cette méthode. La valeur {@link #HORIZONTAL} signifie que l'axe des <var>x</var>
+     * de la parabole sera toujours horizontal. La courbe quadratique produite ressemblera alors à une parabole
+     * classique telle qu'on en voit dans les ouvrages de mathématiques élémentaires. La valeur {@link #PARALLEL}
+     * indique plutôt que l'axe des <var>x</var> de la parabole doit être parallèle à la droite joignant les points
+     * {@code (x0,y0)} et {@code (x2,y2)}. Ce dernier type produira le même résultat que {@link #HORIZONTAL} si
+     * {@code y0==y2}.
      *
      * @param x0 <var>x</var> value of the first point.
      * @param y0 <var>y</var> value of the first point.
@@ -399,12 +356,10 @@ public final class ShapeUtilities {
      * @param y2 <var>y</var> value of the third point.
      * @param orientation Orientation de l'axe des <var>x</var> de la parabole: {@link #PARALLEL} ou
      *     {@link #HORIZONTAL}.
-     * @return Une courbe quadratique passant par les trois points spécifiés. La courbe commencera
-     *     au point {@code (x0,y0)} et se terminera au point {@code (x2,y2)}. Si deux points ont des
-     *     coordonnées presque identiques, ou si les trois points sont colinéaires, alors cette
-     *     méthode retourne {@code null}.
-     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des
-     *     constantes valides.
+     * @return Une courbe quadratique passant par les trois points spécifiés. La courbe commencera au point
+     *     {@code (x0,y0)} et se terminera au point {@code (x2,y2)}. Si deux points ont des coordonnées presque
+     *     identiques, ou si les trois points sont colinéaires, alors cette méthode retourne {@code null}.
+     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des constantes valides.
      */
     public static QuadCurve2D fitParabol(
             final double x0,
@@ -420,18 +375,16 @@ public final class ShapeUtilities {
     }
 
     /**
-     * Retourne le point de contrôle d'une courbe quadratique passant par les trois points
-     * spécifiés. Il peut exister une infinité de courbes quadratiques passant par trois points. On
-     * peut voir les choses en disant qu'une courbe quadratique correspond à une parabole produite
-     * par une équation de la forme <code>y=ax²+bx+c</code>, mais que l'axe des <var>x</var> de
-     * cette équation n'est pas nécessairement horizontal. La direction de cet axe des <var>x</var>
-     * dépend du paramètre {@code orientation} spécifié à cette méthode. La valeur {@link
-     * #HORIZONTAL} signifie que l'axe des <var>x</var> de la parabole sera toujours horizontal. La
-     * courbe quadratique produite ressemblera alors à une parabole classique telle qu'on en voit
-     * dans les ouvrages de mathématiques élémentaires. La valeur {@link #PARALLEL} indique plutôt
-     * que l'axe des <var>x</var> de la parabole doit être parallèle à la droite joignant les points
-     * {@code (x0,y0)} et {@code (x2,y2)}. Ce dernier type produira le même résultat que {@link
-     * #HORIZONTAL} si {@code y0==y2}.
+     * Retourne le point de contrôle d'une courbe quadratique passant par les trois points spécifiés. Il peut exister
+     * une infinité de courbes quadratiques passant par trois points. On peut voir les choses en disant qu'une courbe
+     * quadratique correspond à une parabole produite par une équation de la forme <code>y=ax²+bx+c</code>, mais que
+     * l'axe des <var>x</var> de cette équation n'est pas nécessairement horizontal. La direction de cet axe des
+     * <var>x</var> dépend du paramètre {@code orientation} spécifié à cette méthode. La valeur {@link #HORIZONTAL}
+     * signifie que l'axe des <var>x</var> de la parabole sera toujours horizontal. La courbe quadratique produite
+     * ressemblera alors à une parabole classique telle qu'on en voit dans les ouvrages de mathématiques élémentaires.
+     * La valeur {@link #PARALLEL} indique plutôt que l'axe des <var>x</var> de la parabole doit être parallèle à la
+     * droite joignant les points {@code (x0,y0)} et {@code (x2,y2)}. Ce dernier type produira le même résultat que
+     * {@link #HORIZONTAL} si {@code y0==y2}.
      *
      * @param x0 <var>x</var> value of the first point.
      * @param y0 <var>y</var> value of the first point.
@@ -442,12 +395,11 @@ public final class ShapeUtilities {
      * @param orientation Orientation de l'axe des <var>x</var> de la parabole: {@link #PARALLEL} ou
      *     {@link #HORIZONTAL}.
      * @param dest Where to store the control point.
-     * @return Le point de contrôle d'une courbe quadratique passant par les trois points spécifiés.
-     *     La courbe commencera au point {@code (x0,y0)} et se terminera au point {@code (x2,y2)}.
-     *     Si deux points ont des coordonnées presque identiques, ou si les trois points sont
-     *     colinéaires, alors cette méthode retourne {@code null}.
-     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des
-     *     constantes valides.
+     * @return Le point de contrôle d'une courbe quadratique passant par les trois points spécifiés. La courbe
+     *     commencera au point {@code (x0,y0)} et se terminera au point {@code (x2,y2)}. Si deux points ont des
+     *     coordonnées presque identiques, ou si les trois points sont colinéaires, alors cette méthode retourne
+     *     {@code null}.
+     * @throws IllegalArgumentException si l'argument {@code orientation} n'est pas une des constantes valides.
      */
     public static Point2D parabolicControlPoint(
             final double x0,
@@ -469,48 +421,46 @@ public final class ShapeUtilities {
         x2 -= x0;
         y2 -= y0;
         switch (orientation) {
-            case PARALLEL:
-                {
-                    /*
-                     * Applique une rotation de façon à ce que (x2,y2)
-                     * tombe sur l'axe des x, c'est-à-dire que y2=0.
-                     */
-                    final double rx2 = x2;
-                    final double ry2 = y2;
-                    x2 = hypot(x2, y2);
-                    y2 = (x1 * rx2 + y1 * ry2) / x2; // use 'y2' as a temporary variable for 'x1'
-                    y1 = (y1 * rx2 - x1 * ry2) / x2;
-                    x1 = y2;
-                    y2 = 0;
-                    /*
-                     * Calcule maintenant les coordonnées du point
-                     * de contrôle selon le nouveau système d'axes.
-                     */
-                    final double x = 0.5; // Really "x/x2"
-                    final double y = (y1 * x * x2) / (x1 * (x2 - x1)); // Really "y/y2"
-                    final double check = abs(y);
-                    if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
-                    if (!(check >= EPS)) return null; // Les trois points sont colinéaires.
-                    /*
-                     * Applique une rotation inverse puis une translation pour
-                     * ramener le système d'axe dans sa position d'origine.
-                     */
-                    x1 = (x * rx2 - y * ry2) + x0;
-                    y1 = (y * rx2 + x * ry2) + y0;
-                    break;
-                }
-            case HORIZONTAL:
-                {
-                    final double a = (y2 - y1 * x2 / x1) / (x2 - x1); // Really "a*x2"
-                    final double check = abs(a);
-                    if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
-                    if (!(check >= EPS)) return null; // Les trois points sont colinéaires.
-                    final double b = y2 / x2 - a;
-                    x1 = (1 + b / (2 * a)) * x2 - y2 / (2 * a);
-                    y1 = y0 + b * x1;
-                    x1 += x0;
-                    break;
-                }
+            case PARALLEL: {
+                /*
+                 * Applique une rotation de façon à ce que (x2,y2)
+                 * tombe sur l'axe des x, c'est-à-dire que y2=0.
+                 */
+                final double rx2 = x2;
+                final double ry2 = y2;
+                x2 = hypot(x2, y2);
+                y2 = (x1 * rx2 + y1 * ry2) / x2; // use 'y2' as a temporary variable for 'x1'
+                y1 = (y1 * rx2 - x1 * ry2) / x2;
+                x1 = y2;
+                y2 = 0;
+                /*
+                 * Calcule maintenant les coordonnées du point
+                 * de contrôle selon le nouveau système d'axes.
+                 */
+                final double x = 0.5; // Really "x/x2"
+                final double y = (y1 * x * x2) / (x1 * (x2 - x1)); // Really "y/y2"
+                final double check = abs(y);
+                if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
+                if (!(check >= EPS)) return null; // Les trois points sont colinéaires.
+                /*
+                 * Applique une rotation inverse puis une translation pour
+                 * ramener le système d'axe dans sa position d'origine.
+                 */
+                x1 = (x * rx2 - y * ry2) + x0;
+                y1 = (y * rx2 + x * ry2) + y0;
+                break;
+            }
+            case HORIZONTAL: {
+                final double a = (y2 - y1 * x2 / x1) / (x2 - x1); // Really "a*x2"
+                final double check = abs(a);
+                if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
+                if (!(check >= EPS)) return null; // Les trois points sont colinéaires.
+                final double b = y2 / x2 - a;
+                x1 = (1 + b / (2 * a)) * x2 - y2 / (2 * a);
+                y1 = y0 + b * x1;
+                x1 += x0;
+                break;
+            }
             default:
                 throw new IllegalArgumentException();
         }
@@ -531,23 +481,19 @@ public final class ShapeUtilities {
      * @return A circle passing by the given points.
      */
     public static Ellipse2D fitCircle(final Point2D P1, final Point2D P2, final Point2D P3) {
-        final Point2D center =
-                circleCentre(
-                        P1.getX(), P1.getY(),
-                        P2.getX(), P2.getY(),
-                        P3.getX(), P3.getY());
+        final Point2D center = circleCentre(
+                P1.getX(), P1.getY(),
+                P2.getX(), P2.getY(),
+                P3.getX(), P3.getY());
         final double radius = center.distance(P2);
-        return new Ellipse2D.Double(
-                center.getX() - radius, center.getY() - radius, 2 * radius, 2 * radius);
+        return new Ellipse2D.Double(center.getX() - radius, center.getY() - radius, 2 * radius, 2 * radius);
     }
 
     /**
-     * Retourne la coordonnée centrale d'un cercle passant pas les trois points spécifiés. La
-     * distance entre le point retourné et n'importe quel des points
-     * (<var>x</var><sub>1</sub>,<var>y</var><sub>1</sub>),
-     * (<var>x</var><sub>2</sub>,<var>y</var><sub>2</sub>),
-     * (<var>x</var><sub>3</sub>,<var>y</var><sub>3</sub>) sera constante; ce sera le rayon d'un
-     * cercle centré au point retourné et passant par les trois points spécifiés.
+     * Retourne la coordonnée centrale d'un cercle passant pas les trois points spécifiés. La distance entre le point
+     * retourné et n'importe quel des points (<var>x</var><sub>1</sub>,<var>y</var><sub>1</sub>),
+     * (<var>x</var><sub>2</sub>,<var>y</var><sub>2</sub>), (<var>x</var><sub>3</sub>,<var>y</var><sub>3</sub>) sera
+     * constante; ce sera le rayon d'un cercle centré au point retourné et passant par les trois points spécifiés.
      *
      * @param x1 <var>x</var> value of the first point.
      * @param y1 <var>y</var> value of the first point.
@@ -557,8 +503,7 @@ public final class ShapeUtilities {
      * @param y3 <var>y</var> value of the third point.
      * @return A circle passing by the given points.
      */
-    public static Point2D circleCentre(
-            double x1, double y1, double x2, double y2, double x3, double y3) {
+    public static Point2D circleCentre(double x1, double y1, double x2, double y2, double x3, double y3) {
         x2 -= x1;
         x3 -= x1;
         y2 -= y1;
@@ -570,10 +515,9 @@ public final class ShapeUtilities {
     }
 
     /**
-     * Tente de remplacer la forme géométrique {@code path} par une des formes standards de Java2D.
-     * Par exemple, si {@code path} ne contient qu'un simple segment de droite ou une courbe
-     * quadratique, alors cette méthode retournera un objet {@link Line2D} ou {@link QuadCurve2D}
-     * respectivement.
+     * Tente de remplacer la forme géométrique {@code path} par une des formes standards de Java2D. Par exemple, si
+     * {@code path} ne contient qu'un simple segment de droite ou une courbe quadratique, alors cette méthode retournera
+     * un objet {@link Line2D} ou {@link QuadCurve2D} respectivement.
      *
      * @param path Forme géométrique à simplifier (généralement un objet {@link GeneralPath}).
      * @return Forme géométrique standard, ou {@code path} si aucun remplacement n'est proposé.
@@ -590,12 +534,10 @@ public final class ShapeUtilities {
                     case PathIterator.SEG_LINETO:
                         return new Line2D.Float(x1, y1, buffer[0], buffer[1]);
                     case PathIterator.SEG_QUADTO:
-                        return new QuadCurve2D.Float(
-                                x1, y1, buffer[0], buffer[1], buffer[2], buffer[3]);
+                        return new QuadCurve2D.Float(x1, y1, buffer[0], buffer[1], buffer[2], buffer[3]);
                     case PathIterator.SEG_CUBICTO:
                         return new CubicCurve2D.Float(
-                                x1, y1, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4],
-                                buffer[5]);
+                                x1, y1, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
                 }
             }
         }
@@ -603,8 +545,8 @@ public final class ShapeUtilities {
     }
 
     /**
-     * Returns a suggested value for the {@code flatness} argument in {@link
-     * Shape#getPathIterator(AffineTransform,double)} for the specified shape.
+     * Returns a suggested value for the {@code flatness} argument in
+     * {@link Shape#getPathIterator(AffineTransform,double)} for the specified shape.
      *
      * @param shape The shape for which to compute a flatness factor.
      * @return The suggested flatness factor.

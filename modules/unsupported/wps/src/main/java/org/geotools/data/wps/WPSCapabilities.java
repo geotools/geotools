@@ -29,8 +29,8 @@ public class WPSCapabilities extends Capabilities {
     private String[] exceptions;
 
     /**
-     * The request contains information about possible Requests that can be made against this
-     * server, including URLs and formats.
+     * The request contains information about possible Requests that can be made against this server, including URLs and
+     * formats.
      *
      * @return Returns the request.
      */
@@ -44,8 +44,8 @@ public class WPSCapabilities extends Capabilities {
     }
 
     /**
-     * Exceptions declare what kind of formats this server can return exceptions in. They are used
-     * during subsequent requests.
+     * Exceptions declare what kind of formats this server can return exceptions in. They are used during subsequent
+     * requests.
      */
     public String[] getExceptions() {
         return exceptions;

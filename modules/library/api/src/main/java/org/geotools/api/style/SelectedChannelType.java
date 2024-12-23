@@ -14,8 +14,8 @@ import org.geotools.api.filter.expression.Expression;
 /**
  * A class to hold Channel information for use in ChannelSelection objects.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)

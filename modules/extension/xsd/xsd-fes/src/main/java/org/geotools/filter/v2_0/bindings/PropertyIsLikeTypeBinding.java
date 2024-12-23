@@ -66,8 +66,7 @@ public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
 
         if (FES.expression.equals(name)) {
             return new Object[] {
-                isLike.getExpression(),
-                isLike.getLiteral() != null ? factory.literal(isLike.getLiteral()) : null
+                isLike.getExpression(), isLike.getLiteral() != null ? factory.literal(isLike.getLiteral()) : null
             };
         }
 

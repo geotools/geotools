@@ -30,12 +30,10 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
 
 /**
- * Class used to find the DataStore for a VectorMosaicGranule. The lookup tries three possible
- * avenues:
+ * Class used to find the DataStore for a VectorMosaicGranule. The lookup tries three possible avenues:
  *
  * <ul>
- *   <li>Using the store name, if set in the granule, to lookup the store in the provided {@link
- *       Repository}
+ *   <li>Using the store name, if set in the granule, to lookup the store in the provided {@link Repository}
  *   <li>Using the connection properties if they are set in the granule
  * </ul>
  */
@@ -56,8 +54,7 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Optional<DataStore> findDataStore(
-            VectorMosaicGranule granule, boolean isSampleForSchema) {
+    public Optional<DataStore> findDataStore(VectorMosaicGranule granule, boolean isSampleForSchema) {
         DataStore dataStore = null;
         try {
             if (granule.getStoreName() != null) {
@@ -73,10 +70,9 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
                 } else {
                     dataStore = DataStoreFinder.getDataStore(params);
                 }
-                LOGGER.log(
-                        Level.FINE,
-                        "Found and set datastore for granule {0} with params {1}",
-                        new Object[] {granule.getName(), granule.getConnProperties()});
+                LOGGER.log(Level.FINE, "Found and set datastore for granule {0} with params {1}", new Object[] {
+                    granule.getName(), granule.getConnProperties()
+                });
                 if (!isSampleForSchema && granuleTracker != null) {
                     granuleTracker.add(granule.getParams());
                 }
@@ -97,8 +93,8 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
     }
 
     /**
-     * Simple store wrapper that prevents the store from being disposed. Used when the store comes
-     * from a {@link Repository} that manages its lifecycle.
+     * Simple store wrapper that prevents the store from being disposed. Used when the store comes from a
+     * {@link Repository} that manages its lifecycle.
      */
     private class DisposeStopWrapper extends DecoratingDataStore {
         public DisposeStopWrapper(DataStore ds) {

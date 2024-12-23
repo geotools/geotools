@@ -145,9 +145,7 @@ public class ShadedRelief extends OperationJAI {
     public static final String PARAM_AZIMUTH = "azimuth";
     public static final String PARAM_ALGORITHM = "algorithm";
 
-    public static final String[] CUSTOMIZABLE_PARAMS = {
-        PARAM_ALTITUDE, PARAM_AZIMUTH, PARAM_ALGORITHM
-    };
+    public static final String[] CUSTOMIZABLE_PARAMS = {PARAM_ALTITUDE, PARAM_AZIMUTH, PARAM_ALGORITHM};
 
     public ShadedRelief() throws OperationNotFoundException {
         super("ShadedRelief", getOperationDescriptor(JAIExt.getOperationName("ShadedRelief")));
@@ -183,7 +181,6 @@ public class ShadedRelief extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             OperationJAI.Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "ShadedRelief", 0, 1, 2);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "ShadedRelief", 0, 1, 2);
     }
 }

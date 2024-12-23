@@ -45,21 +45,16 @@ import org.geotools.util.factory.Hints;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class CartesianAuthorityFactory extends DirectAuthorityFactory
-        implements CRSAuthorityFactory {
+public class CartesianAuthorityFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
 
     public static final String GENERIC_2D_CODE = "404000";
 
     /** A clone of {@link DefaultEngineeringCRS#GENERIC_2D} with the proper authority name */
-    public static final DefaultEngineeringCRS GENERIC_2D =
-            new DefaultEngineeringCRS(
-                    buildProperties(
-                            "Wildcard 2D cartesian plane in metric unit",
-                            Citations.EPSG,
-                            GENERIC_2D_CODE),
-                    DefaultEngineeringDatum.UNKNOWN,
-                    DefaultCartesianCS.GENERIC_2D,
-                    true);
+    public static final DefaultEngineeringCRS GENERIC_2D = new DefaultEngineeringCRS(
+            buildProperties("Wildcard 2D cartesian plane in metric unit", Citations.EPSG, GENERIC_2D_CODE),
+            DefaultEngineeringDatum.UNKNOWN,
+            DefaultCartesianCS.GENERIC_2D,
+            true);
 
     static Map<String, ?> buildProperties(String name, Citation authority, String code) {
         Map<String, Object> props = new HashMap<>();
@@ -82,8 +77,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         if (type.isAssignableFrom(EngineeringCRS.class)) {
             final Set<String> set = new LinkedHashSet<>();
             set.add(GENERIC_2D_CODE);
@@ -94,8 +88,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
     }
 
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
         if (code.equals("EPSG:" + GENERIC_2D_CODE)) {
             return new SimpleInternationalString(
                     "A two-dimensional wildcard coordinate system with X,Y axis in meters");
@@ -114,18 +107,16 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
     }
 
     /**
-     * Creates a coordinate reference system from the specified code. The default implementation
-     * delegates to <code>{@linkplain #createEngineeringCRS(String)}(code)</code>.
+     * Creates a coordinate reference system from the specified code. The default implementation delegates to <code>
+     * {@linkplain #createEngineeringCRS(String)}(code)</code>.
      */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         return createEngineeringCRS(code);
     }
 
     @Override
-    public EngineeringCRS createEngineeringCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public EngineeringCRS createEngineeringCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         if (GENERIC_2D_CODE.equals(code) || ("EPSG:" + GENERIC_2D_CODE).equals(code)) {
             return GENERIC_2D;
         } else {
@@ -133,12 +124,10 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
         }
     }
 
-    private NoSuchAuthorityCodeException noSuchAuthorityException(String code)
-            throws NoSuchAuthorityCodeException {
+    private NoSuchAuthorityCodeException noSuchAuthorityException(String code) throws NoSuchAuthorityCodeException {
         String authority = "EPSG";
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(
-                        ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, EngineeringCRS.class),
+                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, EngineeringCRS.class),
                 authority,
                 code);
     }

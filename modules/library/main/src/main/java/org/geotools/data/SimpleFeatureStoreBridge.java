@@ -30,10 +30,7 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 
-/**
- * Bridges between {@link FeatureStore<SimpleFeatureType, SimpleFeature>} and {@link
- * SimpleFeatureStore}
- */
+/** Bridges between {@link FeatureStore<SimpleFeatureType, SimpleFeature>} and {@link SimpleFeatureStore} */
 class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements SimpleFeatureStore {
 
     public SimpleFeatureStoreBridge(FeatureStore<SimpleFeatureType, SimpleFeature> delegate) {
@@ -45,8 +42,8 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
     }
 
     @Override
-    public List<FeatureId> addFeatures(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
+    public List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType, SimpleFeature> collection)
+            throws IOException {
         return delegate().addFeatures(collection);
     }
 
@@ -66,8 +63,7 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
     }
 
     @Override
-    public void modifyFeatures(String name, Object attributeValue, Filter filter)
-            throws IOException {
+    public void modifyFeatures(String name, Object attributeValue, Filter filter) throws IOException {
         if (delegate instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) delegate).modifyFeatures(name, attributeValue, filter);
         } else {
@@ -101,8 +97,7 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
     }
 
     @Override
-    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         delegate().setFeatures(reader);
     }
 

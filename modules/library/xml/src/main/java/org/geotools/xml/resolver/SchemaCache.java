@@ -35,53 +35,43 @@ import org.geotools.util.URLs;
 /**
  * Cache containing XML schemas. (Should also work for other file types.)
  *
- * <p>If configured to permit downloading, schemas not present in the cache are downloaded from the
- * network.
+ * <p>If configured to permit downloading, schemas not present in the cache are downloaded from the network.
  *
  * <p>Only http/https URLs are supported.
  *
- * <p>Files are stored according to the Simple HTTP Resource Path (see {@link
- * SchemaResolver#getSimpleHttpResourcePath(URI))}.
+ * <p>Files are stored according to the Simple HTTP Resource Path (see
+ * {@link SchemaResolver#getSimpleHttpResourcePath(URI))}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public class SchemaCache {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCache.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaCache.class);
 
     /** The default block read size used when downloading a file. */
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
 
-    /**
-     * This is the default value of the keep query flag used when building an automatically
-     * configured SchemaCache.
-     */
+    /** This is the default value of the keep query flag used when building an automatically configured SchemaCache. */
     private static final boolean DEFAULT_KEEP_QUERY = true;
 
-    /**
-     * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
-     * enabled.
-     */
-    private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = {
-        "styles", "workspaces"
-    };
+    /** Subdirectories used to recognise a GeoServer data directory if automatic configuration is enabled. */
+    private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = {"styles", "workspaces"};
 
     /**
-     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the
-     * cache if automatic configuration is enabled.
+     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the cache if automatic
+     * configuration is enabled.
      */
     private static final String CACHE_DIRECTORY_NAME = "app-schema-cache";
 
     /**
-     * Key that should be used to setup a system property that sets the location that should be used
-     * for schema cache location.
+     * Key that should be used to setup a system property that sets the location that should be used for schema cache
+     * location.
      */
     public static final String PROVIDED_CACHE_LOCATION_KEY = "schema.cache.dir";
 
     /**
-     * Is support for automatic detection of GeoServer data directories or existing cache
-     * directories enabled? It is useful to disable this in tests, to prevent downloading.
+     * Is support for automatic detection of GeoServer data directories or existing cache directories enabled? It is
+     * useful to disable this in tests, to prevent downloading.
      */
     private static boolean automaticConfigurationEnabled = true;
 
@@ -100,41 +90,36 @@ public class SchemaCache {
     static {
         if (System.getProperty("schema.cache.download.timeout") != null) {
             try {
-                downloadTimeout =
-                        Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
+                downloadTimeout = Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
             } catch (NumberFormatException e) {
-                LOGGER.warning(
-                        "schema.cache.download.timeout has a wrong format: should be a number");
+                LOGGER.warning("schema.cache.download.timeout has a wrong format: should be a number");
             }
         }
     }
 
     /** Max number of attempts to follow a redirect to avoid redirect loop * */
-    private static final int MAX_FOLLOW_REDIRECT =
-            Integer.getInteger("org.geotools.xml.schema.maxFollowRedirect", 16);
+    private static final int MAX_FOLLOW_REDIRECT = Integer.getInteger("org.geotools.xml.schema.maxFollowRedirect", 16);
 
     /**
-     * A cache of XML schemas (or other file types) rooted in the given directory, with optional
-     * downloading.
+     * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
      *
      * @param directory the directory in which downloaded schemas are stored
-     * @param download is downloading of schemas permitted. If false, only schemas already present
-     *     in the cache will be resolved.
+     * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be
+     *     resolved.
      */
     public SchemaCache(File directory, boolean download) {
         this(directory, download, false);
     }
 
     /**
-     * A cache of XML schemas (or other file types) rooted in the given directory, with optional
-     * downloading.
+     * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
      *
      * @param directory the directory in which downloaded schemas are stored
-     * @param download is downloading of schemas permitted. If false, only schemas already present
-     *     in the cache will be resolved.
-     * @param keepQuery indicates whether or not the query components should be included in the
-     *     path. If this is set to true then the query portion is converted to an MD5 message digest
-     *     and that string is used to identify the file in the cache.
+     * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be
+     *     resolved.
+     * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to
+     *     true then the query portion is converted to an MD5 message digest and that string is used to identify the
+     *     file in the cache.
      */
     public SchemaCache(File directory, boolean download, boolean keepQuery) {
         this.directory = directory;
@@ -148,8 +133,8 @@ public class SchemaCache {
     }
 
     /**
-     * Return the temp directory for not cached downloads (those occurring during another download,
-     * to avoid conflicts among threads).
+     * Return the temp directory for not cached downloads (those occurring during another download, to avoid conflicts
+     * among threads).
      */
     public File getTempDirectory() {
         try {
@@ -228,8 +213,7 @@ public class SchemaCache {
      *
      * @param location and absolute http/https URL.
      * @param blockSize download block size
-     * @param redirectionCount the number of redirection attempts already performed while
-     *     downloading
+     * @param redirectionCount the number of redirection attempts already performed while downloading
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
     static byte[] download(URI location, int blockSize, int redirectionCount) {
@@ -247,14 +231,10 @@ public class SchemaCache {
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                if (hasRedirect(responseCode))
-                    return followRedirect(connection, blockSize, redirectionCount);
-                LOGGER.warning(
-                        String.format(
-                                "Unexpected response \"%d %s\" while downloading %s",
-                                connection.getResponseCode(),
-                                connection.getResponseMessage(),
-                                location.toString()));
+                if (hasRedirect(responseCode)) return followRedirect(connection, blockSize, redirectionCount);
+                LOGGER.warning(String.format(
+                        "Unexpected response \"%d %s\" while downloading %s",
+                        connection.getResponseCode(), connection.getResponseMessage(), location.toString()));
                 return null;
             }
 
@@ -338,13 +318,12 @@ public class SchemaCache {
     }
 
     /**
-     * If automatic configuration is enabled, recursively search parent directories of file url for
-     * a GeoServer data directory or directory containing an existing cache. If found, use it to
-     * create a cache in the "app-schema-cache" subdirectory with downloading enabled.
+     * If automatic configuration is enabled, recursively search parent directories of file url for a GeoServer data
+     * directory or directory containing an existing cache. If found, use it to create a cache in the "app-schema-cache"
+     * subdirectory with downloading enabled.
      *
      * @param url a URL for a file in a GeoServer data directory.
-     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic
-     *     configuration disabled.
+     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic configuration disabled.
      */
     public static SchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
         if (!automaticConfigurationEnabled) {
@@ -359,14 +338,12 @@ public class SchemaCache {
         File file = URLs.urlToFile(url);
         while (true) {
             if (file == null) {
-                LOGGER.warning(
-                        "Automatic app-schema-cache directory build failed, "
-                                + "Geoserver root folder or app-schema-cache folder not found");
+                LOGGER.warning("Automatic app-schema-cache directory build failed, "
+                        + "Geoserver root folder or app-schema-cache folder not found");
                 return null;
             }
             if (isSuitableDirectoryToContainCache(file)) {
-                return new SchemaCache(
-                        new File(file, CACHE_DIRECTORY_NAME), true, DEFAULT_KEEP_QUERY);
+                return new SchemaCache(new File(file, CACHE_DIRECTORY_NAME), true, DEFAULT_KEEP_QUERY);
             }
             file = file.getParentFile();
         }
@@ -386,36 +363,28 @@ public class SchemaCache {
         File cacheDirectory = new File(directory);
         if (cacheDirectory.exists() && cacheDirectory.isFile()) {
             // there is nothing we can do, let's abort the instantiation
-            throw new RuntimeException(
-                    String.format(
-                            "Provided schema cache directory '%s' already exists but it's a file.",
-                            cacheDirectory.getAbsolutePath()));
+            throw new RuntimeException(String.format(
+                    "Provided schema cache directory '%s' already exists but it's a file.",
+                    cacheDirectory.getAbsolutePath()));
         }
         if (!cacheDirectory.exists()) {
             // create the schema cache directory
             cacheDirectory.mkdir();
         }
         // looks like we are fine
-        LOGGER.fine(
-                String.format(
-                        "Using provided schema cache directory '%s'.",
-                        cacheDirectory.getAbsolutePath()));
+        LOGGER.fine(String.format("Using provided schema cache directory '%s'.", cacheDirectory.getAbsolutePath()));
         return new SchemaCache(cacheDirectory, true, DEFAULT_KEEP_QUERY);
     }
 
     /**
-     * Turn off support for automatic configuration of a cache in GeoServer data directory or
-     * detection of an existing cache. Intended for testing. Automatic configuration is enabled by
-     * default.
+     * Turn off support for automatic configuration of a cache in GeoServer data directory or detection of an existing
+     * cache. Intended for testing. Automatic configuration is enabled by default.
      */
     public static void disableAutomaticConfiguration() {
         automaticConfigurationEnabled = false;
     }
 
-    /**
-     * The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled
-     * by default.
-     */
+    /** The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled by default. */
     public static void enableAutomaticConfiguration() {
         automaticConfigurationEnabled = true;
     }
@@ -430,12 +399,11 @@ public class SchemaCache {
     }
 
     /**
-     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache
-     * subdirectory.
+     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache subdirectory.
      *
      * @param directory the candidate file
-     * @return true if it has the files and subdirectories expected of a GeoServer data directory,
-     *     or contains an existing app-schema-cache subdirectory
+     * @return true if it has the files and subdirectories expected of a GeoServer data directory, or contains an
+     *     existing app-schema-cache subdirectory
      */
     static boolean isSuitableDirectoryToContainCache(File directory) {
         if (directory.isDirectory() == false) {
@@ -463,8 +431,7 @@ public class SchemaCache {
                 || responseCode == HttpURLConnection.HTTP_MOVED_TEMP;
     }
 
-    private static byte[] followRedirect(
-            HttpURLConnection connection, int blockSize, int redirectionCount) {
+    private static byte[] followRedirect(HttpURLConnection connection, int blockSize, int redirectionCount) {
         String redirect = connection.getHeaderField("Location");
         byte[] result = null;
         if (redirect == null) {
@@ -476,15 +443,11 @@ public class SchemaCache {
                 LOGGER.info("Following redirect to " + redirect);
                 result = download(redirectURL, blockSize, redirectionCount);
             } catch (URISyntaxException uri) {
-                LOGGER.warning(
-                        "Tried to follow redirect but invalid url was provided in Location header: "
-                                + redirect);
+                LOGGER.warning("Tried to follow redirect but invalid url was provided in Location header: " + redirect);
             }
         } else {
             LOGGER.warning(
-                    "Max number of follow redirect attempts ("
-                            + MAX_FOLLOW_REDIRECT
-                            + ") reached. Returning null");
+                    "Max number of follow redirect attempts (" + MAX_FOLLOW_REDIRECT + ") reached. Returning null");
         }
         return result;
     }

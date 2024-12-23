@@ -24,14 +24,13 @@ import java.util.List;
 /**
  * Property class for holding and handling of property values declared in Extent-element of a layer
  *
- * <p>As of WMS Spec 1.3.0 Extent is no longer a valid child element to the element layer. This java
- * representation is maintained to be able to support both WMS Spec 1.1.1 and 1.3.0
+ * <p>As of WMS Spec 1.3.0 Extent is no longer a valid child element to the element layer. This java representation is
+ * maintained to be able to support both WMS Spec 1.1.1 and 1.3.0
  *
  * <p>http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd
  * <!-- The Extent element indicates
  * what _values_ along a dimension are valid. -->
- * <!ELEMENT Extent (#PCDATA) > <!ATTLIST Extent name CDATA #REQUIRED default CDATA #IMPLIED
- * nearestValue (0 | 1) "0">
+ * <!ELEMENT Extent (#PCDATA) > <!ATTLIST Extent name CDATA #REQUIRED default CDATA #IMPLIED nearestValue (0 | 1) "0">
  *
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
@@ -59,15 +58,9 @@ public class Extent {
     /** A CDATA section in the XML; this is actually a structured string. */
     protected String value;
 
-    public Extent(
-            String name,
-            String defaultValue,
-            Boolean multipleValues,
-            Boolean nearestValue,
-            String value) {
+    public Extent(String name, String defaultValue, Boolean multipleValues, Boolean nearestValue, String value) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Dimension: parameter name must not be null!");
+            throw new IllegalArgumentException("Error creating Dimension: parameter name must not be null!");
         }
         this.name = name;
         this.defaultValue = defaultValue;

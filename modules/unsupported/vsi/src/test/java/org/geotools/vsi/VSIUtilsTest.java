@@ -54,9 +54,7 @@ public final class VSIUtilsTest {
         assertTrue(VSIUtils.isVSILocation("/vsizip/path/to/zipfile.zip"));
         assertTrue(VSIUtils.isVSILocation("/vsizip/path/to/zipfile.zip/location/in/file.tif"));
         assertTrue(VSIUtils.isVSILocation("/vsizip//vsiswift/remote/path/to/archive.zip"));
-        assertTrue(
-                VSIUtils.isVSILocation(
-                        "/vsizip//vsiswift/remote/path/to/archive.zip/location/in/file.tif"));
+        assertTrue(VSIUtils.isVSILocation("/vsizip//vsiswift/remote/path/to/archive.zip/location/in/file.tif"));
 
         assertFalse(VSIUtils.isVSILocation("/vsi/invalid/prefix.tif"));
         assertFalse(VSIUtils.isVSILocation("/vsinoexist/invalid/prefix.tif"));
@@ -75,16 +73,10 @@ public final class VSIUtilsTest {
         assertEquals(VSIUtils.getFileName("/vsiswift/path/to/file.tif"), "file.tif");
         assertEquals(VSIUtils.getFileName("/vsiswift/path/without/extension"), "extension");
         assertEquals(VSIUtils.getFileName("/vsizip/path/to/zipfile.zip"), "zipfile.zip");
+        assertEquals(VSIUtils.getFileName("/vsizip/path/to/zipfile.zip/location/in/file.tif"), "file.tif");
+        assertEquals(VSIUtils.getFileName("/vsizip//vsiswift/remote/path/to/archive.zip"), "archive.zip");
         assertEquals(
-                VSIUtils.getFileName("/vsizip/path/to/zipfile.zip/location/in/file.tif"),
-                "file.tif");
-        assertEquals(
-                VSIUtils.getFileName("/vsizip//vsiswift/remote/path/to/archive.zip"),
-                "archive.zip");
-        assertEquals(
-                VSIUtils.getFileName(
-                        "/vsizip//vsiswift/remote/path/to/archive.zip/location/in/file.tif"),
-                "file.tif");
+                VSIUtils.getFileName("/vsizip//vsiswift/remote/path/to/archive.zip/location/in/file.tif"), "file.tif");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -135,8 +127,7 @@ public final class VSIUtilsTest {
         verify(dataset, times(2)).GetRasterBand(anyInt());
         verify(band, times(1)).SetColorInterpretation(anyInt());
         verify(band, times(1)).GetMetadata_Dict(eq("vrt_sources"));
-        verify(band, times(1))
-                .SetMetadataItem(eq("source_0"), eq("<SourceBand>mask"), eq("new_vrt_sources"));
+        verify(band, times(1)).SetMetadataItem(eq("source_0"), eq("<SourceBand>mask"), eq("new_vrt_sources"));
         verify(dataset, times(1)).FlushCache();
     }
 
@@ -173,8 +164,7 @@ public final class VSIUtilsTest {
         verify(destination, times(2)).GetRasterBand(anyInt());
         verify(band, times(1)).SetColorInterpretation(anyInt());
         verify(band, times(1)).GetMetadata_Dict(eq("vrt_sources"));
-        verify(band, times(1))
-                .SetMetadataItem(eq("source_0"), eq("<SourceBand>mask"), eq("new_vrt_sources"));
+        verify(band, times(1)).SetMetadataItem(eq("source_0"), eq("<SourceBand>mask"), eq("new_vrt_sources"));
     }
 
     @Test(expected = IOException.class)

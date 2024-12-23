@@ -117,7 +117,8 @@ public class SymbolMBLayerTest {
                         * testLayerDefault.getTextSize().intValue());
         // Test generated MBStyle values
         assertEquals(
-                100, testLayer.getTextMaxWidth().intValue() * testLayer.getTextSize().intValue());
+                100,
+                testLayer.getTextMaxWidth().intValue() * testLayer.getTextSize().intValue());
         // Test values in FeatureTypeStyle transform
         assertEquals(
                 "100.0",
@@ -241,14 +242,13 @@ public class SymbolMBLayerTest {
         // check the json
         MBLayer fontLayer = fontStyle.layer("text-font");
         assertTrue(((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
-        JSONArray stops =
-                (JSONArray) ((JSONObject) fontLayer.getLayout().get("text-font")).get("stops");
+        JSONArray stops = (JSONArray) ((JSONObject) fontLayer.getLayout().get("text-font")).get("stops");
         assertEquals("Apple-Chancery", ((JSONArray) ((JSONArray) stops.get(0)).get(1)).get(0));
 
         // check the SLD
         List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
-        TextSymbolizer text =
-                (TextSymbolizer) featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
+        TextSymbolizer text = (TextSymbolizer)
+                featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
         Font font = text.fonts().get(0);
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));

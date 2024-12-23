@@ -37,10 +37,8 @@ import org.geotools.referencing.NamedIdentifier;
 /**
  * Sinusoidal (Sanson–Flamsteed) projection
  *
- * @see <A HREF="http://en.wikipedia.org/wiki/Sinusoidal_projection">Sinusoidal projection on
- *     Wikipedia</A>
- * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/sinusoidal.html">"Sinusoidal" on
- *     RemoteSensing.org</A>
+ * @see <A HREF="http://en.wikipedia.org/wiki/Sinusoidal_projection">Sinusoidal projection on Wikipedia</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/sinusoidal.html">"Sinusoidal" on RemoteSensing.org</A>
  * @since 14.0
  * @author Mihail Andreev
  */
@@ -68,12 +66,11 @@ public class Sinusoidal extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst) throws ProjectionException {
         double x, y;
 
         if (isSpherical) {
@@ -95,13 +92,9 @@ public class Sinusoidal extends MapProjection {
         }
     }
 
-    /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
-     * {@code ptDst}.
-     */
+    /** Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in {@code ptDst}. */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         double phi;
         double lam;
 
@@ -142,8 +135,8 @@ public class Sinusoidal extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Sinusoidal projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the
+     * Sinusoidal projection (not part of the EPSG database).
      *
      * @since 14.0
      * @author Mihail Andreev
@@ -154,15 +147,12 @@ public class Sinusoidal extends MapProjection {
         private static final long serialVersionUID = 8374488793001927036L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Sinusoidal"),
-                            new NamedIdentifier(Citations.ESRI, "Sinusoidal")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Sinusoidal"),
+                    new NamedIdentifier(Citations.ESRI, "Sinusoidal")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

@@ -42,11 +42,11 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 /**
- * This example reads data for point locations and associated attributes from a comma separated text
- * (CSV) file and exports them as a new shapefile. It illustrates how to build a feature type.
+ * This example reads data for point locations and associated attributes from a comma separated text (CSV) file and
+ * exports them as a new shapefile. It illustrates how to build a feature type.
  *
- * <p>Note: to keep things simple in the code below the input file should not have additional spaces
- * or tabs between fields.
+ * <p>Note: to keep things simple in the code below the input file should not have additional spaces or tabs between
+ * fields.
  */
 public class Csv2Shape {
 
@@ -65,15 +65,14 @@ public class Csv2Shape {
          *
          * See also the createFeatureType method below for another, more flexible approach.
          */
-        final SimpleFeatureType TYPE =
-                DataUtilities.createType(
-                        "Location",
-                        "the_geom:Point:srid=4326,"
-                                + // <- the geometry attribute: Point type
-                                "name:String,"
-                                + // <- a String attribute
-                                "number:Integer" // a number attribute
-                        );
+        final SimpleFeatureType TYPE = DataUtilities.createType(
+                "Location",
+                "the_geom:Point:srid=4326,"
+                        + // <- the geometry attribute: Point type
+                        "name:String,"
+                        + // <- a String attribute
+                        "number:Integer" // a number attribute
+                );
         System.out.println("TYPE:" + TYPE);
         // docs break feature collection
         /*
@@ -126,8 +125,7 @@ public class Csv2Shape {
         params.put("url", newFile.toURI().toURL());
         params.put("create spatial index", Boolean.TRUE);
 
-        ShapefileDataStore newDataStore =
-                (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
+        ShapefileDataStore newDataStore = (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
 
         /*
          * TYPE is used as a template to describe the file contents
@@ -216,12 +214,11 @@ public class Csv2Shape {
 
     // start createFeatureType
     /**
-     * Here is how you can use a SimpleFeatureType builder to create the schema for your shapefile
-     * dynamically.
+     * Here is how you can use a SimpleFeatureType builder to create the schema for your shapefile dynamically.
      *
      * <p>This method is an improvement on the code used in the main method above (where we used
-     * DataUtilities.createFeatureType) because we can set a Coordinate Reference System for the
-     * FeatureType and a a maximum field length for the 'name' field dddd
+     * DataUtilities.createFeatureType) because we can set a Coordinate Reference System for the FeatureType and a a
+     * maximum field length for the 'name' field dddd
      */
     private static SimpleFeatureType createFeatureType() {
 

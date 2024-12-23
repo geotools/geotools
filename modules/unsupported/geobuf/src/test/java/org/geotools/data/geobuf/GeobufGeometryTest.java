@@ -31,7 +31,8 @@ import org.locationtech.jts.io.WKTReader;
 
 public class GeobufGeometryTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     protected void encodeDecode(String geometryWkt) throws Exception {
         File file = temporaryFolder.newFile("geom.pbf");

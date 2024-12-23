@@ -26,13 +26,13 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * Aggregate functions defined for use with the GeoTools library.
  *
- * <p>Aggregates are backed by a {@link FeatureCalc} visitor for direct use with a FeatureCollection
- * (or use with {@link GroupByVisitor} ). THe {@link #create(Expression)} method is used as a
- * factory method to configure an appropriate visitor.
+ * <p>Aggregates are backed by a {@link FeatureCalc} visitor for direct use with a FeatureCollection (or use with
+ * {@link GroupByVisitor} ). THe {@link #create(Expression)} method is used as a factory method to configure an
+ * appropriate visitor.
  *
- * <p>During processing a {@link CalcResult} is used to store intermediate results. Implementations
- * that handle an aggregate function directly (such as JDBCDataStore) can use can use the wrap
- * method to generate the expect CalcResult from a calculated raw value.
+ * <p>During processing a {@link CalcResult} is used to store intermediate results. Implementations that handle an
+ * aggregate function directly (such as JDBCDataStore) can use can use the wrap method to generate the expect CalcResult
+ * from a calculated raw value.
  */
 public enum Aggregate {
     AVERAGE {
@@ -105,8 +105,7 @@ public enum Aggregate {
         @Override
         public Class getTargetType(Class inputType) {
             if (!Comparable.class.isAssignableFrom(inputType))
-                throw new IllegalArgumentException(
-                        "Median can be computed only on comparable types");
+                throw new IllegalArgumentException("Median can be computed only on comparable types");
             return inputType;
         }
     },
@@ -146,8 +145,7 @@ public enum Aggregate {
         @Override
         public Class getTargetType(Class inputType) {
             if (!Number.class.isAssignableFrom(inputType))
-                throw new IllegalArgumentException(
-                        "Standard deviation can be computed only on numeric types");
+                throw new IllegalArgumentException("Standard deviation can be computed only on numeric types");
             return inputType;
         }
     },
@@ -208,8 +206,8 @@ public enum Aggregate {
     public abstract FeatureCalc create(Expression expression);
 
     /**
-     * Wraps a raw value in the appropriate visitor calculation result. The typical usage of this is
-     * to wrap values returned by stores able to handle the visitor (for example the JDBCDataStore).
+     * Wraps a raw value in the appropriate visitor calculation result. The typical usage of this is to wrap values
+     * returned by stores able to handle the visitor (for example the JDBCDataStore).
      *
      * @param expression Expression used to sample collection (often a PropertyName)
      * @param value The raw value to be wrapped
@@ -218,8 +216,8 @@ public enum Aggregate {
     public abstract CalcResult wrap(Expression expression, Object value);
 
     /**
-     * Retruns the type of the result, given the type of the input. Will throw an exception if the
-     * input type is not acceptable
+     * Retruns the type of the result, given the type of the input. Will throw an exception if the input type is not
+     * acceptable
      *
      * @return
      */
@@ -228,8 +226,8 @@ public enum Aggregate {
     /**
      * Helper method that given a visitor name returns the appropriate enum constant.
      *
-     * <p>The performed match by name is more permissive that the default one. The match will not be
-     * case sensitive and slightly different names can be used (camel case versus snake case).
+     * <p>The performed match by name is more permissive that the default one. The match will not be case sensitive and
+     * slightly different names can be used (camel case versus snake case).
      *
      * @param visitorName the visitor name
      * @return this enum constant that machs the visitor name

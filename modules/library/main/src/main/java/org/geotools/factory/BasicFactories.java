@@ -39,11 +39,10 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
 /**
- * Defines a common abstraction for getting the different factories. This default implementation
- * provides support for only the most basic factories ({@linkplain ReferencingFactoryFinder
- * referencing}, <cite>etc.</cite>). Many methods thrown an {@link FactoryNotFoundException} in all
- * cases, for example all methods related to GO-1 canvas objects. Those methods will be implemented
- * later in a subclass.
+ * Defines a common abstraction for getting the different factories. This default implementation provides support for
+ * only the most basic factories ({@linkplain ReferencingFactoryFinder referencing}, <cite>etc.</cite>). Many methods
+ * thrown an {@link FactoryNotFoundException} in all cases, for example all methods related to GO-1 canvas objects.
+ * Those methods will be implemented later in a subclass.
  *
  * @since 2.3
  * @version $Id$
@@ -65,9 +64,9 @@ public class BasicFactories {
     protected final Hints hints;
 
     /**
-     * Creates a new instance of {@code BasicFactories} with the specified set of hints. The {@code
-     * hints} map should contains only the minimum set of hints, since this constructor will keep a
-     * reference to all objects found in this map.
+     * Creates a new instance of {@code BasicFactories} with the specified set of hints. The {@code hints} map should
+     * contains only the minimum set of hints, since this constructor will keep a reference to all objects found in this
+     * map.
      *
      * @param hints The hints to be used for all factory creation, or {@code null} if none.
      */
@@ -85,8 +84,8 @@ public class BasicFactories {
     }
 
     /**
-     * Format an error message saying that the specified factory is not yet supported. The error
-     * message will be given to a {@link FactoryNotFoundException}.
+     * Format an error message saying that the specified factory is not yet supported. The error message will be given
+     * to a {@link FactoryNotFoundException}.
      *
      * @param type The factory type requested by the users.
      */
@@ -98,8 +97,8 @@ public class BasicFactories {
     /**
      * Returns the {@linkplain FilterFactory filter factory} singleton.
      *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
+     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default implementation thrown an
+     * exception in all case.
      *
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
@@ -111,8 +110,8 @@ public class BasicFactories {
     /**
      * Returns the {@linkplain NameFactory name factory} singleton.
      *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
+     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default implementation thrown an
+     * exception in all case.
      *
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
@@ -124,8 +123,8 @@ public class BasicFactories {
     /**
      * Returns the {@linkplain CitationFactory citation factory} singleton.
      *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
+     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default implementation thrown an
+     * exception in all case.
      *
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
@@ -195,16 +194,14 @@ public class BasicFactories {
     }
 
     /**
-     * Returns the {@linkplain CoordinateOperationAuthorityFactory coordinate operation authority
-     * factory} singleton.
+     * Returns the {@linkplain CoordinateOperationAuthorityFactory coordinate operation authority factory} singleton.
      *
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
      */
     public CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory()
             throws FactoryRegistryException {
-        return ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(
-                DEFAULT_AUTHORITY, hints);
+        return ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(DEFAULT_AUTHORITY, hints);
     }
 
     /**
@@ -213,8 +210,7 @@ public class BasicFactories {
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
      */
-    public CoordinateOperationFactory getCoordinateOperationFactory()
-            throws FactoryRegistryException {
+    public CoordinateOperationFactory getCoordinateOperationFactory() throws FactoryRegistryException {
         return ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
     }
 }

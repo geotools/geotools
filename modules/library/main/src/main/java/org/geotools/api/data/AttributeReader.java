@@ -20,9 +20,9 @@ import java.io.IOException;
 import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
- * The low-level attribute reading API. An AttributeReader is responsible for reading a finite set
- * of attributes from an underlying storage format. It provides meta-data regarding the data it can
- * provide, and an iterative, row-based approach for accessing the data.
+ * The low-level attribute reading API. An AttributeReader is responsible for reading a finite set of attributes from an
+ * underlying storage format. It provides meta-data regarding the data it can provide, and an iterative, row-based
+ * approach for accessing the data.
  *
  * @author Ian Schneider
  * @version $Id$

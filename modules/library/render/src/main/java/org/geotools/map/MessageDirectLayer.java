@@ -32,9 +32,8 @@ import org.geotools.util.Converters;
 public class MessageDirectLayer extends DirectLayer {
 
     /**
-     * Message to be displayed. While it is perfectly alright to just use the getUserData() map we
-     * are making use of an field here in order to verify the ability to fire events correctly when
-     * the message is changed.
+     * Message to be displayed. While it is perfectly alright to just use the getUserData() map we are making use of an
+     * field here in order to verify the ability to fire events correctly when the message is changed.
      */
     private String message;
 

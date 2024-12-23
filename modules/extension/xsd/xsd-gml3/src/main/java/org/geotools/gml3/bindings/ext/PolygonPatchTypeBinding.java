@@ -21,8 +21,7 @@ import org.geotools.gml3.bindings.PolygonTypeBinding;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @SuppressWarnings("ComparableType")
-public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonPatchTypeBinding
-        implements Comparable {
+public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonPatchTypeBinding implements Comparable {
 
     public PolygonPatchTypeBinding(GeometryFactory gf) {
         super(gf);

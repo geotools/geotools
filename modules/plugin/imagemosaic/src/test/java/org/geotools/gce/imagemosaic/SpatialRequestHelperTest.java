@@ -63,11 +63,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform),
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -97,19 +96,12 @@ public class SpatialRequestHelperTest extends Assert {
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
         double scale = 1; // we scaled down the original image
         assertNotNull(computedResolution);
-        assertEquals(
-                scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                computedResolution[0],
-                1E-6);
-        assertEquals(
-                scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                computedResolution[1],
-                1E-6);
+        assertEquals(scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
+        assertEquals(scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
 
         // all this intersecting and so on MUST not impact the requested resolutions
         GridToEnvelopeMapper gridToEnvelopeMapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(coverageProperties.rasterArea), sourceBBox);
+                new GridToEnvelopeMapper(new GridEnvelope2D(coverageProperties.rasterArea), sourceBBox);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
         double[] expectedResolution = {
             XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
@@ -134,8 +126,8 @@ public class SpatialRequestHelperTest extends Assert {
     /**
      * Requesting an included area at a much smaller resolution.
      *
-     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
-     * raster area should be equal to the requested ones
+     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed raster area should be
+     * equal to the requested ones
      */
     @Test
     public void testBasic2() throws Exception {
@@ -158,11 +150,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -195,18 +186,10 @@ public class SpatialRequestHelperTest extends Assert {
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
         assertNotNull(computedG2W);
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
-        double scale =
-                (1000.0 / 2)
-                        / 250; // we scaled down the original image but we also use a portion of it
+        double scale = (1000.0 / 2) / 250; // we scaled down the original image but we also use a portion of it
         assertNotNull(computedResolution);
-        assertEquals(
-                scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                computedResolution[0],
-                1E-6);
-        assertEquals(
-                scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                computedResolution[1],
-                1E-6);
+        assertEquals(scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
+        assertEquals(scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
 
         // all this intersecting and so on MUST not impact the requested resolutions
         GridToEnvelopeMapper gridToEnvelopeMapper =
@@ -224,8 +207,8 @@ public class SpatialRequestHelperTest extends Assert {
     /**
      * Requesting an intersecting area at a much smaller resolution.
      *
-     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
-     * raster area should be equal to the requested ones
+     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed raster area should be
+     * equal to the requested ones
      */
     @Test
     public void testBasic3() throws Exception {
@@ -248,11 +231,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -274,8 +256,7 @@ public class SpatialRequestHelperTest extends Assert {
         // computed bbox is equal to requestede bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
         assertFalse(computedBBox.isEmpty());
-        ReferencedEnvelope finalReferencedEnvelope =
-                new ReferencedEnvelope(0, 100, 0, 90, sourceCRS);
+        ReferencedEnvelope finalReferencedEnvelope = new ReferencedEnvelope(0, 100, 0, 90, sourceCRS);
         assertEquals(computedBBox, finalReferencedEnvelope);
 
         // computed raster area is equal to requested raster area
@@ -312,8 +293,7 @@ public class SpatialRequestHelperTest extends Assert {
 
         // source area in project crs
         CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:27700");
-        ReferencedEnvelope sourceBBox =
-                new ReferencedEnvelope(414000, 420000, 237000, 301000, sourceCRS);
+        ReferencedEnvelope sourceBBox = new ReferencedEnvelope(414000, 420000, 237000, 301000, sourceCRS);
         coverageProperties.setBBox(sourceBBox);
         coverageProperties.setCrs2D(sourceCRS);
 
@@ -327,33 +307,29 @@ public class SpatialRequestHelperTest extends Assert {
 
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
-        coverageProperties.setGeographicBBox(
-                new ReferencedEnvelope(
-                        -1.7973440460762267,
-                        -1.7061039437509753,
-                        52.03105268214016,
-                        52.60660481087451,
-                        DefaultGeographicCRS.WGS84));
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
+        coverageProperties.setGeographicBBox(new ReferencedEnvelope(
+                -1.7973440460762267,
+                -1.7061039437509753,
+                52.03105268214016,
+                52.60660481087451,
+                DefaultGeographicCRS.WGS84));
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
 
         // now the target request
         spatialRequestHelper.setAccurateResolution(false);
-        spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(
-                        new GridEnvelope2D(0, 0, 256, 256),
-                        new GeneralBounds(
-                                new ReferencedEnvelope(
-                                        -1.9868610903408341,
-                                        -1.1430930819885086,
-                                        51.938491047471814,
-                                        52.705668101075581,
-                                        DefaultGeographicCRS.WGS84))));
+        spatialRequestHelper.setRequestedGridGeometry(new GridGeometry2D(
+                new GridEnvelope2D(0, 0, 256, 256),
+                new GeneralBounds(new ReferencedEnvelope(
+                        -1.9868610903408341,
+                        -1.1430930819885086,
+                        51.938491047471814,
+                        52.705668101075581,
+                        DefaultGeographicCRS.WGS84))));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -382,9 +358,8 @@ public class SpatialRequestHelperTest extends Assert {
 
         // source area in project crs
         CoordinateReferenceSystem sourceCRS = DefaultGeographicCRS.WGS84;
-        ReferencedEnvelope sourceBBox =
-                new ReferencedEnvelope( // Italy?
-                        8, 11, 42, 44, sourceCRS);
+        ReferencedEnvelope sourceBBox = new ReferencedEnvelope( // Italy?
+                8, 11, 42, 44, sourceCRS);
         coverageProperties.setBBox(sourceBBox);
         coverageProperties.setCrs2D(sourceCRS);
 
@@ -397,11 +372,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -413,8 +387,7 @@ public class SpatialRequestHelperTest extends Assert {
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 256, 256);
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
         GeneralBounds requestedBBox = CRS.transform(sourceBBox, requestCRS);
-        spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, requestedBBox));
+        spatialRequestHelper.setRequestedGridGeometry(new GridGeometry2D(requestedRasterArea, requestedBBox));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -440,14 +413,8 @@ public class SpatialRequestHelperTest extends Assert {
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
         double scale = 1000.0 / 256; // we scaled down the original image
         assertNotNull(computedResolution);
-        assertEquals(
-                scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                computedResolution[0],
-                1E-6);
-        assertEquals(
-                scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                computedResolution[1],
-                1E-6);
+        assertEquals(scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
+        assertEquals(scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
 
         // all this intersecting and so on MUST not impact the requested resolutions
         GridToEnvelopeMapper gridToEnvelopeMapper =
@@ -465,8 +432,8 @@ public class SpatialRequestHelperTest extends Assert {
     /**
      * Requesting an included area at a much smaller resolution.
      *
-     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
-     * raster area should be equal to the requested ones
+     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed raster area should be
+     * equal to the requested ones
      */
     @Test
     public void testBasic2Reproject() throws Exception {
@@ -489,11 +456,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -506,8 +472,7 @@ public class SpatialRequestHelperTest extends Assert {
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
         ReferencedEnvelope requestedBBox_ = new ReferencedEnvelope(0, 180, 0, 70, sourceCRS);
         GeneralBounds requestedBBox = CRS.transform(requestedBBox_, requestCRS);
-        spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, requestedBBox));
+        spatialRequestHelper.setRequestedGridGeometry(new GridGeometry2D(requestedRasterArea, requestedBBox));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -531,21 +496,11 @@ public class SpatialRequestHelperTest extends Assert {
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
         assertNotNull(computedG2W);
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
-        double scaleX =
-                (1000.0 / 2)
-                        / 256; // we scaled down the original image but we also use a portion of it
-        double scaleY =
-                (1000.0 / 2)
-                        / 256; // we scaled down the original image but we also use a portion of it
+        double scaleX = (1000.0 / 2) / 256; // we scaled down the original image but we also use a portion of it
+        double scaleY = (1000.0 / 2) / 256; // we scaled down the original image but we also use a portion of it
         assertNotNull(computedResolution);
-        assertEquals(
-                scaleX * XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                computedResolution[0],
-                1E-6);
-        assertEquals(
-                scaleY * XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                computedResolution[1],
-                1E-6);
+        assertEquals(scaleX * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
+        assertEquals(scaleY * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
 
         // all this intersecting and so on MUST not impact the requested resolutions
         GridToEnvelopeMapper gridToEnvelopeMapper =
@@ -566,16 +521,14 @@ public class SpatialRequestHelperTest extends Assert {
         double[] computedResolution2 = spatialRequestHelper.getComputedResolution();
         assertNotEquals(computedResolution[0], computedResolution2[0], 1E-6);
         assertNotEquals(
-                computedResolution[1],
-                computedResolution2[1],
-                1E-6); // high deformations on latitude for large areas
+                computedResolution[1], computedResolution2[1], 1E-6); // high deformations on latitude for large areas
     }
 
     /**
      * Requesting an intersecting area at a much smaller resolution.
      *
-     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed
-     * raster area should be equal to the requested ones
+     * <p>1) The computed resolution should be much coarser. 2) The computed BBOX and the Computed raster area should be
+     * equal to the requested ones
      */
     @Test
     public void testBasic3Reproject() throws Exception {
@@ -598,11 +551,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -615,8 +567,7 @@ public class SpatialRequestHelperTest extends Assert {
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
         ReferencedEnvelope requestedBBox_ = new ReferencedEnvelope(0, 180, 0, 70, sourceCRS);
         GeneralBounds requestedBBox = CRS.transform(requestedBBox_, requestCRS);
-        spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, requestedBBox));
+        spatialRequestHelper.setRequestedGridGeometry(new GridGeometry2D(requestedRasterArea, requestedBBox));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -626,8 +577,7 @@ public class SpatialRequestHelperTest extends Assert {
         // computed bbox is equal to requestede bbox
         BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
         assertFalse(computedBBox.isEmpty());
-        ReferencedEnvelope finalReferencedEnvelope =
-                new ReferencedEnvelope(0, 100, 0, 70, sourceCRS);
+        ReferencedEnvelope finalReferencedEnvelope = new ReferencedEnvelope(0, 100, 0, 70, sourceCRS);
         // the source bbox and the computed one are the same
         // there might be minor differences due to multiple back and forth roundings, but we need
         // to make sure they are negligible
@@ -650,8 +600,7 @@ public class SpatialRequestHelperTest extends Assert {
 
         // all this intersecting and so on MUST not impact the requested resolutions
         gridToEnvelopeMapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(computedRasterArea), finalReferencedEnvelope);
+                new GridToEnvelopeMapper(new GridEnvelope2D(computedRasterArea), finalReferencedEnvelope);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
         double[] expectedResolution = {
             XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
@@ -688,11 +637,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(new GridEnvelope2D(sourceRasterArea), sourceBBox);
         AffineTransform sourceGridToWorldTransform = geMapper.createAffineTransform();
         coverageProperties.setGridToWorld2D((MathTransform2D) sourceGridToWorldTransform);
-        coverageProperties.setFullResolution(
-                new double[] {
-                    XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                    XAffineTransform.getScaleY0(sourceGridToWorldTransform)
-                });
+        coverageProperties.setFullResolution(new double[] {
+            XAffineTransform.getScaleX0(sourceGridToWorldTransform),
+            XAffineTransform.getScaleY0(sourceGridToWorldTransform)
+        });
         coverageProperties.setGeographicBBox(sourceBBox);
         coverageProperties.setGeographicCRS2D(DefaultGeographicCRS.WGS84);
         SpatialRequestHelper spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
@@ -726,14 +674,8 @@ public class SpatialRequestHelperTest extends Assert {
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
         double scale = 1000.0 / 256; // we scaled down the original image
         assertNotNull(computedResolution);
-        assertEquals(
-                scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform),
-                computedResolution[0],
-                1E-6);
-        assertEquals(
-                scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform),
-                computedResolution[1],
-                1E-6);
+        assertEquals(scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
+        assertEquals(scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
 
         // all this intersecting and so on MUST not impact the requested resolutions
         GridToEnvelopeMapper gridToEnvelopeMapper =

@@ -57,30 +57,26 @@ public class AbstractHiddenDataAccessDisposalTest extends AppSchemaTestSupport {
         assertFalse(guDataAccess.hidden);
 
         /**
-         * Non-feature types that are included in geologicUnit.xml should be loaded when geologic
-         * unit data access is created
+         * Non-feature types that are included in geologicUnit.xml should be loaded when geologic unit data access is
+         * created
          */
         // Composition Part
-        AppSchemaDataAccess cpDataAccess =
-                (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(COMPOSITION_PART);
+        AppSchemaDataAccess cpDataAccess = (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(COMPOSITION_PART);
         assertNotNull(cpDataAccess);
         assertNotNull(cpDataAccess.getFeatureSource(COMPOSITION_PART));
         assertTrue(cpDataAccess.hidden);
         // CGI TermValue
-        AppSchemaDataAccess cgiDataAccess =
-                (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(CGI_TERM_VALUE);
+        AppSchemaDataAccess cgiDataAccess = (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(CGI_TERM_VALUE);
         assertNotNull(cgiDataAccess);
         assertNotNull(cgiDataAccess.getFeatureSource(CGI_TERM_VALUE));
         assertTrue(cgiDataAccess.hidden);
         // exposureColor
-        AppSchemaDataAccess expDataAccess =
-                (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(EXPOSURE_COLOR);
+        AppSchemaDataAccess expDataAccess = (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(EXPOSURE_COLOR);
         assertNotNull(expDataAccess);
         assertNotNull(expDataAccess.getFeatureSource(EXPOSURE_COLOR));
         assertTrue(expDataAccess.hidden);
         // ControlledConcept
-        AppSchemaDataAccess ccDataAccess =
-                (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(CONTROLLED_CONCEPT);
+        AppSchemaDataAccess ccDataAccess = (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(CONTROLLED_CONCEPT);
         assertNotNull(ccDataAccess);
         assertNotNull(ccDataAccess.getFeatureSource(CONTROLLED_CONCEPT));
         assertTrue(expDataAccess.hidden);

@@ -27,8 +27,8 @@ import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 
 /**
- * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being
- * the base for all the data content related implementations in the WFS module.
+ * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being the base for all the
+ * data content related implementations in the WFS module.
  */
 class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
@@ -40,8 +40,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     private GetFeatureResponse response;
 
-    public WFSFeatureReader(
-            final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
+    public WFSFeatureReader(final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
             throws IOException {
         this.response = response;
         this.parser = parser;
@@ -77,8 +76,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     @Override
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
-            throw new IllegalStateException(
-                    "No features were retrieved, shouldn't be calling getFeatureType()");
+            throw new IllegalStateException("No features were retrieved, shouldn't be calling getFeatureType()");
         }
         return featureType;
     }

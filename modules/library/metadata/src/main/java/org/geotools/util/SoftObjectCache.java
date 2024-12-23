@@ -26,14 +26,14 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Caching implementation for {@link ObjectCache}. This instance is used when caching is desired,
- * and memory use is an issue.
+ * Caching implementation for {@link ObjectCache}. This instance is used when caching is desired, and memory use is an
+ * issue.
  *
  * <p>Values are held in a SoftReference, the garbage collector may reclaim them at any time.
  *
  * <p>From the soft reference javadocs:<br>
- * Soft reference objects, which are cleared at the discretion of the garbage collector in response
- * to memory demand. Soft references are most often used to implement memory-sensitive caches.
+ * Soft reference objects, which are cleared at the discretion of the garbage collector in response to memory demand.
+ * Soft references are most often used to implement memory-sensitive caches.
  *
  * @since 2.6
  * @author Emily Gouge (Refractions Research)

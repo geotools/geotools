@@ -56,24 +56,22 @@ public class JRendererStatusBarItem extends StatusBarItem {
         renderLabel.setToolTipText(TOOL_TIP);
 
         Insets insets = getInsets();
-        renderLabel.setMinimumSize(
-                new Dimension(
-                        busyIcon.getIconWidth() + insets.left + insets.right,
-                        busyIcon.getIconHeight() + insets.top + insets.bottom));
+        renderLabel.setMinimumSize(new Dimension(
+                busyIcon.getIconWidth() + insets.left + insets.right,
+                busyIcon.getIconHeight() + insets.top + insets.bottom));
 
         add(renderLabel);
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onRenderingStarted(MapPaneEvent ev) {
-                        renderLabel.setIcon(busyIcon);
-                    }
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onRenderingStarted(MapPaneEvent ev) {
+                renderLabel.setIcon(busyIcon);
+            }
 
-                    @Override
-                    public void onRenderingStopped(MapPaneEvent ev) {
-                        renderLabel.setIcon(idleIcon);
-                    }
-                });
+            @Override
+            public void onRenderingStopped(MapPaneEvent ev) {
+                renderLabel.setIcon(idleIcon);
+            }
+        });
     }
 }

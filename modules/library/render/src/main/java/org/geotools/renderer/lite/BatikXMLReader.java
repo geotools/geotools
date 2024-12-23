@@ -33,11 +33,11 @@ import org.xml.sax.XMLReader;
 /**
  * A wrapper that forwards any request to the default JAXP xml reader.
  *
- * <p>By default Batik wants Xerces, but we want to avoid the dependency since a SAX2 parser is
- * already included in the jre.
+ * <p>By default Batik wants Xerces, but we want to avoid the dependency since a SAX2 parser is already included in the
+ * jre.
  *
- * <p>This class is needed because Batik wants the name of a class that implements XMLReader and has
- * a public default constructor, and default jre parsers do not have it.
+ * <p>This class is needed because Batik wants the name of a class that implements XMLReader and has a public default
+ * constructor, and default jre parsers do not have it.
  *
  * @author wolf
  * @since 2.2.1
@@ -73,14 +73,12 @@ public class BatikXMLReader implements XMLReader {
     }
 
     @Override
-    public boolean getFeature(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getFeature(name);
     }
 
     @Override
-    public Object getProperty(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getProperty(name);
     }
 
@@ -115,14 +113,12 @@ public class BatikXMLReader implements XMLReader {
     }
 
     @Override
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setFeature(name, value);
     }
 
     @Override
-    public void setProperty(String name, Object value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setProperty(name, value);
     }
 }

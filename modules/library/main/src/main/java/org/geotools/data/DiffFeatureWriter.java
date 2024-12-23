@@ -37,8 +37,8 @@ import org.geotools.util.factory.Hints;
  *
  * <p>You will eventually need to write out the differences, later.
  *
- * <p>The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to
- * make explicit that no Features are writen out by this Class.
+ * <p>The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make explicit that no
+ * Features are writen out by this Class.
  *
  * @author Jody Garnett, Refractions Research
  * @see TransactionStateDiff
@@ -56,8 +56,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     }
 
     /** DiffFeatureWriter construction. */
-    public DiffFeatureWriter(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
+    public DiffFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
         this.reader = new DiffFeatureReader<>(reader, diff, filter);
         this.diff = diff;
     }
@@ -102,9 +101,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             try {
                 live = null;
                 next = null;
-                current =
-                        SimpleFeatureBuilder.build(
-                                type, new Object[type.getAttributeCount()], "new" + diff.nextFID);
+                current = SimpleFeatureBuilder.build(type, new Object[type.getAttributeCount()], "new" + diff.nextFID);
                 diff.nextFID++;
                 return current;
             } catch (IllegalAttributeException e) {
@@ -119,9 +116,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         if (live != null) {
             // mark live as removed
             diff.remove(live.getID());
-            fireNotification(
-                    FeatureEvent.Type.REMOVED.getType(),
-                    ReferencedEnvelope.reference(live.getBounds()));
+            fireNotification(FeatureEvent.Type.REMOVED.getType(), ReferencedEnvelope.reference(live.getBounds()));
             live = null;
             current = null;
         } else if (current != null) {
@@ -158,16 +153,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
                 if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                     fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                     Map<Object, Object> userData = current.getUserData();
-                    current =
-                            SimpleFeatureBuilder.build(
-                                    current.getFeatureType(), current.getAttributes(), fid);
+                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid);
                     current.getUserData().putAll(userData);
                 }
             }
             diff.add(fid, current);
-            fireNotification(
-                    FeatureEvent.Type.ADDED.getType(),
-                    ReferencedEnvelope.reference(current.getBounds()));
+            fireNotification(FeatureEvent.Type.ADDED.getType(), ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {
             throw new IOException("No feature available to write");
@@ -209,8 +200,8 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Clean up resources associated with this writer.
      *
-     * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and
-     * may yet be written out.
+     * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and may yet be written
+     * out.
      *
      * @see FeatureWriter#close()
      */
@@ -230,14 +221,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Subclass must provide the notification.
      *
-     * <p>Notification requirements for modifications against a Transaction should only be issued to
-     * SimpleFeatureSource instances that opperate against the same typeName and Transaction.
+     * <p>Notification requirements for modifications against a Transaction should only be issued to SimpleFeatureSource
+     * instances that opperate against the same typeName and Transaction.
      *
-     * <p>Other SimpleFeatureSource instances with the same typeName will be notified when the
-     * Transaction is committed.
+     * <p>Other SimpleFeatureSource instances with the same typeName will be notified when the Transaction is committed.
      *
-     * @param eventType One of FeatureType.FEATURES_ADDED, FeatureType.CHANGED,
-     *     FeatureType.FEATURES_REMOVED
+     * @param eventType One of FeatureType.FEATURES_ADDED, FeatureType.CHANGED, FeatureType.FEATURES_REMOVED
      */
     protected abstract void fireNotification(int eventType, ReferencedEnvelope bounds);
 }

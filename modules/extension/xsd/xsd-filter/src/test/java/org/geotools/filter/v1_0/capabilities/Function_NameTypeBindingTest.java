@@ -47,8 +47,7 @@ public class Function_NameTypeBindingTest extends FilterCapabilitiesTestSupport 
     @Test
     public void testEncode() throws Exception {
         FunctionName function = FilterMockData.functionName();
-        Document dom =
-                encode(function, new QName(OGC.NAMESPACE, "Function"), OGC.Function_NameType);
+        Document dom = encode(function, new QName(OGC.NAMESPACE, "Function"), OGC.Function_NameType);
 
         assertEquals("foo", dom.getDocumentElement().getFirstChild().getNodeValue());
         assertEquals("2", dom.getDocumentElement().getAttribute("nArgs"));

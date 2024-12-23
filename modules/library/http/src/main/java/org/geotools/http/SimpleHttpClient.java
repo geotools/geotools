@@ -32,8 +32,7 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
- * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each
- * request.
+ * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each request.
  *
  * @author groldan
  */
@@ -43,10 +42,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private static final int DEFAULT_TIMEOUT = 30; // 30 seconds
 
-    /**
-     * A SimpleHttpClient should be initiated by a call to
-     * HTTPFactoryFinder.getHttpClientFactory().getClient();
-     */
+    /** A SimpleHttpClient should be initiated by a call to HTTPFactoryFinder.getHttpClientFactory().getClient(); */
     public SimpleHttpClient() {
         this.connectTimeout = DEFAULT_TIMEOUT;
         this.readTimeout = DEFAULT_TIMEOUT;
@@ -84,10 +80,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
     /** @see org.geotools.http.HTTPClient#post(URL, InputStream, String) */
     @Override
     public HTTPResponse post(
-            final URL url,
-            final InputStream postContent,
-            final String postContentType,
-            Map<String, String> headers)
+            final URL url, final InputStream postContent, final String postContentType, Map<String, String> headers)
             throws IOException {
 
         if (headers == null) {
@@ -118,8 +111,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         return new DefaultHttpResponse(connection);
     }
 
-    private URLConnection openConnection(URL finalURL, Map<String, String> headers)
-            throws IOException {
+    private URLConnection openConnection(URL finalURL, Map<String, String> headers) throws IOException {
         Map<String, String> extraParams = getExtraParams();
         if (!extraParams.isEmpty()) {
             finalURL = appendURL(finalURL, extraParams);
@@ -150,8 +142,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
             String encodedAuthorization =
-                    Base64.encodeBytes(
-                            userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
+                    Base64.encodeBytes(userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
             headers.put("Authorization", "Basic " + encodedAuthorization);
         }
 
@@ -161,11 +152,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(
-                        Level.FINE,
-                        "Setting header "
-                                + headerNameValue.getKey()
-                                + " = "
-                                + headerNameValue.getValue());
+                        Level.FINE, "Setting header " + headerNameValue.getKey() + " = " + headerNameValue.getValue());
             }
             connection.setRequestProperty(headerNameValue.getKey(), headerNameValue.getValue());
         }

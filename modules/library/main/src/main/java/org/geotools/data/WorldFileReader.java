@@ -34,8 +34,8 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 
 /**
- * This class is responsible for parsing a world file in order to build an affine transform using
- * the parameters provided in the file itself.
+ * This class is responsible for parsing a world file in order to build an affine transform using the parameters
+ * provided in the file itself.
  *
  * <p>The parameters found in the file should be as follows:
  *
@@ -50,10 +50,10 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
  *
  * <strong>Note that the last two coordinates refer to the centre of the pixel!</strong>
  *
- * <p>It is worth to point out that various data sources describe the parameters in the world file
- * as the mapping from the pixel centres' to the associated world coords. Here we directly build the
- * needed grid to world transform and we DO NOT add any half a pixel translation given that, as
- * stated above, the values we receive should map to the centre of the pixel.
+ * <p>It is worth to point out that various data sources describe the parameters in the world file as the mapping from
+ * the pixel centres' to the associated world coords. Here we directly build the needed grid to world transform and we
+ * DO NOT add any half a pixel translation given that, as stated above, the values we receive should map to the centre
+ * of the pixel.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
@@ -64,8 +64,7 @@ public class WorldFileReader {
     public static final int DEFAULT_BUFFER_SIZE = 4096;
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
 
     /** Resolution on the first dimension. */
     private double xPixelSize = 0.0;
@@ -107,11 +106,9 @@ public class WorldFileReader {
      */
     public WorldFileReader(final File worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "worldfile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "worldfile"));
         if (!worldfile.isFile() || !worldfile.canRead())
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, worldfile));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, worldfile));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
@@ -127,8 +124,7 @@ public class WorldFileReader {
      */
     public WorldFileReader(final URL worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
@@ -145,8 +141,7 @@ public class WorldFileReader {
         this(worldfile, WorldFileReader.DEFAULT_BUFFER_SIZE);
     }
 
-    private void parseWorldFile(final BufferedReader bufferedreader)
-            throws IOException, DataSourceException {
+    private void parseWorldFile(final BufferedReader bufferedreader) throws IOException, DataSourceException {
         int index = 0;
         String str;
         try {
@@ -158,8 +153,7 @@ public class WorldFileReader {
                     value = Double.parseDouble(str.trim());
                 } catch (Throwable t) {
                     // A trick to bypass invalid lines ...
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                    if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
                     continue;
                 }
 
@@ -207,14 +201,12 @@ public class WorldFileReader {
                 bufferedreader.close();
             } catch (Throwable t) {
                 // A trick to bypass invalid lines ...
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
             }
         }
 
         // did we find all we were looking for?
-        if (index < 5)
-            throw new DataSourceException("Not all the values were found for this world file!");
+        if (index < 5) throw new DataSourceException("Not all the values were found for this world file!");
     }
 
     public double getRotationX() {
@@ -268,8 +260,7 @@ public class WorldFileReader {
     /**
      * Creates an {@link AffineTransform} for interoperability with Java2d.
      *
-     * @return an {@link AffineTransform} representing the transformation represented by the
-     *     underlying world file.
+     * @return an {@link AffineTransform} representing the transformation represented by the underlying world file.
      */
     public synchronized AffineTransform getAffineTransform() {
         initTransform();

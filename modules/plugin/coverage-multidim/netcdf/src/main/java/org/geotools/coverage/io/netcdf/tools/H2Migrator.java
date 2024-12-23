@@ -85,10 +85,8 @@ public class H2Migrator {
     }
 
     public void migrate() throws Exception {
-        ExecutorService executorService =
-                Executors.newFixedThreadPool(configuration.getConcurrency());
-        DataStore targetStore =
-                H2MigrateConfiguration.getDataStore(configuration.getTargetStoreConfiguration());
+        ExecutorService executorService = Executors.newFixedThreadPool(configuration.getConcurrency());
+        DataStore targetStore = H2MigrateConfiguration.getDataStore(configuration.getTargetStoreConfiguration());
         File logDirectory = configuration.getLogDirectory();
         try (LogWriter netcdfWriter = new LogWriter(new File(logDirectory, "migrated.txt"));
                 LogWriter h2Writer = new LogWriter(new File(logDirectory, "h2.txt"))) {
@@ -110,13 +108,7 @@ public class H2Migrator {
                 futures.put(
                         path,
                         executorService.submit(
-                                () ->
-                                        migrateNetcdf(
-                                                path,
-                                                coverages,
-                                                targetStore,
-                                                netcdfWriter,
-                                                h2Writer)));
+                                () -> migrateNetcdf(path, coverages, targetStore, netcdfWriter, h2Writer)));
             }
             for (Map.Entry<String, Future> entry : futures.entrySet()) {
                 try {
@@ -125,8 +117,7 @@ public class H2Migrator {
                     if (configuration.isFailureIgnored()) {
                         LOGGER.log(Level.WARNING, "Failed to migrate file: " + entry.getKey(), e);
                     } else {
-                        throw new MigrationException(
-                                "Failed to migrate file: " + entry.getKey(), e);
+                        throw new MigrationException("Failed to migrate file: " + entry.getKey(), e);
                     }
                 }
             }
@@ -142,23 +133,19 @@ public class H2Migrator {
     }
 
     private String[] getFilesFromStore(LinkedHashSet<String> filePaths)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-                    IOException, NoSuchMethodException, InvocationTargetException {
-        DataStore sourceStore =
-                H2MigrateConfiguration.getDataStore(configuration.getSourceStoreConfiguration());
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException,
+                    NoSuchMethodException, InvocationTargetException {
+        DataStore sourceStore = H2MigrateConfiguration.getDataStore(configuration.getSourceStoreConfiguration());
         final String[] indexTables =
-                configuration.getIndexTables() != null
-                        ? configuration.getIndexTables()
-                        : getCoverageNames();
+                configuration.getIndexTables() != null ? configuration.getIndexTables() : getCoverageNames();
         try {
             final List<String> typeNames = Arrays.asList(sourceStore.getTypeNames());
             for (String indexTable : indexTables) {
                 if (!typeNames.contains(indexTable)) {
-                    throw new MigrationException(
-                            "Could not find source index table "
-                                    + indexTable
-                                    + ", the available ones are "
-                                    + typeNames);
+                    throw new MigrationException("Could not find source index table "
+                            + indexTable
+                            + ", the available ones are "
+                            + typeNames);
                 }
 
                 final List<String> coverageFiles = collectFilesFromTable(sourceStore, indexTable);
@@ -174,8 +161,8 @@ public class H2Migrator {
     }
 
     /**
-     * Returns the coverage names provided by the user, or tries to guess them by looking at
-     * property files in the mosaic directory
+     * Returns the coverage names provided by the user, or tries to guess them by looking at property files in the
+     * mosaic directory
      */
     private String[] getCoverageNames() {
         String[] names = configuration.getCoverageNames();
@@ -183,38 +170,27 @@ public class H2Migrator {
             final File mosaicDirectory = configuration.getMosaicDirectory();
             // simplifying assumption, the coverages are the ones that have a config file with
             // a sidecar sample image file
-            String[] files =
-                    mosaicDirectory.list(
-                            (dir, name) -> {
-                                if (!name.endsWith(".properties")) {
-                                    return false;
-                                }
-                                String baseName = FilenameUtils.getBaseName(name);
-                                return new File(dir, baseName + Utils.SAMPLE_IMAGE_NAME).exists()
-                                        || new File(dir, baseName + Utils.SAMPLE_IMAGE_NAME_LEGACY)
-                                                .exists();
-                            });
-            names =
-                    Arrays.stream(files)
-                            .map(f -> FilenameUtils.getBaseName(f))
-                            .toArray(n -> new String[n]);
+            String[] files = mosaicDirectory.list((dir, name) -> {
+                if (!name.endsWith(".properties")) {
+                    return false;
+                }
+                String baseName = FilenameUtils.getBaseName(name);
+                return new File(dir, baseName + Utils.SAMPLE_IMAGE_NAME).exists()
+                        || new File(dir, baseName + Utils.SAMPLE_IMAGE_NAME_LEGACY).exists();
+            });
+            names = Arrays.stream(files).map(f -> FilenameUtils.getBaseName(f)).toArray(n -> new String[n]);
         }
 
         return names;
     }
 
-    private List<String> collectFilesFromTable(DataStore sourceStore, String table)
-            throws IOException {
+    private List<String> collectFilesFromTable(DataStore sourceStore, String table) throws IOException {
         final SimpleFeatureSource featureSource = sourceStore.getFeatureSource(table);
         final Properties properties = getCoverageConfiguration(table);
         String locationAttribute =
-                getProperty(
-                        properties,
-                        Utils.Prop.LOCATION_ATTRIBUTE,
-                        Utils.DEFAULT_LOCATION_ATTRIBUTE);
+                getProperty(properties, Utils.Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE);
         PathType pathType =
-                PathType.RELATIVE.valueOf(
-                        getProperty(properties, Utils.Prop.PATH_TYPE, PathType.ABSOLUTE.name()));
+                PathType.RELATIVE.valueOf(getProperty(properties, Utils.Prop.PATH_TYPE, PathType.ABSOLUTE.name()));
 
         // query the location attribute
         Query q = new Query(table);
@@ -226,7 +202,8 @@ public class H2Migrator {
         Set<String> locations = uniqueLocations.getUnique();
         // map via pathtype and return
         return locations.stream()
-                .map(l -> pathType.resolvePath(configuration.getMosaicDirectory().getPath(), l))
+                .map(l ->
+                        pathType.resolvePath(configuration.getMosaicDirectory().getPath(), l))
                 .map(url -> URLs.urlToFile(url).getAbsolutePath())
                 .collect(Collectors.toList());
     }
@@ -246,8 +223,7 @@ public class H2Migrator {
         try (InputStream is = new FileInputStream(coverageConfig)) {
             properties.load(is);
         } catch (IOException e) {
-            throw new MigrationException(
-                    "Could not open the image mosaic configuration file " + coverageConfig, e);
+            throw new MigrationException("Could not open the image mosaic configuration file " + coverageConfig, e);
         }
         return properties;
     }
@@ -267,15 +243,13 @@ public class H2Migrator {
         }
     }
 
-    private List<String> collectFilesFromTable(ImageMosaicReader reader, String coverage)
-            throws IOException {
+    private List<String> collectFilesFromTable(ImageMosaicReader reader, String coverage) throws IOException {
         // grab the necessary background info
         final String mosaicDirectoryPath = configuration.getMosaicDirectory().getAbsolutePath();
         final GranuleSource granuleSource = reader.getGranules(coverage, true);
         final MosaicConfigurationBean configuration =
                 reader.getRasterManager(coverage).getConfiguration();
-        final CatalogConfigurationBean catalogConfiguration =
-                configuration.getCatalogConfigurationBean();
+        final CatalogConfigurationBean catalogConfiguration = configuration.getCatalogConfigurationBean();
         final PathType pathType = catalogConfiguration.getPathType();
         if (pathType != PathType.ABSOLUTE && pathType != PathType.RELATIVE) {
             throw new MigrationException("Cannot perform migration with path type " + pathType);
@@ -297,11 +271,9 @@ public class H2Migrator {
                 .collect(Collectors.toList());
     }
 
-    private void updateMosaicConfiguration(String[] coverageNames)
-            throws JAXBException, IOException {
+    private void updateMosaicConfiguration(String[] coverageNames) throws JAXBException, IOException {
         // create the aux store config file
-        File netcdfStore =
-                new File(configuration.getMosaicDirectory(), NETCDF_DATASTORE_PROPERTIES);
+        File netcdfStore = new File(configuration.getMosaicDirectory(), NETCDF_DATASTORE_PROPERTIES);
         try (OutputStream os = new FileOutputStream(netcdfStore)) {
             if (configuration.getIndexStoreName() != null) {
                 Properties properties = new Properties();
@@ -316,8 +288,7 @@ public class H2Migrator {
         final File indexerFile = new File(configuration.getMosaicDirectory(), "indexer.xml");
         final Indexer indexer = Utils.unmarshal(indexerFile);
         final List<Parameter> parameters = indexer.getParameters().getParameter();
-        Optional<Parameter> indexerParameter =
-                getParameter(Utils.Prop.AUXILIARY_DATASTORE_FILE, parameters);
+        Optional<Parameter> indexerParameter = getParameter(Utils.Prop.AUXILIARY_DATASTORE_FILE, parameters);
         if (indexerParameter.isPresent()) {
             indexerParameter.get().setValue(NETCDF_DATASTORE_PROPERTIES);
         } else {
@@ -338,8 +309,7 @@ public class H2Migrator {
 
         // read, update and rewrite the coverage config files
         for (String coverageName : coverageNames) {
-            File configFile =
-                    new File(configuration.getMosaicDirectory(), coverageName + ".properties");
+            File configFile = new File(configuration.getMosaicDirectory(), coverageName + ".properties");
             Properties properties = new Properties();
             try (FileInputStream is = new FileInputStream(configFile)) {
                 properties.load(is);
@@ -356,35 +326,29 @@ public class H2Migrator {
     }
 
     private Optional<Parameter> getParameter(String name, List<Parameter> parameters) {
-        return parameters.stream().filter(p -> name.equalsIgnoreCase(p.getName())).findFirst();
+        return parameters.stream()
+                .filter(p -> name.equalsIgnoreCase(p.getName()))
+                .findFirst();
     }
 
     Void migrateNetcdf(
-            String path,
-            String[] coverages,
-            DataStore targetStore,
-            LogWriter netcdfWriter,
-            LogWriter h2Writer)
+            String path, String[] coverages, DataStore targetStore, LogWriter netcdfWriter, LogWriter h2Writer)
             throws IOException, JAXBException, NoSuchAlgorithmException {
-        final AncillaryFileManager provider =
-                new AncillaryFileManager(new File(path), null) {
-                    @Override
-                    protected void initIndexer() {
-                        // do not init, we just need to return the info
-                    }
-                };
+        final AncillaryFileManager provider = new AncillaryFileManager(new File(path), null) {
+            @Override
+            protected void initIndexer() {
+                // do not init, we just need to return the info
+            }
+        };
         final DataStoreConfiguration config = provider.getDatastoreConfiguration();
         if (!(config.getDatastoreSpi() instanceof H2DataStoreFactory)) {
-            throw new MigrationException(
-                    "The NetCDF index datastore is not a H2, but "
-                            + config.getDatastoreSpi()
-                            + ", the migration was not designed to handle that case");
+            throw new MigrationException("The NetCDF index datastore is not a H2, but "
+                    + config.getDatastoreSpi()
+                    + ", the migration was not designed to handle that case");
         }
-        final DataStore sourceDataStore =
-                config.getDatastoreSpi().createDataStore(config.getParams());
+        final DataStore sourceDataStore = config.getDatastoreSpi().createDataStore(config.getParams());
         try (Transaction t = new DefaultTransaction()) {
-            final Set<String> typeNames =
-                    new HashSet<>(Arrays.asList(sourceDataStore.getTypeNames()));
+            final Set<String> typeNames = new HashSet<>(Arrays.asList(sourceDataStore.getTypeNames()));
             // shuffle coverages to avoid all threads accumulating on the same coverage
             List<String> shuffledCoverages = new ArrayList<>(Arrays.asList(coverages));
             Collections.shuffle(shuffledCoverages);
@@ -393,11 +357,9 @@ public class H2Migrator {
                 if (typeNames.contains(coverage)) {
                     LOGGER.info("Migrating " + path + ":" + coverage);
                     final SimpleFeatureSource source = sourceDataStore.getFeatureSource(coverage);
-                    final SimpleFeatureStore store =
-                            getTargetFeatureStore(source.getSchema(), targetStore, coverage);
+                    final SimpleFeatureStore store = getTargetFeatureStore(source.getSchema(), targetStore, coverage);
                     SimpleFeatureCollection indexWithLocation =
-                            new LocationFeatureCollection(
-                                    source.getFeatures(), path, store.getSchema());
+                            new LocationFeatureCollection(source.getFeatures(), path, store.getSchema());
                     store.setTransaction(t);
                     store.addFeatures(indexWithLocation);
                     LOGGER.info("Migration for " + path + ":" + coverage + " succesfull");
@@ -440,8 +402,7 @@ public class H2Migrator {
     }
 
     private SimpleFeatureStore getTargetFeatureStore(
-            SimpleFeatureType sourceSchema, DataStore targetStore, String coverage)
-            throws IOException {
+            SimpleFeatureType sourceSchema, DataStore targetStore, String coverage) throws IOException {
         // do we have to create it?
         List<String> existingTypeNames = Arrays.asList(targetStore.getTypeNames());
         if (!existingTypeNames.contains(coverage)) {
@@ -453,13 +414,12 @@ public class H2Migrator {
                     // create indexes if we can
                     if (targetStore instanceof JDBCDataStore) {
                         ((JDBCDataStore) targetStore)
-                                .createIndex(
-                                        new Index(
-                                                schema.getTypeName(),
-                                                schema.getTypeName() + "_loc_idx",
-                                                true,
-                                                "location",
-                                                CoverageSlicesCatalog.IMAGE_INDEX_ATTR));
+                                .createIndex(new Index(
+                                        schema.getTypeName(),
+                                        schema.getTypeName() + "_loc_idx",
+                                        true,
+                                        "location",
+                                        CoverageSlicesCatalog.IMAGE_INDEX_ATTR));
                     }
                 }
             }

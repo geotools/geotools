@@ -44,10 +44,7 @@ public class SLDTest {
 
     @Before
     public void setUp() throws Exception {}
-    /**
-     * We should have a test case for the expected default values so we can be sure of correct SLD
-     * rendering.
-     */
+    /** We should have a test case for the expected default values so we can be sure of correct SLD rendering. */
     @Test
     public void testDefaults() {
         Stroke stroke = sf.getDefaultStroke();
@@ -66,8 +63,8 @@ public class SLDTest {
     }
 
     /**
-     * Test that setting the raster opacity correct duplicates the raster symbolizer as a different
-     * object and correctly sets the opacity.
+     * Test that setting the raster opacity correct duplicates the raster symbolizer as a different object and correctly
+     * sets the opacity.
      */
     @Test
     public void testSetRasterOpacity() {
@@ -81,22 +78,16 @@ public class SLDTest {
         assertNotSame(SLD.rasterSymbolizer(s), rs);
     }
 
-    /**
-     * Test to ensure that updating the channels duplicates the raster sybmolizer with the new rgb
-     * channels
-     */
+    /** Test to ensure that updating the channels duplicates the raster sybmolizer with the new rgb channels */
     @Test
     public void testSetRasterRGBChannels() {
         RasterSymbolizer rs = sb.createRasterSymbolizer();
         Style s = sb.createStyle(rs);
 
-        SelectedChannelType red =
-                sf.createSelectedChannelType("red", sf.createContrastEnhancement(ff.literal(0.2)));
+        SelectedChannelType red = sf.createSelectedChannelType("red", sf.createContrastEnhancement(ff.literal(0.2)));
         SelectedChannelType green =
-                sf.createSelectedChannelType(
-                        "green", sf.createContrastEnhancement(ff.literal(0.4)));
-        SelectedChannelType blue =
-                sf.createSelectedChannelType("blue", sf.createContrastEnhancement(ff.literal(0.7)));
+                sf.createSelectedChannelType("green", sf.createContrastEnhancement(ff.literal(0.4)));
+        SelectedChannelType blue = sf.createSelectedChannelType("blue", sf.createContrastEnhancement(ff.literal(0.7)));
 
         SLD.setChannelSelection(s, new SelectedChannelType[] {red, green, blue}, null);
 

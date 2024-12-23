@@ -40,8 +40,7 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 public class NetCDFSource extends DefaultCoverageSource {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(NetCDFSource.class);
 
     NetCDFImageReader reader;
 
@@ -53,8 +52,7 @@ public class NetCDFSource extends DefaultCoverageSource {
     }
 
     @Override
-    public CoverageResponse read(CoverageReadRequest request, ProgressListener listener)
-            throws IOException {
+    public CoverageResponse read(CoverageReadRequest request, ProgressListener listener) throws IOException {
         ensureNotDisposed();
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Reading NetCDFSource with request: " + request);
@@ -82,13 +80,12 @@ public class NetCDFSource extends DefaultCoverageSource {
             List<AdditionalDomain> domains = getAdditionalDomains();
             if (domains != null && !domains.isEmpty()) {
                 for (AdditionalDomain domain : domains) {
-                    dynamicParameters.add(
-                            DefaultParameterDescriptor.create(
-                                    domain.getName().toUpperCase(),
-                                    "Additional " + domain.getName() + " domain",
-                                    List.class,
-                                    null,
-                                    false));
+                    dynamicParameters.add(DefaultParameterDescriptor.create(
+                            domain.getName().toUpperCase(),
+                            "Additional " + domain.getName() + " domain",
+                            List.class,
+                            null,
+                            false));
                 }
             }
         }

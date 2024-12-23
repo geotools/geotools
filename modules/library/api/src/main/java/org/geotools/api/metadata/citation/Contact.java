@@ -20,47 +20,39 @@ import org.geotools.api.util.InternationalString;
  */
 public interface Contact {
     /**
-     * Telephone numbers at which the organization or individual may be contacted. Returns {@code
-     * null} if none.
+     * Telephone numbers at which the organization or individual may be contacted. Returns {@code null} if none.
      *
-     * @return Telephone numbers at which the organization or individual may be contacted, or {@code
-     *     null}.
+     * @return Telephone numbers at which the organization or individual may be contacted, or {@code null}.
      */
     Telephone getPhone();
 
     /**
-     * Physical and email address at which the organization or individual may be contacted. Returns
-     * {@code null} if none.
+     * Physical and email address at which the organization or individual may be contacted. Returns {@code null} if
+     * none.
      *
-     * @return Physical and email address at which the organization or individual may be contacted,
-     *     or {@code null}.
+     * @return Physical and email address at which the organization or individual may be contacted, or {@code null}.
      */
     Address getAddress();
 
     /**
-     * On-line information that can be used to contact the individual or organization. Returns
-     * {@code null} if none.
+     * On-line information that can be used to contact the individual or organization. Returns {@code null} if none.
      *
-     * @return On-line information that can be used to contact the individual or organization, or
-     *     {@code null}.
+     * @return On-line information that can be used to contact the individual or organization, or {@code null}.
      */
     OnLineResource getOnLineResource();
 
     /**
-     * Time period (including time zone) when individuals can contact the organization or
-     * individual. Returns {@code null} if unspecified.
+     * Time period (including time zone) when individuals can contact the organization or individual. Returns
+     * {@code null} if unspecified.
      *
-     * @return Time period when individuals can contact the organization or individual, or {@code
-     *     null}.
+     * @return Time period when individuals can contact the organization or individual, or {@code null}.
      */
     InternationalString getHoursOfService();
 
     /**
-     * Supplemental instructions on how or when to contact the individual or organization. Returns
-     * {@code null} if none.
+     * Supplemental instructions on how or when to contact the individual or organization. Returns {@code null} if none.
      *
-     * @return Supplemental instructions on how or when to contact the individual or organization,
-     *     or {@code null}.
+     * @return Supplemental instructions on how or when to contact the individual or organization, or {@code null}.
      */
     InternationalString getContactInstructions();
 }

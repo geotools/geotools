@@ -59,8 +59,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void simpleLine() throws IOException {
         String css = "* { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -76,8 +75,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void simpleLineNamedColor() throws IOException {
         String css = "* { stroke: black; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -93,8 +91,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void simpleLineNamedColorCaseInsensitive() throws IOException {
         String css = "* { stroke: BlAcK; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -110,8 +107,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void lineWidth() throws IOException {
         String css = "* { stroke: #000000; stroke-width: 2;}";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -130,8 +126,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void lineWidthPx() throws IOException {
         String css = "* { stroke: #000000; stroke-width: 2px;}";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -155,21 +150,17 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void lineColorDoubleQuotedAttribute() throws IOException, CQLException {
         assertLineColorExpression(
-                "* { stroke : [strSubstring(\"quotedAttribute\", 1, 5)]; }",
-                "strSubstring(\"quotedAttribute\", 1, 5)");
+                "* { stroke : [strSubstring(\"quotedAttribute\", 1, 5)]; }", "strSubstring(\"quotedAttribute\", 1, 5)");
     }
 
     @Test
     public void lineColorStringInCQL() throws IOException, CQLException {
         assertLineColorExpression(
-                "* { stroke : [strSubstring('AB#00ffaaCDE', 2, 8)]; }",
-                "strSubstring('AB#00ffaaCDE', 2, 8)");
+                "* { stroke : [strSubstring('AB#00ffaaCDE', 2, 8)]; }", "strSubstring('AB#00ffaaCDE', 2, 8)");
     }
 
-    private void assertLineColorExpression(String css, String expectedExpression)
-            throws CQLException {
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+    private void assertLineColorExpression(String css, String expectedExpression) throws CQLException {
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
         // printResults(css, result);
@@ -186,8 +177,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void staticStringDoubleQuote() throws IOException {
         String css = "* { label : \"test\"; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -205,8 +195,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void staticLabelSingleQuote() throws IOException {
         String css = "* { label : 'test'; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -224,8 +213,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void staticLabelFontFamily() throws IOException {
         String css = "* { label : 'test'; font-family: Arial; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -244,8 +232,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void testFunction() throws IOException {
         String css = "* { mark: symbol(circle); }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -256,18 +243,13 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
         assertProperty(
-                r,
-                0,
-                "mark",
-                new Value.Function(
-                        "symbol", Collections.singletonList(new Value.Literal("circle"))));
+                r, 0, "mark", new Value.Function("symbol", Collections.singletonList(new Value.Literal("circle"))));
     }
 
     @Test
     public void testMultiValue() throws IOException {
         String css = "* { label-anchor: 50% 50%; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -277,18 +259,13 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
-        assertProperty(
-                r,
-                0,
-                "label-anchor",
-                new Value.MultiValue(new Value.Literal("50%"), new Value.Literal("50%")));
+        assertProperty(r, 0, "label-anchor", new Value.MultiValue(new Value.Literal("50%"), new Value.Literal("50%")));
     }
 
     @Test
     public void ogcSelector() throws IOException, CQLException {
         String css = "[myAttribute > 10] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -304,8 +281,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void minScaleSelector() throws IOException, CQLException {
         String css = "[@scale > 1000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -322,8 +298,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void maxScaleSelector() throws IOException, CQLException {
         String css = "[@scale < 1000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -340,8 +315,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void qualifiedTypeNameSelector() throws IOException, CQLException {
         String css = "topp:states { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -357,8 +331,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void simpleTypeNameSelector() throws IOException, CQLException {
         String css = "states { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -374,8 +347,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void idSelector() throws IOException, CQLException {
         String css = "#states.2 { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -392,8 +364,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void pseudoClassSelector() throws IOException, CQLException {
         String css = ":mark { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -410,8 +381,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void numberedPseudoClassSelector() throws IOException, CQLException {
         String css = ":nth-mark(2) { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -428,8 +398,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void andDataScale() throws IOException, CQLException {
         String css = "[att < 15] [@scale > 3000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -441,14 +410,14 @@ public class ParserSyntheticTest extends CssBaseTest {
         And s = (And) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
         assertEquals(
-                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
     public void andTypeScale() throws IOException, CQLException {
         String css = "topp:states [@scale > 3000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -460,14 +429,14 @@ public class ParserSyntheticTest extends CssBaseTest {
         And s = (And) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
         assertEquals(
-                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
     public void orDataScale() throws IOException, CQLException {
         String css = "[att < 15], [@scale > 3000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -479,14 +448,14 @@ public class ParserSyntheticTest extends CssBaseTest {
         Or s = (Or) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
         assertEquals(
-                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
     public void orTypeScale() throws IOException, CQLException {
         String css = "topp:states, [@scale > 3000] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -498,14 +467,14 @@ public class ParserSyntheticTest extends CssBaseTest {
         Or s = (Or) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
         assertEquals(
-                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+                new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
     public void orIdentifiers() throws IOException, CQLException {
         String css = "#states.2, #states.3 { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -522,8 +491,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void nestedOr() throws IOException, CQLException {
         String css = "#states.2, #states.3, [myAtt > 10] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -541,8 +509,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void nestedAnd() throws IOException, CQLException {
         String css = "#states.2 [@scale > 1000] [myAtt > 10] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -554,15 +521,15 @@ public class ParserSyntheticTest extends CssBaseTest {
         And s = (And) r.getSelector();
         assertEquals(new Id("states.2"), s.getChildren().get(0));
         assertEquals(
-                new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren().get(1));
+                new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
     }
 
     @Test
     public void nestedOrAnd() throws IOException, CQLException {
         String css = "#states.2 [@scale > 1000], [myAtt > 10] { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -584,8 +551,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void testComment() {
         String css = "/* This is a comment */ * { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -598,19 +564,16 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testCommentMultiline() {
-        String commentInternal =
-                "* @title The title\n"
-                        + //
-                        "  * @abstract The abstract";
-        String comment =
-                "/*\n"
-                        + //
-                        commentInternal
-                        + //
-                        "\n*/";
+        String commentInternal = "* @title The title\n"
+                + //
+                "  * @abstract The abstract";
+        String comment = "/*\n"
+                + //
+                commentInternal
+                + //
+                "\n*/";
         String css = comment + " * { stroke: #000000; }";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -624,8 +587,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void testCommentAmongProperties1() {
         String css = "* { stroke: #000000; /* This is a comment */}";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -639,8 +601,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void testCommentAmongProperties2() {
         String css = "* {  /* This is a comment */ stroke: #000000;}";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -653,8 +614,7 @@ public class ParserSyntheticTest extends CssBaseTest {
     @Test
     public void testMultiRule() {
         String css = "* {stroke: #000000;} states {fill:red;} ";
-        ParsingResult<Stylesheet> result =
-                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
 
@@ -751,16 +711,12 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertEquals(1, ss.getRules().size());
         CssRule rule = ss.getRules().get(0);
         final Value.MultiValue levelsValue =
-                new Value.MultiValue(
-                        new Value.Literal("1100"),
-                        new Value.Literal("1200"),
-                        new Value.Literal("1300"));
+                new Value.MultiValue(new Value.Literal("1100"), new Value.Literal("1200"), new Value.Literal("1300"));
         assertProperty(
                 rule,
                 0,
                 "transform",
-                new Value.TransformFunction(
-                        "ras:Contour", Collections.singletonMap("levels", levelsValue)));
+                new Value.TransformFunction("ras:Contour", Collections.singletonMap("levels", levelsValue)));
         assertProperty(rule, 1, "stroke", new Value.Literal("#000000"));
     }
 
@@ -774,8 +730,7 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule nested = rule.getNestedRules().get(0);
         PseudoClass selector = assertSelector(nested.getSelector(), PseudoClass.class);
         assertEquals("mark", selector.getClassName());
-        assertProperty(
-                nested, PseudoClass.newPseudoClass("mark"), 0, "size", new Value.Literal("10"));
+        assertProperty(nested, PseudoClass.newPseudoClass("mark"), 0, "size", new Value.Literal("10"));
     }
 
     @Test
@@ -818,8 +773,7 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testMultiNestedSelectors() {
-        String css =
-                "* { stroke: black; [a <= 10] { fill: yellow }; [a > 10] { fill: red}; stroke-opacity: 50%}";
+        String css = "* { stroke: black; [a <= 10] { fill: yellow }; [a > 10] { fill: red}; stroke-opacity: 50%}";
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
         CssRule rule = ss.getRules().get(0);
@@ -834,13 +788,12 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testDynamicColorMapEntryFromCss() throws Exception {
-        String css =
-                "* { raster-channels: 'auto'; "
-                        + "raster-color-map-type: values; "
-                        + "raster-color-map: color-map-entry("
-                        + "[env('color','#FF0000')], "
-                        + "[env('min', 1) + 2 * (env('max',10) - env('min',1)) / 3],"
-                        + "[env('customOpacity', 1)])  ;}";
+        String css = "* { raster-channels: 'auto'; "
+                + "raster-color-map-type: values; "
+                + "raster-color-map: color-map-entry("
+                + "[env('color','#FF0000')], "
+                + "[env('min', 1) + 2 * (env('max',10) - env('min',1)) / 3],"
+                + "[env('customOpacity', 1)])  ;}";
         LinearColorMap colorMap = buildColorMapFromCss(css);
         assertColorMap(colorMap, 255, 0, 0, 7, 255);
 
@@ -873,8 +826,7 @@ public class ParserSyntheticTest extends CssBaseTest {
         return builder.buildLinearColorMap();
     }
 
-    private void assertColorMap(
-            LinearColorMap colorMap, int red, int green, int blue, int quantity, int opacity) {
+    private void assertColorMap(LinearColorMap colorMap, int red, int green, int blue, int quantity, int opacity) {
         LinearColorMapElement element = colorMap.get(0);
         Color[] colors = element.getColors();
         assertEquals(1, colors.length);

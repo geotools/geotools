@@ -116,8 +116,7 @@ public abstract class DataColumnConstraint {
     }
 
     /** A numeric range restriction */
-    public static class Range<T extends Number & Comparable<? super T>>
-            extends DataColumnConstraint {
+    public static class Range<T extends Number & Comparable<? super T>> extends DataColumnConstraint {
 
         private final NumberRange<T> range;
 

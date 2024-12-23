@@ -26,8 +26,8 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.feature.FeatureCollection;
 
 /**
- * This interface extends {@code FeatureSource}, adding methods to add and remove features and to
- * modify existing features.
+ * This interface extends {@code FeatureSource}, adding methods to add and remove features and to modify existing
+ * features.
  *
  * <pre><code>
  * DataStore myDataStore = ...
@@ -57,13 +57,12 @@ import org.geotools.feature.FeatureCollection;
  * @author Chris Holmes, TOPP
  * @version $Id$
  */
-public interface FeatureStore<T extends FeatureType, F extends Feature>
-        extends FeatureSource<T, F> {
+public interface FeatureStore<T extends FeatureType, F extends Feature> extends FeatureSource<T, F> {
     /**
      * Adds all features from the feature collection.
      *
-     * <p>A list of {@code FeatureIds} is returned, one for each feature in the order created.
-     * However, these might not be assigned until after a commit has been performed.
+     * <p>A list of {@code FeatureIds} is returned, one for each feature in the order created. However, these might not
+     * be assigned until after a commit has been performed.
      *
      * @param featureCollection the collection of features to add
      * @return the {@code FeatureIds} of the newly added features
@@ -80,18 +79,15 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
     void removeFeatures(Filter filter) throws IOException;
 
     /**
-     * Modifies the attributes with the supplied values in all features selected by the given
-     * filter.
+     * Modifies the attributes with the supplied values in all features selected by the given filter.
      *
      * @param attributeNames the attributes to modify
      * @param attributeValues the new values for the attributes
      * @param filter an OpenGIS filter
-     * @throws IOException if the attribute and object arrays are not equal in length; if the value
-     *     types do not match the attribute types; if modification is not supported; or if there
-     *     errors accessing the data source
+     * @throws IOException if the attribute and object arrays are not equal in length; if the value types do not match
+     *     the attribute types; if modification is not supported; or if there errors accessing the data source
      */
-    void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter)
-            throws IOException;
+    void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter) throws IOException;
 
     /**
      * Modifies an attribute with the supplied value in all features selected by the given filter.
@@ -99,15 +95,14 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      * @param attributeName the attribute to modify
      * @param attributeValue the new value for the attribute
      * @param filter an OpenGIS filter
-     * @throws IOException if modification is not supported; if the value type does not match the
-     *     attribute type; or if there errors accessing the data source
+     * @throws IOException if modification is not supported; if the value type does not match the attribute type; or if
+     *     there errors accessing the data source
      */
-    void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
-            throws IOException;
+    void modifyFeatures(Name attributeName, Object attributeValue, Filter filter) throws IOException;
 
     /**
-     * Deletes any existing features in the data source and then inserts new features provided by
-     * the given reader. This is primarily used as a convenience method for file-based data sources.
+     * Deletes any existing features in the data source and then inserts new features provided by the given reader. This
+     * is primarily used as a convenience method for file-based data sources.
      *
      * @param reader - the collection to be written
      * @throws IOException if there are any datasource errors.
@@ -115,8 +110,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
     void setFeatures(FeatureReader<T, F> reader) throws IOException;
 
     /**
-     * Provide a transaction for commit/rollback control of a modifying operation on this {@code
-     * FeatureStore}.
+     * Provide a transaction for commit/rollback control of a modifying operation on this {@code FeatureStore}.
      *
      * <pre><code>
      * Transaction t = new DefaultTransaction();

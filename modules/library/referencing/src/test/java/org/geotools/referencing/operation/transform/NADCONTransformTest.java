@@ -53,28 +53,19 @@ public class NADCONTransformTest {
         transform = new NADCONTransform(new URI(STPAUL_LAS), new URI(STPAUL_LOS));
     }
 
-    /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#getSourceDimensions()}.
-     */
+    /** Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#getSourceDimensions()}. */
     @Test
     public void testGetSourceDimensions() {
         assertEquals(transform.getSourceDimensions(), 2);
     }
 
-    /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#getTargetDimensions()}.
-     */
+    /** Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#getTargetDimensions()}. */
     @Test
     public void testGetTargetDimensions() {
         assertEquals(transform.getTargetDimensions(), 2);
     }
 
-    /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#getParameterValues()}.
-     */
+    /** Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#getParameterValues()}. */
     @Test
     public void testGetParameterValues() {
         ParameterValueGroup pvg = transform.getParameterValues();
@@ -95,8 +86,8 @@ public class NADCONTransformTest {
     }
 
     /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#NADCONTransform(java.net.URI)}.
+     * Test method for
+     * {@link org.geotools.referencing.operation.transform.NADCONTransform#NADCONTransform(java.net.URI)}.
      */
     @Test
     public void testNADCONTransform() throws Exception {
@@ -108,10 +99,7 @@ public class NADCONTransformTest {
         }
     }
 
-    /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#inverse()}.
-     */
+    /** Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#inverse()}. */
     @Test
     public void testInverse() throws TransformException {
         assertSame(transform, transform.inverse().inverse());
@@ -126,8 +114,7 @@ public class NADCONTransformTest {
     }
 
     /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#transform(double[], int,
+     * Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#transform(double[], int,
      * double[], int, int)}.
      */
     @Test
@@ -139,9 +126,8 @@ public class NADCONTransformTest {
     }
 
     /**
-     * Test method for {@link
-     * org.geotools.referencing.operation.transform.NADCONTransform#inverseTransform(double[], int,
-     * double[], int, int)}.
+     * Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#inverseTransform(double[],
+     * int, double[], int, int)}.
      */
     @Test
     public void testInverseTransform() throws TransformException {

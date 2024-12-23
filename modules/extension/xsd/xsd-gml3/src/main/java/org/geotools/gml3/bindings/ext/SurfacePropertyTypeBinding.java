@@ -28,13 +28,12 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("ComparableType")
-public class SurfacePropertyTypeBinding
-        extends org.geotools.gml3.bindings.SurfacePropertyTypeBinding implements Comparable {
+public class SurfacePropertyTypeBinding extends org.geotools.gml3.bindings.SurfacePropertyTypeBinding
+        implements Comparable {
 
     GeometryFactory gf;
 
-    public SurfacePropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
+    public SurfacePropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
         super(encodingUtils, idRegistry);
         this.gf = gf;
     }
@@ -58,8 +57,7 @@ public class SurfacePropertyTypeBinding
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if ("_Surface".equals(name.getLocalPart())
-                || "AbstractSurface".equals(name.getLocalPart())) {
+        if ("_Surface".equals(name.getLocalPart()) || "AbstractSurface".equals(name.getLocalPart())) {
             MultiPolygon multiPolygon = (MultiPolygon) object;
             // this MultiPolygon consists of a single Polygon wrapped in a MultiPolygon:
             return multiPolygon.getGeometryN(0);

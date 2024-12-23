@@ -79,11 +79,9 @@ public class FESParseEncodeUtil {
         List<Object[]> l = new ArrayList<>();
         l.add(distanceBufferOpProperty(op.getExpression1()));
         l.add(distanceBufferOpProperty(op.getExpression2()));
-        l.add(
-                new Object[] {
-                    new QName(FES.NAMESPACE, "Distance"),
-                    DistanceUnits.of(op.getDistance(), op.getDistanceUnits())
-                });
+        l.add(new Object[] {
+            new QName(FES.NAMESPACE, "Distance"), DistanceUnits.of(op.getDistance(), op.getDistanceUnits())
+        });
         return l;
     }
 

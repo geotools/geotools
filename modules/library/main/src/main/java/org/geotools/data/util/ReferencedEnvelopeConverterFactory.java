@@ -32,15 +32,13 @@ public class ReferencedEnvelopeConverterFactory implements ConverterFactory {
         if (ReferencedEnvelope.class.isAssignableFrom(target) && String.class.equals(source)) {
 
             return new Converter() {
-                final CRSConverterFactory.CRSConverter crsConverter =
-                        new CRSConverterFactory.CRSConverter();
+                final CRSConverterFactory.CRSConverter crsConverter = new CRSConverterFactory.CRSConverter();
 
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Pattern pat =
-                            Pattern.compile(
-                                    "\\[([-+]?[0-9]*\\.?[0-9]+) : ([-+]?[0-9]*\\.?[0-9]+), ([-+]?[0-9]*\\.?[0-9]+) : ([-+]?[0-9]*\\.?[0-9]+)] \\{(.*)\\}",
-                                    Pattern.MULTILINE | Pattern.DOTALL);
+                    Pattern pat = Pattern.compile(
+                            "\\[([-+]?[0-9]*\\.?[0-9]+) : ([-+]?[0-9]*\\.?[0-9]+), ([-+]?[0-9]*\\.?[0-9]+) : ([-+]?[0-9]*\\.?[0-9]+)] \\{(.*)\\}",
+                            Pattern.MULTILINE | Pattern.DOTALL);
 
                     Matcher m = pat.matcher((String) source);
 
@@ -51,8 +49,7 @@ public class ReferencedEnvelopeConverterFactory implements ConverterFactory {
                         double maxY = Double.parseDouble(m.group(4));
                         try {
                             CoordinateReferenceSystem crs =
-                                    crsConverter.convert(
-                                            m.group(5), CoordinateReferenceSystem.class);
+                                    crsConverter.convert(m.group(5), CoordinateReferenceSystem.class);
                             return target.cast(new ReferencedEnvelope(minX, maxX, minY, maxY, crs));
                         } catch (FactoryException e) {
                             throw new RuntimeException(e);
@@ -61,30 +58,26 @@ public class ReferencedEnvelopeConverterFactory implements ConverterFactory {
                     throw new RuntimeException("Badly formed ReferencedEnvelope");
                 }
             };
-        } else if (ReferencedEnvelope.class.isAssignableFrom(source)
-                && String.class.equals(target)) {
+        } else if (ReferencedEnvelope.class.isAssignableFrom(source) && String.class.equals(target)) {
             return new Converter() {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
 
                     ReferencedEnvelope env = (ReferencedEnvelope) source;
-                    CRSConverterFactory.CRSConverter crsConverter =
-                            new CRSConverterFactory.CRSConverter();
-                    String crs =
-                            crsConverter.convert(env.getCoordinateReferenceSystem(), String.class);
+                    CRSConverterFactory.CRSConverter crsConverter = new CRSConverterFactory.CRSConverter();
+                    String crs = crsConverter.convert(env.getCoordinateReferenceSystem(), String.class);
 
-                    return target.cast(
-                            "["
-                                    + env.getMinX()
-                                    + " : "
-                                    + env.getMaxX()
-                                    + ", "
-                                    + env.getMinY()
-                                    + " : "
-                                    + env.getMaxY()
-                                    + "] {"
-                                    + crs
-                                    + "}");
+                    return target.cast("["
+                            + env.getMinX()
+                            + " : "
+                            + env.getMaxX()
+                            + ", "
+                            + env.getMinY()
+                            + " : "
+                            + env.getMaxY()
+                            + "] {"
+                            + crs
+                            + "}");
                 }
             };
         }

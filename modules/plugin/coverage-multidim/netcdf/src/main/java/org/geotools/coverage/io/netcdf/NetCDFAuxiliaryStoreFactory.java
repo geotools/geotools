@@ -42,31 +42,23 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
 
 /**
- * Creates a vector store that publishes the index information of the NetCDF Store. This way the
- * user can determine which combination of coordinates have data.
+ * Creates a vector store that publishes the index information of the NetCDF Store. This way the user can determine
+ * which combination of coordinates have data.
  *
  * @author Niels CHarlier
  */
 public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
 
-    public static final String AUXILIARY_STORE_KEY =
-            "org.geotools.coverage.io.netcdf.auxiliary.store";
+    public static final String AUXILIARY_STORE_KEY = "org.geotools.coverage.io.netcdf.auxiliary.store";
 
     public static final Param FILE_PARAM =
             new Param("File", File.class, "NetCDF File Path", true, null, Collections.emptyMap());
 
     public static final Param INDEX_PARAM =
-            new Param(
-                    "Index", String.class, "Index File Path", false, null, Collections.emptyMap());
+            new Param("Index", String.class, "Index File Path", false, null, Collections.emptyMap());
 
     public static final Param DS_PARAM =
-            new Param(
-                    "DataStore",
-                    String.class,
-                    "DataStore File Path",
-                    false,
-                    null,
-                    Collections.emptyMap());
+            new Param("DataStore", String.class, "DataStore File Path", false, null, Collections.emptyMap());
 
     public static final Param NS_PARAM =
             new Param("namespace", String.class, "Namespace", false, null, Collections.emptyMap());
@@ -92,10 +84,8 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
             File file = (File) FILE_PARAM.lookUp(params);
             String indexPath = (String) INDEX_PARAM.lookUp(params);
             String dsPath = (String) DS_PARAM.lookUp(params);
-            AncillaryFileManager ancilaryFileManager =
-                    new AncillaryFileManager(file, indexPath, dsPath);
-            DataStoreConfiguration datastoreConfig =
-                    ancilaryFileManager.getDatastoreConfiguration();
+            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(file, indexPath, dsPath);
+            DataStoreConfiguration datastoreConfig = ancilaryFileManager.getDatastoreConfiguration();
             return datastoreConfig.getDatastoreSpi().canProcess(datastoreConfig.getParams());
         } catch (NoSuchAlgorithmException | JAXBException | IOException e) {
             return false;
@@ -118,13 +108,10 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
         String indexPath = (String) INDEX_PARAM.lookUp(params);
         String dsPath = (String) DS_PARAM.lookUp(params);
         try {
-            AncillaryFileManager ancilaryFileManager =
-                    new AncillaryFileManager(file, indexPath, dsPath);
-            DataStoreConfiguration datastoreConfig =
-                    ancilaryFileManager.getDatastoreConfiguration();
+            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(file, indexPath, dsPath);
+            DataStoreConfiguration datastoreConfig = ancilaryFileManager.getDatastoreConfiguration();
 
-            final DataStore delegate =
-                    datastoreConfig.getDatastoreSpi().createDataStore(datastoreConfig.getParams());
+            final DataStore delegate = datastoreConfig.getDatastoreSpi().createDataStore(datastoreConfig.getParams());
             String namespace = (String) NS_PARAM.lookUp(params);
             if (namespace != null && delegate instanceof ContentDataStore) {
                 ((ContentDataStore) delegate).setNamespaceURI(namespace);
@@ -144,8 +131,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
                 }
 
                 @Override
-                public void updateSchema(Name typeName, SimpleFeatureType featureType)
-                        throws IOException {
+                public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
                     throw new UnsupportedOperationException();
                 }
 
@@ -170,8 +156,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
                 }
 
                 @Override
-                public void updateSchema(String typeName, SimpleFeatureType featureType)
-                        throws IOException {
+                public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
                     throw new UnsupportedOperationException();
                 }
 
@@ -208,8 +193,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
 
                 @Override
                 public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-                        String typeName, Filter filter, Transaction transaction)
-                        throws IOException {
+                        String typeName, Filter filter, Transaction transaction) throws IOException {
                     throw new UnsupportedOperationException();
                 }
 

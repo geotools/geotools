@@ -48,8 +48,7 @@ public class ResetAction extends MapAction {
     }
 
     /**
-     * Constructor. The associated control will be labelled with an icon and, optionally, the tool
-     * name.
+     * Constructor. The associated control will be labelled with an icon and, optionally, the tool name.
      *
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name

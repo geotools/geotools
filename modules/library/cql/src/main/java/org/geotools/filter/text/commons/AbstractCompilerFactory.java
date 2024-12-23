@@ -24,8 +24,8 @@ import org.geotools.filter.text.cql2.CQLException;
 /**
  * Provides the common behavior to make a compiler implementation
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -37,8 +37,7 @@ public abstract class AbstractCompilerFactory {
      *
      * @return CQLCompiler
      */
-    public ICompiler makeCompiler(final String predicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public ICompiler makeCompiler(final String predicate, final FilterFactory filterFactory) throws CQLException {
 
         FilterFactory ff = filterFactory;
 
@@ -50,6 +49,5 @@ public abstract class AbstractCompilerFactory {
         return compiler;
     }
 
-    protected abstract ICompiler createCompiler(
-            final String predicate, final FilterFactory filterFactory);
+    protected abstract ICompiler createCompiler(final String predicate, final FilterFactory filterFactory);
 }

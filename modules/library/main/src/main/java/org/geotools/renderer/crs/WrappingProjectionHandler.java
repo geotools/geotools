@@ -40,8 +40,8 @@ import org.locationtech.jts.geom.Polygon;
 import si.uom.SI;
 
 /**
- * A {@link ProjectionHandler} for projections that do warp in the East/West direction, it will
- * replicate the geometries generating a Google Maps like effect
+ * A {@link ProjectionHandler} for projections that do warp in the East/West direction, it will replicate the geometries
+ * generating a Google Maps like effect
  *
  * @author Andrea Aime - OpenGeo
  */
@@ -53,8 +53,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     protected static final String PREFLIPPED_OBJECT = "PRE-FLIPPED";
 
     /**
-     * The tolerance to consider a geometry without touching both datelines. Derived using trial and
-     * error. Any smaller and Antarctica-like polygons are incorrectly tagged.
+     * The tolerance to consider a geometry without touching both datelines. Derived using trial and error. Any smaller
+     * and Antarctica-like polygons are incorrectly tagged.
      */
     public static final double DATELINE_PROXIMITY_TOLERANCE = 1.99572;
 
@@ -64,10 +64,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     public static final String DATELINE_WRAPPING_CHECK_ENABLED = "datelineWrappingCheckEnabled";
     double sourceHalfCircle;
 
-    /**
-     * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
-     * this step)
-     */
+    /** Provides the strategy with the area we want to render and its CRS (the SPI lookup will do this step) */
     public WrappingProjectionHandler(
             ReferencedEnvelope renderingEnvelope,
             ReferencedEnvelope validArea,
@@ -96,15 +93,14 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     }
 
     /**
-     * Set one of the supported projection parameters: - datelineWrappingCheckEnabled (boolean) if
-     * false disables the heuristic for dateline wrapping check (true by default)
+     * Set one of the supported projection parameters: - datelineWrappingCheckEnabled (boolean) if false disables the
+     * heuristic for dateline wrapping check (true by default)
      */
     @Override
     public void setProjectionParameters(Map<String, Object> projectionParameters) {
         super.setProjectionParameters(projectionParameters);
         if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
-            datelineWrappingCheckEnabled =
-                    (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
+            datelineWrappingCheckEnabled = (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
         }
     }
 
@@ -151,9 +147,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         final double reWidth = getWidth(renderingEnvelope, targetAxisOrder);
 
         // if it was large and still larger, or small and still small, it likely did not wrap
-        if (width < targetHalfCircle
-                && renderingEnvelope.contains(env)
-                && reWidth <= targetHalfCircle * 2) {
+        if (width < targetHalfCircle && renderingEnvelope.contains(env) && reWidth <= targetHalfCircle * 2) {
             return geometry;
         }
 
@@ -170,14 +164,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                         || (geometry.getUserData() != null
                                 && geometry.getUserData().equals(PREFLIPPED_OBJECT)))) {
             final Geometry wrapped = geometry.copy();
-            wrapped.apply(
-                    new WrappingCoordinateFilter(
-                            targetHalfCircle,
-                            targetHalfCircle * 2,
-                            mt,
-                            northEast,
-                            geometry.getUserData() != null
-                                    && geometry.getUserData().equals(PREFLIPPED_OBJECT)));
+            wrapped.apply(new WrappingCoordinateFilter(
+                    targetHalfCircle,
+                    targetHalfCircle * 2,
+                    mt,
+                    northEast,
+                    geometry.getUserData() != null && geometry.getUserData().equals(PREFLIPPED_OBJECT)));
             wrapped.geometryChanged();
             geometry = wrapped;
             env = geometry.getEnvelopeInternal();
@@ -198,26 +190,20 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         if (northEast) {
             base = env.getMinY();
             curr = env.getMinY();
-            lowLimit =
-                    Math.max(
-                            renderingEnvelope.getMinY(),
-                            renderingEnvelope.getMedian(1) - maxWraps * targetHalfCircle * 2);
-            highLimit =
-                    Math.min(
-                            renderingEnvelope.getMaxY(),
-                            renderingEnvelope.getMedian(1) + maxWraps * targetHalfCircle * 2);
+            lowLimit = Math.max(
+                    renderingEnvelope.getMinY(), renderingEnvelope.getMedian(1) - maxWraps * targetHalfCircle * 2);
+            highLimit = Math.min(
+                    renderingEnvelope.getMaxY(), renderingEnvelope.getMedian(1) + maxWraps * targetHalfCircle * 2);
         } else {
             base = env.getMinX();
             curr = env.getMinX();
             double geometryWidth = geometry.getEnvelopeInternal().getWidth();
-            lowLimit =
-                    Math.max(
-                            renderingEnvelope.getMinX() - geometryWidth,
-                            renderingEnvelope.getMedian(0) - maxWraps * targetHalfCircle * 2);
-            highLimit =
-                    Math.min(
-                            renderingEnvelope.getMaxX() + geometryWidth,
-                            renderingEnvelope.getMedian(0) + maxWraps * targetHalfCircle * 2);
+            lowLimit = Math.max(
+                    renderingEnvelope.getMinX() - geometryWidth,
+                    renderingEnvelope.getMedian(0) - maxWraps * targetHalfCircle * 2);
+            highLimit = Math.min(
+                    renderingEnvelope.getMaxX() + geometryWidth,
+                    renderingEnvelope.getMedian(0) + maxWraps * targetHalfCircle * 2);
         }
         while (curr > lowLimit) {
             curr -= targetHalfCircle * 2;
@@ -259,14 +245,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             Polygon[] polys = geoms.toArray(new Polygon[geoms.size()]);
             return geometry.getFactory().createMultiPolygon(polys);
         } else {
-            return geometry.getFactory()
-                    .createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
+            return geometry.getFactory().createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
         }
     }
 
     /**
-     * In some cases the geometry is preflipped due to coordinate order and proximity to the
-     * dateline
+     * In some cases the geometry is preflipped due to coordinate order and proximity to the dateline
      *
      * <p>An example is this line: LINESTRING (179.94028987 52.14290407, -179.9428079 52.40938205)
      *
@@ -280,19 +264,17 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
         // preflipped width will be very close to twice the source half circle
         // but only applies if it doesn't touch both datelines
-        return width > sourceHalfCircle * DATELINE_PROXIMITY_TOLERANCE
-                && width < sourceHalfCircle * 2;
+        return width > sourceHalfCircle * DATELINE_PROXIMITY_TOLERANCE && width < sourceHalfCircle * 2;
     }
 
     /**
-     * Adds the geometries into the collection by recursively splitting apart geometry collections,
-     * so that geoms will contains only simple geometries.
+     * Adds the geometries into the collection by recursively splitting apart geometry collections, so that geoms will
+     * contains only simple geometries.
      *
-     * @return the geometry type that all geometries added to the collection conform to. Worst case
-     *     it's going to be Geometry.class
+     * @return the geometry type that all geometries added to the collection conform to. Worst case it's going to be
+     *     Geometry.class
      */
-    static Class accumulate(
-            List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
+    static Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
         Class gtype = null;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);
@@ -328,8 +310,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     }
 
     /**
-     * Enables the check using the "half world" heuristic on the input geometries, if larger it
-     * assumes they spanned the dateline. Enabled by default
+     * Enables the check using the "half world" heuristic on the input geometries, if larger it assumes they spanned the
+     * dateline. Enabled by default
      */
     public void setDatelineWrappingCheckEnabled(boolean datelineWrappingCheckEnabled) {
         this.datelineWrappingCheckEnabled = datelineWrappingCheckEnabled;

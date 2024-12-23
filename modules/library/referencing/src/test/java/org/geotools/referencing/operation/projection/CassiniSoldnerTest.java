@@ -19,8 +19,8 @@ import org.junit.Test;
 public class CassiniSoldnerTest {
 
     /**
-     * Tests the example provided by the EPSG guidance. See "OGP Surveying and Positioning Guidance
-     * Note number 7, part 2 – April 2009", page 36
+     * Tests the example provided by the EPSG guidance. See "OGP Surveying and Positioning Guidance Note number 7, part
+     * 2 – April 2009", page 36
      */
     @Test
     public void testEpsgExample() throws Exception {

@@ -42,15 +42,12 @@ public class WMSDescribeLayerTypes {
         }
 
         private static Element[] elems = {
-            new WMSSchema.WMSElement(
-                    "LayerDescription", _LayerDescription.getInstance(), 0, Integer.MAX_VALUE)
+            new WMSSchema.WMSElement("LayerDescription", _LayerDescription.getInstance(), 0, Integer.MAX_VALUE)
         };
 
         private static Sequence seq = new SequenceGT(elems);
 
-        private static Attribute[] attrs = {
-            new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
-        };
+        private static Attribute[] attrs = {new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())};
 
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
@@ -132,8 +129,7 @@ public class WMSDescribeLayerTypes {
             return instance;
         }
 
-        private static Element[] elems = {
-            new WMSSchema.WMSElement("Query", _Query.getInstance(), 0, Integer.MAX_VALUE)
+        private static Element[] elems = {new WMSSchema.WMSElement("Query", _Query.getInstance(), 0, Integer.MAX_VALUE)
         };
 
         private static Sequence seq = new SequenceGT(elems);

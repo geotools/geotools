@@ -29,10 +29,10 @@ import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * A subclass of ExtractBoundsFilterVisitor that can return either an Envelope or a list of disjoint
- * envelopes. Reasons to develop it, was that renderer can query multiple separate bounding boxes
- * when dealing with complex projection situations (e.g. dateline or other fundamental break lines
- * in the projection at hand) and we don't want to query all the tiles in between.
+ * A subclass of ExtractBoundsFilterVisitor that can return either an Envelope or a list of disjoint envelopes. Reasons
+ * to develop it, was that renderer can query multiple separate bounding boxes when dealing with complex projection
+ * situations (e.g. dateline or other fundamental break lines in the projection at hand) and we don't want to query all
+ * the tiles in between.
  */
 class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
 

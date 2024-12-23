@@ -26,15 +26,12 @@ import org.apache.commons.dbcp.BasicDataSource;
 /**
  * Allows reuse of JDBCTestSetup for a different set of tests.
  *
- * <p>For example see JDBC3DTestSetup which provides a different test dataset, while still using the
- * provided delegate to access a test fixture and establish a connection.
+ * <p>For example see JDBC3DTestSetup which provides a different test dataset, while still using the provided delegate
+ * to access a test fixture and establish a connection.
  *
  * @see JDBC3DTestSetup
  */
-@SuppressWarnings({
-    "PMD.JUnit4TestShouldUseAfterAnnotation",
-    "PMD.JUnit4TestShouldUseBeforeAnnotation"
-})
+@SuppressWarnings({"PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
     protected JDBCTestSetup delegate;

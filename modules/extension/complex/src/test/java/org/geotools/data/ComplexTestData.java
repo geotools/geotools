@@ -146,8 +146,7 @@ public abstract class ComplexTestData {
      * </code>
      * </pre>
      */
-    public static FeatureType createExample01MultiValuedComplexProperty(
-            FeatureTypeFactory typeFactory) {
+    public static FeatureType createExample01MultiValuedComplexProperty(FeatureTypeFactory typeFactory) {
 
         TypeBuilder builder = new TypeBuilder(typeFactory);
         builder.setNamespaceURI(NSURI);
@@ -332,9 +331,8 @@ public abstract class ComplexTestData {
     }
 
     /**
-     * Creates a representation of a gml:LocationPropertyType association. This would be better done
-     * by obtaining the type from a registry, so we can have GML2TypeRegistry, GML3TypeRegistry,
-     * DefaultTypeRegistry, etc.
+     * Creates a representation of a gml:LocationPropertyType association. This would be better done by obtaining the
+     * type from a registry, so we can have GML2TypeRegistry, GML3TypeRegistry, DefaultTypeRegistry, etc.
      */
     public static AttributeType createGmlLocation(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
@@ -348,9 +346,8 @@ public abstract class ComplexTestData {
     }
 
     /**
-     * Creates a representation of a gml:PointPropertyType association as an AttributeType. This
-     * would be better done by obtaining the type from a registry, so we can have GML2TypeRegistry,
-     * GML3TypeRegistry, DefaultTypeRegistry, etc.
+     * Creates a representation of a gml:PointPropertyType association as an AttributeType. This would be better done by
+     * obtaining the type from a registry, so we can have GML2TypeRegistry, GML3TypeRegistry, DefaultTypeRegistry, etc.
      */
     public static AttributeType createGmlPoint(FeatureTypeFactory typeFactory) {
         TypeBuilder builder = new TypeBuilder(typeFactory);
@@ -371,10 +368,7 @@ public abstract class ComplexTestData {
         return type;
     }
 
-    /**
-     * Asserts the corresponding properties of <code>type</code> for equality with the provided
-     * parameter values
-     */
+    /** Asserts the corresponding properties of <code>type</code> for equality with the provided parameter values */
     public static void checkType(
             AttributeType type,
             Name name,
@@ -395,8 +389,8 @@ public abstract class ComplexTestData {
     }
 
     /**
-     * Similar to the feature type return by {@link createExample01MultiValuedComplexProperty}
-     * except that there is no namespace uri specified.
+     * Similar to the feature type return by {@link createExample01MultiValuedComplexProperty} except that there is no
+     * namespace uri specified.
      *
      * @return FeatureType
      */

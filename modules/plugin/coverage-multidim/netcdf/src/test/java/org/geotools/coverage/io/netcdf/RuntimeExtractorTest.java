@@ -40,8 +40,7 @@ public class RuntimeExtractorTest extends Assert {
         long lastModified = file.lastModified();
 
         final RuntimeExtractorSPI spi = new RuntimeExtractorSPI();
-        final PropertiesCollector collector =
-                spi.create("regex=MODIFY_TIME", Arrays.asList("updated"));
+        final PropertiesCollector collector = spi.create("regex=MODIFY_TIME", Arrays.asList("updated"));
         final SimpleFeatureTypeBuilder featureTypeBuilder = new SimpleFeatureTypeBuilder();
         featureTypeBuilder.setName("runtimeT");
         featureTypeBuilder.add("updated", Date.class);

@@ -52,10 +52,9 @@ public interface FunctionExpression extends Factory, Function {
     /**
      * Fallback value to use in the event the function is unavailable in the requested environment.
      *
-     * <p>The fallback value is not provided as one of the arguments, as it is an advanced option
-     * used in style layer descriptor documents to facilitate interoperability. It allows a user to
-     * specify an SQL function, and provide a value to use when the documented is used with a WFS
-     * that does not support the provided function.
+     * <p>The fallback value is not provided as one of the arguments, as it is an advanced option used in style layer
+     * descriptor documents to facilitate interoperability. It allows a user to specify an SQL function, and provide a
+     * value to use when the documented is used with a WFS that does not support the provided function.
      */
     void setFallbackValue(Literal fallback);
 

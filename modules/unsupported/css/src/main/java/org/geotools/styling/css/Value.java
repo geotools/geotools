@@ -34,8 +34,8 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 
 /**
- * A value for a CSS property. Values can be several things, including from literals, expressions,
- * composition of multiple values.
+ * A value for a CSS property. Values can be several things, including from literals, expressions, composition of
+ * multiple values.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -198,13 +198,9 @@ abstract class Value {
         COLORS_TO_HEX.put("yellowgreen", "#9acd32");
     }
 
-    /**
-     * Turns this value into a OGC expression. Only literals and expressions can be converted to a
-     * OGC expression
-     */
+    /** Turns this value into a OGC expression. Only literals and expressions can be converted to a OGC expression */
     public org.geotools.api.filter.expression.Expression toExpression() {
-        throw new UnsupportedOperationException(
-                "Cannot turn this value into a OGC expression: " + this);
+        throw new UnsupportedOperationException("Cannot turn this value into a OGC expression: " + this);
     }
 
     /** Turns this value into a literal. Only true literals support this operation */
@@ -325,10 +321,9 @@ abstract class Value {
         @Override
         public org.geotools.api.filter.expression.Expression toExpression() {
             // turn function call if possible
-            org.geotools.api.filter.expression.Expression[] params =
-                    this.parameters.stream()
-                            .map(v -> v.toExpression())
-                            .toArray(s -> new org.geotools.api.filter.expression.Expression[s]);
+            org.geotools.api.filter.expression.Expression[] params = this.parameters.stream()
+                    .map(v -> v.toExpression())
+                    .toArray(s -> new org.geotools.api.filter.expression.Expression[s]);
             return FF.function(this.name, params);
         }
 
@@ -406,8 +401,7 @@ abstract class Value {
         public org.geotools.api.filter.expression.Expression toExpression() {
             Map<String, Parameter<?>> paramInfo = loadProcessInfo(processName(name));
             if (paramInfo == null) {
-                throw new RuntimeException(
-                        "Could not locate rendering transformation named " + name);
+                throw new RuntimeException("Could not locate rendering transformation named " + name);
             }
             List<org.geotools.api.filter.expression.Expression> arguments = new ArrayList<>();
 
@@ -425,8 +419,7 @@ abstract class Value {
                 arguments.add(ex);
             }
 
-            org.geotools.api.filter.expression.Expression[] argsArray =
-                    toExpressionArray(arguments);
+            org.geotools.api.filter.expression.Expression[] argsArray = toExpressionArray(arguments);
             return FF.function(name, argsArray);
         }
 
@@ -459,18 +452,15 @@ abstract class Value {
                 final org.geotools.api.filter.expression.Expression ex = v.toExpression();
                 paramArgs.add(ex);
             }
-            org.geotools.api.filter.expression.Expression[] paramArgsArray =
-                    toExpressionArray(paramArgs);
-            org.geotools.api.filter.expression.Function function =
-                    FF.function("parameter", paramArgsArray);
+            org.geotools.api.filter.expression.Expression[] paramArgsArray = toExpressionArray(paramArgs);
+            org.geotools.api.filter.expression.Function function = FF.function("parameter", paramArgsArray);
             return function;
         }
 
         private org.geotools.api.filter.expression.Expression[] toExpressionArray(
                 List<org.geotools.api.filter.expression.Expression> arguments) {
             org.geotools.api.filter.expression.Expression[] argsArray =
-                    arguments.toArray(
-                            new org.geotools.api.filter.expression.Expression[arguments.size()]);
+                    arguments.toArray(new org.geotools.api.filter.expression.Expression[arguments.size()]);
             return argsArray;
         }
 
@@ -487,11 +477,7 @@ abstract class Value {
         public static Map<String, Parameter<?>> loadProcessInfo(Name name) {
             Class<?> processorsClass = null;
             try {
-                processorsClass =
-                        Class.forName(
-                                "org.geotools.process.Processors",
-                                false,
-                                Value.class.getClassLoader());
+                processorsClass = Class.forName("org.geotools.process.Processors", false, Value.class.getClassLoader());
                 Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
                 return (Map<String, Parameter<?>>) getParameterInfo.invoke(null, name);
             } catch (Exception e) {
@@ -545,8 +531,7 @@ abstract class Value {
 
         @Override
         public String toLiteral() {
-            throw new UnsupportedOperationException(
-                    "Cannot turn this value into a literal: " + this);
+            throw new UnsupportedOperationException("Cannot turn this value into a literal: " + this);
         }
     }
 

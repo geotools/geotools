@@ -29,13 +29,12 @@ import org.geotools.metadata.i18n.ErrorKeys;
  *
  * <ul>
  *   <li>The image bounds, comprising the min X and Y coordinates, image width, and image height;
- *   <li>The tile grid layout, comprising the tile grid X and Y offsets, the tile width, and the
- *       tile height; and
+ *   <li>The tile grid layout, comprising the tile grid X and Y offsets, the tile width, and the tile height; and
  * </ul>
  *
- * <p>Methods that modify the state of an <code>RasterLayout</code> return a reference to 'this'
- * following the change. This allows multiple modifications to be made in a single expression. This
- * provides a way of modifying an <code>RasterLayout</code> within a superclass constructor call.
+ * <p>Methods that modify the state of an <code>RasterLayout</code> return a reference to 'this' following the change.
+ * This allows multiple modifications to be made in a single expression. This provides a way of modifying an <code>
+ * RasterLayout</code> within a superclass constructor call.
  */
 public class RasterLayout implements Cloneable {
 
@@ -114,8 +113,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Constructs an <code>RasterLayout</code> with all its parameters set to equal those of a given
-     * <code>RenderedImage</code>.
+     * Constructs an <code>RasterLayout</code> with all its parameters set to equal those of a given <code>RenderedImage
+     * </code>.
      *
      * @param im a <code>RenderedImage</code> whose layout will be copied.
      */
@@ -132,9 +131,7 @@ public class RasterLayout implements Cloneable {
     }
 
     public RasterLayout(Rectangle bounds) {
-        if (bounds == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
+        if (bounds == null) throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
         this.height = bounds.height;
         this.width = bounds.width;
         this.minX = bounds.x;
@@ -146,9 +143,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>minX</code> if it is valid, and otherwise returns the value from
-     * the supplied <code>RenderedImage</code>. If <code>minX</code> is not valid and fallback is
-     * null, 0 is returned.
+     * Returns the value of <code>minX</code> if it is valid, and otherwise returns the value from the supplied <code>
+     * RenderedImage</code>. If <code>minX</code> is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of minX.
      */
@@ -168,9 +164,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>minY</code> if it is valid, and otherwise returns the value from
-     * the supplied <code>RenderedImage</code>. If <code>minY</code> is not valid and fallback is
-     * null, 0 is returned.
+     * Returns the value of <code>minY</code> if it is valid, and otherwise returns the value from the supplied <code>
+     * RenderedImage</code>. If <code>minY</code> is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of minY.
      */
@@ -190,9 +185,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>width</code> if it is valid, and otherwise returns the value from
-     * the supplied <code>RenderedImage</code>. If <code>width</code> is not valid and fallback is
-     * null, 0 is returned.
+     * Returns the value of <code>width</code> if it is valid, and otherwise returns the value from the supplied <code>
+     * RenderedImage</code>. If <code>width</code> is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of width.
      */
@@ -216,8 +210,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of height if it is valid, and otherwise returns the value from the supplied
-     * <code>RenderedImage</code>. If height is not valid and fallback is null, 0 is returned.
+     * Returns the value of height if it is valid, and otherwise returns the value from the supplied <code>RenderedImage
+     * </code>. If height is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of height.
      */
@@ -241,9 +235,9 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>tileGridXOffset</code> if it is valid, and otherwise returns the
-     * value from the supplied <code>RenderedImage</code>. If <code>tileGridXOffset</code> is not
-     * valid and fallback is null, 0 is returned.
+     * Returns the value of <code>tileGridXOffset</code> if it is valid, and otherwise returns the value from the
+     * supplied <code>RenderedImage</code>. If <code>tileGridXOffset</code> is not valid and fallback is null, 0 is
+     * returned.
      *
      * @return the appropriate value of tileGridXOffset.
      */
@@ -263,9 +257,9 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>tileGridYOffset</code> if it is valid, and otherwise returns the
-     * value from the supplied <code>RenderedImage</code>. If <code>tileGridYOffset</code> is not
-     * valid and fallback is null, 0 is returned.
+     * Returns the value of <code>tileGridYOffset</code> if it is valid, and otherwise returns the value from the
+     * supplied <code>RenderedImage</code>. If <code>tileGridYOffset</code> is not valid and fallback is null, 0 is
+     * returned.
      *
      * @return the appropriate value of tileGridYOffset.
      */
@@ -285,9 +279,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of <code>tileWidth</code> if it is valid, and otherwise returns the value
-     * from the supplied <code>RenderedImage</code>. If <code>tileWidth</code> is not valid and
-     * fallback is null, 0 is returned.
+     * Returns the value of <code>tileWidth</code> if it is valid, and otherwise returns the value from the supplied
+     * <code>RenderedImage</code>. If <code>tileWidth</code> is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of tileWidth.
      */
@@ -311,9 +304,8 @@ public class RasterLayout implements Cloneable {
     }
 
     /**
-     * Returns the value of tileHeight if it is valid, and otherwise returns the value from the
-     * supplied <code>RenderedImage</code>. If tileHeight is not valid and fallback is null, 0 is
-     * returned.
+     * Returns the value of tileHeight if it is valid, and otherwise returns the value from the supplied <code>
+     * RenderedImage</code>. If tileHeight is not valid and fallback is null, 0 is returned.
      *
      * @return the appropriate value of tileHeight.
      */
@@ -383,8 +375,7 @@ public class RasterLayout implements Cloneable {
      *
      * @param obj the <code>Object</code> to test for equality
      * @return <code>true</code> if the specified <code>Object</code> is an instance of <code>
-     *     RasterLayout</code> and equals this <code>RasterLayout</code>; <code>false</code>
-     *     otherwise.
+     *     RasterLayout</code> and equals this <code>RasterLayout</code>; <code>false</code> otherwise.
      * @since JAI 1.1
      */
     @Override
@@ -408,7 +399,6 @@ public class RasterLayout implements Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
+        return Objects.hash(minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
     }
 }

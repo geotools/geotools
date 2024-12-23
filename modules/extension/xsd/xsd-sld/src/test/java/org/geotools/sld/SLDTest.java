@@ -51,8 +51,7 @@ public class SLDTest {
         Parser parser = new Parser(new SLDConfiguration());
 
         StyledLayerDescriptor sld =
-                (StyledLayerDescriptor)
-                        parser.parse(getClass().getResourceAsStream("example-sld.xml"));
+                (StyledLayerDescriptor) parser.parse(getClass().getResourceAsStream("example-sld.xml"));
 
         assertEquals(1, sld.getStyledLayers().length);
 
@@ -109,8 +108,7 @@ public class SLDTest {
     @Ignore
     // GEOT-5726 - test consistency with org.geotools.styling.SLDParser
     @Test
-    public void testParserConsistency()
-            throws ParserConfigurationException, SAXException, IOException {
+    public void testParserConsistency() throws ParserConfigurationException, SAXException, IOException {
         String sldText =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" version=\"1.0.0\">\n"
                         + "  <sld:Name>emptytag</sld:Name>\n"
@@ -140,12 +138,11 @@ public class SLDTest {
 
         Configuration config = new SLDConfiguration();
         Parser parser = new Parser(config);
-        StyledLayerDescriptor sld =
-                (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
 
         Style s = ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
-        TextSymbolizer symbolizer =
-                (TextSymbolizer) (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
+        TextSymbolizer symbolizer = (TextSymbolizer)
+                (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
         Font font = symbolizer.fonts().get(0);
         assertTrue(font.getFamily().size() > 0);
 
@@ -153,16 +150,14 @@ public class SLDTest {
     }
 
     @Test
-    public void testBackgroundSolid()
-            throws ParserConfigurationException, SAXException, IOException {
+    public void testBackgroundSolid() throws ParserConfigurationException, SAXException, IOException {
         Parser parser = new Parser(new SLDConfiguration());
 
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("backgroundSolid.sld"));
 
         StyledLayerDescriptor sld =
-                (StyledLayerDescriptor)
-                        parser.parse(getClass().getResourceAsStream("backgroundSolid.sld"));
+                (StyledLayerDescriptor) parser.parse(getClass().getResourceAsStream("backgroundSolid.sld"));
         Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
         Fill fill = style.getBackground();
         assertNotNull(fill);
@@ -171,16 +166,14 @@ public class SLDTest {
     }
 
     @Test
-    public void testBackgroundGraphicFill()
-            throws ParserConfigurationException, SAXException, IOException {
+    public void testBackgroundGraphicFill() throws ParserConfigurationException, SAXException, IOException {
         Parser parser = new Parser(new SLDConfiguration());
 
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("backgroundGraphicFill.sld"));
 
         StyledLayerDescriptor sld =
-                (StyledLayerDescriptor)
-                        parser.parse(getClass().getResourceAsStream("backgroundGraphicFill.sld"));
+                (StyledLayerDescriptor) parser.parse(getClass().getResourceAsStream("backgroundGraphicFill.sld"));
         Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
         Fill fill = style.getBackground();
         assertNotNull(fill);
@@ -188,7 +181,6 @@ public class SLDTest {
         assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
         assertTrue(firstSymbol instanceof Mark);
-        assertEquals(
-                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+        assertEquals("square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 }

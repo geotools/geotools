@@ -87,9 +87,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
             metadata = file.loadMetaData();
 
             try {
-                bounds =
-                        ReferencedEnvelope.create(metadata.getBounds(), WGS_84)
-                                .transform(SPHERICAL_MERCATOR, true);
+                bounds = ReferencedEnvelope.create(metadata.getBounds(), WGS_84).transform(SPHERICAL_MERCATOR, true);
             } catch (Exception e) {
                 bounds = null;
             }
@@ -104,10 +102,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
 
             long size = Math.round(Math.pow(ZOOM_LEVEL_BASE, maxZoom)) * DEFAULT_TILE_SIZE;
 
-            highestRes =
-                    new double[] {
-                        WORLD_ENVELOPE.getSpan(0) / size, WORLD_ENVELOPE.getSpan(1) / size
-                    };
+            highestRes = new double[] {WORLD_ENVELOPE.getSpan(0) / size, WORLD_ENVELOPE.getSpan(1) / size};
 
             originalGridRange = new GridEnvelope2D(new Rectangle((int) size, (int) size));
 
@@ -123,8 +118,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters)
-            throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
         try (MBTilesFile file = new MBTilesFile(sourceFile)) {
 
             ReferencedEnvelope requestedEnvelope = null;
@@ -137,11 +131,9 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
                     if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                         final GridGeometry2D gg = (GridGeometry2D) param.getValue();
                         try {
-                            requestedEnvelope =
-                                    ReferencedEnvelope.create(
-                                                    gg.getEnvelope(),
-                                                    gg.getCoordinateReferenceSystem())
-                                            .transform(SPHERICAL_MERCATOR, true);
+                            requestedEnvelope = ReferencedEnvelope.create(
+                                            gg.getEnvelope(), gg.getCoordinateReferenceSystem())
+                                    .transform(SPHERICAL_MERCATOR, true);
                         } catch (Exception e) {
                             requestedEnvelope = null;
                         }
@@ -161,19 +153,12 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
 
             if (requestedEnvelope != null && dim != null) {
                 // find the closest zoom based on horizontal resolution
-                double ratioWidth =
-                        requestedEnvelope.getSpan(0)
-                                / WORLD_ENVELOPE.getSpan(
-                                        0); // proportion of total width that is being requested
-                double propWidth =
-                        dim.getWidth()
-                                / ratioWidth; // this is the width in pixels that the whole world
+                double ratioWidth = requestedEnvelope.getSpan(0)
+                        / WORLD_ENVELOPE.getSpan(0); // proportion of total width that is being requested
+                double propWidth = dim.getWidth() / ratioWidth; // this is the width in pixels that the whole world
                 // would
                 // have in the requested resolution
-                zoomLevel =
-                        Math.round(
-                                Math.log(propWidth / DEFAULT_TILE_SIZE)
-                                        / Math.log(ZOOM_LEVEL_BASE));
+                zoomLevel = Math.round(Math.log(propWidth / DEFAULT_TILE_SIZE) / Math.log(ZOOM_LEVEL_BASE));
                 // the closest zoom level to the resolution, based on the formula width =
                 // zoom_base^zoom_level * tile_size -> zoom_level = log(width /
                 // tile_size)/log(zoom_base)
@@ -186,10 +171,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
             }
 
             long numberOfTiles =
-                    Math.round(
-                            Math.pow(
-                                    ZOOM_LEVEL_BASE,
-                                    zoomLevel)); // number of tile columns/rows for chosen zoom
+                    Math.round(Math.pow(ZOOM_LEVEL_BASE, zoomLevel)); // number of tile columns/rows for chosen zoom
             // level
             double resX = WORLD_ENVELOPE.getSpan(0) / numberOfTiles; // points per tile
             double resY = WORLD_ENVELOPE.getSpan(1) / numberOfTiles; // points per tile
@@ -207,46 +189,31 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
 
             if (requestedEnvelope != null) { // crop tiles to requested envelope
                 leftTile = boundMax(leftTile, (requestedEnvelope.getMinimum(0) - offsetX) / resX);
-                bottomTile =
-                        boundMax(bottomTile, (requestedEnvelope.getMinimum(1) - offsetY) / resY);
-                rightTile =
-                        boundMin(
-                                leftTile,
-                                rightTile,
-                                (requestedEnvelope.getMaximum(0) - offsetX) / resX);
-                topTile =
-                        boundMin(
-                                bottomTile,
-                                topTile,
-                                (requestedEnvelope.getMaximum(1) - offsetY) / resY);
+                bottomTile = boundMax(bottomTile, (requestedEnvelope.getMinimum(1) - offsetY) / resY);
+                rightTile = boundMin(leftTile, rightTile, (requestedEnvelope.getMaximum(0) - offsetX) / resX);
+                topTile = boundMin(bottomTile, topTile, (requestedEnvelope.getMaximum(1) - offsetY) / resY);
             }
 
             int width = (int) (rightTile - leftTile + 1) * DEFAULT_TILE_SIZE;
             int height = (int) (topTile - bottomTile + 1) * DEFAULT_TILE_SIZE;
 
             // recalculate the envelope we are actually returning
-            ReferencedEnvelope resultEnvelope =
-                    new ReferencedEnvelope(
-                            offsetX + leftTile * resX,
-                            offsetX + (rightTile + 1) * resX,
-                            offsetY + bottomTile * resY,
-                            offsetY + (topTile + 1) * resY,
-                            SPHERICAL_MERCATOR);
+            ReferencedEnvelope resultEnvelope = new ReferencedEnvelope(
+                    offsetX + leftTile * resX,
+                    offsetX + (rightTile + 1) * resX,
+                    offsetY + bottomTile * resY,
+                    offsetY + (topTile + 1) * resY,
+                    SPHERICAL_MERCATOR);
 
             BufferedImage image = null;
 
-            try (MBTilesFile.TileIterator it =
-                    file.tiles(zoomLevel, leftTile, bottomTile, rightTile, topTile)) {
+            try (MBTilesFile.TileIterator it = file.tiles(zoomLevel, leftTile, bottomTile, rightTile, topTile)) {
 
                 while (it.hasNext()) {
                     MBTilesTile tile = it.next();
 
-                    BufferedImage tileImage =
-                            readImage(
-                                    tile.getData(),
-                                    metadata.getFormatStr() == null
-                                            ? "png"
-                                            : metadata.getFormatStr());
+                    BufferedImage tileImage = readImage(
+                            tile.getData(), metadata.getFormatStr() == null ? "png" : metadata.getFormatStr());
 
                     if (image == null) {
                         image = getStartImage(tileImage, width, height);
@@ -267,9 +234,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
             }
 
             return coverageFactory.create(
-                    metadata.getName() == null ? "nameless mbtiles" : metadata.getName(),
-                    image,
-                    resultEnvelope);
+                    metadata.getName() == null ? "nameless mbtiles" : metadata.getName(), image, resultEnvelope);
         }
     }
 
@@ -309,11 +274,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
         WritableRaster raster = Raster.createWritableRaster(sm, null);
 
         BufferedImage image =
-                new BufferedImage(
-                        copyFrom.getColorModel(),
-                        raster,
-                        copyFrom.isAlphaPremultiplied(),
-                        properties);
+                new BufferedImage(copyFrom.getColorModel(), raster, copyFrom.isAlphaPremultiplied(), properties);
 
         // white background
         Graphics2D g2D = (Graphics2D) image.getGraphics();

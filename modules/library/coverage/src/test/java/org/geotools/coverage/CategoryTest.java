@@ -41,8 +41,8 @@ public final class CategoryTest {
     }
 
     /**
-     * Make sure that linear category produce the expected result. This test check also if the
-     * default {@link MathTransform1D} for a linear relation is right.
+     * Make sure that linear category produce the expected result. This test check also if the default
+     * {@link MathTransform1D} for a linear relation is right.
      *
      * @throws TransformException If an error occured while transforming a value.
      */

@@ -23,8 +23,8 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 
 /**
- * Wraps any JAI operation producing a bilevel image. An example of such operation is {@link
- * BinarizeDescriptor Binarize}.
+ * Wraps any JAI operation producing a bilevel image. An example of such operation is {@link BinarizeDescriptor
+ * Binarize}.
  *
  * @since 2.2
  * @version $Id$
@@ -36,10 +36,7 @@ public class BilevelOperation extends OperationJAI {
 
     /** The sample dimension for the resulting image. */
     private static final GridSampleDimension SAMPLE_DIMENSION =
-            new GridSampleDimension(
-                    "Bilevel SampleDimension",
-                    new Category[] {Category.FALSE, Category.TRUE},
-                    null);
+            new GridSampleDimension("Bilevel SampleDimension", new Category[] {Category.FALSE, Category.TRUE}, null);
 
     /**
      * Constructs a bilevel operation with an OGC's name identical to the JAI name.

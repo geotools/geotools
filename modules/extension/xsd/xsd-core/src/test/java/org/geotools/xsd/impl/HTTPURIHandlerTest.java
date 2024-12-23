@@ -36,15 +36,14 @@ public class HTTPURIHandlerTest {
         expectLastCall().asStub();
         expect(conn.getInputStream()).andStubReturn(is);
 
-        handler =
-                new HTTPURIHandler() {
+        handler = new HTTPURIHandler() {
 
-                    @Override
-                    protected HttpURLConnection getConnection(URI uri) throws IOException {
-                        // TODO Auto-generated method stub
-                        return conn;
-                    }
-                };
+            @Override
+            protected HttpURLConnection getConnection(URI uri) throws IOException {
+                // TODO Auto-generated method stub
+                return conn;
+            }
+        };
 
         replay(conn, is);
     }
@@ -152,7 +151,6 @@ public class HTTPURIHandlerTest {
         replay(conn);
 
         URI uri = URI.createURI("http://example.com");
-        Assert.assertThrows(
-                IOException.class, () -> handler.createInputStream(uri, Collections.EMPTY_MAP));
+        Assert.assertThrows(IOException.class, () -> handler.createInputStream(uri, Collections.EMPTY_MAP));
     }
 }

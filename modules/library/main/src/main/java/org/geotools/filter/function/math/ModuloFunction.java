@@ -35,12 +35,11 @@ import org.geotools.util.Converters;
  */
 public class ModuloFunction implements Function {
 
-    static FunctionName NAME =
-            new FunctionNameImpl(
-                    "modulo",
-                    Integer.class,
-                    FunctionNameImpl.parameter("dividend", Integer.class),
-                    FunctionNameImpl.parameter("divisor", Integer.class));
+    static FunctionName NAME = new FunctionNameImpl(
+            "modulo",
+            Integer.class,
+            FunctionNameImpl.parameter("dividend", Integer.class),
+            FunctionNameImpl.parameter("divisor", Integer.class));
 
     private final FunctionName functionName;
 
@@ -60,8 +59,7 @@ public class ModuloFunction implements Function {
         }
 
         if (parameters.size() != NAME.getArguments().size()) {
-            throw new IllegalArgumentException(
-                    NAME.getArguments().size() + " function parameters are required");
+            throw new IllegalArgumentException(NAME.getArguments().size() + " function parameters are required");
         }
 
         this.functionName = NAME;
@@ -116,9 +114,7 @@ public class ModuloFunction implements Function {
         return fallback;
     }
 
-    /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     */
+    /** Creates a String representation of this Function with the function name and the arguments. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -127,8 +123,7 @@ public class ModuloFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);

@@ -20,10 +20,9 @@ import java.util.logging.Logger;
 import org.geotools.util.WeakValueHashMap;
 
 /**
- * A factory for Java {@link Logger} wrapping an other logging framework. This factory is used only
- * when wanting to log to an other framework than Java logging. The {@link #getLogger} method
- * returns some subclass of {@link Logger} (typicallly {@link LoggerAdapter}) that forward directly
- * all log methods to an other framework.
+ * A factory for Java {@link Logger} wrapping an other logging framework. This factory is used only when wanting to log
+ * to an other framework than Java logging. The {@link #getLogger} method returns some subclass of {@link Logger}
+ * (typicallly {@link LoggerAdapter}) that forward directly all log methods to an other framework.
  *
  * @since 2.4
  * @version $Id$
@@ -52,9 +51,8 @@ public abstract class LoggerFactory<L> {
     }
 
     /**
-     * Returns the logger of the specified name, or {@code null}. If this method has already been
-     * invoked previously with the same {@code name} argument, then it may returns the same logger
-     * provided that:
+     * Returns the logger of the specified name, or {@code null}. If this method has already been invoked previously
+     * with the same {@code name} argument, then it may returns the same logger provided that:
      *
      * <ul>
      *   <li>the logger has not yet been garbage collected;
@@ -62,8 +60,8 @@ public abstract class LoggerFactory<L> {
      *       {@linkplain #getImplementation getImplementation}(name)</code> has not changed.
      * </ul>
      *
-     * Otherwise this method returns a new {@code Logger} instance, or {@code null} if the standard
-     * Java logging framework should be used.
+     * Otherwise this method returns a new {@code Logger} instance, or {@code null} if the standard Java logging
+     * framework should be used.
      *
      * @param name The name of the logger.
      * @return The logger, or {@code null}.
@@ -84,23 +82,21 @@ public abstract class LoggerFactory<L> {
     }
 
     /**
-     * Returns the base class of objects to be returned by {@link #getImplementation}. The class
-     * depends on the underlying logging framework (Log4J, SLF4J, <cite>etc.</cite>).
+     * Returns the base class of objects to be returned by {@link #getImplementation}. The class depends on the
+     * underlying logging framework (Log4J, SLF4J, <cite>etc.</cite>).
      */
     public Class<L> getImplementationClass() {
         return loggerClass;
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name. The object to be
-     * returned depends on the logging framework (Log4J, SLF4J, <cite>etc.</cite>). If the target
-     * framework redirects logging events to Java logging, then this method should returns {@code
-     * null} since we should not use wrapper at all.
+     * Returns the implementation to use for the logger of the specified name. The object to be returned depends on the
+     * logging framework (Log4J, SLF4J, <cite>etc.</cite>). If the target framework redirects logging events to Java
+     * logging, then this method should returns {@code null} since we should not use wrapper at all.
      *
      * @param name The name of the logger.
-     * @return The logger as an object of the target logging framework (Log4J, SLF4J,
-     *     <cite>etc.</cite>), or {@code null} if the target framework would redirect to the Java
-     *     logging framework.
+     * @return The logger as an object of the target logging framework (Log4J, SLF4J, <cite>etc.</cite>), or
+     *     {@code null} if the target framework would redirect to the Java logging framework.
      */
     protected abstract L getImplementation(String name);
 
@@ -114,9 +110,9 @@ public abstract class LoggerFactory<L> {
     protected abstract Logger wrap(String name, L implementation);
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none. If the specified logger is not an instance of the expected class,
-     * then this method should returns {@code null}.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none. If the specified logger is not an instance of the expected class, then this method should returns
+     * {@code null}.
      *
      * @param logger The logger to test.
      * @return The implementation wrapped by the specified logger, or {@code null} if none.
@@ -126,8 +122,8 @@ public abstract class LoggerFactory<L> {
     /**
      * Look up configuration information, or {@code null} unknown.
      *
-     * <p>Report back details on how logging configuration is setup. Ideally including configuration
-     * filename along with any system properties used.
+     * <p>Report back details on how logging configuration is setup. Ideally including configuration filename along with
+     * any system properties used.
      *
      * @return configuration information, or {@code null} unknown.
      */

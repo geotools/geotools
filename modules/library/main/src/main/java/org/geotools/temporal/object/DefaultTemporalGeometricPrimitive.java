@@ -35,8 +35,8 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
         implements TemporalGeometricPrimitive, Separation {
 
     /**
-     * Returns the distance from this TM_GeometricPrimitive to another TM_GeometricPrimitive, i.e.
-     * the absolute value of the difference between their temporal positions.
+     * Returns the distance from this TM_GeometricPrimitive to another TM_GeometricPrimitive, i.e. the absolute value of
+     * the difference between their temporal positions.
      */
     @Override
     public Duration distance(TemporalGeometricPrimitive other) {
@@ -47,10 +47,9 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
                     && ((Instant) other).getPosition().anyOther() != null) {
                 if (!((DefaultTemporalPosition) ((Instant) this).getPosition().anyOther())
                         .getFrame()
-                        .equals(
-                                ((DefaultTemporalPosition)
-                                                ((Instant) other).getPosition().anyOther())
-                                        .getFrame())) {
+                        .equals(((DefaultTemporalPosition)
+                                        ((Instant) other).getPosition().anyOther())
+                                .getFrame())) {
                     try {
                         throw new Exception(
                                 "the TM_TemporalPositions are not both associated with the same TM_ReferenceSystem !");
@@ -61,7 +60,8 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
                 }
             } else if (((Instant) this).getPosition().anyOther() != null) {
                 if (((Instant) this).getPosition().anyOther().getIndeterminatePosition() != null
-                        || ((DefaultTemporalPosition) ((Instant) this).getPosition().anyOther())
+                        || ((DefaultTemporalPosition)
+                                                ((Instant) this).getPosition().anyOther())
                                         .getFrame()
                                 instanceof OrdinalReferenceSystem) {
                     try {
@@ -74,7 +74,8 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
                 }
             } else if (((Instant) other).getPosition().anyOther() != null) {
                 if (((Instant) other).getPosition().anyOther().getIndeterminatePosition() != null
-                        || ((DefaultTemporalPosition) ((Instant) other).getPosition().anyOther())
+                        || ((DefaultTemporalPosition)
+                                                ((Instant) other).getPosition().anyOther())
                                         .getFrame()
                                 instanceof OrdinalReferenceSystem) {
                     try {
@@ -91,29 +92,21 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
         if (this.relativePosition(other).equals(RelativePosition.BEFORE)
                 || this.relativePosition(other).equals(RelativePosition.AFTER)) {
             if (this instanceof Instant && other instanceof Instant) {
-                diff =
-                        Math.min(
-                                Math.abs(iTime((Instant) other) - iTime((Instant) this)),
-                                Math.abs(iTime((Instant) this) - iTime((Instant) other)));
+                diff = Math.min(
+                        Math.abs(iTime((Instant) other) - iTime((Instant) this)),
+                        Math.abs(iTime((Instant) this) - iTime((Instant) other)));
             } else if (this instanceof Instant && other instanceof Period) {
-                diff =
-                        Math.min(
-                                Math.abs(pbTime((Period) other) - iTime((Instant) this)),
-                                Math.abs(
-                                        iTime(((Period) other).getEnding())
-                                                - iTime((Instant) this)));
+                diff = Math.min(
+                        Math.abs(pbTime((Period) other) - iTime((Instant) this)),
+                        Math.abs(iTime(((Period) other).getEnding()) - iTime((Instant) this)));
             } else if (this instanceof Period && other instanceof Instant) {
-                diff =
-                        Math.min(
-                                Math.abs(
-                                        iTime((Instant) other)
-                                                - iTime(((Period) this).getEnding())),
-                                Math.abs(iTime((Instant) other) - pbTime((Period) this)));
+                diff = Math.min(
+                        Math.abs(iTime((Instant) other) - iTime(((Period) this).getEnding())),
+                        Math.abs(iTime((Instant) other) - pbTime((Period) this)));
             } else if (this instanceof Period && other instanceof Period) {
-                diff =
-                        Math.min(
-                                Math.abs(peTime((Period) other) - pbTime((Period) this)),
-                                Math.abs(pbTime((Period) other) - peTime((Period) this)));
+                diff = Math.min(
+                        Math.abs(peTime((Period) other) - pbTime((Period) this)),
+                        Math.abs(pbTime((Period) other) - peTime((Period) this)));
             }
         } else if (this.relativePosition(other).equals(RelativePosition.BEGINS)
                 || this.relativePosition(other).equals(RelativePosition.BEGUN_BY)

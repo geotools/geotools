@@ -61,16 +61,11 @@ public abstract class JMapPaneTestBase {
      */
     protected ReferencedEnvelope createMatchedBounds(Rectangle screenRect) {
         return new ReferencedEnvelope(
-                0,
-                (double) screenRect.width / screenRect.height,
-                0,
-                1.0,
-                DefaultEngineeringCRS.CARTESIAN_2D);
+                0, (double) screenRect.width / screenRect.height, 0, 1.0, DefaultEngineeringCRS.CARTESIAN_2D);
     }
 
     /**
-     * Creates a new MapContent optionally populated with single-feature Layers having the specified
-     * bounds.
+     * Creates a new MapContent optionally populated with single-feature Layers having the specified bounds.
      *
      * @param boundsOfLayers 0 or more bounds for layers
      * @return new map content
@@ -98,8 +93,7 @@ public abstract class JMapPaneTestBase {
     }
 
     /**
-     * Creates a feature collection containing a single feature with a polygon geometry based on the
-     * input envelope.
+     * Creates a feature collection containing a single feature with a polygon geometry based on the input envelope.
      *
      * @param env the input envelope
      * @return new feature collection
@@ -116,8 +110,7 @@ public abstract class JMapPaneTestBase {
         final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
 
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
+                SimpleFeatureBuilder.build(TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
 
         SimpleFeatureCollection fc = new ListFeatureCollection(TYPE, Arrays.asList(feature));
         return fc;

@@ -42,8 +42,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
 
     /** Creates a new instance of CustomGlyphRenderer */
     public CustomGlyphRenderer() {
-        FilterFactory factory =
-                (FilterFactory) org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
+        FilterFactory factory = (FilterFactory) org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
 
         list.addProperty("radius", Expression.class, factory.literal(50));
         list.addProperty("circle color", Expression.class, factory.literal("#000066"));
@@ -101,9 +100,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
                 // NOTHING?
                 LOGGER.log(
                         Level.WARNING,
-                        "Tried to set the property "
-                                + nextName
-                                + " to a glyph that does not have this property.");
+                        "Tried to set the property " + nextName + " to a glyph that does not have this property.");
             }
         }
 
@@ -222,20 +219,15 @@ public class CustomGlyphRenderer implements GlyphRenderer {
         int circleCenterX = Math.max(pointerLength, radius);
         int circleCenterY = Math.max(maxBarHeight, Math.max(pointerLength, radius));
 
-        int imageHeight =
-                Math.max(
-                        radius * 2,
-                        Math.max(
-                                radius + pointerLength,
-                                Math.max(radius + maxBarHeight, pointerLength + maxBarHeight)));
+        int imageHeight = Math.max(
+                radius * 2,
+                Math.max(radius + pointerLength, Math.max(radius + maxBarHeight, pointerLength + maxBarHeight)));
         int imageWidth = Math.max(radius * 2, pointerLength * 2);
-        BufferedImage image =
-                new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         pointerLength = Math.max(pointerLength, radius);
         Graphics2D imageGraphic = image.createGraphics();
         imageGraphic.setColor(circleColor);
-        imageGraphic.fillOval(
-                circleCenterX - radius, circleCenterY - radius, radius * 2, radius * 2);
+        imageGraphic.fillOval(circleCenterX - radius, circleCenterY - radius, radius * 2, radius * 2);
         imageGraphic.setColor(wedgeColor);
         imageGraphic.fillArc(
                 circleCenterX - radius,
@@ -251,20 +243,15 @@ public class CustomGlyphRenderer implements GlyphRenderer {
                 barUncWidth * 2,
                 barUncertainty * 2);
         // pointer
-        int[] endPoint =
-                calculateEndOfPointer(
-                        circleCenterX, circleCenterY, pointerLength, pointerDirection);
+        int[] endPoint = calculateEndOfPointer(circleCenterX, circleCenterY, pointerLength, pointerDirection);
         imageGraphic.setStroke(new java.awt.BasicStroke(3));
         imageGraphic.setColor(pointerColor);
-        imageGraphic.draw(
-                new java.awt.geom.Line2D.Double(
-                        circleCenterX, circleCenterY, endPoint[0], endPoint[1]));
+        imageGraphic.draw(new java.awt.geom.Line2D.Double(circleCenterX, circleCenterY, endPoint[0], endPoint[1]));
         // bar
         imageGraphic.setStroke(new java.awt.BasicStroke(3));
         imageGraphic.setColor(barColor);
-        imageGraphic.draw(
-                new java.awt.geom.Line2D.Double(
-                        circleCenterX, circleCenterY, circleCenterX, circleCenterY - barHeight));
+        imageGraphic.draw(new java.awt.geom.Line2D.Double(
+                circleCenterX, circleCenterY, circleCenterX, circleCenterY - barHeight));
 
         imageGraphic.dispose();
         return image;
@@ -274,20 +261,9 @@ public class CustomGlyphRenderer implements GlyphRenderer {
         return 450 - (pointerDirection + wedgeWidth);
     }
 
-    private int[] calculateEndOfPointer(
-            int circleCenterX, int circleCenterY, int pointerLength, int pointerDirection) {
-        int x =
-                circleCenterX
-                        + (int)
-                                Math.round(
-                                        pointerLength
-                                                * Math.cos(Math.toRadians(pointerDirection - 90)));
-        int y =
-                circleCenterY
-                        + (int)
-                                Math.round(
-                                        pointerLength
-                                                * Math.sin(Math.toRadians(pointerDirection - 90)));
+    private int[] calculateEndOfPointer(int circleCenterX, int circleCenterY, int pointerLength, int pointerDirection) {
+        int x = circleCenterX + (int) Math.round(pointerLength * Math.cos(Math.toRadians(pointerDirection - 90)));
+        int y = circleCenterY + (int) Math.round(pointerLength * Math.sin(Math.toRadians(pointerDirection - 90)));
         return new int[] {x, y};
     }
 }

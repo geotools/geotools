@@ -28,16 +28,15 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
 
 /**
- * This class implements the AUTOCLUST algorithm of Estivill-Castro and Lee (2002) "Argument free
- * clustering for large spatial point-data sets via boundary extraction from Delaunay Diagram" in
- * Computers, Environment and Urban Systems, 26:315-334.
+ * This class implements the AUTOCLUST algorithm of Estivill-Castro and Lee (2002) "Argument free clustering for large
+ * spatial point-data sets via boundary extraction from Delaunay Diagram" in Computers, Environment and Urban Systems,
+ * 26:315-334.
  *
  * @author jfc173
  */
 public class AutoClust {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AutoClust.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AutoClust.class);
 
     /** Creates a new instance of AutoClust */
     public AutoClust() {}
@@ -69,9 +68,7 @@ public class AutoClust {
             Iterator anotherEdgeIt = localEdges.iterator();
             while (anotherEdgeIt.hasNext()) {
                 DelaunayEdge nextEdge = (DelaunayEdge) anotherEdgeIt.next();
-                sumOfSquaredDiffs =
-                        sumOfSquaredDiffs
-                                + Math.pow((nextEdge.getEuclideanDistance() - meanLength), 2);
+                sumOfSquaredDiffs = sumOfSquaredDiffs + Math.pow((nextEdge.getEuclideanDistance() - meanLength), 2);
             }
             double variance = sumOfSquaredDiffs / (localEdges.size());
             double stDev = Math.sqrt(variance);
@@ -108,19 +105,13 @@ public class AutoClust {
                 double length = nextEdge.getEuclideanDistance();
                 if (length < acd.getLocalMean() - meanStDev) {
                     shortEdges.add(nextEdge);
-                    LOGGER.finer(
-                            nextEdge + ": length " + nextEdge.getEuclideanDistance() + " is short");
+                    LOGGER.finer(nextEdge + ": length " + nextEdge.getEuclideanDistance() + " is short");
                 } else if (length > acd.getLocalMean() + meanStDev) {
                     longEdges.add(nextEdge);
-                    LOGGER.finer(
-                            nextEdge + ": length " + nextEdge.getEuclideanDistance() + " is long");
+                    LOGGER.finer(nextEdge + ": length " + nextEdge.getEuclideanDistance() + " is long");
                 } else {
                     otherEdges.add(nextEdge);
-                    LOGGER.finer(
-                            nextEdge
-                                    + ": length "
-                                    + nextEdge.getEuclideanDistance()
-                                    + " is medium");
+                    LOGGER.finer(nextEdge + ": length " + nextEdge.getEuclideanDistance() + " is medium");
                 }
             }
             acd.setShortEdges(shortEdges);
@@ -236,19 +227,16 @@ public class AutoClust {
         while (nodeIt5.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt5.next();
             List<Edge> edgesWithinTwo = new ArrayList<>();
-            List<Edge> adjacentEdges =
-                    AutoClustUtils.findAdjacentEdges(
-                            next,
-                            edges); // yes, next.getEdges() could work, but there's no guarantee
+            List<Edge> adjacentEdges = AutoClustUtils.findAdjacentEdges(
+                    next, edges); // yes, next.getEdges() could work, but there's no guarantee
             // that next's edge list is current anymore
             edgesWithinTwo.addAll(adjacentEdges);
             Iterator adjacentIt = adjacentEdges.iterator();
             while (adjacentIt.hasNext()) {
                 Edge nextEdge = (Edge) adjacentIt.next();
                 Node other = nextEdge.getOtherNode(next);
-                List adjacentToOther =
-                        AutoClustUtils.findAdjacentEdges(
-                                other, edges); // yes, other.getEdges() could work, but there's no
+                List adjacentToOther = AutoClustUtils.findAdjacentEdges(
+                        other, edges); // yes, other.getEdges() could work, but there's no
                 // guarantee that other's edge list is current anymore
                 Iterator atoIt = adjacentToOther.iterator();
                 while (atoIt.hasNext()) {
@@ -295,8 +283,7 @@ public class AutoClust {
             }
         }
         if (ret == null) {
-            throw new RuntimeException(
-                    "Couldn't find the graph component containing node: " + node);
+            throw new RuntimeException("Couldn't find the graph component containing node: " + node);
         }
         return ret;
     }

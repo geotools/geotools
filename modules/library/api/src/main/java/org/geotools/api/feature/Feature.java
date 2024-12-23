@@ -14,8 +14,8 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
 
 /**
- * An instance of {@link FeatureType} representing a geographic feature composed of geometric and
- * non-geometric properties.
+ * An instance of {@link FeatureType} representing a geographic feature composed of geometric and non-geometric
+ * properties.
  *
  * <p>Beyond being a complex attribute, a feature contains the following additional information:
  *
@@ -43,15 +43,14 @@ public interface Feature extends ComplexAttribute {
     /**
      * A unique identifier for the feature.
      *
-     * <p><code>getType().isIdentifiable()</code> must return <code>true</code> so this value must
-     * not return <code>null</code>.
+     * <p><code>getType().isIdentifiable()</code> must return <code>true</code> so this value must not return <code>null
+     * </code>.
      *
-     * <p>Generation of the identifier is dependent on the underlying data storage medium. Often
-     * this identifier is not persistent. Mediums such shapefiles and database tables have "keys"
-     * built in which map naturally to persistent feature identifiers. But other mediums do not have
-     * such keys and may have to generate feature identifiers "on-the-fly". This means that client
-     * code being able to depend on this value as a persistent entity is dependent on which storage
-     * medium or data source is being used.
+     * <p>Generation of the identifier is dependent on the underlying data storage medium. Often this identifier is not
+     * persistent. Mediums such shapefiles and database tables have "keys" built in which map naturally to persistent
+     * feature identifiers. But other mediums do not have such keys and may have to generate feature identifiers
+     * "on-the-fly". This means that client code being able to depend on this value as a persistent entity is dependent
+     * on which storage medium or data source is being used.
      *
      * @return The feature identifier, never <code>null</code>.
      */
@@ -63,15 +62,13 @@ public interface Feature extends ComplexAttribute {
      *
      * <p>This value is derived from any geometric attributes that the feature is composed of.
      *
-     * <p>In the case that the feature has no geometric attributes this method should return an
-     * empty bounds, ie, <code>bounds.isEmpty() == true</code>. This method should never return
-     * <code>null</code>.
+     * <p>In the case that the feature has no geometric attributes this method should return an empty bounds, ie, <code>
+     * bounds.isEmpty() == true</code>. This method should never return <code>null</code>.
      *
-     * <p>The coordinate reference system of the returned bounds is derived from the geometric
-     * attributes which were used to compute the bounds. In the event that the feature contains
-     * multiple geometric attributes which have different crs's, the one defined by {@link
-     * #getGeometryDescriptor()} should take precedence and the others should be reprojected
-     * accordingly.
+     * <p>The coordinate reference system of the returned bounds is derived from the geometric attributes which were
+     * used to compute the bounds. In the event that the feature contains multiple geometric attributes which have
+     * different crs's, the one defined by {@link #getGeometryDescriptor()} should take precedence and the others should
+     * be reprojected accordingly.
      *
      * @return the feature bounds, possibly empty.
      */
@@ -89,12 +86,11 @@ public interface Feature extends ComplexAttribute {
     /**
      * Sets the default geometric attribute of the feature.
      *
-     * <p>This value must be an attribute which is already defined for the feature. In other words,
-     * this method can not be used to add a new attribute to the feature.
+     * <p>This value must be an attribute which is already defined for the feature. In other words, this method can not
+     * be used to add a new attribute to the feature.
      *
      * @param geometryAttribute The new geomtric attribute.
-     * @throws IllegalArgumentException If the specified attribute is not already an attribute of
-     *     the feature.
+     * @throws IllegalArgumentException If the specified attribute is not already an attribute of the feature.
      */
     void setDefaultGeometryProperty(GeometryAttribute geometryAttribute);
 }

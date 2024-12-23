@@ -23,8 +23,8 @@ import java.util.List;
 import org.geotools.swing.MapPane;
 
 /**
- * Receives mouse events from a MapPane instance, converts them to MapPaneMouseEvents, and sends
- * these to the active map pane tools.
+ * Receives mouse events from a MapPane instance, converts them to MapPaneMouseEvents, and sends these to the active map
+ * pane tools.
  *
  * @author Michael Bedward
  * @since 8.0

@@ -18,8 +18,8 @@
 package org.geotools.swing.event;
 
 /**
- * An adapter class that implements all of the methods defined by {@code MapPaneListener} as empty
- * methods, allowing sub-classes to just override the methods they need.
+ * An adapter class that implements all of the methods defined by {@code MapPaneListener} as empty methods, allowing
+ * sub-classes to just override the methods they need.
  *
  * @author Michael Bedward
  * @since 2.6

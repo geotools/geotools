@@ -24,8 +24,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
- * Obtains the data needed for a Quantile operation (classification of features into classes of
- * equal size).
+ * Obtains the data needed for a Quantile operation (classification of features into classes of equal size).
  *
  * <p>The result contains an array of lists with the expression values in each.
  *
@@ -82,8 +81,7 @@ public class QuantileListVisitor implements FeatureCalc {
             for (int binMember = 0; binMember < binPop; binMember++) {
                 bin[binIndex].add(items.get(item++));
             }
-            if (lastBigBin == binIndex)
-                binPop--; // decrease the number of items in a bin for the next item
+            if (lastBigBin == binIndex) binPop--; // decrease the number of items in a bin for the next item
         }
         return new AbstractCalcResult() {
             @Override

@@ -44,8 +44,7 @@ class TransformFeatureReaderWrapper implements FeatureReader<SimpleFeatureType, 
     private SimpleFeatureType target;
 
     public TransformFeatureReaderWrapper(
-            FeatureReader<SimpleFeatureType, SimpleFeature> wrapped, Transformer transformer)
-            throws IOException {
+            FeatureReader<SimpleFeatureType, SimpleFeature> wrapped, Transformer transformer) throws IOException {
         this.transformer = transformer;
         this.target = transformer.getSchema();
         this.wrapped = wrapped;

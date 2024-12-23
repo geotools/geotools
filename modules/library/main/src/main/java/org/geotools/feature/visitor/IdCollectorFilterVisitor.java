@@ -29,8 +29,7 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
  */
 public class IdCollectorFilterVisitor extends DefaultFilterVisitor {
     public static final IdCollectorFilterVisitor ID_COLLECTOR = new IdCollectorFilterVisitor(true);
-    public static final IdCollectorFilterVisitor IDENTIFIER_COLLECTOR =
-            new IdCollectorFilterVisitor(false);
+    public static final IdCollectorFilterVisitor IDENTIFIER_COLLECTOR = new IdCollectorFilterVisitor(false);
     private final boolean mCollectStringIds;
 
     protected IdCollectorFilterVisitor(boolean collectStringIds) {

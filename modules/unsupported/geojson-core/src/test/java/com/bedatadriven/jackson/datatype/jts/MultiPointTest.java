@@ -38,7 +38,6 @@ public class MultiPointTest extends BaseJtsModuleTest<MultiPoint> {
 
     @Override
     protected MultiPoint createGeometry() {
-        return gf.createMultiPoint(
-                new Point[] {gf.createPoint(new Coordinate(1.2345678, 2.3456789))});
+        return gf.createMultiPoint(new Point[] {gf.createPoint(new Coordinate(1.2345678, 2.3456789))});
     }
 }

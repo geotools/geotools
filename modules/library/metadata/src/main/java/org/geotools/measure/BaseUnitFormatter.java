@@ -29,8 +29,8 @@ import javax.measure.format.MeasurementParseException;
 import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
- * This class encapsulates the required machinations to initialize the unit formatter implementation
- * of a certain third-party unit library.
+ * This class encapsulates the required machinations to initialize the unit formatter implementation of a certain
+ * third-party unit library.
  *
  * <p>GeoTools' unit formatters should be implemented by calling the provided constructors.
  */
@@ -44,12 +44,14 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
 
     private SimpleUnitFormat delegateFormatter = SimpleUnitFormat.getNewInstance();
 
-    @Deprecated private Map<String, Unit<?>> nameToUnit = new HashMap<>();
-    @Deprecated private Map<Unit<?>, String> unitToName = new HashMap<>();
+    @Deprecated
+    private Map<String, Unit<?>> nameToUnit = new HashMap<>();
+
+    @Deprecated
+    private Map<Unit<?>, String> unitToName = new HashMap<>();
 
     /**
-     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit
-     * definitions.
+     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit definitions.
      *
      * @param unitDefinitions unit definitions used to initialize this new instance
      */
@@ -58,8 +60,7 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
     }
 
     /**
-     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit
-     * definitions.
+     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit definitions.
      *
      * @param unitDefinitions a list of unit definitions used to initialize this new instance
      */
@@ -67,9 +68,7 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
         for (UnitDefinition unitDefinition : unitDefinitions) {
             Unit<?> unit = unitDefinition.getUnit();
             String unitSymbol =
-                    unitDefinition.getSymbolOverride() != null
-                            ? unitDefinition.getSymbolOverride()
-                            : unit.getSymbol();
+                    unitDefinition.getSymbolOverride() != null ? unitDefinition.getSymbolOverride() : unit.getSymbol();
 
             // add units
             this.label(unit, unitSymbol);
@@ -90,8 +89,7 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
     }
 
     /**
-     * @return an immutable map that shows the units (associated with their symbols) that this unit
-     *     formatter contains
+     * @return an immutable map that shows the units (associated with their symbols) that this unit formatter contains
      */
     @Deprecated
     public Map<Unit<?>, String> getUnitToSymbolMap() {
@@ -99,8 +97,7 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
     }
 
     /**
-     * @return an immutable map that shows the symbols (associated with their units) that this unit
-     *     formatter contains
+     * @return an immutable map that shows the symbols (associated with their units) that this unit formatter contains
      */
     @Deprecated
     public Map<String, Unit<?>> getSymbolToUnitMap() {

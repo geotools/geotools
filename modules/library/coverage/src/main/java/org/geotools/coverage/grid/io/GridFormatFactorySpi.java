@@ -41,8 +41,8 @@ public interface GridFormatFactorySpi extends OptionalFactory {
     /**
      * Construct a live grid format.
      *
-     * @throws IOException (Warning: the rest of the javadoc comment was wrong) if there were any
-     *     problems creating or connecting the datasource.
+     * @throws IOException (Warning: the rest of the javadoc comment was wrong) if there were any problems creating or
+     *     connecting the datasource.
      */
     AbstractGridFormat createFormat();
 }

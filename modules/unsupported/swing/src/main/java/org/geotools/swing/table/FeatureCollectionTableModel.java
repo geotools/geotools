@@ -28,8 +28,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 
 /**
- * A Swing {@code TableModel} to retrieve attribute values from each feature in a feature collection
- * and cache them for a {@code JTable}
+ * A Swing {@code TableModel} to retrieve attribute values from each feature in a feature collection and cache them for
+ * a {@code JTable}
  *
  * <p>
  */
@@ -43,8 +43,8 @@ public class FeatureCollectionTableModel extends AbstractTableModel {
     public IOException exception;
 
     /**
-     * A worker class to get the attributes of each feature and load them into the {@code
-     * TableModel}. The work is performed on a background thread.
+     * A worker class to get the attributes of each feature and load them into the {@code TableModel}. The work is
+     * performed on a background thread.
      */
     class TableWorker extends SwingWorker<List<Object[]>, Object[]> {
         SimpleFeatureCollection features;

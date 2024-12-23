@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.solr.common.SolrInputDocument;
 
 /**
- * Data model class that represents a demoralized station. This class will be mainly used as a
- * support to read the stations information from a XML file.
+ * Data model class that represents a demoralized station. This class will be mainly used as a support to read the
+ * stations information from a XML file.
  */
 @XmlRootElement
 public final class Station implements Serializable {

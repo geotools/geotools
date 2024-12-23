@@ -30,8 +30,8 @@ import org.geotools.api.filter.expression.Subtract;
 /**
  * Check if an expression is static (ie does not contain a PropertyName expression).
  *
- * <p>This visitor will "short-circuit" the moment it finds a PropertyName expression and will not
- * need to visit the entire data structure.
+ * <p>This visitor will "short-circuit" the moment it finds a PropertyName expression and will not need to visit the
+ * entire data structure.
  *
  * <p>Example:
  *

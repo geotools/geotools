@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_symDifference extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "symDifference",
-                    parameter("symetric difference", Geometry.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "symDifference",
+            parameter("symetric difference", Geometry.class),
+            parameter("geometry", Geometry.class),
+            parameter("geometry", Geometry.class));
 
     public FilterFunction_symDifference() {
         super(NAME);

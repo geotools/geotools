@@ -28,9 +28,7 @@ public interface GetStylesRequest extends Request {
     public static final String LAYERS = "LAYERS";
     public static final String SLDVER = "SLDVER";
 
-    /**
-     * @param layers comma-separated list of named layers for which to retrieve style descriptions
-     */
+    /** @param layers comma-separated list of named layers for which to retrieve style descriptions */
     public void setLayers(String layers);
 
     /** @param sldVer the SLD version requested for the SLD document */

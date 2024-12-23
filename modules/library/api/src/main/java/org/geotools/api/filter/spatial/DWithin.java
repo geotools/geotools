@@ -12,8 +12,8 @@ package org.geotools.api.filter.spatial;
 // Annotations
 
 /**
- * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as true when
- * any part of the first geometry lies within the given distance of the second geometry.
+ * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as true when any part of the
+ * first geometry lies within the given distance of the second geometry.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

@@ -29,15 +29,13 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.UnsupportedImplementationException;
 
 /**
- * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific
- * coordinate operation.
+ * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific coordinate operation.
  *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultPassThroughOperation extends DefaultSingleOperation
-        implements PassThroughOperation {
+public class DefaultPassThroughOperation extends DefaultSingleOperation implements PassThroughOperation {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 4308173919747248695L;
 
@@ -45,10 +43,9 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
     protected final Operation operation;
 
     /**
-     * Constructs a single operation from a set of properties. The properties given in argument
-     * follow the same rules than for the {@link AbstractCoordinateOperation} constructor. Affected
-     * ordinates will range from {@code firstAffectedOrdinate} inclusive to {@code
-     * dimTarget-numTrailingOrdinates} exclusive.
+     * Constructs a single operation from a set of properties. The properties given in argument follow the same rules
+     * than for the {@link AbstractCoordinateOperation} constructor. Affected ordinates will range from
+     * {@code firstAffectedOrdinate} inclusive to {@code dimTarget-numTrailingOrdinates} exclusive.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS.
@@ -71,21 +68,18 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
                 sourceCRS,
                 targetCRS,
                 operation,
-                PassThroughTransform.create(
-                        firstAffectedOrdinate, operation.getMathTransform(), numTrailingOrdinates));
+                PassThroughTransform.create(firstAffectedOrdinate, operation.getMathTransform(), numTrailingOrdinates));
     }
 
     /**
-     * Constructs a single operation from a set of properties and the given transform. The
-     * properties given in argument follow the same rules than for the {@link
-     * AbstractCoordinateOperation} constructor.
+     * Constructs a single operation from a set of properties and the given transform. The properties given in argument
+     * follow the same rules than for the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
      * @param operation The operation to apply on the subset of a coordinate tuple.
-     * @param transform The {@linkplain MathTransformFactory#createPassThroughTransform pass through
-     *     transform}.
+     * @param transform The {@linkplain MathTransformFactory#createPassThroughTransform pass through transform}.
      */
     public DefaultPassThroughOperation(
             final Map<String, ?> properties,
@@ -118,9 +112,8 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
     }
 
     /**
-     * Ordered sequence of positive integers defining the positions in a coordinate tuple of the
-     * coordinates affected by this pass-through operation. The returned index are for source
-     * coordinates.
+     * Ordered sequence of positive integers defining the positions in a coordinate tuple of the coordinates affected by
+     * this pass-through operation. The returned index are for source coordinates.
      *
      * @return The modified coordinates.
      * @todo Current version work only with Geotools implementation.

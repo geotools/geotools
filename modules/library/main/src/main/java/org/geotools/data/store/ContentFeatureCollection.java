@@ -70,8 +70,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
 
         // retype feature type if necessary
         if (query.getPropertyNames() != Query.ALL_NAMES) {
-            this.featureType =
-                    SimpleFeatureTypeBuilder.retype(this.featureType, query.getPropertyNames());
+            this.featureType = SimpleFeatureTypeBuilder.retype(this.featureType, query.getPropertyNames());
         }
         // Check for change in coordinate reference system
         // (Even if featureSource.canReproject the feature reader, we will need to adjust the
@@ -79,21 +78,12 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         try {
             if (query.getCoordinateSystemReproject() != null) {
                 this.featureType =
-                        FeatureTypes.transform(
-                                this.featureType,
-                                query.getCoordinateSystemReproject(),
-                                false,
-                                true);
+                        FeatureTypes.transform(this.featureType, query.getCoordinateSystemReproject(), false, true);
             } else if (query.getCoordinateSystem() != null) {
-                this.featureType =
-                        FeatureTypes.transform(
-                                this.featureType, query.getCoordinateSystem(), false, true);
+                this.featureType = FeatureTypes.transform(this.featureType, query.getCoordinateSystem(), false, true);
             }
         } catch (SchemaException e) {
-            LOGGER.log(
-                    Level.FINER,
-                    "Problem handling Query change of CoordinateReferenceSystem:" + e,
-                    e);
+            LOGGER.log(Level.FINER, "Problem handling Query change of CoordinateReferenceSystem:" + e, e);
         }
 
         // check for join and expand attributes as necessary
@@ -125,8 +115,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     // Visitors
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         featureSource.accepts(query, visitor, progress);
     }
@@ -201,8 +190,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 q.setPropertyNames(geometries);
             }
             // grab the features and scan through them
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    featureSource.getReader(q)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = featureSource.getReader(q)) {
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(f.getBounds());
@@ -266,16 +254,13 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
 
     /**
-     * Quick heuristic used to find a small attribute to use when scanning over the entire
-     * collection just to get the size of the collection. The result is indicative, just an
-     * heuristic to quickly compare attributes in order to find a suitably small one, it's not meant
-     * to be the actual size of an attribute in bytes.
+     * Quick heuristic used to find a small attribute to use when scanning over the entire collection just to get the
+     * size of the collection. The result is indicative, just an heuristic to quickly compare attributes in order to
+     * find a suitably small one, it's not meant to be the actual size of an attribute in bytes.
      */
     int size(AttributeDescriptor ad) {
         Class<?> binding = ad.getType().getBinding();
-        if (binding.isPrimitive()
-                || Number.class.isAssignableFrom(binding)
-                || Date.class.isAssignableFrom(binding)) {
+        if (binding.isPrimitive() || Number.class.isAssignableFrom(binding) || Date.class.isAssignableFrom(binding)) {
             return 4;
         } else if (binding.equals(String.class)) {
             int fieldLen = FeatureTypes.getFieldLength(ad);
@@ -299,8 +284,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
 
         AttributeDescriptor smallAttribute = getSmallAttributeInSchema();
         if (smallAttribute != null) {
-            notEmptyQuery.setPropertyNames(
-                    Collections.singletonList(smallAttribute.getLocalName()));
+            notEmptyQuery.setPropertyNames(Collections.singletonList(smallAttribute.getLocalName()));
         }
 
         try {
@@ -346,8 +330,8 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     /**
      * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
      *
-     * <p>This implementation iterates over the elements in the collection, checking each element in
-     * turn for equality with the specified element.
+     * <p>This implementation iterates over the elements in the collection, checking each element in turn for equality
+     * with the specified element.
      *
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
@@ -373,14 +357,12 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
     /**
-     * Returns <tt>true</tt> if this collection contains all of the elements in the specified
-     * collection.
+     * Returns <tt>true</tt> if this collection contains all of the elements in the specified collection.
      *
      * <p>
      *
      * @param c collection to be checked for containment in this collection.
-     * @return <tt>true</tt> if this collection contains all of the elements in the specified
-     *     collection.
+     * @return <tt>true</tt> if this collection contains all of the elements in the specified collection.
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
@@ -422,8 +404,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         //                return false; // nothing to do; we can only remove features
         //            }
         //        }
-        throw new UnsupportedOperationException(
-                "Content is not writable; FeatureStore not available");
+        throw new UnsupportedOperationException("Content is not writable; FeatureStore not available");
     }
 
     /**
@@ -449,10 +430,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
-            array =
-                    (T[])
-                            java.lang.reflect.Array.newInstance(
-                                    array.getClass().getComponentType(), size);
+            array = (T[]) java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), size);
         }
         try (FeatureIterator<SimpleFeature> it = features()) {
             Object[] result = array;

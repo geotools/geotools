@@ -25,8 +25,8 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.standard.BreadthFirstTopologicalIterator;
 
 /**
- * Detects cycles in a graph. A topological iteration of the nodes of the graph is performed. If the
- * iteration includes all nodes in the graph then the graph is cycle free, otherwise a cycle exists.
+ * Detects cycles in a graph. A topological iteration of the nodes of the graph is performed. If the iteration includes
+ * all nodes in the graph then the graph is cycle free, otherwise a cycle exists.
  *
  * @see org.geotools.graph.traverse.standard.BreadthFirstTopologicalIterator
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

@@ -61,8 +61,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this(csvFileState, csvStrategy, Query.ALL);
     }
 
-    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query)
-            throws IOException {
+    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query) throws IOException {
         this.csvFileState = csvFileState;
         File file = csvFileState.getFile();
         File directory = file.getParentFile();
@@ -99,8 +98,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // next start
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (csvWriter == null) {
             throw new IOException("Writer has been closed");
         }
@@ -128,10 +126,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     // next end
 
     // remove start
-    /**
-     * Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively
-     * removing it.
-     */
+    /** Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it. */
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }

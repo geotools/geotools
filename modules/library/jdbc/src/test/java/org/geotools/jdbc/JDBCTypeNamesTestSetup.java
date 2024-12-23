@@ -43,12 +43,10 @@ public abstract class JDBCTypeNamesTestSetup extends JDBCDelegatingTestSetup {
     /**
      * Creates a table with the following schema:
      *
-     * <p><code>ftntable( id:Integer; name:String; geom:POLYGON )</code> Creates a view with the
-     * following schema:
+     * <p><code>ftntable( id:Integer; name:String; geom:POLYGON )</code> Creates a view with the following schema:
      *
-     * <p><code>create view ftnview as select id, geom from ft_table</code> In Addition to that,
-     * there should be some database specific type structures like synonyms or aliases, if
-     * available. (should be )
+     * <p><code>create view ftnview as select id, geom from ft_table</code> In Addition to that, there should be some
+     * database specific type structures like synonyms or aliases, if available. (should be )
      */
     protected abstract void createTypes() throws Exception;
 

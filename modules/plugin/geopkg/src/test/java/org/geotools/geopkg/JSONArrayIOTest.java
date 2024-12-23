@@ -53,12 +53,9 @@ public class JSONArrayIOTest {
 
     @Test
     public void testParseNestedObject() {
-        assertThrows(
-                java.lang.IllegalArgumentException.class,
-                () -> {
-                    String[] parsed =
-                            io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
-                });
+        assertThrows(java.lang.IllegalArgumentException.class, () -> {
+            String[] parsed = io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
+        });
     }
 
     @Test
@@ -69,8 +66,7 @@ public class JSONArrayIOTest {
 
     @Test
     public void testDates() {
-        Date[] parsed =
-                io.parse("[\"2000-11-10\",\"2002-08-09\",\"2003-05-20\"]", Date.class, null);
+        Date[] parsed = io.parse("[\"2000-11-10\",\"2002-08-09\",\"2003-05-20\"]", Date.class, null);
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         c.setTime(parsed[0]);
         assertEquals(2000, c.get(Calendar.YEAR));

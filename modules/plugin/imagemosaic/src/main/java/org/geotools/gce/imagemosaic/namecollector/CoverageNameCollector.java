@@ -23,9 +23,8 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 public interface CoverageNameCollector {
 
     /**
-     * Return the coverage Name based on properties collected from optional input {@link
-     * GridCoverage2DReader} and map Specific implementations may ignore the reader, the map or
-     * both.
+     * Return the coverage Name based on properties collected from optional input {@link GridCoverage2DReader} and map
+     * Specific implementations may ignore the reader, the map or both.
      */
     String getName(GridCoverage2DReader reader, Map<String, String> map);
 }

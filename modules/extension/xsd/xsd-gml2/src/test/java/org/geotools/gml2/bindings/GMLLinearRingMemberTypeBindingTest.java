@@ -44,28 +44,21 @@ public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testWithGeometry() throws Exception {
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {
-                            new GeometryFactory()
-                                    .createLinearRing(
-                                            new Coordinate[] {
-                                                new Coordinate(0, 0),
-                                                new Coordinate(1, 1),
-                                                new Coordinate(2, 2),
-                                                new Coordinate(0, 0)
-                                            })
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {
+                    new GeometryFactory().createLinearRing(new Coordinate[] {
+                        new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(0, 0)
+                    })
+                },
+                null,
+                null);
         GMLGeometryAssociationTypeBinding s1 =
                 (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
-        GMLLinearRingMemberTypeBinding s2 =
-                (GMLLinearRingMemberTypeBinding) getBinding(GML.LinearRingMemberType);
+        GMLLinearRingMemberTypeBinding s2 = (GMLLinearRingMemberTypeBinding) getBinding(GML.LinearRingMemberType);
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

@@ -29,10 +29,7 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
 
-/**
- * Custom functions to support the use of MBStyle, {@link ZoomLevelFunction}, {@link
- * ExponentialFunction}.
- */
+/** Custom functions to support the use of MBStyle, {@link ZoomLevelFunction}, {@link ExponentialFunction}. */
 public class MBFunctionFactory implements FunctionFactory {
 
     @Override

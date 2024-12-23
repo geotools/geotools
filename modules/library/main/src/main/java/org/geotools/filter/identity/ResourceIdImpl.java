@@ -25,8 +25,8 @@ import org.geotools.util.Utilities;
 /**
  * Implementation of {@link ResourceId} used for Query.
  *
- * <p>This class is mutable under one condition only; during a commit a datastore can update the
- * internal fid to reflect the real identify assigned by the database or wfs.
+ * <p>This class is mutable under one condition only; during a commit a datastore can update the internal fid to reflect
+ * the real identify assigned by the database or wfs.
  *
  * <p>
  *
@@ -52,22 +52,20 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
     }
 
     /**
-     * Obtain a ResourceId that represents an explicit request for feature id and feature version
-     * (essentially the quivalent of {@link FeatureId})
+     * Obtain a ResourceId that represents an explicit request for feature id and feature version (essentially the
+     * quivalent of {@link FeatureId})
      */
     public ResourceIdImpl(String fid, String featureVersion) {
         this(fid, featureVersion, null);
     }
 
     /**
-     * Date range constructor for a feature id; none or one of {@code start} and {@code end} can be
-     * {@code null}, making for an unconstrained date range at either of the ends.
+     * Date range constructor for a feature id; none or one of {@code start} and {@code end} can be {@code null}, making
+     * for an unconstrained date range at either of the ends.
      *
      * @param fid feature id, non null;
-     * @param start lower end of the time range, inclusive, or {@code null} only if {@code end !=
-     *     null}
-     * @param end upper end of the time range, inclusive, or {@code null} only if {@code start !=
-     *     null}
+     * @param start lower end of the time range, inclusive, or {@code null} only if {@code end != null}
+     * @param end upper end of the time range, inclusive, or {@code null} only if {@code start != null}
      */
     public ResourceIdImpl(String fid, Date start, Date end) {
         this(fid, null, (Version) null);

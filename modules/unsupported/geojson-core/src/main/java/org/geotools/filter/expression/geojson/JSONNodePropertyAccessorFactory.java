@@ -37,13 +37,11 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
     static final String ROOT = "/";
 
     @Override
-    public PropertyAccessor createPropertyAccessor(
-            Class<?> type, String xpath, Class<?> target, Hints hints) {
+    public PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints) {
         if (xpath == null) {
             return null;
         }
-        if (!SimpleFeature.class.isAssignableFrom(type)
-                && !SimpleFeatureType.class.isAssignableFrom(type))
+        if (!SimpleFeature.class.isAssignableFrom(type) && !SimpleFeatureType.class.isAssignableFrom(type))
             return null; // we only work with simple feature
         return JSONNODEPROPERTY;
     }
@@ -87,10 +85,8 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
             return value;
         }
 
-        private static Object getValueFromUserData(
-                String[] parts, SimpleFeature feature, Object value) {
-            Map topLevelAttributes =
-                    (Map) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+        private static Object getValueFromUserData(String[] parts, SimpleFeature feature, Object value) {
+            Map topLevelAttributes = (Map) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
             if (topLevelAttributes != null) {
                 value = topLevelAttributes.get(parts[0]);
             }
@@ -113,8 +109,7 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             JsonNode jsonNode = null;
             if (xpath != null && object != null && object instanceof SimpleFeature) {
                 String[] parts = stripAndReturnHeadAndRest(xpath);
@@ -128,8 +123,7 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
                         JsonPointer pointer = JsonPointer.compile(parts[1]);
                         jsonNode = ((JsonNode) value).at(pointer);
                         if (jsonNode.isMissingNode()) {
-                            throw new IllegalArgumentException(
-                                    "Cannot get property " + xpath + " from " + object);
+                            throw new IllegalArgumentException("Cannot get property " + xpath + " from " + object);
                         }
                         return (T) getMostPrimitive(jsonNode);
                     }
@@ -203,8 +197,7 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
         }
 
         @Override
-        public <T> void set(Object object, String xpath, T value, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> void set(Object object, String xpath, T value, Class<T> target) throws IllegalArgumentException {
             throw new UnsupportedOperationException("Does not support updating.");
         }
     }

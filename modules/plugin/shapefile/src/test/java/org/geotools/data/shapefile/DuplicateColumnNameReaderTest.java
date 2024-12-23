@@ -60,17 +60,15 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         ShapefileDataStore indexedstore = new ShapefileDataStore(shpFile.toURI().toURL());
 
         // get a random feature id from one of the stores
-        try (SimpleFeatureIterator it = indexedstore.getFeatureSource().getFeatures().features()) {
+        try (SimpleFeatureIterator it =
+                indexedstore.getFeatureSource().getFeatures().features()) {
             FeatureId fid = it.next().getIdentifier();
 
             // query the datastore
             FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Filter idFilter = ff.id(Collections.singleton(fid));
             final Query query =
-                    new Query(
-                            indexedstore.getSchema().getName().getLocalPart(),
-                            idFilter,
-                            new String[] {testColumn});
+                    new Query(indexedstore.getSchema().getName().getLocalPart(), idFilter, new String[] {testColumn});
             final SimpleFeatureCollection indexedfeatures =
                     indexedstore.getFeatureSource().getFeatures(query);
 

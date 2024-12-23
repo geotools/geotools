@@ -29,11 +29,10 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 
 /**
- * Information about spatial, vertical, and temporal extent. This interface has four optional
- * attributes ({@linkplain #getGeographicElements geographic elements}, {@linkplain
- * #getTemporalElements temporal elements}, and {@linkplain #getVerticalElements vertical elements})
- * and an element called {@linkplain #getDescription description}. At least one of the four shall be
- * used.
+ * Information about spatial, vertical, and temporal extent. This interface has four optional attributes
+ * ({@linkplain #getGeographicElements geographic elements}, {@linkplain #getTemporalElements temporal elements}, and
+ * {@linkplain #getVerticalElements vertical elements}) and an element called {@linkplain #getDescription description}.
+ * At least one of the four shall be used.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -128,9 +127,9 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /**
-     * Convenience method returning a single geographic bounding box from the specified extent. If
-     * no bounding box was found, then this method returns {@code null}. If more than one box is
-     * found, then boxes are {@linkplain GeographicBoundingBoxImpl#add added} together.
+     * Convenience method returning a single geographic bounding box from the specified extent. If no bounding box was
+     * found, then this method returns {@code null}. If more than one box is found, then boxes are
+     * {@linkplain GeographicBoundingBoxImpl#add added} together.
      *
      * @since 2.2
      */

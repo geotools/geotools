@@ -24,8 +24,8 @@ package org.geotools.feature;
  */
 public interface CollectionListener {
     /**
-     * Gets called when a CollectionEvent is fired. Typically fired to signify that a change has
-     * occurred in the collection.
+     * Gets called when a CollectionEvent is fired. Typically fired to signify that a change has occurred in the
+     * collection.
      *
      * @param tce The CollectionEvent
      */

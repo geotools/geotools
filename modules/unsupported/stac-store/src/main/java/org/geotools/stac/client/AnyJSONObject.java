@@ -25,8 +25,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Base class with support for parsing and holding onto unknown properties, and basic
- * equals/tostring/hashcode based on reflection
+ * Base class with support for parsing and holding onto unknown properties, and basic equals/tostring/hashcode based on
+ * reflection
  */
 public class AnyJSONObject {
 

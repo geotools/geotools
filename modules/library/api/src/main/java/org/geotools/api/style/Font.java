@@ -15,8 +15,8 @@ import org.geotools.api.filter.expression.Expression;
 /**
  * The Font element identifies a font of a certain family, style, and size.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Chris Dillard (SYS Technologies)
@@ -64,8 +64,8 @@ public interface Font {
     /**
      * Font size in pixels with a default of 10 pixels.
      *
-     * <p>Please note this is specified in pixels so you may need to take the resolution of your
-     * output into account when providing a size.
+     * <p>Please note this is specified in pixels so you may need to take the resolution of your output into account
+     * when providing a size.
      *
      * @return font size
      */
@@ -88,12 +88,11 @@ public interface Font {
      *
      * <p>enum Style2 implements Literal { NORMAL("normal"), ITALIC("italic"), OBLIQUE("oblique");
      *
-     * <p>final String literal; final static int count=0; private Style2(String constant) { literal
-     * = constant; } public Object accept(ExpressionVisitor visitor, Object extraData) { return
-     * visitor.visit( this, extraData ); } public Object evaluate(Object object) { return literal; }
-     * public <T> T evaluate(Object object, Class<T> context) { // return
-     * Converters.convert(literal, context); if( context.isInstance( literal) ){ return
-     * context.cast(literal); } return null; } public Object getValue() { return literal; } }
+     * <p>final String literal; final static int count=0; private Style2(String constant) { literal = constant; } public
+     * Object accept(ExpressionVisitor visitor, Object extraData) { return visitor.visit( this, extraData ); } public
+     * Object evaluate(Object object) { return literal; } public <T> T evaluate(Object object, Class<T> context) { //
+     * return Converters.convert(literal, context); if( context.isInstance( literal) ){ return context.cast(literal); }
+     * return null; } public Object getValue() { return literal; } }
      */
     interface Style {
         static final String NORMAL = "normal";

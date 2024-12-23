@@ -33,8 +33,7 @@ public class H2BooleanTestSetup extends JDBCBooleanTestSetup {
 
     @Override
     protected void createBooleanTable() throws Exception {
-        run(
-                "CREATE TABLE \"b\" (fid int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, \"boolProperty\" boolean)");
+        run("CREATE TABLE \"b\" (fid int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, \"boolProperty\" boolean)");
         run("INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (0, false)");
         run("INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (1, true)");
     }

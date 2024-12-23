@@ -47,8 +47,7 @@ public class ElasticResponseTest {
 
     @Test
     public void testTotalHits() throws IOException {
-        ElasticResponse response =
-                mapper.readValue("{\"hits\":{\"total\":10}}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"hits\":{\"total\":10}}", ElasticResponse.class);
         assertEquals(10, response.getTotalNumHits());
     }
 
@@ -60,29 +59,25 @@ public class ElasticResponseTest {
 
     @Test
     public void testMaxScore() throws IOException {
-        ElasticResponse response =
-                mapper.readValue("{\"hits\":{\"max_score\":0.8}}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"hits\":{\"max_score\":0.8}}", ElasticResponse.class);
         assertEquals(0.8, response.getMaxScore(), 1e-6);
     }
 
     @Test
     public void testScroll() throws IOException {
-        ElasticResponse response =
-                mapper.readValue("{\"_scroll_id\":\"12345\"}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"_scroll_id\":\"12345\"}", ElasticResponse.class);
         assertEquals("12345", response.getScrollId());
     }
 
     @Test
     public void getNumHits() throws IOException {
-        ElasticResponse response =
-                mapper.readValue("{\"hits\":{\"hits\":[{},{},{}]}}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{},{},{}]}}", ElasticResponse.class);
         assertEquals(3, response.getNumHits());
     }
 
     @Test
     public void testHitId() throws IOException {
-        ElasticResponse response =
-                mapper.readValue("{\"hits\":{\"hits\":[{\"_id\": \"5\"}]}}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{\"_id\": \"5\"}]}}", ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertEquals("5", response.getResults().getHits().get(0).getId());
     }
@@ -90,8 +85,7 @@ public class ElasticResponseTest {
     @Test
     public void testHitIndex() throws IOException {
         ElasticResponse response =
-                mapper.readValue(
-                        "{\"hits\":{\"hits\":[{\"_index\": \"test\"}]}}", ElasticResponse.class);
+                mapper.readValue("{\"hits\":{\"hits\":[{\"_index\": \"test\"}]}}", ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertEquals("test", response.getResults().getHits().get(0).getIndex());
     }
@@ -99,17 +93,14 @@ public class ElasticResponseTest {
     @Test
     public void testHitType() throws IOException {
         ElasticResponse response =
-                mapper.readValue(
-                        "{\"hits\":{\"hits\":[{\"_type\": \"test\"}]}}", ElasticResponse.class);
+                mapper.readValue("{\"hits\":{\"hits\":[{\"_type\": \"test\"}]}}", ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertEquals("test", response.getResults().getHits().get(0).getType());
     }
 
     @Test
     public void testHitScore() throws IOException {
-        ElasticResponse response =
-                mapper.readValue(
-                        "{\"hits\":{\"hits\":[{\"_score\": 0.4}]}}", ElasticResponse.class);
+        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{\"_score\": 0.4}]}}", ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertEquals(0.4, response.getResults().getHits().get(0).getScore(), 1e-6);
     }
@@ -120,7 +111,8 @@ public class ElasticResponseTest {
         ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertNotNull(response.getResults().getHits().get(0).field("tags"));
-        assertEquals(ImmutableList.of("red"), response.getResults().getHits().get(0).field("tags"));
+        assertEquals(
+                ImmutableList.of("red"), response.getResults().getHits().get(0).field("tags"));
 
         response = mapper.readValue("{\"hits\":{\"hits\":[{}]}}", ElasticResponse.class);
         assertNull(response.getResults().getHits().get(0).field("tags"));
@@ -139,8 +131,7 @@ public class ElasticResponseTest {
 
     @Test
     public void testAggregations() throws IOException {
-        String content =
-                "{\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
+        String content = "{\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
         ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         assertEquals(1, response.getAggregations().size());
         assertEquals(1, response.getAggregations().size());
@@ -149,7 +140,8 @@ public class ElasticResponseTest {
         assertNotNull(aggregations);
         assertEquals(1, aggregations.getBuckets().size());
         assertEquals(
-                ImmutableMap.of("key", "0", "doc_count", 10), aggregations.getBuckets().get(0));
+                ImmutableMap.of("key", "0", "doc_count", 10),
+                aggregations.getBuckets().get(0));
     }
 
     @Test
@@ -160,9 +152,8 @@ public class ElasticResponseTest {
 
     @Test
     public void testToString() throws IOException {
-        String content =
-                "{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}, "
-                        + "\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
+        String content = "{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}, "
+                + "\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
         ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         String responseStr = response.toString();
         assertTrue(responseStr.contains("hits=1"));

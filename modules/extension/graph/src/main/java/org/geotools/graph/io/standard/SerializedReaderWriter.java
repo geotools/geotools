@@ -30,15 +30,14 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 /**
- * An implementation of GraphReaderWriter that uses java serialization to read and write graph
- * objects. During the graph serialization process edges are written to the object output stream.
- * Along with the edges, the two nodes incident to the edge are also written. However, edge
- * adjacency lists of nodes are <B>not</B> written to the output stream in order to prevent deep
- * recursive calls that often result in a stack overflow. Therefore it is important that any
- * implementation of the Node interface declare its edge adjacecny list (if any) as transient in
- * order to support graph serializability. <br>
- * Because edge adjacency lists are not serialized, they must be reconstructed upon deserialization
- * in order to preserve the original graph structure.<br>
+ * An implementation of GraphReaderWriter that uses java serialization to read and write graph objects. During the graph
+ * serialization process edges are written to the object output stream. Along with the edges, the two nodes incident to
+ * the edge are also written. However, edge adjacency lists of nodes are <B>not</B> written to the output stream in
+ * order to prevent deep recursive calls that often result in a stack overflow. Therefore it is important that any
+ * implementation of the Node interface declare its edge adjacecny list (if any) as transient in order to support graph
+ * serializability. <br>
+ * Because edge adjacency lists are not serialized, they must be reconstructed upon deserialization in order to preserve
+ * the original graph structure.<br>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -56,10 +55,8 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
         GraphBuilder builder = (GraphBuilder) getProperty(BUILDER);
 
         // create file input stream
-        try (ValidatingObjectInputStream objin =
-                new ValidatingObjectInputStream(
-                        new BufferedInputStream(
-                                new FileInputStream((String) getProperty(FILENAME))))) {
+        try (ValidatingObjectInputStream objin = new ValidatingObjectInputStream(
+                new BufferedInputStream(new FileInputStream((String) getProperty(FILENAME))))) {
             // only allow graph objects and arrays of graph objects
             objin.accept("org.geotools.graph.structure.*", "[Lorg.geotools.graph.structure.*");
 
@@ -106,19 +103,16 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
     }
 
     /**
-     * Serializes the graph by writing each edge in the graph to an object output stream. If there
-     * any nodes of degree 0 in the graph, then they are appended to the end of the object output
-     * stream.
+     * Serializes the graph by writing each edge in the graph to an object output stream. If there any nodes of degree 0
+     * in the graph, then they are appended to the end of the object output stream.
      *
      * @see GraphReaderWriter#write()
      */
     @Override
     public void write(Graph graph) throws Exception {
         // create file output stream
-        try (ObjectOutputStream objout =
-                new ObjectOutputStream(
-                        new BufferedOutputStream(
-                                new FileOutputStream((String) getProperty(FILENAME))))) {
+        try (ObjectOutputStream objout = new ObjectOutputStream(
+                new BufferedOutputStream(new FileOutputStream((String) getProperty(FILENAME))))) {
 
             // create header
             // 1. number of nodes

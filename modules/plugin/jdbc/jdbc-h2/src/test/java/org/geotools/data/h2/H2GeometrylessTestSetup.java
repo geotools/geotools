@@ -35,9 +35,8 @@ public class H2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     @Override
     protected void createPersonTable() throws Exception {
-        run(
-                "CREATE TABLE \"person\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
-                        + "\"name\" varchar, \"age\" int)");
+        run("CREATE TABLE \"person\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
+                + "\"name\" varchar, \"age\" int)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Paul',32)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Anne',40)");
     }

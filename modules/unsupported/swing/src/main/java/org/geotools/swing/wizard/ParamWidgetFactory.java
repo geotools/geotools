@@ -17,8 +17,8 @@
 package org.geotools.swing.wizard;
 
 /**
- * A factory that takes a parameter type and its map of metadata and determines what sort of form
- * widget to create for it
+ * A factory that takes a parameter type and its map of metadata and determines what sort of form widget to create for
+ * it
  *
  * @author Graham Davis
  */

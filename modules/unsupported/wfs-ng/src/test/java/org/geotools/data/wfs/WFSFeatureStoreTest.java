@@ -73,28 +73,21 @@ public class WFSFeatureStoreTest {
 
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
-        simpleTypeName1 =
-                new NameImpl(
-                        TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
+        simpleTypeName1 = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
 
-        featureType1 =
-                createType(
-                        "http://example.com/1",
-                        simpleTypeName1.getLocalPart(),
-                        "the_geom:Point:srid=4326,NAME:String,THUMBNAIL:String,MAINPAGE:String");
+        featureType1 = createType(
+                "http://example.com/1",
+                simpleTypeName1.getLocalPart(),
+                "the_geom:Point:srid=4326,NAME:String,THUMBNAIL:String,MAINPAGE:String");
     }
 
     @Before
     public void setUp() throws Exception {
-        wfs =
-                new IntegrationTestWFSClient(
-                        "GeoServer_1.7.x/1.0.0/", WFSTestData.getGmlCompatibleConfig());
+        wfs = new IntegrationTestWFSClient("GeoServer_1.7.x/1.0.0/", WFSTestData.getGmlCompatibleConfig());
         dataStore = new WFSDataStore(wfs);
 
-        dataStoreWFS11 =
-                new WFSDataStore(
-                        new IntegrationTestWFSClient(
-                                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
+        dataStoreWFS11 = new WFSDataStore(
+                new IntegrationTestWFSClient("GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
     }
 
     @After
@@ -105,8 +98,7 @@ public class WFSFeatureStoreTest {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
         FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 
@@ -117,12 +109,10 @@ public class WFSFeatureStoreTest {
         Coordinate insideCoord = new Coordinate(5.2, 7.5);
         Point myPoint = geomfac.createPoint(insideCoord);
 
-        SimpleFeature feat =
-                new SimpleFeatureImpl(
-                        Arrays.asList(
-                                new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
-                        featureType1,
-                        new FeatureIdImpl("myid"));
+        SimpleFeature feat = new SimpleFeatureImpl(
+                Arrays.asList(new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                featureType1,
+                new FeatureIdImpl("myid"));
 
         collection.add(feat);
 
@@ -133,12 +123,9 @@ public class WFSFeatureStoreTest {
         ContentFeatureCollection coll = store.getFeatures();
         assertEquals(4, coll.size());
 
-        coll =
-                store.getFeatures(
-                        new Query(
-                                simpleTypeName1.getLocalPart(),
-                                filterfac.equals(
-                                        filterfac.property("NAME"), filterfac.literal("mypoint"))));
+        coll = store.getFeatures(new Query(
+                simpleTypeName1.getLocalPart(),
+                filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))));
         assertEquals(1, coll.size());
 
         SimpleFeature feature = coll.features().next();
@@ -149,8 +136,7 @@ public class WFSFeatureStoreTest {
     public void testAddFeaturesWithFIDAutoCommit() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStoreWFS11.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStoreWFS11.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 
@@ -163,12 +149,10 @@ public class WFSFeatureStoreTest {
 
         String newFID = UUID.randomUUID().toString();
 
-        SimpleFeature feat =
-                new SimpleFeatureImpl(
-                        Arrays.asList(
-                                new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
-                        featureType1,
-                        new FeatureIdImpl(newFID));
+        SimpleFeature feat = new SimpleFeatureImpl(
+                Arrays.asList(new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                featureType1,
+                new FeatureIdImpl(newFID));
 
         feat.getUserData().put(Hints.USE_PROVIDED_FID, true);
 
@@ -185,8 +169,7 @@ public class WFSFeatureStoreTest {
 
         FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
 
         WFSFeatureStore store = (WFSFeatureStore) source;
 
@@ -206,8 +189,7 @@ public class WFSFeatureStoreTest {
 
         FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
 
         WFSFeatureStore store = (WFSFeatureStore) source;
 
@@ -215,8 +197,7 @@ public class WFSFeatureStoreTest {
 
         store.modifyFeatures("NAME", "blah", filter);
 
-        ContentFeatureCollection coll =
-                store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filter));
+        ContentFeatureCollection coll = store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filter));
         assertEquals(1, coll.size());
 
         SimpleFeature feature = coll.features().next();
@@ -228,8 +209,7 @@ public class WFSFeatureStoreTest {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
         FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 
@@ -240,12 +220,10 @@ public class WFSFeatureStoreTest {
         Coordinate insideCoord = new Coordinate(5.2, 7.5);
         Point myPoint = geomfac.createPoint(insideCoord);
 
-        SimpleFeature feat =
-                new SimpleFeatureImpl(
-                        Arrays.asList(
-                                new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
-                        featureType1,
-                        new FeatureIdImpl("myid"));
+        SimpleFeature feat = new SimpleFeatureImpl(
+                Arrays.asList(new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                featureType1,
+                new FeatureIdImpl("myid"));
 
         collection.add(feat);
 
@@ -266,13 +244,9 @@ public class WFSFeatureStoreTest {
             ContentFeatureCollection coll = store.getFeatures();
             assertEquals(3, coll.size());
 
-            coll =
-                    store.getFeatures(
-                            new Query(
-                                    simpleTypeName1.getLocalPart(),
-                                    filterfac.equals(
-                                            filterfac.property("NAME"),
-                                            filterfac.literal("mypoint"))));
+            coll = store.getFeatures(new Query(
+                    simpleTypeName1.getLocalPart(),
+                    filterfac.equals(filterfac.property("NAME"), filterfac.literal("mypoint"))));
 
             assertEquals(1, coll.size());
 
@@ -296,8 +270,7 @@ public class WFSFeatureStoreTest {
         // makes test to use GeoServer_1.7.x/1.0.0/TransactionFailure_poi.xml
         wfs.setFailOnTransaction(true);
 
-        ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 
@@ -305,11 +278,10 @@ public class WFSFeatureStoreTest {
 
         MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
 
-        SimpleFeature feat =
-                new SimpleFeatureImpl(
-                        Arrays.asList(new Object[] {null, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
-                        featureType1,
-                        new FeatureIdImpl("myid"));
+        SimpleFeature feat = new SimpleFeatureImpl(
+                Arrays.asList(new Object[] {null, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                featureType1,
+                new FeatureIdImpl("myid"));
 
         collection.add(feat);
 

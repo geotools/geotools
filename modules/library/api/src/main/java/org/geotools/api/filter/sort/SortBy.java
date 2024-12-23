@@ -14,9 +14,9 @@ import org.geotools.api.filter.expression.PropertyName;
 /**
  * Defines the sort order, based on a property and ascending/descending.
  *
- * <p>Having SortBy at the Filter level is an interesting undertaking of Filter 1.1 support. Why you
- * ask? It is at the Same level as Filter, it is not *used* by Filter itself. The services that make
- * use of Filter, such as WFS are starting to make use of SortBy in the same breath.
+ * <p>Having SortBy at the Filter level is an interesting undertaking of Filter 1.1 support. Why you ask? It is at the
+ * Same level as Filter, it is not *used* by Filter itself. The services that make use of Filter, such as WFS are
+ * starting to make use of SortBy in the same breath.
  *
  * <p>Where is SortBy used:
  *
@@ -27,10 +27,9 @@ import org.geotools.api.filter.expression.PropertyName;
  *
  * There may be more ...
  *
- * <p>What this means is that the GeoTools Query will make use of this construct. As for sorting the
- * result of an expression (where an expression matches more then one element), we will splice it in
- * to AttributeExpression as an optional parameter. Note function is defined to return a single
- * value (so we don't need to worry there).
+ * <p>What this means is that the GeoTools Query will make use of this construct. As for sorting the result of an
+ * expression (where an expression matches more then one element), we will splice it in to AttributeExpression as an
+ * optional parameter. Note function is defined to return a single value (so we don't need to worry there).
  *
  * @see <a href="http://schemas.opengis.net/filter/1.1.0/sort.xsd">
  * @see <a href="http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
@@ -46,16 +45,14 @@ public interface SortBy {
     SortBy[] UNSORTED = new SortBy[0];
 
     /**
-     * Used to indicate "natural" sorting order, usually according FID (hopefully based on Key
-     * attribtues).
+     * Used to indicate "natural" sorting order, usually according FID (hopefully based on Key attribtues).
      *
-     * <p>This is the order that is most likely to be available in optimzied form, if an Attribute
-     * is marked as "key" an optimized ordering should be considered avaialble.
+     * <p>This is the order that is most likely to be available in optimzied form, if an Attribute is marked as "key" an
+     * optimized ordering should be considered avaialble.
      *
-     * <p>Non optimized orderings are will at the very least require as pass through the data to
-     * bring it into memory, you can assume somekind of TreeSet would be used. Where the nodes in
-     * the tree would indicate a list of FeatureIds assoicated with the node, in the order
-     * encountered.
+     * <p>Non optimized orderings are will at the very least require as pass through the data to bring it into memory,
+     * you can assume somekind of TreeSet would be used. Where the nodes in the tree would indicate a list of FeatureIds
+     * assoicated with the node, in the order encountered.
      *
      * <p>This is a "NullObject".
      */
@@ -75,8 +72,7 @@ public interface SortBy {
      *
      * <ul>
      *   <li>It would be consist with our use in GeoTools
-     *   <li>It would not seem to agree with the short hand notation used by WFS1.1 (ie. "year A,
-     *       month A, day A" )
+     *   <li>It would not seem to agree with the short hand notation used by WFS1.1 (ie. "year A, month A, day A" )
      * </ul>
      *
      * @todo Use QName
@@ -84,9 +80,6 @@ public interface SortBy {
      */
     PropertyName getPropertyName();
 
-    /**
-     * The the sort order - one of {@link SortOrder#ASCENDING ASCENDING} or {@link
-     * SortOrder#DESCENDING DESCENDING}.
-     */
+    /** The the sort order - one of {@link SortOrder#ASCENDING ASCENDING} or {@link SortOrder#DESCENDING DESCENDING}. */
     SortOrder getSortOrder();
 }

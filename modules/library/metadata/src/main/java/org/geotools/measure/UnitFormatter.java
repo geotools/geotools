@@ -22,8 +22,7 @@ import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
 
 /**
- * An interface that is similar to {@link javax.measure.format.UnitFormat} but elides mutating
- * methods.
+ * An interface that is similar to {@link javax.measure.format.UnitFormat} but elides mutating methods.
  *
  * <p>It is used to protect global or shared UnitFormat instances from being changed inadvertently.
  */
@@ -33,8 +32,7 @@ public interface UnitFormatter {
 
     String format(Unit<?> unit);
 
-    Unit<?> parse(CharSequence csq, ParsePosition pos)
-            throws IllegalArgumentException, MeasurementParseException;
+    Unit<?> parse(CharSequence csq, ParsePosition pos) throws IllegalArgumentException, MeasurementParseException;
 
     Unit<?> parse(CharSequence csq) throws MeasurementParseException;
 }

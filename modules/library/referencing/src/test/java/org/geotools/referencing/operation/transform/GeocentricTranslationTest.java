@@ -37,9 +37,7 @@ import org.junit.Test;
  * @author Martin Desruisseaux (IRD)
  */
 public final class GeocentricTranslationTest {
-    /**
-     * Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section 2.4.3.1.
-     */
+    /** Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section 2.4.3.1. */
     @Test
     public void testTranslation() throws FactoryException, TransformException {
         final String classification = "Geocentric translations (geog2d domain)";
@@ -61,10 +59,7 @@ public final class GeocentricTranslationTest {
         assertEquals(5124421.30, position.getOrdinate(2), 1E-5);
     }
 
-    /**
-     * Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section
-     * 2.4.3.2.1.
-     */
+    /** Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section 2.4.3.2.1. */
     @Test
     public void testSevenParam() throws FactoryException, TransformException {
         final String classification = "Position Vector transformation (geog2d domain)";
@@ -90,10 +85,7 @@ public final class GeocentricTranslationTest {
         assertEquals(5201387.75, position.getOrdinate(2), 1E-2);
     }
 
-    /**
-     * Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section
-     * 2.4.3.2.2.
-     */
+    /** Test case using example from EPSG Guidance Note number 7 part 2 (May 2005), section 2.4.3.2.2. */
     @Test
     public void testFrameRotation() throws FactoryException, TransformException {
         final String classification = "Coordinate Frame rotation (geog2d domain)";
@@ -120,8 +112,8 @@ public final class GeocentricTranslationTest {
     }
 
     /**
-     * Tests the creation with geocentric transforms. Note: the expected values here are
-     * approximatives since we didn't used an external source of test points for this test.
+     * Tests the creation with geocentric transforms. Note: the expected values here are approximatives since we didn't
+     * used an external source of test points for this test.
      */
     @Test
     public void testGeotoolsExtensions() throws FactoryException, TransformException {

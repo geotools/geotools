@@ -44,11 +44,8 @@ public class HanaJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
             parameters.put(param.getKey(), param.getValue());
             if (EXPOSE_PK.key.equals(param.getKey())) {
                 parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
-                parameters.put(
-                        HanaDataStoreFactory.DISABLE_SIMPLIFY.key,
-                        HanaDataStoreFactory.DISABLE_SIMPLIFY);
-                parameters.put(
-                        HanaDataStoreFactory.SELECT_HINTS.key, HanaDataStoreFactory.SELECT_HINTS);
+                parameters.put(HanaDataStoreFactory.DISABLE_SIMPLIFY.key, HanaDataStoreFactory.DISABLE_SIMPLIFY);
+                parameters.put(HanaDataStoreFactory.SELECT_HINTS.key, HanaDataStoreFactory.SELECT_HINTS);
             }
         }
     }

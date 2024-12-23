@@ -36,8 +36,7 @@ import org.junit.Test;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
-public class CapabilitiesFilterSplitterFunctionTest
-        extends AbstractCapabilitiesFilterSplitterTests {
+public class CapabilitiesFilterSplitterFunctionTest extends AbstractCapabilitiesFilterSplitterTests {
 
     CapabilitiesFilterSplitter visitor;
 
@@ -83,7 +82,8 @@ public class CapabilitiesFilterSplitterFunctionTest
         Filter filter = ff.and(filter1, filter2);
 
         Capabilities filterCapabilitiesMask = new Capabilities();
-        filterCapabilitiesMask.addName(testFunction.getName(), testFunction.getParameters().size());
+        filterCapabilitiesMask.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         filterCapabilitiesMask.addAll(Capabilities.SIMPLE_COMPARISONS_OPENGIS);
         filterCapabilitiesMask.addAll(Capabilities.LOGICAL_OPENGIS);
         visitor = newVisitor(filterCapabilitiesMask);

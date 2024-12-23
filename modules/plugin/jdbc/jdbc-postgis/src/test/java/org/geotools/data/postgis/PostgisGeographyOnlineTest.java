@@ -69,9 +69,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
         // extra check, pg specific: the native typename is actually geography
         SimpleFeatureType ft = dataStore.getFeatureSource(tname("geopoint")).getSchema();
-        assertEquals(
-                "geography",
-                ft.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        assertEquals("geography", ft.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
     }
 
     // As reported in GEOS-4384 (http://jira.codehaus.org/browse/GEOS-4384)
@@ -148,10 +146,8 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
     public void testDimensionFromFirstGeography() throws Exception {
         try (Connection cx = dataStore.getDataSource().getConnection()) {
             PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
-            assertEquals(
-                    (Integer) 0, dialect.getDimensionFromFirstGeo("public", "geopoint", "geo", cx));
-            assertEquals(
-                    (Integer) 1, dialect.getDimensionFromFirstGeo("public", "geoline", "geo", cx));
+            assertEquals((Integer) 0, dialect.getDimensionFromFirstGeo("public", "geopoint", "geo", cx));
+            assertEquals((Integer) 1, dialect.getDimensionFromFirstGeo("public", "geoline", "geo", cx));
         }
     }
 }

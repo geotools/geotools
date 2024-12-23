@@ -43,8 +43,7 @@ public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrat
         if (name != null) {
             String algorithm = name.evaluate(null, String.class);
             if (algorithm != null && !ALGORITHM_NAMES.contains(algorithm)) {
-                throw new IllegalArgumentException(
-                        "Unsupported Algorithm has been specified: " + algorithm);
+                throw new IllegalArgumentException("Unsupported Algorithm has been specified: " + algorithm);
             }
         }
         super.setAlgorithm(name);

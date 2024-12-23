@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_sin extends FunctionExpressionImpl {
     // public static FunctionName NAME = new FunctionNameImpl("sin", "radians");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "sin", parameter("sine", Double.class), parameter("radians", Number.class));
+            new FunctionNameImpl("sin", parameter("sine", Double.class), parameter("radians", Number.class));
 
     public FilterFunction_sin() {
         super(NAME);

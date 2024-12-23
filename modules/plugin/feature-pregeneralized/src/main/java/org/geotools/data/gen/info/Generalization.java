@@ -22,9 +22,9 @@ import java.io.IOException;
 /**
  * @author Christian Mueller
  *     <p>This class holds info for one generalization
- *     <p>distance the distance used in generalization featureName the name of the feature
- *     geomPropertyName the name of the geometry property in the feature dataSourceName the name of
- *     the datasource dataSourceNameSpace the namespace of the datasource, may be null
+ *     <p>distance the distance used in generalization featureName the name of the feature geomPropertyName the name of
+ *     the geometry property in the feature dataSourceName the name of the datasource dataSourceNameSpace the namespace
+ *     of the datasource, may be null
  */
 public class Generalization implements Comparable<Generalization> {
     private Double distance;
@@ -34,11 +34,7 @@ public class Generalization implements Comparable<Generalization> {
 
     private GeneralizationInfo parent;
 
-    public Generalization(
-            Double distance,
-            String featureName,
-            String geomPropertyName,
-            GeneralizationInfo parent) {
+    public Generalization(Double distance, String featureName, String geomPropertyName, GeneralizationInfo parent) {
         super();
         this.distance = distance;
         this.featureName = featureName;

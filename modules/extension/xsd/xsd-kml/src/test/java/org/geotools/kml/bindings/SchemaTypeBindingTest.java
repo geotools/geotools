@@ -21,10 +21,7 @@ public class SchemaTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<Schema name=\"foo\">"
-                        + "<SimpleField type=\"int\" name=\"quux\"></SimpleField>"
-                        + "</Schema>";
+        String xml = "<Schema name=\"foo\">" + "<SimpleField type=\"int\" name=\"quux\"></SimpleField>" + "</Schema>";
         buildDocument(xml);
         SimpleFeatureType ft = (SimpleFeatureType) parse();
         assertEquals("Unexpected number of attributes", 1, ft.getAttributeCount());

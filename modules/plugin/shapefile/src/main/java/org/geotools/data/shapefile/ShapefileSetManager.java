@@ -67,11 +67,9 @@ class ShapefileSetManager implements FileReader {
      * @return A new ShapefileReader.
      * @throws IOException If an error occurs during creation.
      */
-    protected ShapefileReader openShapeReader(GeometryFactory gf, boolean onlyRandomAccess)
-            throws IOException {
+    protected ShapefileReader openShapeReader(GeometryFactory gf, boolean onlyRandomAccess) throws IOException {
         try {
-            return new ShapefileReader(
-                    shpFiles, true, store.isMemoryMapped(), gf, onlyRandomAccess);
+            return new ShapefileReader(shpFiles, true, store.isMemoryMapped(), gf, onlyRandomAccess);
         } catch (ShapefileException se) {
             throw new DataSourceException("Error creating ShapefileReader", se);
         }
@@ -98,9 +96,7 @@ class ShapefileSetManager implements FileReader {
                 && shpFiles.get(CPG) != null
                 && (!shpFiles.isLocal() || (shpFiles.isLocal() && shpFiles.exists(CPG)))) {
             try (BufferedReader br =
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    shpFiles.getInputStream(CPG, this), ISO_8859_1))) {
+                    new BufferedReader(new InputStreamReader(shpFiles.getInputStream(CPG, this), ISO_8859_1))) {
                 String charsetName;
                 if ((charsetName = br.readLine()) != null) {
                     try {
@@ -108,34 +104,28 @@ class ShapefileSetManager implements FileReader {
                         store.setCharset(charset);
                     } catch (Exception e) {
                         if (LOGGER.isLoggable(Level.FINER)) {
-                            LOGGER.finer(
-                                    "Can't figure out charset from CPG file. Will use provided by the store.");
+                            LOGGER.finer("Can't figure out charset from CPG file. Will use provided by the store.");
                         }
                     }
                 }
             } catch (IOException e) {
                 // could happen if cpg file does not exist remotely
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.log(
-                            Level.FINER,
-                            "Ignoring invalid cpg file and moving on: " + e.getMessage());
+                    LOGGER.log(Level.FINER, "Ignoring invalid cpg file and moving on: " + e.getMessage());
                 }
             }
         }
 
         try {
             if (indexed) {
-                return new IndexedDbaseFileReader(
-                        shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
+                return new IndexedDbaseFileReader(shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
             } else {
-                return new DbaseFileReader(
-                        shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
+                return new DbaseFileReader(shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
             }
         } catch (IOException e) {
             // could happen if dbf file does not exist
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.log(
-                        Level.FINER, "Ignoring invalid dbf file and moving on: " + e.getMessage());
+                LOGGER.log(Level.FINER, "Ignoring invalid dbf file and moving on: " + e.getMessage());
             }
             return null;
         }
@@ -162,8 +152,7 @@ class ShapefileSetManager implements FileReader {
         } catch (IOException e) {
             // could happen if prj file does not exist remotely
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.log(
-                        Level.FINER, "Ignoring invalid prj file and moving on: " + e.getMessage());
+                LOGGER.log(Level.FINER, "Ignoring invalid prj file and moving on: " + e.getMessage());
             }
             return null;
         }
@@ -188,8 +177,7 @@ class ShapefileSetManager implements FileReader {
         } catch (IOException e) {
             // could happen if shx file does not exist remotely
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.log(
-                        Level.FINER, "Ignoring invalid shx file and moving on: " + e.getMessage());
+                LOGGER.log(Level.FINER, "Ignoring invalid shx file and moving on: " + e.getMessage());
             }
             return null;
         }

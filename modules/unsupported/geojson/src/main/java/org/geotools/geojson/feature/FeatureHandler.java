@@ -88,8 +88,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         } else if ("crs".equals(key) && properties == null /* it's top level, not a property */) {
             delegate = new CRSHandler();
             return true;
-        } else if ("geometry".equals(key)
-                && properties == null /* it's top level, not a property */) {
+        } else if ("geometry".equals(key) && properties == null /* it's top level, not a property */) {
             delegate = new GeometryHandler(new GeometryFactory());
             return true;
         } else if ("properties".equals(key) && delegate == NULL) {
@@ -131,9 +130,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             if (delegate instanceof GeometryHandler) {
                 GeometryHandler geometryHandler = (GeometryHandler) delegate;
                 Geometry g = geometryHandler.getValue();
-                if (g != null
-                        || !(((GeometryHandler) delegate).getDelegate()
-                                instanceof GeometryCollectionHandler)) {
+                if (g != null || !(((GeometryHandler) delegate).getDelegate() instanceof GeometryCollectionHandler)) {
                     if (properties != null) {
                         // this is a regular property
                         values.add(g);

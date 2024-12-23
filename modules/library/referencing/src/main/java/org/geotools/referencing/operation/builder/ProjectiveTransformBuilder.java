@@ -28,9 +28,9 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 
 /**
  * Builds {@linkplain MathTransform MathTransform} setup as Projective transformation from a list of
- * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The
- * calculation uses least square method. The Projective transform equation: (2D). The calculation
- * uses least square method. Projective transform equation:
+ * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The calculation uses least
+ * square method. The Projective transform equation: (2D). The calculation uses least square method. Projective
+ * transform equation:
  *
  * <pre>  [ x']   [  m00  m01  m02  ] [ x ]
  *   [ y'] = [  m10  m11  m12  ] [ y ]
@@ -83,15 +83,13 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *     {@linkplain MappedPosition MappedPosition}
      */
     public ProjectiveTransformBuilder(List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }
 
     /**
-     * Returns the minimum number of points required by this builder, which is 4 by default.
-     * Subclasses like {@linkplain AffineTransformBuilder affine transform builders} will reduce
-     * this minimum.
+     * Returns the minimum number of points required by this builder, which is 4 by default. Subclasses like
+     * {@linkplain AffineTransformBuilder affine transform builders} will reduce this minimum.
      *
      * @return minimum number of points required by this builder, which is 4 by default.
      */
@@ -116,8 +114,8 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      * @throws MissingInfoException if accuracy is not defined.
      */
     protected void fillPMatrix() throws MissingInfoException {
-        this.P =
-                new GeneralMatrix(getMappedPositions().size() * 2, getMappedPositions().size() * 2);
+        this.P = new GeneralMatrix(
+                getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         for (int i = 0; i < getMappedPositions().size(); i = i + 2) {
             if (Double.compare((getMappedPositions().get(i).getAccuracy()), Double.NaN) == 0) {
@@ -175,17 +173,16 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Switch whether to include weights into the calculation. Weights are derived from each point
-     * accuracy. Weight p = 1 / accuracy<sup>2<sup>.
+     * Switch whether to include weights into the calculation. Weights are derived from each point accuracy. Weight p =
+     * 1 / accuracy<sup>2<sup>.
      *
-     * @param include if true then the weights will be included onto the calculation. False is
-     *     default.
-     * @throws FactoryException if all or some of the {@linkplain #setMappedPositions(List) points}
-     *     does not have accuracy setup properly.
+     * @param include if true then the weights will be included onto the calculation. False is default.
+     * @throws FactoryException if all or some of the {@linkplain #setMappedPositions(List) points} does not have
+     *     accuracy setup properly.
      */
     public void includeWeights(boolean include) throws MissingInfoException {
-        this.P =
-                new GeneralMatrix(getMappedPositions().size() * 2, getMappedPositions().size() * 2);
+        this.P = new GeneralMatrix(
+                getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         if (include) {
             fillPMatrix();
@@ -238,9 +235,8 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Returns the matrix of parameters for Projective transformation. This method should by
-     * override for the special cases like affine or similar transformation. The M matrix looks like
-     * this:
+     * Returns the matrix of parameters for Projective transformation. This method should by override for the special
+     * cases like affine or similar transformation. The M matrix looks like this:
      *
      * <pre>
      *

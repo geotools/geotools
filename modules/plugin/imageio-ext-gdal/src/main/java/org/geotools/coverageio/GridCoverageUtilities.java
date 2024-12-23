@@ -49,9 +49,9 @@ class GridCoverageUtilities {
     private GridCoverageUtilities() {}
 
     /**
-     * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}. This is useful in
-     * order to have an implementation of {@link BoundingBox} from a {@link GeographicBoundingBox}
-     * which strangely does implement {@link GeographicBoundingBox}.
+     * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}. This is useful in order to have an
+     * implementation of {@link BoundingBox} from a {@link GeographicBoundingBox} which strangely does implement
+     * {@link GeographicBoundingBox}.
      *
      * @param geographicBBox the {@link GeographicBoundingBox} to convert.
      * @return an instance of {@link ReferencedEnvelope}.

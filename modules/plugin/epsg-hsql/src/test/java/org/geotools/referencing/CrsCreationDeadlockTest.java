@@ -19,18 +19,17 @@ public class CrsCreationDeadlockTest {
     public void testForDeadlock() throws InterruptedException {
         // prepare the loaders
         final AtomicInteger ai = new AtomicInteger(NUMBER_OF_THREADS);
-        final Runnable runnable =
-                () -> {
-                    try {
-                        final CRSAuthorityFactory authorityFactory =
-                                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
-                        authorityFactory.createCoordinateReferenceSystem("4326");
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    } finally {
-                        ai.decrementAndGet();
-                    }
-                };
+        final Runnable runnable = () -> {
+            try {
+                final CRSAuthorityFactory authorityFactory =
+                        ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+                authorityFactory.createCoordinateReferenceSystem("4326");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                ai.decrementAndGet();
+            }
+        };
 
         // start them
         final List<Thread> threads = new ArrayList<>();
@@ -46,9 +45,7 @@ public class CrsCreationDeadlockTest {
             while (ai.get() > 0) {
                 long[] deadlockedThreads = mbean.findMonitorDeadlockedThreads();
                 if (deadlockedThreads != null && deadlockedThreads.length > 0) {
-                    fail(
-                            "Deadlock detected between the following threads: "
-                                    + Arrays.toString(deadlockedThreads));
+                    fail("Deadlock detected between the following threads: " + Arrays.toString(deadlockedThreads));
                 }
                 // sleep for a bit
                 Thread.currentThread().sleep(10);

@@ -21,10 +21,10 @@ import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Thrown by {@link Formattable#toWKT} when an object can't be formatted as WKT. A formatting may
- * fails because an object is too complex for the WKT format capability (for example an {@linkplain
- * org.geotools.referencing.crs.DefaultEngineeringCRS engineering CRS} with different unit for each
- * axis), or because only some specific implementations can be formatted as WKT.
+ * Thrown by {@link Formattable#toWKT} when an object can't be formatted as WKT. A formatting may fails because an
+ * object is too complex for the WKT format capability (for example an
+ * {@linkplain org.geotools.referencing.crs.DefaultEngineeringCRS engineering CRS} with different unit for each axis),
+ * or because only some specific implementations can be formatted as WKT.
  *
  * @since 2.0
  * @version $Id$
@@ -48,13 +48,13 @@ public class UnformattableObjectException extends UnsupportedOperationException 
     }
 
     /**
-     * Returns the type of the object that can't be formatted. This is often an OpenGIS interface
-     * rather than the implementation class. For example if a engineering CRS uses different unit
-     * for each axis, then this method may return <code>
-     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem}.class</code>. It
-     * doesn't mean that no CRS can be formatted; only that a particular instance of it can't. Other
-     * possible classes are {@link org.geotools.api.referencing.datum.ImageDatum}, {@link
-     * org.geotools.api.referencing.crs.ProjectedCRS}, <cite>etc</cite>.
+     * Returns the type of the object that can't be formatted. This is often an OpenGIS interface rather than the
+     * implementation class. For example if a engineering CRS uses different unit for each axis, then this method may
+     * return <code>
+     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem}.class</code>. It doesn't mean that no CRS
+     * can be formatted; only that a particular instance of it can't. Other possible classes are
+     * {@link org.geotools.api.referencing.datum.ImageDatum}, {@link org.geotools.api.referencing.crs.ProjectedCRS},
+     * <cite>etc</cite>.
      *
      * @since 2.4
      */
@@ -62,10 +62,7 @@ public class UnformattableObjectException extends UnsupportedOperationException 
         return unformattable;
     }
 
-    /**
-     * Returns the detail message. A default message is formatted if none was specified at
-     * construction time.
-     */
+    /** Returns the detail message. A default message is formatted if none was specified at construction time. */
     @Override
     public String getMessage() {
         String message = super.getMessage();

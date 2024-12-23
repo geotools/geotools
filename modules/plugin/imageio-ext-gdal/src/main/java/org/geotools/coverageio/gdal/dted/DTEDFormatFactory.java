@@ -30,11 +30,9 @@ import org.geotools.coverageio.BaseGridFormatFactorySPI;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class DTEDFormatFactory extends BaseGridFormatFactorySPI
-        implements GridFormatFactorySpi {
+public final class DTEDFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DTEDFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DTEDFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access dted is available or not.

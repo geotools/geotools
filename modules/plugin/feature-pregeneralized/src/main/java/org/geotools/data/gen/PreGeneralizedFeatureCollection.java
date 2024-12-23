@@ -37,8 +37,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * @author Christian Mueller
  *     <p>Implementation of {@link FeatureCollection} for {@link PreGeneralizedSimpleFeature}
- *     <p>This collection is read only, modifying methods result in {@link
- *     UnsupportedOperationException}
+ *     <p>This collection is read only, modifying methods result in {@link UnsupportedOperationException}
  */
 public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection {
 
@@ -140,12 +139,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         SimpleFeatureCollection fColl = backendCollection.sort(sortBy);
         if (fColl == null) return null;
         return new PreGeneralizedFeatureCollection(
-                fColl,
-                featureType,
-                returnedFeatureType,
-                indexMapping,
-                geomPropertyName,
-                backendGeomPropertyName);
+                fColl, featureType, returnedFeatureType, indexMapping, geomPropertyName, backendGeomPropertyName);
     }
 
     @Override
@@ -153,26 +147,20 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         SimpleFeatureCollection fColl = backendCollection.subCollection(filter);
         if (fColl == null) return null;
         return new PreGeneralizedFeatureCollection(
-                fColl,
-                featureType,
-                returnedFeatureType,
-                indexMapping,
-                geomPropertyName,
-                backendGeomPropertyName);
+                fColl, featureType, returnedFeatureType, indexMapping, geomPropertyName, backendGeomPropertyName);
     }
 
     @Override
     public Object[] toArray() {
         Object[] res = backendCollection.toArray();
         for (int i = 0; i < res.length; i++) {
-            res[i] =
-                    new PreGeneralizedSimpleFeature(
-                            getSchema(),
-                            getSchema(),
-                            indexMapping,
-                            (SimpleFeature) res[i],
-                            geomPropertyName,
-                            backendGeomPropertyName);
+            res[i] = new PreGeneralizedSimpleFeature(
+                    getSchema(),
+                    getSchema(),
+                    indexMapping,
+                    (SimpleFeature) res[i],
+                    geomPropertyName,
+                    backendGeomPropertyName);
         }
         return res;
     }
@@ -182,15 +170,13 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         O[] res = backendCollection.toArray(a);
         for (int i = 0; i < res.length; i++) {
             @SuppressWarnings("unchecked")
-            O cast =
-                    (O)
-                            new PreGeneralizedSimpleFeature(
-                                    getSchema(),
-                                    getSchema(),
-                                    indexMapping,
-                                    (SimpleFeature) res[i],
-                                    geomPropertyName,
-                                    backendGeomPropertyName);
+            O cast = (O) new PreGeneralizedSimpleFeature(
+                    getSchema(),
+                    getSchema(),
+                    indexMapping,
+                    (SimpleFeature) res[i],
+                    geomPropertyName,
+                    backendGeomPropertyName);
             res[i] = cast;
         }
         return res;

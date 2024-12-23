@@ -12,8 +12,8 @@ package org.geotools.api.style;
 /**
  * Indicates how to draw point geometries on a map.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Chris Dillard (SYS Technologies)
@@ -22,9 +22,8 @@ package org.geotools.api.style;
 public interface PointSymbolizer extends Symbolizer {
 
     /**
-     * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
-     * be used, the default square mark will be used instead. If false, the symbol will not be
-     * painted.
+     * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can be used, the default
+     * square mark will be used instead. If false, the symbol will not be painted.
      */
     String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
 

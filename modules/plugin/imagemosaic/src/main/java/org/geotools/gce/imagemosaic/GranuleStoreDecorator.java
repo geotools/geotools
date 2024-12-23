@@ -27,8 +27,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 
 /**
- * Plain delegating base class for {@link GranuleStore} decorators. Meant to allow easier/clearer
- * implementation of subclasses overriding specific methods
+ * Plain delegating base class for {@link GranuleStore} decorators. Meant to allow easier/clearer implementation of
+ * subclasses overriding specific methods
  */
 class GranuleStoreDecorator implements GranuleStore {
 

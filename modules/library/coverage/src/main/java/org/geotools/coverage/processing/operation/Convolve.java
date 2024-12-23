@@ -20,8 +20,8 @@ import javax.media.jai.operator.ConvolveDescriptor;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**
- * Computes each output sample by multiplying elements of a kernel with the samples surrounding a
- * particular source sample.
+ * Computes each output sample by multiplying elements of a kernel with the samples surrounding a particular source
+ * sample.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Convolve"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain ConvolveDescriptor Convolve}"</CODE><br>

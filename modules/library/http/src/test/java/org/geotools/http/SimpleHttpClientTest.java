@@ -49,13 +49,11 @@ public class SimpleHttpClientTest {
 
     @Test
     public void testBasicHeader() throws IOException {
-        stubFor(
-                get(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
 
         String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
         String userName = "user";
@@ -66,9 +64,8 @@ public class SimpleHttpClientTest {
 
         String encodedCredentials =
                 "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-        verify(
-                getRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+        verify(getRequestedFor(urlEqualTo("/test"))
+                .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
     }
 
     /**
@@ -81,11 +78,10 @@ public class SimpleHttpClientTest {
         String headerValue;
         URL url = new URL("http://localhost:" + wireMockRule.port() + "/test");
         UrlPattern urlPattern = urlEqualTo("/test");
-        ResponseDefinitionBuilder response =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder response = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         SimpleHttpClient client = new SimpleHttpClient();
 
@@ -93,17 +89,13 @@ public class SimpleHttpClientTest {
         stubFor(get(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis();
         client.get(url, singletonMap("Authorization", headerValue));
-        verify(
-                getRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo(headerValue)));
+        verify(getRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
 
         // POST
         stubFor(post(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis() + 1;
         client.post(url, postBody, "text/plain", singletonMap("Authorization", headerValue));
-        verify(
-                postRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo(headerValue)));
+        verify(postRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
     }
 
     /**
@@ -115,19 +107,16 @@ public class SimpleHttpClientTest {
     public void testRequestsWithExtraParams() throws IOException {
         SimpleHttpClient client = new SimpleHttpClient();
 
-        Map<String, String> testExtraParams =
-                Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
+        Map<String, String> testExtraParams = Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
 
-        URL urlWithoutExtraParams =
-                new URL("http://localhost:" + wireMockRule.port() + "/test?key2=duplicate");
+        URL urlWithoutExtraParams = new URL("http://localhost:" + wireMockRule.port() + "/test?key2=duplicate");
 
         // Mock the expected request and response
         UrlPattern urlPattern = urlMatching("/test[\\w?&=%]*"); // \w or any of ?&=%
-        ResponseDefinitionBuilder response =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder response = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         stubFor(get(urlPattern).willReturn(response));
         stubFor(post(urlPattern).willReturn(response));
 
@@ -135,24 +124,20 @@ public class SimpleHttpClientTest {
 
         // GET
         client.get(urlWithoutExtraParams);
-        verify(
-                getRequestedFor(urlMatching("/test[\\w?&=%]*"))
-                        .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2"))
-                        .withQueryParam("key2", equalTo("duplicate"))
-                        .withQueryParam(
-                                "key%3",
-                                equalTo("value/3"))); // % and / are URL-encoded and then decoded
+        verify(getRequestedFor(urlMatching("/test[\\w?&=%]*"))
+                .withQueryParam("key1", equalTo("123"))
+                .withQueryParam("key2", equalTo("value2"))
+                .withQueryParam("key2", equalTo("duplicate"))
+                .withQueryParam("key%3", equalTo("value/3"))); // % and / are URL-encoded and then decoded
         // again
 
         // POST
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         client.post(urlWithoutExtraParams, postBody, "text/plain");
-        verify(
-                postRequestedFor(urlMatching("/test[\\w?&=%]*"))
-                        .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2"))
-                        .withQueryParam("key2", equalTo("duplicate"))
-                        .withQueryParam("key%3", equalTo("value/3")));
+        verify(postRequestedFor(urlMatching("/test[\\w?&=%]*"))
+                .withQueryParam("key1", equalTo("123"))
+                .withQueryParam("key2", equalTo("value2"))
+                .withQueryParam("key2", equalTo("duplicate"))
+                .withQueryParam("key%3", equalTo("value/3")));
     }
 }

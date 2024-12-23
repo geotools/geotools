@@ -61,10 +61,7 @@ public interface Element {
      *
      * @return Description of the evaluation method, or {@code null}.
      */
-    @UML(
-            identifier = "evaluationMethodDescription",
-            obligation = OPTIONAL,
-            specification = ISO_19115)
+    @UML(identifier = "evaluationMethodDescription", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getEvaluationMethodDescription();
 
     /**
@@ -75,9 +72,8 @@ public interface Element {
     Citation getEvaluationProcedure();
 
     /**
-     * Date or range of dates on which a data quality measure was applied. The collection size is 1
-     * for a single date, or 2 for a range. Returns an empty collection if this information is not
-     * available.
+     * Date or range of dates on which a data quality measure was applied. The collection size is 1 for a single date,
+     * or 2 for a range. Returns an empty collection if this information is not available.
      *
      * @return Date or range of dates on which a data quality measure was applied.
      * @since GeoAPI 2.1
@@ -85,9 +81,8 @@ public interface Element {
     Collection<? extends Date> getDates();
 
     /**
-     * Value (or set of values) obtained from applying a data quality measure or the out come of
-     * evaluating the obtained value (or set of values) against a specified acceptable conformance
-     * quality level.
+     * Value (or set of values) obtained from applying a data quality measure or the out come of evaluating the obtained
+     * value (or set of values) against a specified acceptable conformance quality level.
      *
      * @return Set of values obtained from applying a data quality measure.
      * @since GeoAPI 2.1

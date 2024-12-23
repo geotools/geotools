@@ -33,8 +33,8 @@ import org.geotools.ows.wms.response.PutStylesResponse;
 /**
  * Provides support for the Web Map Server 1.1.1 Specificaiton.
  *
- * <p>WMS1_1_1 provides both name and version information that may be checked against a
- * GetCapabilities document during version negotiation.
+ * <p>WMS1_1_1 provides both name and version information that may be checked against a GetCapabilities document during
+ * version negotiation.
  *
  * @author Jody Garnett, Refractions Research
  * @author rgould
@@ -79,8 +79,7 @@ public class WMS1_1_1 extends WMS1_1_0 {
 
     public static class GetFeatureInfoRequest extends WMS1_1_0.GetFeatureInfoRequest {
 
-        public GetFeatureInfoRequest(
-                URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
+        public GetFeatureInfoRequest(URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);
         }
 
@@ -102,15 +101,13 @@ public class WMS1_1_1 extends WMS1_1_0 {
     }
 
     @Override
-    public GetStylesRequest createGetStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public GetStylesRequest createGetStylesRequest(URL onlineResource) throws UnsupportedOperationException {
         return new InternalGetStylesRequest(onlineResource, null);
     }
 
     /** @see WMS1_0_0#createPutStylesRequest(java.net.URL) */
     @Override
-    public PutStylesRequest createPutStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public PutStylesRequest createPutStylesRequest(URL onlineResource) throws UnsupportedOperationException {
         return new InternalPutStylesRequest(onlineResource);
     }
 
@@ -129,8 +126,7 @@ public class WMS1_1_1 extends WMS1_1_0 {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetStylesResponse(httpResponse);
         }
     }
@@ -147,8 +143,7 @@ public class WMS1_1_1 extends WMS1_1_0 {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new PutStylesResponse(httpResponse);
         }
     }

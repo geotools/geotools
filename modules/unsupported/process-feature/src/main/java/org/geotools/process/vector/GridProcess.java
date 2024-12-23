@@ -56,12 +56,8 @@ public class GridProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Generated grid cells as features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "bounds", description = "Bounds of the grid")
-                    ReferencedEnvelope bounds,
-            @DescribeParameter(
-                            name = "width",
-                            description = "Width of a cell (in units of the grid CRS)")
-                    double width,
+            @DescribeParameter(name = "bounds", description = "Bounds of the grid") ReferencedEnvelope bounds,
+            @DescribeParameter(name = "width", description = "Width of a cell (in units of the grid CRS)") double width,
             @DescribeParameter(
                             name = "height",
                             description =
@@ -70,19 +66,16 @@ public class GridProcess implements VectorProcess {
                     Double height,
             @DescribeParameter(
                             name = "vertexSpacing",
-                            description =
-                                    "Distance between vertices along cell sides (in units of the grid CRS)",
+                            description = "Distance between vertices along cell sides (in units of the grid CRS)",
                             min = 0)
                     Double vertexSpacing,
             @DescribeParameter(
                             name = "mode",
-                            description =
-                                    "Type of grid to be generated.  Specifies shape of cells in grid.",
+                            description = "Type of grid to be generated.  Specifies shape of cells in grid.",
                             defaultValue = "Rectangular")
                     GridMode mode)
             throws ProcessException {
-        final GridFeatureBuilder builder =
-                new GridFeatureBuilderImpl(bounds.getCoordinateReferenceSystem());
+        final GridFeatureBuilder builder = new GridFeatureBuilderImpl(bounds.getCoordinateReferenceSystem());
         double h = height != null ? height : width;
 
         SimpleFeatureSource source;
@@ -140,8 +133,8 @@ public class GridProcess implements VectorProcess {
         }
 
         /**
-         * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)} to assign a
-         * sequential integer id value to each grid element feature as it is constructed.
+         * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)} to assign a sequential integer id
+         * value to each grid element feature as it is constructed.
          *
          * @param ge the element from which the new feature is being constructed
          * @param attributes a {@code Map} with the single key "id"

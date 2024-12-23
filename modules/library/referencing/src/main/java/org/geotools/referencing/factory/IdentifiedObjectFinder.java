@@ -37,11 +37,11 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 
 /**
- * Looks up an object from an {@linkplain AuthorityFactory authority factory} which is {@linkplain
- * CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified object. The main purpose of
- * this class is to get a fully {@linkplain IdentifiedObject identified object} from an incomplete
- * one, for example from an object without {@linkplain IdentifiedObject#getIdentifiers identifiers}
- * or "{@code AUTHORITY[...]}" element in <cite>Well Known Text</cite> terminology.
+ * Looks up an object from an {@linkplain AuthorityFactory authority factory} which is
+ * {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified object. The main purpose of this
+ * class is to get a fully {@linkplain IdentifiedObject identified object} from an incomplete one, for example from an
+ * object without {@linkplain IdentifiedObject#getIdentifiers identifiers} or "{@code AUTHORITY[...]}" element in
+ * <cite>Well Known Text</cite> terminology.
  *
  * @since 2.4
  * @version $Id$
@@ -65,15 +65,13 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Creates a finder using the specified factory. This constructor is protected because instances
-     * of this class should not be created directly. Use {@link
-     * AbstractAuthorityFactory#getIdentifiedObjectFinder} instead.
+     * Creates a finder using the specified factory. This constructor is protected because instances of this class
+     * should not be created directly. Use {@link AbstractAuthorityFactory#getIdentifiedObjectFinder} instead.
      *
      * @param factory The factory to scan for the identified objects.
      * @param type The type of objects to lookup.
      */
-    protected IdentifiedObjectFinder(
-            final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
+    protected IdentifiedObjectFinder(final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
         setProxy(AuthorityFactoryProxy.getInstance(factory, type));
     }
 
@@ -95,44 +93,39 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * If {@code true}, an exhaustive full scan against all registered objects will be performed
-     * (may be slow). Otherwise only a fast lookup based on embedded identifiers and names will be
-     * performed. The default value is {@code true}.
+     * If {@code true}, an exhaustive full scan against all registered objects will be performed (may be slow).
+     * Otherwise only a fast lookup based on embedded identifiers and names will be performed. The default value is
+     * {@code true}.
      */
     public boolean isFullScanAllowed() {
         return fullScan;
     }
 
-    /**
-     * Set whatever an exhaustive scan against all registered objects is allowed. The default value
-     * is {@code true}.
-     */
+    /** Set whatever an exhaustive scan against all registered objects is allowed. The default value is {@code true}. */
     public void setFullScanAllowed(final boolean fullScan) {
         this.fullScan = fullScan;
     }
 
     /**
-     * Lookups an object which is {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata},
-     * to the specified object. The default implementation tries to instantiate some {@linkplain
-     * IdentifiedObject identified objects} from the authority factory specified at construction
-     * time, in the following order:
+     * Lookups an object which is {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified
+     * object. The default implementation tries to instantiate some {@linkplain IdentifiedObject identified objects}
+     * from the authority factory specified at construction time, in the following order:
      *
      * <p>
      *
      * <ul>
-     *   <li>If the specified object contains {@linkplain IdentifiedObject#getIdentifiers
-     *       identifiers} associated to the same authority than the factory, then those identifiers
-     *       are used for {@linkplain AuthorityFactory#createObject creating objects} to be tested.
-     *   <li>If the authority factory can create objects from their {@linkplain
-     *       IdentifiedObject#getName name} in addition of identifiers, then the name and
-     *       {@linkplain IdentifiedObject#getAlias aliases} are used for creating objects to be
-     *       tested.
-     *   <li>If {@linkplain #isFullScanAllowed full scan is allowed}, then full {@linkplain
-     *       #getCodeCandidates set of authority codes} are used for creating objects to be tested.
+     *   <li>If the specified object contains {@linkplain IdentifiedObject#getIdentifiers identifiers} associated to the
+     *       same authority than the factory, then those identifiers are used for
+     *       {@linkplain AuthorityFactory#createObject creating objects} to be tested.
+     *   <li>If the authority factory can create objects from their {@linkplain IdentifiedObject#getName name} in
+     *       addition of identifiers, then the name and {@linkplain IdentifiedObject#getAlias aliases} are used for
+     *       creating objects to be tested.
+     *   <li>If {@linkplain #isFullScanAllowed full scan is allowed}, then full {@linkplain #getCodeCandidates set of
+     *       authority codes} are used for creating objects to be tested.
      * </ul>
      *
-     * <p>The first of the above created objects which is equals to the specified object in the the
-     * sense of {@link CRS#equalsIgnoreMetadata equalsIgnoreMetadata} is returned.
+     * <p>The first of the above created objects which is equals to the specified object in the the sense of
+     * {@link CRS#equalsIgnoreMetadata equalsIgnoreMetadata} is returned.
      *
      * @param object The object looked up.
      * @return The identified object, or {@code null} if not found.
@@ -169,9 +162,9 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Returns the identifier of the specified object, or {@code null} if none. The default
-     * implementation invokes <code>{@linkplain #find find}(object)</code> and extracts the code
-     * from the returned {@linkplain IdentifiedObject identified object}.
+     * Returns the identifier of the specified object, or {@code null} if none. The default implementation invokes
+     * <code>{@linkplain #find find}(object)</code> and extracts the code from the returned {@linkplain IdentifiedObject
+     * identified object}.
      */
     public String findIdentifier(final IdentifiedObject object) throws FactoryException {
         final IdentifiedObject candidate = find(object);
@@ -212,12 +205,11 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the
-     * specified object using only the {@linkplain IdentifiedObject#getIdentifiers identifiers}. If
-     * no such object is found, returns {@code null}.
+     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified object using
+     * only the {@linkplain IdentifiedObject#getIdentifiers identifiers}. If no such object is found, returns
+     * {@code null}.
      *
-     * <p>This method may be used in order to get a fully identified object from a partially
-     * identified one.
+     * <p>This method may be used in order to get a fully identified object from a partially identified one.
      *
      * @param object The object looked up.
      * @return The identified object, or {@code null} if not found.
@@ -225,8 +217,7 @@ public class IdentifiedObjectFinder {
      * @see #createFromNames
      * @throws FactoryException if an error occured while creating an object.
      */
-    final IdentifiedObject createFromIdentifiers(final IdentifiedObject object)
-            throws FactoryException {
+    final IdentifiedObject createFromIdentifiers(final IdentifiedObject object) throws FactoryException {
         final Citation authority = getProxy().getAuthorityFactory().getAuthority();
         final boolean isAll = ReferencingFactory.ALL.equals(authority);
         for (ReferenceIdentifier referenceIdentifier : object.getIdentifiers()) {
@@ -251,13 +242,12 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the
-     * specified object using only the {@linkplain IdentifiedObject#getName name} and {@linkplain
-     * IdentifiedObject#getAlias aliases}. If no such object is found, returns {@code null}.
+     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified object using
+     * only the {@linkplain IdentifiedObject#getName name} and {@linkplain IdentifiedObject#getAlias aliases}. If no
+     * such object is found, returns {@code null}.
      *
-     * <p>This method may be used with some {@linkplain AuthorityFactory authority factory}
-     * implementations like the one backed by the EPSG database, which are capable to find an object
-     * from its name when the identifier is unknown.
+     * <p>This method may be used with some {@linkplain AuthorityFactory authority factory} implementations like the one
+     * backed by the EPSG database, which are capable to find an object from its name when the identifier is unknown.
      *
      * @param object The object looked up.
      * @return The identified object, or {@code null} if not found.
@@ -298,18 +288,16 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the
-     * specified object. This method scans the {@linkplain #getAuthorityCodes authority codes},
-     * create the objects and returns the first one which is equals to the specified object in the
-     * sense of {@link CRS#equalsIgnoreMetadata equalsIgnoreMetadata}.
+     * Creates an object {@linkplain CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified object. This
+     * method scans the {@linkplain #getAuthorityCodes authority codes}, create the objects and returns the first one
+     * which is equals to the specified object in the sense of {@link CRS#equalsIgnoreMetadata equalsIgnoreMetadata}.
      *
-     * <p>This method may be used in order to get a fully {@linkplain IdentifiedObject identified
-     * object} from an object without {@linkplain IdentifiedObject#getIdentifiers identifiers}.
+     * <p>This method may be used in order to get a fully {@linkplain IdentifiedObject identified object} from an object
+     * without {@linkplain IdentifiedObject#getIdentifiers identifiers}.
      *
      * <p>Scaning the whole set of authority codes may be slow. Users should try <code>
      * {@linkplain #createFromIdentifiers createFromIdentifiers}(object)</code> and/or <code>
-     * {@linkplain #createFromNames createFromNames}(object)</code> before to fallback on this
-     * method.
+     * {@linkplain #createFromNames createFromNames}(object)</code> before to fallback on this method.
      *
      * @param object The object looked up.
      * @return The identified object, or {@code null} if not found.
@@ -317,11 +305,9 @@ public class IdentifiedObjectFinder {
      * @see #createFromIdentifiers
      * @see #createFromNames
      */
-    final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific)
-            throws FactoryException {
+    final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific) throws FactoryException {
         @SuppressWarnings("unchecked")
-        final Set<String> codes =
-                specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
+        final Set<String> codes = specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
         for (final String code : codes) {
             IdentifiedObject candidate;
             try {
@@ -331,10 +317,7 @@ public class IdentifiedObjectFinder {
                 // Some object cannot be created properly.
                 continue;
             } catch (Exception problemCode) {
-                LOGGER.log(
-                        Level.FINEST,
-                        "Could not create '" + code + "':" + problemCode,
-                        problemCode);
+                LOGGER.log(Level.FINEST, "Could not create '" + code + "':" + problemCode, problemCode);
                 continue;
             }
 
@@ -351,20 +334,19 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * Returns a set of authority codes that <strong>may</strong> identify the same object than the
-     * specified one. The returned set must contains the code of every objects that are {@linkplain
-     * CRS#equalsIgnoreMetadata equals, ignoring metadata}, to the specified one. However the set is
-     * not required to contains only the codes of those objects; it may conservatively contains the
-     * code for more objects if an exact search is too expensive.
+     * Returns a set of authority codes that <strong>may</strong> identify the same object than the specified one. The
+     * returned set must contains the code of every objects that are {@linkplain CRS#equalsIgnoreMetadata equals,
+     * ignoring metadata}, to the specified one. However the set is not required to contains only the codes of those
+     * objects; it may conservatively contains the code for more objects if an exact search is too expensive.
      *
-     * <p>This method is invoked by the default {@link #find find} method implementation. The caller
-     * may iterates through every returned codes, instantiate the objects and compare them with the
-     * specified one in order to determine which codes are really applicable.
+     * <p>This method is invoked by the default {@link #find find} method implementation. The caller may iterates
+     * through every returned codes, instantiate the objects and compare them with the specified one in order to
+     * determine which codes are really applicable.
      *
      * <p>The default implementation returns the same set than <code>
-     * {@linkplain AuthorityFactory#getAuthorityCodes getAuthorityCodes}(type)</code> where {@code
-     * type} is the interface specified at construction type. Subclasses should override this method
-     * in order to return a smaller set, if they can.
+     * {@linkplain AuthorityFactory#getAuthorityCodes getAuthorityCodes}(type)</code> where {@code type} is the
+     * interface specified at construction type. Subclasses should override this method in order to return a smaller
+     * set, if they can.
      *
      * @param object The object looked up.
      * @return A set of code candidates.
@@ -393,22 +375,20 @@ public class IdentifiedObjectFinder {
      */
 
     /**
-     * Returns {@code candidate}, or an object derived from {@code candidate}, if it is {@linkplain
-     * CRS#equalsIgnoreMetadata equals ignoring metadata} to the specified model. Otherwise returns
+     * Returns {@code candidate}, or an object derived from {@code candidate}, if it is
+     * {@linkplain CRS#equalsIgnoreMetadata equals ignoring metadata} to the specified model. Otherwise returns
      * {@code null}.
      *
-     * <p>This method is overriden by factories that may test many flavors of {@code candidate}, for
-     * example {@link TransformedAuthorityFactory}.
+     * <p>This method is overriden by factories that may test many flavors of {@code candidate}, for example
+     * {@link TransformedAuthorityFactory}.
      *
      * @param candidate An object created by the factory specified at construction time.
-     * @return {@code candidate}, or an object derived from {@code candidate} (for example with axis
-     *     order forced to (<var>longitude</var>, <var>latitude</var>), or {@code null} if none of
-     *     the above is {@linkplain CRS#equalsIgnoreMetadata equals ignoring metadata} to the
-     *     specified model.
+     * @return {@code candidate}, or an object derived from {@code candidate} (for example with axis order forced to
+     *     (<var>longitude</var>, <var>latitude</var>), or {@code null} if none of the above is
+     *     {@linkplain CRS#equalsIgnoreMetadata equals ignoring metadata} to the specified model.
      * @throws FactoryException if an error occured while creating a derived object.
      */
-    protected IdentifiedObject deriveEquivalent(
-            final IdentifiedObject candidate, final IdentifiedObject model)
+    protected IdentifiedObject deriveEquivalent(final IdentifiedObject candidate, final IdentifiedObject model)
             throws FactoryException {
         return CRS.equalsIgnoreMetadata(candidate, model) ? candidate : null;
     }
@@ -425,10 +405,10 @@ public class IdentifiedObjectFinder {
     }
 
     /**
-     * A finder which delegate part of its work to an other finder. This adapter forwards some
-     * method calls to the underlying finder. This class should not be public, because not all
-     * method are overriden. The choice is tuned for {@link BufferedAuthorityFactory} and {@link
-     * AuthorityFactoryAdapter} needs and may not be appropriate in the general case.
+     * A finder which delegate part of its work to an other finder. This adapter forwards some method calls to the
+     * underlying finder. This class should not be public, because not all method are overriden. The choice is tuned for
+     * {@link BufferedAuthorityFactory} and {@link AuthorityFactoryAdapter} needs and may not be appropriate in the
+     * general case.
      *
      * @author Martin Desruisseaux
      */
@@ -450,12 +430,11 @@ public class IdentifiedObjectFinder {
         }
 
         /**
-         * Returns a set of authority codes that <strong>may</strong> identify the same object than
-         * the specified one. The default implementation delegates to the backing finder.
+         * Returns a set of authority codes that <strong>may</strong> identify the same object than the specified one.
+         * The default implementation delegates to the backing finder.
          */
         @Override
-        protected Set<String> getCodeCandidates(final IdentifiedObject object)
-                throws FactoryException {
+        protected Set<String> getCodeCandidates(final IdentifiedObject object) throws FactoryException {
             return finder.getCodeCandidates(object);
         }
 
@@ -466,12 +445,11 @@ public class IdentifiedObjectFinder {
 
         /**
          * Returns {@code candidate}, or an object derived from {@code candidate}, if it is
-         * {@linkplain CRS#equalsIgnoreMetadata equals ignoring metadata} to the specified model.
-         * The default implementation delegates to the backing finder.
+         * {@linkplain CRS#equalsIgnoreMetadata equals ignoring metadata} to the specified model. The default
+         * implementation delegates to the backing finder.
          */
         @Override
-        protected IdentifiedObject deriveEquivalent(
-                final IdentifiedObject candidate, final IdentifiedObject model)
+        protected IdentifiedObject deriveEquivalent(final IdentifiedObject candidate, final IdentifiedObject model)
                 throws FactoryException {
             return finder.deriveEquivalent(candidate, model);
         }

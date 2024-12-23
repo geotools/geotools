@@ -93,8 +93,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
             return null;
         }
         ExtensionSymbolizer symbolizer =
-                sf.extensionSymbolizer(
-                        name, null, description.build(), uom, extensionName, parameters);
+                sf.extensionSymbolizer(name, null, description.build(), uom, extensionName, parameters);
         symbolizer.setGeometry(geometry);
         if (parent == null) {
             reset();

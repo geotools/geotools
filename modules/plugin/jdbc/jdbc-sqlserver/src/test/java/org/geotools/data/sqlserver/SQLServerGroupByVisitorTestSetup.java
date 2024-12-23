@@ -28,10 +28,9 @@ public class SQLServerGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetu
     protected void createBuildingsTable() throws Exception {
         // last_update_date is an extra column used to test datedifference translation to SQL
         // against date fields, as opposed to timestamp fields
-        run(
-                "CREATE TABLE buildings_group_by_tests (id int PRIMARY KEY, building_id varchar(255), "
-                        + "building_type varchar(255), energy_type varchar(255), fuel_consumption float,"
-                        + "energy_consumption float, last_update datetime, last_update_date date)");
+        run("CREATE TABLE buildings_group_by_tests (id int PRIMARY KEY, building_id varchar(255), "
+                + "building_type varchar(255), energy_type varchar(255), fuel_consumption float,"
+                + "energy_consumption float, last_update datetime, last_update_date date)");
         run(
                 "INSERT INTO buildings_group_by_tests VALUES "
                         + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, CAST('2016-06-03 12:00:00' AS DATETIME), CAST('2016-06-03' AS DATE)),"
@@ -62,24 +61,15 @@ public class SQLServerGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetu
                         + "intProperty int," //
                         + "doubleProperty float, " //
                         + "stringProperty varchar(255))");
-        run(
-                "INSERT INTO ft1_group_by VALUES(0, geometry::STGeomFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(1, geometry::STGeomFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(2, geometry::STGeomFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(3, geometry::STGeomFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(4, geometry::STGeomFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(5, geometry::STGeomFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(6, geometry::STGeomFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(7, geometry::STGeomFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
-        run(
-                "INSERT INTO ft1_group_by VALUES(8, geometry::STGeomFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
+        run("INSERT INTO ft1_group_by VALUES(0, geometry::STGeomFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
+        run("INSERT INTO ft1_group_by VALUES(1, geometry::STGeomFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
+        run("INSERT INTO ft1_group_by VALUES(2, geometry::STGeomFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
+        run("INSERT INTO ft1_group_by VALUES(3, geometry::STGeomFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
+        run("INSERT INTO ft1_group_by VALUES(4, geometry::STGeomFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
+        run("INSERT INTO ft1_group_by VALUES(5, geometry::STGeomFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
+        run("INSERT INTO ft1_group_by VALUES(6, geometry::STGeomFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
+        run("INSERT INTO ft1_group_by VALUES(7, geometry::STGeomFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
+        run("INSERT INTO ft1_group_by VALUES(8, geometry::STGeomFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
     }
 
     @Override

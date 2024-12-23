@@ -33,11 +33,9 @@ import org.junit.Test;
 
 /**
  * @author Niels Charlier
- *     <p>the samples used in this test class (.nc and .ncml files located in test-data/unidata) are
- *     taken from
- *     http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/ncml/Aggregation.html (see
- *     THREDDS license) except the reversed sample files which are manipulations of the originals
- *     from the website above.
+ *     <p>the samples used in this test class (.nc and .ncml files located in test-data/unidata) are taken from
+ *     http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/ncml/Aggregation.html (see THREDDS license)
+ *     except the reversed sample files which are manipulations of the originals from the website above.
  */
 public class NetCDFAggregationTest {
 
@@ -115,11 +113,9 @@ public class NetCDFAggregationTest {
 
         NetCDFImageReaderSpi readerSpiReversed = new NetCDFImageReaderSpi();
         File fileReversed = TestData.file(this, "unidata/aggExistingReversed.ncml");
-        NetCDFImageReader readerReversed =
-                (NetCDFImageReader) readerSpiReversed.createReaderInstance();
+        NetCDFImageReader readerReversed = (NetCDFImageReader) readerSpiReversed.createReaderInstance();
         readerReversed.setInput(fileReversed);
-        VariableAdapter variableAdapterReversed =
-                readerReversed.getCoverageDescriptor(new NameImpl("T"));
+        VariableAdapter variableAdapterReversed = readerReversed.getCoverageDescriptor(new NameImpl("T"));
 
         assertEquals(
                 variableAdapter.getTemporalDomain().getTemporalExtent(),

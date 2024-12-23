@@ -16,9 +16,9 @@ import org.geotools.api.feature.Property;
 /**
  * The type of a complex attribute. <br>
  *
- * <p>Similar to how a complex attribute is composed of other properties, a complex type is composed
- * of property descriptors. A complex type is very much like a complex type from xml schema.
- * Consider the following xml schema complex type:
+ * <p>Similar to how a complex attribute is composed of other properties, a complex type is composed of property
+ * descriptors. A complex type is very much like a complex type from xml schema. Consider the following xml schema
+ * complex type:
  *
  * <pre>
  * &lt;element name="myComplexElement" type="myComplexType"/>
@@ -94,8 +94,8 @@ public interface ComplexType extends AttributeType {
     /**
      * The property descriptor which compose the complex type.
      *
-     * <p>A complex type can be composed of attributes and associations which means this collection
-     * returns instances of {@link AttributeDescriptor} and {@link AssociationDescriptor}.
+     * <p>A complex type can be composed of attributes and associations which means this collection returns instances of
+     * {@link AttributeDescriptor} and {@link AssociationDescriptor}.
      *
      * @return Collection of descriptors representing the composition of the complex type.
      */
@@ -114,9 +114,8 @@ public interface ComplexType extends AttributeType {
     /**
      * Describe a single property by unqualified name.
      *
-     * <p>Note: Special care should be taken when using this method in the case that two properties
-     * with the same local name but different namespace uri exist. For this reason using {@link
-     * #getDescriptor(Name)} is safer.
+     * <p>Note: Special care should be taken when using this method in the case that two properties with the same local
+     * name but different namespace uri exist. For this reason using {@link #getDescriptor(Name)} is safer.
      *
      * <p>This method returns <code>null</code> if no such property is found.
      *
@@ -128,9 +127,9 @@ public interface ComplexType extends AttributeType {
     /**
      * Indicates ability of XPath to notice this attribute.
      *
-     * <p>This facility is used to "hide" an attribute from XPath searches, while the compelx
-     * contents will still be navigated no additional nesting will be considered. It will be as if
-     * the content were "folded" inline resulting in a flatter nesting structure.
+     * <p>This facility is used to "hide" an attribute from XPath searches, while the compelx contents will still be
+     * navigated no additional nesting will be considered. It will be as if the content were "folded" inline resulting
+     * in a flatter nesting structure.
      *
      * <p>Construct described using Java Interfaces:
      *
@@ -188,12 +187,11 @@ public interface ComplexType extends AttributeType {
     /**
      * Describes allowable content, indicating containment.
      *
-     * <p>A collection of AttributeDescriptors (name and AttributeType) is used. We make no
-     * restrictions as to attribute order. All attributes are considered accessable by name (and
-     * order is thus insignificant).
+     * <p>A collection of AttributeDescriptors (name and AttributeType) is used. We make no restrictions as to attribute
+     * order. All attributes are considered accessable by name (and order is thus insignificant).
      *
-     * <p>If you are modling a typing system where attribute order is relevant you may make use of a
-     * List. Similarly if duplicate attributes are disallowed you may make use of a Set.
+     * <p>If you are modling a typing system where attribute order is relevant you may make use of a List. Similarly if
+     * duplicate attributes are disallowed you may make use of a Set.
      *
      * <p>This method follows JavaBeans naming convention indicating this is part of our data model.
      */

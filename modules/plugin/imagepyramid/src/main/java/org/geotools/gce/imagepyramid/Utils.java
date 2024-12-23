@@ -152,12 +152,9 @@ class Utils {
         }
 
         // check the gdal case and move files if necessary
-        if (!zeroLevelDirectory.exists()
-                && (directories != null && numericDirectories.length == directories.length)) {
+        if (!zeroLevelDirectory.exists() && (directories != null && numericDirectories.length == directories.length)) {
             LOGGER.log(
-                    Level.INFO,
-                    "Detected gdal_retile file structure, "
-                            + "moving root files to the '0' subdirectory");
+                    Level.INFO, "Detected gdal_retile file structure, " + "moving root files to the '0' subdirectory");
             if (zeroLevelDirectory.mkdir()) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Created '0' subidr, now moving files");
@@ -203,9 +200,7 @@ class Utils {
             for (File subdir : directories) {
                 if (mosaicFactory.accepts(subdir, hints)) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Trying to build mosaic for the directory:"
-                                        + subdir.getAbsolutePath());
+                        LOGGER.fine("Trying to build mosaic for the directory:" + subdir.getAbsolutePath());
                     }
                     ImageMosaicReader reader = null;
                     try {
@@ -224,9 +219,7 @@ class Utils {
                     }
                 } else {
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info(
-                                "Unable to build mosaic for the directory:"
-                                        + subdir.getAbsolutePath());
+                        LOGGER.info("Unable to build mosaic for the directory:" + subdir.getAbsolutePath());
                     }
                 }
             }
@@ -286,10 +279,7 @@ class Utils {
         try (OutputStream os = new FileOutputStream(sourceFile)) {
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
-            LOGGER.log(
-                    Level.INFO,
-                    "We could not generate the pyramid property file " + sourceFile.getPath(),
-                    e);
+            LOGGER.log(Level.INFO, "We could not generate the pyramid property file " + sourceFile.getPath(), e);
             return null;
         }
 
@@ -299,10 +289,7 @@ class Utils {
             try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile))) {
                 pw.print(envelope.getCoordinateReferenceSystem().toString());
             } catch (IOException e) {
-                LOGGER.log(
-                        Level.INFO,
-                        "We could not write out the projection file " + prjFile.getPath(),
-                        e);
+                LOGGER.log(Level.INFO, "We could not write out the projection file " + prjFile.getPath(), e);
                 return null;
             }
         }
@@ -345,13 +332,11 @@ class Utils {
                         continue;
                     }
                     double[][] compareLevels = reader.getResolutionLevels(coverageName);
-                    boolean homogeneous =
-                            org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
-                                    resolutionLevels.length, resolutionLevels, compareLevels);
+                    boolean homogeneous = org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
+                            resolutionLevels.length, resolutionLevels, compareLevels);
                     if (!homogeneous) {
                         // Relax this in the future
-                        throw new IllegalArgumentException(
-                                "Coverages need to have same levels structure");
+                        throw new IllegalArgumentException("Coverages need to have same levels structure");
                     }
                 }
             }
@@ -365,8 +350,8 @@ class Utils {
      * Prepares a message with the status of the provided file.
      *
      * @param sourceFile The {@link File} to provided the status message for
-     * @return a status message for the provided {@link File} or a {@link NullPointerException} in
-     *     case the {@link File}is <code>null</code>.
+     * @return a status message for the provided {@link File} or a {@link NullPointerException} in case the
+     *     {@link File}is <code>null</code>.
      */
     private static String fileStatus(File sourceFile) {
         if (sourceFile == null) {
@@ -391,11 +376,7 @@ class Utils {
     static class MosaicInfo implements Comparable<MosaicInfo> {
         @Override
         public String toString() {
-            return "MosaicInfo [directory="
-                    + directory
-                    + ", resolutions="
-                    + Arrays.toString(resolutions)
-                    + "]";
+            return "MosaicInfo [directory=" + directory + ", resolutions=" + Arrays.toString(resolutions) + "]";
         }
 
         File directory;

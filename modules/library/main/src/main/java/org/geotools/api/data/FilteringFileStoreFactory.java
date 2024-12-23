@@ -19,10 +19,7 @@ package org.geotools.api.data;
 import java.io.FileFilter;
 import java.io.IOException;
 
-/**
- * A delegate that indicates which files can be managed by the delegate store, when setting up a
- * DirectoryDataStore
- */
+/** A delegate that indicates which files can be managed by the delegate store, when setting up a DirectoryDataStore */
 public interface FilteringFileStoreFactory extends FileStoreFactory {
 
     /** Returns a FileFilter to be applied on delegate store lookup */

@@ -38,31 +38,28 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * Implements a geometry filter.
  *
- * <p>This filter implements a relationship - of some sort - between two geometry expressions. Note
- * that this comparison does not attempt to restict its expressions to be meaningful. This means
- * that it considers itself a valid filter as long as it contains two <b>geometry</b>
- * sub-expressions. It is also slightly less restrictive than the OGC Filter specification because
- * it does not require that one sub-expression be an geometry attribute and the other be a geometry
- * literal.
+ * <p>This filter implements a relationship - of some sort - between two geometry expressions. Note that this comparison
+ * does not attempt to restict its expressions to be meaningful. This means that it considers itself a valid filter as
+ * long as it contains two <b>geometry</b> sub-expressions. It is also slightly less restrictive than the OGC Filter
+ * specification because it does not require that one sub-expression be an geometry attribute and the other be a
+ * geometry literal.
  *
- * <p>In other words, you may use this filter to compare two geometries in the same feature, such
- * as: attributeA inside attributeB? You may also compare two literal geometries, although this is
- * fairly meaningless, since it could be reduced (ie. it is always either true or false). This
- * approach is very similar to that taken in the FilterCompare class.
+ * <p>In other words, you may use this filter to compare two geometries in the same feature, such as: attributeA inside
+ * attributeB? You may also compare two literal geometries, although this is fairly meaningless, since it could be
+ * reduced (ie. it is always either true or false). This approach is very similar to that taken in the FilterCompare
+ * class.
  *
  * @author Rob Hranac, TOPP
  * @version $Id$
- * @task REVISIT: make this class (and all filters) immutable, implement cloneable and return new
- *     filters when calling addLeftGeometry and addRightG Issues to think through: would be cleaner
- *     immutability to have constructor called with left and right Geometries, but this does not
- *     jive with SAX parsing, which is one of the biggest uses of filters. But the alternative is
- *     not incredibly efficient either, as there will be two filters that are just thrown away every
- *     time we make a full geometry filter. These issues extend to most filters, as just about all
- *     of them are mutable when creating them. Other issue is that lots of code will need to be
- *     changed for immutability. (comments by cholmes) - MUTABLE FACTORIES! Sax and immutability.
+ * @task REVISIT: make this class (and all filters) immutable, implement cloneable and return new filters when calling
+ *     addLeftGeometry and addRightG Issues to think through: would be cleaner immutability to have constructor called
+ *     with left and right Geometries, but this does not jive with SAX parsing, which is one of the biggest uses of
+ *     filters. But the alternative is not incredibly efficient either, as there will be two filters that are just
+ *     thrown away every time we make a full geometry filter. These issues extend to most filters, as just about all of
+ *     them are mutable when creating them. Other issue is that lots of code will need to be changed for immutability.
+ *     (comments by cholmes) - MUTABLE FACTORIES! Sax and immutability.
  */
-public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
-        implements BinarySpatialOperator {
+public abstract class GeometryFilterImpl extends BinaryComparisonAbstract implements BinarySpatialOperator {
 
     protected MatchAction matchAction;
 
@@ -83,17 +80,15 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     }
 
     protected GeometryFilterImpl(
-            org.geotools.api.filter.expression.Expression e1,
-            org.geotools.api.filter.expression.Expression e2) {
+            org.geotools.api.filter.expression.Expression e1, org.geotools.api.filter.expression.Expression e2) {
         this(e1, e2, MatchAction.ANY);
     }
 
     /**
-     * NC - support for multiple values Convenience method for returning expression as either a
-     * geometry or a list of geometries.
+     * NC - support for multiple values Convenience method for returning expression as either a geometry or a list of
+     * geometries.
      */
-    protected static Object getGeometries(
-            org.geotools.api.filter.expression.Expression expr, Object feature) {
+    protected static Object getGeometries(org.geotools.api.filter.expression.Expression expr, Object feature) {
 
         Object o = expr.evaluate(feature);
 
@@ -160,9 +155,8 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     }
 
     /**
-     * Compares this filter to the specified object. Returns true if the passed in object is the
-     * same as this filter. Checks to make sure the filter types are the same as well as the left
-     * and right geometries.
+     * Compares this filter to the specified object. Returns true if the passed in object is the same as this filter.
+     * Checks to make sure the filter types are the same as well as the left and right geometries.
      *
      * @param obj - the object to compare this GeometryFilter against.
      * @return true if specified object is equal to this filter; else false
@@ -218,15 +212,13 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         }
 
         @SuppressWarnings("unchecked")
-        Collection<Geometry> leftValues =
-                object1 instanceof Collection
-                        ? (Collection<Geometry>) object1
-                        : Collections.singletonList((Geometry) object1);
+        Collection<Geometry> leftValues = object1 instanceof Collection
+                ? (Collection<Geometry>) object1
+                : Collections.singletonList((Geometry) object1);
         @SuppressWarnings("unchecked")
-        Collection<Geometry> rightValues =
-                object2 instanceof Collection
-                        ? (Collection<Geometry>) object2
-                        : Collections.singletonList((Geometry) object2);
+        Collection<Geometry> rightValues = object2 instanceof Collection
+                ? (Collection<Geometry>) object2
+                : Collections.singletonList((Geometry) object2);
 
         int count = 0;
         for (Geometry leftValue : leftValues) {
@@ -266,10 +258,8 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     /**
      * Performs the calculation on the two geometries.
      *
-     * @param left the geometry on the left of the equations (the geometry obtained from evaluating
-     *     Expression1)
-     * @param right the geometry on the right of the equations (the geometry obtained from
-     *     evaluating Expression2)
+     * @param left the geometry on the left of the equations (the geometry obtained from evaluating Expression1)
+     * @param right the geometry on the right of the equations (the geometry obtained from evaluating Expression2)
      * @return true if the filter evaluates to true for the two geometries
      */
     protected abstract boolean evaluateInternal(Geometry left, Geometry right);

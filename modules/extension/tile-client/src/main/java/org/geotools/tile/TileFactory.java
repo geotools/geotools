@@ -20,12 +20,11 @@ package org.geotools.tile;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * A TileFactory is responsible for finding and/or creating tiles for a given TileService and area.
- * Here we make no distinction whereas a requested tile is created or retrieved form an internal
- * cache.
+ * A TileFactory is responsible for finding and/or creating tiles for a given TileService and area. Here we make no
+ * distinction whereas a requested tile is created or retrieved form an internal cache.
  *
- * <p>When creating/finding a tile, the factory must know the zoom level for which the tile is
- * required. Also, a geographic position or, alternatively a reference tile, must be passed.
+ * <p>When creating/finding a tile, the factory must know the zoom level for which the tile is required. Also, a
+ * geographic position or, alternatively a reference tile, must be passed.
  *
  * @author Tobias Sauerwein
  * @author Ugo Taddei
@@ -51,8 +50,7 @@ public abstract class TileFactory {
      * @param service the service
      * @return a tile
      */
-    public abstract Tile findTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel, TileService service);
+    public abstract Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service);
 
     /**
      * Gets the ZoomLevel (object) for a given zoom level integer.
@@ -64,24 +62,24 @@ public abstract class TileFactory {
     public abstract ZoomLevel getZoomLevel(int zoomLevel, TileService service);
 
     /**
-     * Finds the tile for a service at the given position and zoom level, which is immediately to
-     * the right of the passed tile.
+     * Finds the tile for a service at the given position and zoom level, which is immediately to the right of the
+     * passed tile.
      *
      * @param tile the reference tile
      */
     public abstract Tile findRightNeighbour(Tile tile, TileService service);
 
     /**
-     * Finds the tile for a service at the given position and zoom level, which is immediately below
-     * the the passed tile.
+     * Finds the tile for a service at the given position and zoom level, which is immediately below the the passed
+     * tile.
      *
      * @param tile the reference tile
      */
     public abstract Tile findLowerNeighbour(Tile tile, TileService service);
 
     /**
-     * Some clients, e.g. uDig, may produce numbers like -210° for the longitude, but we need a
-     * number in the range -180 to 180, so instead of -210 we want 150.
+     * Some clients, e.g. uDig, may produce numbers like -210° for the longitude, but we need a number in the range -180
+     * to 180, so instead of -210 we want 150.
      *
      * @param value the number to normalize (e.g. -210)
      * @param maxValue the maximum value (e.g. 180 -> the range is: -180..180)

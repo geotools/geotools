@@ -41,9 +41,8 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + ", 'POLYGON')");
 
         // add the spatial index
-        run(
-                "CREATE MULTISET TABLE \"lake_geom_idx\""
-                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+        run("CREATE MULTISET TABLE \"lake_geom_idx\""
+                + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
         //        run("CREATE TRIGGER \"lake_geom_mi\" AFTER INSERT ON lake"
         //                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN
         // ATOMIC"
@@ -82,9 +81,8 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + getDelegate().getSrid4326()
                         + ", 'MULTILINESTRING')");
 
-        run(
-                "CREATE MULTISET TABLE \"river_geom_idx\""
-                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+        run("CREATE MULTISET TABLE \"river_geom_idx\""
+                + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
         //        run("CREATE TRIGGER \"river_geom_mi\" AFTER INSERT ON river"
         //                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN
         // ATOMIC"
@@ -106,14 +104,12 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         // advance the sequence to 1 to compensate for hand insertions
         // run("SELECT nextval(pg_get_serial_sequence('river','fid'))");
 
-        run(
-                "INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\")  VALUES (0, 0,"
-                        + "'MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',"
-                        + "'rv1', 4.5)");
-        run(
-                "INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\") VALUES (1, 1,"
-                        + "'MULTILINESTRING((4 6, 4 8, 6 10))',"
-                        + "'rv2', 3.0)");
+        run("INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\")  VALUES (0, 0,"
+                + "'MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',"
+                + "'rv1', 4.5)");
+        run("INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\") VALUES (1, 1,"
+                + "'MULTILINESTRING((4 6, 4 8, 6 10))',"
+                + "'rv2', 3.0)");
     }
 
     @Override
@@ -129,9 +125,8 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + getDelegate().getSrid4326()
                         + ", 'LINESTRING')");
 
-        run(
-                "CREATE MULTISET TABLE \"road_geom_idx\""
-                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+        run("CREATE MULTISET TABLE \"road_geom_idx\""
+                + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
         //        run("CREATE TRIGGER \"road_geom_mi\" AFTER INSERT ON road"
         //                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN
         // ATOMIC"
@@ -155,18 +150,15 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         // run("SELECT nextval(pg_get_serial_sequence('road','fid'))");
 
         // insertions
-        run(
-                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                        + "'LINESTRING(1 1, 2 2, 4 2, 5 1)',"
-                        + "'r1')");
-        run(
-                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
-                        + "'LINESTRING(3 0, 3 2, 3 3, 3 4)',"
-                        + "'r2')");
-        run(
-                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
-                        + "'LINESTRING(3 2, 4 2, 5 3)',"
-                        + "'r3')");
+        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
+                + "'LINESTRING(1 1, 2 2, 4 2, 5 1)',"
+                + "'r1')");
+        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
+                + "'LINESTRING(3 0, 3 2, 3 3, 3 4)',"
+                + "'r2')");
+        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
+                + "'LINESTRING(3 2, 4 2, 5 3)',"
+                + "'r3')");
     }
 
     @Override

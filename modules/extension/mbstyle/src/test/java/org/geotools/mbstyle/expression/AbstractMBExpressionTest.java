@@ -37,10 +37,10 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Abstract Test class the implements common/shared functionality for setting up tests for the
- * various MapBox Expression classes, particularly for testing the JSON parsing of each. For each
- * Expression type, a separate test class should be written that extends this abstract class, with
- * appropriate method implementations provided. A typical test method would look like this:
+ * Abstract Test class the implements common/shared functionality for setting up tests for the various MapBox Expression
+ * classes, particularly for testing the JSON parsing of each. For each Expression type, a separate test class should be
+ * written that extends this abstract class, with appropriate method implementations provided. A typical test method
+ * would look like this:
  *
  * <p>
  *
@@ -51,10 +51,9 @@ import org.locationtech.jts.geom.GeometryFactory;
  *     // appropriate validation and verification of the evaluated expression goes here
  * </pre>
  *
- * Where "layerName" is the name of the layer to test in the test resource, "fieldName" is the JSON
- * blob to retrieve, and "fieldElement" is the specific JSON element that a given test method should
- * be validating. Once the evaluated expression Object is retrieved, any appropriate assertions
- * should be made within the specific test.
+ * Where "layerName" is the name of the layer to test in the test resource, "fieldName" is the JSON blob to retrieve,
+ * and "fieldElement" is the specific JSON element that a given test method should be validating. Once the evaluated
+ * expression Object is retrieved, any appropriate assertions should be made within the specific test.
  */
 public abstract class AbstractMBExpressionTest {
 
@@ -78,23 +77,20 @@ public abstract class AbstractMBExpressionTest {
         parse = new MBObjectParser(MBExpression.class);
         ff = parse.getFilterFactory();
         // setup test features
-        final SimpleFeatureType dataType =
-                DataUtilities.createType(
-                        "mbexpression.test",
-                        "anIntField:int,anotherIntField:int,doubleField:double,geom:Point,name:String");
+        final SimpleFeatureType dataType = DataUtilities.createType(
+                "mbexpression.test", "anIntField:int,anotherIntField:int,doubleField:double,geom:Point,name:String");
         testFeatures = new SimpleFeature[intVals.length];
         for (int i = 0; i < intVals.length; ++i) {
-            final SimpleFeature simpleFeature =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {
-                                i,
-                                intVals[i],
-                                doubleVals[i],
-                                geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
-                                "name_" + intVals[i]
-                            },
-                            "mbexpression." + (i + 1));
+            final SimpleFeature simpleFeature = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {
+                        i,
+                        intVals[i],
+                        doubleVals[i],
+                        geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
+                        "name_" + intVals[i]
+                    },
+                    "mbexpression." + (i + 1));
             testFeatures[i] = simpleFeature;
         }
         // finally, do any subclass setup steps
@@ -113,17 +109,16 @@ public abstract class AbstractMBExpressionTest {
     protected abstract String getTestResourceName();
 
     /**
-     * Returns the MapBox Expression class type associated with this Test class. The assumption is
-     * tests for each MapBox Expression type will be grouped into a single class that extends this
-     * abstract class.
+     * Returns the MapBox Expression class type associated with this Test class. The assumption is tests for each MapBox
+     * Expression type will be grouped into a single class that extends this abstract class.
      *
      * @return the Class type of the MapBox Expression class for this Test.
      */
     protected abstract Class<?> getExpressionClassType();
 
     /**
-     * Traverse a nested map using the array of strings, and cast the result to the provided class,
-     * or return {@link Optional#empty()}.
+     * Traverse a nested map using the array of strings, and cast the result to the provided class, or return
+     * {@link Optional#empty()}.
      *
      * @param <T> Class type of the returned value.
      * @param map JSON Object to traverse.
@@ -151,8 +146,7 @@ public abstract class AbstractMBExpressionTest {
     }
 
     /**
-     * Helper method to create an Expression object from a JSON text field and evaluate the
-     * Expression.
+     * Helper method to create an Expression object from a JSON text field and evaluate the Expression.
      *
      * @param json JSONObject to parse.
      * @param jsonTextField Name of the text field to retrieve.
@@ -163,23 +157,20 @@ public abstract class AbstractMBExpressionTest {
     }
 
     /**
-     * Helper method to create an Expression object from a JSON text field and evaluate the
-     * Expression.
+     * Helper method to create an Expression object from a JSON text field and evaluate the Expression.
      *
      * @param json JSONObject to parse.
      * @param jsonTextField Name of the text field to retrieve.
      * @param feature Feature to which the expression should be evaluated.
      * @return The Expression evaluation of the supplied tectField value.
      */
-    protected Object getExpressionEvaluation(
-            JSONObject json, String jsonTextField, SimpleFeature feature) {
+    protected Object getExpressionEvaluation(JSONObject json, String jsonTextField, SimpleFeature feature) {
         // get the Object from the supplied JSON
         final Object textFieldObj = json.get(jsonTextField);
         // make sure we got a field
         assertNotNull(
                 String.format(
-                        "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"",
-                        jsonTextField),
+                        "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"", jsonTextField),
                 textFieldObj);
         // assert the field is a JSONArray
         assertEquals(JSONArray.class, textFieldObj.getClass());
@@ -196,14 +187,11 @@ public abstract class AbstractMBExpressionTest {
     }
 
     /**
-     * Retrieves the JSON object from the test resource identified by the supplied layer and field
-     * Ids.
+     * Retrieves the JSON object from the test resource identified by the supplied layer and field Ids.
      *
-     * @param layerId String representation of the layer for which the JSON object should be
-     *     retrieved.
+     * @param layerId String representation of the layer for which the JSON object should be retrieved.
      * @param fieldId String representation of the field in the layer to retrieve.
-     * @return A JSONObject instance that represents the test JSON for the supplied layer and field
-     *     Ids.
+     * @return A JSONObject instance that represents the test JSON for the supplied layer and field Ids.
      */
     protected JSONObject getObjectByLayerId(final String layerId, String fieldId) {
         final JSONObject layer = testLayersById.get(layerId);

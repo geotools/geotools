@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.geotools.util.logging.Logging;
 
 /**
- * A URI handler that handles HTTP connections with connection timeouts and read timeouts. The
- * default timeouts are 10 seconds, they can be set interactively on an instance of the {@link
- * HTTPURIHandler}, and default values can be overridden setting the <code>
+ * A URI handler that handles HTTP connections with connection timeouts and read timeouts. The default timeouts are 10
+ * seconds, they can be set interactively on an instance of the {@link HTTPURIHandler}, and default values can be
+ * overridden setting the <code>
  * org.geotools.xsd.http.connection.timeout</code> and <code>org.geotools.xsd.http.read.timeout
  * </code> system variables.
  *
@@ -40,11 +40,9 @@ import org.geotools.util.logging.Logging;
  */
 public class HTTPURIHandler extends URIHandlerImpl {
 
-    static final int DEFAULT_CONNECTION_TIMEOUT =
-            Integer.getInteger("org.geotools.xsd.http.connectionTimeout", 10000);
+    static final int DEFAULT_CONNECTION_TIMEOUT = Integer.getInteger("org.geotools.xsd.http.connectionTimeout", 10000);
 
-    static final int DEFAULT_READ_TIMEOUT =
-            Integer.getInteger("org.geotools.xsd.http.readTimeout", 10000);
+    static final int DEFAULT_READ_TIMEOUT = Integer.getInteger("org.geotools.xsd.http.readTimeout", 10000);
 
     static final Logger LOGGER = Logging.getLogger(HTTPURIHandler.class);
 
@@ -74,9 +72,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
             InputStream result = httpConnection.getInputStream();
             Map<Object, Object> response = getResponse(options);
             if (response != null) {
-                response.put(
-                        URIConverter.RESPONSE_TIME_STAMP_PROPERTY,
-                        httpConnection.getLastModified());
+                response.put(URIConverter.RESPONSE_TIME_STAMP_PROPERTY, httpConnection.getLastModified());
             }
             return result;
         } catch (RuntimeException exception) {
@@ -96,10 +92,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
         return connectionTimeout;
     }
 
-    /**
-     * Sets the connection timeout, in milliseconds. See {@link
-     * HttpURLConnection#setConnectTimeout(int)}
-     */
+    /** Sets the connection timeout, in milliseconds. See {@link HttpURLConnection#setConnectTimeout(int)} */
     public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }

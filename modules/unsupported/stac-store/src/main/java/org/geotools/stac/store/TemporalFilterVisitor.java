@@ -25,9 +25,8 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
- * Several parts of GeoTools build simple comparisons for temporal filters, CQL2 uses dedicated
- * operators instead, this visitor switches simple comparisons to temporal ones when a temporal
- * property is used.
+ * Several parts of GeoTools build simple comparisons for temporal filters, CQL2 uses dedicated operators instead, this
+ * visitor switches simple comparisons to temporal ones when a temporal property is used.
  */
 public class TemporalFilterVisitor extends DuplicatingFilterVisitor {
 
@@ -47,8 +46,8 @@ public class TemporalFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Checks if a property is a time property, users can override if they have more sophisticated
-     * logic than matching a single property name
+     * Checks if a property is a time property, users can override if they have more sophisticated logic than matching a
+     * single property name
      *
      * @param expression
      * @return

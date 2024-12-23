@@ -30,12 +30,10 @@ public class GeometryExamples {
     public void createCurve() {
         // createCurve start
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-        CurvedGeometryFactory curvedFactory =
-                new CurvedGeometryFactory(geometryFactory, Double.MAX_VALUE);
+        CurvedGeometryFactory curvedFactory = new CurvedGeometryFactory(geometryFactory, Double.MAX_VALUE);
 
         CoordinateSequence coords =
-                PackedCoordinateSequenceFactory.DOUBLE_FACTORY.create(
-                        new double[] {10, 14, 6, 10, 14, 10}, 2);
+                PackedCoordinateSequenceFactory.DOUBLE_FACTORY.create(new double[] {10, 14, 6, 10, 14, 10}, 2);
 
         CircularString arc = (CircularString) curvedFactory.createCurvedGeometry(coords);
         // createCurve end

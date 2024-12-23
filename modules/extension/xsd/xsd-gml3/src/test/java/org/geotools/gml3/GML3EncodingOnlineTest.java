@@ -68,8 +68,7 @@ public class GML3EncodingOnlineTest {
         // first parse in test data
         Parser parser = new Parser(configuration);
         SimpleFeatureCollection fc =
-                (SimpleFeatureCollection)
-                        parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
+                (SimpleFeatureCollection) parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         Assert.assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
@@ -97,8 +96,7 @@ public class GML3EncodingOnlineTest {
         // first parse in test data
         Parser parser = new Parser(configuration);
         SimpleFeatureCollection fc =
-                (SimpleFeatureCollection)
-                        parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
+                (SimpleFeatureCollection) parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         Assert.assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
@@ -120,20 +118,19 @@ public class GML3EncodingOnlineTest {
         Validator v = s.newValidator();
 
         final ArrayList<SAXParseException> errors = new ArrayList<>();
-        DefaultHandler handler =
-                new DefaultHandler() {
-                    @Override
-                    public void error(SAXParseException e) throws SAXException {
-                        // System.out.println(e.getMessage());
-                        errors.add(e);
-                    }
+        DefaultHandler handler = new DefaultHandler() {
+            @Override
+            public void error(SAXParseException e) throws SAXException {
+                // System.out.println(e.getMessage());
+                errors.add(e);
+            }
 
-                    @Override
-                    public void fatalError(SAXParseException e) throws SAXException {
-                        // System.out.println(e.getMessage());
-                        errors.add(e);
-                    }
-                };
+            @Override
+            public void fatalError(SAXParseException e) throws SAXException {
+                // System.out.println(e.getMessage());
+                errors.add(e);
+            }
+        };
 
         v.setErrorHandler(handler);
         v.validate(new StreamSource(new ByteArrayInputStream(data)));

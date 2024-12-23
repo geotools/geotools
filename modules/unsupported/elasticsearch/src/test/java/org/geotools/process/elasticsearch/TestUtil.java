@@ -28,8 +28,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 
 class TestUtil {
 
-    public static SimpleFeatureCollection createAggregationFeatures(
-            List<Map<String, Object>> data) {
+    public static SimpleFeatureCollection createAggregationFeatures(List<Map<String, Object>> data) {
         final SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("testType");
         builder.add("_aggregation", HashMap.class);
@@ -37,11 +36,10 @@ class TestUtil {
         final SimpleFeatureType featureType = builder.buildFeatureType();
         final DefaultFeatureCollection collection = new DefaultFeatureCollection();
         final SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-        data.forEach(
-                item -> {
-                    item.keySet().forEach(key -> featureBuilder.set(key, item.get(key)));
-                    collection.add(featureBuilder.buildFeature(null));
-                });
+        data.forEach(item -> {
+            item.keySet().forEach(key -> featureBuilder.set(key, item.get(key)));
+            collection.add(featureBuilder.buildFeature(null));
+        });
         return collection;
     }
 
@@ -52,8 +50,7 @@ class TestUtil {
         return bucket;
     }
 
-    public static Map<String, Object> createMetricBucket(
-            int docCount, String metricName, String valueName, int value) {
+    public static Map<String, Object> createMetricBucket(int docCount, String metricName, String valueName, int value) {
         Map<String, Object> metric = new HashMap<>();
         metric.put(valueName, value);
 

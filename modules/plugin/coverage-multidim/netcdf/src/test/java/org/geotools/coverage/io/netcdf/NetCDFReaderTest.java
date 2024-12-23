@@ -103,8 +103,8 @@ public class NetCDFReaderTest extends Assert {
     private static final double DELTA = 1E-6;
 
     /**
-     * Test using this netcdf image: data: LAI= 20,20,20,30,30, 40,40,40,50,50, 60,60,60,70,70,
-     * 80,80,80,90,90; lon= 10,15,20,25,30; lat= 70,60,50,40;
+     * Test using this netcdf image: data: LAI= 20,20,20,30,30, 40,40,40,50,50, 60,60,60,70,70, 80,80,80,90,90; lon=
+     * 10,15,20,25,30; lat= 70,60,50,40;
      */
     @Test
     public void testHDF5Image() throws IOException, FactoryException {
@@ -128,12 +128,10 @@ public class NetCDFReaderTest extends Assert {
             InternationalString description = sampleDimension.getDescription();
             assertEquals("LAI", description.toString());
 
-            byte[] byteValue =
-                    grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
+            byte[] byteValue = grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
             assertEquals(20, byteValue[0]);
 
-            byteValue =
-                    grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
+            byteValue = grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
             assertEquals(90, byteValue[0]);
 
         } finally {
@@ -164,16 +162,10 @@ public class NetCDFReaderTest extends Assert {
             GridCoverage2D grid = reader.read("O3", null);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            float[] value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
-                            new float[1]);
+            float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
             assertEquals(47.63341f, value[0], 0.00001);
 
-            value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45.125),
-                            new float[1]);
+            value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45.125), new float[1]);
             assertEquals(52.7991f, value[0], 0.000001);
 
         } finally {
@@ -205,9 +197,7 @@ public class NetCDFReaderTest extends Assert {
         GridCoverage2D coverage = reader.read(coverageName, values);
 
         float[] result =
-                coverage.evaluate(
-                        (Position) new Position2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
-                        new float[1]);
+                coverage.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5.0, 45.0), new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);
         reader.dispose();
@@ -215,9 +205,7 @@ public class NetCDFReaderTest extends Assert {
         // let's open a file containing a time variable with _FillValue attribute
         file = TestData.file(this, "o3_no2_so_fv_time.nc");
         reader = new NetCDFReader(file, null);
-        assertEquals(
-                "2012-04-01T00:00:00.000Z",
-                reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+        assertEquals("2012-04-01T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
         NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
         System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
         reader.dispose();
@@ -252,10 +240,10 @@ public class NetCDFReaderTest extends Assert {
         File file = TestData.file(this, "O3-NO2.nc");
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "O3-NO2.nc");
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -276,27 +264,19 @@ public class NetCDFReaderTest extends Assert {
                         "2012-04-01T00:00:00.000Z/2012-04-01T00:00:00.000Z,2012-04-01T01:00:00.000Z/2012-04-01T01:00:00.000Z",
                         timeMetadata);
                 assertNotNull(timeMetadata);
-                assertEquals(
-                        "2012-04-01T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "2012-04-01T01:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+                assertEquals("2012-04-01T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("2012-04-01T01:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
 
                 assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                final String elevationMetadata =
-                        reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                 assertNotNull(elevationMetadata);
                 assertEquals("10.0/10.0,450.0/450.0", elevationMetadata);
                 assertEquals(2, elevationMetadata.split(",").length);
-                assertEquals(
-                        "10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+                assertEquals("10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
 
                 List<DimensionDescriptor> descriptors =
-                        ((StructuredGridCoverage2DReader) reader)
-                                .getDimensionDescriptors(coverageName);
+                        ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors(coverageName);
                 assertNotNull(descriptors);
                 assertEquals(2, descriptors.size());
 
@@ -305,34 +285,28 @@ public class NetCDFReaderTest extends Assert {
                 assertEquals("time", descriptor.getStartAttribute());
                 assertNull(descriptor.getEndAttribute());
                 assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getName(), descriptor.getUnits());
-                assertEquals(
-                        CoverageUtilities.UCUM.TIME_UNITS.getSymbol(), descriptor.getUnitSymbol());
+                assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getSymbol(), descriptor.getUnitSymbol());
 
                 descriptor = descriptors.get(1);
                 assertEquals("ELEVATION", descriptor.getName());
                 assertEquals("z", descriptor.getStartAttribute());
                 assertNull(descriptor.getEndAttribute());
                 assertEquals("meters", descriptor.getUnits());
-                assertEquals(
-                        CoverageUtilities.UCUM.ELEVATION_UNITS.getSymbol(),
-                        descriptor.getUnitSymbol());
+                assertEquals(CoverageUtilities.UCUM.ELEVATION_UNITS.getSymbol(), descriptor.getUnitSymbol());
 
                 // subsetting the envelope
-                final ParameterValue<GridGeometry2D> gg =
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
                 final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralBounds reducedEnvelope =
-                        new GeneralBounds(
-                                new double[] {
-                                    originalEnvelope.getLowerCorner().getOrdinate(0),
-                                    originalEnvelope.getLowerCorner().getOrdinate(1)
-                                },
-                                new double[] {
-                                    originalEnvelope.getMedian().getOrdinate(0),
-                                    originalEnvelope.getMedian().getOrdinate(1)
-                                });
-                reducedEnvelope.setCoordinateReferenceSystem(
-                        reader.getCoordinateReferenceSystem(coverageName));
+                final GeneralBounds reducedEnvelope = new GeneralBounds(
+                        new double[] {
+                            originalEnvelope.getLowerCorner().getOrdinate(0),
+                            originalEnvelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            originalEnvelope.getMedian().getOrdinate(0),
+                            originalEnvelope.getMedian().getOrdinate(1)
+                        });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
                 // Selecting bigger gridRange for a zoomed result
                 final Dimension dim = new Dimension();
@@ -344,8 +318,7 @@ public class NetCDFReaderTest extends Assert {
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
 
                 final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-                final SimpleDateFormat formatD =
-                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(List.of(timeD));
@@ -388,10 +361,10 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "O3-NO2.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -412,40 +385,30 @@ public class NetCDFReaderTest extends Assert {
                         "2012-04-01T00:00:00.000Z/2012-04-01T00:00:00.000Z,2012-04-01T01:00:00.000Z/2012-04-01T01:00:00.000Z",
                         timeMetadata);
                 assertNotNull(timeMetadata);
-                assertEquals(
-                        "2012-04-01T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "2012-04-01T01:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+                assertEquals("2012-04-01T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("2012-04-01T01:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
 
                 assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                final String elevationMetadata =
-                        reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                 assertNotNull(elevationMetadata);
                 assertEquals("10.0/10.0,450.0/450.0", elevationMetadata);
                 assertEquals(2, elevationMetadata.split(",").length);
-                assertEquals(
-                        "10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+                assertEquals("10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
 
                 // subsetting the envelope
-                final ParameterValue<GridGeometry2D> gg =
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
                 final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralBounds reducedEnvelope =
-                        new GeneralBounds(
-                                new double[] {
-                                    originalEnvelope.getLowerCorner().getOrdinate(0),
-                                    originalEnvelope.getLowerCorner().getOrdinate(1)
-                                },
-                                new double[] {
-                                    originalEnvelope.getMedian().getOrdinate(0),
-                                    originalEnvelope.getMedian().getOrdinate(1)
-                                });
-                reducedEnvelope.setCoordinateReferenceSystem(
-                        reader.getCoordinateReferenceSystem(coverageName));
+                final GeneralBounds reducedEnvelope = new GeneralBounds(
+                        new double[] {
+                            originalEnvelope.getLowerCorner().getOrdinate(0),
+                            originalEnvelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            originalEnvelope.getMedian().getOrdinate(0),
+                            originalEnvelope.getMedian().getOrdinate(1)
+                        });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
                 // Selecting bigger gridRange for a zoomed result
                 final Dimension dim = new Dimension();
@@ -486,8 +449,7 @@ public class NetCDFReaderTest extends Assert {
     @Test
     public void NetCDFTestOn4DcoveragesWithDifferentSchemas()
             throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
-        File mosaic =
-                new File(TestData.file(this, "."), "NetCDFTestOn4DcoveragesWithDifferentSchemas");
+        File mosaic = new File(TestData.file(this, "."), "NetCDFTestOn4DcoveragesWithDifferentSchemas");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -497,10 +459,10 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "O3-NO2-noZ.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -519,58 +481,40 @@ public class NetCDFReaderTest extends Assert {
                         "2012-04-01T00:00:00.000Z/2012-04-01T00:00:00.000Z,2012-04-01T01:00:00.000Z/2012-04-01T01:00:00.000Z",
                         timeMetadata);
                 assertNotNull(timeMetadata);
-                assertEquals(
-                        "2012-04-01T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "2012-04-01T01:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
-                assertEquals(
-                        "java.util.Date",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_DATATYPE"));
+                assertEquals("2012-04-01T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("2012-04-01T01:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+                assertEquals("java.util.Date", reader.getMetadataValue(coverageName, "TIME_DOMAIN_DATATYPE"));
 
                 if (coverageName.equalsIgnoreCase("O3")) {
-                    assertEquals(
-                            "true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                    final String elevationMetadata =
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                    assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                    final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                     assertNotNull(elevationMetadata);
                     assertEquals("10.0/10.0,450.0/450.0", elevationMetadata);
                     assertEquals(2, elevationMetadata.split(",").length);
+                    assertEquals("10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                    assertEquals("450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
                     assertEquals(
-                            "10.0",
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
-                    assertEquals(
-                            "450.0",
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
-                    assertEquals(
-                            "java.lang.Double",
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_DATATYPE"));
+                            "java.lang.Double", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_DATATYPE"));
                 } else {
                     // Note that This sample doesn't have elevation for NO2
-                    assertEquals(
-                            "false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                    final String elevationMetadata =
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                    assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                    final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                     assertNull(elevationMetadata);
                 }
 
                 // subsetting the envelope
-                final ParameterValue<GridGeometry2D> gg =
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
                 final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralBounds reducedEnvelope =
-                        new GeneralBounds(
-                                new double[] {
-                                    originalEnvelope.getLowerCorner().getOrdinate(0),
-                                    originalEnvelope.getLowerCorner().getOrdinate(1)
-                                },
-                                new double[] {
-                                    originalEnvelope.getMedian().getOrdinate(0),
-                                    originalEnvelope.getMedian().getOrdinate(1)
-                                });
-                reducedEnvelope.setCoordinateReferenceSystem(
-                        reader.getCoordinateReferenceSystem(coverageName));
+                final GeneralBounds reducedEnvelope = new GeneralBounds(
+                        new double[] {
+                            originalEnvelope.getLowerCorner().getOrdinate(0),
+                            originalEnvelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            originalEnvelope.getMedian().getOrdinate(0),
+                            originalEnvelope.getMedian().getOrdinate(1)
+                        });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
                 // Selecting bigger gridRange for a zoomed result
                 final Dimension dim = new Dimension();
@@ -582,8 +526,7 @@ public class NetCDFReaderTest extends Assert {
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
 
                 final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-                final SimpleDateFormat formatD =
-                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(List.of(timeD));
@@ -591,10 +534,9 @@ public class NetCDFReaderTest extends Assert {
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(List.of(450d));
 
-                GeneralParameterValue[] values =
-                        coverageName.equalsIgnoreCase("O3")
-                                ? new GeneralParameterValue[] {gg, time, elevation}
-                                : new GeneralParameterValue[] {gg, time};
+                GeneralParameterValue[] values = coverageName.equalsIgnoreCase("O3")
+                        ? new GeneralParameterValue[] {gg, time, elevation}
+                        : new GeneralParameterValue[] {gg, time};
 
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
@@ -620,8 +562,7 @@ public class NetCDFReaderTest extends Assert {
     @Test
     public void NetCDFTestOn4DcoveragesWithImposedSchemas()
             throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
-        File mosaic =
-                new File(TestData.file(this, "."), "NetCDFTestOn4DcoveragesWithImposedSchemas");
+        File mosaic = new File(TestData.file(this, "."), "NetCDFTestOn4DcoveragesWithImposedSchemas");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
         }
@@ -633,14 +574,12 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(auxFile, mosaic);
         file = new File(mosaic, "O3NO2-noZ.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-        hints.put(
-                Utils.AUXILIARY_FILES_PATH,
-                new File(mosaic, "O3NO2-noZ.xml").getAbsolutePath()); // impose def
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        hints.put(Utils.AUXILIARY_FILES_PATH, new File(mosaic, "O3NO2-noZ.xml").getAbsolutePath()); // impose def
 
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -659,52 +598,37 @@ public class NetCDFReaderTest extends Assert {
                         "2012-04-01T00:00:00.000Z/2012-04-01T00:00:00.000Z,2012-04-01T01:00:00.000Z/2012-04-01T01:00:00.000Z",
                         timeMetadata);
                 assertNotNull(timeMetadata);
-                assertEquals(
-                        "2012-04-01T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "2012-04-01T01:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+                assertEquals("2012-04-01T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("2012-04-01T01:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
 
                 if (coverageName.equalsIgnoreCase("O3")) {
-                    assertEquals(
-                            "true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                    final String elevationMetadata =
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                    assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                    final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                     assertNotNull(elevationMetadata);
                     assertEquals("10.0/10.0,450.0/450.0", elevationMetadata);
                     assertEquals(2, elevationMetadata.split(",").length);
-                    assertEquals(
-                            "10.0",
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
-                    assertEquals(
-                            "450.0",
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+                    assertEquals("10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                    assertEquals("450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
                 } else {
                     // Note that This sample doesn't have elevation for NO2
-                    assertEquals(
-                            "false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                    final String elevationMetadata =
-                            reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                    assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                    final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                     assertNull(elevationMetadata);
                 }
 
                 // subsetting the envelope
-                final ParameterValue<GridGeometry2D> gg =
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
                 final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralBounds reducedEnvelope =
-                        new GeneralBounds(
-                                new double[] {
-                                    originalEnvelope.getLowerCorner().getOrdinate(0),
-                                    originalEnvelope.getLowerCorner().getOrdinate(1)
-                                },
-                                new double[] {
-                                    originalEnvelope.getMedian().getOrdinate(0),
-                                    originalEnvelope.getMedian().getOrdinate(1)
-                                });
-                reducedEnvelope.setCoordinateReferenceSystem(
-                        reader.getCoordinateReferenceSystem(coverageName));
+                final GeneralBounds reducedEnvelope = new GeneralBounds(
+                        new double[] {
+                            originalEnvelope.getLowerCorner().getOrdinate(0),
+                            originalEnvelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            originalEnvelope.getMedian().getOrdinate(0),
+                            originalEnvelope.getMedian().getOrdinate(1)
+                        });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
                 // Selecting bigger gridRange for a zoomed result
                 final Dimension dim = new Dimension();
@@ -716,8 +640,7 @@ public class NetCDFReaderTest extends Assert {
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
 
                 final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-                final SimpleDateFormat formatD =
-                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
                 time.setValue(List.of(timeD));
@@ -725,10 +648,9 @@ public class NetCDFReaderTest extends Assert {
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
                 elevation.setValue(List.of(450d));
 
-                GeneralParameterValue[] values =
-                        coverageName.equalsIgnoreCase("O3")
-                                ? new GeneralParameterValue[] {gg, time, elevation}
-                                : new GeneralParameterValue[] {gg, time};
+                GeneralParameterValue[] values = coverageName.equalsIgnoreCase("O3")
+                        ? new GeneralParameterValue[] {gg, time, elevation}
+                        : new GeneralParameterValue[] {gg, time};
 
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
@@ -752,8 +674,7 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
-    public void NetCDFTestAscatL1()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void NetCDFTestAscatL1() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File mosaic = new File(TestData.file(this, "."), "NetCDFTestAscatL1");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
@@ -763,12 +684,12 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "ascatl1.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         hints.add(new Hints(Utils.EXCLUDE_MOSAIC, true));
 
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -785,32 +706,27 @@ public class NetCDFReaderTest extends Assert {
                 // Parsing metadata values
                 assertEquals("false", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
 
-                assertEquals(
-                        "false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
 
                 assertEquals("true", reader.getMetadataValue(coverageName, "HAS_NUMSIGMA_DOMAIN"));
-                final String sigmaMetadata =
-                        reader.getMetadataValue(coverageName, "NUMSIGMA_DOMAIN");
+                final String sigmaMetadata = reader.getMetadataValue(coverageName, "NUMSIGMA_DOMAIN");
                 assertNotNull(sigmaMetadata);
                 assertEquals("0,1,2", sigmaMetadata);
                 assertEquals(3, sigmaMetadata.split(",").length);
 
                 // subsetting the envelope
-                final ParameterValue<GridGeometry2D> gg =
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
                 final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralBounds reducedEnvelope =
-                        new GeneralBounds(
-                                new double[] {
-                                    originalEnvelope.getLowerCorner().getOrdinate(0),
-                                    originalEnvelope.getLowerCorner().getOrdinate(1)
-                                },
-                                new double[] {
-                                    originalEnvelope.getMedian().getOrdinate(0),
-                                    originalEnvelope.getMedian().getOrdinate(1)
-                                });
-                reducedEnvelope.setCoordinateReferenceSystem(
-                        reader.getCoordinateReferenceSystem(coverageName));
+                final GeneralBounds reducedEnvelope = new GeneralBounds(
+                        new double[] {
+                            originalEnvelope.getLowerCorner().getOrdinate(0),
+                            originalEnvelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            originalEnvelope.getMedian().getOrdinate(0),
+                            originalEnvelope.getMedian().getOrdinate(1)
+                        });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
                 // Selecting bigger gridRange for a zoomed result
                 final Dimension dim = new Dimension();
@@ -854,8 +770,7 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
-    public void NetCDFGOME2()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void NetCDFGOME2() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File mosaic = new File(TestData.file(this, "."), "NetCDFGOME2");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
@@ -865,10 +780,10 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -887,10 +802,8 @@ public class NetCDFReaderTest extends Assert {
                 final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
                 assertNull(timeMetadata);
 
-                assertEquals(
-                        "false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                final String elevationMetadata =
-                        reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                 assertNull(elevationMetadata);
             }
         } catch (Throwable t) {
@@ -918,21 +831,18 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, dir);
         file = new File(dir, "2DLatLonCoverage.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
         try {
             String[] names = reader.getGridCoverageNames();
             String coverageName = names[0];
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralBounds reducedEnvelope =
-                    new GeneralBounds(new double[] {7.1, 54}, new double[] {12.1, 63});
-            reducedEnvelope.setCoordinateReferenceSystem(
-                    reader.getCoordinateReferenceSystem(coverageName));
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralBounds reducedEnvelope = new GeneralBounds(new double[] {7.1, 54}, new double[] {12.1, 63});
+            reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
             final Rectangle rasterArea = new Rectangle(0, 3, 1, 1);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -953,8 +863,7 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
-    public void testFileInfo()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void testFileInfo() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File nc2 = new File(TestData.file(this, "."), "nc2");
         if (nc2.exists()) {
             FileUtils.deleteDirectory(nc2);
@@ -964,10 +873,10 @@ public class NetCDFReaderTest extends Assert {
         File file = TestData.file(this, "O3-NO2.nc");
         FileUtils.copyFileToDirectory(file, nc2);
         file = new File(nc2, "O3-NO2.nc");
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1048,15 +957,12 @@ public class NetCDFReaderTest extends Assert {
             String coverageName = names[0];
 
             // subsetting the envelope
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
             final CoordinateReferenceSystem epsg3857 = CRS.decode("EPSG:3857", true);
             final GeneralBounds projectedEnvelope = CRS.transform(originalEnvelope, epsg3857);
 
-            gg.setValue(
-                    new GridGeometry2D(
-                            new GridEnvelope2D(new Rectangle(0, 0, 30, 30)), projectedEnvelope));
+            gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 30, 30)), projectedEnvelope));
 
             GeneralParameterValue[] values = {gg};
             GridCoverage2D coverage = reader.read(coverageName, values);
@@ -1092,8 +998,7 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
-    public void NetCDFNoData()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void NetCDFNoData() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File mosaic = new File(TestData.file(this, "."), "NetCDFGOME2");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
@@ -1103,10 +1008,10 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1142,14 +1047,14 @@ public class NetCDFReaderTest extends Assert {
             assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
         }
 
-        FileUtils.copyFile(
-                TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
+        FileUtils.copyFile(TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
         TestData.unzipFile(this, "climatological/climatological.zip");
 
         File file = new File(workDir, "climatological.nc");
 
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), null);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), null);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), null);
 
         assertNotNull(format);
@@ -1171,29 +1076,19 @@ public class NetCDFReaderTest extends Assert {
                         "0001-01-16T00:00:00.000Z/0001-01-16T00:00:00.000Z,0001-02-16T00:00:00.000Z/0001-02-16T00:00:00.000Z,0001-03-16T00:00:00.000Z/0001-03-16T00:00:00.000Z,0001-04-16T00:00:00.000Z/0001-04-16T00:00:00.000Z,0001-05-16T00:00:00.000Z/0001-05-16T00:00:00.000Z,0001-06-16T00:00:00.000Z/0001-06-16T00:00:00.000Z,0001-07-16T00:00:00.000Z/0001-07-16T00:00:00.000Z,0001-08-16T00:00:00.000Z/0001-08-16T00:00:00.000Z,0001-09-16T00:00:00.000Z/0001-09-16T00:00:00.000Z,0001-10-16T00:00:00.000Z/0001-10-16T00:00:00.000Z,0001-11-16T00:00:00.000Z/0001-11-16T00:00:00.000Z,0001-12-16T00:00:00.000Z/0001-12-16T00:00:00.000Z",
                         timeMetadata);
                 assertEquals(12, timeMetadata.split(",").length);
-                assertEquals(
-                        "0001-01-16T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "0001-12-16T00:00:00.000Z",
-                        reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+                assertEquals("0001-01-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("0001-12-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
 
                 assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-                final String elevationMetadata =
-                        reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
                 assertNotNull(elevationMetadata);
-                assertEquals(
-                        "0.0/0.0,10.0/10.0,20.0/20.0,30.0/30.0,50.0/50.0,75.0/75.0",
-                        elevationMetadata);
+                assertEquals("0.0/0.0,10.0/10.0,20.0/20.0,30.0/30.0,50.0/50.0,75.0/75.0", elevationMetadata);
                 assertEquals(6, elevationMetadata.split(",").length);
-                assertEquals(
-                        "0.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
-                assertEquals(
-                        "75.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+                assertEquals("0.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("75.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
 
                 List<DimensionDescriptor> descriptors =
-                        ((StructuredGridCoverage2DReader) reader)
-                                .getDimensionDescriptors(coverageName);
+                        ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors(coverageName);
                 assertNotNull(descriptors);
                 assertEquals(2, descriptors.size());
 
@@ -1248,10 +1143,10 @@ public class NetCDFReaderTest extends Assert {
         FileUtils.copyFileToDirectory(file, mosaic);
         file = new File(mosaic, "DUMMY.GOME2.NO2.PGL.nc");
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final AbstractGridFormat format =
+                GridFormatFinder.findFormat(file.toURI().toURL(), hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
@@ -1297,14 +1192,11 @@ public class NetCDFReaderTest extends Assert {
         File aux = TestData.file(this, "gome/_dummy.xml");
         File datastore = TestData.file(this, "gome/netcdf_datastore.properties");
         AncillaryFileManager manager =
-                new AncillaryFileManager(
-                        netcdf1, aux.getAbsolutePath(), datastore.getAbsolutePath());
+                new AncillaryFileManager(netcdf1, aux.getAbsolutePath(), datastore.getAbsolutePath());
         DataStoreConfiguration datastoreConfig1 = manager.getDatastoreConfiguration();
 
         File netcdf2 = TestData.file(this, "gome/20130101.BrO.DUMMY.nc");
-        manager =
-                new AncillaryFileManager(
-                        netcdf2, aux.getAbsolutePath(), datastore.getAbsolutePath());
+        manager = new AncillaryFileManager(netcdf2, aux.getAbsolutePath(), datastore.getAbsolutePath());
         DataStoreConfiguration datastoreConfig2 = manager.getDatastoreConfiguration();
 
         Assert.assertSame(datastoreConfig1, datastoreConfig2);
@@ -1316,8 +1208,7 @@ public class NetCDFReaderTest extends Assert {
     public void IASI() throws Exception {
 
         final URL testURL = TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc");
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
         // Get format
         final AbstractGridFormat format = GridFormatFinder.findFormat(testURL, hints);
         final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
@@ -1349,21 +1240,18 @@ public class NetCDFReaderTest extends Assert {
             assertEquals(3.6231999084702693, Double.valueOf(newDomainValues[0]), 1E-6);
 
             // subsetting the envelope
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            final GeneralBounds reducedEnvelope =
-                    new GeneralBounds(
-                            new double[] {
-                                originalEnvelope.getLowerCorner().getOrdinate(0),
-                                originalEnvelope.getLowerCorner().getOrdinate(1)
-                            },
-                            new double[] {
-                                originalEnvelope.getMedian().getOrdinate(0),
-                                originalEnvelope.getMedian().getOrdinate(1)
-                            });
-            reducedEnvelope.setCoordinateReferenceSystem(
-                    reader.getCoordinateReferenceSystem(coverageName));
+            final GeneralBounds reducedEnvelope = new GeneralBounds(
+                    new double[] {
+                        originalEnvelope.getLowerCorner().getOrdinate(0),
+                        originalEnvelope.getLowerCorner().getOrdinate(1)
+                    },
+                    new double[] {
+                        originalEnvelope.getMedian().getOrdinate(0),
+                        originalEnvelope.getMedian().getOrdinate(1)
+                    });
+            reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
 
             // Selecting bigger gridRange for a zoomed result
             final Dimension dim = new Dimension();
@@ -1404,9 +1292,9 @@ public class NetCDFReaderTest extends Assert {
     }
 
     /**
-     * Test that {@link NetCDFReader#getOriginalEnvelope()}, a method for which no coverage name is
-     * specified, works for a NetCDF source containing multiple coverages. The method is expected to
-     * succeed using {@link NetCDFReader#defaultName}.
+     * Test that {@link NetCDFReader#getOriginalEnvelope()}, a method for which no coverage name is specified, works for
+     * a NetCDF source containing multiple coverages. The method is expected to succeed using
+     * {@link NetCDFReader#defaultName}.
      */
     @Test
     public void testGetOriginalEnvelopeDefaultName() throws Exception {
@@ -1418,8 +1306,8 @@ public class NetCDFReaderTest extends Assert {
     }
 
     /**
-     * Test that {@link GridCoverage2DReader#SOURCE_URL_PROPERTY} is correctly set on a coverage
-     * read from a NetCDF file.
+     * Test that {@link GridCoverage2DReader#SOURCE_URL_PROPERTY} is correctly set on a coverage read from a NetCDF
+     * file.
      */
     @Test
     public void testSourceUrl() throws Exception {
@@ -1455,7 +1343,9 @@ public class NetCDFReaderTest extends Assert {
         assertFalse(
                 "Metadata dir should have been removed",
                 purgeSetupHelper.metadataDirectory.get().exists());
-        assertTrue("Data file should still be there", purgeSetupHelper.dataFile.get().exists());
+        assertTrue(
+                "Data file should still be there",
+                purgeSetupHelper.dataFile.get().exists());
     }
 
     @Test
@@ -1493,8 +1383,7 @@ public class NetCDFReaderTest extends Assert {
             }
             assertTrue(directory.mkdirs());
 
-            FileUtils.copyFileToDirectory(
-                    TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
+            FileUtils.copyFileToDirectory(TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
             File file = new File(directory, "O3-NO2.nc");
 
             // create a reader and read coverage, should create everything
@@ -1505,13 +1394,13 @@ public class NetCDFReaderTest extends Assert {
             // check we have file and the metadata directory
             File[] files = directory.listFiles();
             assertEquals(2, files.length);
-            metadataDirectory =
-                    Arrays.stream(files)
-                            .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
-                            .findFirst();
+            metadataDirectory = Arrays.stream(files)
+                    .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
+                    .findFirst();
             assertTrue(metadataDirectory.isPresent());
-            dataFile =
-                    Arrays.stream(files).filter(f -> f.getName().equals("O3-NO2.nc")).findFirst();
+            dataFile = Arrays.stream(files)
+                    .filter(f -> f.getName().equals("O3-NO2.nc"))
+                    .findFirst();
             assertTrue(dataFile.isPresent());
             return this;
         }

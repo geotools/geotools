@@ -27,8 +27,7 @@ import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.Stroke;
 
 /**
- * A dynamic line style, that will compute its parameters each time they are requested instead of
- * caching them
+ * A dynamic line style, that will compute its parameters each time they are requested instead of caching them
  *
  * @author jamesm
  */
@@ -150,8 +149,8 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     }
 
     /**
-     * Evaluates an expression over the passed feature, if the expression or the result is null, the
-     * default value will be returned
+     * Evaluates an expression over the passed feature, if the expression or the result is null, the default value will
+     * be returned
      */
     private String evaluateExpression(Expression e, SimpleFeature feature, String defaultValue) {
         String result = defaultValue;

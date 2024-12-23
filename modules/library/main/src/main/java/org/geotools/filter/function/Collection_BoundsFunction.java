@@ -45,17 +45,13 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class Collection_BoundsFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_BoundsFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_BoundsFunction.class);
 
     FeatureCollection<FeatureType, Feature> previousFeatureCollection = null;
     Object bounds = null;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Bounds",
-                    parameter("bounds", Object.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Bounds", parameter("bounds", Object.class), parameter("geometry", Geometry.class));
     /** Creates a new instance of Collection_BoundsFunction */
     public Collection_BoundsFunction() {
         super(NAME);
@@ -67,8 +63,7 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the unique
      * @return An object containing the unique value of the attributes
      */
-    static CalcResult calculateBounds(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection)
+    static CalcResult calculateBounds(FeatureCollection<? extends FeatureType, ? extends Feature> collection)
             throws IllegalFilterException, IOException {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
         collection.accepts(boundsVisitor, null);
@@ -83,8 +78,8 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
     /**
      * The provided arguments are evaulated with respect to the FeatureCollection.
      *
-     * <p>For an aggregate function (like unique) please use the WFS mandated XPath syntax to refer
-     * to featureMember content.
+     * <p>For an aggregate function (like unique) please use the WFS mandated XPath syntax to refer to featureMember
+     * content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      *
@@ -99,9 +94,8 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
 
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.geotools.api.filter.expression.Expression expr = args.get(0);
-        expr =
-                (org.geotools.api.filter.expression.Expression)
-                        expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
+        expr = (org.geotools.api.filter.expression.Expression)
+                expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);
     }
@@ -112,8 +106,7 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl {
         if (feature == null) {
             return Integer.valueOf(0); // no features were visited in the making of this answer
         }
-        FeatureCollection<FeatureType, Feature> featureCollection =
-                (FeatureCollection<FeatureType, Feature>) feature;
+        FeatureCollection<FeatureType, Feature> featureCollection = (FeatureCollection<FeatureType, Feature>) feature;
         synchronized (featureCollection) {
             if (featureCollection != previousFeatureCollection) {
                 previousFeatureCollection = featureCollection;

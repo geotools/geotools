@@ -37,10 +37,7 @@ final class MultiLineStringBuilder extends GeometryBuilder {
         super(statement, resultStack);
     }
 
-    /**
-     * Makes a {@link #MultiLineString} geometry using the {@link LineString} presents in the result
-     * stack.
-     */
+    /** Makes a {@link #MultiLineString} geometry using the {@link LineString} presents in the result stack. */
     @Override
     public Geometry build(int linestringtextNode) throws CQLException {
 

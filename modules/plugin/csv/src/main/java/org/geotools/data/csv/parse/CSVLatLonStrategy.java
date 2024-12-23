@@ -62,8 +62,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
         this(csvFileState, latField, lngField, "location");
     }
 
-    public CSVLatLonStrategy(
-            CSVFileState csvFileState, String latField, String lngField, String pointField) {
+    public CSVLatLonStrategy(CSVFileState csvFileState, String latField, String lngField, String pointField) {
         super(csvFileState);
         this.latField = latField;
         this.lngField = lngField;
@@ -148,8 +147,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 header.add(this.latField);
             }
         } else {
-            throw new IOException(
-                    "Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
+            throw new IOException("Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;
@@ -157,13 +155,12 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
 
         // Write out header, producing an empty file of the correct type
-        try (CSVWriter writer =
-                new CSVWriter(
-                        new FileWriter(this.csvFileState.getFile()),
-                        getSeparator(),
-                        getQuotechar(),
-                        getEscapechar(),
-                        getLineSeparator())) {
+        try (CSVWriter writer = new CSVWriter(
+                new FileWriter(this.csvFileState.getFile()),
+                getSeparator(),
+                getQuotechar(),
+                getEscapechar(),
+                getLineSeparator())) {
             writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
         }
     }

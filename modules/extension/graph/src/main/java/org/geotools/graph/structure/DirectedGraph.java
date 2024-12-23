@@ -21,14 +21,14 @@ package org.geotools.graph.structure;
  *
  * <p>In a directed graph, components have an explicit direction associated with them. <br>
  * <br>
- * Directed nodes differentiate between those adjacent edges that originate at them (outgoing edges
- * ) and those that terminate at them (incoming edges).<br>
+ * Directed nodes differentiate between those adjacent edges that originate at them (outgoing edges ) and those that
+ * terminate at them (incoming edges).<br>
  * <br>
- * Directed edges differentiate between the node at the the source of the edge (source node) and the
- * node at the destination of the edges (destination node).<br>
+ * Directed edges differentiate between the node at the the source of the edge (source node) and the node at the
+ * destination of the edges (destination node).<br>
  * <br>
- * The following is a figure of an undirected graph, and one of the possible directed graphs that
- * can be derived from it. Directionality is indicated by arrow heads on the edges of the graph.<br>
+ * The following is a figure of an undirected graph, and one of the possible directed graphs that can be derived from
+ * it. Directionality is indicated by arrow heads on the edges of the graph.<br>
  * <br>
  * <IMG src="doc-files/undirected2directed.gif"><br>
  * <br>

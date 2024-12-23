@@ -53,10 +53,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCRS,
-            boolean wrap,
-            int wrapLimit)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit)
             throws FactoryException {
         if (renderingEnvelope == null) {
             return null;
@@ -78,8 +75,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
             try {
                 validArea = getObliqueValidArea(cm, lo, targetCRS);
             } catch (TransformException e) {
-                throw new RuntimeException(
-                        "Failed to compute valid area for oblique orthographic", e);
+                throw new RuntimeException("Failed to compute valid area for oblique orthographic", e);
             }
         }
 
@@ -95,8 +91,8 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
     }
 
     /**
-     * This one is a square, but it can be crossing the dateline, in which case, it needs to be
-     * split into two parts (multi-polygon valid area)
+     * This one is a square, but it can be crossing the dateline, in which case, it needs to be split into two parts
+     * (multi-polygon valid area)
      */
     private Geometry getEquatorialValidArea(double centralMeridian, double latitudeOrigin) {
         double minLat = -90 + EPS;
@@ -105,34 +101,25 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
         GeometryFactory gf = new GeometryFactory();
         if (centralMeridian < -90) {
             // crossing the dateline, east
-            Polygon p1 =
-                    JTS.toGeometry(
-                            new Envelope(centralMeridian - 90 + 360, 180 - EPS, minLat, maxLat));
-            Polygon p2 =
-                    JTS.toGeometry(new Envelope(-180 - EPS, centralMeridian + 90, minLat, maxLat));
+            Polygon p1 = JTS.toGeometry(new Envelope(centralMeridian - 90 + 360, 180 - EPS, minLat, maxLat));
+            Polygon p2 = JTS.toGeometry(new Envelope(-180 - EPS, centralMeridian + 90, minLat, maxLat));
             validArea = gf.createMultiPolygon(new Polygon[] {p1, p2});
 
         } else if (centralMeridian > 90) {
             // crossing the dateline, west
-            Polygon p1 =
-                    JTS.toGeometry(
-                            new Envelope(-180 + EPS, centralMeridian + 90 - 360, minLat, maxLat));
-            Polygon p2 =
-                    JTS.toGeometry(new Envelope(centralMeridian - 90, 180 - EPS, minLat, maxLat));
+            Polygon p1 = JTS.toGeometry(new Envelope(-180 + EPS, centralMeridian + 90 - 360, minLat, maxLat));
+            Polygon p2 = JTS.toGeometry(new Envelope(centralMeridian - 90, 180 - EPS, minLat, maxLat));
             validArea = gf.createMultiPolygon(new Polygon[] {p1, p2});
         } else {
-            validArea =
-                    JTS.toGeometry(
-                            new Envelope(
-                                    centralMeridian - 90, centralMeridian + 90, minLat, maxLat));
+            validArea = JTS.toGeometry(new Envelope(centralMeridian - 90, centralMeridian + 90, minLat, maxLat));
         }
         // need to have a denser representation for reprojection, (buffer accounted above)
         return Densifier.densify(validArea, DENSIFY_DISTANCE);
     }
 
     /**
-     * The border of the disc has a shape similar to a sinusoidal drawn between the datelines in
-     * plate carrée, but needs to include everything up to the pole closer to the center point
+     * The border of the disc has a shape similar to a sinusoidal drawn between the datelines in plate carrée, but needs
+     * to include everything up to the pole closer to the center point
      */
     private Geometry getObliqueValidArea(
             double centralMeridian, double latitudeOrigin, CoordinateReferenceSystem targetCRS)
@@ -188,8 +175,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
         return polygon.buffer(SAFETY_BUFFER);
     }
 
-    private void join(
-            double latitudeOrigin, List<Coordinate> coords, Coordinate prev, Coordinate curr) {
+    private void join(double latitudeOrigin, List<Coordinate> coords, Coordinate prev, Coordinate curr) {
         // adding points that include everything up to the pole, densified
         double sxp = Math.signum(prev.x);
         double sxc = Math.signum(curr.x);
@@ -232,9 +218,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
         Geometry p2;
 
         public OrthographicProjectionHandler(
-                CoordinateReferenceSystem sourceCRS,
-                Geometry validArea,
-                ReferencedEnvelope renderingEnvelope)
+                CoordinateReferenceSystem sourceCRS, Geometry validArea, ReferencedEnvelope renderingEnvelope)
                 throws FactoryException {
             super(sourceCRS, validArea, renderingEnvelope, true);
             if (validArea instanceof MultiPolygon) {
@@ -245,21 +229,17 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
         }
 
         /**
-         * Orthographic is really finicky, step a bit out of the valid area and it will throw
-         * exceptions. So we need to work strictly within the valid bounds, using JTS intersections,
-         * rather than working with envelopes
+         * Orthographic is really finicky, step a bit out of the valid area and it will throw exceptions. So we need to
+         * work strictly within the valid bounds, using JTS intersections, rather than working with envelopes
          */
         @Override
-        protected ReferencedEnvelope transformEnvelope(
-                ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+        protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
                 throws TransformException, FactoryException {
             return transformEnvelope(envelope, targetCRS, validArea);
         }
 
         protected ReferencedEnvelope transformEnvelope(
-                ReferencedEnvelope envelope,
-                CoordinateReferenceSystem targetCRS,
-                Geometry validArea)
+                ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS, Geometry validArea)
                 throws FactoryException, TransformException {
             // need to transform at all?
             CoordinateReferenceSystem envelopeCRS = envelope.getCoordinateReferenceSystem();
@@ -267,9 +247,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
 
             // reduce envelope to valid area
             Geometry validAreaInEnvelopeCRS =
-                    JTS.transform(
-                            validArea,
-                            CRS.findMathTransform(DefaultGeographicCRS.WGS84, envelopeCRS));
+                    JTS.transform(validArea, CRS.findMathTransform(DefaultGeographicCRS.WGS84, envelopeCRS));
             if (validArea instanceof MultiPolygon) {
                 validAreaInEnvelopeCRS = validAreaInEnvelopeCRS.buffer(0);
             }
@@ -285,17 +263,12 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
             intersection = Densifier.densify(intersection, distance);
 
             // transform to target CRS
-            Geometry transformed =
-                    JTS.transform(intersection, CRS.findMathTransform(envelopeCRS, targetCRS));
+            Geometry transformed = JTS.transform(intersection, CRS.findMathTransform(envelopeCRS, targetCRS));
 
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
-            ProjectionHandler handler =
-                    ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS),
-                            DefaultGeographicCRS.WGS84,
-                            true,
-                            Collections.emptyMap());
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(
+                    new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true, Collections.emptyMap());
             if (handler == null || handler instanceof WrappingProjectionHandler) {
                 return new ReferencedEnvelope(transformed.getEnvelopeInternal(), targetCRS);
             }
@@ -312,8 +285,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
         }
 
         @Override
-        public List<ReferencedEnvelope> getQueryEnvelopes()
-                throws TransformException, FactoryException {
+        public List<ReferencedEnvelope> getQueryEnvelopes() throws TransformException, FactoryException {
             // non equatorial case?
             if (p1 == null) return super.getQueryEnvelopes();
 

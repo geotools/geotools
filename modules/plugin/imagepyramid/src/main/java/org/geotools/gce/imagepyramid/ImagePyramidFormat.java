@@ -44,14 +44,12 @@ import org.geotools.util.factory.Hints;
  * This class implements the basic format capabilities for a coverage format.
  *
  * @author Simone Giannecchini (simboss)
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
- *     jar:file:foo.jar/bar.properties like URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties like URLs
  */
 public final class ImagePyramidFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImagePyramidFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImagePyramidFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public ImagePyramidFormat() {
@@ -71,36 +69,28 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
         // reading parameters. Inheriting them from the ImageMosaic
         final ImageMosaicFormat formatForParameters = new ImageMosaicFormat();
         final ParameterValueGroup readParams = formatForParameters.getReadParameters();
-        final DefaultParameterDescriptorGroup descriptor =
-                (DefaultParameterDescriptorGroup) readParams.getDescriptor();
+        final DefaultParameterDescriptorGroup descriptor = (DefaultParameterDescriptorGroup) readParams.getDescriptor();
         List<GeneralParameterDescriptor> descriptors = descriptor.descriptors();
-        GeneralParameterDescriptor[] descriptorArray =
-                new GeneralParameterDescriptor[descriptors.size()];
+        GeneralParameterDescriptor[] descriptorArray = new GeneralParameterDescriptor[descriptors.size()];
         descriptorArray = descriptors.toArray(descriptorArray);
-        readParameters =
-                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, descriptorArray));
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, descriptorArray));
 
         // writing parameters
         writeParameters = null;
     }
 
     /**
-     * Retrieves a reader for this source object in case the provided source can be read using this
-     * plugin.
+     * Retrieves a reader for this source object in case the provided source can be read using this plugin.
      *
      * @param source Object
-     * @return An {@link ImagePyramidReader} if the provided object can be read using this plugin or
-     *     null.
+     * @return An {@link ImagePyramidReader} if the provided object can be read using this plugin or null.
      */
     @Override
     public ImagePyramidReader getReader(Object source) {
         return getReader(source, null);
     }
 
-    /**
-     * This methods throw an {@link UnsupportedOperationException} because this plugiin si read
-     * only.
-     */
+    /** This methods throw an {@link UnsupportedOperationException} because this plugiin si read only. */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
         throw new UnsupportedOperationException("This plugin is a read only plugin!");
@@ -111,8 +101,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
     public boolean accepts(Object source, Hints hints) {
 
         if (source == null) {
-            throw new NullPointerException(
-                    "Null parameter provided to the accepts method of this ImagePyramidFormat");
+            throw new NullPointerException("Null parameter provided to the accepts method of this ImagePyramidFormat");
         }
 
         try {
@@ -143,8 +132,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
             // get the crs if able to
             final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
             CoordinateReferenceSystem tempcrs = null;
-            try (PrjFileReader crsReader =
-                    new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
+            try (PrjFileReader crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
                 tempcrs = crsReader.getCoordinateReferenceSystem();
             } catch (FactoryException e) {
                 return false;
@@ -154,8 +142,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
                 tempcrs = AbstractGridFormat.getDefaultCRS();
                 LOGGER.log(
                         Level.FINE,
-                        new StringBuilder(
-                                        "Unable to find a CRS for this coverage, using a default one: ")
+                        new StringBuilder("Unable to find a CRS for this coverage, using a default one: ")
                                 .append(tempcrs.toWKT())
                                 .toString());
             }
@@ -168,8 +155,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
                 return false;
             }
             LOGGER.fine("loading properties from: " + sourceURL);
-            try (BufferedInputStream propertyStream =
-                    new BufferedInputStream(sourceURL.openStream())) {
+            try (BufferedInputStream propertyStream = new BufferedInputStream(sourceURL.openStream())) {
                 properties.load(propertyStream);
             } catch (Throwable e) {
                 return false;
@@ -214,13 +200,11 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
     }
 
     /**
-     * Retrieves a reader for this source object in case the provided source can be read using this
-     * plugin.
+     * Retrieves a reader for this source object in case the provided source can be read using this plugin.
      *
      * @param source Object
      * @param hints {@link Hints} to control the reader behaviour.
-     * @return An {@link ImagePyramidReader} if the provided object can be read using this plugin or
-     *     null.
+     * @return An {@link ImagePyramidReader} if the provided object can be read using this plugin or null.
      */
     @Override
     public ImagePyramidReader getReader(Object source, Hints hints) {
@@ -229,11 +213,9 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
             return new ImagePyramidReader(source, hints);
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.severe(
-                        new StringBuffer(
-                                        "impossible to get a reader for the provided source. The error is ")
-                                .append(e.getLocalizedMessage())
-                                .toString());
+                LOGGER.severe(new StringBuffer("impossible to get a reader for the provided source. The error is ")
+                        .append(e.getLocalizedMessage())
+                        .toString());
             return null;
         }
     }

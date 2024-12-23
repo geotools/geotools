@@ -43,7 +43,8 @@ public class GeometryFunctionTest {
 
     @Before
     public void setUp() throws Exception {
-        File property = new File(TestData.getResource(this, "squareUTM.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "squareUTM.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("square");
         bounds = fs.getBounds();
@@ -74,11 +75,7 @@ public class GeometryFunctionTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/"
-                                + styleName
-                                + ".png");
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
 }

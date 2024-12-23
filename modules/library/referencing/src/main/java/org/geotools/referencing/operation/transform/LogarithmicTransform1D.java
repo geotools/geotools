@@ -36,13 +36,12 @@ import org.geotools.referencing.operation.MathTransformProvider;
 import tech.units.indriya.AbstractUnit;
 
 /**
- * A one dimensional, logarithmic transform. Input values <var>x</var> are converted into output
- * values <var>y</var> using the following equation:
+ * A one dimensional, logarithmic transform. Input values <var>x</var> are converted into output values <var>y</var>
+ * using the following equation:
  *
- * <p align="center"><var>y</var> &nbsp;=&nbsp; {@linkplain #offset} + log<sub>{@linkplain
- * #base}</sub>(<var>x</var>) &nbsp;&nbsp;=&nbsp;&nbsp; {@linkplain #offset} +
- * ln(<var>x</var>)/ln({@linkplain #base}) This transform is the inverse of {@link
- * ExponentialTransform1D}.
+ * <p align="center"><var>y</var> &nbsp;=&nbsp; {@linkplain #offset} + log<sub>{@linkplain #base}</sub>(<var>x</var>)
+ * &nbsp;&nbsp;=&nbsp;&nbsp; {@linkplain #offset} + ln(<var>x</var>)/ln({@linkplain #base}) This transform is the
+ * inverse of {@link ExponentialTransform1D}.
  *
  * @since 2.0
  * @version $Id$
@@ -50,8 +49,7 @@ import tech.units.indriya.AbstractUnit;
  * @see ExponentialTransform1D
  * @see LinearTransform1D
  */
-public class LogarithmicTransform1D extends AbstractMathTransform
-        implements MathTransform1D, Serializable {
+public class LogarithmicTransform1D extends AbstractMathTransform implements MathTransform1D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1535101265352133948L;
 
@@ -68,15 +66,12 @@ public class LogarithmicTransform1D extends AbstractMathTransform
     public final double offset;
 
     /**
-     * The inverse of this transform. Created only when first needed. Serialized in order to avoid
-     * rounding error if this transform is actually the one which was created from the inverse.
+     * The inverse of this transform. Created only when first needed. Serialized in order to avoid rounding error if
+     * this transform is actually the one which was created from the inverse.
      */
     private MathTransform1D inverse;
 
-    /**
-     * Constructs a new logarithmic transform which is the inverse of the supplied exponentional
-     * transform.
-     */
+    /** Constructs a new logarithmic transform which is the inverse of the supplied exponentional transform. */
     private LogarithmicTransform1D(final ExponentialTransform1D inverse) {
         this.base = inverse.base;
         this.lnBase = inverse.lnBase;
@@ -85,9 +80,9 @@ public class LogarithmicTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Constructs a new logarithmic transform. This constructor is provided for subclasses only.
-     * Instances should be created using the {@linkplain #create factory method}, which may returns
-     * optimized implementations for some particular argument values.
+     * Constructs a new logarithmic transform. This constructor is provided for subclasses only. Instances should be
+     * created using the {@linkplain #create factory method}, which may returns optimized implementations for some
+     * particular argument values.
      *
      * @param base The base of the logarithm (typically 10).
      * @param offset The offset to add to the logarithm.
@@ -98,10 +93,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
         this.lnBase = Math.log(base);
     }
 
-    /**
-     * Constructs a new logarithmic transform which is the inverse of the supplied exponentional
-     * transform.
-     */
+    /** Constructs a new logarithmic transform which is the inverse of the supplied exponentional transform. */
     static LogarithmicTransform1D create(final ExponentialTransform1D inverse) {
         if (Math.abs(inverse.base - 10) < EPS) {
             return new Base10(inverse);
@@ -139,12 +131,9 @@ public class LogarithmicTransform1D extends AbstractMathTransform
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        return new org.geotools.parameter.ParameterGroup(
-                getParameterDescriptors(),
-                new ParameterValue[] {
-                    new FloatParameter(Provider.BASE, base),
-                    new FloatParameter(Provider.OFFSET, offset)
-                });
+        return new org.geotools.parameter.ParameterGroup(getParameterDescriptors(), new ParameterValue[] {
+            new FloatParameter(Provider.BASE, base), new FloatParameter(Provider.OFFSET, offset)
+        });
     }
 
     /** Gets the dimension of input points, which is 1. */
@@ -182,8 +171,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = (float) (Math.log(srcPts[srcOff++]) / lnBase + offset);
@@ -199,8 +187,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = Math.log(srcPts[srcOff++]) / lnBase + offset;
@@ -214,9 +201,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
         }
     }
 
-    /**
-     * Special case for base 10 taking advantage of extra precision provided by {@link Math#log10}.
-     */
+    /** Special case for base 10 taking advantage of extra precision provided by {@link Math#log10}. */
     private static final class Base10 extends LogarithmicTransform1D {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -5435804027536647558L;
@@ -239,8 +224,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
         /** {@inheritDoc} */
         @Override
-        public void transform(
-                final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+        public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
             if (srcPts != dstPts || srcOff >= dstOff) {
                 while (--numPts >= 0) {
                     dstPts[dstOff++] = (float) (Math.log10(srcPts[srcOff++]) + offset);
@@ -256,8 +240,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
         /** {@inheritDoc} */
         @Override
-        public void transform(
-                final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+        public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
             if (srcPts != dstPts || srcOff >= dstOff) {
                 while (--numPts >= 0) {
                     dstPts[dstOff++] = Math.log10(srcPts[srcOff++]) + offset;
@@ -273,16 +256,13 @@ public class LogarithmicTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Concatenates in an optimized way a {@link MathTransform} {@code other} to this {@code
-     * MathTransform}. This implementation can optimize some concatenation with {@link
-     * LinearTransform1D} and {@link ExponentialTransform1D}.
+     * Concatenates in an optimized way a {@link MathTransform} {@code other} to this {@code MathTransform}. This
+     * implementation can optimize some concatenation with {@link LinearTransform1D} and {@link ExponentialTransform1D}.
      *
      * @param other The math transform to apply.
-     * @param applyOtherFirst {@code true} if the transformation order is {@code other} followed by
-     *     {@code this}, or {@code false} if the transformation order is {@code this} followed by
-     *     {@code other}.
-     * @return The combined math transform, or {@code null} if no optimized combined transform is
-     *     available.
+     * @param applyOtherFirst {@code true} if the transformation order is {@code other} followed by {@code this}, or
+     *     {@code false} if the transformation order is {@code this} followed by {@code other}.
+     * @return The combined math transform, or {@code null} if no optimized combined transform is available.
      */
     @Override
     MathTransform concatenate(final MathTransform other, final boolean applyOtherFirst) {
@@ -305,8 +285,8 @@ public class LogarithmicTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Returns a hash value for this transform. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this transform. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -342,34 +322,25 @@ public class LogarithmicTransform1D extends AbstractMathTransform
         private static final long serialVersionUID = -7235097164208708484L;
 
         /**
-         * The operation parameter descriptor for the {@link #base base} parameter value. Valid
-         * values range from 0 to infinity. The default value is 10.
+         * The operation parameter descriptor for the {@link #base base} parameter value. Valid values range from 0 to
+         * infinity. The default value is 10.
          */
         public static final ParameterDescriptor<Double> BASE =
-                DefaultParameterDescriptor.create(
-                        "base", 10, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
+                DefaultParameterDescriptor.create("base", 10, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /**
-         * The operation parameter descriptor for the {@link #offset offset} parameter value. Valid
-         * values range is unrestricted. The default value is 0.
+         * The operation parameter descriptor for the {@link #offset offset} parameter value. Valid values range is
+         * unrestricted. The default value is 0.
          */
-        public static final ParameterDescriptor<Double> OFFSET =
-                DefaultParameterDescriptor.create(
-                        "offset",
-                        0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor<Double> OFFSET = DefaultParameterDescriptor.create(
+                "offset", 0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(VocabularyKeys.LOGARITHMIC))
-                        },
-                        new ParameterDescriptor[] {BASE, OFFSET});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.LOGARITHMIC))
+                },
+                new ParameterDescriptor[] {BASE, OFFSET});
 
         /** Create a provider for logarithmic transforms. */
         public Provider() {

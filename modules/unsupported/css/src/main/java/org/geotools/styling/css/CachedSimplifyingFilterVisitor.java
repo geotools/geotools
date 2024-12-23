@@ -31,8 +31,7 @@ import org.geotools.api.filter.Or;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 
 /**
- * A simplifying filter visitor that caches the results, to avoid repeating their computation over
- * and over
+ * A simplifying filter visitor that caches the results, to avoid repeating their computation over and over
  *
  * @author Andrea Aime - GeoSolutions
  */

@@ -97,9 +97,9 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      * <!-- begin-user-doc -->
      * A quick approx of the available content:
      *
-     * <p>This method returns a {@link Map} in which the names of children and attributes are keys,
-     * and the parsed children and attributes are the values. If the element being parsed contains
-     * child text, it is available under the <code>nulll</code> key.
+     * <p>This method returns a {@link Map} in which the names of children and attributes are keys, and the parsed
+     * children and attributes are the values. If the element being parsed contains child text, it is available under
+     * the <code>nulll</code> key.
      *
      * @return Map,
      *     <!-- end-user-doc -->

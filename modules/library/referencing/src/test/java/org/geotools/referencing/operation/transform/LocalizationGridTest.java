@@ -93,21 +93,18 @@ public final class LocalizationGridTest {
     };
 
     /**
-     * Maximal error between expected "real world" and computed "real world" coordinates when direct
-     * transformation is used.
+     * Maximal error between expected "real world" and computed "real world" coordinates when direct transformation is
+     * used.
      */
     private static final double EPS = 1E-9;
 
     /**
-     * Maximal error between expected "real world" and computed "real world" coordinates when the
-     * fitted affine transformation is used.
+     * Maximal error between expected "real world" and computed "real world" coordinates when the fitted affine
+     * transformation is used.
      */
     private static final double FIT_TOLERANCE = 0.4;
 
-    /**
-     * Set up common objects used for all tests. This implementation construct a default
-     * localization grid.
-     */
+    /** Set up common objects used for all tests. This implementation construct a default localization grid. */
     @Before
     public void setUp() {
         final int width = GRID_DATA[0].length / 2;
@@ -134,8 +131,8 @@ public final class LocalizationGridTest {
     /**
      * Returns an array with grid or "real world" coordinates.
      *
-     * @param real <code>true</code> to gets the "real world" coordinates, or <code>false</code> to
-     *     gets the grid coordinates.
+     * @param real <code>true</code> to gets the "real world" coordinates, or <code>false</code> to gets the grid
+     *     coordinates.
      */
     private double[] getGridCoordinates(final boolean real) {
         final int width = GRID_DATA[0].length / 2;
@@ -177,10 +174,7 @@ public final class LocalizationGridTest {
         assertEquals("Grid is not square", width * height * 2, offset);
     }
 
-    /**
-     * Test direct transformation from grid coordinates to "real world" coordinates using the
-     * localization grid.
-     */
+    /** Test direct transformation from grid coordinates to "real world" coordinates using the localization grid. */
     @Test
     public void testDirectTransform() throws TransformException {
         final double[] array = getGridCoordinates(false);
@@ -189,9 +183,9 @@ public final class LocalizationGridTest {
     }
 
     /**
-     * Test affine tranformation for the whole grid by comparing the expected "real world" to the
-     * approximated coordinates. Since the affine transform is fitted using least-squares method,
-     * the transformation is approximative.
+     * Test affine tranformation for the whole grid by comparing the expected "real world" to the approximated
+     * coordinates. Since the affine transform is fitted using least-squares method, the transformation is
+     * approximative.
      */
     @Test
     public void testAffineTransform() {
@@ -201,8 +195,8 @@ public final class LocalizationGridTest {
     }
 
     /**
-     * Test inverse transformation from "real world" coordinates to grid coordinates coordinate
-     * using the localization grid.
+     * Test inverse transformation from "real world" coordinates to grid coordinates coordinate using the localization
+     * grid.
      */
     @Test
     public void testInverseTransform() throws TransformException {

@@ -30,11 +30,11 @@ import org.geotools.api.style.UserLayer;
 import org.geotools.styling.SLD;
 
 /**
- * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and
- * title, and delegates to {@link FeatureStyleEncoder} for the content.
+ * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and title, and delegates to
+ * {@link FeatureStyleEncoder} for the content.
  *
- * <p>YSLD focuses on SymbologyEncoding specification; encoding the default (or first) style found,
- * and treating surrounding StyleLayerDescriptor / NamedLayer as a wrapper.
+ * <p>YSLD focuses on SymbologyEncoding specification; encoding the default (or first) style found, and treating
+ * surrounding StyleLayerDescriptor / NamedLayer as a wrapper.
  */
 public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
 
@@ -45,8 +45,8 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
     /**
      * Encode sld as part of root-level information prefixed with {@code sld}.
      *
-     * <p>This method looks and encodes the {@link SLD#defaultStyle(StyledLayerDescriptor)} along
-     * with it's parent layer.
+     * <p>This method looks and encodes the {@link SLD#defaultStyle(StyledLayerDescriptor)} along with it's parent
+     * layer.
      *
      * @param sld
      */
@@ -100,21 +100,19 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         if (style == null) return null;
 
         return sld.layers().stream()
-                .filter(
-                        new Predicate<StyledLayer>() {
-                            @Override
-                            public boolean test(StyledLayer styledLayer) {
-                                List<Style> styles;
-                                if (styledLayer instanceof NamedLayer)
-                                    styles = ((NamedLayer) styledLayer).styles();
-                                else if (styledLayer instanceof UserLayer) {
-                                    styles = ((UserLayer) styledLayer).userStyles();
-                                } else {
-                                    styles = Collections.emptyList();
-                                }
-                                return styles.contains(style);
-                            }
-                        })
+                .filter(new Predicate<StyledLayer>() {
+                    @Override
+                    public boolean test(StyledLayer styledLayer) {
+                        List<Style> styles;
+                        if (styledLayer instanceof NamedLayer) styles = ((NamedLayer) styledLayer).styles();
+                        else if (styledLayer instanceof UserLayer) {
+                            styles = ((UserLayer) styledLayer).userStyles();
+                        } else {
+                            styles = Collections.emptyList();
+                        }
+                        return styles.contains(style);
+                    }
+                })
                 .findFirst()
                 .orElse(null);
     }

@@ -44,9 +44,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the usage of {@link OrderedAxisAuthorityFactory} with the help of the EPSG database. Any
- * EPSG plugin should fit. However, this test live in the {@code plugin/epsg-hsql} module since the
- * HSQL plugin is the only one which is garantee to work on any machine running Maven.
+ * Tests the usage of {@link OrderedAxisAuthorityFactory} with the help of the EPSG database. Any EPSG plugin should
+ * fit. However, this test live in the {@code plugin/epsg-hsql} module since the HSQL plugin is the only one which is
+ * garantee to work on any machine running Maven.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -54,9 +54,8 @@ import org.junit.Test;
  */
 public class OrderedAxisAuthorityFactoryTest {
     /**
-     * {@code true} if metadata (especially identifiers) should be erased, or {@code false} if they
-     * should be kepts. The {@code true} value matches the pre GEOT-854 state, while the {@code
-     * false} value mathes the post GEOT-854 state.
+     * {@code true} if metadata (especially identifiers) should be erased, or {@code false} if they should be kepts. The
+     * {@code true} value matches the pre GEOT-854 state, while the {@code false} value mathes the post GEOT-854 state.
      *
      * @see http://jira.codehaus.org/browse/GEOT-854
      */
@@ -69,8 +68,7 @@ public class OrderedAxisAuthorityFactoryTest {
     public void setUp() throws Exception {
 
         // this test does not work if there is more than one EPSG factory around
-        Set<CRSAuthorityFactory> factories =
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        Set<CRSAuthorityFactory> factories = ReferencingFactoryFinder.getCRSAuthorityFactories(null);
         for (CRSAuthorityFactory factory : factories) {
             if (factory instanceof CartesianAuthorityFactory) {
                 ReferencingFactoryFinder.removeAuthorityFactory(factory);
@@ -80,16 +78,14 @@ public class OrderedAxisAuthorityFactoryTest {
 
     /** Returns the ordered axis factory for the specified set of hints. */
     private static OrderedAxisAuthorityFactory getFactory(final Hints hints) {
-        CRSAuthorityFactory factory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
 
         Assert.assertTrue(factory.getClass().toString(), factory instanceof LongitudeFirstFactory);
         final LongitudeFirstFactory asLongitudeFirst = (LongitudeFirstFactory) factory;
         final Map implementationHints = asLongitudeFirst.getImplementationHints();
         factory = (CRSAuthorityFactory) implementationHints.get(Hints.CRS_AUTHORITY_FACTORY);
 
-        Assert.assertTrue(
-                factory.getClass().toString(), factory instanceof OrderedAxisAuthorityFactory);
+        Assert.assertTrue(factory.getClass().toString(), factory instanceof OrderedAxisAuthorityFactory);
         final OrderedAxisAuthorityFactory asOrdered = (OrderedAxisAuthorityFactory) factory;
         Assert.assertFalse(asOrdered.isCodeMethodOverriden());
 
@@ -97,8 +93,8 @@ public class OrderedAxisAuthorityFactoryTest {
     }
 
     /**
-     * Returns a positive number if the specified coordinate system is right-handed, or a negative
-     * number if it is left handed.
+     * Returns a positive number if the specified coordinate system is right-handed, or a negative number if it is left
+     * handed.
      */
     private static double getAngle(final CoordinateReferenceSystem crs) {
         final CoordinateSystem cs = crs.getCoordinateSystem();
@@ -108,8 +104,8 @@ public class OrderedAxisAuthorityFactoryTest {
     }
 
     /**
-     * Tests the registration of the various flavor of {@link OrderedAxisAuthorityFactoryTest} for
-     * the EPSG authority factory.
+     * Tests the registration of the various flavor of {@link OrderedAxisAuthorityFactoryTest} for the EPSG authority
+     * factory.
      */
     @Test
     public void testRegistration() {
@@ -158,23 +154,20 @@ public class OrderedAxisAuthorityFactoryTest {
          */
         final Hints hints = new Hints(Hints.CRS_AUTHORITY_FACTORY, AbstractAuthorityFactory.class);
         final AbstractAuthorityFactory factory0 =
-                (AbstractAuthorityFactory)
-                        ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+                (AbstractAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         Assert.assertFalse(factory0 instanceof OrderedAxisAuthorityFactory);
         Assert.assertFalse(factory0 instanceof LongitudeFirstFactory);
         hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.TRUE);
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.TRUE);
         final AbstractAuthorityFactory factory1 =
-                (AbstractAuthorityFactory)
-                        ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+                (AbstractAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         Assert.assertTrue(factory1 instanceof LongitudeFirstFactory);
         /*
          * The local variables to be used for all remaining tests
          * (usefull to setup in the debugger).
          */
-        CoordinateOperationFactory opFactory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        CoordinateOperationFactory opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
         /*
          * Tests a WGS84 geographic CRS (2D) with (NORTH, EAST) axis directions.
          * The factory should reorder the axis with no more operation than an axis swap.
@@ -199,12 +192,11 @@ public class OrderedAxisAuthorityFactoryTest {
         Assert.assertTrue(mt instanceof LinearTransform);
         Matrix matrix = ((LinearTransform) mt).getMatrix();
         Assert.assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, 1, 0},
-                            {1, 0, 0},
-                            {0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, 1, 0},
+                    {1, 0, 0},
+                    {0, 0, 1}
+                }),
                 new GeneralMatrix(matrix));
         /*
          * Tests a WGS84 geographic CRS (3D) with (NORTH, EAST, UP) axis directions.
@@ -244,13 +236,12 @@ public class OrderedAxisAuthorityFactoryTest {
         Assert.assertTrue(mt instanceof LinearTransform);
         matrix = ((LinearTransform) mt).getMatrix();
         Assert.assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, 1, 0, 0},
-                            {1, 0, 0, 0},
-                            {0, 0, 1, 0},
-                            {0, 0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, 1, 0, 0},
+                    {1, 0, 0, 0},
+                    {0, 0, 1, 0},
+                    {0, 0, 0, 1}
+                }),
                 new GeneralMatrix(matrix));
         /*
          * Tests a projected CRS with (EAST, NORTH) axis orientation. No axis reordering is needed,
@@ -264,8 +255,7 @@ public class OrderedAxisAuthorityFactoryTest {
         Assert.assertNotSame(crs0, crs1);
         Assert.assertSame(crs0.getCoordinateSystem(), crs1.getCoordinateSystem());
         Assert.assertSame(((SingleCRS) crs0).getDatum(), ((SingleCRS) crs1).getDatum());
-        Assert.assertNotSame(
-                ((ProjectedCRS) crs0).getBaseCRS(), ((ProjectedCRS) crs1).getBaseCRS());
+        Assert.assertNotSame(((ProjectedCRS) crs0).getBaseCRS(), ((ProjectedCRS) crs1).getBaseCRS());
         Assert.assertFalse(crs0.getIdentifiers().isEmpty());
         if (METADATA_ERASED) {
             Assert.assertTrue(crs1.getIdentifiers().isEmpty());
@@ -297,12 +287,11 @@ public class OrderedAxisAuthorityFactoryTest {
         Assert.assertTrue(mt instanceof LinearTransform);
         matrix = ((LinearTransform) mt).getMatrix();
         Assert.assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {-1, 0, 0},
-                            {0, -1, 0},
-                            {0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {-1, 0, 0},
+                    {0, -1, 0},
+                    {0, 0, 1}
+                }),
                 new GeneralMatrix(matrix));
         /*
          * Tests the cache.
@@ -321,49 +310,41 @@ public class OrderedAxisAuthorityFactoryTest {
         Assert.assertTrue(transform instanceof LinearTransform);
         final Matrix matrix = ((LinearTransform) transform).getMatrix();
         Assert.assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, 1, 0},
-                            {1, 0, 0},
-                            {0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, 1, 0},
+                    {1, 0, 0},
+                    {0, 0, 1}
+                }),
                 new GeneralMatrix(matrix));
     }
 
     /** Tests the {@link IdentifiedObjectFinder#find} method with axis order forced. */
     @Test
     public void testFind() throws FactoryException {
-        final CRSAuthorityFactory factory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory(
-                        "EPSG", new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+        final CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory(
+                "EPSG", new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
 
         Assert.assertTrue(factory instanceof AbstractAuthorityFactory);
         AbstractAuthorityFactory findable = (AbstractAuthorityFactory) factory;
-        final IdentifiedObjectFinder finder =
-                findable.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+        final IdentifiedObjectFinder finder = findable.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
 
         IdentifiedObject find = finder.find(DefaultGeographicCRS.WGS84);
         Assert.assertNotNull("With scan allowed, should find the CRS.", find);
         Assert.assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, find));
-        Assert.assertEquals(
-                "Expected a right-handed CS.",
-                +90,
-                getAngle((CoordinateReferenceSystem) find),
-                EPS);
+        Assert.assertEquals("Expected a right-handed CS.", +90, getAngle((CoordinateReferenceSystem) find), EPS);
         /*
          * Search a CRS using (latitude,longitude) axis order. The IdentifiedObjectFinder
          * should be able to find it even if it is backed by LongitudeFirstAuthorityFactory,
          * because the later is itself backed by EPSG factory and IdentifiedObjectFinder
          * should queries CRS from both.
          */
-        final String wkt =
-                "GEOGCS[\"WGS 84\",\n"
-                        + "  DATUM[\"WGS84\",\n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "  UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "  AXIS[\"Geodetic latitude\", NORTH],\n"
-                        + "  AXIS[\"Geodetic longitude\", EAST]]";
+        final String wkt = "GEOGCS[\"WGS 84\",\n"
+                + "  DATUM[\"WGS84\",\n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                + "  UNIT[\"degree\", 0.017453292519943295],\n"
+                + "  AXIS[\"Geodetic latitude\", NORTH],\n"
+                + "  AXIS[\"Geodetic longitude\", EAST]]";
         final CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
         Assert.assertTrue(CRS.equalsIgnoreMetadata(search, standard));

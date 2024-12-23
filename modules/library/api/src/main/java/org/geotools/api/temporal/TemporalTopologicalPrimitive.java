@@ -10,8 +10,8 @@
 package org.geotools.api.temporal;
 
 /**
- * Represents a single non-decomposable element of topology and its relationships to other
- * topological primitives within a topological complex.
+ * Represents a single non-decomposable element of topology and its relationships to other topological primitives within
+ * a topological complex.
  *
  * @author Alexander Petkov
  */

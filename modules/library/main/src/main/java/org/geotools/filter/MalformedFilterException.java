@@ -34,8 +34,7 @@ public class MalformedFilterException extends Exception {
     }
 
     /**
-     * Constructs an instance of <code>MalformedFilterException</code> with the specified root
-     * cause.
+     * Constructs an instance of <code>MalformedFilterException</code> with the specified root cause.
      *
      * @param cause the root cause of the exceptions.
      */
@@ -44,8 +43,7 @@ public class MalformedFilterException extends Exception {
     }
 
     /**
-     * Constructs an instance of <code>MalformedFilterException</code> with the specified detail
-     * message and root cause.
+     * Constructs an instance of <code>MalformedFilterException</code> with the specified detail message and root cause.
      *
      * @param msg the detail message.
      * @param cause the root cause of the exceptions.

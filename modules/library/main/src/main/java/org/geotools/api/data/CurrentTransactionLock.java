@@ -29,8 +29,7 @@ class CurrentTransactionLock extends FeatureLock {
     /**
      * Transaction locks do not require Authorization.
      *
-     * <p>Authorization is based on being on "holding" the Transaction rather than supplying an
-     * authorization id.
+     * <p>Authorization is based on being on "holding" the Transaction rather than supplying an authorization id.
      *
      * @return <code>CURRENT_TRANSACTION</code> to aid in debugging.
      * @see FeatureLock#getAuthorization()
@@ -43,8 +42,8 @@ class CurrentTransactionLock extends FeatureLock {
     /**
      * Transaciton locks are not held for a duration.
      *
-     * <p>Any locking performed against the current Transaction is expected to expire when the
-     * transaction finishes with a close or rollback
+     * <p>Any locking performed against the current Transaction is expected to expire when the transaction finishes with
+     * a close or rollback
      *
      * @return <code>-1</code> representing an invalid duration
      * @see FeatureLock#getDuration()

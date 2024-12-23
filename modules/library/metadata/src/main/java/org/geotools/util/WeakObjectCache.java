@@ -25,8 +25,8 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Caching implementation for {@link ObjectCache}. This instance is used when caching is desired,
- * and memory use is an issue.
+ * Caching implementation for {@link ObjectCache}. This instance is used when caching is desired, and memory use is an
+ * issue.
  *
  * <p>Values are held in a WeakReference, the garbage collector may reclaim them at any time.
  *

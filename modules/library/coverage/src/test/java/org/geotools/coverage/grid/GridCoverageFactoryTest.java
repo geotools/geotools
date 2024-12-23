@@ -65,8 +65,7 @@ public final class GridCoverageFactoryTest {
         try {
             coverage = new GridCoverageFactory().create(name, raster, env, null);
         } catch (NullPointerException e) {
-            fail(
-                    "NullPointerException was thrown despite the javadocs indicating that 'bands' is nullable");
+            fail("NullPointerException was thrown despite the javadocs indicating that 'bands' is nullable");
         }
 
         // And check that the GridCoverage actually contains data that matches what we put into it.
@@ -82,8 +81,7 @@ public final class GridCoverageFactoryTest {
         try {
             coverage = new GridCoverageFactory().create(name, raster, crs, mathTx, null);
         } catch (NullPointerException e) {
-            fail(
-                    "NullPointerException was thrown despite the javadocs indicating that 'bands' is nullable");
+            fail("NullPointerException was thrown despite the javadocs indicating that 'bands' is nullable");
         }
 
         coverage.evaluate(new Point2D.Double(15, 14), dest);

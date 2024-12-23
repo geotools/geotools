@@ -49,42 +49,35 @@ public interface RenderingExecutor {
     void setPollingInterval(long interval);
 
     /**
-     * Submits a new rendering task to the executor. The specified listener will be notified of task
-     * progress. If the task is rejected by the executor for any reason, this method returns {@link
-     * #TASK_REJECTED} instead of a task ID value.
+     * Submits a new rendering task to the executor. The specified listener will be notified of task progress. If the
+     * task is rejected by the executor for any reason, this method returns {@link #TASK_REJECTED} instead of a task ID
+     * value.
      *
      * @param mapContent the map content holding the layers to be rendered
      * @param renderer the renderer to use
      * @param graphics the graphics object to draw into
      * @param listener the listener to be notified of task progress
-     * @return either a task ID value (which should be positive and unique across all executors and
-     *     rendering tasks) if the task was accepted; or {@link #TASK_REJECTED}
+     * @return either a task ID value (which should be positive and unique across all executors and rendering tasks) if
+     *     the task was accepted; or {@link #TASK_REJECTED}
      * @throws IllegalArgumentException if any arguments are {@code null}
      * @throws IllegalStateException if called after the executor has been shut down
      */
-    long submit(
-            MapContent mapContent,
-            GTRenderer renderer,
-            Graphics2D graphics,
-            RenderingExecutorListener listener);
+    long submit(MapContent mapContent, GTRenderer renderer, Graphics2D graphics, RenderingExecutorListener listener);
 
     /**
-     * Submits a new rendering task to the executor. The specified listener will be notified of task
-     * progress. If the task is rejected by the executor for any reason, this method returns {@link
-     * #TASK_REJECTED} instead of a task ID value.
+     * Submits a new rendering task to the executor. The specified listener will be notified of task progress. If the
+     * task is rejected by the executor for any reason, this method returns {@link #TASK_REJECTED} instead of a task ID
+     * value.
      *
      * @param mapContent the map content holding the layers to be rendered
      * @param operands operands for each of the sub-tasks composing this task
      * @param listener the listener to be notified of task progress
-     * @return either a task ID value (which should be positive and unique across all executors and
-     *     rendering tasks) if the task was accepted; or {@link #TASK_REJECTED}
+     * @return either a task ID value (which should be positive and unique across all executors and rendering tasks) if
+     *     the task was accepted; or {@link #TASK_REJECTED}
      * @throws IllegalArgumentException if any arguments are {@code null}
      * @throws IllegalStateException if called after the executor has been shut down
      */
-    long submit(
-            MapContent mapContent,
-            List<RenderingOperands> operands,
-            RenderingExecutorListener listener);
+    long submit(MapContent mapContent, List<RenderingOperands> operands, RenderingExecutorListener listener);
 
     /**
      * Cancels a specific rendering task.
@@ -96,8 +89,8 @@ public interface RenderingExecutor {
     void cancelAll();
 
     /**
-     * Stops any current rendering tasks and cleans up resources. After calling this method the
-     * executor is no longer usable.
+     * Stops any current rendering tasks and cleans up resources. After calling this method the executor is no longer
+     * usable.
      */
     void shutdown();
 

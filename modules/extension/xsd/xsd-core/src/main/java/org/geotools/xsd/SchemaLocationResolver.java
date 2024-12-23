@@ -24,8 +24,7 @@ import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 /**
  * Resolves a physical schema location from a namespace uri.
  *
- * <p>This class works from a {@link XSD} instance from which it resolves location on disk relative
- * to.
+ * <p>This class works from a {@link XSD} instance from which it resolves location on disk relative to.
  *
  * <p>Example usage: <code>
  *         <pre>
@@ -46,8 +45,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
     /**
      * A list of locations to use as prefixes when looking up schema files.
      *
-     * <p>This value should be set in cases where an xml schema imports or includes schema files
-     * from sub directories.
+     * <p>This value should be set in cases where an xml schema imports or includes schema files from sub directories.
      */
     protected String[] lookupDirectories;
 
@@ -61,11 +59,10 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
     }
 
     /**
-     * Creates the new schema location resolver specifying additional directories to locate schema
-     * files in.
+     * Creates the new schema location resolver specifying additional directories to locate schema files in.
      *
-     * <p>The <tt>lookupDirectories</tt> parameter should be used in cases where a main schema
-     * imports or includes files from sub directories. Consider the following schema file structure:
+     * <p>The <tt>lookupDirectories</tt> parameter should be used in cases where a main schema imports or includes files
+     * from sub directories. Consider the following schema file structure:
      *
      * <pre>
      *   main.xsd
@@ -82,8 +79,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
      * </pre>
      *
      * @param xsd The xsd to resolve files relative to.
-     * @param lookupDirectories Additional lookup directories relative to the xsd to lookup files
-     *     in.
+     * @param lookupDirectories Additional lookup directories relative to the xsd to lookup files in.
      */
     public SchemaLocationResolver(XSD xsd, String... lookupDirectories) {
         this.xsd = xsd;
@@ -91,8 +87,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
     }
 
     /**
-     * Determines if the locator can resolve the schema location for a particular namespace uri and
-     * schema location.
+     * Determines if the locator can resolve the schema location for a particular namespace uri and schema location.
      *
      * @return true if it can handle, otherwise false.
      */
@@ -134,8 +129,8 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
     /**
      * Resolves <param>location<param> to a physical location.
      *
-     * <p>Resolution is performed by stripping the filename off of <param>location</param> and
-     * looking up a resource located in the same package as the xsd.
+     * <p>Resolution is performed by stripping the filename off of <param>location</param> and looking up a resource
+     * located in the same package as the xsd.
      */
     @Override
     public String resolveSchemaLocation(XSDSchema schema, String uri, String location) {

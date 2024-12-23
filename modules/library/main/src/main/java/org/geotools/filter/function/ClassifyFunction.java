@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class ClassifyFunction extends FunctionExpressionImpl {
 
     // parameters are expression, classifier
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "classify",
-                    parameter("value", Object.class),
-                    parameter("expression", Object.class),
-                    parameter("classifer", Classifier.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "classify",
+            parameter("value", Object.class),
+            parameter("expression", Object.class),
+            parameter("classifer", Classifier.class));
 
     public ClassifyFunction() {
         super(NAME);

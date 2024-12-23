@@ -17,10 +17,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
-/**
- * Simple wrapper class used for tests, collects all the Query objects passed to it, and allows to
- * inspect them
- */
+/** Simple wrapper class used for tests, collects all the Query objects passed to it, and allows to inspect them */
 class QueryCollectingFeatureSource implements SimpleFeatureSource {
 
     SimpleFeatureSource delegate;

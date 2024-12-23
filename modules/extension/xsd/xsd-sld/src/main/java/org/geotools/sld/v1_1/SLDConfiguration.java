@@ -56,8 +56,7 @@ public class SLDConfiguration extends Configuration {
         container.registerComponentImplementation(SLD.NamedLayer, NamedLayerBinding.class);
         container.registerComponentImplementation(SLD.NamedStyle, NamedStyleBinding.class);
         container.registerComponentImplementation(SLD.RemoteOWS, RemoteOWSBinding.class);
-        container.registerComponentImplementation(
-                SLD.StyledLayerDescriptor, StyledLayerDescriptorBinding.class);
+        container.registerComponentImplementation(SLD.StyledLayerDescriptor, StyledLayerDescriptorBinding.class);
         container.registerComponentImplementation(SLD.UserLayer, UserLayerBinding.class);
         container.registerComponentImplementation(SLD.UserStyle, UserStyleBinding.class);
         container.registerComponentImplementation(SLD.Background, FillBinding.class);

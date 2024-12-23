@@ -35,15 +35,14 @@ import org.junit.rules.TemporaryFolder;
 
 public class FlatGeobufDataStoreFactoryTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void metadata() {
         FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         assertEquals("FlatGeobuf", dataStoreFactory.getDisplayName());
-        assertEquals(
-                "A DataStore for reading and writing FlatGeobuf files",
-                dataStoreFactory.getDescription());
+        assertEquals("A DataStore for reading and writing FlatGeobuf files", dataStoreFactory.getDescription());
         assertTrue(dataStoreFactory.isAvailable());
         assertNull(dataStoreFactory.getImplementationHints());
         DataAccessFactory.Param[] params = dataStoreFactory.getParametersInfo();

@@ -30,22 +30,15 @@ import org.geotools.util.KVP;
 public class FlatGeobufDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param URL_PARAM =
-            new Param(
-                    "url",
-                    URL.class,
-                    "The FlatGeobuf file or directory",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "fgb"));
+            new Param("url", URL.class, "The FlatGeobuf file or directory", true, null, new KVP(Param.EXT, "fgb"));
 
-    public static final Param NAMESPACE_PARAM =
-            new Param(
-                    "namespace",
-                    URI.class,
-                    "uri to a the namespace",
-                    false,
-                    null, // not required
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param NAMESPACE_PARAM = new Param(
+            "namespace",
+            URI.class,
+            "uri to a the namespace",
+            false,
+            null, // not required
+            new KVP(Param.LEVEL, "advanced"));
 
     public FlatGeobufDataStoreFactory() {}
 

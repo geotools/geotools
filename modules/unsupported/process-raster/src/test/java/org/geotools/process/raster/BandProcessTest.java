@@ -70,14 +70,11 @@ public class BandProcessTest {
     /** Second coverage to use, equal to the first coverage */
     private static GridCoverage2D coverage2;
 
-    /**
-     * Third coverage to use, which equal to the first one but also translated on the X direction
-     */
+    /** Third coverage to use, which equal to the first one but also translated on the X direction */
     private static GridCoverage2D coverage3;
 
     @BeforeClass
-    public static void setup()
-            throws FileNotFoundException, IOException, NoninvertibleTransformException {
+    public static void setup() throws FileNotFoundException, IOException, NoninvertibleTransformException {
         // Disable medialib
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
         // Disable bandmerge and mosaic native operation
@@ -344,18 +341,16 @@ public class BandProcessTest {
 
         // First image requires only cropping since it is on the right position
         ImageWorker w1 = new ImageWorker(sel1);
-        RenderedOp crop1 =
-                w1.crop(0f, 0f, (float) srcImg.getWidth(), (float) srcImg.getHeight())
-                        .getRenderedOperation();
+        RenderedOp crop1 = w1.crop(0f, 0f, (float) srcImg.getWidth(), (float) srcImg.getHeight())
+                .getRenderedOperation();
         // Minimum
         float minX = sel1.getWidth() - srcImg.getWidth();
         float minY = sel2.getHeight() - srcImg.getHeight();
         // Cropping + Translation of the second image
         ImageWorker w2 = new ImageWorker(sel2);
-        RenderedOp crop2 =
-                w2.crop(minX, minY, (float) srcImg.getWidth(), (float) srcImg.getHeight())
-                        .translate(-minX, -minY, null)
-                        .getRenderedOperation();
+        RenderedOp crop2 = w2.crop(minX, minY, (float) srcImg.getWidth(), (float) srcImg.getHeight())
+                .translate(-minX, -minY, null)
+                .getRenderedOperation();
 
         // Final check on the images
         ensureEqualImages(srcImg, crop1);
@@ -417,22 +412,15 @@ public class BandProcessTest {
                     coordinates[i] = new Coordinate(envelope.getMinX(), envelope.getMinY());
                     break;
                 case 1:
-                    coordinates[i] =
-                            new Coordinate(
-                                    envelope.getMinX(),
-                                    envelope.getMinY() + envelope.getHeight() / 2);
+                    coordinates[i] = new Coordinate(envelope.getMinX(), envelope.getMinY() + envelope.getHeight() / 2);
                     break;
                 case 2:
-                    coordinates[i] =
-                            new Coordinate(
-                                    envelope.getMinX() + envelope.getWidth() / 2,
-                                    envelope.getMinY() + envelope.getHeight() / 2);
+                    coordinates[i] = new Coordinate(
+                            envelope.getMinX() + envelope.getWidth() / 2,
+                            envelope.getMinY() + envelope.getHeight() / 2);
                     break;
                 case 3:
-                    coordinates[i] =
-                            new Coordinate(
-                                    envelope.getMinX() + envelope.getWidth() / 2,
-                                    envelope.getMinY());
+                    coordinates[i] = new Coordinate(envelope.getMinX() + envelope.getWidth() / 2, envelope.getMinY());
                     break;
             }
         }
@@ -473,14 +461,9 @@ public class BandProcessTest {
                 int minx = tile.getMinX();
                 int miny = tile.getMinY();
 
-                int maxx =
-                        Math.min(
-                                minx + tile.getWidth(),
-                                img.getMinX() + img.getWidth() - tx * img.getTileWidth());
+                int maxx = Math.min(minx + tile.getWidth(), img.getMinX() + img.getWidth() - tx * img.getTileWidth());
                 int maxy =
-                        Math.min(
-                                miny + tile.getHeight(),
-                                img.getMinY() + img.getHeight() - tx * img.getTileHeight());
+                        Math.min(miny + tile.getHeight(), img.getMinY() + img.getHeight() - tx * img.getTileHeight());
                 // Check each pixel outside the ROI
                 for (int x = minx; x < maxx; x++) {
                     for (int y = miny; y < maxy; y++) {

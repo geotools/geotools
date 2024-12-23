@@ -11,8 +11,7 @@ public class PostGISCitextTestSetup extends JDBCTestSetup {
     @Override
     protected void setUpData() throws Exception {
         runSafe("DROP TABLE \"users\"");
-        run(
-                "CREATE TABLE \"users\" (fid INT PRIMARY KEY, \"nick\" CITEXT, \"pass\" TEXT NOT NULL)");
+        run("CREATE TABLE \"users\" (fid INT PRIMARY KEY, \"nick\" CITEXT, \"pass\" TEXT NOT NULL)");
         run("INSERT INTO \"users\" VALUES (1, 'larry',  md5(random()::text) );");
         run("INSERT INTO \"users\" VALUES (2, 'Tom',  md5(random()::text) );");
         run("INSERT INTO \"users\" VALUES (3, 'DAMIAN',  md5(random()::text) );");

@@ -23,24 +23,24 @@ import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * A demonstration of schema-validation in which XML schemas are downloaded from the network.
- * Schemas on the classpath are not used.
+ * A demonstration of schema-validation in which XML schemas are downloaded from the network. Schemas on the classpath
+ * are not used.
  *
  * <p>This demo validates the content of <code>
- * src/test/resources/test-data/validator-demo/file-to-be-validated.xml</code> against the schemas
- * declared in its <code>schemaLocation</code>. The schema-validation should report two validation
- * failures to stderr when run as an application in Eclipse.
+ * src/test/resources/test-data/validator-demo/file-to-be-validated.xml</code> against the schemas declared in its
+ * <code>schemaLocation</code>. The schema-validation should report two validation failures to stderr when run as an
+ * application in Eclipse.
  *
  * <p>To validate any other XML document with an XML Schema grammer, replace the content of <code>
- * src/test/resources/test-data/validator-demo/file-to-be-validated.xml</code> with the document to
- * be validated and run this class as an application in Eclipse. Validation requires the presence of
- * a <code>schemaLocation</code> in the instance document.
+ * src/test/resources/test-data/validator-demo/file-to-be-validated.xml</code> with the document to be validated and run
+ * this class as an application in Eclipse. Validation requires the presence of a <code>schemaLocation</code> in the
+ * instance document.
  *
  * <p>Schemas required for validation will be downloaded from the network and placed in <code>
- * target/test-classes/test-data/validator-demo/app-schema-cache</code>. The cache is configured by
- * the existence of <code>src/test/resources/test-data/validator-demo/app-schema-cache</code>, which
- * is copied to <code>target/test-classes</code> by Eclipse and discovered by searching the ancestor
- * directories of the file under validation (also copied and found earlier on the classpath).
+ * target/test-classes/test-data/validator-demo/app-schema-cache</code>. The cache is configured by the existence of
+ * <code>src/test/resources/test-data/validator-demo/app-schema-cache</code>, which is copied to <code>
+ * target/test-classes</code> by Eclipse and discovered by searching the ancestor directories of the file under
+ * validation (also copied and found earlier on the classpath).
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
@@ -57,9 +57,8 @@ public class AppSchemaValidatorDemo {
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws IOException {
         // download and cache schemas using app-schema-cache discovered from resource path
-        SchemaCache cache =
-                SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
-                        AppSchemaValidatorDemo.class.getResource(RESOURCE));
+        SchemaCache cache = SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
+                AppSchemaValidatorDemo.class.getResource(RESOURCE));
         // no classpath resolution of schemas; cached downloads only
         SchemaResolver resolver = new SchemaResolver(null, false, cache);
         AppSchemaValidator validator = AppSchemaValidator.buildValidator(resolver);

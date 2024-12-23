@@ -14,14 +14,12 @@ package org.geotools.api.filter.expression;
 /**
  * Instances of this interface provide a constant, literal value that can be used in expressions.
  *
- * <p>The {@link #evaluate evaluate} method of this class must return the same value as {@link
- * #getValue()}.
+ * <p>The {@link #evaluate evaluate} method of this class must return the same value as {@link #getValue()}.
  *
- * <p>It should be noted that content of getValue() may be persisted with with XML based
- * technologies. As an example a geoapi Geometry may be written out uding GML3, while a JTS Geometry
- * may be written out using GML2. You should not assume that the same instance will be made
- * available to all callers, please limit your self to pure data objects and don't use Literal to
- * pass state or operations between systems.
+ * <p>It should be noted that content of getValue() may be persisted with with XML based technologies. As an example a
+ * geoapi Geometry may be written out uding GML3, while a JTS Geometry may be written out using GML2. You should not
+ * assume that the same instance will be made available to all callers, please limit your self to pure data objects and
+ * don't use Literal to pass state or operations between systems.
  *
  * <p>
  *

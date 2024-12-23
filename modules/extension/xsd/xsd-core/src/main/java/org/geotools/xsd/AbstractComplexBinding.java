@@ -31,8 +31,7 @@ import org.w3c.dom.Element;
 public abstract class AbstractComplexBinding implements ComplexBinding {
     /** Does nothing, subclasses should override this method. */
     @Override
-    public void initializeChildContext(
-            ElementInstance childInstance, Node node, MutablePicoContainer context) {
+    public void initializeChildContext(ElementInstance childInstance, Node node, MutablePicoContainer context) {
         // does nothing, subclasses should override
     }
 
@@ -52,17 +51,14 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
         return OVERRIDE;
     }
 
-    /**
-     * Subclasses should override this method, the default implementation return <code>null</code>.
-     */
+    /** Subclasses should override this method, the default implementation return <code>null</code>. */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return null;
     }
 
     /**
-     * Subclasses should override this method if need be, the default implementation returns
-     * <param>value</param>.
+     * Subclasses should override this method if need be, the default implementation returns <param>value</param>.
      *
      * @see ComplexBinding#encode(Object, Document, Element).
      */
@@ -87,12 +83,11 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      * Subclasses should override this method if need be, the default implementation returns <code>
      * null</code>.
      *
-     * <p>Note that this method only needs to be implemented for schema types which are open-ended
-     * in which the contents are not specifically specified by the schema.
+     * <p>Note that this method only needs to be implemented for schema types which are open-ended in which the contents
+     * are not specifically specified by the schema.
      */
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // do nothing, subclasses should override
         return null;
     }

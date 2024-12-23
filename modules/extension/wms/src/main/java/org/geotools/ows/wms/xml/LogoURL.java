@@ -19,8 +19,8 @@ package org.geotools.ows.wms.xml;
 import java.net.URL;
 
 /**
- * This class is used for representing the LogoURL element inside the Attribution element of a Layer
- * when parsing a GetCapabilities response.
+ * This class is used for representing the LogoURL element inside the Attribution element of a Layer when parsing a
+ * GetCapabilities response.
  *
  * @author Nicola Lagomarsini GeoSolutions S.A.S.
  */

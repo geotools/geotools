@@ -40,23 +40,21 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * This exception is thrown when the problem with reading the GeoTiff file has to do with
- * constructing either the raster to model transform, or the coordinate system. A GeoTiffException:
+ * This exception is thrown when the problem with reading the GeoTiff file has to do with constructing either the raster
+ * to model transform, or the coordinate system. A GeoTiffException:
  *
  * <p>
  *
  * <ul>
- *   <li>encapsulates the salient information in the GeoTiff tags, making the values available as
- *       read only properties.
+ *   <li>encapsulates the salient information in the GeoTiff tags, making the values available as read only properties.
  *   <li>sends the appropriate log message to the log stream
  *   <li>produces a readable message property for later retrieval
  * </ul>
  *
- * <p>This exception is expected to be thrown when there is absolutely nothing wrong with the
- * GeoTiff file which produced it. In this case, the exception is reporting an unsupported
- * coordinate system description or raster to model transform, or some other unrecognized
- * configuration of the GeoTIFFWritingUtilities tags. By doing so, it attempts to record enough
- * information so that the maintainers can support it in the future.
+ * <p>This exception is expected to be thrown when there is absolutely nothing wrong with the GeoTiff file which
+ * produced it. In this case, the exception is reporting an unsupported coordinate system description or raster to model
+ * transform, or some other unrecognized configuration of the GeoTIFFWritingUtilities tags. By doing so, it attempts to
+ * record enough information so that the maintainers can support it in the future.
  *
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
@@ -97,7 +95,8 @@ public final class GeoTiffException extends IOException {
      */
     public GeoKeyEntry[] getGeoKeys() {
         return metadata != null
-                ? metadata.getGeoKeys().toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
+                ? metadata.getGeoKeys()
+                        .toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
                 : null;
     }
 
@@ -117,14 +116,13 @@ public final class GeoTiffException extends IOException {
         if (metadata != null) {
             final PixelScale modelPixelScales = metadata.getModelPixelScales();
             if (modelPixelScales != null) {
-                message.println(
-                        "["
-                                + modelPixelScales.getScaleX()
-                                + ","
-                                + modelPixelScales.getScaleY()
-                                + ","
-                                + modelPixelScales.getScaleZ()
-                                + "]");
+                message.println("["
+                        + modelPixelScales.getScaleX()
+                        + ","
+                        + modelPixelScales.getScaleY()
+                        + ","
+                        + modelPixelScales.getScaleZ()
+                        + "]");
             } else {
                 message.println("NOT AVAILABLE");
             }
@@ -174,19 +172,14 @@ public final class GeoTiffException extends IOException {
             int i = 1;
             for (GeoKeyEntry geokey : metadata.getGeoKeys()) {
                 message.print("GeoKey #" + i + ": ");
-                message.println(
-                        "Key = "
-                                + geokey.getKeyID()
-                                + ", Value = "
-                                + metadata.getGeoKey(geokey.getKeyID()));
+                message.println("Key = " + geokey.getKeyID() + ", Value = " + metadata.getGeoKey(geokey.getKeyID()));
                 i++;
             }
         }
 
         // print out the localized message
         Throwable t = getCause();
-        if (t != null)
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
+        if (t != null) java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
         // close and return
         message.close();

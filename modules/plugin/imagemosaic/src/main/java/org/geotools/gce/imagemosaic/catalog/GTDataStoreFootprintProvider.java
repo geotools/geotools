@@ -36,9 +36,9 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature
- * in a GT data store. The filter must use property names like "granule/attname" to refer to the
- * current granule attributes, e.g. "granule/location"
+ * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature in a GT data store.
+ * The filter must use property names like "granule/attname" to refer to the current granule attributes, e.g.
+ * "granule/location"
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -52,8 +52,8 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
 
     private DataStore store;
 
-    public GTDataStoreFootprintProvider(
-            Map<String, Serializable> params, String typeName, Filter filter) throws IOException {
+    public GTDataStoreFootprintProvider(Map<String, Serializable> params, String typeName, Filter filter)
+            throws IOException {
         store = DataStoreFinder.getDataStore(params);
         if (store == null) {
             throw new IOException("Coould not create footprint data store from params: " + params);
@@ -79,14 +79,13 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
                 SimpleFeature sf = fi.next();
                 result = (Geometry) sf.getDefaultGeometry();
                 if (fi.hasNext()) {
-                    throw new IOException(
-                            "The filter "
-                                    + localFilter
-                                    + " matched more than one footprint record, in particular, it"
-                                    + " matched "
-                                    + fc.size()
-                                    + ", the first match is: "
-                                    + sf);
+                    throw new IOException("The filter "
+                            + localFilter
+                            + " matched more than one footprint record, in particular, it"
+                            + " matched "
+                            + fc.size()
+                            + ", the first match is: "
+                            + sf);
                 }
             }
 
@@ -99,8 +98,8 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
     }
 
     /**
-     * Replaces all references to granule/attribute with the value of said attribute in the feature
-     * provided as a parameter
+     * Replaces all references to granule/attribute with the value of said attribute in the feature provided as a
+     * parameter
      *
      * @author Andrea Aime - GeoSolutions
      */

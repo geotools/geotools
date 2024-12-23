@@ -107,8 +107,7 @@ public class SrsReaderTest {
                         + "\"]],AUTHORITY[\"EPSG\",\"4683\"]]",
                 srs.getWkt());
         Assert.assertEquals(
-                "+proj=longlat +ellps=clrk66 +towgs84=-127.62,-67.24,-47.04,-3.068,4.903,1.578,-1"
-                        + ".06 +no_defs ",
+                "+proj=longlat +ellps=clrk66 +towgs84=-127.62,-67.24,-47.04,-3.068,4.903,1.578,-1" + ".06 +no_defs ",
                 srs.getProj4());
         Assert.assertEquals("metre", srs.getLinearUom());
         Assert.assertEquals("degree", srs.getAngularUom());

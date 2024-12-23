@@ -38,9 +38,8 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 /**
- * Base class for test suite. This class is not abstract for the purpose of {@link
- * TestCaseSupportTest}, but should not be instantiated otherwise. It should be extented (which is
- * why the constructor is protected).
+ * Base class for test suite. This class is not abstract for the purpose of {@link TestCaseSupportTest}, but should not
+ * be instantiated otherwise. It should be extented (which is why the constructor is protected).
  *
  * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
@@ -54,8 +53,8 @@ public abstract class TestCaseSupport {
     static final String MIXED = "mif/mixed.MIF";
 
     /**
-     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply
-     * to message displayed in case of errors.
+     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply to message displayed
+     * in case of errors.
      */
     protected static boolean verbose = false;
 
@@ -107,8 +106,7 @@ public abstract class TestCaseSupport {
     }
 
     /**
-     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
-     * after each test.
+     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run after each test.
      */
     @After
     public void tearDown() throws Exception {
@@ -202,17 +200,19 @@ public abstract class TestCaseSupport {
     }
 
     /**
-     * Copies the specified shape file into the {@code test-data} directory, together with its
-     * sibling ({@code .dbf}, {@code .shp}, {@code .shx} and {@code .prj} files).
+     * Copies the specified shape file into the {@code test-data} directory, together with its sibling ({@code .dbf},
+     * {@code .shp}, {@code .shx} and {@code .prj} files).
      */
     protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions)
             throws IOException {
         for (String requiredExtension : requiredExtensions) {
-            Assert.assertTrue(TestData.copy(this, sibling(name, requiredExtension)).canRead());
+            Assert.assertTrue(
+                    TestData.copy(this, sibling(name, requiredExtension)).canRead());
         }
         for (String optionalExtension : optionalExtensions) {
             try {
-                Assert.assertTrue(TestData.copy(this, sibling(name, optionalExtension)).canRead());
+                Assert.assertTrue(
+                        TestData.copy(this, sibling(name, optionalExtension)).canRead());
             } catch (FileNotFoundException e) {
                 // Ignore: this file is optional.
             }
@@ -221,12 +221,9 @@ public abstract class TestCaseSupport {
 
     /** Returns the absolute path of a test file, given its location in the test data set */
     protected String getAbsolutePath(String testData) throws IOException {
-        if (testData.endsWith(".shp"))
-            copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
-        else if (testData.endsWith(".MIF"))
-            copy(testData, new String[] {"MIF", "MID"}, new String[0]);
-        else if (testData.endsWith(".tab"))
-            copy(testData, new String[] {"tab", "dat", "id", "map"}, new String[0]);
+        if (testData.endsWith(".shp")) copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
+        else if (testData.endsWith(".MIF")) copy(testData, new String[] {"MIF", "MID"}, new String[0]);
+        else if (testData.endsWith(".tab")) copy(testData, new String[] {"tab", "dat", "id", "map"}, new String[0]);
         File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }

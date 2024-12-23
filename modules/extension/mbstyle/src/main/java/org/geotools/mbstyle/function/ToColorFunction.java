@@ -27,14 +27,13 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 
 /**
- * Takes an object as an argument and returns the color value if possible. Evaluates string in the
- * formats of: "rgb(int, int, int)" "rgba(int, int, int, double)"
+ * Takes an object as an argument and returns the color value if possible. Evaluates string in the formats of: "rgb(int,
+ * int, int)" "rgba(int, int, int, double)"
  *
- * <p>And in arrays of 3 and 4 numbers for rgb and rgba colors: [int, int, int] [int, int, int,
- * double]
+ * <p>And in arrays of 3 and 4 numbers for rgb and rgba colors: [int, int, int] [int, int, int, double]
  *
- * <p>The integer values should be between 0-255, for red, green, and blue color values. The double
- * value should be between 0-1, and is converted to a 0-255 alpha value.
+ * <p>The integer values should be between 0-255, for red, green, and blue color values. The double value should be
+ * between 0-1, and is converted to a 0-255 alpha value.
  */
 class ToColorFunction extends FunctionExpressionImpl {
     final MBObjectParser parse = new MBObjectParser(ToColorFunction.class);

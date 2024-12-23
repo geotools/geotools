@@ -49,8 +49,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     }
 
     /**
-     * Constructor with literal. This alternative constructor is a convinience one for integers an
-     * Integer object will be constructed, and no IllegalFilterException can ever be thrown.
+     * Constructor with literal. This alternative constructor is a convinience one for integers an Integer object will
+     * be constructed, and no IllegalFilterException can ever be thrown.
      *
      * @param value The integer to store inside this expression.
      */
@@ -75,8 +75,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     }
 
     /**
-     * Constructor with literal. This alternative constructor is a convinience one for doubles an
-     * Double object will be constructed, and no IllegalFilterException can ever be thrown.
+     * Constructor with literal. This alternative constructor is a convinience one for doubles an Double object will be
+     * constructed, and no IllegalFilterException can ever be thrown.
      *
      * @param value The double to store inside this expression.
      */
@@ -91,8 +91,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     }
 
     /**
-     * Constructor with literal. This alternative constructor is a convinience one for doubles an
-     * Double object will be constructed, and no IllegalFilterException can ever be thrown.
+     * Constructor with literal. This alternative constructor is a convinience one for doubles an Double object will be
+     * constructed, and no IllegalFilterException can ever be thrown.
      *
      * @param value The double to store inside this expression.
      */
@@ -147,14 +147,13 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     }
 
     /**
-     * Compares this filter to the specified object. Returns true if the passed in object is the
-     * same as this expression. Checks to make sure the expression types are the same as well as the
-     * literals.
+     * Compares this filter to the specified object. Returns true if the passed in object is the same as this
+     * expression. Checks to make sure the expression types are the same as well as the literals.
      *
      * @param obj - the object to compare this ExpressionLiteral against.
      * @return true if specified object is equal to this expression; false otherwise.
-     * @task REVISIT: missmatched types now considered not equal. This may be a problem when
-     *     comparing Doubles and Integers
+     * @task REVISIT: missmatched types now considered not equal. This may be a problem when comparing Doubles and
+     *     Integers
      */
     @Override
     public boolean equals(Object obj) {
@@ -180,11 +179,9 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
 
             // do the conversion dance
             int expressionType = getExpressionType(this);
-            if (expressionType == ExpressionType.LITERAL_GEOMETRY
-                    && this.literal instanceof Geometry) {
+            if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Geometry) {
                 return ((Geometry) this.literal).equalsExact(expLit.evaluate(null, Geometry.class));
-            } else if (expressionType == ExpressionType.LITERAL_GEOMETRY
-                    && this.literal instanceof Envelope) {
+            } else if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Envelope) {
                 return this.literal.equals(expLit.evaluate(null, Envelope.class));
             } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
                 return this.literal.equals(expLit.evaluate(null, Integer.class));
@@ -236,13 +233,12 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     }
 
     /**
-     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by
-     * Filter decoders, but may also be used by any thing which needs infomration from filter
-     * structure. Implementations should always call: visitor.visit(this); It is importatant that
-     * this is not left to a parent class unless the parents API is identical.
+     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by Filter decoders, but may
+     * also be used by any thing which needs infomration from filter structure. Implementations should always call:
+     * visitor.visit(this); It is importatant that this is not left to a parent class unless the parents API is
+     * identical.
      *
-     * @param visitor The visitor which requires access to this filter, the method must call
-     *     visitor.visit(this);
+     * @param visitor The visitor which requires access to this filter, the method must call visitor.visit(this);
      */
     @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {

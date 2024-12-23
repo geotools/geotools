@@ -10,9 +10,8 @@
 package org.geotools.api.referencing;
 
 /**
- * Thrown when a {@linkplain org.geotools.api.referencing.operation.MathTransform math transform} as
- * been requested with an unknow {@linkplain org.geotools.api.referencing.operation.OperationMethod
- * operation method} identifier.
+ * Thrown when a {@linkplain org.geotools.api.referencing.operation.MathTransform math transform} as been requested with
+ * an unknow {@linkplain org.geotools.api.referencing.operation.OperationMethod operation method} identifier.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -28,8 +27,8 @@ public class NoSuchIdentifierException extends FactoryException {
     /**
      * Constructs an exception with the specified detail message and classification name.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param identifier {@linkplain ReferenceIdentifier#getCode identifier code}.
      */
     public NoSuchIdentifierException(final String message, final String identifier) {

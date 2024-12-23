@@ -49,9 +49,8 @@ public final class PixelTranslation implements Serializable {
     private static final long serialVersionUID = 2616596940766158984L;
 
     /**
-     * Math transforms created by {@link #translate(MathTransform,PixelInCell,PixelInCell)}. Each
-     * element in this array will be created when first needed. Even index are translations by -0.5
-     * while odd index are translations by +0.5.
+     * Math transforms created by {@link #translate(MathTransform,PixelInCell,PixelInCell)}. Each element in this array
+     * will be created when first needed. Even index are translations by -0.5 while odd index are translations by +0.5.
      */
     private static final MathTransform[] translations = new MathTransform[16];
 
@@ -59,14 +58,14 @@ public final class PixelTranslation implements Serializable {
     public final PixelOrientation orientation;
 
     /**
-     * The translation among the <var>x</var> axis relative to pixel center. The value is typically
-     * in the [-0.5 .. +0.5] range.
+     * The translation among the <var>x</var> axis relative to pixel center. The value is typically in the [-0.5 ..
+     * +0.5] range.
      */
     public final double dx;
 
     /**
-     * The translation among the <var>y</var> axis relative to pixel center. The value is typically
-     * in the [-0.5 .. +0.5] range.
+     * The translation among the <var>y</var> axis relative to pixel center. The value is typically in the [-0.5 ..
+     * +0.5] range.
      */
     public final double dy;
 
@@ -86,8 +85,8 @@ public final class PixelTranslation implements Serializable {
     }
 
     /**
-     * Creates a new pixel translation. The translation is added immediately in the {@link
-     * #ORIENTATIONS} map (this behavior would need to be revisited if this method was public).
+     * Creates a new pixel translation. The translation is added immediately in the {@link #ORIENTATIONS} map (this
+     * behavior would need to be revisited if this method was public).
      */
     private PixelTranslation(final PixelOrientation orientation, final double dx, final double dy) {
         this.orientation = orientation;
@@ -99,8 +98,8 @@ public final class PixelTranslation implements Serializable {
     }
 
     /**
-     * Creates a new pixel translation. The translation is added immediately in the {@link
-     * #ORIENTATIONS} map (this behavior would need to be revisited if this method was public).
+     * Creates a new pixel translation. The translation is added immediately in the {@link #ORIENTATIONS} map (this
+     * behavior would need to be revisited if this method was public).
      */
     private PixelTranslation(final String orientation, final double dx, final double dy) {
         this(valueOf(orientation), dx, dy);
@@ -113,8 +112,7 @@ public final class PixelTranslation implements Serializable {
      * @return The corresponding pixel orientation, or {@code null} if the argument was null.
      * @throws IllegalArgumentException if the given code is unknown.
      */
-    public static PixelOrientation getPixelOrientation(final PixelInCell anchor)
-            throws IllegalArgumentException {
+    public static PixelOrientation getPixelOrientation(final PixelInCell anchor) throws IllegalArgumentException {
         if (PixelInCell.CELL_CENTER.equals(anchor)) {
             return CENTER;
         } else if (PixelInCell.CELL_CORNER.equals(anchor)) {
@@ -122,14 +120,12 @@ public final class PixelTranslation implements Serializable {
         } else if (anchor == null) {
             return null;
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
     /**
-     * Returns the position relative to the pixel center. This method returns a value from the
-     * following table:
+     * Returns the position relative to the pixel center. This method returns a value from the following table:
      *
      * <p>
      *
@@ -139,8 +135,7 @@ public final class PixelTranslation implements Serializable {
      *   <tr><td>{@link PixelInCell#CELL_CORNER  CELL_CORNER}</td> <td>-0.5</td></tr>
      * </table>
      *
-     * <p>This method is typically used for <var>n</var>-dimensional grids, where the number of
-     * dimension is unknown.
+     * <p>This method is typically used for <var>n</var>-dimensional grids, where the number of dimension is unknown.
      *
      * @param anchor The "pixel in cell" value.
      * @return The translation for the given "pixel in cell" value.
@@ -151,14 +146,13 @@ public final class PixelTranslation implements Serializable {
         } else if (PixelInCell.CELL_CORNER.equals(anchor)) {
             return -0.5;
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
     /**
-     * Returns the specified position relative to the pixel center. This method returns a value from
-     * the following table:
+     * Returns the specified position relative to the pixel center. This method returns a value from the following
+     * table:
      *
      * <p>
      *
@@ -177,19 +171,17 @@ public final class PixelTranslation implements Serializable {
      * @return The position relative to the pixel center.
      * @throws IllegalArgumentException if the specified orientation is unknown.
      */
-    public static PixelTranslation getPixelTranslation(final PixelOrientation anchor)
-            throws IllegalArgumentException {
+    public static PixelTranslation getPixelTranslation(final PixelOrientation anchor) throws IllegalArgumentException {
         final PixelTranslation offset = ORIENTATIONS.get(anchor);
         if (offset == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
         return offset;
     }
 
     /**
-     * Returns the pixel orientation for the given offset, or {@code null} if none. This is the
-     * reverse of {@link #getPixelTranslation(PixelOrientation)}.
+     * Returns the pixel orientation for the given offset, or {@code null} if none. This is the reverse of
+     * {@link #getPixelTranslation(PixelOrientation)}.
      *
      * @param dx The translation along <var>x</var> axis.
      * @param dy The translation along <var>y</var> axis.
@@ -300,10 +292,8 @@ public final class PixelTranslation implements Serializable {
     }
 
     /** Formats an exception for an illegal dimension. */
-    private static IllegalArgumentException illegalDimension(
-            final String name, final Object dimension) {
-        return new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
+    private static IllegalArgumentException illegalDimension(final String name, final Object dimension) {
+        return new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
     }
 
     /** Returns a string representation of this pixel translation. */

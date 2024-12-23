@@ -74,10 +74,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
 
     /** */
     void checkEnv(ReferencedEnvelope env) throws FactoryException {
-        assertEquals(
-                "wrong CRS",
-                "EPSG:3857",
-                CRS.lookupIdentifier(env.getCoordinateReferenceSystem(), true));
+        assertEquals("wrong CRS", "EPSG:3857", CRS.lookupIdentifier(env.getCoordinateReferenceSystem(), true));
         assertEquals(env.getMinimum(0), -1.3885038382923e7, 0.001);
         assertEquals(env.getMinimum(1), 2870337.130793, 0.001);
         assertEquals(env.getMaximum(0), -7455049.489182421, 0.001);
@@ -88,10 +85,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
     @Test
     public void testGetCoordinateReferenceSystem() throws FactoryException {
 
-        assertEquals(
-                "wrong CRS",
-                "EPSG:3857",
-                CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(), true));
+        assertEquals("wrong CRS", "EPSG:3857", CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(), true));
     }
 
     /** Test if our http client is used, and how many calls. */
@@ -104,15 +98,14 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
-        AffineTransform transform =
-                RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
+        AffineTransform transform = RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
         renderer.paint(image.createGraphics(), paintArea, kvpMapLayer.getBounds(), transform);
         Assert.assertEquals(2, httpClient.count);
     }
 
     /**
-     * Test method for {@link
-     * WMTSMapLayer#isNativelySupported(org.geotools.api.referencing.crs.CoordinateReferenceSystem)}.
+     * Test method for
+     * {@link WMTSMapLayer#isNativelySupported(org.geotools.api.referencing.crs.CoordinateReferenceSystem)}.
      */
     @Test
     public void testIsNativelySupported() throws NoSuchAuthorityCodeException, FactoryException {

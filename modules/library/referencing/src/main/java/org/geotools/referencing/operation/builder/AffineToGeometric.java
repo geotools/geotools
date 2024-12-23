@@ -19,9 +19,9 @@ package org.geotools.referencing.operation.builder;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 
 /**
- * Helper class for converting values from affine transformation matrix to its geometric form.
- * Development carried out thanks to R&D grant DC08P02OUK006 - Old Maps Online
- * (www.oldmapsonline.org) from Ministry of Culture of the Czech Republic
+ * Helper class for converting values from affine transformation matrix to its geometric form. Development carried out
+ * thanks to R&D grant DC08P02OUK006 - Old Maps Online (www.oldmapsonline.org) from Ministry of Culture of the Czech
+ * Republic
  *
  * @see http://groups.csail.mit.edu/graphics/classes/6.837/F98/Notes/lecture10.ps
  * @author jezekjan

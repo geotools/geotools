@@ -109,7 +109,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         TYPE_NAME_TO_CLASS.put("ST_POINT", Point.class);
         TYPE_NAME_TO_CLASS.put("ST_GEOMETRY", Geometry.class);
         TYPE_NAME_TO_CLASS.put("BOOLEAN", Boolean.class);
-    };
+    }
+    ;
 
     private static final Map<Integer, Class<?>> SQL_TYPE_TO_CLASS = new HashMap<>();
 
@@ -180,8 +181,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public boolean includeTable(String schemaName, String tableName, Connection cx)
-            throws SQLException {
+    public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
         if (METADATA_TABLE_NAME.equals(tableName)) {
             return false;
         }
@@ -224,23 +224,20 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         return GEOMETRY_TYPE_NAME;
     }
 
-    private Integer getGeometrySRIDFromView(
-            String schemaName, String tableName, String columnName, Connection cx)
+    private Integer getGeometrySRIDFromView(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             if (schemaName != null) {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT SRS_ID FROM PUBLIC.ST_GEOMETRY_COLUMNS WHERE SCHEMA_NAME = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?");
+                ps = cx.prepareStatement(
+                        "SELECT SRS_ID FROM PUBLIC.ST_GEOMETRY_COLUMNS WHERE SCHEMA_NAME = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, tableName);
                 ps.setString(3, columnName);
             } else {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT SRS_ID FROM PUBLIC.ST_GEOMETRY_COLUMNS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ? AND COLUMN_NAME = ?");
+                ps = cx.prepareStatement(
+                        "SELECT SRS_ID FROM PUBLIC.ST_GEOMETRY_COLUMNS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ? AND COLUMN_NAME = ?");
                 ps.setString(1, tableName);
                 ps.setString(2, columnName);
             }
@@ -256,8 +253,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    private Integer getGeometrySRIDViaSelect(
-            String schemaName, String tableName, String columnName, Connection cx)
+    private Integer getGeometrySRIDViaSelect(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         // Try the first non-NULL geometry
         StringBuffer sql = new StringBuffer();
@@ -285,8 +281,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public Integer getGeometrySRID(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         Integer srid = getGeometrySRIDFromView(schemaName, tableName, columnName, cx);
         if (srid == null) {
@@ -296,8 +291,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public int getGeometryDimension(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public int getGeometryDimension(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         // Try the metadata table first
         if (tableExists(schemaName, METADATA_TABLE_NAME, cx)) {
@@ -354,9 +348,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps =
-                    cx.prepareStatement(
-                            "SELECT ORGANIZATION, ORGANIZATION_COORDSYS_ID, DEFINITION FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_ID = ?");
+            ps = cx.prepareStatement(
+                    "SELECT ORGANIZATION, ORGANIZATION_COORDSYS_ID, DEFINITION FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_ID = ?");
             ps.setInt(1, srid);
             rs = ps.executeQuery();
             if (!rs.next()) return null;
@@ -369,13 +362,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
                     return CRS.decode(org + ":" + orgId);
                 } catch (Exception e) {
                     LOGGER.log(
-                            Level.WARNING,
-                            "Could not decode "
-                                    + org
-                                    + ":"
-                                    + orgId
-                                    + " using the geotools database",
-                            e);
+                            Level.WARNING, "Could not decode " + org + ":" + orgId + " using the geotools database", e);
                 }
             }
 
@@ -417,8 +404,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
-            throws SQLException, IOException {
+    public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx) throws SQLException, IOException {
         String senvelope = rs.getString(column);
         if (senvelope == null) return new Envelope();
         String[] comps = senvelope.split(":");
@@ -432,11 +418,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void encodeGeometryColumn(
-            GeometryDescriptor gatt,
-            String prefix,
-            int srid,
-            org.geotools.util.factory.Hints hints,
-            StringBuffer sql) {
+            GeometryDescriptor gatt, String prefix, int srid, org.geotools.util.factory.Hints hints, StringBuffer sql) {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
         sql.append(".ST_AsBinary()");
     }
@@ -575,8 +557,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         createSequences(schemaName, featureType, cx);
     }
 
-    private void registerMetadata(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {
+    private void registerMetadata(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
         String tableName = featureType.getName().getLocalPart();
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
             if (!(att instanceof GeometryDescriptor)) {
@@ -587,15 +568,12 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    private void registerMetadata(
-            String schemaName, String tableName, GeometryDescriptor gd, Connection cx)
+    private void registerMetadata(String schemaName, String tableName, GeometryDescriptor gd, Connection cx)
             throws SQLException {
         // HANA accepts 2-, 3- and 4-dimensional geometries in each geometry column.
         // Therefore, we store the information about the dimension in an extra metadata table.
         int dimensions = 2;
-        Integer dimHint =
-                (Integer)
-                        gd.getUserData().get(org.geotools.util.factory.Hints.COORDINATE_DIMENSION);
+        Integer dimHint = (Integer) gd.getUserData().get(org.geotools.util.factory.Hints.COORDINATE_DIMENSION);
         if (dimHint != null) {
             dimensions = dimHint;
         }
@@ -634,8 +612,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    private void createSequences(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {
+    private void createSequences(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
         schemaName = resolveSchema(schemaName, cx);
         String tableName = featureType.getTypeName();
         List<String> pkColumns = getPrimaryKeys(schemaName, tableName, cx);
@@ -657,8 +634,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
         schemaName = resolveSchema(schemaName, cx);
         String tableName = featureType.getTypeName();
         List<String> pkColumns = getPrimaryKeys(schemaName, tableName, cx);
@@ -679,8 +655,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
         if (!tableExists(schemaName, METADATA_TABLE_NAME, cx)) {
             return;
         }
@@ -698,8 +673,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    private List<String> getPrimaryKeys(String schemaName, String tableName, Connection cx)
-            throws SQLException {
+    private List<String> getPrimaryKeys(String schemaName, String tableName, Connection cx) throws SQLException {
         DatabaseMetaData dbmd = cx.getMetaData();
 
         List<String> pkColumns = new ArrayList<>();
@@ -721,30 +695,26 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public Object getNextAutoGeneratedValue(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Object getNextAutoGeneratedValue(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         String sequenceName = getSequenceForColumn(schemaName, tableName, columnName, cx);
         return getNextSequenceValue(schemaName, sequenceName, cx);
     }
 
     @Override
-    public String getSequenceForColumn(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public String getSequenceForColumn(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         String sequenceName = getSequenceName(tableName, columnName);
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             if (schemaName == null) {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?");
+                ps = cx.prepareStatement(
+                        "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?");
                 ps.setString(1, sequenceName);
             } else {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?");
+                ps = cx.prepareStatement(
+                        "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, sequenceName);
             }
@@ -761,8 +731,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx)
-            throws SQLException {
+    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx) throws SQLException {
         String sql = "SELECT " + encodeNextSequenceValue(schemaName, sequenceName) + " FROM DUMMY";
         Statement stmt = null;
         ResultSet rs = null;
@@ -846,19 +815,14 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void prepareGeometryValue(
-            Class<? extends Geometry> gClass,
-            int dimension,
-            int srid,
-            Class binding,
-            StringBuffer sql) {
+            Class<? extends Geometry> gClass, int dimension, int srid, Class binding, StringBuffer sql) {
         sql.append("ST_GeomFromWKB(?, ");
         sql.append(srid);
         sql.append(")");
     }
 
     @Override
-    public void setGeometryValue(
-            Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
         if (g != null) {
             dimension = Math.min(dimension, HanaDimensionFinder.findDimension(g));
@@ -874,8 +838,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void setValue(
-            Object value, Class binding, PreparedStatement ps, int column, Connection cx)
+    public void setValue(Object value, Class binding, PreparedStatement ps, int column, Connection cx)
             throws SQLException {
         if (value == null) {
             super.setValue(value, binding, ps, column, cx);
@@ -899,8 +862,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         return new HanaFilterToSQL(this, functionEncodingEnabled, hanaVersion);
     }
 
-    private String resolveSchema(String schemaName, Connection cx)
-            throws SQLException, AssertionError {
+    private String resolveSchema(String schemaName, Connection cx) throws SQLException, AssertionError {
         if (schemaName == null) {
             schemaName = getCurrentSchema(cx);
         }
@@ -925,20 +887,16 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         return schemaName;
     }
 
-    private boolean tableExists(String schemaName, String tableName, Connection cx)
-            throws SQLException {
+    private boolean tableExists(String schemaName, String tableName, Connection cx) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             if (schemaName == null) {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?");
+                ps = cx.prepareStatement(
+                        "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?");
                 ps.setString(1, tableName);
             } else {
-                ps =
-                        cx.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?");
+                ps = cx.prepareStatement("SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, tableName);
             }

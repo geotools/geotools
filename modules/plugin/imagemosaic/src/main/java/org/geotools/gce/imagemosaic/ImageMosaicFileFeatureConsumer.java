@@ -37,13 +37,12 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /**
- * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by
- * leveraging on the {@link File} associated to the feature.
+ * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by leveraging on the
+ * {@link File} associated to the feature.
  */
 public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsumer<SimpleFeature> {
 
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicFileConsumer.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFileConsumer.class);
 
     /** The Underlying {@link ImageMosaicFileConsumer} instance, doing the actual handling */
     private ImageMosaicFileConsumer imageMosaicFileConsumer;
@@ -61,15 +60,11 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
         File file = null;
         if (locationAttrObj instanceof String) {
             final String path = (String) locationAttrObj;
-            boolean isAbsolute =
-                    Boolean.getBoolean(runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH));
+            boolean isAbsolute = Boolean.getBoolean(runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH));
 
-            file =
-                    isAbsolute
-                            ? new File(path)
-                            : new File(
-                                    runConfiguration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR),
-                                    path);
+            file = isAbsolute
+                    ? new File(path)
+                    : new File(runConfiguration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR), path);
         } else if (locationAttrObj instanceof File) {
             file = (File) locationAttrObj;
         }
@@ -77,8 +72,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
     }
 
     @Override
-    public void handleElement(SimpleFeature feature, ImageMosaicWalker provider)
-            throws IOException {
+    public void handleElement(SimpleFeature feature, ImageMosaicWalker provider) throws IOException {
         ImageMosaicConfigHandler configHandler = provider.getConfigHandler();
         CatalogBuilderConfiguration runConfiguration = configHandler.getRunConfiguration();
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
@@ -121,10 +115,8 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
             file = (File) locationAttrObj;
         } else {
             provider.getEventHandler()
-                    .fireException(
-                            new IOException(
-                                    "Location attribute type not recognized for column name: "
-                                            + locationAttrName));
+                    .fireException(new IOException(
+                            "Location attribute type not recognized for column name: " + locationAttrName));
             provider.stop();
             return;
         }
@@ -175,9 +167,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
             }
             validFileName = FilenameUtils.getName(validFileName);
             eventHandler.fireEvent(
-                    Level.INFO,
-                    "Now indexing file " + validFileName,
-                    ((elementIndex * 100.0) / numElements));
+                    Level.INFO, "Now indexing file " + validFileName, ((elementIndex * 100.0) / numElements));
             GridCoverage2DReader coverageReader = null;
             try {
                 // Getting a coverage reader for this coverage.
@@ -206,7 +196,8 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                     return;
                 }
 
-                final Hints configurationHints = configHandler.getRunConfiguration().getHints();
+                final Hints configurationHints =
+                        configHandler.getRunConfiguration().getHints();
                 coverageReader = (GridCoverage2DReader) format.getReader(file, configurationHints);
 
                 // Setting of the ReaderSPI to use
@@ -219,11 +210,8 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                     if (inStreamSpi == null) {
                         throw new IllegalArgumentException("no inputStreamSPI available!");
                     }
-                    try (ImageInputStream inStream =
-                            inStreamSpi.createInputStreamInstance(
-                                    granuleUrl,
-                                    ImageIO.getUseCache(),
-                                    ImageIO.getCacheDirectory())) {
+                    try (ImageInputStream inStream = inStreamSpi.createInputStreamInstance(
+                            granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory())) {
                         // Get the ImageInputStream from the SPI
                         // Throws an Exception if the ImageInputStream is not present
                         if (inStream == null) {
@@ -231,8 +219,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                                 LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
                             }
                             throw new IllegalArgumentException(
-                                    "Unable to get an input stream for the provided file "
-                                            + granuleUrl.toString());
+                                    "Unable to get an input stream for the provided file " + granuleUrl.toString());
                         }
                         // Selection of the ImageReaderSpi from the Stream
                         ImageReaderSpi spi = Utils.getReaderSpiFromStream(null, inStream);
@@ -244,45 +231,33 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                 String[] coverageNames = coverageReader.getGridCoverageNames();
 
                 for (String cvName : coverageNames) {
-                    ImageMosaicSourceElement element =
-                            new ImageMosaicSourceElement.FileElement(file);
+                    ImageMosaicSourceElement element = new ImageMosaicSourceElement.FileElement(file);
                     boolean shouldAccept = true;
                     try {
                         for (GranuleAcceptor acceptor : configHandler.getGranuleAcceptors()) {
                             if (!acceptor.accepts(coverageReader, cvName, file, configHandler)) {
                                 shouldAccept = false;
-                                String message =
-                                        "Granule acceptor  "
-                                                + acceptor.getClass().getName()
-                                                + " rejected the granule being processed"
-                                                + file;
-                                element.fireHarvestingEvent(
-                                        eventHandler, elementIndex, numElements, message);
+                                String message = "Granule acceptor  "
+                                        + acceptor.getClass().getName()
+                                        + " rejected the granule being processed"
+                                        + file;
+                                element.fireHarvestingEvent(eventHandler, elementIndex, numElements, message);
                                 break;
                             }
                         }
                         // store the format only if we can accept this file, not before
                         configHandler.setCachedFormat(format);
                     } catch (Exception e) {
-                        LOGGER.log(
-                                Level.FINE,
-                                "Failure during potential granule evaluation, skipping it: " + file,
-                                e);
+                        LOGGER.log(Level.FINE, "Failure during potential granule evaluation, skipping it: " + file, e);
                         shouldAccept = false;
                     }
 
                     if (shouldAccept) {
                         configHandler.updateConfiguration(
-                                coverageReader,
-                                cvName,
-                                element,
-                                elementIndex,
-                                numElements,
-                                provider.getTransaction());
+                                coverageReader, cvName, element, elementIndex, numElements, provider.getTransaction());
                     }
 
-                    element.fireHarvestingEvent(
-                            eventHandler, elementIndex, numElements, "Done with file " + file);
+                    element.fireHarvestingEvent(eventHandler, elementIndex, numElements, "Done with file " + file);
                 }
             } catch (Exception e) {
                 // we got an exception, we should stop the walk
@@ -299,8 +274,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                         coverageReader.dispose();
                 } catch (Throwable e) {
                     // ignore exception
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
                 }
             }
         }

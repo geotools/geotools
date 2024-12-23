@@ -44,8 +44,7 @@ public class GetCapabilitiesTest {
         WPSConfiguration wps = new WPSConfiguration();
         Parser parser = new Parser(wps);
 
-        Object o =
-                parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
+        Object o = parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
         Assert.assertTrue(o instanceof WPSCapabilitiesType);
 
         WPSCapabilitiesType caps = (WPSCapabilitiesType) o;
@@ -57,12 +56,10 @@ public class GetCapabilitiesTest {
     }
 
     /**
-     * <ows:ServiceIdentification> <ows:Title>AAFC GDAS-based WPS server</ows:Title>
-     * <ows:Abstract>AAFC GDAS-based WPS server developed for the OGC WPSie.</ows:Abstract>
-     * <ows:Keywords> <ows:Keyword>WPS</ows:Keyword> <ows:Keyword>AAFC</ows:Keyword>
-     * <ows:Keyword>geospatial</ows:Keyword> <ows:Keyword>geoprocessing</ows:Keyword>
-     * </ows:Keywords> <ows:ServiceType>WPS</ows:ServiceType>
-     * <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+     * <ows:ServiceIdentification> <ows:Title>AAFC GDAS-based WPS server</ows:Title> <ows:Abstract>AAFC GDAS-based WPS
+     * server developed for the OGC WPSie.</ows:Abstract> <ows:Keywords> <ows:Keyword>WPS</ows:Keyword>
+     * <ows:Keyword>AAFC</ows:Keyword> <ows:Keyword>geospatial</ows:Keyword> <ows:Keyword>geoprocessing</ows:Keyword>
+     * </ows:Keywords> <ows:ServiceType>WPS</ows:ServiceType> <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
      * <ows:ServiceTypeVersion>0.4.0</ows:ServiceTypeVersion> <ows:Fees>NONE</ows:Fees>
      * <ows:AccessConstraints>NONE</ows:AccessConstraints> </ows:ServiceIdentification>
      */
@@ -103,17 +100,15 @@ public class GetCapabilitiesTest {
     }
 
     /**
-     * <ows:ServiceProvider> <ows:ProviderName>Agriculture and Agri-Food Canada</ows:ProviderName>
-     * <ows:ProviderSite xlink:href="http://gis.agr.gc.ca/"/> <ows:ServiceContact>
-     * <ows:IndividualName>Peter Schut</ows:IndividualName> <ows:PositionName>Information System
-     * Scientist</ows:PositionName> <ows:ContactInfo> <ows:Phone> <ows:Voice>+1 613
-     * 759-1874</ows:Voice> <ows:Facsimile>+1 613 759-1937</ows:Facsimile> </ows:Phone>
-     * <ows:Address> <ows:DeliveryPoint>Room 1135, Neatby Building, 960, Carling
-     * Avenue</ows:DeliveryPoint> <ows:City>Ottawa</ows:City>
-     * <ows:AdministrativeArea>ON</ows:AdministrativeArea> <ows:PostalCode>K1AOC6</ows:PostalCode>
-     * <ows:Country>Canada</ows:Country>
-     * <ows:ElectronicMailAddress>schutp@agr.gc.ca</ows:ElectronicMailAddress> </ows:Address>
-     * </ows:ContactInfo> </ows:ServiceContact> </ows:ServiceProvider>
+     * <ows:ServiceProvider> <ows:ProviderName>Agriculture and Agri-Food Canada</ows:ProviderName> <ows:ProviderSite
+     * xlink:href="http://gis.agr.gc.ca/"/> <ows:ServiceContact> <ows:IndividualName>Peter Schut</ows:IndividualName>
+     * <ows:PositionName>Information System Scientist</ows:PositionName> <ows:ContactInfo> <ows:Phone> <ows:Voice>+1 613
+     * 759-1874</ows:Voice> <ows:Facsimile>+1 613 759-1937</ows:Facsimile> </ows:Phone> <ows:Address>
+     * <ows:DeliveryPoint>Room 1135, Neatby Building, 960, Carling Avenue</ows:DeliveryPoint>
+     * <ows:City>Ottawa</ows:City> <ows:AdministrativeArea>ON</ows:AdministrativeArea>
+     * <ows:PostalCode>K1AOC6</ows:PostalCode> <ows:Country>Canada</ows:Country>
+     * <ows:ElectronicMailAddress>schutp@agr.gc.ca</ows:ElectronicMailAddress> </ows:Address> </ows:ContactInfo>
+     * </ows:ServiceContact> </ows:ServiceProvider>
      */
     void assertServiceProvider(ServiceProviderType sp) {
         Assert.assertNotNull(sp);
@@ -134,8 +129,7 @@ public class GetCapabilitiesTest {
         AddressType a = ci.getAddress();
         Assert.assertNotNull(a);
         Assert.assertNotNull(a.getDeliveryPoint());
-        Assert.assertEquals(
-                "Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
+        Assert.assertEquals("Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
         Assert.assertEquals("Ottawa", a.getCity());
         Assert.assertEquals("ON", a.getAdministrativeArea());
         Assert.assertEquals("Canada", a.getCountry());
@@ -145,12 +139,10 @@ public class GetCapabilitiesTest {
 
     /**
      * <ows:OperationsMetadata> <ows:Operation name="GetCapabilities"> <ows:DCP> <ows:HTTP> <ows:Get
-     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> </ows:HTTP> </ows:DCP> </ows:Operation>
-     * <ows:Operation name="DescribeProcess"> <ows:DCP> <ows:HTTP> <ows:Get
-     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> <ows:Post
-     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS"/> </ows:HTTP> </ows:DCP> </ows:Operation>
-     * <ows:Operation name="Execute"> <ows:DCP> <ows:HTTP> <ows:Get
-     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> <ows:Post
+     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> </ows:HTTP> </ows:DCP> </ows:Operation> <ows:Operation
+     * name="DescribeProcess"> <ows:DCP> <ows:HTTP> <ows:Get xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> <ows:Post
+     * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS"/> </ows:HTTP> </ows:DCP> </ows:Operation> <ows:Operation
+     * name="Execute"> <ows:DCP> <ows:HTTP> <ows:Get xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/> <ows:Post
      * xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS"/> </ows:HTTP> </ows:DCP> </ows:Operation>
      * </ows:OperationsMetadata>
      */
@@ -199,11 +191,10 @@ public class GetCapabilitiesTest {
     }
 
     /**
-     * <wps:ProcessOfferings> <wps:Process wps:processVersion="1">
-     * <ows:Identifier>buffer</ows:Identifier> <ows:Title>Buffer a polygon feature</ows:Title>
-     * <ows:Abstract>Buffer the polygon coordinates found in one GML stream by a given buffer
-     * distance, and output the results in GML.</ows:Abstract> <ows:Metadata xlink:title="buffer" />
-     * <ows:Metadata xlink:title="polygon" /> </wps:Process> </wps:ProcessOfferings>
+     * <wps:ProcessOfferings> <wps:Process wps:processVersion="1"> <ows:Identifier>buffer</ows:Identifier>
+     * <ows:Title>Buffer a polygon feature</ows:Title> <ows:Abstract>Buffer the polygon coordinates found in one GML
+     * stream by a given buffer distance, and output the results in GML.</ows:Abstract> <ows:Metadata
+     * xlink:title="buffer" /> <ows:Metadata xlink:title="polygon" /> </wps:Process> </wps:ProcessOfferings>
      */
     void assertProcessOfferings(ProcessOfferingsType po) {
         Assert.assertNotNull(po);

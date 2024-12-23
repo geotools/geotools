@@ -65,7 +65,8 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         Document dom = encode(geometry, GML.MultiPolygon);
         // print(dom);
         assertEquals("geometry", getID(dom.getDocumentElement()));
-        assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "polygonMember").getLength());
+        assertEquals(
+                2, dom.getElementsByTagNameNS(GML.NAMESPACE, "polygonMember").getLength());
         NodeList children = dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart());
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
@@ -86,10 +87,9 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
                         .getAttributes()
                         .getNamedItem("srsName")
                         .getTextContent());
-        assertNull(
-                dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon")
-                        .item(0)
-                        .getAttributes()
-                        .getNamedItem("srsName"));
+        assertNull(dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon")
+                .item(0)
+                .getAttributes()
+                .getNamedItem("srsName"));
     }
 }

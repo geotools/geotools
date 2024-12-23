@@ -40,14 +40,13 @@ public class OvalBuilder extends PolygonBuilder {
     }
 
     /**
-     * Creates a new {@code Oval} positioned at the given neighbor position relative to the
-     * reference element.
+     * Creates a new {@code Oval} positioned at the given neighbor position relative to the reference element.
      *
      * @param el the reference oval
      * @param neighbor a neighbour position
      * @return a new {@code Oval} object
-     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not
-     *     an instance of {@code Oval}
+     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not an instance of
+     *     {@code Oval}
      */
     @Override
     public Oval createNeighbor(PolygonElement el, Neighbor neighbor) {

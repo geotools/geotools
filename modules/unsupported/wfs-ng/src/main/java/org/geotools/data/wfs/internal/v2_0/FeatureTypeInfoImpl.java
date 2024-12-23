@@ -116,10 +116,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         try {
             nativeBounds = wgs84Bounds.transform(crs, true);
         } catch (TransformException | FactoryException e) {
-            Loggers.MODULE.log(
-                    Level.WARNING,
-                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
-                    e);
+            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to " + getDefaultSRS(), e);
             nativeBounds = new ReferencedEnvelope(crs);
         }
         return nativeBounds;
@@ -162,8 +159,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             double maxLat = upperCorner.get(1);
 
             ReferencedEnvelope latLonBounds =
-                    new ReferencedEnvelope(
-                            minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
+                    new ReferencedEnvelope(minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
 
             return latLonBounds;
         }

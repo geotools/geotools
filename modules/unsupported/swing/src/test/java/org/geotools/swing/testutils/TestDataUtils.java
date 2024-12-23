@@ -35,8 +35,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * Provides static methods to load and access test data, thus reducing duplicated code in test
- * classes.
+ * Provides static methods to load and access test data, thus reducing duplicated code in test classes.
  *
  * @author Michael Bedward
  * @since 8.0

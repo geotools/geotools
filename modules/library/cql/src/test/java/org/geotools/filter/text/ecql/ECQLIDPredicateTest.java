@@ -73,8 +73,7 @@ public class ECQLIDPredicateTest {
         final String strId1 = "states.1";
         final String strId2 = "states.2";
         final String strId3 = "states.3";
-        Filter filter =
-                ECQL.toFilter("NOT IN ('" + strId1 + "','" + strId2 + "', '" + strId3 + "')");
+        Filter filter = ECQL.toFilter("NOT IN ('" + strId1 + "','" + strId2 + "', '" + strId3 + "')");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue("Not filter was expected", filter instanceof Not);
@@ -144,9 +143,7 @@ public class ECQLIDPredicateTest {
         final String timeStamp1 = "2010-01-01 00:01:01";
         final String timeStamp2 = "2010-02-02 00:01:01";
         final String timeStamp3 = "2010-03-03 00:01:01";
-        Filter filter =
-                ECQL.toFilter(
-                        "IN ('" + timeStamp1 + "','" + timeStamp2 + "', '" + timeStamp3 + "')");
+        Filter filter = ECQL.toFilter("IN ('" + timeStamp1 + "','" + timeStamp2 + "', '" + timeStamp3 + "')");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue("Not filter was expected", filter instanceof Id);
@@ -207,8 +204,8 @@ public class ECQLIDPredicateTest {
     /**
      * deprecated syntax (TODO it should be unsupported in the next version)
      *
-     * <p>This test produces the following warning in the log: "WARNING: ID IN (...) is a deprecated
-     * syntax, you should use IN (...) "
+     * <p>This test produces the following warning in the log: "WARNING: ID IN (...) is a deprecated syntax, you should
+     * use IN (...) "
      */
     @Test
     public void deprecatedSyntax() throws Exception {

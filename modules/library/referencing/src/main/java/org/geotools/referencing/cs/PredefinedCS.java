@@ -39,11 +39,10 @@ import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
 /**
- * Converts an arbitrary CS into one of the predefined constants provided in the {@link
- * org.geotools.referencing.cs} package. The main usage for this class is to reorder the axis in
- * some "standard" order like (<var>x</var>, <var>y</var>, <var>z</var>) or (<var>longitude</var>,
- * <var>latitude</var>). What "standard" order means is sometime an arbitrary choice, which explain
- * why this class is not public at this time.
+ * Converts an arbitrary CS into one of the predefined constants provided in the {@link org.geotools.referencing.cs}
+ * package. The main usage for this class is to reorder the axis in some "standard" order like (<var>x</var>,
+ * <var>y</var>, <var>z</var>) or (<var>longitude</var>, <var>latitude</var>). What "standard" order means is sometime
+ * an arbitrary choice, which explain why this class is not public at this time.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -54,26 +53,25 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
 
     /** Our ordering for coordinate system objects. */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-    private final Class<? extends CoordinateSystem>[] types =
-            new Class[] {
-                CartesianCS.class,
-                AffineCS.class,
-                EllipsoidalCS.class,
-                SphericalCS.class,
-                CylindricalCS.class,
-                PolarCS.class,
-                VerticalCS.class,
-                TimeCS.class,
-                LinearCS.class,
-                UserDefinedCS.class
-            };
+    private final Class<? extends CoordinateSystem>[] types = new Class[] {
+        CartesianCS.class,
+        AffineCS.class,
+        EllipsoidalCS.class,
+        SphericalCS.class,
+        CylindricalCS.class,
+        PolarCS.class,
+        VerticalCS.class,
+        TimeCS.class,
+        LinearCS.class,
+        UserDefinedCS.class
+    };
 
     /** Creates a comparator. */
     private PredefinedCS() {}
 
     /**
-     * Compares the ordering between two coordinate systems. This comparator is used for sorting the
-     * axis in an user-supplied compound CS in an order closes to some "standard" order.
+     * Compares the ordering between two coordinate systems. This comparator is used for sorting the axis in an
+     * user-supplied compound CS in an order closes to some "standard" order.
      */
     @Override
     public int compare(final CoordinateSystem object1, final CoordinateSystem object2) {
@@ -93,29 +91,27 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
         final int dimension = cs.getDimension();
         if (cs instanceof CartesianCS) {
             switch (dimension) {
-                case 2:
-                    {
-                        if (DefaultCartesianCS.PROJECTED.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.PROJECTED;
-                        }
-                        if (DefaultCartesianCS.GRID.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.GRID;
-                        }
-                        if (DefaultCartesianCS.GENERIC_2D.directionColinearWith(cs)) {
-                            return DefaultCartesianCS.GENERIC_2D;
-                        }
-                        return rightHanded((CartesianCS) cs);
+                case 2: {
+                    if (DefaultCartesianCS.PROJECTED.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.PROJECTED;
                     }
-                case 3:
-                    {
-                        if (DefaultCartesianCS.GEOCENTRIC.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.GEOCENTRIC;
-                        }
-                        if (DefaultCartesianCS.GENERIC_3D.directionColinearWith(cs)) {
-                            return DefaultCartesianCS.GENERIC_3D;
-                        }
-                        return rightHanded((CartesianCS) cs);
+                    if (DefaultCartesianCS.GRID.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.GRID;
                     }
+                    if (DefaultCartesianCS.GENERIC_2D.directionColinearWith(cs)) {
+                        return DefaultCartesianCS.GENERIC_2D;
+                    }
+                    return rightHanded((CartesianCS) cs);
+                }
+                case 3: {
+                    if (DefaultCartesianCS.GEOCENTRIC.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.GEOCENTRIC;
+                    }
+                    if (DefaultCartesianCS.GENERIC_3D.directionColinearWith(cs)) {
+                        return DefaultCartesianCS.GENERIC_3D;
+                    }
+                    return rightHanded((CartesianCS) cs);
+                }
             }
         }
         if (cs instanceof AffineCS) {
@@ -137,10 +133,9 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
         }
         if (cs instanceof VerticalCS) {
             switch (dimension) {
-                case 1:
-                    {
-                        return DefaultVerticalCS.ELLIPSOIDAL_HEIGHT;
-                    }
+                case 1: {
+                    return DefaultVerticalCS.ELLIPSOIDAL_HEIGHT;
+                }
             }
         }
         if (cs instanceof TimeCS) {
@@ -150,8 +145,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
             }
         }
         if (cs instanceof DefaultCompoundCS) {
-            final List<CoordinateSystem> components =
-                    ((DefaultCompoundCS) cs).getCoordinateSystems();
+            final List<CoordinateSystem> components = ((DefaultCompoundCS) cs).getCoordinateSystems();
             final CoordinateSystem[] user = new CoordinateSystem[components.size()];
             final CoordinateSystem[] std = new CoordinateSystem[user.length];
             for (int i = 0; i < std.length; i++) {
@@ -164,14 +158,12 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
             return Arrays.equals(user, std) ? cs : new DefaultCompoundCS(std);
         }
         final Object arg0 = cs.getName().getCode();
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, arg0));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, arg0));
     }
 
     /**
-     * Reorder the axis in the specified Affine CS in an attempt to get a right-handed system. Units
-     * are standardized to meters in the process. If no axis change is needed, then this method
-     * returns {@code cs} unchanged.
+     * Reorder the axis in the specified Affine CS in an attempt to get a right-handed system. Units are standardized to
+     * meters in the process. If no axis change is needed, then this method returns {@code cs} unchanged.
      */
     private static AffineCS rightHanded(final AffineCS cs) {
         boolean changed = false;

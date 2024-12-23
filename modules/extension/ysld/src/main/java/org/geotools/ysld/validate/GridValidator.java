@@ -40,8 +40,7 @@ public class GridValidator extends YsldValidateHandler {
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
 
-                ZoomContext namedZoomContext =
-                        Util.getNamedZoomContext(value, context.zCtxtFinders);
+                ZoomContext namedZoomContext = Util.getNamedZoomContext(value, context.zCtxtFinders);
                 if (namedZoomContext != null) {
                     context.zCtxt = namedZoomContext;
                     return null;

@@ -38,9 +38,7 @@ public final class GrassBinaryImageMetadataFormat extends IIOMetadataFormatImpl 
 
     /** Default constructor. */
     protected GrassBinaryImageMetadataFormat() {
-        super(
-                GrassBinaryImageMetadata.nativeMetadataFormatName,
-                IIOMetadataFormatImpl.CHILD_POLICY_ALL);
+        super(GrassBinaryImageMetadata.nativeMetadataFormatName, IIOMetadataFormatImpl.CHILD_POLICY_ALL);
 
         // root -> EnvelopeDescriptor
         addElement(
@@ -60,29 +58,13 @@ public final class GrassBinaryImageMetadataFormat extends IIOMetadataFormatImpl 
                 true,
                 null);
         addAttribute(
-                GrassBinaryImageMetadata.REGION_DESCRIPTOR,
-                GrassBinaryImageMetadata.EAST,
-                DATATYPE_DOUBLE,
-                true,
-                null);
+                GrassBinaryImageMetadata.REGION_DESCRIPTOR, GrassBinaryImageMetadata.EAST, DATATYPE_DOUBLE, true, null);
         addAttribute(
-                GrassBinaryImageMetadata.REGION_DESCRIPTOR,
-                GrassBinaryImageMetadata.WEST,
-                DATATYPE_DOUBLE,
-                true,
-                null);
+                GrassBinaryImageMetadata.REGION_DESCRIPTOR, GrassBinaryImageMetadata.WEST, DATATYPE_DOUBLE, true, null);
         addAttribute(
-                GrassBinaryImageMetadata.REGION_DESCRIPTOR,
-                GrassBinaryImageMetadata.XRES,
-                DATATYPE_DOUBLE,
-                true,
-                null);
+                GrassBinaryImageMetadata.REGION_DESCRIPTOR, GrassBinaryImageMetadata.XRES, DATATYPE_DOUBLE, true, null);
         addAttribute(
-                GrassBinaryImageMetadata.REGION_DESCRIPTOR,
-                GrassBinaryImageMetadata.YRES,
-                DATATYPE_DOUBLE,
-                true,
-                null);
+                GrassBinaryImageMetadata.REGION_DESCRIPTOR, GrassBinaryImageMetadata.YRES, DATATYPE_DOUBLE, true, null);
         addAttribute(
                 GrassBinaryImageMetadata.REGION_DESCRIPTOR,
                 GrassBinaryImageMetadata.NO_DATA,

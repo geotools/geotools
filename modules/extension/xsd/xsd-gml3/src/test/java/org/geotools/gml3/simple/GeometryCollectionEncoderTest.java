@@ -34,14 +34,9 @@ import org.w3c.dom.Document;
 public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
     @Test
     public void testGeometryCollectionEncoder() throws ParseException, Exception {
-        GeometryCollectionEncoder gce =
-                new GeometryCollectionEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        GeometryCollection geometry =
-                (GeometryCollection)
-                        new WKTReader2()
-                                .read(
-                                        "GEOMETRYCOLLECTION (LINESTRING"
-                                                + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
+        GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder, "gml", GML.NAMESPACE);
+        GeometryCollection geometry = (GeometryCollection) new WKTReader2()
+                .read("GEOMETRYCOLLECTION (LINESTRING" + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry, "feature.1");
         // XMLTestSupport.print(doc);
         assertThat(doc, hasXPath("count(//gml:LineString)", equalTo("1")));
@@ -52,26 +47,14 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
                 hasXPath(
                         "//gml:MultiGeometry/gml:geometryMember/gml:LineString/gml:posList",
                         equalTo("180 200 160 180")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos",
-                        equalTo("19 19")));
+        assertThat(doc, hasXPath("//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos", equalTo("19 19")));
         assertThat(doc, hasXPath("//gml:MultiGeometry/@gml:id", equalTo("feature.1")));
         assertThat(
                 doc,
-                hasXPath(
-                        "//gml:MultiGeometry/gml:geometryMember[1]/gml:LineString/@gml:id",
-                        equalTo("feature.1.1")));
+                hasXPath("//gml:MultiGeometry/gml:geometryMember[1]/gml:LineString/@gml:id", equalTo("feature.1.1")));
         assertThat(
-                doc,
-                hasXPath(
-                        "//gml:MultiGeometry/gml:geometryMember[2]/gml:Point/@gml:id",
-                        equalTo("feature.1.2")));
+                doc, hasXPath("//gml:MultiGeometry/gml:geometryMember[2]/gml:Point/@gml:id", equalTo("feature.1.2")));
         assertThat(
-                doc,
-                hasXPath(
-                        "//gml:MultiGeometry/gml:geometryMember[3]/gml:Point/@gml:id",
-                        equalTo("feature.1.3")));
+                doc, hasXPath("//gml:MultiGeometry/gml:geometryMember[3]/gml:Point/@gml:id", equalTo("feature.1.3")));
     }
 }

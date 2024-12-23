@@ -35,10 +35,8 @@ import org.geotools.util.logging.Logging;
  * @author Adam Brown (Curtin University of Technology)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
-public class WFSContentComplexFeatureCollection
-        extends BaseFeatureCollection<FeatureType, Feature> {
-    private static final Logger LOGGER =
-            Logging.getLogger(WFSContentComplexFeatureCollection.class);
+public class WFSContentComplexFeatureCollection extends BaseFeatureCollection<FeatureType, Feature> {
+    private static final Logger LOGGER = Logging.getLogger(WFSContentComplexFeatureCollection.class);
 
     private final WFSClient client;
 
@@ -58,11 +56,7 @@ public class WFSContentComplexFeatureCollection
 
     /** Making a feature collection based on a request for a type with a filter. */
     public WFSContentComplexFeatureCollection(
-            GetFeatureRequest request,
-            FeatureType schema,
-            QName name,
-            Filter filter,
-            WFSClient client) {
+            GetFeatureRequest request, FeatureType schema, QName name, Filter filter, WFSClient client) {
         Objects.requireNonNull(client);
         this.request = request;
         this.name = name;

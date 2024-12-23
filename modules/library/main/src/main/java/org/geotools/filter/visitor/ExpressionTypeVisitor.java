@@ -40,51 +40,42 @@ import org.geotools.api.filter.expression.Subtract;
 import org.geotools.filter.function.FilterFunction_if_then_else;
 
 /**
- * Returns the output type of the visited expression, taking into account functions output types,
- * property types, and general promotion rules in arithmetic expressions
+ * Returns the output type of the visited expression, taking into account functions output types, property types, and
+ * general promotion rules in arithmetic expressions
  *
  * @author Andrea Aime - GeoSolutions
  */
 public class ExpressionTypeVisitor implements ExpressionVisitor {
 
-    static final Map<Class<?>, List<Class<?>>> PROMOTIONS =
-            Map.ofEntries(
-                    entry(
+    static final Map<Class<?>, List<Class<?>>> PROMOTIONS = Map.ofEntries(
+            entry(
+                    Byte.class,
+                    List.of(
                             Byte.class,
-                            List.of(
-                                    Byte.class,
-                                    Short.class,
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Short.class,
-                            List.of(
-                                    Short.class,
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Integer.class,
-                            List.of(
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Long.class,
-                            List.of(Long.class, Double.class, BigInteger.class, BigDecimal.class)),
-                    entry(Float.class, List.of(Float.class, Double.class, BigDecimal.class)),
-                    entry(Double.class, List.of(Double.class, BigDecimal.class)),
-                    entry(BigInteger.class, List.of(BigInteger.class, BigDecimal.class)));
+                            Float.class,
+                            Double.class,
+                            BigInteger.class,
+                            BigDecimal.class)),
+            entry(
+                    Short.class,
+                    List.of(
+                            Short.class,
+                            Integer.class,
+                            Long.class,
+                            Float.class,
+                            Double.class,
+                            BigInteger.class,
+                            BigDecimal.class)),
+            entry(
+                    Integer.class,
+                    List.of(Integer.class, Long.class, Float.class, Double.class, BigInteger.class, BigDecimal.class)),
+            entry(Long.class, List.of(Long.class, Double.class, BigInteger.class, BigDecimal.class)),
+            entry(Float.class, List.of(Float.class, Double.class, BigDecimal.class)),
+            entry(Double.class, List.of(Double.class, BigDecimal.class)),
+            entry(BigInteger.class, List.of(BigInteger.class, BigDecimal.class)));
 
     FeatureType featureType;
 
@@ -153,8 +144,8 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
     }
 
     /**
-     * Traverses the super-classes trying to find a common superclass. Won't consider interfaces
-     * (good enough for the moment, all basic types we handle have a common superclass)
+     * Traverses the super-classes trying to find a common superclass. Won't consider interfaces (good enough for the
+     * moment, all basic types we handle have a common superclass)
      */
     Class<?> getCommonSuperclass(Class<?> c1, Class<?> c2) {
         Class<?> curr = c1;
@@ -178,8 +169,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
     }
 
     /**
-     * Special case for the if then else function, which stores parameters in the second and third
-     * list items
+     * Special case for the if then else function, which stores parameters in the second and third list items
      *
      * @param expression IfThenElse function
      * @return The common ancestor type of the two parameters possibly returned by if then else

@@ -117,26 +117,22 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName CI_Address_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Address_PropertyType");
     /** @generated */
-    public static final QName CI_Address_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Address_Type");
+    public static final QName CI_Address_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Address_Type");
     /** @generated */
     public static final QName CI_Citation_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Citation_PropertyType");
     /** @generated */
-    public static final QName CI_Citation_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Citation_Type");
+    public static final QName CI_Citation_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Citation_Type");
     /** @generated */
     public static final QName CI_Contact_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Contact_PropertyType");
     /** @generated */
-    public static final QName CI_Contact_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Contact_Type");
+    public static final QName CI_Contact_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Contact_Type");
     /** @generated */
     public static final QName CI_Date_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Date_PropertyType");
     /** @generated */
-    public static final QName CI_Date_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Date_Type");
+    public static final QName CI_Date_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Date_Type");
     /** @generated */
     public static final QName CI_DateTypeCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_DateTypeCode_PropertyType");
@@ -165,32 +161,24 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName CI_Series_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Series_PropertyType");
     /** @generated */
-    public static final QName CI_Series_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Series_Type");
+    public static final QName CI_Series_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Series_Type");
     /** @generated */
     public static final QName CI_Telephone_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "CI_Telephone_PropertyType");
     /** @generated */
-    public static final QName CI_Telephone_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Telephone_Type");
+    public static final QName CI_Telephone_Type = new QName("http://www.isotc211.org/2005/gmd", "CI_Telephone_Type");
     /** @generated */
     public static final QName Country_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "Country_PropertyType");
     /** @generated */
     public static final QName DQ_AbsoluteExternalPositionalAccuracy_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_AbsoluteExternalPositionalAccuracy_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_AbsoluteExternalPositionalAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_AbsoluteExternalPositionalAccuracy_Type =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_AbsoluteExternalPositionalAccuracy_Type");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_AbsoluteExternalPositionalAccuracy_Type");
     /** @generated */
     public static final QName DQ_AccuracyOfATimeMeasurement_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_AccuracyOfATimeMeasurement_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_AccuracyOfATimeMeasurement_PropertyType");
     /** @generated */
     public static final QName DQ_AccuracyOfATimeMeasurement_Type =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_AccuracyOfATimeMeasurement_Type");
@@ -238,8 +226,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "DQ_Element_PropertyType");
     /** @generated */
     public static final QName DQ_EvaluationMethodTypeCode_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd", "DQ_EvaluationMethodTypeCode_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_EvaluationMethodTypeCode_PropertyType");
     /** @generated */
     public static final QName DQ_FormatConsistency_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_FormatConsistency_PropertyType");
@@ -248,9 +235,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "DQ_FormatConsistency_Type");
     /** @generated */
     public static final QName DQ_GriddedDataPositionalAccuracy_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_GriddedDataPositionalAccuracy_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_GriddedDataPositionalAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_GriddedDataPositionalAccuracy_Type =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_GriddedDataPositionalAccuracy_Type");
@@ -259,21 +244,16 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "DQ_LogicalConsistency_PropertyType");
     /** @generated */
     public static final QName DQ_NonQuantitativeAttributeAccuracy_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_NonQuantitativeAttributeAccuracy_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_NonQuantitativeAttributeAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_NonQuantitativeAttributeAccuracy_Type =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd", "DQ_NonQuantitativeAttributeAccuracy_Type");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_NonQuantitativeAttributeAccuracy_Type");
     /** @generated */
     public static final QName DQ_PositionalAccuracy_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_PositionalAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_QuantitativeAttributeAccuracy_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_QuantitativeAttributeAccuracy_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_QuantitativeAttributeAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_QuantitativeAttributeAccuracy_Type =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_QuantitativeAttributeAccuracy_Type");
@@ -285,14 +265,10 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "DQ_QuantitativeResult_Type");
     /** @generated */
     public static final QName DQ_RelativeInternalPositionalAccuracy_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_RelativeInternalPositionalAccuracy_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_RelativeInternalPositionalAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_RelativeInternalPositionalAccuracy_Type =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_RelativeInternalPositionalAccuracy_Type");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_RelativeInternalPositionalAccuracy_Type");
     /** @generated */
     public static final QName DQ_Result_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_Result_PropertyType");
@@ -300,8 +276,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DQ_Scope_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_Scope_PropertyType");
     /** @generated */
-    public static final QName DQ_Scope_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DQ_Scope_Type");
+    public static final QName DQ_Scope_Type = new QName("http://www.isotc211.org/2005/gmd", "DQ_Scope_Type");
     /** @generated */
     public static final QName DQ_TemporalAccuracy_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_TemporalAccuracy_PropertyType");
@@ -322,14 +297,10 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "DQ_ThematicAccuracy_PropertyType");
     /** @generated */
     public static final QName DQ_ThematicClassificationCorrectness_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_ThematicClassificationCorrectness_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_ThematicClassificationCorrectness_PropertyType");
     /** @generated */
     public static final QName DQ_ThematicClassificationCorrectness_Type =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "DQ_ThematicClassificationCorrectness_Type");
+            new QName("http://www.isotc211.org/2005/gmd", "DQ_ThematicClassificationCorrectness_Type");
     /** @generated */
     public static final QName DQ_TopologicalConsistency_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_TopologicalConsistency_PropertyType");
@@ -352,14 +323,12 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DS_DataSet_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_DataSet_PropertyType");
     /** @generated */
-    public static final QName DS_DataSet_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_DataSet_Type");
+    public static final QName DS_DataSet_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_DataSet_Type");
     /** @generated */
     public static final QName DS_Initiative_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_Initiative_PropertyType");
     /** @generated */
-    public static final QName DS_Initiative_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Initiative_Type");
+    public static final QName DS_Initiative_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_Initiative_Type");
     /** @generated */
     public static final QName DS_InitiativeTypeCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_InitiativeTypeCode_PropertyType");
@@ -373,8 +342,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DS_Platform_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_Platform_PropertyType");
     /** @generated */
-    public static final QName DS_Platform_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Platform_Type");
+    public static final QName DS_Platform_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_Platform_Type");
     /** @generated */
     public static final QName DS_ProductionSeries_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_ProductionSeries_PropertyType");
@@ -385,20 +353,17 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DS_Sensor_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_Sensor_PropertyType");
     /** @generated */
-    public static final QName DS_Sensor_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Sensor_Type");
+    public static final QName DS_Sensor_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_Sensor_Type");
     /** @generated */
     public static final QName DS_Series_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_Series_PropertyType");
     /** @generated */
-    public static final QName DS_Series_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Series_Type");
+    public static final QName DS_Series_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_Series_Type");
     /** @generated */
     public static final QName DS_StereoMate_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "DS_StereoMate_PropertyType");
     /** @generated */
-    public static final QName DS_StereoMate_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_StereoMate_Type");
+    public static final QName DS_StereoMate_Type = new QName("http://www.isotc211.org/2005/gmd", "DS_StereoMate_Type");
     /** @generated */
     public static final QName EX_BoundingPolygon_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "EX_BoundingPolygon_PropertyType");
@@ -409,8 +374,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName EX_Extent_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "EX_Extent_PropertyType");
     /** @generated */
-    public static final QName EX_Extent_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "EX_Extent_Type");
+    public static final QName EX_Extent_Type = new QName("http://www.isotc211.org/2005/gmd", "EX_Extent_Type");
     /** @generated */
     public static final QName EX_GeographicBoundingBox_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "EX_GeographicBoundingBox_PropertyType");
@@ -451,8 +415,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName LI_Lineage_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "LI_Lineage_PropertyType");
     /** @generated */
-    public static final QName LI_Lineage_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "LI_Lineage_Type");
+    public static final QName LI_Lineage_Type = new QName("http://www.isotc211.org/2005/gmd", "LI_Lineage_Type");
     /** @generated */
     public static final QName LI_ProcessStep_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "LI_ProcessStep_PropertyType");
@@ -463,8 +426,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName LI_Source_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "LI_Source_PropertyType");
     /** @generated */
-    public static final QName LI_Source_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "LI_Source_Type");
+    public static final QName LI_Source_Type = new QName("http://www.isotc211.org/2005/gmd", "LI_Source_Type");
     /** @generated */
     public static final QName LocalisedCharacterString_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "LocalisedCharacterString_PropertyType");
@@ -479,9 +441,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_AggregateInformation_Type");
     /** @generated */
     public static final QName MD_ApplicationSchemaInformation_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_ApplicationSchemaInformation_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_ApplicationSchemaInformation_PropertyType");
     /** @generated */
     public static final QName MD_ApplicationSchemaInformation_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ApplicationSchemaInformation_Type");
@@ -489,8 +449,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Band_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Band_PropertyType");
     /** @generated */
-    public static final QName MD_Band_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Band_Type");
+    public static final QName MD_Band_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Band_Type");
     /** @generated */
     public static final QName MD_BrowseGraphic_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_BrowseGraphic_PropertyType");
@@ -517,8 +476,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_ContentInformation_PropertyType");
     /** @generated */
     public static final QName MD_CoverageContentTypeCode_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd", "MD_CoverageContentTypeCode_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_CoverageContentTypeCode_PropertyType");
     /** @generated */
     public static final QName MD_CoverageDescription_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_CoverageDescription_PropertyType");
@@ -544,8 +502,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Dimension_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Dimension_PropertyType");
     /** @generated */
-    public static final QName MD_Dimension_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Dimension_Type");
+    public static final QName MD_Dimension_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Dimension_Type");
     /** @generated */
     public static final QName MD_DimensionNameTypeCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_DimensionNameTypeCode_PropertyType");
@@ -566,17 +523,13 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_Distributor_Type");
     /** @generated */
     public static final QName MD_ExtendedElementInformation_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_ExtendedElementInformation_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_ExtendedElementInformation_PropertyType");
     /** @generated */
     public static final QName MD_ExtendedElementInformation_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ExtendedElementInformation_Type");
     /** @generated */
     public static final QName MD_FeatureCatalogueDescription_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_FeatureCatalogueDescription_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_FeatureCatalogueDescription_PropertyType");
     /** @generated */
     public static final QName MD_FeatureCatalogueDescription_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_FeatureCatalogueDescription_Type");
@@ -584,8 +537,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Format_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Format_PropertyType");
     /** @generated */
-    public static final QName MD_Format_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Format_Type");
+    public static final QName MD_Format_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Format_Type");
     /** @generated */
     public static final QName MD_GeometricObjects_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_GeometricObjects_PropertyType");
@@ -594,8 +546,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_GeometricObjects_Type");
     /** @generated */
     public static final QName MD_GeometricObjectTypeCode_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd", "MD_GeometricObjectTypeCode_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_GeometricObjectTypeCode_PropertyType");
     /** @generated */
     public static final QName MD_Georectified_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Georectified_PropertyType");
@@ -610,9 +561,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_Georeferenceable_Type");
     /** @generated */
     public static final QName MD_GridSpatialRepresentation_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_GridSpatialRepresentation_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_GridSpatialRepresentation_PropertyType");
     /** @generated */
     public static final QName MD_GridSpatialRepresentation_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_GridSpatialRepresentation_Type");
@@ -623,8 +572,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Identifier_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Identifier_PropertyType");
     /** @generated */
-    public static final QName MD_Identifier_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Identifier_Type");
+    public static final QName MD_Identifier_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Identifier_Type");
     /** @generated */
     public static final QName MD_ImageDescription_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ImageDescription_PropertyType");
@@ -638,8 +586,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Keywords_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Keywords_PropertyType");
     /** @generated */
-    public static final QName MD_Keywords_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Keywords_Type");
+    public static final QName MD_Keywords_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Keywords_Type");
     /** @generated */
     public static final QName MD_KeywordTypeCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_KeywordTypeCode_PropertyType");
@@ -651,8 +598,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_LegalConstraints_Type");
     /** @generated */
     public static final QName MD_MaintenanceFrequencyCode_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd", "MD_MaintenanceFrequencyCode_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_MaintenanceFrequencyCode_PropertyType");
     /** @generated */
     public static final QName MD_MaintenanceInformation_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MaintenanceInformation_PropertyType");
@@ -663,8 +609,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Medium_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Medium_PropertyType");
     /** @generated */
-    public static final QName MD_Medium_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Medium_Type");
+    public static final QName MD_Medium_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Medium_Type");
     /** @generated */
     public static final QName MD_MediumFormatCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MediumFormatCode_PropertyType");
@@ -675,13 +620,10 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Metadata_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Metadata_PropertyType");
     /** @generated */
-    public static final QName MD_Metadata_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Metadata_Type");
+    public static final QName MD_Metadata_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Metadata_Type");
     /** @generated */
     public static final QName MD_MetadataExtensionInformation_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_MetadataExtensionInformation_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_MetadataExtensionInformation_PropertyType");
     /** @generated */
     public static final QName MD_MetadataExtensionInformation_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MetadataExtensionInformation_Type");
@@ -699,9 +641,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_PixelOrientationCode_Type");
     /** @generated */
     public static final QName MD_PortrayalCatalogueReference_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_PortrayalCatalogueReference_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_PortrayalCatalogueReference_PropertyType");
     /** @generated */
     public static final QName MD_PortrayalCatalogueReference_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_PortrayalCatalogueReference_Type");
@@ -730,8 +670,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Resolution_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Resolution_PropertyType");
     /** @generated */
-    public static final QName MD_Resolution_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Resolution_Type");
+    public static final QName MD_Resolution_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Resolution_Type");
     /** @generated */
     public static final QName MD_RestrictionCode_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_RestrictionCode_PropertyType");
@@ -761,9 +700,7 @@ public final class GMD extends GML.DelegatingXSD {
             new QName("http://www.isotc211.org/2005/gmd", "MD_SpatialRepresentation_PropertyType");
     /** @generated */
     public static final QName MD_SpatialRepresentationTypeCode_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_SpatialRepresentationTypeCode_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_SpatialRepresentationTypeCode_PropertyType");
     /** @generated */
     public static final QName MD_StandardOrderProcess_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_StandardOrderProcess_PropertyType");
@@ -783,13 +720,10 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_Usage_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Usage_PropertyType");
     /** @generated */
-    public static final QName MD_Usage_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Usage_Type");
+    public static final QName MD_Usage_Type = new QName("http://www.isotc211.org/2005/gmd", "MD_Usage_Type");
     /** @generated */
     public static final QName MD_VectorSpatialRepresentation_PropertyType =
-            new QName(
-                    "http://www.isotc211.org/2005/gmd",
-                    "MD_VectorSpatialRepresentation_PropertyType");
+            new QName("http://www.isotc211.org/2005/gmd", "MD_VectorSpatialRepresentation_PropertyType");
     /** @generated */
     public static final QName MD_VectorSpatialRepresentation_Type =
             new QName("http://www.isotc211.org/2005/gmd", "MD_VectorSpatialRepresentation_Type");
@@ -797,14 +731,12 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName PT_FreeText_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "PT_FreeText_PropertyType");
     /** @generated */
-    public static final QName PT_FreeText_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "PT_FreeText_Type");
+    public static final QName PT_FreeText_Type = new QName("http://www.isotc211.org/2005/gmd", "PT_FreeText_Type");
     /** @generated */
     public static final QName PT_Locale_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "PT_Locale_PropertyType");
     /** @generated */
-    public static final QName PT_Locale_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "PT_Locale_Type");
+    public static final QName PT_Locale_Type = new QName("http://www.isotc211.org/2005/gmd", "PT_Locale_Type");
     /** @generated */
     public static final QName PT_LocaleContainer_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "PT_LocaleContainer_PropertyType");
@@ -815,22 +747,19 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName RS_Identifier_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "RS_Identifier_PropertyType");
     /** @generated */
-    public static final QName RS_Identifier_Type =
-            new QName("http://www.isotc211.org/2005/gmd", "RS_Identifier_Type");
+    public static final QName RS_Identifier_Type = new QName("http://www.isotc211.org/2005/gmd", "RS_Identifier_Type");
     /** @generated */
     public static final QName RS_ReferenceSystem_PropertyType =
             new QName("http://www.isotc211.org/2005/gmd", "RS_ReferenceSystem_PropertyType");
     /** @generated */
-    public static final QName URL_PropertyType =
-            new QName("http://www.isotc211.org/2005/gmd", "URL_PropertyType");
+    public static final QName URL_PropertyType = new QName("http://www.isotc211.org/2005/gmd", "URL_PropertyType");
 
     /* Elements */
     /** @generated */
     public static final QName AbstractDQ_Completeness =
             new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_Completeness");
     /** @generated */
-    public static final QName AbstractDQ_Element =
-            new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_Element");
+    public static final QName AbstractDQ_Element = new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_Element");
     /** @generated */
     public static final QName AbstractDQ_LogicalConsistency =
             new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_LogicalConsistency");
@@ -838,8 +767,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName AbstractDQ_PositionalAccuracy =
             new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_PositionalAccuracy");
     /** @generated */
-    public static final QName AbstractDQ_Result =
-            new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_Result");
+    public static final QName AbstractDQ_Result = new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_Result");
     /** @generated */
     public static final QName AbstractDQ_TemporalAccuracy =
             new QName("http://www.isotc211.org/2005/gmd", "AbstractDQ_TemporalAccuracy");
@@ -865,25 +793,20 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName AbstractRS_ReferenceSystem =
             new QName("http://www.isotc211.org/2005/gmd", "AbstractRS_ReferenceSystem");
     /** @generated */
-    public static final QName CI_Address =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Address");
+    public static final QName CI_Address = new QName("http://www.isotc211.org/2005/gmd", "CI_Address");
     /** @generated */
-    public static final QName CI_Citation =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Citation");
+    public static final QName CI_Citation = new QName("http://www.isotc211.org/2005/gmd", "CI_Citation");
     /** @generated */
-    public static final QName CI_Contact =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Contact");
+    public static final QName CI_Contact = new QName("http://www.isotc211.org/2005/gmd", "CI_Contact");
     /** @generated */
     public static final QName CI_Date = new QName("http://www.isotc211.org/2005/gmd", "CI_Date");
     /** @generated */
-    public static final QName CI_DateTypeCode =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_DateTypeCode");
+    public static final QName CI_DateTypeCode = new QName("http://www.isotc211.org/2005/gmd", "CI_DateTypeCode");
     /** @generated */
     public static final QName CI_OnLineFunctionCode =
             new QName("http://www.isotc211.org/2005/gmd", "CI_OnLineFunctionCode");
     /** @generated */
-    public static final QName CI_OnlineResource =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_OnlineResource");
+    public static final QName CI_OnlineResource = new QName("http://www.isotc211.org/2005/gmd", "CI_OnlineResource");
     /** @generated */
     public static final QName CI_PresentationFormCode =
             new QName("http://www.isotc211.org/2005/gmd", "CI_PresentationFormCode");
@@ -891,14 +814,11 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName CI_ResponsibleParty =
             new QName("http://www.isotc211.org/2005/gmd", "CI_ResponsibleParty");
     /** @generated */
-    public static final QName CI_RoleCode =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_RoleCode");
+    public static final QName CI_RoleCode = new QName("http://www.isotc211.org/2005/gmd", "CI_RoleCode");
     /** @generated */
-    public static final QName CI_Series =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Series");
+    public static final QName CI_Series = new QName("http://www.isotc211.org/2005/gmd", "CI_Series");
     /** @generated */
-    public static final QName CI_Telephone =
-            new QName("http://www.isotc211.org/2005/gmd", "CI_Telephone");
+    public static final QName CI_Telephone = new QName("http://www.isotc211.org/2005/gmd", "CI_Telephone");
     /** @generated */
     public static final QName Country = new QName("http://www.isotc211.org/2005/gmd", "Country");
     /** @generated */
@@ -920,8 +840,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DQ_ConformanceResult =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_ConformanceResult");
     /** @generated */
-    public static final QName DQ_DataQuality =
-            new QName("http://www.isotc211.org/2005/gmd", "DQ_DataQuality");
+    public static final QName DQ_DataQuality = new QName("http://www.isotc211.org/2005/gmd", "DQ_DataQuality");
     /** @generated */
     public static final QName DQ_DomainConsistency =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_DomainConsistency");
@@ -961,44 +880,34 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName DQ_TopologicalConsistency =
             new QName("http://www.isotc211.org/2005/gmd", "DQ_TopologicalConsistency");
     /** @generated */
-    public static final QName DS_Association =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Association");
+    public static final QName DS_Association = new QName("http://www.isotc211.org/2005/gmd", "DS_Association");
     /** @generated */
     public static final QName DS_AssociationTypeCode =
             new QName("http://www.isotc211.org/2005/gmd", "DS_AssociationTypeCode");
     /** @generated */
-    public static final QName DS_DataSet =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_DataSet");
+    public static final QName DS_DataSet = new QName("http://www.isotc211.org/2005/gmd", "DS_DataSet");
     /** @generated */
-    public static final QName DS_Initiative =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Initiative");
+    public static final QName DS_Initiative = new QName("http://www.isotc211.org/2005/gmd", "DS_Initiative");
     /** @generated */
     public static final QName DS_InitiativeTypeCode =
             new QName("http://www.isotc211.org/2005/gmd", "DS_InitiativeTypeCode");
     /** @generated */
-    public static final QName DS_OtherAggregate =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_OtherAggregate");
+    public static final QName DS_OtherAggregate = new QName("http://www.isotc211.org/2005/gmd", "DS_OtherAggregate");
     /** @generated */
-    public static final QName DS_Platform =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Platform");
+    public static final QName DS_Platform = new QName("http://www.isotc211.org/2005/gmd", "DS_Platform");
     /** @generated */
     public static final QName DS_ProductionSeries =
             new QName("http://www.isotc211.org/2005/gmd", "DS_ProductionSeries");
     /** @generated */
-    public static final QName DS_Sensor =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Sensor");
+    public static final QName DS_Sensor = new QName("http://www.isotc211.org/2005/gmd", "DS_Sensor");
     /** @generated */
-    public static final QName DS_Series =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_Series");
+    public static final QName DS_Series = new QName("http://www.isotc211.org/2005/gmd", "DS_Series");
     /** @generated */
-    public static final QName DS_StereoMate =
-            new QName("http://www.isotc211.org/2005/gmd", "DS_StereoMate");
+    public static final QName DS_StereoMate = new QName("http://www.isotc211.org/2005/gmd", "DS_StereoMate");
     /** @generated */
-    public static final QName EX_BoundingPolygon =
-            new QName("http://www.isotc211.org/2005/gmd", "EX_BoundingPolygon");
+    public static final QName EX_BoundingPolygon = new QName("http://www.isotc211.org/2005/gmd", "EX_BoundingPolygon");
     /** @generated */
-    public static final QName EX_Extent =
-            new QName("http://www.isotc211.org/2005/gmd", "EX_Extent");
+    public static final QName EX_Extent = new QName("http://www.isotc211.org/2005/gmd", "EX_Extent");
     /** @generated */
     public static final QName EX_GeographicBoundingBox =
             new QName("http://www.isotc211.org/2005/gmd", "EX_GeographicBoundingBox");
@@ -1009,23 +918,17 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName EX_SpatialTemporalExtent =
             new QName("http://www.isotc211.org/2005/gmd", "EX_SpatialTemporalExtent");
     /** @generated */
-    public static final QName EX_TemporalExtent =
-            new QName("http://www.isotc211.org/2005/gmd", "EX_TemporalExtent");
+    public static final QName EX_TemporalExtent = new QName("http://www.isotc211.org/2005/gmd", "EX_TemporalExtent");
     /** @generated */
-    public static final QName EX_VerticalExtent =
-            new QName("http://www.isotc211.org/2005/gmd", "EX_VerticalExtent");
+    public static final QName EX_VerticalExtent = new QName("http://www.isotc211.org/2005/gmd", "EX_VerticalExtent");
     /** @generated */
-    public static final QName LanguageCode =
-            new QName("http://www.isotc211.org/2005/gmd", "LanguageCode");
+    public static final QName LanguageCode = new QName("http://www.isotc211.org/2005/gmd", "LanguageCode");
     /** @generated */
-    public static final QName LI_Lineage =
-            new QName("http://www.isotc211.org/2005/gmd", "LI_Lineage");
+    public static final QName LI_Lineage = new QName("http://www.isotc211.org/2005/gmd", "LI_Lineage");
     /** @generated */
-    public static final QName LI_ProcessStep =
-            new QName("http://www.isotc211.org/2005/gmd", "LI_ProcessStep");
+    public static final QName LI_ProcessStep = new QName("http://www.isotc211.org/2005/gmd", "LI_ProcessStep");
     /** @generated */
-    public static final QName LI_Source =
-            new QName("http://www.isotc211.org/2005/gmd", "LI_Source");
+    public static final QName LI_Source = new QName("http://www.isotc211.org/2005/gmd", "LI_Source");
     /** @generated */
     public static final QName LocalisedCharacterString =
             new QName("http://www.isotc211.org/2005/gmd", "LocalisedCharacterString");
@@ -1038,8 +941,7 @@ public final class GMD extends GML.DelegatingXSD {
     /** @generated */
     public static final QName MD_Band = new QName("http://www.isotc211.org/2005/gmd", "MD_Band");
     /** @generated */
-    public static final QName MD_BrowseGraphic =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_BrowseGraphic");
+    public static final QName MD_BrowseGraphic = new QName("http://www.isotc211.org/2005/gmd", "MD_BrowseGraphic");
     /** @generated */
     public static final QName MD_CellGeometryCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_CellGeometryCode");
@@ -1050,8 +952,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_ClassificationCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ClassificationCode");
     /** @generated */
-    public static final QName MD_Constraints =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Constraints");
+    public static final QName MD_Constraints = new QName("http://www.isotc211.org/2005/gmd", "MD_Constraints");
     /** @generated */
     public static final QName MD_CoverageContentTypeCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_CoverageContentTypeCode");
@@ -1062,26 +963,22 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_DataIdentification =
             new QName("http://www.isotc211.org/2005/gmd", "MD_DataIdentification");
     /** @generated */
-    public static final QName MD_DatatypeCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_DatatypeCode");
+    public static final QName MD_DatatypeCode = new QName("http://www.isotc211.org/2005/gmd", "MD_DatatypeCode");
     /** @generated */
     public static final QName MD_DigitalTransferOptions =
             new QName("http://www.isotc211.org/2005/gmd", "MD_DigitalTransferOptions");
     /** @generated */
-    public static final QName MD_Dimension =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Dimension");
+    public static final QName MD_Dimension = new QName("http://www.isotc211.org/2005/gmd", "MD_Dimension");
     /** @generated */
     public static final QName MD_DimensionNameTypeCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_DimensionNameTypeCode");
     /** @generated */
-    public static final QName MD_Distribution =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Distribution");
+    public static final QName MD_Distribution = new QName("http://www.isotc211.org/2005/gmd", "MD_Distribution");
     /** @generated */
     public static final QName MD_DistributionUnits =
             new QName("http://www.isotc211.org/2005/gmd", "MD_DistributionUnits");
     /** @generated */
-    public static final QName MD_Distributor =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Distributor");
+    public static final QName MD_Distributor = new QName("http://www.isotc211.org/2005/gmd", "MD_Distributor");
     /** @generated */
     public static final QName MD_ExtendedElementInformation =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ExtendedElementInformation");
@@ -1089,8 +986,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_FeatureCatalogueDescription =
             new QName("http://www.isotc211.org/2005/gmd", "MD_FeatureCatalogueDescription");
     /** @generated */
-    public static final QName MD_Format =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Format");
+    public static final QName MD_Format = new QName("http://www.isotc211.org/2005/gmd", "MD_Format");
     /** @generated */
     public static final QName MD_GeometricObjects =
             new QName("http://www.isotc211.org/2005/gmd", "MD_GeometricObjects");
@@ -1098,8 +994,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_GeometricObjectTypeCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_GeometricObjectTypeCode");
     /** @generated */
-    public static final QName MD_Georectified =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Georectified");
+    public static final QName MD_Georectified = new QName("http://www.isotc211.org/2005/gmd", "MD_Georectified");
     /** @generated */
     public static final QName MD_Georeferenceable =
             new QName("http://www.isotc211.org/2005/gmd", "MD_Georeferenceable");
@@ -1107,8 +1002,7 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_GridSpatialRepresentation =
             new QName("http://www.isotc211.org/2005/gmd", "MD_GridSpatialRepresentation");
     /** @generated */
-    public static final QName MD_Identifier =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Identifier");
+    public static final QName MD_Identifier = new QName("http://www.isotc211.org/2005/gmd", "MD_Identifier");
     /** @generated */
     public static final QName MD_ImageDescription =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ImageDescription");
@@ -1116,11 +1010,9 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_ImagingConditionCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ImagingConditionCode");
     /** @generated */
-    public static final QName MD_Keywords =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Keywords");
+    public static final QName MD_Keywords = new QName("http://www.isotc211.org/2005/gmd", "MD_Keywords");
     /** @generated */
-    public static final QName MD_KeywordTypeCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_KeywordTypeCode");
+    public static final QName MD_KeywordTypeCode = new QName("http://www.isotc211.org/2005/gmd", "MD_KeywordTypeCode");
     /** @generated */
     public static final QName MD_LegalConstraints =
             new QName("http://www.isotc211.org/2005/gmd", "MD_LegalConstraints");
@@ -1131,23 +1023,19 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_MaintenanceInformation =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MaintenanceInformation");
     /** @generated */
-    public static final QName MD_Medium =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Medium");
+    public static final QName MD_Medium = new QName("http://www.isotc211.org/2005/gmd", "MD_Medium");
     /** @generated */
     public static final QName MD_MediumFormatCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MediumFormatCode");
     /** @generated */
-    public static final QName MD_MediumNameCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_MediumNameCode");
+    public static final QName MD_MediumNameCode = new QName("http://www.isotc211.org/2005/gmd", "MD_MediumNameCode");
     /** @generated */
-    public static final QName MD_Metadata =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Metadata");
+    public static final QName MD_Metadata = new QName("http://www.isotc211.org/2005/gmd", "MD_Metadata");
     /** @generated */
     public static final QName MD_MetadataExtensionInformation =
             new QName("http://www.isotc211.org/2005/gmd", "MD_MetadataExtensionInformation");
     /** @generated */
-    public static final QName MD_ObligationCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_ObligationCode");
+    public static final QName MD_ObligationCode = new QName("http://www.isotc211.org/2005/gmd", "MD_ObligationCode");
     /** @generated */
     public static final QName MD_PixelOrientationCode =
             new QName("http://www.isotc211.org/2005/gmd", "MD_PixelOrientationCode");
@@ -1155,26 +1043,20 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_PortrayalCatalogueReference =
             new QName("http://www.isotc211.org/2005/gmd", "MD_PortrayalCatalogueReference");
     /** @generated */
-    public static final QName MD_ProgressCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_ProgressCode");
+    public static final QName MD_ProgressCode = new QName("http://www.isotc211.org/2005/gmd", "MD_ProgressCode");
     /** @generated */
-    public static final QName MD_RangeDimension =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_RangeDimension");
+    public static final QName MD_RangeDimension = new QName("http://www.isotc211.org/2005/gmd", "MD_RangeDimension");
     /** @generated */
-    public static final QName MD_ReferenceSystem =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_ReferenceSystem");
+    public static final QName MD_ReferenceSystem = new QName("http://www.isotc211.org/2005/gmd", "MD_ReferenceSystem");
     /** @generated */
     public static final QName MD_RepresentativeFraction =
             new QName("http://www.isotc211.org/2005/gmd", "MD_RepresentativeFraction");
     /** @generated */
-    public static final QName MD_Resolution =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_Resolution");
+    public static final QName MD_Resolution = new QName("http://www.isotc211.org/2005/gmd", "MD_Resolution");
     /** @generated */
-    public static final QName MD_RestrictionCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_RestrictionCode");
+    public static final QName MD_RestrictionCode = new QName("http://www.isotc211.org/2005/gmd", "MD_RestrictionCode");
     /** @generated */
-    public static final QName MD_ScopeCode =
-            new QName("http://www.isotc211.org/2005/gmd", "MD_ScopeCode");
+    public static final QName MD_ScopeCode = new QName("http://www.isotc211.org/2005/gmd", "MD_ScopeCode");
     /** @generated */
     public static final QName MD_ScopeDescription =
             new QName("http://www.isotc211.org/2005/gmd", "MD_ScopeDescription");
@@ -1202,17 +1084,13 @@ public final class GMD extends GML.DelegatingXSD {
     public static final QName MD_VectorSpatialRepresentation =
             new QName("http://www.isotc211.org/2005/gmd", "MD_VectorSpatialRepresentation");
     /** @generated */
-    public static final QName PT_FreeText =
-            new QName("http://www.isotc211.org/2005/gmd", "PT_FreeText");
+    public static final QName PT_FreeText = new QName("http://www.isotc211.org/2005/gmd", "PT_FreeText");
     /** @generated */
-    public static final QName PT_Locale =
-            new QName("http://www.isotc211.org/2005/gmd", "PT_Locale");
+    public static final QName PT_Locale = new QName("http://www.isotc211.org/2005/gmd", "PT_Locale");
     /** @generated */
-    public static final QName PT_LocaleContainer =
-            new QName("http://www.isotc211.org/2005/gmd", "PT_LocaleContainer");
+    public static final QName PT_LocaleContainer = new QName("http://www.isotc211.org/2005/gmd", "PT_LocaleContainer");
     /** @generated */
-    public static final QName RS_Identifier =
-            new QName("http://www.isotc211.org/2005/gmd", "RS_Identifier");
+    public static final QName RS_Identifier = new QName("http://www.isotc211.org/2005/gmd", "RS_Identifier");
     /** @generated */
     public static final QName URL = new QName("http://www.isotc211.org/2005/gmd", "URL");
 

@@ -61,9 +61,7 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
         final Element root = dom.getDocumentElement();
         assertName(WFS.Delete, root);
 
-        assertEquals(
-                typeName.getPrefix() + ":" + typeName.getLocalPart(),
-                root.getAttribute("typeName"));
+        assertEquals(typeName.getPrefix() + ":" + typeName.getLocalPart(), root.getAttribute("typeName"));
     }
 
     @Override

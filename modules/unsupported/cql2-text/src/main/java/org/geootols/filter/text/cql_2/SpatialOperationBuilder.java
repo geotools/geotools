@@ -33,8 +33,8 @@ import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
 
 /**
- * Builds an instance of one {@link BinarySpatialOperator} subclass. Copied from gt-cql, should be
- * removed once the modules * are merged.
+ * Builds an instance of one {@link BinarySpatialOperator} subclass. Copied from gt-cql, should be removed once the
+ * modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

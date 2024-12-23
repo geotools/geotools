@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * Reads a multiline SQL file extracting each command separately. Skips empty lines, assumes
- * comments start with "--" and are on their own line
+ * Reads a multiline SQL file extracting each command separately. Skips empty lines, assumes comments start with "--"
+ * and are on their own line
  */
 public class SqlScriptReader {
     boolean fetched = true;
@@ -59,8 +59,7 @@ public class SqlScriptReader {
     }
 
     public String next() throws IOException {
-        if (fetched)
-            throw new IOException("hasNext was not called, or was called and it returned false");
+        if (fetched) throw new IOException("hasNext was not called, or was called and it returned false");
 
         fetched = true;
         return builder.toString();

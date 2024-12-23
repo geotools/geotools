@@ -37,17 +37,15 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Resource compiler. This class is run from the command line at compile time only. {@code
- * IndexedResourceCompiler} scans for {@code .properties} files and copies their content to {@code
- * .utf} files using UTF8 encoding. It also checks for key validity and checks values for {@link
- * MessageFormat} compatibility. Finally, it creates a {@code FooKeys.java} source file declaring
- * resource keys as integer constants.
+ * Resource compiler. This class is run from the command line at compile time only. {@code IndexedResourceCompiler}
+ * scans for {@code .properties} files and copies their content to {@code .utf} files using UTF8 encoding. It also
+ * checks for key validity and checks values for {@link MessageFormat} compatibility. Finally, it creates a
+ * {@code FooKeys.java} source file declaring resource keys as integer constants.
  *
  * <p>This class <strong>must</strong> be run from the maven root of Geotools project.
  *
- * <p>{@code IndexedResourceCompiler} and all {@code FooKeys} classes don't need to be included in
- * the final JAR file. They are used at compile time only and no other classes should keep reference
- * to them.
+ * <p>{@code IndexedResourceCompiler} and all {@code FooKeys} classes don't need to be included in the final JAR file.
+ * They are used at compile time only and no other classes should keep reference to them.
  *
  * @since 2.4
  * @version $Id$
@@ -55,8 +53,8 @@ import java.util.Properties;
  */
 public final class IndexedResourceCompiler implements Comparator<Object> {
     /**
-     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
-     * structure must be consistent with Maven conventions.
+     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory structure must be
+     * consistent with Maven conventions.
      *
      * @see #sourceDirectory
      */
@@ -64,28 +62,21 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
 
     /** The resources to process. */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-    private static final Class<? extends IndexedResourceBundle>[] RESOURCES_TO_PROCESS =
-            new Class[] {
-                org.geotools.metadata.i18n.Descriptions.class,
-                org.geotools.metadata.i18n.Vocabulary.class,
-                org.geotools.metadata.i18n.Loggings.class
-            };
+    private static final Class<? extends IndexedResourceBundle>[] RESOURCES_TO_PROCESS = new Class[] {
+        org.geotools.metadata.i18n.Descriptions.class,
+        org.geotools.metadata.i18n.Vocabulary.class,
+        org.geotools.metadata.i18n.Loggings.class
+    };
 
-    /**
-     * Extension for properties source files. Must be in the {@code ${sourceDirectory}/java}
-     * directory.
-     */
+    /** Extension for properties source files. Must be in the {@code ${sourceDirectory}/java} directory. */
     private static final String PROPERTIES_EXT = ".properties";
 
-    /**
-     * Extension for resource target files. Will be be in the {@code ${sourceDirectory}/resources}
-     * directory.
-     */
+    /** Extension for resource target files. Will be be in the {@code ${sourceDirectory}/resources} directory. */
     private static final String RESOURCES_EXT = ".utf";
 
     /**
-     * Prefix for argument count in resource key names. For example, a resource expecting one
-     * argument may have a key name like "HELLO_$1".
+     * Prefix for argument count in resource key names. For example, a resource expecting one argument may have a key
+     * name like "HELLO_$1".
      */
     private static final String ARGUMENT_COUNT_PREFIX = "_$";
 
@@ -93,33 +84,26 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     private static final int COMMENT_LENGTH = 92;
 
     /**
-     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
-     * structure must be consistent with Maven conventions.
+     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory structure must be
+     * consistent with Maven conventions.
      */
     private final File sourceDirectory;
 
-    /**
-     * Integer IDs allocated to resource keys. This map will be shared for all languages of a given
-     * resource bundle.
-     */
+    /** Integer IDs allocated to resource keys. This map will be shared for all languages of a given resource bundle. */
     private final Map<Integer, String> allocatedIDs = new HashMap<>();
 
-    /**
-     * Resource keys and their localized values. This map will be cleared for each language in a
-     * resource bundle.
-     */
+    /** Resource keys and their localized values. This map will be cleared for each language in a resource bundle. */
     private final Map<Object, Object> resources = new HashMap<>();
 
     /** The output stream for printing message. */
     private final PrintWriter out;
 
     /**
-     * Constructs a new {@code IndexedResourceCompiler}. This method will immediately look for a
-     * {@code FooKeys.class} file. If one is found, integer keys are loaded in order to reuse the
-     * same values.
+     * Constructs a new {@code IndexedResourceCompiler}. This method will immediately look for a {@code FooKeys.class}
+     * file. If one is found, integer keys are loaded in order to reuse the same values.
      *
-     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
-     *     sub-directories. The directory structure must be consistent with Maven conventions.
+     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
+     *     structure must be consistent with Maven conventions.
      * @param bundleClass The resource bundle base class (e.g. <code>
      *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      * @param renumber {@code true} for renumbering all key values.
@@ -166,9 +150,9 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /**
-     * Returns the class name for the keys. For example if {@code bundleClass} is {@code
-     * "org.geotools.metadata.i18n.Vocabulary"}, then this method returns {@code
-     * "org.geotools.metadata.i18n.VocabularyKeys"}.
+     * Returns the class name for the keys. For example if {@code bundleClass} is
+     * {@code "org.geotools.metadata.i18n.Vocabulary"}, then this method returns
+     * {@code "org.geotools.metadata.i18n.VocabularyKeys"}.
      */
     private static String toKeyClass(String bundleClass) {
         if (bundleClass.endsWith("s")) {
@@ -187,10 +171,9 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /**
-     * Loads all properties from a {@code .properties} file. Resource keys are checked for naming
-     * conventions (i.e. resources expecting some arguments must have a key name ending with {@code
-     * "_$n"} where {@code "n"} is the number of arguments). This method transforms resource values
-     * into legal {@link MessageFormat} patterns when necessary.
+     * Loads all properties from a {@code .properties} file. Resource keys are checked for naming conventions (i.e.
+     * resources expecting some arguments must have a key name ending with {@code "_$n"} where {@code "n"} is the number
+     * of arguments). This method transforms resource values into legal {@link MessageFormat} patterns when necessary.
      *
      * @param file The properties file to read.
      * @throws IOException if an input/output operation failed.
@@ -265,16 +248,14 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /**
-     * Write UTF file. Method {@link #processPropertyFile} should be invoked beforehand to {@code
-     * writeUTFFile}.
+     * Write UTF file. Method {@link #processPropertyFile} should be invoked beforehand to {@code writeUTFFile}.
      *
      * @param file The destination file.
      * @throws IOException if an input/output operation failed.
      */
     private void writeUTFFile(final File file) throws IOException {
         final int count = allocatedIDs.isEmpty() ? 0 : Collections.max(allocatedIDs.keySet()) + 1;
-        try (DataOutputStream out =
-                new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+        try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
             out.writeInt(count);
             for (int i = 0; i < count; i++) {
                 final String value = (String) resources.get(allocatedIDs.get(i));
@@ -284,8 +265,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /**
-     * Changes a "normal" text string into a pattern compatible with {@link MessageFormat}. The main
-     * operation consists of changing ' for '', except for '{' and '}' strings.
+     * Changes a "normal" text string into a pattern compatible with {@link MessageFormat}. The main operation consists
+     * of changing ' for '', except for '{' and '}' strings.
      */
     private static String toMessageFormatString(final String text) {
         int level = 0;
@@ -308,46 +289,44 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
                     level--;
                     last = i;
                     break;
-                case '\'':
-                    {
-                        /*
-                         * If a brace ('{' or '}') is found between quotes, the entire block is
-                         * ignored and we continue with the character following the closing quote.
-                         */
-                        if (i + 2 < buffer.length() && buffer.charAt(i + 2) == '\'') {
-                            switch (buffer.charAt(i + 1)) {
-                                case '{':
-                                    i += 2;
-                                    continue search;
-                                case '}':
-                                    i += 2;
-                                    continue search;
-                            }
+                case '\'': {
+                    /*
+                     * If a brace ('{' or '}') is found between quotes, the entire block is
+                     * ignored and we continue with the character following the closing quote.
+                     */
+                    if (i + 2 < buffer.length() && buffer.charAt(i + 2) == '\'') {
+                        switch (buffer.charAt(i + 1)) {
+                            case '{':
+                                i += 2;
+                                continue search;
+                            case '}':
+                                i += 2;
+                                continue search;
                         }
-                        if (level <= 0) {
-                            /*
-                             * If we weren't between braces, we must double the quotes.
-                             */
+                    }
+                    if (level <= 0) {
+                        /*
+                         * If we weren't between braces, we must double the quotes.
+                         */
+                        buffer.insert(i++, '\'');
+                        continue search;
+                    }
+                    /*
+                     * If we find ourselves between braces, we don't normally need to double
+                     * our quotes.  However, the format {0,choice,...} is an exception.
+                     */
+                    if (last >= 0 && buffer.charAt(last) == '{') {
+                        int scan = last;
+                        do if (scan >= i) continue search;
+                        while (Character.isDigit(buffer.charAt(++scan)));
+                        final String choice = ",choice,";
+                        final int end = scan + choice.length();
+                        if (end < buffer.length() && buffer.substring(scan, end).equalsIgnoreCase(choice)) {
                             buffer.insert(i++, '\'');
                             continue search;
                         }
-                        /*
-                         * If we find ourselves between braces, we don't normally need to double
-                         * our quotes.  However, the format {0,choice,...} is an exception.
-                         */
-                        if (last >= 0 && buffer.charAt(last) == '{') {
-                            int scan = last;
-                            do if (scan >= i) continue search;
-                            while (Character.isDigit(buffer.charAt(++scan)));
-                            final String choice = ",choice,";
-                            final int end = scan + choice.length();
-                            if (end < buffer.length()
-                                    && buffer.substring(scan, end).equalsIgnoreCase(choice)) {
-                                buffer.insert(i++, '\'');
-                                continue search;
-                            }
-                        }
                     }
+                }
             }
         }
         return buffer.toString();
@@ -361,8 +340,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * @param message The message string.
      * @param exception An optional exception that is the cause of this warning.
      */
-    private void warning(
-            final File file, final String key, final String message, final Exception exception) {
+    private void warning(final File file, final String key, final String message, final Exception exception) {
         out.print("ERROR ");
         if (file != null) {
             String filename = file.getPath();
@@ -408,44 +386,40 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             return;
         }
         try (BufferedWriter out =
-                new BufferedWriter(
-                        new OutputStreamWriter(
-                                new FileOutputStream(file), StandardCharsets.UTF_8))) {
-            out.write(
-                    "/*\n"
-                            + " *    GeoTools - The Open Source Java GIS Toolkit\n"
-                            + " *    http://geotools.org\n"
-                            + " *    \n"
-                            + " *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)\n"
-                            + " *    \n"
-                            + " *    This library is free software; you can redistribute it and/or\n"
-                            + " *    modify it under the terms of the GNU Lesser General Public\n"
-                            + " *    License as published by the Free Software Foundation;\n"
-                            + " *    version 2.1 of the License.\n"
-                            + " *    \n"
-                            + " *    This library is distributed in the hope that it will be useful,\n"
-                            + " *    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                            + " *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
-                            + " *    Lesser General Public License for more details.\n"
-                            + " *    \n"
-                            + " *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!\n"
-                            + " *    Generated with: org.geotools.resources.IndexedResourceCompiler\n"
-                            + " */\n");
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            out.write("/*\n"
+                    + " *    GeoTools - The Open Source Java GIS Toolkit\n"
+                    + " *    http://geotools.org\n"
+                    + " *    \n"
+                    + " *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)\n"
+                    + " *    \n"
+                    + " *    This library is free software; you can redistribute it and/or\n"
+                    + " *    modify it under the terms of the GNU Lesser General Public\n"
+                    + " *    License as published by the Free Software Foundation;\n"
+                    + " *    version 2.1 of the License.\n"
+                    + " *    \n"
+                    + " *    This library is distributed in the hope that it will be useful,\n"
+                    + " *    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                    + " *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
+                    + " *    Lesser General Public License for more details.\n"
+                    + " *    \n"
+                    + " *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!\n"
+                    + " *    Generated with: org.geotools.resources.IndexedResourceCompiler\n"
+                    + " */\n");
             out.write("package ");
             out.write(packageName);
             out.write(";\n\n\n");
-            out.write(
-                    "/**\n"
-                            + " * Resource keys. This class is used when compiling sources, but\n"
-                            + " * no dependencies to {@code ResourceKeys} should appear in any\n"
-                            + " * resulting class files.  Since Java compiler inlines final integer\n"
-                            + " * values, using long identifiers will not bloat constant pools of\n"
-                            + " * classes compiled against the interface, provided that no class\n"
-                            + " * implements this interface.\n"
-                            + " *\n"
-                            + " * @see org.geotools.resources.IndexedResourceBundle\n"
-                            + " * @see org.geotools.resources.IndexedResourceCompiler\n"
-                            + " */\n");
+            out.write("/**\n"
+                    + " * Resource keys. This class is used when compiling sources, but\n"
+                    + " * no dependencies to {@code ResourceKeys} should appear in any\n"
+                    + " * resulting class files.  Since Java compiler inlines final integer\n"
+                    + " * values, using long identifiers will not bloat constant pools of\n"
+                    + " * classes compiled against the interface, provided that no class\n"
+                    + " * implements this interface.\n"
+                    + " *\n"
+                    + " * @see org.geotools.resources.IndexedResourceBundle\n"
+                    + " * @see org.geotools.resources.IndexedResourceCompiler\n"
+                    + " */\n");
             out.write("public final class ");
             out.write(classname);
             out.write(" {\n");
@@ -453,8 +427,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             out.write(classname);
             out.write("() {\n");
             out.write("    }\n");
-            final Map.Entry[] entries =
-                    allocatedIDs.entrySet().toArray(new Map.Entry[allocatedIDs.size()]);
+            final Map.Entry[] entries = allocatedIDs.entrySet().toArray(new Map.Entry[allocatedIDs.size()]);
             Arrays.sort(entries, this);
             for (Map.Entry entry : entries) {
                 out.write('\n');
@@ -489,9 +462,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     }
 
     /**
-     * Compares two resource keys. Object {@code o1} and {@code o2} are usually {@link String}
-     * objects representing resource keys (for example, "{@code MISMATCHED_DIMENSION}"), but may
-     * also be {@link java.util.Map.Entry}.
+     * Compares two resource keys. Object {@code o1} and {@code o2} are usually {@link String} objects representing
+     * resource keys (for example, "{@code MISMATCHED_DIMENSION}"), but may also be {@link java.util.Map.Entry}.
      */
     @Override
     public int compare(Object o1, Object o2) {
@@ -505,8 +477,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     /**
      * Scans the package for resources.
      *
-     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
-     *     sub-directories. The directory structure must be consistent with Maven conventions.
+     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
+     *     structure must be consistent with Maven conventions.
      * @param bundleClass The resource bundle base class (e.g. <code>
      *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      * @param renumber {@code true} for renumbering all key values.
@@ -546,13 +518,10 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
                 final String filename = file.getName();
                 if (filename.startsWith(classname) && filename.endsWith(PROPERTIES_EXT)) {
                     if (compiler == null) {
-                        compiler =
-                                new IndexedResourceCompiler(
-                                        sourceDirectory, bundleClass, renumber, out);
+                        compiler = new IndexedResourceCompiler(sourceDirectory, bundleClass, renumber, out);
                     }
                     compiler.processPropertyFile(file);
-                    final String noExt =
-                            filename.substring(0, filename.length() - PROPERTIES_EXT.length());
+                    final String noExt = filename.substring(0, filename.length() - PROPERTIES_EXT.length());
                     final File utfFile = new File(utfDir, noExt + RESOURCES_EXT);
                     compiler.writeUTFFile(utfFile);
                     if (noExt.equals(classname)) {
@@ -574,8 +543,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * Run the resource compiler.
      *
      * @param args The command-line arguments.
-     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
-     *     sub-directories. The directory structure must be consistent with Maven conventions.
+     * @param sourceDirectory The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
+     *     structure must be consistent with Maven conventions.
      * @param resourcesToProcess The resource bundle base classes (e.g. <code>
      *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      */

@@ -89,7 +89,8 @@ public class DuplicateFilterVisitorTest {
                 }
                 return super.visit(expression, extraData);
             }
-        };
+        }
+        ;
         Expression modified = (Expression) add.accept(new Optimization(), null);
         Assert.assertTrue(modified instanceof Literal);
     }
@@ -123,8 +124,7 @@ public class DuplicateFilterVisitorTest {
     @Test
     public void testNativeFilterIsDuplicated() {
         // build a filter that uses a native filter
-        BBOX boundingBoxFilter =
-                fac.bbox("geometry", -5, -5, 5, 5, DefaultGeographicCRS.WGS84.toString());
+        BBOX boundingBoxFilter = fac.bbox("geometry", -5, -5, 5, 5, DefaultGeographicCRS.WGS84.toString());
         NativeFilter nativeFilter = fac.nativeFilter("SOME NATIVE FILTER");
         Filter filter = fac.and(boundingBoxFilter, nativeFilter);
         // duplicate the filter
@@ -134,10 +134,9 @@ public class DuplicateFilterVisitorTest {
         assertThat(duplicated, instanceOf(And.class));
         And andFilter = (And) duplicated;
         assertThat(andFilter.getChildren().size(), is(2));
-        List<Filter> found =
-                andFilter.getChildren().stream()
-                        .filter(child -> child instanceof NativeFilter)
-                        .collect(Collectors.toList());
+        List<Filter> found = andFilter.getChildren().stream()
+                .filter(child -> child instanceof NativeFilter)
+                .collect(Collectors.toList());
         assertThat(found.size(), is(1));
         assertThat(((NativeFilter) found.get(0)).getNative(), is("SOME NATIVE FILTER"));
     }

@@ -11,22 +11,20 @@
 package org.geotools.api.filter.expression;
 
 /**
- * Marker interface indicating that that the function return value can change during a single data
- * access operation even if the argument values provided to it remain constant
+ * Marker interface indicating that that the function return value can change during a single data access operation even
+ * if the argument values provided to it remain constant
  *
- * <p>Very few functions are truly volatile, one example being random(), whose value is going to
- * change over each invocation, even during the same feature collection filtering
+ * <p>Very few functions are truly volatile, one example being random(), whose value is going to change over each
+ * invocation, even during the same feature collection filtering
  *
- * <p>Functions whose value changes over time but not within the same feature collection filtering
- * are considered to be <em>stable</em> and as such their result can be considered a constant during
- * the single data access operation
+ * <p>Functions whose value changes over time but not within the same feature collection filtering are considered to be
+ * <em>stable</em> and as such their result can be considered a constant during the single data access operation
  *
- * <p>GeoTools will try to optimize out the stable functions and replace them with a constant that
- * can be easily encoded in whatever native filtering mechanism the datastores have
+ * <p>GeoTools will try to optimize out the stable functions and replace them with a constant that can be easily encoded
+ * in whatever native filtering mechanism the datastores have
  *
- * <p>Given the vast majority of function are <em>stable</em> by the above definition only the fews
- * that aren't suitable for constant replacement during a single run against a feature collection
- * should be marked as <em>volatile</em>
+ * <p>Given the vast majority of function are <em>stable</em> by the above definition only the fews that aren't suitable
+ * for constant replacement during a single run against a feature collection should be marked as <em>volatile</em>
  *
  * @author Andrea Aime - GeoSolutions
  */

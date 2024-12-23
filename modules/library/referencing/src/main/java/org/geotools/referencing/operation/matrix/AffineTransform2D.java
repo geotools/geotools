@@ -23,19 +23,17 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Utilities;
 
 /**
- * An affine matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. Here, the term "affine" means
- * a matrix with the last row fixed to {@code [0,0,1]} values. Such matrices are used for affine
- * transformations in a 2D space.
+ * An affine matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. Here, the term "affine" means a matrix with the
+ * last row fixed to {@code [0,0,1]} values. Such matrices are used for affine transformations in a 2D space.
  *
- * <p>This class both extends the <cite>Java2D</cite> {@link AffineTransform} class and implements
- * the {@link Matrix} interface. It allows interoperbility for code that need to pass the same
- * matrix to both <cite>Java2D</cite> API and more generic API working with coordinates of arbitrary
- * dimension.
+ * <p>This class both extends the <cite>Java2D</cite> {@link AffineTransform} class and implements the {@link Matrix}
+ * interface. It allows interoperbility for code that need to pass the same matrix to both <cite>Java2D</cite> API and
+ * more generic API working with coordinates of arbitrary dimension.
  *
- * <p>This class do not implements the {@link XMatrix} interface because the inherited {@code
- * invert()} method (new in J2SE 1.6) declares a checked exception, {@code setZero()} would be an
- * unsupported operation (because it is not possible to change the value at {@code (2,2)}), {@code
- * transpose()} would fails in most cases, and {@code isAffine()} would be useless.
+ * <p>This class do not implements the {@link XMatrix} interface because the inherited {@code invert()} method (new in
+ * J2SE 1.6) declares a checked exception, {@code setZero()} would be an unsupported operation (because it is not
+ * possible to change the value at {@code (2,2)}), {@code transpose()} would fails in most cases, and {@code isAffine()}
+ * would be useless.
  *
  * @since 2.3
  * @version $Id$
@@ -57,8 +55,8 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     }
 
     /**
-     * Creates a new matrix initialized to the same value than the specified one. The specified
-     * matrix size must be {@value #SIZE}&times;{@value #SIZE}.
+     * Creates a new matrix initialized to the same value than the specified one. The specified matrix size must be
+     * {@value #SIZE}&times;{@value #SIZE}.
      */
     public AffineTransform2D(final Matrix matrix) {
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
@@ -84,19 +82,13 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
         setTransform(matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]);
     }
 
-    /**
-     * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of rows in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumRow() {
         return SIZE;
     }
 
-    /**
-     * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumCol() {
         return SIZE;
@@ -112,49 +104,44 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     @Override
     public double getElement(final int row, final int column) {
         switch (row) {
-            case 0:
-                {
-                    switch (column) {
-                        case 0:
-                            return getScaleX();
-                        case 1:
-                            return getShearX();
-                        case 2:
-                            return getTranslateX();
-                    }
-                    break;
+            case 0: {
+                switch (column) {
+                    case 0:
+                        return getScaleX();
+                    case 1:
+                        return getShearX();
+                    case 2:
+                        return getTranslateX();
                 }
-            case 1:
-                {
-                    switch (column) {
-                        case 0:
-                            return getShearY();
-                        case 1:
-                            return getScaleY();
-                        case 2:
-                            return getTranslateY();
-                    }
-                    break;
+                break;
+            }
+            case 1: {
+                switch (column) {
+                    case 0:
+                        return getShearY();
+                    case 1:
+                        return getScaleY();
+                    case 2:
+                        return getTranslateY();
                 }
-            case 2:
-                {
-                    switch (column) {
-                        case 0: // fall through
-                        case 1:
-                            return 0;
-                        case 2:
-                            return 1;
-                    }
-                    break;
+                break;
+            }
+            case 2: {
+                switch (column) {
+                    case 0: // fall through
+                    case 1:
+                        return 0;
+                    case 2:
+                        return 1;
                 }
-            default:
-                {
-                    throw new IndexOutOfBoundsException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
-                }
+                break;
+            }
+            default: {
+                throw new IndexOutOfBoundsException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+            }
         }
-        throw new IndexOutOfBoundsException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+        throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
     }
 
     /**
@@ -167,12 +154,10 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     @Override
     public void setElement(final int row, final int column, final double value) {
         if (row < 0 || row >= SIZE) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
         }
         if (column < 0 || column >= SIZE) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
         }
         if (row == SIZE - 1) {
             checkLastRow(column, value);
@@ -186,24 +171,20 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     }
 
     /**
-     * Check if the specified value is valid for the last row if this matrix. The last row contains
-     * only 0 values except the last column which is set to 1. This method throws an exception if
-     * the specified value is not the expected one.
+     * Check if the specified value is valid for the last row if this matrix. The last row contains only 0 values except
+     * the last column which is set to 1. This method throws an exception if the specified value is not the expected
+     * one.
      */
-    private static void checkLastRow(final int column, final double value)
-            throws IllegalArgumentException {
+    private static void checkLastRow(final int column, final double value) throws IllegalArgumentException {
         if (value != (column == SIZE - 1 ? 1 : 0)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "matrix[" + (SIZE - 1) + ',' + column + ']',
-                            value));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "matrix[" + (SIZE - 1) + ',' + column + ']', value));
         }
     }
 
     /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this matrix. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes only.
      */
     @Override
     public String toString() {

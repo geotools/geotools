@@ -21,11 +21,9 @@ import java.util.Collection;
  */
 public interface Telephone {
     /**
-     * Telephone numbers by which individuals can speak to the responsible organization or
-     * individual.
+     * Telephone numbers by which individuals can speak to the responsible organization or individual.
      *
-     * @return Telephone numbers by which individuals can speak to the responsible organization or
-     *     individual.
+     * @return Telephone numbers by which individuals can speak to the responsible organization or individual.
      * @since GeoAPI 2.1
      */
     Collection<String> getVoices();
@@ -33,8 +31,7 @@ public interface Telephone {
     /**
      * Telephone numbers of a facsimile machine for the responsible organization or individual.
      *
-     * @return Telephone numbers of a facsimile machine for the responsible organization or
-     *     individual.
+     * @return Telephone numbers of a facsimile machine for the responsible organization or individual.
      * @since GeoAPI 2.1
      */
     Collection<String> getFacsimiles();

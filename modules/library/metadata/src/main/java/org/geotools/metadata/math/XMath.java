@@ -40,14 +40,14 @@ public final class XMath {
     };
 
     /**
-     * The sequence of prime numbers computed so far. Will be expanded as needed. We limit ourself
-     * to 16 bits numbers because they are suffisient for computing divisors of any 32 bits number.
+     * The sequence of prime numbers computed so far. Will be expanded as needed. We limit ourself to 16 bits numbers
+     * because they are suffisient for computing divisors of any 32 bits number.
      */
     private static short[] primes = {2, 3};
 
     /**
-     * Maximum length allowed for the {@link #primes} array. This is the index of the first prime
-     * number that can not be stored as 16 bits unsigned.
+     * Maximum length allowed for the {@link #primes} array. This is the index of the first prime number that can not be
+     * stored as 16 bits unsigned.
      */
     private static final int MAX_PRIMES_LENGTH = 6542;
 
@@ -55,8 +55,8 @@ public final class XMath {
     private XMath() {}
 
     /**
-     * Computes 10 raised to the power of <var>x</var>. This method delegates to {@link #pow10(int)}
-     * if <var>x</var> is an integer, or to {@link Math#pow} otherwise.
+     * Computes 10 raised to the power of <var>x</var>. This method delegates to {@link #pow10(int)} if <var>x</var> is
+     * an integer, or to {@link Math#pow} otherwise.
      *
      * @param x The exponent.
      * @return 10 raised to the given exponent.
@@ -71,14 +71,12 @@ public final class XMath {
     }
 
     /**
-     * Computes 10 raised to the power of <var>x</var>. This method tries to be slightly more
-     * accurate than <code>{@linkplain Math#pow Math.pow}(10,x)</code>, sometime at the cost of
-     * performance.
+     * Computes 10 raised to the power of <var>x</var>. This method tries to be slightly more accurate than <code>
+     * {@linkplain Math#pow Math.pow}(10,x)</code>, sometime at the cost of performance.
      *
-     * <p>The {@code Math.pow(10,x)} method doesn't always return the closest IEEE floating point
-     * representation. More accurate calculations are slower and usually not necessary, but the base
-     * 10 is a special case since it is used for scaling axes or formatting human-readable output,
-     * in which case the precision may matter.
+     * <p>The {@code Math.pow(10,x)} method doesn't always return the closest IEEE floating point representation. More
+     * accurate calculations are slower and usually not necessary, but the base 10 is a special case since it is used
+     * for scaling axes or formatting human-readable output, in which case the precision may matter.
      *
      * @param x The exponent.
      * @return 10 raised to the given exponent.
@@ -107,8 +105,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero or {@code NaN} and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * or {@code NaN} and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -121,8 +119,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero or {@code NaN} and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * or {@code NaN} and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -135,8 +133,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -148,8 +146,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -161,8 +159,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -174,8 +172,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
-     * <var>x</var> is zero and +1 if <var>x</var> is positive.
+     * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if <var>x</var> is zero
+     * and +1 if <var>x</var> is positive.
      *
      * @param x The number from which to get the sign.
      * @return {@code +1} if <var>x</var> is positive, {@code -1} if negative, or 0 otherwise.
@@ -187,9 +185,9 @@ public final class XMath {
     }
 
     /**
-     * Rounds the specified value, providing that the difference between the original value and the
-     * rounded value is not greater than the specified amount of floating point units. This method
-     * can be used for hiding floating point error likes 2.9999999996.
+     * Rounds the specified value, providing that the difference between the original value and the rounded value is not
+     * greater than the specified amount of floating point units. This method can be used for hiding floating point
+     * error likes 2.9999999996.
      *
      * @param value The value to round.
      * @param maxULP The maximal change allowed in ULPs (Unit in the Last Place).
@@ -211,21 +209,18 @@ public final class XMath {
     }
 
     /**
-     * Tries to remove at least {@code n} fraction digits in the decimal representation of the
-     * specified value. This method tries small changes to {@code value}, by adding or substracting
-     * up to {@code maxULP} (Unit in the Last Place). If there is no small change that remove at
-     * least {@code n} fraction digits, then the value is returned unchanged. This method is used
-     * for hiding rounding errors, like in conversions from radians to degrees.
+     * Tries to remove at least {@code n} fraction digits in the decimal representation of the specified value. This
+     * method tries small changes to {@code value}, by adding or substracting up to {@code maxULP} (Unit in the Last
+     * Place). If there is no small change that remove at least {@code n} fraction digits, then the value is returned
+     * unchanged. This method is used for hiding rounding errors, like in conversions from radians to degrees.
      *
-     * <p>Example: {@code XMath.trimLastDecimalDigits(-61.500000000000014, 12, 4)} returns {@code
-     * -61.5}.
+     * <p>Example: {@code XMath.trimLastDecimalDigits(-61.500000000000014, 12, 4)} returns {@code -61.5}.
      *
      * @param value The value to fix.
-     * @param maxULP The maximal change allowed in ULPs (Unit in the Last Place). A typical value is
-     *     4.
+     * @param maxULP The maximal change allowed in ULPs (Unit in the Last Place). A typical value is 4.
      * @param n The minimum amount of fraction digits.
-     * @return The trimmed value, or the unchanged {@code value} if there is no small change that
-     *     remove at least {@code n} fraction digits.
+     * @return The trimmed value, or the unchanged {@code value} if there is no small change that remove at least
+     *     {@code n} fraction digits.
      */
     public static double trimDecimalFractionDigits(final double value, final int maxULP, int n) {
         double lower = value;
@@ -241,8 +236,8 @@ public final class XMath {
     }
 
     /**
-     * Counts the fraction digits in the string representation of the specified value. This method
-     * is equivalent to a calling <code>{@linkplain Double#toString(double) Double.toString}(value)
+     * Counts the fraction digits in the string representation of the specified value. This method is equivalent to a
+     * calling <code>{@linkplain Double#toString(double) Double.toString}(value)
      * </code> and counting the number of digits after the decimal separator.
      *
      * @param value The value for which to count the fraction digits.
@@ -266,10 +261,10 @@ public final class XMath {
     }
 
     /**
-     * Returns a {@link Float#NaN NaN} number for the specified index. Valid NaN numbers have bit
-     * fields ranging from {@code 0x7f800001} through {@code 0x7fffffff} or {@code 0xff800001}
-     * through {@code 0xffffffff}. The standard {@link Float#NaN} has bit fields {@code 0x7fc00000}.
-     * See {@link Float#intBitsToFloat} for more details on NaN bit values.
+     * Returns a {@link Float#NaN NaN} number for the specified index. Valid NaN numbers have bit fields ranging from
+     * {@code 0x7f800001} through {@code 0x7fffffff} or {@code 0xff800001} through {@code 0xffffffff}. The standard
+     * {@link Float#NaN} has bit fields {@code 0x7fc00000}. See {@link Float#intBitsToFloat} for more details on NaN bit
+     * values.
      *
      * @param index The index, from -2097152 to 2097151 inclusive.
      * @return One of the legal {@link Float#NaN NaN} values as a float.
@@ -288,9 +283,8 @@ public final class XMath {
     }
 
     /**
-     * Returns the <var>i</var><sup>th</sup> prime number. This method returns (2,3,5,7,11...) for
-     * index (0,1,2,3,4...). This method is designed for relatively small prime numbers only; don't
-     * use it for large values.
+     * Returns the <var>i</var><sup>th</sup> prime number. This method returns (2,3,5,7,11...) for index (0,1,2,3,4...).
+     * This method is designed for relatively small prime numbers only; don't use it for large values.
      *
      * @param index The prime number index, starting at index 0 for prime number 2.
      * @return The prime number at the specified index.
@@ -330,9 +324,9 @@ public final class XMath {
     }
 
     /**
-     * Returns the divisors of the specified number as positive integers. For any value other than
-     * {@code O} (which returns an empty array), the first element in the returned array is always
-     * {@code 1} and the last element is always the absolute value of {@code number}.
+     * Returns the divisors of the specified number as positive integers. For any value other than {@code O} (which
+     * returns an empty array), the first element in the returned array is always {@code 1} and the last element is
+     * always the absolute value of {@code number}.
      *
      * @param number The number for which to compute the divisors.
      * @return The divisors in strictly increasing order.

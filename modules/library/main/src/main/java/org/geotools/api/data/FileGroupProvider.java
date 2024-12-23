@@ -21,15 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * A {@link FileGroup} provider allowing to return a {@link CloseableIterator} of {@link
- * FileGroup}s.
- */
+/** A {@link FileGroup} provider allowing to return a {@link CloseableIterator} of {@link FileGroup}s. */
 public interface FileGroupProvider {
 
     /**
-     * A Group of Files consisting of a reference to a mainFile, plus a set of support Files (if
-     * any) and metadata map.
+     * A Group of Files consisting of a reference to a mainFile, plus a set of support Files (if any) and metadata map.
      */
     public static class FileGroup {
 
@@ -70,9 +66,8 @@ public interface FileGroupProvider {
         List<File> supportFiles = null;
 
         /**
-         * Metadata for this group. As an instance, domain information) A sample entry of that
-         * mapping could be <"time",DateRange> to indicate that this group is covering the reported
-         * time range.
+         * Metadata for this group. As an instance, domain information) A sample entry of that mapping could be
+         * <"time",DateRange> to indicate that this group is covering the reported time range.
          */
         Map<String, Object> metadata;
 
@@ -104,8 +99,7 @@ public interface FileGroupProvider {
     /**
      * Return {@link FileGroup}s matching the specified query (if any).
      *
-     * <p>Specifying a <code>null</code> query will result in returning all the available {@link
-     * FileGroup}s.
+     * <p>Specifying a <code>null</code> query will result in returning all the available {@link FileGroup}s.
      */
     CloseableIterator<FileGroup> getFiles(Query query);
 }

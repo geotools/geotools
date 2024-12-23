@@ -40,8 +40,7 @@ import org.geotools.filter.function.JsonPointerFunction;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PostPreProcessFilterSplittingVisitorTest
-        extends AbstractPostPreProcessFilterSplittingVisitorTests {
+public class PostPreProcessFilterSplittingVisitorTest extends AbstractPostPreProcessFilterSplittingVisitorTests {
 
     private FilterCapabilities simpleLogicalCaps = new FilterCapabilities();
     private PostPreProcessFilterSplittingVisitor visitor;
@@ -126,9 +125,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         runTest(f, FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS, nameAtt);
     }
 
-    /**
-     * an update is in transaction that modifies an attribute that NOT is referenced in the query
-     */
+    /** an update is in transaction that modifies an attribute that NOT is referenced in the query */
     @Test
     public void testVisitCompareFilterWithUpdateDifferentAttribute() throws Exception {
         Filter f = createPropertyIsEqualToFilter(nameAtt, "david");
@@ -328,27 +325,23 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(f, visitor.getFilterPre());
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
 
-        visitor =
-                new PostPreProcessFilterSplittingVisitor(
-                        simpleLogicalCaps,
-                        null,
-                        new ClientTransactionAccessor() {
+        visitor = new PostPreProcessFilterSplittingVisitor(simpleLogicalCaps, null, new ClientTransactionAccessor() {
 
-                            @Override
-                            public Filter getDeleteFilter() {
-                                return null;
-                            }
+            @Override
+            public Filter getDeleteFilter() {
+                return null;
+            }
 
-                            @Override
-                            public Filter getUpdateFilter(String attributePath) {
-                                if (attributePath.equals("eventtype")) {
-                                    HashSet<FeatureId> ids = new HashSet<>();
-                                    ids.add(ff.featureId("fid"));
-                                    return ff.id(ids);
-                                }
-                                return null;
-                            }
-                        });
+            @Override
+            public Filter getUpdateFilter(String attributePath) {
+                if (attributePath.equals("eventtype")) {
+                    HashSet<FeatureId> ids = new HashSet<>();
+                    ids.add(ff.featureId("fid"));
+                    return ff.id(ids);
+                }
+                return null;
+            }
+        });
 
         f.accept(visitor, null);
 
@@ -364,8 +357,7 @@ public class PostPreProcessFilterSplittingVisitorTest
         FilterCapabilities caps = new FilterCapabilities();
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         caps.addType(And.class);
-        PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter f1 = ff.equals(ff.property("CFCC"), ff.literal("A41"));
@@ -386,8 +378,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     @Test
     public void testTemporalFilter() throws Exception {
         FilterCapabilities caps = new FilterCapabilities();
-        PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
 
         Filter f1 = ff.after(ff.property("foo"), ff.literal("2011-06-20"));
         f1.accept(visitor, null);
@@ -398,8 +389,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     @Test
     public void testIsNullFilter() {
         FilterCapabilities caps = new FilterCapabilities();
-        PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
         caps.addType(PropertyIsNull.class);
 
         Filter f1 = ff.isNull(ff.literal("abc"));
@@ -417,8 +407,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     @Test
     public void testNullLiteralInLogicCombination() {
         FilterCapabilities caps = new FilterCapabilities();
-        PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         caps.addType(And.class);
         caps.addType(Or.class);
@@ -437,18 +426,14 @@ public class PostPreProcessFilterSplittingVisitorTest
         // test a bug doesn't occur when having in the filter a function
         // with a number of parameters <= the number of filters in the post stack
         FilterCapabilities caps = new FilterCapabilities();
-        PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         caps.addType(JsonPointerFunction.class);
         caps.addType(And.class);
         Filter memoryOne = ff.crosses((String) null, null);
         Filter memoryTwo = ff.crosses((String) null, null);
-        Filter otherFilter =
-                ff.equal(
-                        ff.function("jsonPointer", ff.literal("/pointer"), ff.property("property")),
-                        ff.literal("test"),
-                        false);
+        Filter otherFilter = ff.equal(
+                ff.function("jsonPointer", ff.literal("/pointer"), ff.property("property")), ff.literal("test"), false);
         And and = ff.and(Arrays.asList(memoryOne, memoryTwo, otherFilter));
         and.accept(visitor, null);
         assertEquals(ff.and(Arrays.asList(memoryOne, memoryTwo)), visitor.getFilterPost());

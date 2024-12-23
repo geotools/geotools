@@ -26,8 +26,8 @@ import javax.swing.SwingUtilities;
 import org.jaitools.swing.ImageFrame;
 
 /**
- * Wraps a JAITools {@linkplain ImageFrame} and a {@linkplain CountDownLatch} to enable test methods
- * to display the image and then wait until the frame is dismissed.
+ * Wraps a JAITools {@linkplain ImageFrame} and a {@linkplain CountDownLatch} to enable test methods to display the
+ * image and then wait until the frame is dismissed.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -36,9 +36,8 @@ import org.jaitools.swing.ImageFrame;
 public class TestImageFrame {
 
     /**
-     * Displays the given image in an {@linkplain ImageFrame} and counts down the returned latch
-     * when the frame is closed. This allows test methods to display an image and then wait until
-     * the user dismisses the frame.
+     * Displays the given image in an {@linkplain ImageFrame} and counts down the returned latch when the frame is
+     * closed. This allows test methods to display an image and then wait until the user dismisses the frame.
      *
      * <pre><code>
      * // In test method
@@ -54,8 +53,7 @@ public class TestImageFrame {
      * @param image image to display
      * @param title frame title (may be {@code null}
      * @return the latch which will be set to zero when the frame is closed
-     * @throws InterruptedException if the thread is interrupted while the image frame is being
-     *     created and shown
+     * @throws InterruptedException if the thread is interrupted while the image frame is being created and shown
      * @throws InvocationTargetException on internal error
      */
     public static CountDownLatch showImage(final RenderedImage image, final String title)
@@ -90,8 +88,7 @@ public class TestImageFrame {
      * @param title frame title
      * @param latch latch to count down when the frame is closed
      */
-    private static void doShowImage(
-            final RenderedImage image, final String title, final CountDownLatch latch) {
+    private static void doShowImage(final RenderedImage image, final String title, final CountDownLatch latch) {
 
         ImageFrameWithLatch frame = new ImageFrameWithLatch(image, title, latch);
         frame.setVisible(true);
@@ -104,13 +101,12 @@ public class TestImageFrame {
             super(img, title);
             this.closeLatch = latch;
 
-            addWindowListener(
-                    new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            closeLatch.countDown();
-                        }
-                    });
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    closeLatch.countDown();
+                }
+            });
         }
     }
 }

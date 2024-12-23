@@ -23,11 +23,10 @@ import org.geotools.xsd.impl.BindingWalker.Visitor;
 import org.picocontainer.MutablePicoContainer;
 
 /**
- * Methods for the dispatch of binding visitors that first check for type mismatches between binding
- * Java types and instance types.
+ * Methods for the dispatch of binding visitors that first check for type mismatches between binding Java types and
+ * instance types.
  *
- * <p>If a mismatched binding is found for a complex attribute, the binding for xs:anyType is
- * visited.
+ * <p>If a mismatched binding is found for a complex attribute, the binding for xs:anyType is visited.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */

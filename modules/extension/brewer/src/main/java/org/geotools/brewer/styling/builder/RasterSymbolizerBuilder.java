@@ -129,19 +129,18 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         if (unset) {
             return null;
         }
-        RasterSymbolizer symbolizer =
-                sf.rasterSymbolizer(
-                        name,
-                        geometry,
-                        description.build(),
-                        uom,
-                        opacity,
-                        channelSelection.build(),
-                        overlapsBehaviour,
-                        colorMap.build(),
-                        contrast.build(),
-                        shadedRelief.build(),
-                        outline != null ? outline.build() : null);
+        RasterSymbolizer symbolizer = sf.rasterSymbolizer(
+                name,
+                geometry,
+                description.build(),
+                uom,
+                opacity,
+                channelSelection.build(),
+                overlapsBehaviour,
+                colorMap.build(),
+                contrast.build(),
+                shadedRelief.build(),
+                outline != null ? outline.build() : null);
         symbolizer.getOptions().putAll(options);
         return symbolizer;
     }
@@ -166,13 +165,9 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         colorMap.reset(symbolizer.getColorMap());
         contrast.reset(symbolizer.getContrastEnhancement());
         if (symbolizer.getImageOutline() instanceof LineSymbolizer) {
-            this.outline =
-                    new LineSymbolizerBuilder()
-                            .reset((LineSymbolizer) symbolizer.getImageOutline());
+            this.outline = new LineSymbolizerBuilder().reset((LineSymbolizer) symbolizer.getImageOutline());
         } else if (symbolizer.getImageOutline() instanceof PolygonSymbolizer) {
-            this.outline =
-                    new PolygonSymbolizerBuilder()
-                            .reset((PolygonSymbolizer) symbolizer.getImageOutline());
+            this.outline = new PolygonSymbolizerBuilder().reset((PolygonSymbolizer) symbolizer.getImageOutline());
         }
         unset = false;
         return this;

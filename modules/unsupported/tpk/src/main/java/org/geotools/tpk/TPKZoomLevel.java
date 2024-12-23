@@ -24,12 +24,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * A TPK file contains one or more zoom levels This interface is an abstraction of a zoom level
- * providing the coverage values of the zoom level (minColumn, minRow, maxColumn, maxRow) and the
- * ability to retrieve tiles for a particular coverage in that zoom level.
+ * A TPK file contains one or more zoom levels This interface is an abstraction of a zoom level providing the coverage
+ * values of the zoom level (minColumn, minRow, maxColumn, maxRow) and the ability to retrieve tiles for a particular
+ * coverage in that zoom level.
  *
- * <p>A zoom level can consist of multiple bundle/bundle index files; the zoomLevel interface
- * abstracts this away from the caller.
+ * <p>A zoom level can consist of multiple bundle/bundle index files; the zoomLevel interface abstracts this away from
+ * the caller.
  */
 public interface TPKZoomLevel {
 

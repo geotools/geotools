@@ -31,7 +31,8 @@ import org.w3c.dom.Document;
 public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     @Test
     public void testType() {
-        assertEquals(ScalarCapabilities.class, binding(OGC.Scalar_CapabilitiesType).getType());
+        assertEquals(
+                ScalarCapabilities.class, binding(OGC.Scalar_CapabilitiesType).getType());
     }
 
     @Test
@@ -63,21 +64,19 @@ public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSu
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.scalarCapabilities(true),
-                        new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
-                        OGC.Scalar_CapabilitiesType);
+        Document dom = encode(
+                FilterMockData.scalarCapabilities(true),
+                new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
+                OGC.Scalar_CapabilitiesType);
 
         assertNotNull(getElementByQName(dom, OGC.Logical_Operators));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Comparison_Operators")));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Arithmetic_Operators")));
 
-        dom =
-                encode(
-                        FilterMockData.scalarCapabilities(false),
-                        new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
-                        OGC.Scalar_CapabilitiesType);
+        dom = encode(
+                FilterMockData.scalarCapabilities(false),
+                new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
+                OGC.Scalar_CapabilitiesType);
         assertNull(getElementByQName(dom, OGC.Logical_Operators));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Comparison_Operators")));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Arithmetic_Operators")));

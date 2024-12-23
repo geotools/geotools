@@ -40,9 +40,9 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
  *   <li>DataUtilities.attributeNames( Expression, FeatureType )
  * </ul>
  *
- * The class can also be used to determine if an expression is "static", that is, despite a complex
- * structure does not use attribute or volatile functions, and can be thus replaced by a constant:
- * for this use case refer to the {@link #isConstantExpression()} method
+ * The class can also be used to determine if an expression is "static", that is, despite a complex structure does not
+ * use attribute or volatile functions, and can be thus replaced by a constant: for this use case refer to the
+ * {@link #isConstantExpression()} method
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -78,8 +78,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     }
 
     /**
-     * Lists the PropertyNames found so far; useful when dealing with cpath expressions involving
-     * namespace informaiton.
+     * Lists the PropertyNames found so far; useful when dealing with cpath expressions involving namespace informaiton.
      */
     public Set<PropertyName> getPropertyNameSet() {
         return propertyNames;
@@ -155,11 +154,12 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
             }
         }
         return super.visit(expression, data);
-    };
+    }
+    ;
 
     /**
-     * Returns true if the last visited expression is a constant, that is, does not depend on any
-     * attribute and does not use any {@link VolatileFunction}
+     * Returns true if the last visited expression is a constant, that is, does not depend on any attribute and does not
+     * use any {@link VolatileFunction}
      */
     public boolean isConstantExpression() {
         return !usingVolatileFunctions
@@ -168,8 +168,8 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     }
 
     /**
-     * Returns true if the expression is using dynamic property names, so a static analysis of the
-     * expression won't be able to return all the properties in use
+     * Returns true if the expression is using dynamic property names, so a static analysis of the expression won't be
+     * able to return all the properties in use
      */
     public boolean isUsingDynamincProperties() {
         return usingDynamicProperties;

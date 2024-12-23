@@ -43,9 +43,9 @@ import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
- * Store information about the underlying NetCDF georeferencing, such as Coordinate Variables (i.e.
- * Latitude, Longitude, Time variables, with values), Coordinate Reference Systems (i.e.
- * GridMappings), NetCDF dimensions to NetCDF coordinates relations.
+ * Store information about the underlying NetCDF georeferencing, such as Coordinate Variables (i.e. Latitude, Longitude,
+ * Time variables, with values), Coordinate Reference Systems (i.e. GridMappings), NetCDF dimensions to NetCDF
+ * coordinates relations.
  */
 class NetCDFGeoreferenceManager {
 
@@ -53,9 +53,9 @@ class NetCDFGeoreferenceManager {
     class BBoxGetter {
 
         /**
-         * BoundingBoxes available for the underlying dataset. Most common case is that the whole
-         * dataset has a single boundingbox/grid-mapping, resulting into a map made by a single
-         * element. In that case, the only one envelope will be referred through the "DEFAULT" key
+         * BoundingBoxes available for the underlying dataset. Most common case is that the whole dataset has a single
+         * boundingbox/grid-mapping, resulting into a map made by a single element. In that case, the only one envelope
+         * will be referred through the "DEFAULT" key
          */
         protected Map<String, ReferencedEnvelope> boundingBoxes;
 
@@ -141,8 +141,7 @@ class NetCDFGeoreferenceManager {
                     crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                 }
             }
-            ReferencedEnvelope boundingBox =
-                    new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
+            ReferencedEnvelope boundingBox = new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
             boundingBoxes.put(NetCDFGeoreferenceManager.DEFAULT, boundingBox);
         }
 
@@ -158,15 +157,12 @@ class NetCDFGeoreferenceManager {
     }
 
     /**
-     * BBoxGetter Implementation for multiple bounding boxes management. Use it for NetCDF datasets
-     * defining multiple bounding boxes.
+     * BBoxGetter Implementation for multiple bounding boxes management. Use it for NetCDF datasets defining multiple
+     * bounding boxes.
      */
     class MultipleBBoxGetter extends BBoxGetter {
 
-        /**
-         * Class delegated to retrieve and compute the coordinates from the available coordinate
-         * variables.
-         */
+        /** Class delegated to retrieve and compute the coordinates from the available coordinate variables. */
         class CoordinatesManager {
 
             // Map for longitude/easting coordinates
@@ -194,11 +190,8 @@ class NetCDFGeoreferenceManager {
                 xLonCoords.put(cv.getName(), xLon);
             }
 
-            /**
-             * Compute a {@link ReferencedEnvelope} instance, from the specified coordinate names
-             */
-            public ReferencedEnvelope computeEnvelope(
-                    String coordinates, CoordinateReferenceSystem crs) {
+            /** Compute a {@link ReferencedEnvelope} instance, from the specified coordinate names */
+            public ReferencedEnvelope computeEnvelope(String coordinates, CoordinateReferenceSystem crs) {
                 Utilities.ensureNonNull("coordinates", coordinates);
                 String[] coords = coordinates.split(" ");
                 double[] xLon = null;
@@ -221,8 +214,8 @@ class NetCDFGeoreferenceManager {
 
             /**
              * Get the coordinates available for this variable. They are retrieved from the
-             * {@linkplain NetCDFUtilities#COORDINATES} coordinates attribute. If missing, they will
-             * be retrieved from the dimension names
+             * {@linkplain NetCDFUtilities#COORDINATES} coordinates attribute. If missing, they will be retrieved from
+             * the dimension names
              */
             public String getCoordinateNames(Variable var) {
                 String coordinates = null;
@@ -316,14 +309,12 @@ class NetCDFGeoreferenceManager {
             if (coordinates != null) {
                 return boundingBoxes.get(coordinates);
             }
-            throw new IllegalArgumentException(
-                    "Unable to find an envelope for the provided variable: " + shortName);
+            throw new IllegalArgumentException("Unable to find an envelope for the provided variable: " + shortName);
         }
 
         /** Look for a Coordinate Reference System */
         private CoordinateReferenceSystem lookForCrs(
-                CoordinateReferenceSystem crs, Attribute gridMappingAttribute, Variable var)
-                throws FactoryException {
+                CoordinateReferenceSystem crs, Attribute gridMappingAttribute, Variable var) throws FactoryException {
             if (gridMappingAttribute != null) {
                 String gridMappingName = gridMappingAttribute.getStringValue();
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -337,12 +328,11 @@ class NetCDFGeoreferenceManager {
                         crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                     }
                 } else if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "The specified variable "
-                                    + var.getFullName()
-                                    + " declares a gridMapping = "
-                                    + gridMappingName
-                                    + " but that mapping doesn't exist.");
+                    LOGGER.warning("The specified variable "
+                            + var.getFullName()
+                            + " declares a gridMapping = "
+                            + gridMappingName
+                            + " but that mapping doesn't exist.");
                 }
             }
             return crs;
@@ -352,9 +342,9 @@ class NetCDFGeoreferenceManager {
     private static final Logger LOGGER = Logging.getLogger(NetCDFGeoreferenceManager.class);
 
     /**
-     * Set it to {@code true} in case the dataset has a single bbox. Set it to {@code false} in case
-     * the dataset has multiple 2D coordinates definitions and bboxes. Used to quickly access the
-     * bbox in case there is only a single one.
+     * Set it to {@code true} in case the dataset has a single bbox. Set it to {@code false} in case the dataset has
+     * multiple 2D coordinates definitions and bboxes. Used to quickly access the bbox in case there is only a single
+     * one.
      */
     private boolean hasSingleBBox = true;
 
@@ -362,14 +352,11 @@ class NetCDFGeoreferenceManager {
     private BBoxGetter bbox;
 
     /**
-     * Class mapping the NetCDF dimensions to related coordinate variables/axis names. Typical
-     * example is a "time" coordinate variable containing the time instants for the "time"
-     * dimensions.
+     * Class mapping the NetCDF dimensions to related coordinate variables/axis names. Typical example is a "time"
+     * coordinate variable containing the time instants for the "time" dimensions.
      */
     class DimensionMapper {
-        /**
-         * Mapping containing the relation between a dimension and the related coordinate variable
-         */
+        /** Mapping containing the relation between a dimension and the related coordinate variable */
         private Map<String, String> dimensions;
 
         /** Return the whole dimension to coordinates mapping */
@@ -440,11 +427,10 @@ class NetCDFGeoreferenceManager {
                     }
                 } else {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Null coordinate variable: '"
-                                        + key
-                                        + "' while processing input: "
-                                        + dataset.getLocation());
+                        LOGGER.fine("Null coordinate variable: '"
+                                + key
+                                + "' while processing input: "
+                                + dataset.getLocation());
                     }
                 }
             }
@@ -526,8 +512,7 @@ class NetCDFGeoreferenceManager {
         if (envelope != null) {
             return envelope.getCoordinateReferenceSystem();
         }
-        throw new IllegalArgumentException(
-                "Unable to find a CRS for the provided variable: " + shortName);
+        throw new IllegalArgumentException("Unable to find a CRS for the provided variable: " + shortName);
     }
 
     private String getCoordinatesForVariable(String shortName) {
@@ -563,8 +548,8 @@ class NetCDFGeoreferenceManager {
     }
 
     /**
-     * Main constructor to setup the NetCDF Georeferencing based on the available information stored
-     * within the NetCDF dataset.
+     * Main constructor to setup the NetCDF Georeferencing based on the available information stored within the NetCDF
+     * dataset.
      */
     public NetCDFGeoreferenceManager(NetcdfDataset dataset) {
         this.dataset = dataset;
@@ -577,8 +562,8 @@ class NetCDFGeoreferenceManager {
     }
 
     /**
-     * Parse the CoordinateAxes of the dataset and setup proper {@link CoordinateVariable} instances
-     * on top of it and proper mapping between NetCDF dimensions and related coordinate variables.
+     * Parse the CoordinateAxes of the dataset and setup proper {@link CoordinateVariable} instances on top of it and
+     * proper mapping between NetCDF dimensions and related coordinate variables.
      */
     private void initCoordinates() {
         // get the coordinate variables
@@ -601,19 +586,16 @@ class NetCDFGeoreferenceManager {
                     } else if ("time".equals(axisName)) {
                         if (LOGGER.isLoggable(Level.FINE)) {
                             LOGGER.fine(
-                                    "Detected unparseable unit string in time axis: '"
-                                            + axis.getUnitsString()
-                                            + "'.");
+                                    "Detected unparseable unit string in time axis: '" + axis.getUnitsString() + "'.");
                         }
                         axis.setAxisType(AxisType.Time);
                         coordinates.put(axisName, CoordinateVariable.create(axis));
                     } else if (!ignored.contains(axisName)) {
-                        LOGGER.warning(
-                                "Unsupported axis: "
-                                        + axis
-                                        + " in input: "
-                                        + dataset.getLocation()
-                                        + " has been found");
+                        LOGGER.warning("Unsupported axis: "
+                                + axis
+                                + " in input: "
+                                + dataset.getLocation()
+                                + " has been found");
                     }
                 }
             }
@@ -628,10 +610,9 @@ class NetCDFGeoreferenceManager {
     }
 
     /**
-     * Get the bounding box coordinates from the provided coordinateVariable. The resulting
-     * coordinates will be stored in the provided array. The convention is that the stored
-     * coordinates represent the center of the cell so we apply a half pixel offset to go to the
-     * corner.
+     * Get the bounding box coordinates from the provided coordinateVariable. The resulting coordinates will be stored
+     * in the provided array. The convention is that the stored coordinates represent the center of the cell so we apply
+     * a half pixel offset to go to the corner.
      */
     private void getCoordinate(CoordinateVariable<?> cv, double[] coordinate) throws IOException {
         if (cv.isRegular()) {

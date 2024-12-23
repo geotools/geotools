@@ -64,14 +64,13 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
     }
 
     /**
-     * This test tries to read GZipped ascii grids first by supplying the {@link ArcGridReader} with
-     * a {@link File} that points to a gzipped coverage, second by opening up a {@link
-     * GZIPInputStream} and asking {@link ImageIO} to wrap it with an {@link ImageInputStream}.
+     * This test tries to read GZipped ascii grids first by supplying the {@link ArcGridReader} with a {@link File} that
+     * points to a gzipped coverage, second by opening up a {@link GZIPInputStream} and asking {@link ImageIO} to wrap
+     * it with an {@link ImageInputStream}.
      */
     @Test
     public void testReadFileGZip() throws IOException {
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
         LOGGER.info("Reading the coverage through a file");
         // get a gzipped ascii grid
         final File f = TestData.file(this, "arcgrid/spearfish.asc.gz");
@@ -82,8 +81,7 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
         LOGGER.info("Reading the gzipped coverage through an ImageInputStream");
         // Reading the coverage through an ImageInputStream
         @SuppressWarnings("PMD.CloseResource")
-        final ImageInputStream iiStream =
-                ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream(f)));
+        final ImageInputStream iiStream = ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream(f)));
         reader = new ArcGridReader(iiStream, hints);
         final GridCoverage2D gc2 = (GridCoverage2D) reader.read(null);
 

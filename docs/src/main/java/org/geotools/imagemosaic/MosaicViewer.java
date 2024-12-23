@@ -33,8 +33,8 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.util.factory.Hints;
 
 /**
- * A simple viewer for a imageMosaic. You must provide your own mosaic. Which could simply be a
- * folder with image files coupled with a world image file.
+ * A simple viewer for a imageMosaic. You must provide your own mosaic. Which could simply be a folder with image files
+ * coupled with a world image file.
  *
  * <p>Testing the multithreading options.
  *
@@ -97,16 +97,12 @@ public class MosaicViewer {
             ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
             ImageMosaicReader reader =
-                    new ImageMosaicReader(
-                            new File(pathMosaic), new Hints(Hints.EXECUTOR_SERVICE, executor));
+                    new ImageMosaicReader(new File(pathMosaic), new Hints(Hints.EXECUTOR_SERVICE, executor));
 
-            ParameterValue<Boolean> multithreadParam =
-                    ImageMosaicFormat.ALLOW_MULTITHREADING.createValue();
+            ParameterValue<Boolean> multithreadParam = ImageMosaicFormat.ALLOW_MULTITHREADING.createValue();
             multithreadParam.setValue(true);
 
-            layer =
-                    new GridReaderLayer(
-                            reader, style, new GeneralParameterValue[] {multithreadParam});
+            layer = new GridReaderLayer(reader, style, new GeneralParameterValue[] {multithreadParam});
 
             // end Create Multithreaded ImageMosaicReader example
         }

@@ -51,8 +51,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @generated
  */
 @SuppressWarnings("ComparableType")
-public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding
-        implements Comparable {
+public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding implements Comparable {
 
     public CurveTypeBinding(GeometryFactory gf) {
         super(gf);

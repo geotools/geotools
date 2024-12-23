@@ -29,8 +29,8 @@ import org.geotools.tile.TileService;
 import org.geotools.util.logging.Logging;
 
 /**
- * The WebMercatorTileService is an abstract class that holds some of the tile service logic for
- * Mercator-based tile services.
+ * The WebMercatorTileService is an abstract class that holds some of the tile service logic for Mercator-based tile
+ * services.
  *
  * @author Ugo Taddei
  * @since 12
@@ -73,11 +73,7 @@ public abstract class WebMercatorTileService extends TileService {
     @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(
-                MIN_LONGITUDE,
-                MAX_LONGITUDE,
-                MIN_LATITUDE,
-                MAX_LATITUDE,
-                DefaultGeographicCRS.WGS84);
+                MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE, DefaultGeographicCRS.WGS84);
     }
 
     @Override

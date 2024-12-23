@@ -32,12 +32,11 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * This class is a bridge between a FeatureCollection<SimpleFeatureType,SimpleFeature> and the
- * SimpleFeatureCollection interface.
+ * This class is a bridge between a FeatureCollection<SimpleFeatureType,SimpleFeature> and the SimpleFeatureCollection
+ * interface.
  *
- * <p>This class is package visbile and can only be created by DataUtilities.simple(
- * featureCollection ); it is under lock and key so that we can safely do an instance of check and
- * not get multiple wrappers piling up.
+ * <p>This class is package visbile and can only be created by DataUtilities.simple( featureCollection ); it is under
+ * lock and key so that we can safely do an instance of check and not get multiple wrappers piling up.
  *
  * @author Jody
  * @since 2.7
@@ -46,8 +45,7 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
 
     private FeatureCollection<SimpleFeatureType, SimpleFeature> collection;
 
-    public SimpleFeatureCollectionBridge(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
+    public SimpleFeatureCollectionBridge(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         if (featureCollection == null) {
             throw new NullPointerException("FeatureCollection required");
         }

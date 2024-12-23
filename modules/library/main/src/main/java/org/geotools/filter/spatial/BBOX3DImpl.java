@@ -30,8 +30,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * A 3D BBOX Filter Implementation Supports filtering with BBOXes that have 3D coordinates including
- * a minimum and maximum for the z-axis.
+ * A 3D BBOX Filter Implementation Supports filtering with BBOXes that have 3D coordinates including a minimum and
+ * maximum for the z-axis.
  *
  * @author Niels Charlier
  */

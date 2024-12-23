@@ -25,8 +25,8 @@ import org.geotools.api.style.FeatureTypeStyle;
 /**
  * Simple container for holding styles by uri.
  *
- * <p>This is lame as it is just a hash map in memory. It should really be an embedded db that
- * serializes / deserializes out to disk.
+ * <p>This is lame as it is just a hash map in memory. It should really be an embedded db that serializes / deserializes
+ * out to disk.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

@@ -26,65 +26,58 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 
 /**
- * Processes messages from clients to create Logic Filters. Handles nested logic filters. Filters
- * should call start and end when they reach logic filters, and create when the filter is complete.
+ * Processes messages from clients to create Logic Filters. Handles nested logic filters. Filters should call start and
+ * end when they reach logic filters, and create when the filter is complete.
  *
- * <p>This documenation provided by Dave Blasby April 1/2005 after fixing GEOS-328: DJB: okay,
- * there's no where near enough comments in here to understand whats going on. Hopefully I'm
- * correct. I've looked at this for a bit, and this is what I can figure out.
+ * <p>This documenation provided by Dave Blasby April 1/2005 after fixing GEOS-328: DJB: okay, there's no where near
+ * enough comments in here to understand whats going on. Hopefully I'm correct. I've looked at this for a bit, and this
+ * is what I can figure out.
  *
- * <p>This is called by the FilterFilter class (nice name...NOT) which is also a sax parser-like
- * class. Basically, the FilterFilter does most of the Filter parsing - but it hands most of the
- * work off to the appropriate classes. For NOT, AND, OR clauses, this class is used.
+ * <p>This is called by the FilterFilter class (nice name...NOT) which is also a sax parser-like class. Basically, the
+ * FilterFilter does most of the Filter parsing - but it hands most of the work off to the appropriate classes. For NOT,
+ * AND, OR clauses, this class is used.
  *
- * <p>As a simple example, <filter> <OR> [STATE_NAME = 'NY'] [STATE_NAME = 'WA'] </OR></FILTER> Or,
- * in long form: <Filter> <Or> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName>
- * <Literal>NY</Literal> </PropertyIsEqualTo> <PropertyIsEqualTo>
- * <PropertyName>STATE_NAME</PropertyName> <Literal>WA</Literal> </PropertyIsEqualTo> </Or>
+ * <p>As a simple example, <filter> <OR> [STATE_NAME = 'NY'] [STATE_NAME = 'WA'] </OR></FILTER> Or, in long form:
+ * <Filter> <Or> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>NY</Literal> </PropertyIsEqualTo>
+ * <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>WA</Literal> </PropertyIsEqualTo> </Or>
  * </Filter>
  *
- * <p>The "PropertyIsEqualTo" is handled by another parser, so we dont have to worry about it here
- * for the moment.
+ * <p>The "PropertyIsEqualTo" is handled by another parser, so we dont have to worry about it here for the moment.
  *
  * <p>So, the order of events are like this:
  *
- * <p>start( "OR" ) add([STATE_NAME = 'NY']) // these are handled by another class add([STATE_NAME =
- * 'WA']) // these are handled by another class end ("OR") create() // this creates an actual Filter
- * [[ STATE_NAME = NY ] OR [ STATE_NAME = WA ]]
+ * <p>start( "OR" ) add([STATE_NAME = 'NY']) // these are handled by another class add([STATE_NAME = 'WA']) // these are
+ * handled by another class end ("OR") create() // this creates an actual Filter [[ STATE_NAME = NY ] OR [ STATE_NAME =
+ * WA ]]
  *
  * <p>This is pretty simple, but it gets more complex when you have nested structures.
  *
- * <p><Filter> <And> <Or> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName>
- * <Literal>NY</Literal> </PropertyIsEqualTo> <PropertyIsEqualTo>
- * <PropertyName>STATE_NAME</PropertyName> <Literal>WA</Literal> </PropertyIsEqualTo> </Or>
- * <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>BC</Literal>
+ * <p><Filter> <And> <Or> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>NY</Literal>
+ * </PropertyIsEqualTo> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>WA</Literal>
+ * </PropertyIsEqualTo> </Or> <PropertyIsEqualTo> <PropertyName>STATE_NAME</PropertyName> <Literal>BC</Literal>
  * </PropertyIsEqualTo> </And> </Filter>
  *
  * <p>Again, we're going to ignore the "PropertyIsEqualTo" stuff since its handled elsewhere.
  *
- * <p>The main idea is that there will be a LogicSAXParser for the top-level "AND" and another one
- * for the nested "OR". It gets a bit harder to describe because the classes start passing events to
- * each other.
+ * <p>The main idea is that there will be a LogicSAXParser for the top-level "AND" and another one for the nested "OR".
+ * It gets a bit harder to describe because the classes start passing events to each other.
  *
- * <p>start("AND") -- the parent LogicSAXParser starts to construct an "AND" filter start("OR") --
- * the "AND" parser sees that its sub-element is another logic operator. It makes another
- * LogicSAXParser that will handle the "OR" SAX events. add([STATE_NAME = 'NY']) -- this is sent to
- * the "AND" parser. It then sends it to the "OR" parser. + "OR" parser remembers this component
- * add([STATE_NAME = 'WA']) -- this is sent to the "AND" parser. It then sends it to the "OR"
- * parser. + "OR" parser remembers this component end("OR") -- this is sent to the "AND" parser. It
- * then sends it to the "OR" parser. + The "OR" parser marks itself as complete + The "AND" parser
- * notices that its child is completed parsing + The "AND" parser calls create() on the "OR" parser
- * to make a filter (see next step) + Since "OR" is finished, "AND" stop passing events to it.
- * "OR".create() -- makes a "[[ STATE_NAME = NY ] OR [ STATE_NAME = WA ]]" and "AND" remembers it as
- * a component add ([ STATE_NAME = BC ]) --This is added as a component to the "AND" filter. end
- * ("AND") -- the "AND" parser marks itself as complete create() -- the "AND" parser creates a
- * FILTER [[[ STATE_NAME = NY ] OR [ STATE_NAME = WA ]] AND [ STATE_NAME = BC ]]
+ * <p>start("AND") -- the parent LogicSAXParser starts to construct an "AND" filter start("OR") -- the "AND" parser sees
+ * that its sub-element is another logic operator. It makes another LogicSAXParser that will handle the "OR" SAX events.
+ * add([STATE_NAME = 'NY']) -- this is sent to the "AND" parser. It then sends it to the "OR" parser. + "OR" parser
+ * remembers this component add([STATE_NAME = 'WA']) -- this is sent to the "AND" parser. It then sends it to the "OR"
+ * parser. + "OR" parser remembers this component end("OR") -- this is sent to the "AND" parser. It then sends it to the
+ * "OR" parser. + The "OR" parser marks itself as complete + The "AND" parser notices that its child is completed
+ * parsing + The "AND" parser calls create() on the "OR" parser to make a filter (see next step) + Since "OR" is
+ * finished, "AND" stop passing events to it. "OR".create() -- makes a "[[ STATE_NAME = NY ] OR [ STATE_NAME = WA ]]"
+ * and "AND" remembers it as a component add ([ STATE_NAME = BC ]) --This is added as a component to the "AND" filter.
+ * end ("AND") -- the "AND" parser marks itself as complete create() -- the "AND" parser creates a FILTER [[[ STATE_NAME
+ * = NY ] OR [ STATE_NAME = WA ]] AND [ STATE_NAME = BC ]]
  *
- * <p>Higher levels of nesting work the same way - each level will send the event down to the next
- * level.
+ * <p>Higher levels of nesting work the same way - each level will send the event down to the next level.
  *
- * <p>If logicFilter == null then this object is the one doing the processing. If its non-null, then
- * the sub-object is doing the processing - event are sent to it.
+ * <p>If logicFilter == null then this object is the one doing the processing. If its non-null, then the sub-object is
+ * doing the processing - event are sent to it.
  *
  * @author Rob Hranac, Vision for New York
  * @author Chris Holmes, TOPP
@@ -92,8 +85,7 @@ import org.geotools.factory.CommonFactoryFinder;
  */
 public class LogicSAXParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
 
     /** factory for creating filters. */
     private FilterFactory ff;
@@ -125,8 +117,7 @@ public class LogicSAXParser {
     }
 
     /**
-     * To be called by a parser to start the creation of a logic filter. Can start a nested or a
-     * base logic filter.
+     * To be called by a parser to start the creation of a logic filter. Can start a nested or a base logic filter.
      *
      * @param logicType OR, or AND abstract filter type.
      * @throws IllegalFilterException if filter type does not match declared type.
@@ -150,8 +141,7 @@ public class LogicSAXParser {
     }
 
     /**
-     * To be called when the sax parser reaches the end of a logic filter. Tells this class to
-     * complete.
+     * To be called when the sax parser reaches the end of a logic filter. Tells this class to complete.
      *
      * @param logicType the Filter type.
      * @throws IllegalFilterException If the end message can't be processed in this state.
@@ -172,8 +162,7 @@ public class LogicSAXParser {
             LOGGER.finer("end element matched internal type: " + this.logicType);
             isComplete = true;
         } else {
-            throw new IllegalFilterException(
-                    "Logic Factory got an end message that it can't process.");
+            throw new IllegalFilterException("Logic Factory got an end message that it can't process.");
         }
     }
 
@@ -230,8 +219,7 @@ public class LogicSAXParser {
     /**
      * indicates if the logic filter is complete.
      *
-     * @return <tt>true</tt> if this holds a complete logic filter to be created, <tt>false</tt>
-     *     otherwise.
+     * @return <tt>true</tt> if this holds a complete logic filter to be created, <tt>false</tt> otherwise.
      */
     public boolean isComplete() {
         return isComplete;

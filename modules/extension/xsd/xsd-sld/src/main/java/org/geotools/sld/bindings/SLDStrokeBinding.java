@@ -206,14 +206,6 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
         Graphic graphicStroke = (Graphic) node.getChildValue("GraphicStroke");
 
         return styleFactory.createStroke(
-                color,
-                width,
-                opacity,
-                lineJoin,
-                lineCap,
-                dash,
-                dashOffset,
-                graphicFill,
-                graphicStroke);
+                color, width, opacity, lineJoin, lineCap, dash, dashOffset, graphicFill, graphicStroke);
     }
 }

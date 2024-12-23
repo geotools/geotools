@@ -35,13 +35,12 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.util.logging.Logging;
 
 /**
- * {@link ResourceBundle} implementation using integers instead of strings for resource keys.
- * Because it doesn't use strings, this implementation avoids adding all those string constants to
- * {@code .class} files and runtime images. Developers still have meaningful labels in their code
- * (e.g. {@code DIMENSION_MISMATCH}) through a set of constants defined in interfaces. This approach
- * furthermore gives the benefit of compile-time safety. Because integer constants are inlined right
- * into class files at compile time, the declarative interface is never loaded at run time. This
- * class also provides facilities for string formatting using {@link MessageFormat}.
+ * {@link ResourceBundle} implementation using integers instead of strings for resource keys. Because it doesn't use
+ * strings, this implementation avoids adding all those string constants to {@code .class} files and runtime images.
+ * Developers still have meaningful labels in their code (e.g. {@code DIMENSION_MISMATCH}) through a set of constants
+ * defined in interfaces. This approach furthermore gives the benefit of compile-time safety. Because integer constants
+ * are inlined right into class files at compile time, the declarative interface is never loaded at run time. This class
+ * also provides facilities for string formatting using {@link MessageFormat}.
  *
  * @since 2.4
  * @version $Id$
@@ -50,54 +49,45 @@ import org.geotools.util.logging.Logging;
 @SuppressFBWarnings("UI_INHERITANCE_UNSAFE_GETRESOURCE")
 public class IndexedResourceBundle extends ResourceBundle {
     /**
-     * Maximum string length for text inserted into another text. This parameter is used by {@link
-     * #summarize}. Resource strings are never cut to this length. However, text replacing "{0}" in
-     * a string like "Parameter name is {0}." will be cut to this length.
+     * Maximum string length for text inserted into another text. This parameter is used by {@link #summarize}. Resource
+     * strings are never cut to this length. However, text replacing "{0}" in a string like "Parameter name is {0}."
+     * will be cut to this length.
      */
     private static final int MAX_STRING_LENGTH = 200;
 
-    /**
-     * The resource name of the binary file containing resources. It may be a file name or an entry
-     * in a JAR file.
-     */
+    /** The resource name of the binary file containing resources. It may be a file name or an entry in a JAR file. */
     private final String filename;
 
     /**
-     * The array of resources. Keys are an array index. For example, the value for key "14" is
-     * {@code values[14]}. This array will be loaded only when first needed. We should not load it
-     * at construction time, because some {@code ResourceBundle} objects will never ask for values.
-     * This is particularly the case for ancestor classes of {@code Resources_fr_CA}, {@code
-     * Resources_en}, {@code Resources_de}, etc., which will only be used if a key has not been
-     * found in the subclass.
+     * The array of resources. Keys are an array index. For example, the value for key "14" is {@code values[14]}. This
+     * array will be loaded only when first needed. We should not load it at construction time, because some
+     * {@code ResourceBundle} objects will never ask for values. This is particularly the case for ancestor classes of
+     * {@code Resources_fr_CA}, {@code Resources_en}, {@code Resources_de}, etc., which will only be used if a key has
+     * not been found in the subclass.
      */
     private String[] values;
 
     /**
-     * The locale for formatting objects like number, date, etc. There are two possible Locales we
-     * could use: default locale or resource bundle locale. If the default locale uses the same
-     * language as this ResourceBundle's locale, then we will use the default locale. This allows
-     * dates and numbers to be formatted according to user conventions (e.g. French Canada) even if
-     * the ResourceBundle locale is different (e.g. standard French). However, if languages don't
-     * match, then we will use ResourceBundle locale for better coherence.
+     * The locale for formatting objects like number, date, etc. There are two possible Locales we could use: default
+     * locale or resource bundle locale. If the default locale uses the same language as this ResourceBundle's locale,
+     * then we will use the default locale. This allows dates and numbers to be formatted according to user conventions
+     * (e.g. French Canada) even if the ResourceBundle locale is different (e.g. standard French). However, if languages
+     * don't match, then we will use ResourceBundle locale for better coherence.
      */
     private transient Locale locale;
 
-    /**
-     * The object to use for formatting messages. This object will be constructed only when first
-     * needed.
-     */
+    /** The object to use for formatting messages. This object will be constructed only when first needed. */
     private transient MessageFormat format;
 
     /**
-     * The key of the last resource requested. If the same resource is requested multiple times,
-     * knowing its key allows us to avoid invoking the costly {@link MessageFormat#applyPattern}
-     * method.
+     * The key of the last resource requested. If the same resource is requested multiple times, knowing its key allows
+     * us to avoid invoking the costly {@link MessageFormat#applyPattern} method.
      */
     private transient int lastKey;
 
     /**
-     * Constructs a new resource bundle. The resource filename will be inferred from the fully
-     * qualified classname of this {@code IndexedResourceBundle} subclass.
+     * Constructs a new resource bundle. The resource filename will be inferred from the fully qualified classname of
+     * this {@code IndexedResourceBundle} subclass.
      */
     protected IndexedResourceBundle() {
         filename = getClass().getSimpleName() + ".utf";
@@ -106,8 +96,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     /**
      * Constructs a new resource bundle.
      *
-     * @param filename The resource name containing resources. It may be a filename or an entry in a
-     *     JAR file.
+     * @param filename The resource name containing resources. It may be a filename or an entry in a JAR file.
      */
     protected IndexedResourceBundle(final String filename) {
         this.filename = filename;
@@ -133,8 +122,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Lists resources to the specified stream. If a resource has more than one line, only the first
-     * line will be written. This method is used mostly for debugging purposes.
+     * Lists resources to the specified stream. If a resource has more than one line, only the first line will be
+     * written. This method is used mostly for debugging purposes.
      *
      * @param out The destination stream.
      * @throws IOException if an output operation failed.
@@ -145,8 +134,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Lists resources to the specified stream. If a resource has more than one line, only the first
-     * line will be written. This method is used mostly for debugging purposes.
+     * Lists resources to the specified stream. If a resource has more than one line, only the first line will be
+     * written. This method is used mostly for debugging purposes.
      *
      * @param out The destination stream.
      * @param values The resources to list.
@@ -175,8 +164,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     /**
      * Ensures that resource values are loaded. If they are not, load them immediately.
      *
-     * @param key Key for the requested resource, or {@code null} if all resources are requested.
-     *     This key is used mostly for constructing messages.
+     * @param key Key for the requested resource, or {@code null} if all resources are requested. This key is used
+     *     mostly for constructing messages.
      * @return The resources.
      * @throws MissingResourceException if this method failed to load resources.
      */
@@ -195,8 +184,7 @@ public class IndexedResourceBundle extends ResourceBundle {
                  * into an error record. Note that the message must be logged outside
                  * the synchronized block, otherwise there is dead locks!
                  */
-                record =
-                        new LogRecord(Level.FINER, "Loaded resources for {0} from bundle \"{1}\".");
+                record = new LogRecord(Level.FINER, "Loaded resources for {0} from bundle \"{1}\".");
                 record.setSourceClassName(getClass().getName());
                 record.setSourceMethodName((key != null) ? "getObject" : "getKeys");
                 /*
@@ -245,9 +233,8 @@ public class IndexedResourceBundle extends ResourceBundle {
             final Logger logger = Logging.getLogger(IndexedResourceBundle.class);
             record.setLoggerName(logger.getName());
             logger.log(record);
-            final MissingResourceException error =
-                    new MissingResourceException(
-                            exception.getLocalizedMessage(), getClass().getName(), key);
+            final MissingResourceException error = new MissingResourceException(
+                    exception.getLocalizedMessage(), getClass().getName(), key);
             error.initCause(exception);
             throw error;
         }
@@ -282,8 +269,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Gets an object for the given key from this resource bundle. Returns null if this resource
-     * bundle does not contain an object for the given key.
+     * Gets an object for the given key from this resource bundle. Returns null if this resource bundle does not contain
+     * an object for the given key.
      *
      * @param key the key for the desired object
      * @exception NullPointerException if {@code key} is {@code null}
@@ -303,11 +290,10 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Makes sure that the {@code text} string is not longer than {@code maxLength} characters. If
-     * {@code text} is not longer, it is returned unchanged (except for trailing blanks, which are
-     * removed). If {@code text} is longer, it will be cut somewhere in the middle. This method
-     * tries to cut between two words and replace the missing words with "(...)". For example, the
-     * following string:
+     * Makes sure that the {@code text} string is not longer than {@code maxLength} characters. If {@code text} is not
+     * longer, it is returned unchanged (except for trailing blanks, which are removed). If {@code text} is longer, it
+     * will be cut somewhere in the middle. This method tries to cut between two words and replace the missing words
+     * with "(...)". For example, the following string:
      *
      * <blockquote>
      *
@@ -324,8 +310,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * </blockquote>
      *
      * @param text The sentence to summarize if it is too long.
-     * @param maxLength The maximum length allowed for {@code text}. If {@code text} is longer, it
-     *     will be summarized.
+     * @param maxLength The maximum length allowed for {@code text}. If {@code text} is longer, it will be summarized.
      * @return A sentence not longer than {@code maxLength}.
      */
     private static String summarize(String text, int maxLength) {
@@ -375,11 +360,10 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Returns {@code arguments} as an array. If {@code arguments} is already an array, this array
-     * or a copy of this array will be returned. If {@code arguments} is not an array, it will be
-     * placed in an array of length 1. In any case, all the array's elements will be checked for
-     * {@link String} objects. Any strings of length greater than {@link #MAX_STRING_LENGTH} will be
-     * reduced using the {@link #summarize} method.
+     * Returns {@code arguments} as an array. If {@code arguments} is already an array, this array or a copy of this
+     * array will be returned. If {@code arguments} is not an array, it will be placed in an array of length 1. In any
+     * case, all the array's elements will be checked for {@link String} objects. Any strings of length greater than
+     * {@link #MAX_STRING_LENGTH} will be reduced using the {@link #summarize} method.
      *
      * @param arguments The object to check.
      * @return {@code arguments} as an array.
@@ -422,8 +406,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Gets a string for the given key and appends "..." to it. This method is typically used for
-     * creating menu items.
+     * Gets a string for the given key and appends "..." to it. This method is typically used for creating menu items.
      *
      * @param key The key for the desired string.
      * @return The string for the given key.
@@ -434,8 +417,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Gets a string for the given key and appends ": " to it. This method is typically used for
-     * creating labels.
+     * Gets a string for the given key and appends ": " to it. This method is typically used for creating labels.
      *
      * @param key The key for the desired string.
      * @return The string for the given key.
@@ -457,9 +439,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Gets a string for the given key and formats it with the specified argument. The message is
-     * formatted using {@link MessageFormat}. Calling this method is approximately equivalent to
-     * calling:
+     * Gets a string for the given key and formats it with the specified argument. The message is formatted using
+     * {@link MessageFormat}. Calling this method is approximately equivalent to calling:
      *
      * <blockquote>
      *
@@ -472,8 +453,8 @@ public class IndexedResourceBundle extends ResourceBundle {
      * </blockquote>
      *
      * If {@code arg0} is not already an array, it will be placed into an array of length 1. Using
-     * {@link MessageFormat}, all occurrences of "{0}", "{1}", "{2}" in the resource string will be
-     * replaced by {@code arg0[0]}, {@code arg0[1]}, {@code arg0[2]}, etc.
+     * {@link MessageFormat}, all occurrences of "{0}", "{1}", "{2}" in the resource string will be replaced by
+     * {@code arg0[0]}, {@code arg0[1]}, {@code arg0[2]}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 A single object or an array of objects to be formatted and substituted.
@@ -484,8 +465,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @see #getString(int,Object,Object,Object)
      * @see MessageFormat
      */
-    public final String getString(final int key, final Object arg0)
-            throws MissingResourceException {
+    public final String getString(final int key, final Object arg0) throws MissingResourceException {
         final String pattern = getString(key);
         final Object[] arguments = toArray(arg0);
         synchronized (this) {
@@ -507,8 +487,8 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute for "{0}".
@@ -516,14 +496,13 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public final String getString(final int key, final Object arg0, final Object arg1)
-            throws MissingResourceException {
+    public final String getString(final int key, final Object arg0, final Object arg1) throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1});
     }
 
     /**
-     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute for "{0}".
@@ -532,15 +511,14 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public final String getString(
-            final int key, final Object arg0, final Object arg1, final Object arg2)
+    public final String getString(final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1, arg2});
     }
 
     /**
-     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute for "{0}".
@@ -551,18 +529,14 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @throws MissingResourceException If no object for the given key can be found.
      */
     public final String getString(
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2,
-            final Object arg3)
+            final int key, final Object arg0, final Object arg1, final Object arg2, final Object arg3)
             throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1, arg2, arg3});
     }
 
     /**
-     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a string for the given key and replaces all occurrences of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute for "{0}".
@@ -621,8 +595,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @param arg1 The second parameter.
      * @return The log record.
      */
-    public LogRecord getLogRecord(
-            final Level level, final int key, final Object arg0, final Object arg1) {
+    public LogRecord getLogRecord(final Level level, final int key, final Object arg0, final Object arg1) {
         return getLogRecord(level, key, new Object[] {arg0, arg1});
     }
 
@@ -637,11 +610,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The log record.
      */
     public LogRecord getLogRecord(
-            final Level level,
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2) {
+            final Level level, final int key, final Object arg0, final Object arg1, final Object arg2) {
         return getLogRecord(level, key, new Object[] {arg0, arg1, arg2});
     }
 
@@ -667,10 +636,10 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /**
-     * Localize and format the message string from a log record. This method performs a work similar
-     * to {@link java.util.logging.Formatter#formatMessage}, except that the work will be delegated
-     * to {@link #getString(int, Object)} if the {@linkplain LogRecord#getResourceBundle record
-     * resource bundle} is an instance of {@code IndexedResourceBundle}.
+     * Localize and format the message string from a log record. This method performs a work similar to
+     * {@link java.util.logging.Formatter#formatMessage}, except that the work will be delegated to
+     * {@link #getString(int, Object)} if the {@linkplain LogRecord#getResourceBundle record resource bundle} is an
+     * instance of {@code IndexedResourceBundle}.
      *
      * @param record The log record to format.
      * @return The formatted message.
@@ -719,9 +688,7 @@ public class IndexedResourceBundle extends ResourceBundle {
         Logging.unexpectedException(IndexedResourceBundle.class, "format", exception);
     }
 
-    /**
-     * Returns a string representation of this object. This method is for debugging purposes only.
-     */
+    /** Returns a string representation of this object. This method is for debugging purposes only. */
     @Override
     public synchronized String toString() {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(this));

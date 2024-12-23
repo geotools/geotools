@@ -45,24 +45,13 @@ public class GeometryBuilderTest {
 
     @Test
     public void box() throws Exception {
-        Polygon p =
-                builder.box(
-                        RECT_ENV.getMinX(),
-                        RECT_ENV.getMinY(),
-                        RECT_ENV.getMaxX(),
-                        RECT_ENV.getMaxY());
+        Polygon p = builder.box(RECT_ENV.getMinX(), RECT_ENV.getMinY(), RECT_ENV.getMaxX(), RECT_ENV.getMaxY());
         assertBounds(RECT_ENV, p.getEnvelopeInternal(), 1.0e-8);
     }
 
     @Test
     public void boxZ() throws Exception {
-        Polygon p =
-                builder.boxZ(
-                        RECT_ENV.getMinX(),
-                        RECT_ENV.getMinY(),
-                        RECT_ENV.getMaxX(),
-                        RECT_ENV.getMaxY(),
-                        42);
+        Polygon p = builder.boxZ(RECT_ENV.getMinX(), RECT_ENV.getMinY(), RECT_ENV.getMaxX(), RECT_ENV.getMaxY(), 42);
         assertBounds(RECT_ENV, p.getEnvelopeInternal(), 1.0e-8);
         assertEquals(42, (int) p.getCoordinate().getZ());
     }
@@ -71,25 +60,16 @@ public class GeometryBuilderTest {
     public void circle() throws Exception {
         double radius = SQUARE_ENV.getWidth() / 2;
 
-        Polygon p =
-                builder.circle(
-                        SQUARE_ENV.getMinX() + radius,
-                        SQUARE_ENV.getMinY() + radius,
-                        radius,
-                        getNumSides(SQUARE_ENV));
+        Polygon p = builder.circle(
+                SQUARE_ENV.getMinX() + radius, SQUARE_ENV.getMinY() + radius, radius, getNumSides(SQUARE_ENV));
 
         assertBounds(SQUARE_ENV, p.getEnvelopeInternal(), 0.01);
     }
 
     @Test
     public void ellipse() throws Exception {
-        Polygon p =
-                builder.ellipse(
-                        RECT_ENV.getMinX(),
-                        RECT_ENV.getMinY(),
-                        RECT_ENV.getMaxX(),
-                        RECT_ENV.getMaxY(),
-                        getNumSides(RECT_ENV));
+        Polygon p = builder.ellipse(
+                RECT_ENV.getMinX(), RECT_ENV.getMinY(), RECT_ENV.getMaxX(), RECT_ENV.getMaxY(), getNumSides(RECT_ENV));
 
         assertBounds(RECT_ENV, p.getEnvelopeInternal(), 0.01);
     }

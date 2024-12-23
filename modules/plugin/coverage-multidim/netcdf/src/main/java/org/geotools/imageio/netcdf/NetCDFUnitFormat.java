@@ -37,8 +37,8 @@ import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.function.LogConverter;
 
 /**
- * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit
- * syntax transformation and allow setting up custom aliases just for the NetCDF case.
+ * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit syntax transformation
+ * and allow setting up custom aliases just for the NetCDF case.
  */
 public class NetCDFUnitFormat {
 
@@ -56,11 +56,10 @@ public class NetCDFUnitFormat {
     public static final String NETCDF_UNIT_REPLACEMENTS = "netcdf-unit-replacements.properties";
 
     /** Hard coded replacements for common operations */
-    private static final Map<String, String> CONTENT_REPLACEMENTS =
-            Map.ofEntries(
-                    entry(" ", "*"), //
-                    entry("-", "^-"),
-                    entry(".", "*"));
+    private static final Map<String, String> CONTENT_REPLACEMENTS = Map.ofEntries(
+            entry(" ", "*"), //
+            entry("-", "^-"),
+            entry(".", "*"));
 
     static {
         reset();
@@ -77,9 +76,8 @@ public class NetCDFUnitFormat {
     /**
      * Configures the string replacements to be performed before trying to parse the units.
      *
-     * @param replacements The replacements to be used. It is strongly advised to use a {@link
-     *     LinkedHashMap} as replacements are run from top to bottom, in order, and the order might
-     *     influence the results
+     * @param replacements The replacements to be used. It is strongly advised to use a {@link LinkedHashMap} as
+     *     replacements are run from top to bottom, in order, and the order might influence the results
      */
     public static void setReplacements(Map<String, String> replacements) {
         REPLACEMENTS = new LinkedHashMap<>(replacements);
@@ -94,31 +92,26 @@ public class NetCDFUnitFormat {
     public static LinkedHashMap<String, String> loadPropertiesOrdered(InputStream is) {
         try {
             LinkedHashMap<String, String> result = new LinkedHashMap<>();
-            Properties props =
-                    new Properties() {
+            Properties props = new Properties() {
 
-                        @Override
-                        public Object put(Object key, Object value) {
-                            result.put((String) key, (String) value);
-                            return super.put(key, value);
-                        }
-                    };
+                @Override
+                public Object put(Object key, Object value) {
+                    result.put((String) key, (String) value);
+                    return super.put(key, value);
+                }
+            };
             props.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             return result;
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Failed to load the build-in config file: " + NETCDF_UNIT_ALIASES + e);
+            throw new RuntimeException("Failed to load the build-in config file: " + NETCDF_UNIT_ALIASES + e);
         }
     }
 
     private static Map<String, String> loadBuiltInConfigFile(String fileName) {
-        return loadPropertiesOrdered(
-                org.geotools.imageio.netcdf.NetCDFUnitFormat.class.getResourceAsStream(fileName));
+        return loadPropertiesOrdered(org.geotools.imageio.netcdf.NetCDFUnitFormat.class.getResourceAsStream(fileName));
     }
 
-    /**
-     * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
-     */
+    /** Configures the aliases to be used on the unit parser. An alias is a different name for a unit */
     public static void setAliases(Map<String, String> aliases) {
         SimpleUnitFormat format = UnitFormat.create();
 
@@ -143,11 +136,7 @@ public class NetCDFUnitFormat {
             } catch (MeasurementParseException ex) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Failed to parse "
-                                + entry.getKey()
-                                + " -> "
-                                + entry.getValue()
-                                + ", skipped.",
+                        "Failed to parse " + entry.getKey() + " -> " + entry.getValue() + ", skipped.",
                         ex);
             }
         }
@@ -192,8 +181,7 @@ public class NetCDFUnitFormat {
         try {
             return FORMAT.parse(spec);
         } catch (MeasurementParseException e) {
-            throw new MeasurementParseException(
-                    "Failed to parse " + spec, e.getParsedString(), e.getPosition());
+            throw new MeasurementParseException("Failed to parse " + spec, e.getParsedString(), e.getPosition());
         }
     }
 
@@ -208,5 +196,6 @@ public class NetCDFUnitFormat {
     }
 
     /** Utility class, no instantiation */
-    private NetCDFUnitFormat() {};
+    private NetCDFUnitFormat() {}
+    ;
 }

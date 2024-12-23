@@ -23,14 +23,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A map whose keys are derived from an other map. The keys are derived only when requested, which
- * make it possible to backup potentially large maps. Implementations need only to overrides {@link
- * #baseToDerived} and {@link #derivedToBase} methods. This set do not supports {@code null} key,
- * since {@code null} is used when no mapping from {@linkplain #base} to {@code this} exists. This
- * class is serializable if the underlying {@linkplain #base} set is serializable too.
+ * A map whose keys are derived from an other map. The keys are derived only when requested, which make it possible to
+ * backup potentially large maps. Implementations need only to overrides {@link #baseToDerived} and
+ * {@link #derivedToBase} methods. This set do not supports {@code null} key, since {@code null} is used when no mapping
+ * from {@linkplain #base} to {@code this} exists. This class is serializable if the underlying {@linkplain #base} set
+ * is serializable too.
  *
- * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's
- * reponsability.
+ * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's reponsability.
  *
  * @param <BK> The type of keys in the backing map.
  * @param <K> The type of keys in this map.
@@ -81,8 +80,8 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Transforms a key from the {@linkplain #base} map to a key in this map. If there is no key in
-     * the derived map for the specified base key, then this method returns {@code null}.
+     * Transforms a key from the {@linkplain #base} map to a key in this map. If there is no key in the derived map for
+     * the specified base key, then this method returns {@code null}.
      *
      * @param key A ley from the {@linkplain #base} map.
      * @return The key that this view should contains instead of {@code key}, or {@code null}.
@@ -118,8 +117,8 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Returns {@code true} if this map maps one or more keys to this value. The default
-     * implementation invokes <code>{@linkplain #base}.containsValue(value)</code>.
+     * Returns {@code true} if this map maps one or more keys to this value. The default implementation invokes <code>
+     * {@linkplain #base}.containsValue(value)</code>.
      *
      * @return {@code true} if this map maps one or more keys to this value.
      */
@@ -129,8 +128,8 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Returns {@code true} if this map contains a mapping for the specified key. The default
-     * implementation invokes <code>
+     * Returns {@code true} if this map contains a mapping for the specified key. The default implementation invokes
+     * <code>
      * {@linkplain #base}.containsKey({@linkplain #derivedToBase derivedToBase}(key))</code>.
      *
      * @param key key whose presence in this map is to be tested.
@@ -146,8 +145,8 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Returns the value to which this map maps the specified key. The default implementation
-     * invokes <code>{@linkplain #base}.get({@linkplain #derivedToBase derivedToBase}(key))</code>.
+     * Returns the value to which this map maps the specified key. The default implementation invokes <code>
+     * {@linkplain #base}.get({@linkplain #derivedToBase derivedToBase}(key))</code>.
      *
      * @param key key whose associated value is to be returned.
      * @return the value to which this map maps the specified key.
@@ -162,16 +161,14 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Associates the specified value with the specified key in this map. The default implementation
-     * invokes <code>{@linkplain #base}.put({@linkplain #derivedToBase derivedToBase}(key), value)
+     * Associates the specified value with the specified key in this map. The default implementation invokes <code>
+     * {@linkplain #base}.put({@linkplain #derivedToBase derivedToBase}(key), value)
      * </code>.
      *
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
-     * @return previous value associated with specified key, or {@code null} if there was no mapping
-     *     for key.
-     * @throws UnsupportedOperationException if the {@linkplain #base} map doesn't supports the
-     *     {@code put} operation.
+     * @return previous value associated with specified key, or {@code null} if there was no mapping for key.
+     * @throws UnsupportedOperationException if the {@linkplain #base} map doesn't supports the {@code put} operation.
      */
     @Override
     public V put(final K key, final V value) throws UnsupportedOperationException {
@@ -179,14 +176,13 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /**
-     * Removes the mapping for this key from this map if present. The default implementation invokes
-     * <code>{@linkplain #base}.remove({@linkplain #derivedToBase derivedToBase}(key))</code>.
+     * Removes the mapping for this key from this map if present. The default implementation invokes <code>
+     * {@linkplain #base}.remove({@linkplain #derivedToBase derivedToBase}(key))</code>.
      *
      * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or {@code null} if there was no entry
-     *     for key.
-     * @throws UnsupportedOperationException if the {@linkplain #base} map doesn't supports the
-     *     {@code remove} operation.
+     * @return previous value associated with specified key, or {@code null} if there was no entry for key.
+     * @throws UnsupportedOperationException if the {@linkplain #base} map doesn't supports the {@code remove}
+     *     operation.
      */
     @Override
     public V remove(final Object key) throws UnsupportedOperationException {

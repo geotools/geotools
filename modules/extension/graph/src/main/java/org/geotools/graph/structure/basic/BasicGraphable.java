@@ -20,11 +20,10 @@ import java.io.Serializable;
 import org.geotools.graph.structure.Graphable;
 
 /**
- * Basic implementation of Graphable. This class serves as the root in the hierarchy of basic graph
- * components. <br>
+ * Basic implementation of Graphable. This class serves as the root in the hierarchy of basic graph components. <br>
  * <br>
- * Components in the basic hierarchy implement the Serializable interface. However serialization
- * will fail if a Graphable object contains a reference to a non serializable object.
+ * Components in the basic hierarchy implement the Serializable interface. However serialization will fail if a
+ * Graphable object contains a reference to a non serializable object.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -45,10 +44,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     /** Id for component. */
     private int m_id;
 
-    /**
-     * Constructs a new a graph component. Sets the visited flag to false, counter to -1, and
-     * generates a new id.
-     */
+    /** Constructs a new a graph component. Sets the visited flag to false, counter to -1, and generates a new id. */
     public BasicGraphable() {
         m_visited = false;
         m_nvisited = -1;

@@ -67,11 +67,8 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
         assertTrue(ft.getDescriptor(aname("geo")) instanceof GeometryDescriptor);
         assertEquals(Geometry.class, ft.getDescriptor("geo").getType().getBinding());
 
-        int epsg =
-                CRS.lookupEpsgCode(
-                        ((GeometryDescriptor) ft.getDescriptor(aname("geo")))
-                                .getCoordinateReferenceSystem(),
-                        false);
+        int epsg = CRS.lookupEpsgCode(
+                ((GeometryDescriptor) ft.getDescriptor(aname("geo"))).getCoordinateReferenceSystem(), false);
         assertEquals(4326, epsg);
     }
 

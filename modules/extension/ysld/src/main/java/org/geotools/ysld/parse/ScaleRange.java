@@ -20,8 +20,8 @@ package org.geotools.ysld.parse;
 import org.geotools.api.style.Rule;
 
 /**
- * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be
- * applied to a given {@link Rule}.
+ * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be applied to a given
+ * {@link Rule}.
  */
 public class ScaleRange {
     final double minDenom;
@@ -36,8 +36,7 @@ public class ScaleRange {
             throw new IllegalArgumentException("maxDenom must be non-negative");
         }
         if (!(minDenom <= maxDenom)) {
-            throw new IllegalArgumentException(
-                    "maxDenom must be greater than or equal to minDenom");
+            throw new IllegalArgumentException("maxDenom must be greater than or equal to minDenom");
         }
 
         this.minDenom = minDenom;

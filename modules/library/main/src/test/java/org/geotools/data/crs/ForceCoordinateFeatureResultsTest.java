@@ -72,23 +72,22 @@ public class ForceCoordinateFeatureResultsTest {
         featureCollection = new ListFeatureCollection(ft);
         featureCollection.add(b.buildFeature(null));
 
-        visitorCollection =
-                new ListFeatureCollection(ft) {
-                    @Override
-                    public void accepts(FeatureVisitor visitor, ProgressListener progress)
-                            throws java.io.IOException {
-                        lastVisitor = visitor;
-                    };
+        visitorCollection = new ListFeatureCollection(ft) {
+            @Override
+            public void accepts(FeatureVisitor visitor, ProgressListener progress) throws java.io.IOException {
+                lastVisitor = visitor;
+            }
+            ;
 
-                    @Override
-                    public SimpleFeatureCollection subCollection(Filter filter) {
-                        if (filter == Filter.INCLUDE) {
-                            return this;
-                        } else {
-                            return super.subCollection(filter);
-                        }
-                    }
-                };
+            @Override
+            public SimpleFeatureCollection subCollection(Filter filter) {
+                if (filter == Filter.INCLUDE) {
+                    return this;
+                } else {
+                    return super.subCollection(filter);
+                }
+            }
+        };
     }
 
     @Test
@@ -122,8 +121,7 @@ public class ForceCoordinateFeatureResultsTest {
     }
 
     private void assertOptimalVisit(FeatureVisitor visitor) throws IOException, SchemaException {
-        SimpleFeatureCollection retypedCollection =
-                new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
         Assert.assertSame(lastVisitor, visitor);
     }
@@ -131,8 +129,7 @@ public class ForceCoordinateFeatureResultsTest {
     @Test
     public void testBoundsNotOptimized() throws IOException, SchemaException {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
-        SimpleFeatureCollection retypedCollection =
-                new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
         Assert.assertNull(lastVisitor);

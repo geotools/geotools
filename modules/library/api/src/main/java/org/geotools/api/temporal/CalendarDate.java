@@ -18,18 +18,14 @@ import org.geotools.api.util.InternationalString;
  * @author Alexander Petkov
  */
 public interface CalendarDate extends TemporalPosition {
-    /**
-     * Provides the name of the {@linkplain CalendarEra calendar era} to which the date is
-     * referenced.
-     */
+    /** Provides the name of the {@linkplain CalendarEra calendar era} to which the date is referenced. */
     InternationalString getCalendarEraName();
 
     /**
-     * Provides a sequence of integers in which the first integer identifies a specific instance of
-     * the unit used at the highest level of the calendar hierarchy, the second integer identifies a
-     * specific instance of the unit used at the next lower level in the hierarchy, and so on. The
-     * format defined in ISO 8601 for dates in the Gregorian calendar may be used for any date that
-     * is composed of values for year, month and day.
+     * Provides a sequence of integers in which the first integer identifies a specific instance of the unit used at the
+     * highest level of the calendar hierarchy, the second integer identifies a specific instance of the unit used at
+     * the next lower level in the hierarchy, and so on. The format defined in ISO 8601 for dates in the Gregorian
+     * calendar may be used for any date that is composed of values for year, month and day.
      *
      * @todo Should we returns an array of some primitive type instead?
      */

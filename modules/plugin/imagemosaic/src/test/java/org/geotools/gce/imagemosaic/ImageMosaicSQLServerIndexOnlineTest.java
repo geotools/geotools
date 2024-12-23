@@ -124,9 +124,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        try (FileWriter out =
-                new FileWriter(
-                        new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;
@@ -147,8 +145,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final File workDir = new File(TestData.file(this, "."), tempFolderName1);
             FileUtils.deleteDirectory(workDir);
             assertTrue(workDir.mkdir());
-            FileUtils.copyFile(
-                    TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+            FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
             TestData.unzipFile(this, tempFolderName1 + "/watertemp.zip");
             final URL timeElevURL = TestData.url(this, tempFolderName1);
 
@@ -168,10 +165,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
             assertNotNull(timeMetadata);
             assertEquals(2, timeMetadata.split(",").length);
-            assertEquals(
-                    timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-            assertEquals(
-                    timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+            assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+            assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
 
             assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
             final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
@@ -187,8 +182,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                     1E-6);
 
             // limit yourself to reading just a bit of it
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(
@@ -211,28 +205,22 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
             bkg.setValue(new double[] {-9999.0});
 
-            final ParameterValue<Boolean> direct =
-                    ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
             direct.setValue(false);
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
             elevation.setValue(Arrays.asList(100.0));
 
             // Test the output coverage
-            assertNotNull(
-                    reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
+            assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
             TestUtils.checkCoverage(
-                    reader,
-                    new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                    "Time-Elevation Test");
+                    reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
 
             // Test the output coverage
             reader = TestUtils.getReader(timeElevURL, format);
             elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
             TestUtils.checkCoverage(
-                    reader,
-                    new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                    "Time-Elevation Test");
+                    reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
         } finally {
             if (reader != null) reader.dispose();
         }
@@ -246,8 +234,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final File workDir = new File(TestData.file(this, "."), tempFolderNoEpsg);
             workDir.mkdir();
             assertTrue(workDir.exists());
-            FileUtils.copyFile(
-                    TestData.file(this, "rgb_noepsg.zip"), new File(workDir, "rgb_noepsg.zip"));
+            FileUtils.copyFile(TestData.file(this, "rgb_noepsg.zip"), new File(workDir, "rgb_noepsg.zip"));
             TestData.unzipFile(this, tempFolderNoEpsg + "/rgb_noepsg.zip");
             final URL noEpsgURL = TestData.url(this, tempFolderNoEpsg);
 
@@ -271,8 +258,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final File workDir = new File(TestData.file(this, "."), tempFolderName4);
             workDir.mkdir();
             assertTrue(workDir.exists());
-            FileUtils.copyFile(
-                    TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+            FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
             TestData.unzipFile(this, tempFolderName4 + "/watertemp.zip");
             final URL timeElevURL = TestData.url(this, tempFolderName4);
 
@@ -305,8 +291,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
         try {
             final File workDir = new File(TestData.file(this, "."), tempFolderName2);
             assertTrue(workDir.mkdir());
-            FileUtils.copyFile(
-                    TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+            FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
             TestData.unzipFile(this, tempFolderName2 + "/watertemp.zip");
             final URL timeElevURL = TestData.url(this, tempFolderName2);
 
@@ -328,8 +313,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             // dispose and create new reader
             reader.dispose();
             reader = new MyImageMosaicReader(timeElevURL);
-            final RasterManager rasterManager =
-                    reader.getRasterManager(reader.getGridCoverageNames()[0]);
+            final RasterManager rasterManager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
             // query
             final SimpleFeatureType type = rasterManager.granuleCatalog.getType("waterTempPG2");
@@ -344,12 +328,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
                 // sorting
                 final SortBy[] clauses = {
-                    new SortByImpl(
-                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
-                            SortOrder.DESCENDING),
-                    new SortByImpl(
-                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
-                            SortOrder.ASCENDING),
+                    new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"), SortOrder.DESCENDING),
+                    new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"), SortOrder.ASCENDING),
                 };
                 query.setSortBy(clauses);
             }
@@ -372,12 +352,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
             // Reverting order (the previous timestamp shouldn't match anymore)
             final SortBy[] clauses = {
-                new SortByImpl(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
-                        SortOrder.ASCENDING),
-                new SortByImpl(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
-                        SortOrder.DESCENDING),
+                new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"), SortOrder.ASCENDING),
+                new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"), SortOrder.DESCENDING),
             };
             query.setSortBy(clauses);
 
@@ -414,18 +390,15 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     private void dropTables(String[] tables, String database) throws Exception {
         // delete tables
-        try (Connection connection =
-                        DriverManager.getConnection(
-                                "jdbc:sqlserver://"
-                                        + fixture.getProperty("host")
-                                        + ":"
-                                        + fixture.getProperty("port")
-                                        + ";databaseName="
-                                        + (database != null
-                                                ? database
-                                                : fixture.getProperty("database")),
-                                fixture.getProperty("user"),
-                                fixture.getProperty("passwd"));
+        try (Connection connection = DriverManager.getConnection(
+                        "jdbc:sqlserver://"
+                                + fixture.getProperty("host")
+                                + ":"
+                                + fixture.getProperty("port")
+                                + ";databaseName="
+                                + (database != null ? database : fixture.getProperty("database")),
+                        fixture.getProperty("user"),
+                        fixture.getProperty("passwd"));
                 Statement st = connection.createStatement()) {
             for (String table : tables) {
                 StringBuilder sb = new StringBuilder("DROP TABLE IF EXISTS ");
@@ -478,10 +451,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
             assertNotNull(timeMetadata);
             assertEquals(2, timeMetadata.split(",").length);
-            assertEquals(
-                    timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-            assertEquals(
-                    timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+            assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+            assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
 
             assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
             final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
@@ -497,8 +468,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                     1E-6);
 
             // limit yourself to reading just a bit of it
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(
@@ -521,28 +491,22 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
             bkg.setValue(new double[] {-9999.0});
 
-            final ParameterValue<Boolean> direct =
-                    ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
             direct.setValue(false);
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
             elevation.setValue(Arrays.asList(100.0));
 
             // Test the output coverage
-            assertNotNull(
-                    reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
+            assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
             TestUtils.checkCoverage(
-                    reader,
-                    new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                    "Time-Elevation Test");
+                    reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
 
             // Test the output coverage
             reader = TestUtils.getReader(dataUrl, format, null);
             elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
             TestUtils.checkCoverage(
-                    reader,
-                    new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                    "Time-Elevation Test");
+                    reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
         } finally {
             if (reader != null) reader.dispose();
         }
@@ -552,30 +516,28 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     protected void tearDownInternal() throws Exception {
 
         // delete tables
-        dropTables(
-                new String[] {
-                    tempFolderNoEpsg,
-                    tempFolderName1,
-                    tempFolderName2,
-                    tempFolderName3,
-                    VERY_LONG_NAME_SQLSERVER.substring(0, 113),
-                    SQLServerDatastoreWrapper.DEFAULT_METADATA_TABLE
-                });
+        dropTables(new String[] {
+            tempFolderNoEpsg,
+            tempFolderName1,
+            tempFolderName2,
+            tempFolderName3,
+            VERY_LONG_NAME_SQLSERVER.substring(0, 113),
+            SQLServerDatastoreWrapper.DEFAULT_METADATA_TABLE
+        });
 
         System.clearProperty("org.geotools.referencing.forceXY");
 
         // clean up disk
         if (!ImageMosaicReaderTest.INTERACTIVE) {
             File parent = TestData.file(this, ".");
-            for (String name :
-                    Arrays.asList(
-                            tempFolderName1,
-                            tempFolderName2,
-                            tempFolderName3,
-                            tempFolderName4,
-                            tempFolderNameWrap,
-                            VERY_LONG_NAME_SQLSERVER.substring(0, 113),
-                            tempFolderNoEpsg)) {
+            for (String name : Arrays.asList(
+                    tempFolderName1,
+                    tempFolderName2,
+                    tempFolderName3,
+                    tempFolderName4,
+                    tempFolderNameWrap,
+                    VERY_LONG_NAME_SQLSERVER.substring(0, 113),
+                    tempFolderNoEpsg)) {
                 File directory = new File(parent, name);
                 if (directory.isDirectory() && directory.exists()) {
                     FileUtils.deleteDirectory(directory);

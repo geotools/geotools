@@ -78,8 +78,7 @@ public class XSAnySimpleTypeBinding implements SimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This method returns the value paramter, which is the facet parsed string passed in from the
-     * framework.
+     * This method returns the value paramter, which is the facet parsed string passed in from the framework.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

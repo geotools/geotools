@@ -35,22 +35,22 @@ import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 
 /**
- * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link
- * AttributeType}s and {@link AttributeDescriptor}s.
+ * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link AttributeType}s and
+ * {@link AttributeDescriptor}s.
  *
- * <p>All the XSD schema locations that comprise the application schema are obtained from the main
- * {@link Configuration} and its dependencies.
+ * <p>All the XSD schema locations that comprise the application schema are obtained from the main {@link Configuration}
+ * and its dependencies.
  *
- * <p>Of particular interest might be the {@link ApplicationSchemaConfiguration} object, which
- * allows to provide the location of the root xsd schema for a given application schema.
+ * <p>Of particular interest might be the {@link ApplicationSchemaConfiguration} object, which allows to provide the
+ * location of the root xsd schema for a given application schema.
  *
  * @author Gabriel Roldan
  * @since 2.4
  */
 public class EmfComplexFeatureReader {
     /**
-     * The initial resolver has support for only file and classpath resolution. Anything more than a
-     * test should probably set this to something more useful.
+     * The initial resolver has support for only file and classpath resolution. Anything more than a test should
+     * probably set this to something more useful.
      */
     private SchemaResolver resolver = new SchemaResolver();
 
@@ -66,20 +66,17 @@ public class EmfComplexFeatureReader {
         this.resolver = resolver;
     }
 
-    /**
-     * Set resolver based on catalog. Use this for testing only, because it does not support cached
-     * downloads.
-     */
+    /** Set resolver based on catalog. Use this for testing only, because it does not support cached downloads. */
     public void setResolver(URL catalogLocation) {
         this.resolver = new SchemaResolver(SchemaCatalog.build(catalogLocation));
     }
 
     /**
-     * Parses the GML schema represented by the <code>configuration</code>'s {@link
-     * Configuration#getSchemaFileURL() schema location} into a {@link SchemaIndex}.
+     * Parses the GML schema represented by the <code>configuration</code>'s {@link Configuration#getSchemaFileURL()
+     * schema location} into a {@link SchemaIndex}.
      *
-     * @param configuration configuration object used to access the XSDSchema to parse. This
-     *     configuration object might contain {@link Binding}s
+     * @param configuration configuration object used to access the XSDSchema to parse. This configuration object might
+     *     contain {@link Binding}s
      */
     public SchemaIndex parse(Configuration configuration) throws IOException {
         // find out the schemas involved in the app schema configuration
@@ -92,24 +89,22 @@ public class EmfComplexFeatureReader {
      * Parses the schema referenced by <code>location</code> into a {@link SchemaIndex}
      *
      * @param nameSpace the location namespace
-     * @param schemaLocation the physical location of the root xsd schema that comprises the
-     *     application schema to parse.
-     * @throws IOException if any non recoverable problem occurs while parsing the application
-     *     schema pointed out by <code>location</code> or one of its dependencies.
+     * @param schemaLocation the physical location of the root xsd schema that comprises the application schema to
+     *     parse.
+     * @throws IOException if any non recoverable problem occurs while parsing the application schema pointed out by
+     *     <code>location</code> or one of its dependencies.
      */
     public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {
-        AppSchemaConfiguration configuration =
-                new AppSchemaConfiguration(nameSpace, schemaLocation, resolver);
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(nameSpace, schemaLocation, resolver);
         return parse(configuration);
     }
 
     /**
      * Parses the gml schema referenced by <code>location</code> into a {@link SchemaIndex}
      *
-     * @param location the physical location of the root xsd schema that comprises the application
-     *     schema to parse.
-     * @throws IOException if any non recoverable problem occurs while parsing the application
-     *     schema pointed out by <code>location</code> or one of its dependencies.
+     * @param location the physical location of the root xsd schema that comprises the application schema to parse.
+     * @throws IOException if any non recoverable problem occurs while parsing the application schema pointed out by
+     *     <code>location</code> or one of its dependencies.
      */
     public SchemaIndex parse(final URL location) throws IOException {
 
@@ -155,8 +150,7 @@ public class EmfComplexFeatureReader {
             throw (RuntimeException) new RuntimeException(msg).initCause(e);
         }
         if (targetNamespace == null) {
-            throw new IllegalArgumentException(
-                    "Input document does not specifies a targetNamespace");
+            throw new IllegalArgumentException("Input document does not specifies a targetNamespace");
         }
         return targetNamespace;
     }

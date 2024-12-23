@@ -24,9 +24,8 @@ import org.geotools.data.sort.SortedFeatureIterator;
 import org.geotools.util.factory.Hints;
 
 /**
- * A wrapper that will sort a feature collection using a size sensitive algorithm, in main memory
- * for small collections, using secondary memory otherwise. The threshold is defined by the {@link
- * Hints#MAX_MEMORY_SORT} feature count
+ * A wrapper that will sort a feature collection using a size sensitive algorithm, in main memory for small collections,
+ * using secondary memory otherwise. The threshold is defined by the {@link Hints#MAX_MEMORY_SORT} feature count
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -40,8 +39,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
         this.sort = sort;
     }
 
-    public SortedSimpleFeatureCollection(
-            SimpleFeatureCollection delegate, SortBy[] sort, int maxMemoryFeatures) {
+    public SortedSimpleFeatureCollection(SimpleFeatureCollection delegate, SortBy[] sort, int maxMemoryFeatures) {
         super(delegate);
         this.sort = sort;
         this.maxMemoryFeatures = maxMemoryFeatures;
@@ -54,8 +52,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
             SimpleFeatureIterator features = delegate.features();
             // sort if necessary
             if (sort != null) {
-                features =
-                        new SortedFeatureIterator(features, getSchema(), sort, maxMemoryFeatures);
+                features = new SortedFeatureIterator(features, getSchema(), sort, maxMemoryFeatures);
             }
             return features;
         } catch (IOException e) {

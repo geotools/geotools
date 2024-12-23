@@ -23,8 +23,8 @@ import org.geotools.xml.schema.Element;
 import org.xml.sax.Attributes;
 
 /**
- * This is a default Handler which is used in case a handler cannot be created for an arbitry
- * element. Note: this handler does not perform and parsing on the current element or it's children.
+ * This is a default Handler which is used in case a handler cannot be created for an arbitry element. Note: this
+ * handler does not perform and parsing on the current element or it's children.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
@@ -58,8 +58,7 @@ public class IgnoreHandler extends XMLElementHandler {
 
     /** @see schema.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
     @Override
-    public XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) {
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints) {
         return this;
     }
 
@@ -82,8 +81,7 @@ public class IgnoreHandler extends XMLElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(URI namespaceURI, String localName, Attributes attr) {

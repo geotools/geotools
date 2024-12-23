@@ -44,8 +44,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This is a test for AppSchemaDataAccessConfigurator on file-based datastores, including shapefiles
- * and *.properties files.
+ * This is a test for AppSchemaDataAccessConfigurator on file-based datastores, including shapefiles and *.properties
+ * files.
  *
  * @author Tara Athan
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -56,8 +56,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     private static final String testData = "/test-data/";
 
     /** The temporary directory where tests are run. */
-    private static final File testDir =
-            new File("target/test/" + AppSchemaFileDataTest.class.getSimpleName());
+    private static final File testDir = new File("target/test/" + AppSchemaFileDataTest.class.getSimpleName());
 
     /**
      * Create the test directory.
@@ -94,8 +93,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     private static void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
         FileUtils.copyFileToDirectory(
-                URLs.urlToFile(AppSchemaFileDataTest.class.getResource(testData + baseFileName)),
-                destDir);
+                URLs.urlToFile(AppSchemaFileDataTest.class.getResource(testData + baseFileName)), destDir);
     }
 
     /**
@@ -108,8 +106,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using a
-     * relative paths to the data
+     * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using a relative paths to the data
      */
     @Test
     public void testShapeMappings() throws Exception {
@@ -132,8 +129,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using an
-     * absolute path to the data.
+     * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using an absolute path to the
+     * data.
      */
     @Test
     public void testShapeMappingsAbsolute() throws Exception {
@@ -163,9 +160,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Test the AppSchemaDataAccessConfigurator.buildMappings method with *.properties files using a
-     * relative and paths to the data just to be sure we didn't break these while we were playing
-     * around with shapefiles.
+     * Test the AppSchemaDataAccessConfigurator.buildMappings method with *.properties files using a relative and paths
+     * to the data just to be sure we didn't break these while we were playing around with shapefiles.
      */
     @Test
     public void testPropertiesMappings() throws Exception {
@@ -188,9 +184,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Test the AppSchemaDataAccessConfigurator.buildMappings method with *.properties files using
-     * an absolute path to the data just to be sure we didn't break these while we were playing
-     * around with shapefiles.
+     * Test the AppSchemaDataAccessConfigurator.buildMappings method with *.properties files using an absolute path to
+     * the data just to be sure we didn't break these while we were playing around with shapefiles.
      */
     @Test
     public void testPropertiesMappingsAbsolute() throws Exception {
@@ -202,8 +197,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         try {
             // now let's test a mapping file with an absolute path to the properties file
             // because we don't know the absolute path in advance, we must create the mapping file
-            copyRelativeToAbsolute(
-                    configFilePathRelativeProperties, configFilePathAbsoluteProperties);
+            copyRelativeToAbsolute(configFilePathRelativeProperties, configFilePathAbsoluteProperties);
 
             // create the DataAccess based on properties file configured with a absolute path
             dSAbsolute = buildDataAccess(mappingFileNameAbsoluteProperties);
@@ -224,8 +218,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         // we need the feature type in order to query for the number of features
         Name[] dSNameArray = dS.getTypeNames();
         String testType = dSNameArray[0].toString();
-        FeatureSource<FeatureType, Feature> featureSource =
-                dS.getFeatureSourceByName(dSNameArray[0]);
+        FeatureSource<FeatureType, Feature> featureSource = dS.getFeatureSourceByName(dSNameArray[0]);
         int numFeatures = featureSource.getCount(new Query(testType));
 
         return numFeatures;
@@ -272,11 +265,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
                 // in shapefile test, chosen target feature doesn't allow null entry, so we'll take
                 // the conditional out
                 if (line.trim().startsWith("<OCQL>")) {
-                    line =
-                            line.replace(
-                                    "if_then_else(equalTo(CAT_DESC, 'No Name'), "
-                                            + "Expression.Nil , CAT_DESC)",
-                                    "CAT_DESC");
+                    line = line.replace(
+                            "if_then_else(equalTo(CAT_DESC, 'No Name'), " + "Expression.Nil , CAT_DESC)", "CAT_DESC");
                 }
                 writer.println(line);
             }
@@ -292,15 +282,13 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      * @return an absolute, normalized filename
      * @throws RuntimeException if the base filename and relative path are incompatible
      */
-    private String extendFilename(String baseFilename, String relativePath)
-            throws RuntimeException {
+    private String extendFilename(String baseFilename, String relativePath) throws RuntimeException {
         baseFilename = new File(baseFilename).getAbsolutePath();
         String extendedFilename = FilenameUtils.concat(baseFilename, relativePath);
 
         if (extendedFilename == null) {
             throw new RuntimeException(
-                    "Relative path to datastore is incompatible with the "
-                            + "base path - check double dot steps.");
+                    "Relative path to datastore is incompatible with the " + "base path - check double dot steps.");
         }
         return extendedFilename;
     }

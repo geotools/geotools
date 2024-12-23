@@ -35,32 +35,30 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
 
 /**
- * A helper class for building <var>n</var>-dimensional {@linkplain AffineTransform affine
- * transform} mapping {@linkplain GridEnvelope grid ranges} to {@linkplain Bounds envelopes}. The
- * affine transform will be computed automatically from the information specified by the {@link
- * #setGridRange setGridRange} and {@link #setEnvelope setEnvelope} methods, which are mandatory.
- * All other setter methods are optional hints about the affine transform to be created. This
- * builder is convenient when the following conditions are meet:
+ * A helper class for building <var>n</var>-dimensional {@linkplain AffineTransform affine transform} mapping
+ * {@linkplain GridEnvelope grid ranges} to {@linkplain Bounds envelopes}. The affine transform will be computed
+ * automatically from the information specified by the {@link #setGridRange setGridRange} and {@link #setEnvelope
+ * setEnvelope} methods, which are mandatory. All other setter methods are optional hints about the affine transform to
+ * be created. This builder is convenient when the following conditions are meet:
  *
  * <p>
  *
  * <ul>
  *   <li>
- *       <p>Pixels coordinates (usually (<var>x</var>,<var>y</var>) integer values inside the
- *       rectangle specified by the grid range) are expressed in some {@linkplain
- *       CoordinateReferenceSystem coordinate reference system} known at compile time. This is often
- *       the case. For example the CRS attached to {@link BufferedImage} has always ({@linkplain
- *       AxisDirection#COLUMN_POSITIVE column}, {@linkplain AxisDirection#ROW_POSITIVE row}) axis,
- *       with the origin (0,0) in the upper left corner, and row values increasing down.
+ *       <p>Pixels coordinates (usually (<var>x</var>,<var>y</var>) integer values inside the rectangle specified by the
+ *       grid range) are expressed in some {@linkplain CoordinateReferenceSystem coordinate reference system} known at
+ *       compile time. This is often the case. For example the CRS attached to {@link BufferedImage} has always
+ *       ({@linkplain AxisDirection#COLUMN_POSITIVE column}, {@linkplain AxisDirection#ROW_POSITIVE row}) axis, with the
+ *       origin (0,0) in the upper left corner, and row values increasing down.
  *   <li>
- *       <p>"Real world" coordinates (inside the envelope) are expressed in arbitrary
- *       <em>horizontal</em> coordinate reference system. Axis directions may be ({@linkplain
- *       AxisDirection#NORTH North}, {@linkplain AxisDirection#WEST West}), or ({@linkplain
- *       AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}), <cite>etc.</cite>.
+ *       <p>"Real world" coordinates (inside the envelope) are expressed in arbitrary <em>horizontal</em> coordinate
+ *       reference system. Axis directions may be ({@linkplain AxisDirection#NORTH North},
+ *       {@linkplain AxisDirection#WEST West}), or ({@linkplain AxisDirection#EAST East},
+ *       {@linkplain AxisDirection#NORTH North}), <cite>etc.</cite>.
  * </ul>
  *
- * <p>In such case (and assuming that the image's CRS has the same characteristics than the {@link
- * BufferedImage}'s CRS described above):
+ * <p>In such case (and assuming that the image's CRS has the same characteristics than the {@link BufferedImage}'s CRS
+ * described above):
  *
  * <p>
  *
@@ -68,17 +66,16 @@ import org.geotools.util.Utilities;
  *   <li>
  *       <p>{@link #setSwapXY swapXY} shall be set to {@code true} if the "real world" axis order is
  *       ({@linkplain AxisDirection#NORTH North}, {@linkplain AxisDirection#EAST East}) instead of
- *       ({@linkplain AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). This axis
- *       swapping is necessary for mapping the ({@linkplain AxisDirection#COLUMN_POSITIVE column},
- *       {@linkplain AxisDirection#ROW_POSITIVE row}) axis order associated to the image CRS.
+ *       ({@linkplain AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). This axis swapping is necessary
+ *       for mapping the ({@linkplain AxisDirection#COLUMN_POSITIVE column}, {@linkplain AxisDirection#ROW_POSITIVE
+ *       row}) axis order associated to the image CRS.
  *   <li>
  *       <p>In addition, the "real world" axis directions shall be reversed (by invoking <code>
- *       {@linkplain #reverseAxis reverseAxis}(dimension)</code>) if their direction is {@link
- *       AxisDirection#WEST WEST} (<var>x</var> axis) or {@link AxisDirection#NORTH NORTH}
- *       (<var>y</var> axis), in order to get them oriented toward the {@link AxisDirection#EAST
- *       EAST} or {@link AxisDirection#SOUTH SOUTH} direction respectively. The later may seems
- *       unatural, but it reflects the fact that row values are increasing down in an {@link
- *       BufferedImage}'s CRS.
+ *       {@linkplain #reverseAxis reverseAxis}(dimension)</code>) if their direction is {@link AxisDirection#WEST WEST}
+ *       (<var>x</var> axis) or {@link AxisDirection#NORTH NORTH} (<var>y</var> axis), in order to get them oriented
+ *       toward the {@link AxisDirection#EAST EAST} or {@link AxisDirection#SOUTH SOUTH} direction respectively. The
+ *       later may seems unatural, but it reflects the fact that row values are increasing down in an
+ *       {@link BufferedImage}'s CRS.
  * </ul>
  *
  * @since 2.3
@@ -117,14 +114,14 @@ public class GridToEnvelopeMapper {
     private Bounds envelope;
 
     /**
-     * Whatever the {@code gridToCRS} transform will maps pixel center or corner. The default value
-     * is {@link PixelInCell#CELL_CENTER}.
+     * Whatever the {@code gridToCRS} transform will maps pixel center or corner. The default value is
+     * {@link PixelInCell#CELL_CENTER}.
      */
     private PixelInCell anchor = PixelInCell.CELL_CENTER;
 
     /**
-     * {@code true} if we should swap the two first axis, {@code false} if we should not swap and
-     * {@code null} if this state is not yet determined.
+     * {@code true} if we should swap the two first axis, {@code false} if we should not swap and {@code null} if this
+     * state is not yet determined.
      */
     private Boolean swapXY;
 
@@ -141,12 +138,10 @@ public class GridToEnvelopeMapper {
      * Creates a new instance for the specified grid range and envelope.
      *
      * @param gridRange The valid coordinate range of a grid coverage.
-     * @param userRange The corresponding coordinate range in user coordinate. This envelope must
-     *     contains entirely all pixels, i.e. the envelope's upper left corner must coincide with
-     *     the upper left corner of the first pixel and the envelope's lower right corner must
-     *     coincide with the lower right corner of the last pixel.
-     * @throws MismatchedDimensionException if the grid range and the envelope doesn't have
-     *     consistent dimensions.
+     * @param userRange The corresponding coordinate range in user coordinate. This envelope must contains entirely all
+     *     pixels, i.e. the envelope's upper left corner must coincide with the upper left corner of the first pixel and
+     *     the envelope's lower right corner must coincide with the lower right corner of the last pixel.
+     * @throws MismatchedDimensionException if the grid range and the envelope doesn't have consistent dimensions.
      */
     public GridToEnvelopeMapper(final GridEnvelope gridRange, final Bounds userRange)
             throws MismatchedDimensionException {
@@ -163,11 +158,9 @@ public class GridToEnvelopeMapper {
     }
 
     /** Makes sure that an argument is non-null. */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -206,8 +199,8 @@ public class GridToEnvelopeMapper {
 
     /**
      * Returns whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the
-     * later is Java2D/JAI convention. The default is cell center (OGC convention).
+     * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the later is Java2D/JAI
+     * convention. The default is cell center (OGC convention).
      *
      * @return Whatever the grid range maps pixel center or corner.
      * @since 2.5
@@ -218,8 +211,8 @@ public class GridToEnvelopeMapper {
 
     /**
      * Sets whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the
-     * later is Java2D/JAI convention.
+     * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the later is Java2D/JAI
+     * convention.
      *
      * @param anchor Whatever the grid range maps pixel center or corner.
      * @since 2.5
@@ -240,8 +233,7 @@ public class GridToEnvelopeMapper {
      */
     public GridEnvelope getGridRange() throws IllegalStateException {
         if (gridRange == null) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
         }
         return gridRange;
     }
@@ -261,23 +253,22 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Returns the envelope. For performance reason, this method do not clone the envelope. So the
-     * returned object should not be modified.
+     * Returns the envelope. For performance reason, this method do not clone the envelope. So the returned object
+     * should not be modified.
      *
      * @return The envelope.
      * @throws IllegalStateException if the envelope has not yet been defined.
      */
     public Bounds getEnvelope() throws IllegalStateException {
         if (envelope == null) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
         }
         return envelope;
     }
 
     /**
-     * Sets the envelope. This method do not clone the specified envelope, so it should not be
-     * modified after this method has been invoked.
+     * Sets the envelope. This method do not clone the specified envelope, so it should not be modified after this
+     * method has been invoked.
      *
      * @param envelope The new envelope.
      */
@@ -290,9 +281,7 @@ public class GridToEnvelopeMapper {
         }
     }
 
-    /**
-     * Applies heuristic rules in order to determine if the two first axis should be interchanged.
-     */
+    /** Applies heuristic rules in order to determine if the two first axis should be interchanged. */
     private static boolean swapXY(final CoordinateSystem cs) {
         if (cs != null && cs.getDimension() >= 2) {
             return AxisDirection.NORTH.equals(cs.getAxis(0).getDirection().absolute())
@@ -303,22 +292,21 @@ public class GridToEnvelopeMapper {
 
     /**
      * Returns {@code true} if the two first axis should be interchanged. If <code>
-     * {@linkplain #isAutomatic isAutomatic}({@linkplain #SWAP_XY})</code> returns {@code true}
-     * (which is the default), then this method make the following assumptions:
+     * {@linkplain #isAutomatic isAutomatic}({@linkplain #SWAP_XY})</code> returns {@code true} (which is the default),
+     * then this method make the following assumptions:
      *
      * <ul>
      *   <li>
-     *       <p>Axis order in the grid range matches exactly axis order in the envelope, except for
-     *       the special case described in the next point. In other words, if axis order in the
-     *       underlying image is (<var>column</var>, <var>row</var>) (which is the case for a
-     *       majority of images), then the envelope should probably have a (<var>longitude</var>,
-     *       <var>latitude</var>) or (<var>easting</var>, <var>northing</var>) axis order.
+     *       <p>Axis order in the grid range matches exactly axis order in the envelope, except for the special case
+     *       described in the next point. In other words, if axis order in the underlying image is (<var>column</var>,
+     *       <var>row</var>) (which is the case for a majority of images), then the envelope should probably have a
+     *       (<var>longitude</var>, <var>latitude</var>) or (<var>easting</var>, <var>northing</var>) axis order.
      *   <li>
-     *       <p>An exception to the above rule applies for CRS using exactly the following axis
-     *       order: ({@link AxisDirection#NORTH NORTH}|{@link AxisDirection#SOUTH SOUTH}, {@link
-     *       AxisDirection#EAST EAST}|{@link AxisDirection#WEST WEST}). An example of such CRS is
-     *       {@code EPSG:4326}. In this particular case, this method will returns {@code true}, thus
-     *       suggesting to interchange the (<var>y</var>,<var>x</var>) axis for such CRS.
+     *       <p>An exception to the above rule applies for CRS using exactly the following axis order:
+     *       ({@link AxisDirection#NORTH NORTH}|{@link AxisDirection#SOUTH SOUTH}, {@link AxisDirection#EAST
+     *       EAST}|{@link AxisDirection#WEST WEST}). An example of such CRS is {@code EPSG:4326}. In this particular
+     *       case, this method will returns {@code true}, thus suggesting to interchange the (<var>y</var>,<var>x</var>)
+     *       axis for such CRS.
      * </ul>
      *
      * @return {@code true} if the two first axis should be interchanged.
@@ -350,19 +338,19 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Returns which (if any) axis in <cite>user</cite> space (not grid space) should have their
-     * direction reversed. If <code>
-     * {@linkplain #isAutomatic isAutomatic}({@linkplain #REVERSE_AXIS})</code> returns {@code true}
-     * (which is the default), then this method make the following assumptions:
+     * Returns which (if any) axis in <cite>user</cite> space (not grid space) should have their direction reversed. If
+     * <code>
+     * {@linkplain #isAutomatic isAutomatic}({@linkplain #REVERSE_AXIS})</code> returns {@code true} (which is the
+     * default), then this method make the following assumptions:
      *
      * <p>
      *
      * <ul>
-     *   <li>Axis should be reverted if needed in order to point toward their "{@linkplain
-     *       AxisDirection#absolute absolute}" direction.
-     *   <li>An exception to the above rule is the second axis in grid space, which is assumed to be
-     *       the <var>y</var> axis on output device (usually the screen). This axis is reversed
-     *       again in order to match the bottom direction often used with such devices.
+     *   <li>Axis should be reverted if needed in order to point toward their "{@linkplain AxisDirection#absolute
+     *       absolute}" direction.
+     *   <li>An exception to the above rule is the second axis in grid space, which is assumed to be the <var>y</var>
+     *       axis on output device (usually the screen). This axis is reversed again in order to match the bottom
+     *       direction often used with such devices.
      * </ul>
      *
      * @return The reversal state of each axis, or {@code null} if unspecified.
@@ -377,9 +365,7 @@ public class GridToEnvelopeMapper {
                     for (int i = 0; i < dimension; i++) {
                         final AxisDirection direction = cs.getAxis(i).getDirection();
                         final AxisDirection absolute = direction.absolute();
-                        reverseAxis[i] =
-                                direction != AxisDirection.OTHER
-                                        && direction.equals(absolute.opposite());
+                        reverseAxis[i] = direction != AxisDirection.OTHER && direction.equals(absolute.opposite());
                     }
                     if (dimension >= 2) {
                         final int i = getSwapXY() ? 0 : 1;
@@ -405,12 +391,11 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Set which (if any) axis in <cite>user</cite> space (not grid space) should have their
-     * direction reversed. Invoking this method force <code>
+     * Set which (if any) axis in <cite>user</cite> space (not grid space) should have their direction reversed.
+     * Invoking this method force <code>
      * {@linkplain #isAutomatic isAutomatic}({@linkplain #REVERSE_AXIS})</code> to {@code false}.
      *
-     * @param reverse The reversal state of each axis. A {@code null} value means to reverse no
-     *     axis.
+     * @param reverse The reversal state of each axis. A {@code null} value means to reverse no axis.
      */
     public void setReverseAxis(final boolean[] reverse) {
         if (!Arrays.equals(reverseAxis, reverse)) {
@@ -421,9 +406,9 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Reverses a single axis in user space. Invoking this methods <var>n</var> time is equivalent
-     * to creating a boolean {@code reverse} array of the appropriate length, setting {@code
-     * reverse[dimension] = true} for the <var>n</var> axis to be reversed, and invoke <code>
+     * Reverses a single axis in user space. Invoking this methods <var>n</var> time is equivalent to creating a boolean
+     * {@code reverse} array of the appropriate length, setting {@code reverse[dimension] = true} for the <var>n</var>
+     * axis to be reversed, and invoke <code>
      * {@linkplain #setReverseAxis setReverseAxis}(reverse)</code>.
      *
      * @param dimension The index of the axis to reverse.
@@ -447,8 +432,7 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Returns {@code true} if all properties designed by the specified bit mask will be computed
-     * automatically.
+     * Returns {@code true} if all properties designed by the specified bit mask will be computed automatically.
      *
      * @param mask Any combination of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
      * @return {@code true} if all properties given by the mask will be computed automatically.
@@ -458,9 +442,9 @@ public class GridToEnvelopeMapper {
     }
 
     /**
-     * Set all properties designed by the specified bit mask as automatic. Their value will be
-     * computed automatically by the corresponding methods (e.g. {@link #getReverseAxis}, {@link
-     * #getSwapXY}). By default, all properties are automatic.
+     * Set all properties designed by the specified bit mask as automatic. Their value will be computed automatically by
+     * the corresponding methods (e.g. {@link #getReverseAxis}, {@link #getSwapXY}). By default, all properties are
+     * automatic.
      *
      * @param mask Any combination of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
      */

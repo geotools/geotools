@@ -89,9 +89,8 @@ public abstract class TileService implements ImageLoader {
      * <p>Client isn't set so you should override loadImageTileImage.
      *
      * @param name the name. Cannot be null.
-     * @param baseURL the base URL. This is a string representing the common part of the URL for all
-     *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
-     *     URL is well-formed.
+     * @param baseURL the base URL. This is a string representing the common part of the URL for all this service's
+     *     tiles. Cannot be null. Note that this constructor doesn't ensure that the URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
         if (name == null || name.isEmpty()) {
@@ -109,9 +108,8 @@ public abstract class TileService implements ImageLoader {
      * Create a new TileService with a name and a base URL
      *
      * @param name the name. Cannot be null.
-     * @param baseURL the base URL. This is a string representing the common part of the URL for all
-     *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
-     *     URL is well-formed.
+     * @param baseURL the base URL. This is a string representing the common part of the URL for all this service's
+     *     tiles. Cannot be null. Note that this constructor doesn't ensure that the URL is well-formed.
      * @param client HTTPClient instance to use for a tile request.
      */
     protected TileService(String name, String baseURL, HTTPClient client) {
@@ -156,14 +154,12 @@ public abstract class TileService implements ImageLoader {
     /**
      * Translates the map scale into a zoom-level for the map services.
      *
-     * <p>The scale-factor (0-100) decides whether the tiles will be scaled down (100) or scaled up
-     * (0).
+     * <p>The scale-factor (0-100) decides whether the tiles will be scaled down (100) or scaled up (0).
      *
      * @param scaleFactor Scale-factor (0-100)
      * @return Zoom-level
      */
-    public int getZoomLevelFromMapScale(
-            ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor) {
+    public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
         assert (scaleList != null && scaleList.length > 0);
@@ -196,11 +192,9 @@ public abstract class TileService implements ImageLoader {
     /**
      * Returns the zoom-level that should be used to fetch the tiles.
      *
-     * @param useRecommended always use the calculated zoom-level, do not use the one the user
-     *     selected
+     * @param useRecommended always use the calculated zoom-level, do not use the one the user selected
      */
-    public int getZoomLevelToUse(
-            ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor, boolean useRecommended) {
+    public int getZoomLevelToUse(ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor, boolean useRecommended) {
         if (useRecommended) {
             return getZoomLevelFromMapScale(zoomLevelMatcher, scaleFactor);
         }
@@ -209,8 +203,7 @@ public abstract class TileService implements ImageLoader {
         int zoomLevel = -1;
 
         // check if the zoom-level is valid
-        if (!selectionAutomatic
-                && ((zoomLevel >= getMinZoomLevel()) && (zoomLevel <= getMaxZoomLevel()))) {
+        if (!selectionAutomatic && ((zoomLevel >= getMinZoomLevel()) && (zoomLevel <= getMaxZoomLevel()))) {
             // the zoom-level from the properties is valid, so let's take it
 
             return zoomLevel;
@@ -246,10 +239,7 @@ public abstract class TileService implements ImageLoader {
     }
 
     public Set<Tile> findTilesInExtent(
-            ReferencedEnvelope _mapExtent,
-            double scaleFactor,
-            boolean recommendedZoomLevel,
-            int maxNumberOfTiles) {
+            ReferencedEnvelope _mapExtent, double scaleFactor, boolean recommendedZoomLevel, int maxNumberOfTiles) {
 
         ReferencedEnvelope mapExtent = createSafeEnvelopeInWGS84(_mapExtent);
 
@@ -266,15 +256,14 @@ public abstract class TileService implements ImageLoader {
         ScaleZoomLevelMatcher zoomLevelMatcher = null;
         try {
 
-            zoomLevelMatcher =
-                    new ScaleZoomLevelMatcher(
-                            getTileCrs(),
-                            getProjectedTileCrs(),
-                            CRS.findMathTransform(getTileCrs(), getProjectedTileCrs()),
-                            CRS.findMathTransform(getProjectedTileCrs(), getTileCrs()),
-                            mapExtent,
-                            mapExtent,
-                            scaleFactor);
+            zoomLevelMatcher = new ScaleZoomLevelMatcher(
+                    getTileCrs(),
+                    getProjectedTileCrs(),
+                    CRS.findMathTransform(getTileCrs(), getProjectedTileCrs()),
+                    CRS.findMathTransform(getProjectedTileCrs(), getTileCrs()),
+                    mapExtent,
+                    mapExtent,
+                    scaleFactor);
 
         } catch (FactoryException e) {
             throw new RuntimeException(e);
@@ -290,8 +279,7 @@ public abstract class TileService implements ImageLoader {
         Set<Tile> tileList = new HashSet<>(100);
 
         // Let's get the first tile which covers the upper-left corner
-        TileIdentifier identifier =
-                identifyTileAtCoordinate(extent.getMinX(), extent.getMaxY(), zoomLevel);
+        TileIdentifier identifier = identifyTileAtCoordinate(extent.getMinX(), extent.getMaxY(), zoomLevel);
         Tile firstTile = obtainTile(identifier);
 
         tileList.add(firstTile);
@@ -321,10 +309,7 @@ public abstract class TileService implements ImageLoader {
                     break;
                 }
                 if (tileList.size() > maxNumberOfTiles) {
-                    LOGGER.warning(
-                            "Reached tile limit of "
-                                    + maxNumberOfTiles
-                                    + ". Returning an empty collection.");
+                    LOGGER.warning("Reached tile limit of " + maxNumberOfTiles + ". Returning an empty collection.");
                     return Collections.emptySet();
                 }
             } while (tileList.size() < maxNumberOfTilesForZoomLevel);
@@ -349,8 +334,7 @@ public abstract class TileService implements ImageLoader {
     }
 
     /** Returns tile identifier for the tile at the given coordinate */
-    public abstract TileIdentifier identifyTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel);
+    public abstract TileIdentifier identifyTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel);
 
     /** Fetches the image from url given by tile. */
     @Override
@@ -386,8 +370,8 @@ public abstract class TileService implements ImageLoader {
     /**
      * Returns a list that represents a mapping between zoom-levels and map scale.
      *
-     * <p>Array index: zoom-level Value at index: map scale High zoom-level -> more detailed map Low
-     * zoom-level -> less detailed map
+     * <p>Array index: zoom-level Value at index: map scale High zoom-level -> more detailed map Low zoom-level -> less
+     * detailed map
      *
      * @return mapping between zoom-levels and map scale
      */
@@ -402,8 +386,7 @@ public abstract class TileService implements ImageLoader {
     /** Returns the TileFactory which is used to call the method getTileFromCoordinate(). */
     public abstract TileFactory getTileFactory();
 
-    public static final ReferencedEnvelope createSafeEnvelopeInWGS84(
-            ReferencedEnvelope _mapExtent) {
+    public static final ReferencedEnvelope createSafeEnvelopeInWGS84(ReferencedEnvelope _mapExtent) {
 
         try {
 
@@ -417,11 +400,10 @@ public abstract class TileService implements ImageLoader {
     /**
      * Normalize extents.
      *
-     * <p>The extent from the viewport may look like this: MaxY: 110° (=-70°) MinY: -110° MaxX: 180°
-     * MinX: -180°
+     * <p>The extent from the viewport may look like this: MaxY: 110° (=-70°) MinY: -110° MaxX: 180° MinX: -180°
      *
-     * <p>But cutExtentIntoTiles(..) requires an extent that looks like this: MaxY: 85° (or 90°)
-     * MinY: -85° (or -90°) MaxX: 180° MinX: -180°
+     * <p>But cutExtentIntoTiles(..) requires an extent that looks like this: MaxY: 85° (or 90°) MinY: -85° (or -90°)
+     * MaxX: 180° MinX: -180°
      */
     private ReferencedEnvelope normalizeExtent(ReferencedEnvelope envelope) {
         ReferencedEnvelope bounds = getBounds();
@@ -431,18 +413,13 @@ public abstract class TileService implements ImageLoader {
                 || envelope.getMaxX() > bounds.getMaxX()
                 || envelope.getMinX() < bounds.getMinX()) {
 
-            double maxY =
-                    (envelope.getMaxY() > bounds.getMaxY()) ? bounds.getMaxY() : envelope.getMaxY();
-            double minY =
-                    (envelope.getMinY() < bounds.getMinY()) ? bounds.getMinY() : envelope.getMinY();
-            double maxX =
-                    (envelope.getMaxX() > bounds.getMaxX()) ? bounds.getMaxX() : envelope.getMaxX();
-            double minX =
-                    (envelope.getMinX() < bounds.getMinX()) ? bounds.getMinX() : envelope.getMinX();
+            double maxY = (envelope.getMaxY() > bounds.getMaxY()) ? bounds.getMaxY() : envelope.getMaxY();
+            double minY = (envelope.getMinY() < bounds.getMinY()) ? bounds.getMinY() : envelope.getMinY();
+            double maxX = (envelope.getMaxX() > bounds.getMaxX()) ? bounds.getMaxX() : envelope.getMaxX();
+            double minX = (envelope.getMinX() < bounds.getMinX()) ? bounds.getMinX() : envelope.getMinX();
 
             ReferencedEnvelope newEnvelope =
-                    new ReferencedEnvelope(
-                            minX, maxX, minY, maxY, envelope.getCoordinateReferenceSystem());
+                    new ReferencedEnvelope(minX, maxX, minY, maxY, envelope.getCoordinateReferenceSystem());
 
             return newEnvelope;
         }

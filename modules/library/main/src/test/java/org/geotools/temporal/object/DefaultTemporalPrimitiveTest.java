@@ -79,8 +79,7 @@ public class DefaultTemporalPrimitiveTest {
         // relative position between Period onbjects
         temporalPrimitive1 = new DefaultPeriod(new DefaultInstant(position1), instant1);
         cal.set(2200, 9, 1);
-        temporalPrimitive2 =
-                new DefaultPeriod(instant2, new DefaultInstant(new DefaultPosition(cal.getTime())));
+        temporalPrimitive2 = new DefaultPeriod(instant2, new DefaultInstant(new DefaultPosition(cal.getTime())));
         result = temporalPrimitive1.relativePosition(other);
         assertNotEquals(temporalPrimitive2.relativePosition(other), result);
     }

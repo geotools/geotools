@@ -48,8 +48,7 @@ public class MongoFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         DBObject obj = cursor.next();
 
         return mapper.buildFeature(obj, featureSource.getSchema());

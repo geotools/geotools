@@ -64,9 +64,8 @@ import org.geotools.util.Converters;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Optimizes filter trees by replacing expressions/filters with memoized equivalents, also replaces
- * the generic property access machinery with straight index access when the target feature type is
- * a {@link SimpleFeatureType}.
+ * Optimizes filter trees by replacing expressions/filters with memoized equivalents, also replaces the generic property
+ * access machinery with straight index access when the target feature type is a {@link SimpleFeatureType}.
  */
 class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
 
@@ -78,8 +77,8 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     SimpleFeatureType simpleFeatureType;
 
     /**
-     * Prepares to duplicate a filter for a given target schema. Only filters included in the
-     * memoizeCandidates set will be wrapped within a caching proxy
+     * Prepares to duplicate a filter for a given target schema. Only filters included in the memoizeCandidates set will
+     * be wrapped within a caching proxy
      */
     public MemoryFilterOptimizer(FeatureType schema, Set<Object> memoizeCandidates) {
         if (schema instanceof SimpleFeatureType) {
@@ -126,8 +125,8 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Check if it's possible generate an IN function from the provided OR filter. If the OR filter
-     * doesn't accomplish the conditions, returns null.
+     * Check if it's possible generate an IN function from the provided OR filter. If the OR filter doesn't accomplish
+     * the conditions, returns null.
      */
     private InFunction replaceWithInFilter(Or filter) {
         List<Filter> children = filter.getChildren();
@@ -264,8 +263,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         return memoize(filter, extraData, super::visit);
     }
 
-    public <T extends Filter> T memoize(
-            T filter, Object extraData, BiFunction<T, Object, Object> duplicator) {
+    public <T extends Filter> T memoize(T filter, Object extraData, BiFunction<T, Object, Object> duplicator) {
         // do we want to memoize this filter?
         if (!memoizeCandidates.contains(filter)) {
             // drill down, this clones and at the same time visits sub-filters
@@ -291,8 +289,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     public Object visit(PropertyName expression, Object extraData) {
         Expression replacement = expressionReplacements.get(expression);
         if (replacement == null) {
-            if (simpleFeatureType != null
-                    && simpleFeatureType.indexOf(expression.getPropertyName()) >= 0) {
+            if (simpleFeatureType != null && simpleFeatureType.indexOf(expression.getPropertyName()) >= 0) {
                 // index access is significantly faster, does not need memoization
                 replacement = new IndexPropertyName(simpleFeatureType, expression);
             } else if (memoizeCandidates.contains(expression)) {
@@ -366,11 +363,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
                         throw new RuntimeException(
-                                "Could not locate attribute at index "
-                                        + index
-                                        + " on feature "
-                                        + object,
-                                e);
+                                "Could not locate attribute at index " + index + " on feature " + object, e);
                     }
                 }
             }
@@ -390,8 +383,8 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Caches the result of the last property retrieved from the "feature", assuming the feature, as
-     * well as the target type, are the same as in the last invocation
+     * Caches the result of the last property retrieved from the "feature", assuming the feature, as well as the target
+     * type, are the same as in the last invocation
      */
     static class MemoizedPropertyName implements PropertyName {
         PropertyName delegate;

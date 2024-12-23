@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * PreparedStatement inserts must be split in function of those criteria: - useExisting - type of
- * the geometries
+ * PreparedStatement inserts must be split in function of those criteria: - useExisting - type of the geometries
  *
  * <p>This class allows to do the splitting.
  */

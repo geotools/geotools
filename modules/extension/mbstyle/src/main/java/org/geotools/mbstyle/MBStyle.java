@@ -55,20 +55,18 @@ import org.locationtech.jts.geom.PrecisionModel;
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
  *
- * <p>This class is responsible for presenting the wrapped JSON in an easy to use / navigate form
- * for Java developers:
+ * <p>This class is responsible for presenting the wrapped JSON in an easy to use / navigate form for Java developers:
  *
  * <ul>
  *   <li>get methods: access the json directly
  *   <li>query methods: provide logic / transforms to GeoTools classes as required.
  * </ul>
  *
- * <p>Access methods should return Java Objects, rather than generic maps. Additional access methods
- * to perform common queries are expected and encouraged.
+ * <p>Access methods should return Java Objects, rather than generic maps. Additional access methods to perform common
+ * queries are expected and encouraged.
  *
- * <p>This class works closely with {@link MBLayer} hierarchy used to represent the fill, line,
- * symbol, raster, circle layers. Additional support will be required to work with sprites and
- * glyphs.
+ * <p>This class works closely with {@link MBLayer} hierarchy used to represent the fill, line, symbol, raster, circle
+ * layers. Additional support will be required to work with sprites and glyphs.
  *
  * @author Jody Garnett (Boundless)
  */
@@ -78,14 +76,12 @@ public class MBStyle {
     /**
      * JSON document being wrapped by this class.
      *
-     * <p>All methods act as accessors on this JSON document, no other state is maintained. This
-     * allows modifications to be made cleaning with out chance of side-effect.
+     * <p>All methods act as accessors on this JSON document, no other state is maintained. This allows modifications to
+     * be made cleaning with out chance of side-effect.
      */
     public final JSONObject json;
 
-    /**
-     * Helper class used to perform JSON traversal and perform Expression and Filter conversions.
-     */
+    /** Helper class used to perform JSON traversal and perform Expression and Filter conversions. */
     final MBObjectParser parse = new MBObjectParser(MBStyle.class);
 
     /**
@@ -159,8 +155,7 @@ public class MBStyle {
                 }
                 // adjust label priority so that the labels of the last layer are painted first
                 if (mbLayer instanceof SymbolMBLayer) {
-                    ((SymbolMBLayer) mbLayer)
-                            .setLabelPriority(labelPriority += DEFAULT_LABEL_PRIORITY);
+                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority += DEFAULT_LABEL_PRIORITY);
                 }
                 layersList.add(mbLayer);
             } else {
@@ -247,19 +242,18 @@ public class MBStyle {
     }
 
     /**
-     * (Optional) Arbitrary properties useful to track with the stylesheet, but do not influence
-     * rendering. Properties should be prefixed to avoid collisions, like 'mapbox:'.
+     * (Optional) Arbitrary properties useful to track with the stylesheet, but do not influence rendering. Properties
+     * should be prefixed to avoid collisions, like 'mapbox:'.
      *
-     * @return {@link JSONObject} containing the metadata, or an empty JSON object the style has no
-     *     metadata.
+     * @return {@link JSONObject} containing the metadata, or an empty JSON object the style has no metadata.
      */
     public JSONObject getMetadata() {
         return parse.getJSONObject(json, "metadata", new JSONObject());
     }
 
     /**
-     * (Optional) Default map center in longitude and latitude. The style center will be used only
-     * if the map has not been positioned by other means (e.g. map options or user interaction).
+     * (Optional) Default map center in longitude and latitude. The style center will be used only if the map has not
+     * been positioned by other means (e.g. map options or user interaction).
      *
      * @return A {@link Point} for the map center, or null if the style contains no center.
      */
@@ -275,8 +269,8 @@ public class MBStyle {
     }
 
     /**
-     * (Optional) Default zoom level. The style zoom will be used only if the map has not been
-     * positioned by other means (e.g. map options or user interaction).
+     * (Optional) Default zoom level. The style zoom will be used only if the map has not been positioned by other means
+     * (e.g. map options or user interaction).
      *
      * @return Number for the zoom level, or null if the style has no default zoom level.
      */
@@ -285,9 +279,8 @@ public class MBStyle {
     }
 
     /**
-     * (Optional) Default bearing, in degrees clockwise from true north. The style bearing will be
-     * used only if the map has not been positioned by other means (e.g. map options or user
-     * interaction).
+     * (Optional) Default bearing, in degrees clockwise from true north. The style bearing will be used only if the map
+     * has not been positioned by other means (e.g. map options or user interaction).
      *
      * @return The bearing in degrees. Defaults to 0 if the style has no bearing.
      */
@@ -296,10 +289,9 @@ public class MBStyle {
     }
 
     /**
-     * (Optional) Default pitch, in degrees. Zero is perpendicular to the surface, for a look
-     * straight down at the map, while a greater value like 60 looks ahead towards the horizon. The
-     * style pitch will be used only if the map has not been positioned by other means (e.g. map
-     * options or user interaction).
+     * (Optional) Default pitch, in degrees. Zero is perpendicular to the surface, for a look straight down at the map,
+     * while a greater value like 60 looks ahead towards the horizon. The style pitch will be used only if the map has
+     * not been positioned by other means (e.g. map options or user interaction).
      *
      * @return The pitch in degrees. Defaults to 0 if the style has no pitch.
      */
@@ -308,10 +300,9 @@ public class MBStyle {
     }
 
     /**
-     * A base URL for retrieving the sprite image and metadata. The extensions .png, .json and scale
-     * factor @2x.png will be automatically appended. This property is required if any layer uses
-     * the background-pattern, fill-pattern, line-pattern, fill-extrusion-pattern, or icon-image
-     * properties.
+     * A base URL for retrieving the sprite image and metadata. The extensions .png, .json and scale factor @2x.png will
+     * be automatically appended. This property is required if any layer uses the background-pattern, fill-pattern,
+     * line-pattern, fill-extrusion-pattern, or icon-image properties.
      *
      * @return The sprite URL, or null if the style has no sprite URL.
      */
@@ -320,9 +311,8 @@ public class MBStyle {
     }
 
     /**
-     * (Optional) A URL template for loading signed-distance-field glyph sets in PBF format. The URL
-     * must include {fontstack} and {range} tokens. This property is required if any layer uses the
-     * text-field layout property. <br>
+     * (Optional) A URL template for loading signed-distance-field glyph sets in PBF format. The URL must include
+     * {fontstack} and {range} tokens. This property is required if any layer uses the text-field layout property. <br>
      * Example: <br>
      * <code>"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf"</code>
      *
@@ -376,16 +366,12 @@ public class MBStyle {
 
             int layerMaxZoom = layer.getMaxZoom();
             int layerMinZoom = layer.getMinZoom();
-            Double layerMinScaleDenominator =
-                    layerMaxZoom == Integer.MAX_VALUE
-                            ? null
-                            : MBObjectStops.zoomLevelToScaleDenominator(
-                                    Math.min(25d, layerMaxZoom));
-            Double layerMaxScaleDenominator =
-                    layerMinZoom == Integer.MIN_VALUE
-                            ? null
-                            : MBObjectStops.zoomLevelToScaleDenominator(
-                                    Math.max(-25d, layerMinZoom));
+            Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE
+                    ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator(Math.min(25d, layerMaxZoom));
+            Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE
+                    ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator(Math.max(-25d, layerMinZoom));
 
             if (layer.visibility()) {
                 // check for property and zoom functions, if true we will have a layer for each one
@@ -395,26 +381,20 @@ public class MBStyle {
                     int i = 0;
                     for (MBLayer l : mbObjectStops.layersForStop) {
                         double s = stopLevels.get(i);
-                        double[] rangeForStopLevel =
-                                mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
-                        Double maxScaleDenominator =
-                                MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                        double[] rangeForStopLevel = mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
+                        Double maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
                         Double minScaleDenominator = null;
                         if (rangeForStopLevel[1] != -1) {
-                            minScaleDenominator =
-                                    MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
+                            minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
                         }
 
-                        featureTypeStyles.addAll(
-                                l.transform(this, minScaleDenominator, maxScaleDenominator));
+                        featureTypeStyles.addAll(l.transform(this, minScaleDenominator, maxScaleDenominator));
                         i++;
                     }
                 } else if ((layer instanceof BackgroundMBLayer)) {
                     background = (BackgroundMBLayer) layer;
                 } else {
-                    featureTypeStyles.addAll(
-                            layer.transform(
-                                    this, layerMinScaleDenominator, layerMaxScaleDenominator));
+                    featureTypeStyles.addAll(layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator));
                 }
             }
 
@@ -466,10 +446,7 @@ public class MBStyle {
     }
 
     private void addLoneBackgroundLayer(
-            StyleFactory sf,
-            StyledLayerDescriptor sld,
-            BackgroundMBLayer background,
-            FilterFactory ff) {
+            StyleFactory sf, StyledLayerDescriptor sld, BackgroundMBLayer background, FilterFactory ff) {
         // Background does not use a source; construct a user later with a world extent
         // inline feature so that we still have a valid SLD.
         UserLayer userLayer = sf.createUserLayer();
@@ -490,13 +467,10 @@ public class MBStyle {
             SimpleFeatureType featureType = ftb.buildFeatureType();
 
             final DefaultFeatureCollection fc = new DefaultFeatureCollection();
-            fc.add(
-                    SimpleFeatureBuilder.build(
-                            featureType,
-                            new Object[] {
-                                jtsFactory.toGeometry(new ReferencedEnvelope(CRS.getEnvelope(crs)))
-                            },
-                            "background"));
+            fc.add(SimpleFeatureBuilder.build(
+                    featureType,
+                    new Object[] {jtsFactory.toGeometry(new ReferencedEnvelope(CRS.getEnvelope(crs)))},
+                    "background"));
 
             userLayer.setInlineFeatureType(featureType);
             userLayer.setInlineFeatureDatastore(DataUtilities.dataStore(fc));

@@ -39,22 +39,17 @@ public class LineGraphGeneratorTest {
 
     /**
      * Build a linear graph by adding a number of line segments that join at endpoints. <br>
-     * Expected: 1. Number of edges = number of lines added. 2. Number of nodes = number of lines +
-     * 1
+     * Expected: 1. Number of edges = number of lines added. 2. Number of nodes = number of lines + 1
      */
     @Test
     public void test_0() {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            Edge e = (Edge) generator()
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
             e.setID(i - 1);
             e.getNodeA().setID(i - 1);
             e.getNodeB().setID(i);
@@ -66,31 +61,29 @@ public class LineGraphGeneratorTest {
         Assert.assertEquals(built.getEdges().size(), n);
         Assert.assertEquals(built.getNodes().size(), n + 1);
 
-        GraphVisitor visitor =
-                component -> {
-                    Node node = (Node) component;
-                    Coordinate c = (Coordinate) node.getObject();
+        GraphVisitor visitor = component -> {
+            Node node = (Node) component;
+            Coordinate c = (Coordinate) node.getObject();
 
-                    if (node.getDegree() == 1) {
-                        Assert.assertTrue(node.getID() == 0 || node.getID() == n);
-                    } else {
-                        Assert.assertEquals(2, node.getDegree());
-                    }
+            if (node.getDegree() == 1) {
+                Assert.assertTrue(node.getID() == 0 || node.getID() == n);
+            } else {
+                Assert.assertEquals(2, node.getDegree());
+            }
 
-                    Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
-                    return (0);
-                };
+            Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
+            return (0);
+        };
         built.visitNodes(visitor);
 
-        visitor =
-                component -> {
-                    Edge edge = (Edge) component;
-                    LineSegment line = (LineSegment) edge.getObject();
+        visitor = component -> {
+            Edge edge = (Edge) component;
+            LineSegment line = (LineSegment) edge.getObject();
 
-                    Assert.assertTrue(line.p1.x == line.p0.x + 1 && line.p1.y == line.p0.y + 1);
+            Assert.assertTrue(line.p1.x == line.p0.x + 1 && line.p1.y == line.p0.y + 1);
 
-                    return (0);
-                };
+            return (0);
+        };
         built.visitEdges(visitor);
     }
 
@@ -104,14 +97,10 @@ public class LineGraphGeneratorTest {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            Edge e = (Edge) generator()
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
             e.setID(i - 1);
             e.getNodeA().setID(i - 1);
             e.getNodeB().setID(i);

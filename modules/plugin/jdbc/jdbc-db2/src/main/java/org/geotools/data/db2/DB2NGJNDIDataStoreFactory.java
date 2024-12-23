@@ -37,7 +37,6 @@ public class DB2NGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(DB2NGDataStoreFactory.LOOSEBBOX.key, DB2NGDataStoreFactory.LOOSEBBOX);
-        parameters.put(
-                DB2NGDataStoreFactory.USE_SELECTIVITY.key, DB2NGDataStoreFactory.USE_SELECTIVITY);
+        parameters.put(DB2NGDataStoreFactory.USE_SELECTIVITY.key, DB2NGDataStoreFactory.USE_SELECTIVITY);
     }
 }

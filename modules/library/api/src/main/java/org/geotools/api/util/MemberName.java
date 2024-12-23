@@ -10,10 +10,9 @@
 package org.geotools.api.util;
 
 /**
- * The name to identify a member of a {@linkplain Record record}. This name bears an association
- * with a {@linkplain TypeName type name}. There may be alternate implementations of this: for
- * instance, one implementation may apply to the in-memory model. Another may apply to a shapefile
- * data store, etc.
+ * The name to identify a member of a {@linkplain Record record}. This name bears an association with a
+ * {@linkplain TypeName type name}. There may be alternate implementations of this: for instance, one implementation may
+ * apply to the in-memory model. Another may apply to a shapefile data store, etc.
  *
  * @author Bryce Nordgren (USDA)
  * @author Martin Desruisseaux (IRD)
@@ -23,8 +22,8 @@ public interface MemberName extends LocalName {
     /**
      * Returns the type of the data associated with the record member.
      *
-     * @todo Check in the specification if this association is really navigable that way. This
-     *     association seems redundant with {@link RecordType#locate}.
+     * @todo Check in the specification if this association is really navigable that way. This association seems
+     *     redundant with {@link RecordType#locate}.
      */
     TypeName getAttributeType();
 }

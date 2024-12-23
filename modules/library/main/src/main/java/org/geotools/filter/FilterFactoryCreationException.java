@@ -19,16 +19,14 @@
 package org.geotools.filter;
 
 /**
- * An exception that can be thrown by the StyleFactory if it fails to create the implementation of
- * the StyleFactory.
+ * An exception that can be thrown by the StyleFactory if it fails to create the implementation of the StyleFactory.
  *
  * @author Ian Turton, CCG
  * @version $Id$
  */
 public class FilterFactoryCreationException extends java.lang.Exception {
     /**
-     * Constructs an instance of <code>StyleFactoryCreationException</code> with the specified
-     * detail message.
+     * Constructs an instance of <code>StyleFactoryCreationException</code> with the specified detail message.
      *
      * @param msg the detail message.
      */
@@ -37,8 +35,7 @@ public class FilterFactoryCreationException extends java.lang.Exception {
     }
 
     /**
-     * Constructs an instance of <code>FilterFactoryCreationException</code> with the specified root
-     * cause.
+     * Constructs an instance of <code>FilterFactoryCreationException</code> with the specified root cause.
      *
      * @param cause the root cause of the exceptions.
      */
@@ -47,8 +44,8 @@ public class FilterFactoryCreationException extends java.lang.Exception {
     }
 
     /**
-     * Constructs an instance of <code>FilterFactoryCreationException</code> with the specified
-     * detail message and root cause.
+     * Constructs an instance of <code>FilterFactoryCreationException</code> with the specified detail message and root
+     * cause.
      *
      * @param msg the detail message.
      * @param cause the root cause of the exceptions.

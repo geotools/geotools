@@ -16,8 +16,8 @@
  */
 
 /**
- * Code has been forked from <b>spring-data-elastic</b>, it handles parsing and formatting dates the
- * way ElasticSearch does, without requiring a large dependency on elasticsearch-server, or causing
- * split packages (like the previous solutions, grabbing sources from elasticsearch-server, did).
+ * Code has been forked from <b>spring-data-elastic</b>, it handles parsing and formatting dates the way ElasticSearch
+ * does, without requiring a large dependency on elasticsearch-server, or causing split packages (like the previous
+ * solutions, grabbing sources from elasticsearch-server, did).
  */
 package org.geotools.data.elasticsearch.date;

@@ -35,10 +35,9 @@ import org.geotools.util.NumberRange;
 // Geotools dependencies
 
 /**
- * Divides every sample values of the source coverage by constants (one for each band). If the
- * number of constants supplied is less than the number of bands of the destination, then the
- * constant from entry 0 is applied to all the bands. Otherwise, a constant from a different entry
- * is applied to each band.
+ * Divides every sample values of the source coverage by constants (one for each band). If the number of constants
+ * supplied is less than the number of bands of the destination, then the constant from entry 0 is applied to all the
+ * bands. Otherwise, a constant from a different entry is applied to each band.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"DivideByConst"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain DivideByConstDescriptor DivideByConst}"
@@ -109,9 +108,9 @@ public class DivideByConst extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         if (JAIExt.isJAIExtOperation(OPERATION_CONST)) {
             parameters.set(Operator.DIVIDE, 1);
         }
@@ -126,7 +125,6 @@ public class DivideByConst extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], OPERATION_CONST, 2, 3, 4);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], OPERATION_CONST, 2, 3, 4);
     }
 }

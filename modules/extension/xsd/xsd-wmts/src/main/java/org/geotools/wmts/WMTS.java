@@ -42,9 +42,8 @@ public final class WMTS extends XSD {
 
         // This is the WMTS schema, so wherever we see datasetSummaryDescription element, we
         // need to use the layer definition to decode/encode it
-        List<XSDElementDeclaration> datasetSummaryBaseTypeDeclarations =
-                XSDSchemaQueryTools.findElementsUsingType(
-                        theSchema, OWS.NAMESPACE, "DatasetDescriptionSummaryBaseType");
+        List<XSDElementDeclaration> datasetSummaryBaseTypeDeclarations = XSDSchemaQueryTools.findElementsUsingType(
+                theSchema, OWS.NAMESPACE, "DatasetDescriptionSummaryBaseType");
 
         XSDElementDeclaration layerDeclaration = null;
         XSDElementDeclaration dsSummaryDeclaration = null;
@@ -101,12 +100,10 @@ public final class WMTS extends XSD {
 
     /* Type Definitions */
     /** @generated */
-    public static final QName AcceptedFormatsType =
-            new QName("http://www.opengis.net/wmts/1.0", "AcceptedFormatsType");
+    public static final QName AcceptedFormatsType = new QName("http://www.opengis.net/wmts/1.0", "AcceptedFormatsType");
 
     /** @generated */
-    public static final QName ContentsType =
-            new QName("http://www.opengis.net/wmts/1.0", "ContentsType");
+    public static final QName ContentsType = new QName("http://www.opengis.net/wmts/1.0", "ContentsType");
 
     /** @generated */
     public static final QName GetCapabilitiesValueType =
@@ -117,69 +114,56 @@ public final class WMTS extends XSD {
             new QName("http://www.opengis.net/wmts/1.0", "GetFeatureInfoValueType");
 
     /** @generated */
-    public static final QName GetTileValueType =
-            new QName("http://www.opengis.net/wmts/1.0", "GetTileValueType");
+    public static final QName GetTileValueType = new QName("http://www.opengis.net/wmts/1.0", "GetTileValueType");
 
     /** @generated */
     public static final QName LayerType = new QName("http://www.opengis.net/wmts/1.0", "LayerType");
 
     /** @generated */
-    public static final QName RequestServiceType =
-            new QName("http://www.opengis.net/wmts/1.0", "RequestServiceType");
+    public static final QName RequestServiceType = new QName("http://www.opengis.net/wmts/1.0", "RequestServiceType");
 
     /** @generated */
-    public static final QName SectionsType =
-            new QName("http://www.opengis.net/wmts/1.0", "SectionsType");
+    public static final QName SectionsType = new QName("http://www.opengis.net/wmts/1.0", "SectionsType");
 
     /** @generated */
-    public static final QName URLTemplateType =
-            new QName("http://www.opengis.net/wmts/1.0", "URLTemplateType");
+    public static final QName URLTemplateType = new QName("http://www.opengis.net/wmts/1.0", "URLTemplateType");
 
     /** @generated */
-    public static final QName VersionType =
-            new QName("http://www.opengis.net/wmts/1.0", "VersionType");
+    public static final QName VersionType = new QName("http://www.opengis.net/wmts/1.0", "VersionType");
 
     /** @generated */
-    public static final QName _BinaryPayload =
-            new QName("http://www.opengis.net/wmts/1.0", "_BinaryPayload");
+    public static final QName _BinaryPayload = new QName("http://www.opengis.net/wmts/1.0", "_BinaryPayload");
 
     /** @generated */
-    public static final QName _Capabilities =
-            new QName("http://www.opengis.net/wmts/1.0", "_Capabilities");
+    public static final QName _Capabilities = new QName("http://www.opengis.net/wmts/1.0", "_Capabilities");
 
     /** @generated */
-    public static final QName _Dimension =
-            new QName("http://www.opengis.net/wmts/1.0", "_Dimension");
+    public static final QName _Dimension = new QName("http://www.opengis.net/wmts/1.0", "_Dimension");
 
     /** @generated */
-    public static final QName _DimensionNameValue =
-            new QName("http://www.opengis.net/wmts/1.0", "_DimensionNameValue");
+    public static final QName _DimensionNameValue = new QName("http://www.opengis.net/wmts/1.0", "_DimensionNameValue");
 
     /** @generated */
     public static final QName _FeatureInfoResponse =
             new QName("http://www.opengis.net/wmts/1.0", "_FeatureInfoResponse");
 
     /** @generated */
-    public static final QName _GetCapabilities =
-            new QName("http://www.opengis.net/wmts/1.0", "_GetCapabilities");
+    public static final QName _GetCapabilities = new QName("http://www.opengis.net/wmts/1.0", "_GetCapabilities");
 
     /** @generated */
-    public static final QName _GetFeatureInfo =
-            new QName("http://www.opengis.net/wmts/1.0", "_GetFeatureInfo");
+    public static final QName _GetFeatureInfo = new QName("http://www.opengis.net/wmts/1.0", "_GetFeatureInfo");
 
     /** @generated */
     public static final QName _GetTile = new QName("http://www.opengis.net/wmts/1.0", "_GetTile");
 
     /** @generated */
-    public static final QName _LegendURL =
-            new QName("http://www.opengis.net/wmts/1.0", "_LegendURL");
+    public static final QName _LegendURL = new QName("http://www.opengis.net/wmts/1.0", "_LegendURL");
 
     /** @generated */
     public static final QName _Style = new QName("http://www.opengis.net/wmts/1.0", "_Style");
 
     /** @generated */
-    public static final QName _TextPayload =
-            new QName("http://www.opengis.net/wmts/1.0", "_TextPayload");
+    public static final QName _TextPayload = new QName("http://www.opengis.net/wmts/1.0", "_TextPayload");
 
     /** @generated */
     public static final QName _Theme = new QName("http://www.opengis.net/wmts/1.0", "_Theme");
@@ -188,52 +172,42 @@ public final class WMTS extends XSD {
     public static final QName _Themes = new QName("http://www.opengis.net/wmts/1.0", "_Themes");
 
     /** @generated */
-    public static final QName _TileMatrix =
-            new QName("http://www.opengis.net/wmts/1.0", "_TileMatrix");
+    public static final QName _TileMatrix = new QName("http://www.opengis.net/wmts/1.0", "_TileMatrix");
 
     /** @generated */
-    public static final QName _TileMatrixLimits =
-            new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixLimits");
+    public static final QName _TileMatrixLimits = new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixLimits");
 
     /** @generated */
-    public static final QName _TileMatrixSet =
-            new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixSet");
+    public static final QName _TileMatrixSet = new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixSet");
 
     /** @generated */
     public static final QName _TileMatrixSetLimits =
             new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixSetLimits");
 
     /** @generated */
-    public static final QName _TileMatrixSetLink =
-            new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixSetLink");
+    public static final QName _TileMatrixSetLink = new QName("http://www.opengis.net/wmts/1.0", "_TileMatrixSetLink");
 
     /* Elements */
     /** @generated */
-    public static final QName BinaryPayload =
-            new QName("http://www.opengis.net/wmts/1.0", "BinaryPayload");
+    public static final QName BinaryPayload = new QName("http://www.opengis.net/wmts/1.0", "BinaryPayload");
 
     /** @generated */
-    public static final QName Capabilities =
-            new QName("http://www.opengis.net/wmts/1.0", "Capabilities");
+    public static final QName Capabilities = new QName("http://www.opengis.net/wmts/1.0", "Capabilities");
 
     /** @generated */
     public static final QName Dimension = new QName("http://www.opengis.net/wmts/1.0", "Dimension");
 
     /** @generated */
-    public static final QName DimensionNameValue =
-            new QName("http://www.opengis.net/wmts/1.0", "DimensionNameValue");
+    public static final QName DimensionNameValue = new QName("http://www.opengis.net/wmts/1.0", "DimensionNameValue");
 
     /** @generated */
-    public static final QName FeatureInfoResponse =
-            new QName("http://www.opengis.net/wmts/1.0", "FeatureInfoResponse");
+    public static final QName FeatureInfoResponse = new QName("http://www.opengis.net/wmts/1.0", "FeatureInfoResponse");
 
     /** @generated */
-    public static final QName GetCapabilities =
-            new QName("http://www.opengis.net/wmts/1.0", "GetCapabilities");
+    public static final QName GetCapabilities = new QName("http://www.opengis.net/wmts/1.0", "GetCapabilities");
 
     /** @generated */
-    public static final QName GetFeatureInfo =
-            new QName("http://www.opengis.net/wmts/1.0", "GetFeatureInfo");
+    public static final QName GetFeatureInfo = new QName("http://www.opengis.net/wmts/1.0", "GetFeatureInfo");
 
     /** @generated */
     public static final QName GetTile = new QName("http://www.opengis.net/wmts/1.0", "GetTile");
@@ -248,8 +222,7 @@ public final class WMTS extends XSD {
     public static final QName Style = new QName("http://www.opengis.net/wmts/1.0", "Style");
 
     /** @generated */
-    public static final QName TextPayload =
-            new QName("http://www.opengis.net/wmts/1.0", "TextPayload");
+    public static final QName TextPayload = new QName("http://www.opengis.net/wmts/1.0", "TextPayload");
 
     /** @generated */
     public static final QName Theme = new QName("http://www.opengis.net/wmts/1.0", "Theme");
@@ -258,24 +231,19 @@ public final class WMTS extends XSD {
     public static final QName Themes = new QName("http://www.opengis.net/wmts/1.0", "Themes");
 
     /** @generated */
-    public static final QName TileMatrix =
-            new QName("http://www.opengis.net/wmts/1.0", "TileMatrix");
+    public static final QName TileMatrix = new QName("http://www.opengis.net/wmts/1.0", "TileMatrix");
 
     /** @generated */
-    public static final QName TileMatrixLimits =
-            new QName("http://www.opengis.net/wmts/1.0", "TileMatrixLimits");
+    public static final QName TileMatrixLimits = new QName("http://www.opengis.net/wmts/1.0", "TileMatrixLimits");
 
     /** @generated */
-    public static final QName TileMatrixSet =
-            new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSet");
+    public static final QName TileMatrixSet = new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSet");
 
     /** @generated */
-    public static final QName TileMatrixSetLimits =
-            new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSetLimits");
+    public static final QName TileMatrixSetLimits = new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSetLimits");
 
     /** @generated */
-    public static final QName TileMatrixSetLink =
-            new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSetLink");
+    public static final QName TileMatrixSetLink = new QName("http://www.opengis.net/wmts/1.0", "TileMatrixSetLink");
 
     /*public static final QName Format = new QName("", "Format");
     public static final QName InfoFormat = new QName("", "InfoFormat");*/

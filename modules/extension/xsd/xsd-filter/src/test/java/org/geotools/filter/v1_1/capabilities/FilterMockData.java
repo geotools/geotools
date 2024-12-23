@@ -54,8 +54,7 @@ public class FilterMockData {
     }
 
     static Element functionNames(Document document, Node parent) {
-        Element functionNames =
-                element(document, parent, new QName(OGC.NAMESPACE, "FunctionNames"));
+        Element functionNames = element(document, parent, new QName(OGC.NAMESPACE, "FunctionNames"));
         functionName(document, functionNames, "foo", 2);
         functionName(document, functionNames, "bar", 3);
 
@@ -86,8 +85,7 @@ public class FilterMockData {
     }
 
     static Element arithmetic(Document document, Node parent, boolean simple) {
-        Element arithmetic =
-                element(document, parent, new QName(OGC.NAMESPACE, "ArithmeticOperators"));
+        Element arithmetic = element(document, parent, new QName(OGC.NAMESPACE, "ArithmeticOperators"));
 
         if (simple) {
             element(document, arithmetic, OGC.SimpleArithmetic);
@@ -111,8 +109,7 @@ public class FilterMockData {
     }
 
     static Element comparisonOperator(Document document, Node parent, String name) {
-        Element operator =
-                element(document, parent, new QName(OGC.NAMESPACE, "ComparisonOperator"));
+        Element operator = element(document, parent, new QName(OGC.NAMESPACE, "ComparisonOperator"));
         operator.appendChild(document.createTextNode(name));
 
         return operator;
@@ -127,8 +124,7 @@ public class FilterMockData {
     }
 
     static Element comparison(Document document, Node parent, boolean simple) {
-        Element comparison =
-                element(document, parent, new QName(OGC.NAMESPACE, "ComparisonOperators"));
+        Element comparison = element(document, parent, new QName(OGC.NAMESPACE, "ComparisonOperators"));
 
         if (simple) {
             comparisonOperator(document, comparison, "LessThan");
@@ -265,8 +261,7 @@ public class FilterMockData {
     }
 
     static Element spatialCapabilities(Document document, Node parent) {
-        Element spatial =
-                element(document, parent, new QName(OGC.NAMESPACE, "Spatial_Capabilities"));
+        Element spatial = element(document, parent, new QName(OGC.NAMESPACE, "Spatial_Capabilities"));
         spatial(document, spatial);
 
         return spatial;
@@ -286,10 +281,7 @@ public class FilterMockData {
 
     static FilterCapabilities capabilities() {
         return ff.capabilities(
-                FilterCapabilities.VERSION_100,
-                scalarCapabilities(),
-                spatialCapabilities(),
-                idCapabilities());
+                FilterCapabilities.VERSION_100, scalarCapabilities(), spatialCapabilities(), idCapabilities());
     }
 
     static Element capabilities(Document document, Node parent) {

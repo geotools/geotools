@@ -34,16 +34,15 @@ import org.geotools.util.Utilities;
  *
  * <blockquote>
  *
- * This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But despite their names, they
- * don't need to be oriented toward {@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST
- * East} and {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}. The
- * (<var>x</var>,<var>y</var>) axis can have any orientation and should be understood as
- * "<cite>ordinate 0</cite>" and "<cite>ordinate 1</cite>" values instead. This is not specific to
- * this implementation; in Java2D too, the visual axis orientation depend on the {@linkplain
- * java.awt.Graphics2D#getTransform affine transform in the graphics context}.
+ * This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But despite their names, they don't need to be
+ * oriented toward {@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East} and
+ * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}. The (<var>x</var>,<var>y</var>) axis can have
+ * any orientation and should be understood as "<cite>ordinate 0</cite>" and "<cite>ordinate 1</cite>" values instead.
+ * This is not specific to this implementation; in Java2D too, the visual axis orientation depend on the
+ * {@linkplain java.awt.Graphics2D#getTransform affine transform in the graphics context}.
  *
- * <p>The rational for avoiding axis orientation restriction is that other {@link Position}
- * implementation do not have such restriction, and it would be hard to generalize (what to do with
+ * <p>The rational for avoiding axis orientation restriction is that other {@link Position} implementation do not have
+ * such restriction, and it would be hard to generalize (what to do with
  * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH_EAST North-East} direction?).
  *
  * </blockquote>
@@ -52,16 +51,15 @@ import org.geotools.util.Utilities;
  *
  * <blockquote>
  *
- * <strong>Do not mix instances of this class with ordinary {@link Point2D} instances in a {@link
- * java.util.HashSet} or as {@link java.util.HashMap} keys.</strong> It is not possible to meet both
- * {@link Point2D#hashCode} and {@link Position#hashCode} contract, and this class choose to
- * implements the later. Concequently, <strong>{@link #hashCode} is inconsistent with {@link
- * Point2D#equals}</strong> (but is consistent with {@link Position#equals}).
+ * <strong>Do not mix instances of this class with ordinary {@link Point2D} instances in a {@link java.util.HashSet} or
+ * as {@link java.util.HashMap} keys.</strong> It is not possible to meet both {@link Point2D#hashCode} and
+ * {@link Position#hashCode} contract, and this class choose to implements the later. Concequently,
+ * <strong>{@link #hashCode} is inconsistent with {@link Point2D#equals}</strong> (but is consistent with
+ * {@link Position#equals}).
  *
- * <p>In other words, it is safe to add instances of {@code DirectPosition2D} in a {@code
- * HashSet<DirectPosition>}, but it is unsafe to add them in a {@code HashSet<Point2D>}. Collections
- * that do not rely on {@link Object#hashCode}, like {@link java.util.ArrayList}, are safe in all
- * cases.
+ * <p>In other words, it is safe to add instances of {@code DirectPosition2D} in a {@code HashSet<DirectPosition>}, but
+ * it is unsafe to add them in a {@code HashSet<Point2D>}. Collections that do not rely on {@link Object#hashCode}, like
+ * {@link java.util.ArrayList}, are safe in all cases.
  *
  * </blockquote>
  *
@@ -79,9 +77,7 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     /** The coordinate reference system for this position; */
     private CoordinateReferenceSystem crs;
 
-    /**
-     * Constructs a position initialized to (0,0) with a {@code null} coordinate reference system.
-     */
+    /** Constructs a position initialized to (0,0) with a {@code null} coordinate reference system. */
     public Position2D() {}
 
     /**
@@ -94,12 +90,11 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Constructs a 2D position from the specified ordinates. Despite their name, the
-     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
-     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain Position2D
-     * class javadoc} for details.
+     * Constructs a 2D position from the specified ordinates. Despite their name, the (<var>x</var>,<var>y</var>)
+     * coordinates don't need to be oriented toward ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST
+     * East}, {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain Position2D class javadoc} for
+     * details.
      *
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
@@ -109,12 +104,12 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Constructs a 2D position from the specified ordinates in the specified CRS. Despite their
-     * name, the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward
-     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
-     * match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are
-     * determined by the specified CRS. See the {@linkplain Position2D class javadoc} for details.
+     * Constructs a 2D position from the specified ordinates in the specified CRS. Despite their name, the
+     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward
+     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East},
+     * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply match the
+     * {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are determined by the specified CRS.
+     * See the {@linkplain Position2D class javadoc} for details.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @param x The <var>x</var> value.
@@ -157,9 +152,9 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Returns the coordinate reference system in which the coordinate is given. May be {@code null}
-     * if this particular {@code DirectPosition} is included in a larger object with such a
-     * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}.
+     * Returns the coordinate reference system in which the coordinate is given. May be {@code null} if this particular
+     * {@code DirectPosition} is included in a larger object with such a reference to a
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}.
      *
      * @return The coordinate reference system, or {@code null}.
      */
@@ -190,8 +185,7 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Returns a sequence of numbers that hold the coordinate of this position in its reference
-     * system.
+     * Returns a sequence of numbers that hold the coordinate of this position in its reference system.
      *
      * @return The coordinates
      */
@@ -244,8 +238,8 @@ public class Position2D extends Point2D.Double implements Position, Serializable
 
     /**
      * Set this coordinate to the specified direct position. If the specified position contains a
-     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this
-     * position will be set to the CRS of the specified position.
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this position will be set to
+     * the CRS of the specified position.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
@@ -267,11 +261,10 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Returns a string representation of this coordinate. The default implementation formats this
-     * coordinate using a shared instance of {@link org.geotools.referencing.CoordinateFormat}. This
-     * is okay for occasional formatting (for example for debugging purpose). But if there is a lot
-     * of positions to format, users will get better performance and more control by using their own
-     * instance of {@link org.geotools.referencing.CoordinateFormat}.
+     * Returns a string representation of this coordinate. The default implementation formats this coordinate using a
+     * shared instance of {@link org.geotools.referencing.CoordinateFormat}. This is okay for occasional formatting (for
+     * example for debugging purpose). But if there is a lot of positions to format, users will get better performance
+     * and more control by using their own instance of {@link org.geotools.referencing.CoordinateFormat}.
      */
     @Override
     public String toString() {
@@ -279,8 +272,8 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Returns a hash value for this coordinate. This method implements the {@link
-     * Position#hashCode} contract, not the {@link Point2D#hashCode} contract.
+     * Returns a hash value for this coordinate. This method implements the {@link Position#hashCode} contract, not the
+     * {@link Point2D#hashCode} contract.
      *
      * @return A hash code value for this position.
      */
@@ -290,10 +283,9 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Compares this point with the specified object for equality. If the given object implements
-     * the {@link Position} interface, then the comparaison is performed as specified in its {@link
-     * Position#equals} contract. Otherwise the comparaison is performed as specified in {@link
-     * Point2D#equals}.
+     * Compares this point with the specified object for equality. If the given object implements the {@link Position}
+     * interface, then the comparaison is performed as specified in its {@link Position#equals} contract. Otherwise the
+     * comparaison is performed as specified in {@link Point2D#equals}.
      *
      * @param object The object to compare with this position.
      * @return {@code true} if the given object is equals to this position.
@@ -334,8 +326,7 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Write this object to the specified stream. This method is necessary because the super-class
-     * is not serializable.
+     * Write this object to the specified stream. This method is necessary because the super-class is not serializable.
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
@@ -344,8 +335,7 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     }
 
     /**
-     * Read this object from the specified stream. This method is necessary because the super-class
-     * is not serializable.
+     * Read this object from the specified stream. This method is necessary because the super-class is not serializable.
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();

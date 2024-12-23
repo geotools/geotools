@@ -78,10 +78,8 @@ public final class IndexQueryUtils {
     }
 
     /** Compare if mapping-xpath == attMapping */
-    public static boolean equalsXpath(
-            FeatureTypeMapping mapping, AttributeMapping attMapping, String xpath) {
-        StepList simplifiedSteps =
-                XPath.steps(mapping.getTargetFeature(), xpath, mapping.getNamespaces());
+    public static boolean equalsXpath(FeatureTypeMapping mapping, AttributeMapping attMapping, String xpath) {
+        StepList simplifiedSteps = XPath.steps(mapping.getTargetFeature(), xpath, mapping.getNamespaces());
         return Objects.equals(attMapping.getTargetXPath(), simplifiedSteps);
     }
 
@@ -105,8 +103,7 @@ public final class IndexQueryUtils {
     //    }
 
     /** Checks if all properties are indexed in mapping */
-    public static boolean checkAllPropertiesIndexed(
-            List<String> properties, FeatureTypeMapping mapping) {
+    public static boolean checkAllPropertiesIndexed(List<String> properties, FeatureTypeMapping mapping) {
         return !properties.stream().anyMatch(p -> mapping.getIndexAttributeName(p) == null);
     }
 
@@ -119,14 +116,10 @@ public final class IndexQueryUtils {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         List<Filter> idFilters = new ArrayList<>();
-        ids.forEach(
-                idStr -> {
-                    idFilters.add(
-                            ff.equals(
-                                    ff.property(
-                                            mapping.getTargetFeature().getName().getLocalPart()),
-                                    ff.literal(idStr)));
-                });
+        ids.forEach(idStr -> {
+            idFilters.add(
+                    ff.equals(ff.property(mapping.getTargetFeature().getName().getLocalPart()), ff.literal(idStr)));
+        });
 
         return ff.or(idFilters);
     }
@@ -139,19 +132,16 @@ public final class IndexQueryUtils {
     public static Filter buildIdInExpressionFunction(List<String> ids, FeatureTypeMapping mapping) {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         List<Expression> idExpressions = new ArrayList<>();
-        String rootXpath =
-                XPath.rootElementSteps(mapping.getTargetFeature(), mapping.getNamespaces())
-                        .toString();
+        String rootXpath = XPath.rootElementSteps(mapping.getTargetFeature(), mapping.getNamespaces())
+                .toString();
         // add id field name
         idExpressions.add(ff.property(rootXpath));
         // add values
-        ids.forEach(
-                idStr -> {
-                    idExpressions.add(ff.literal(idStr));
-                });
+        ids.forEach(idStr -> {
+            idExpressions.add(ff.literal(idStr));
+        });
         // create Filter = id IN (val1, val2, .... valn)
-        return ff.equals(
-                ff.function("in", idExpressions.toArray(new Expression[] {})), ff.literal(true));
+        return ff.equals(ff.function("in", idExpressions.toArray(new Expression[] {})), ff.literal(true));
     }
 
     /**

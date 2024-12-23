@@ -72,24 +72,16 @@ public class RectangleLongTest {
     @Test
     public void testExpandToIncludeRect() {
         // inside
-        assertEquals(
-                new RectangleLong(0, 10, 0, 10), expand0_10_0_10(new RectangleLong(5, 6, 5, 6)));
+        assertEquals(new RectangleLong(0, 10, 0, 10), expand0_10_0_10(new RectangleLong(5, 6, 5, 6)));
         // containing
-        assertEquals(
-                new RectangleLong(-10, 20, -10, 20),
-                expand0_10_0_10(new RectangleLong(-10, 20, -10, 20)));
+        assertEquals(new RectangleLong(-10, 20, -10, 20), expand0_10_0_10(new RectangleLong(-10, 20, -10, 20)));
         // overlapping, various directions
-        assertEquals(
-                new RectangleLong(0, 15, 0, 10), expand0_10_0_10(new RectangleLong(5, 15, 0, 10)));
-        assertEquals(
-                new RectangleLong(-5, 10, 0, 10), expand0_10_0_10(new RectangleLong(-5, 5, 0, 10)));
-        assertEquals(
-                new RectangleLong(0, 10, 0, 15), expand0_10_0_10(new RectangleLong(0, 10, 5, 15)));
-        assertEquals(
-                new RectangleLong(0, 10, -5, 10), expand0_10_0_10(new RectangleLong(0, 10, -5, 5)));
+        assertEquals(new RectangleLong(0, 15, 0, 10), expand0_10_0_10(new RectangleLong(5, 15, 0, 10)));
+        assertEquals(new RectangleLong(-5, 10, 0, 10), expand0_10_0_10(new RectangleLong(-5, 5, 0, 10)));
+        assertEquals(new RectangleLong(0, 10, 0, 15), expand0_10_0_10(new RectangleLong(0, 10, 5, 15)));
+        assertEquals(new RectangleLong(0, 10, -5, 10), expand0_10_0_10(new RectangleLong(0, 10, -5, 5)));
         // disjoint
-        assertEquals(
-                new RectangleLong(0, 30, 0, 10), expand0_10_0_10(new RectangleLong(20, 30, 0, 10)));
+        assertEquals(new RectangleLong(0, 30, 0, 10), expand0_10_0_10(new RectangleLong(20, 30, 0, 10)));
     }
 
     public RectangleLong expand0_10_0_10(RectangleLong expand) {

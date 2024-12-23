@@ -17,8 +17,8 @@
 package org.geotools.mbstyle.sprite;
 
 /**
- * Thrown by {@link SpriteGraphicFactory} in case of an exception while retrieving or parsing either
- * a spritesheet or a sprite index file.
+ * Thrown by {@link SpriteGraphicFactory} in case of an exception while retrieving or parsing either a spritesheet or a
+ * sprite index file.
  */
 public class MBSpriteException extends RuntimeException {
 

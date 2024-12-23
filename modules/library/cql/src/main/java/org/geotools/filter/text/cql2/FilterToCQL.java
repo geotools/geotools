@@ -66,13 +66,12 @@ import org.geotools.filter.text.commons.FilterToTextUtil;
 /**
  * This is a utility class used by CQL.encode( Filter ) method to do the hard work.
  *
- * <p>Please note that this encoder is a bit more strict than you may be used to (the Common Query
- * Language for example demands Equals.getExpression1() is a PropertyName). If you used
- * FilterFactory to produce your filter you should be okay (as it only provides methods to make a
- * valid Filter); if not please expect ClassCastExceptions.
+ * <p>Please note that this encoder is a bit more strict than you may be used to (the Common Query Language for example
+ * demands Equals.getExpression1() is a PropertyName). If you used FilterFactory to produce your filter you should be
+ * okay (as it only provides methods to make a valid Filter); if not please expect ClassCastExceptions.
  *
- * <p>This visitor will return a StringBuilder; you can also provide a StringBuilder as the data
- * parameter in order to cut down on the number of objects created during encoding.
+ * <p>This visitor will return a StringBuilder; you can also provide a StringBuilder as the data parameter in order to
+ * cut down on the number of objects created during encoding.
  *
  * <pre>
  * <code>
@@ -108,8 +107,8 @@ class FilterToCQL implements FilterVisitor {
     /**
      * Encoding an Id filter is not supported by CQL.
      *
-     * <p>This is because in the Catalog specification retreiving an object by an id is a distinct
-     * operation seperate from a filter based query.
+     * <p>This is because in the Catalog specification retreiving an object by an id is a distinct operation seperate
+     * from a filter based query.
      */
     @Override
     public Object visit(Id filter, Object extraData) {
@@ -272,9 +271,8 @@ class FilterToCQL implements FilterVisitor {
     /**
      * A filter has not been provided.
      *
-     * <p>In general this is a bad situtation which we ask people to represent with Filter.INCLUDES
-     * or Filter.EXCLUDES depending on what behaviour they want to see happen - in this case
-     * literally <code>null</code> was provided.
+     * <p>In general this is a bad situtation which we ask people to represent with Filter.INCLUDES or Filter.EXCLUDES
+     * depending on what behaviour they want to see happen - in this case literally <code>null</code> was provided.
      *
      * <p>
      */
@@ -302,8 +300,7 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter AnyInteracts has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter AnyInteracts has not a CQL expression");
     }
 
     @Override
@@ -343,8 +340,7 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(TContains contains, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter TContains has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter TContains has not a CQL expression");
     }
 
     @Override
@@ -354,7 +350,6 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(TOverlaps contains, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter TOverlaps has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter TOverlaps has not a CQL expression");
     }
 }

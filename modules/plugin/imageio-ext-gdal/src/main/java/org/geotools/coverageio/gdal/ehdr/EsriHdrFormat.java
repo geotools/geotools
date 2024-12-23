@@ -35,8 +35,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EsriHdrFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(EsriHdrFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public EsriHdrFormat() {

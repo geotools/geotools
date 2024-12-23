@@ -29,13 +29,12 @@ import org.geotools.swing.wizard.JWizard;
  * TBD
  * </pre></code>
  *
- * <p>If you wish to customize this wizard (as an example to allow users to draw a geometry directly
- * rather than use WKT) pelase use this class as a starting point or code example With this in mind
- * the two pages used here are intended for reuse.
+ * <p>If you wish to customize this wizard (as an example to allow users to draw a geometry directly rather than use
+ * WKT) pelase use this class as a starting point or code example With this in mind the two pages used here are intended
+ * for reuse.
  *
- * <p>The *ProcessSelectionPage* is interesting in that it defines the next page that is to be
- * displayed. It does this based on the selected process description and is a good example of an
- * dynamic wizard.
+ * <p>The *ProcessSelectionPage* is interesting in that it defines the next page that is to be displayed. It does this
+ * based on the selected process description and is a good example of an dynamic wizard.
  *
  * @author Jody Garnett (LISAsoft)
  * @since 8.0

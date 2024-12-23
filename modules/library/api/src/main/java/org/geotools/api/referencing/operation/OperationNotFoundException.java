@@ -13,10 +13,9 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Thrown when a {@linkplain CoordinateOperation coordinate operation} is not found. It may be
- * because there is no known path between source and target {@linkplain CoordinateReferenceSystem
- * coordinate reference systems}, or because the requested operation is not available in the
- * environment.
+ * Thrown when a {@linkplain CoordinateOperation coordinate operation} is not found. It may be because there is no known
+ * path between source and target {@linkplain CoordinateReferenceSystem coordinate reference systems}, or because the
+ * requested operation is not available in the environment.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

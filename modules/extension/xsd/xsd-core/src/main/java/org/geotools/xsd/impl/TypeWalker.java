@@ -83,8 +83,7 @@ public class TypeWalker {
          * Supplies the current type to the visitor.
          *
          * @param type The current type.
-         * @return True to signal that the walk should continue, false to signal the walk should
-         *     stop.
+         * @return True to signal that the walk should continue, false to signal the walk should stop.
          */
         boolean visit(XSDTypeDefinition type);
     }

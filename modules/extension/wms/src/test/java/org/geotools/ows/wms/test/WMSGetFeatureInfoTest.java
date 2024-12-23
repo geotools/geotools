@@ -41,69 +41,51 @@ public class WMSGetFeatureInfoTest {
     public void testProperTransformationsToGetXYinImageCoordinates()
             throws FactoryException, ServiceException, IOException {
         URL brunar130 = WMSCoverageReaderTest.class.getResource("brunar130.xml");
-        MockHttpClient client =
-                new MockHttpClient() {
+        MockHttpClient client = new MockHttpClient() {
 
-                    @Override
-                    public HTTPResponse get(URL url) throws IOException {
-                        if (url.getQuery().contains("GetCapabilities")) {
-                            return new MockHttpResponse(brunar130, "text/xml");
-                        } else if (url.getQuery().contains("GetFeatureInfo")) {
-                            Map<String, String> params = parseParams(url.getQuery());
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    return new MockHttpResponse(brunar130, "text/xml");
+                } else if (url.getQuery().contains("GetFeatureInfo")) {
+                    Map<String, String> params = parseParams(url.getQuery());
 
-                            // Expected position request
-                            if (!Double.valueOf(params.get("I")).equals(Double.valueOf(107))
-                                    || !Double.valueOf(params.get("J")).equals(Double.valueOf(2))) {
-                                // this will cause the test to fail
-                                throw new IllegalArgumentException();
-                            } else {
-                                return new MockHttpResponse(brunar130, "application/vnd.ogc.gml");
-                            }
-                        }
-                        throw new IllegalArgumentException(
-                                "Don't know how to handle a get request over "
-                                        + url.toExternalForm());
+                    // Expected position request
+                    if (!Double.valueOf(params.get("I")).equals(Double.valueOf(107))
+                            || !Double.valueOf(params.get("J")).equals(Double.valueOf(2))) {
+                        // this will cause the test to fail
+                        throw new IllegalArgumentException();
+                    } else {
+                        return new MockHttpResponse(brunar130, "application/vnd.ogc.gml");
                     }
-                };
-        WebMapServer serverWithMockedClient =
-                new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
+                }
+                throw new IllegalArgumentException(
+                        "Don't know how to handle a get request over " + url.toExternalForm());
+            }
+        };
+        WebMapServer serverWithMockedClient = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
         HashMap<String, CRSEnvelope> BBOXES = new HashMap<>();
         // given the bbox, and i, j params
 
-        CRSEnvelope generalEnvelope =
-                new CRSEnvelope("EPSG:4326", -180, -90, 180, 90); // $NON-NLS-1$
+        CRSEnvelope generalEnvelope = new CRSEnvelope("EPSG:4326", -180, -90, 180, 90); // $NON-NLS-1$
         BBOXES.put("EPSG:4326", generalEnvelope);
-        ReferencedEnvelope requestBBox =
-                new ReferencedEnvelope(
-                        7291710.72,
-                        7294004.4799999995,
-                        832252.7999999999,
-                        834546.5599999999,
-                        CRS.decode("EPSG:3006"));
+        ReferencedEnvelope requestBBox = new ReferencedEnvelope(
+                7291710.72, 7294004.4799999995, 832252.7999999999, 834546.5599999999, CRS.decode("EPSG:3006"));
 
         Position2D pointInImage = new Position2D(107, 2);
         Layer layer = new Layer("CV100Coberta_Terrestre");
         layer.setSrs(Sets.newSet("EPSG:3006"));
         layer.setBoundingBoxes(BBOXES);
         // a random layer to perform the getFeatureInfoRequest
-        WMSLayer wmsCopy =
-                new WMSLayerTest(
-                        new WebMapServer(brunar130),
-                        layer,
-                        new WMSCoverageReader(
-                                serverWithMockedClient,
-                                getLayer(serverWithMockedClient, "GEOS9770")));
+        WMSLayer wmsCopy = new WMSLayerTest(
+                new WebMapServer(brunar130),
+                layer,
+                new WMSCoverageReader(serverWithMockedClient, getLayer(serverWithMockedClient, "GEOS9770")));
 
         // test trigger
         try {
             wmsCopy.getFeatureInfo(
-                    requestBBox,
-                    512,
-                    512,
-                    (int) pointInImage.x,
-                    (int) pointInImage.y,
-                    "application/vnd.ogc.gml",
-                    1);
+                    requestBBox, 512, 512, (int) pointInImage.x, (int) pointInImage.y, "application/vnd.ogc.gml", 1);
         } catch (Exception e) {
             Assert.fail("getFeatureInfo request with wrong I,J reprojected params ");
         }
@@ -137,5 +119,6 @@ public class WMSGetFeatureInfoTest {
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
+    ;
 }

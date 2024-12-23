@@ -28,33 +28,25 @@ public class EscapeSqlTest {
     public void testSqlEscaping() throws Exception {
         VirtualTable vt = new VirtualTable("test", "%param1%");
         vt.setEscapeSql(true);
-        vt.addParameter(
-                new VirtualTableParameter("param1", "default_value", new RegexpValidator(".*")));
-        String singleQuote =
-                vt.expandParameters(
-                        new Hints(
-                                Hints.VIRTUAL_TABLE_PARAMETERS,
-                                Collections.singletonMap("param1", "o'shea")));
+        vt.addParameter(new VirtualTableParameter("param1", "default_value", new RegexpValidator(".*")));
+        String singleQuote = vt.expandParameters(
+                new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, Collections.singletonMap("param1", "o'shea")));
         Assert.assertEquals("single quotes should be doubled", "o''shea\n", singleQuote);
 
-        String doubleQuote =
-                vt.expandParameters(
-                        new Hints(
-                                Hints.VIRTUAL_TABLE_PARAMETERS,
-                                Collections.singletonMap(
-                                        "param1",
-                                        "If you hear a voice within you say \"you cannot paint,\" then by all means paint, and that voice will be silenced.")));
+        String doubleQuote = vt.expandParameters(
+                new Hints(
+                        Hints.VIRTUAL_TABLE_PARAMETERS,
+                        Collections.singletonMap(
+                                "param1",
+                                "If you hear a voice within you say \"you cannot paint,\" then by all means paint, and that voice will be silenced.")));
         Assert.assertEquals(
                 "double quotes should be doubled",
                 "If you hear a voice within you say \"\"you cannot paint,\"\" then by all means "
                         + "paint, and that voice will be silenced.\n",
                 doubleQuote);
 
-        String backslash =
-                vt.expandParameters(
-                        new Hints(
-                                Hints.VIRTUAL_TABLE_PARAMETERS,
-                                Collections.singletonMap("param1", "abc\\n")));
+        String backslash = vt.expandParameters(
+                new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, Collections.singletonMap("param1", "abc\\n")));
         Assert.assertEquals("backslashes should be removed", "abcn\n", backslash);
     }
 }

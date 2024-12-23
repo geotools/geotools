@@ -22,8 +22,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * A document class to handle integer verification and parsing for {@code JIntTextField} and other
- * classes wishing to restrict user input to integer values.
+ * A document class to handle integer verification and parsing for {@code JIntTextField} and other classes wishing to
+ * restrict user input to integer values.
  *
  * @author Michael Bedward
  * @since 2.6.1
@@ -68,8 +68,7 @@ class IntegerDocument extends PlainDocument {
 
     /** {@inheritDoc} */
     @Override
-    public void insertString(int offset, String text, AttributeSet attributes)
-            throws BadLocationException {
+    public void insertString(int offset, String text, AttributeSet attributes) throws BadLocationException {
         if (text != null) {
             String newText;
 
@@ -96,9 +95,7 @@ class IntegerDocument extends PlainDocument {
     public void remove(int offset, int length) throws BadLocationException {
         final int curLen = getLength();
         final String currentContent = getText(0, curLen);
-        final String newText =
-                currentContent.substring(0, offset)
-                        + currentContent.substring(length + offset, curLen);
+        final String newText = currentContent.substring(0, offset) + currentContent.substring(length + offset, curLen);
 
         if (allowNegative && offset == 0 && newText.equals("-")) {
             value = 0;

@@ -40,16 +40,14 @@ import org.geotools.api.style.TextSymbolizer;
 import org.geotools.measure.Units;
 
 /**
- * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
- * consideration the Unit of Measure (UOM, e.g., SI.METRE, USCustomary.FOOT) of each symbolizer. The
- * resulting Style's Symbolizer sizes will all be given in PIXELS, so that they can be directly used
- * by a renderer that is unaware of units of measure or the current map scale. For example, points
- * with size == 100 meters could be rescaled to 10 pixels for higher levels of zoom and 2 pixels for
- * a lower level of zoom.
+ * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into consideration the Unit
+ * of Measure (UOM, e.g., SI.METRE, USCustomary.FOOT) of each symbolizer. The resulting Style's Symbolizer sizes will
+ * all be given in PIXELS, so that they can be directly used by a renderer that is unaware of units of measure or the
+ * current map scale. For example, points with size == 100 meters could be rescaled to 10 pixels for higher levels of
+ * zoom and 2 pixels for a lower level of zoom.
  *
- * <p>This visitor extends {@link DuplicatingStyleVisitor} and as such yields a copy of the original
- * Style. Usage is simply to call the desired visit() method and then call getCopy() to retrieve the
- * result.
+ * <p>This visitor extends {@link DuplicatingStyleVisitor} and as such yields a copy of the original Style. Usage is
+ * simply to call the desired visit() method and then call getCopy() to retrieve the result.
  *
  * @author milton
  * @author Andrea Aime - GeoSolutions
@@ -59,18 +57,16 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     double mapScale;
 
     /**
-     * Constructor: requires the current mapScale to inform the window to viewport (world to screen)
-     * relation in order to correctly rescaleDashArray sizes according to units of measure given in
-     * world units (e.g., SI.METRE, USCustomary.FOOT, etc).
+     * Constructor: requires the current mapScale to inform the window to viewport (world to screen) relation in order
+     * to correctly rescaleDashArray sizes according to units of measure given in world units (e.g., SI.METRE,
+     * USCustomary.FOOT, etc).
      *
      * @param mapScale The specified map scale, given in pixels per meter.
      */
     public UomRescaleStyleVisitor(double mapScale) {
         if (mapScale <= 0)
             throw new IllegalArgumentException(
-                    "The mapScale is out of range. Value is "
-                            + Double.toString(mapScale)
-                            + ". It must be positive.");
+                    "The mapScale is out of range. Value is " + Double.toString(mapScale) + ". It must be positive.");
 
         this.mapScale = mapScale;
     }
@@ -196,10 +192,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Unit<Length> uom = copy.getUnitOfMeasure();
         rescaleStroke(copy.getStroke(), uom);
         rescaleFill(copy.getFill(), uom);
-        scaleIntArrayOption(
-                copy.getOptions(),
-                org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY,
-                uom);
+        scaleIntArrayOption(copy.getOptions(), org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY, uom);
         copy.setUnitOfMeasure(Units.PIXEL);
     }
 
@@ -237,8 +230,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             LinePlacement linePlacement = (LinePlacement) placement;
             linePlacement.setGap(rescale(linePlacement.getGap(), uom));
             linePlacement.setInitialGap(rescale(linePlacement.getInitialGap(), uom));
-            linePlacement.setPerpendicularOffset(
-                    rescale(linePlacement.getPerpendicularOffset(), uom));
+            linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset(), uom));
         }
         copy.setLabelPlacement(placement);
 
@@ -270,8 +262,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    private void scaleIntArrayOption(
-            Map<String, String> options, String optionName, Unit<Length> uom) {
+    private void scaleIntArrayOption(Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
             String strValue = options.get(optionName);
             if (strValue != null) {

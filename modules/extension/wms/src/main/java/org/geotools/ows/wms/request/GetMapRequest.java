@@ -43,10 +43,9 @@ import org.geotools.ows.wms.StyleImpl;
  *   <li><i>vendor specific parameters</i>
  * </ul>
  *
- * <p>Q: List availableFormats and availableExceptions - why are these here? It looks like they are
- * designed to restrict the values used for SRS, format and exceptions. If so the code never uses
- * them. Q: How constant is the GetMapRequest format across WMS versions? Do we need to generalize
- * here?
+ * <p>Q: List availableFormats and availableExceptions - why are these here? It looks like they are designed to restrict
+ * the values used for SRS, format and exceptions. If so the code never uses them. Q: How constant is the GetMapRequest
+ * format across WMS versions? Do we need to generalize here?
  *
  * @author Richard Gould, Refractions Research
  */
@@ -108,8 +107,7 @@ public interface GetMapRequest extends Request {
     public void setVersion(String version);
 
     /**
-     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any
-     * previously added layers.
+     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any previously added layers.
      *
      * @param layer the Layer to use
      * @param style the style to use. If it is null, the default style is used.
@@ -117,8 +115,7 @@ public interface GetMapRequest extends Request {
     public void addLayer(Layer layer, StyleImpl style);
 
     /**
-     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any
-     * previously added layers.
+     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any previously added layers.
      *
      * @param layerName the Layer to use
      * @param style the style to use. If it is null, the default style is used.
@@ -126,8 +123,7 @@ public interface GetMapRequest extends Request {
     public void addLayer(String layerName, StyleImpl style);
 
     /**
-     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any
-     * previously added layers.
+     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any previously added layers.
      *
      * @param layerName the name of the layer to use
      * @param styleName the style to use to draw the layer, can also be NULL, "" or "default"
@@ -135,8 +131,7 @@ public interface GetMapRequest extends Request {
     public void addLayer(String layerName, String styleName);
 
     /**
-     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any
-     * previously added layers.
+     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any previously added layers.
      *
      * @param layer the Layer to use
      * @param styleName the style to use to draw the layer, can also be NULL, "" or "default"
@@ -144,43 +139,39 @@ public interface GetMapRequest extends Request {
     public void addLayer(Layer layer, String styleName);
 
     /**
-     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any
-     * previously added layers. The style will be the default one.
+     * Adds a Layer to the list of layers to be requested. This layer will be drawn below any previously added layers.
+     * The style will be the default one.
      *
      * @param layer the Layer to use
      */
     public void addLayer(Layer layer);
 
     /**
-     * From the Web Map Service Implementation Specification: "The required SRS parameter states
-     * which Spatial Reference System applies to the values in the BBOX parameter. The value of the
-     * SRS parameter shall be on of the values defined in the character data section of an &lt;SRS>
-     * element defined or inherited by the requested layer. The same SRS applies to all layers in a
-     * single request. If the WMS has declared SRS=NONE for a Layer, then the Layer does not have a
-     * well-defined spatial reference system and should not be shown in conjunction with other
-     * layers. The client shall specify SRS as "none" in the GetMap request and the Server may issue
-     * a Service Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required SRS parameter states which Spatial Reference
+     * System applies to the values in the BBOX parameter. The value of the SRS parameter shall be on of the values
+     * defined in the character data section of an &lt;SRS> element defined or inherited by the requested layer. The
+     * same SRS applies to all layers in a single request. If the WMS has declared SRS=NONE for a Layer, then the Layer
+     * does not have a well-defined spatial reference system and should not be shown in conjunction with other layers.
+     * The client shall specify SRS as "none" in the GetMap request and the Server may issue a Service Exception
+     * otherwise."
      *
      * @param srs A String indicating the Spatial Reference System to render the layers in.
      */
     public void setSRS(String srs);
 
     /**
-     * From the Web Map Service Implementation Specification: "The required BBOX parameter allows a
-     * Client to request a particular Bounding Box. The value of the BBOX parameter in a GetMap
-     * request is a list of comma-separated numbers of the form "minx,miny,maxx,maxy". If the WMS
-     * server has declared that a Layer is not subsettable, then the Client shall specify exactly
-     * the declared Bounding Box values in the GetMap request and the Server may issue a Service
-     * Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required BBOX parameter allows a Client to request a
+     * particular Bounding Box. The value of the BBOX parameter in a GetMap request is a list of comma-separated numbers
+     * of the form "minx,miny,maxx,maxy". If the WMS server has declared that a Layer is not subsettable, then the
+     * Client shall specify exactly the declared Bounding Box values in the GetMap request and the Server may issue a
+     * Service Exception otherwise."
      *
-     * <p>NOTE: In WMS 1.3.0, the specification of "EPSG:4326" has the axis swapped, so a request
-     * made in 1.1.1 using "minx,miny,maxx,maxy" would use "miny,minx,maxy,maxx" in 1.3.0. Only when
-     * using EPSG:4326!
+     * <p>NOTE: In WMS 1.3.0, the specification of "EPSG:4326" has the axis swapped, so a request made in 1.1.1 using
+     * "minx,miny,maxx,maxy" would use "miny,minx,maxy,maxx" in 1.3.0. Only when using EPSG:4326!
      *
-     * <p>Currently it is up to the client to do this on there own. TODO Accept Envelopes and
-     * doubles instead of Strings, and perform the 1.3.0 conversion automatically. Also note that
-     * not all servers may implement this. Should provide an option to use 1.1.1 format even when
-     * using 1.3.0.
+     * <p>Currently it is up to the client to do this on there own. TODO Accept Envelopes and doubles instead of
+     * Strings, and perform the 1.3.0 conversion automatically. Also note that not all servers may implement this.
+     * Should provide an option to use 1.1.1 format even when using 1.3.0.
      *
      * @param bbox A string representing a bounding box in the format "minx,miny,maxx,maxy"
      */
@@ -190,24 +181,22 @@ public interface GetMapRequest extends Request {
     public void setBBox(Bounds box);
 
     /**
-     * From the Web Map Service Implementation Specification: "The required FORMAT parameter states
-     * the desired format of the response to an operation. Supported values for a GetMap request on
-     * a WMS instance are listed in one or more &lt;Format> elements in the &;ltRequest>&lt;GetMap>
-     * element of its Capabilities XML. The entire MIME type string in &lt;Format> is used as the
-     * value of the FORMAT parameter."
+     * From the Web Map Service Implementation Specification: "The required FORMAT parameter states the desired format
+     * of the response to an operation. Supported values for a GetMap request on a WMS instance are listed in one or
+     * more &lt;Format> elements in the &;ltRequest>&lt;GetMap> element of its Capabilities XML. The entire MIME type
+     * string in &lt;Format> is used as the value of the FORMAT parameter."
      *
      * @param format The desired format for the GetMap response
      */
     public void setFormat(String format);
 
     /**
-     * From the Web Map Service Implementation Specification: "The required WIDTH and HEIGHT
-     * parameters specify the size in integer pixels of the map image to be produced. WIDTH
-     * specifies the number of pixels to be used between the minimum and maximum X values
-     * (inclusive) in the BBOX parameter, while HEIGHT specifies the number of pixels between the
-     * minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and
-     * height, then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap
-     * request and the Server may issue a Service Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required WIDTH and HEIGHT parameters specify the size
+     * in integer pixels of the map image to be produced. WIDTH specifies the number of pixels to be used between the
+     * minimum and maximum X values (inclusive) in the BBOX parameter, while HEIGHT specifies the number of pixels
+     * between the minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and height,
+     * then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap request and the Server may
+     * issue a Service Exception otherwise."
      */
     public void setDimensions(String width, String height);
 
@@ -218,18 +207,18 @@ public interface GetMapRequest extends Request {
     // TODO Implement optional parameters.
 
     /**
-     * From the Web Map Service Implementation Specification: "The optional TRANSPARENT parameter
-     * specifies whether the map background is to be made transparent or not. The default value is
-     * false if the parameter is absent from the request."
+     * From the Web Map Service Implementation Specification: "The optional TRANSPARENT parameter specifies whether the
+     * map background is to be made transparent or not. The default value is false if the parameter is absent from the
+     * request."
      *
      * @param transparent true for transparency, false otherwise
      */
     public void setTransparent(boolean transparent);
 
     /**
-     * Specifies the colour, in hexidecimal format, to be used as the background of the map. It is a
-     * String representing RGB values in hexidecimal format, prefixed by "0x". The format is:
-     * 0xRRGGBB. The default value is 0xFFFFFF (white)
+     * Specifies the colour, in hexidecimal format, to be used as the background of the map. It is a String representing
+     * RGB values in hexidecimal format, prefixed by "0x". The format is: 0xRRGGBB. The default value is 0xFFFFFF
+     * (white)
      *
      * @param bgColour the background colour of the map, in the format 0xRRGGBB
      */
@@ -263,8 +252,7 @@ public interface GetMapRequest extends Request {
     public void setElevation(String elevation);
 
     /**
-     * See the Web Map Server Implementation Specification 1.1.1, Annex C, in particular section
-     * C.4.2
+     * See the Web Map Server Implementation Specification 1.1.1, Annex C, in particular section C.4.2
      *
      * <p>Example use: <code>request.setSampleDimensionValue("DIM_WAVELENGTH",
      * "4000");</code>

@@ -26,9 +26,8 @@ import org.locationtech.jts.geom.GeometryFilter;
 import org.locationtech.jts.geom.LineString;
 
 /**
- * Class collecting unclosed straight lines from a geometry. If a non straight line is found, or any
- * other type of geometry is found, the "simple" property will return false. The class is stateful
- * and can be only used once
+ * Class collecting unclosed straight lines from a geometry. If a non straight line is found, or any other type of
+ * geometry is found, the "simple" property will return false. The class is stateful and can be only used once
  *
  * @author Andrea Aime
  */
@@ -39,14 +38,11 @@ class LinesExtractor implements GeometryFilter {
 
     @Override
     public void filter(Geometry geom) {
-        if (geom instanceof LineString && ((LineString) geom).getCoordinateSequence().size() == 2) {
+        if (geom instanceof LineString
+                && ((LineString) geom).getCoordinateSequence().size() == 2) {
             CoordinateSequence cs = ((LineString) geom).getCoordinateSequence();
-            lines.add(
-                    new Line2D.Double(
-                            cs.getOrdinate(0, 0),
-                            cs.getOrdinate(0, 1),
-                            cs.getOrdinate(1, 0),
-                            cs.getOrdinate(1, 1)));
+            lines.add(new Line2D.Double(
+                    cs.getOrdinate(0, 0), cs.getOrdinate(0, 1), cs.getOrdinate(1, 0), cs.getOrdinate(1, 1)));
         } else if (!(geom instanceof GeometryCollection)) {
             // collections are not a problem
             isSimple = false;

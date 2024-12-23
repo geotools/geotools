@@ -17,10 +17,9 @@ package org.geotools.api.temporal;
  */
 public interface TemporalPosition {
     /**
-     * This attribute provides the only value for temporal position unless a subtype of {@code
-     * TemporalPosition} is used as the data type. When this attribute is used with a subtype of
-     * {@code TemporalPosition}, it provides a qualifier to the specific value for temporal position
-     * provided by the subtype.
+     * This attribute provides the only value for temporal position unless a subtype of {@code TemporalPosition} is used
+     * as the data type. When this attribute is used with a subtype of {@code TemporalPosition}, it provides a qualifier
+     * to the specific value for temporal position provided by the subtype.
      *
      * @todo Method name doesn't match the return type.
      */

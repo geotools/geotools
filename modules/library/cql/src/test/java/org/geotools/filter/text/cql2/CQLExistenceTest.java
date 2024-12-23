@@ -27,8 +27,8 @@ import org.junit.Test;
 /**
  * Test Existence Predicate.
  *
- * <p>EXIST: evaluates as true for all record instances where the attribute_name is a member of the
- * record schema. DOES-NOT-EXIST: opposite to EXISTS
+ * <p>EXIST: evaluates as true for all record instances where the attribute_name is a member of the record schema.
+ * DOES-NOT-EXIST: opposite to EXISTS
  *
  * <p>
  *
@@ -96,7 +96,6 @@ public class CQLExistenceTest {
 
         Assert.assertEquals(expected, eqToResultFilter);
 
-        Assert.assertNotNull(
-                "implementation of function was expected", eqToResultFilter.getExpression1());
+        Assert.assertNotNull("implementation of function was expected", eqToResultFilter.getExpression1());
     }
 }

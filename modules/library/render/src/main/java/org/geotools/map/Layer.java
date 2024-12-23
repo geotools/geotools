@@ -193,8 +193,8 @@ public abstract class Layer {
     }
 
     /**
-     * Alerts listeners that this layer has been scheduled to be disposed to give them a chance to
-     * finish or cancel any tasks using the layer.
+     * Alerts listeners that this layer has been scheduled to be disposed to give them a chance to finish or cancel any
+     * tasks using the layer.
      */
     public void preDispose() {
         if (!preDispose) {
@@ -203,10 +203,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Allows a Layer to clean up any listeners, or internal caches or resources it has added during
-     * use.
-     */
+    /** Allows a Layer to clean up any listeners, or internal caches or resources it has added during use. */
     public void dispose() {
         if (!preDispose) {
             LOGGER.severe("Layer preDispose was not called prior to calling dispose");
@@ -228,8 +225,7 @@ public abstract class Layer {
     }
 
     /**
-     * Set the title of this layer. A { LayerEvent} is fired if the new title is different from the
-     * previous one.
+     * Set the title of this layer. A { LayerEvent} is fired if the new title is different from the previous one.
      *
      * @param title The title of this layer.
      */
@@ -247,8 +243,8 @@ public abstract class Layer {
     }
 
     /**
-     * Sets whether the layer is to be shown or hidden when rendering. {@link LayerEvent} is fired
-     * if the visibility changed.
+     * Sets whether the layer is to be shown or hidden when rendering. {@link LayerEvent} is fired if the visibility
+     * changed.
      *
      * @param visible {@code true} to show the layer; {@code false} to hide it
      */
@@ -264,8 +260,8 @@ public abstract class Layer {
     }
 
     /**
-     * Determines whether this layer is selected. Selection status can be used by clients such as
-     * {@code JMapPane} for selective processing of layers.
+     * Determines whether this layer is selected. Selection status can be used by clients such as {@code JMapPane} for
+     * selective processing of layers.
      *
      * @return {@code true} if the layer is selected, or {@code false} otherwise
      */
@@ -274,8 +270,8 @@ public abstract class Layer {
     }
 
     /**
-     * Sets layer selection status. This can be used by clients such as {@code JMapPane} for
-     * selective processing of layers.
+     * Sets layer selection status. This can be used by clients such as {@code JMapPane} for selective processing of
+     * layers.
      *
      * @param selected new selection status.
      */
@@ -309,21 +305,19 @@ public abstract class Layer {
     }
 
     /**
-     * The bounds of the Layer content (if known). The bounds can be used to determine if any of the
-     * layers content is "on screen" when rendering the map; however often it is expensive to
-     * calculate a layers bounds up front so we are allowing this value to be optional.
+     * The bounds of the Layer content (if known). The bounds can be used to determine if any of the layers content is
+     * "on screen" when rendering the map; however often it is expensive to calculate a layers bounds up front so we are
+     * allowing this value to be optional.
      *
-     * <p>The returned bounds are a ReferencedEnvelope using the same CoordinateReferenceSystem as
-     * the layers contents.
+     * <p>The returned bounds are a ReferencedEnvelope using the same CoordinateReferenceSystem as the layers contents.
      *
      * @return layer bounds, null if unknown
      */
     public abstract ReferencedEnvelope getBounds();
 
     /**
-     * The listener is notified when the layer information changes; or when the contents of the
-     * layer changes. This is used by interactive map displays to detect when information is
-     * modified and needs to be redrawn.
+     * The listener is notified when the layer information changes; or when the contents of the layer changes. This is
+     * used by interactive map displays to detect when information is modified and needs to be redrawn.
      *
      * @param listener The listener to add to the listener list.
      */
@@ -353,12 +347,11 @@ public abstract class Layer {
     }
 
     /**
-     * Called in an interactive environment where a Layer is expected to listen to the data source
-     * on behalf of the application.
+     * Called in an interactive environment where a Layer is expected to listen to the data source on behalf of the
+     * application.
      *
-     * <p>This method is called as needed by addMapListener and removeMapListener to allow
-     * subclasses to connect any data listeners required in order to issue fireMapLayerChanged
-     * events.
+     * <p>This method is called as needed by addMapListener and removeMapListener to allow subclasses to connect any
+     * data listeners required in order to issue fireMapLayerChanged events.
      *
      * @param listen true to connect, false to disconnect
      */
@@ -373,12 +366,11 @@ public abstract class Layer {
     /**
      * Get the style for this layer. If style has not been set, then null is returned.
      *
-     * <p>This is an optional method that is used to support feature based rendering systems such as
-     * as KML.
+     * <p>This is an optional method that is used to support feature based rendering systems such as as KML.
      *
-     * <p>Please note that feature based renders can be very flexible; as an example raster content
-     * is asked to return the outline of each raster - in the event that the user has supplied a
-     * style drawing the raster as a Polygon outlines.
+     * <p>Please note that feature based renders can be very flexible; as an example raster content is asked to return
+     * the outline of each raster - in the event that the user has supplied a style drawing the raster as a Polygon
+     * outlines.
      *
      * @return The style (SLD).
      */
@@ -400,17 +392,15 @@ public abstract class Layer {
     /**
      * Used to access the feature collection for this layer; if available.
      *
-     * <p>This is an optional method that is used to support feature based rendering systems such as
-     * as KML.
+     * <p>This is an optional method that is used to support feature based rendering systems such as as KML.
      *
-     * <p>Please note that feature based renders can be very flexible; as an example raster content
-     * is asked to return the outline of each raster - in the event that the user has supplied a
-     * style drawing the raster as a Polygon outlines.
+     * <p>Please note that feature based renders can be very flexible; as an example raster content is asked to return
+     * the outline of each raster - in the event that the user has supplied a style drawing the raster as a Polygon
+     * outlines.
      *
-     * <p>Override: Implementors should override this method to provide access to a feature
-     * representation of the layer contents if available. For DirectLayers displaying abstract
-     * concepts like a scale bar this may not be possible (however for some that display a grid this
-     * may in fact be possible).
+     * <p>Override: Implementors should override this method to provide access to a feature representation of the layer
+     * contents if available. For DirectLayers displaying abstract concepts like a scale bar this may not be possible
+     * (however for some that display a grid this may in fact be possible).
      *
      * @return The features for this layer, or an an empty ArrayFeatureSource if not available.
      */
@@ -426,18 +416,16 @@ public abstract class Layer {
     }
 
     /**
-     * The definition query (including filter) for this layer, or {@link Query.ALL} if no definition
-     * query has been provided by the user.
+     * The definition query (including filter) for this layer, or {@link Query.ALL} if no definition query has been
+     * provided by the user.
      *
-     * <p>This is an optional method that is used to support feature based rendering systems such as
-     * as KML.
+     * <p>This is an optional method that is used to support feature based rendering systems such as as KML.
      *
-     * <p>Please note that feature based renders can be very flexible; as an example raster content
-     * is asked to return the outline of each raster - in the event that the user has supplied a
-     * style drawing the raster as a Polygon outlines.
+     * <p>Please note that feature based renders can be very flexible; as an example raster content is asked to return
+     * the outline of each raster - in the event that the user has supplied a style drawing the raster as a Polygon
+     * outlines.
      *
-     * <p>Implementors should take care to return a copy of their internal Query to be safe from
-     * modificaiton:
+     * <p>Implementors should take care to return a copy of their internal Query to be safe from modificaiton:
      *
      * <pre>
      * if( query == null || query == Query.ALL ){
@@ -450,9 +438,8 @@ public abstract class Layer {
      *
      * <p>
      *
-     * @return the definition query established for this layer. If not set, just returns {@link
-     *     Query.ALL}, if set, returns a copy of the actual query object to avoid external
-     *     modification
+     * @return the definition query established for this layer. If not set, just returns {@link Query.ALL}, if set,
+     *     returns a copy of the actual query object to avoid external modification
      */
     public Query getQuery() {
         // when overriding this method please be sure to return a copy of your internal Query

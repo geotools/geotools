@@ -48,8 +48,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Map<String, Serializable> params = createConnectionParams();
         String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
         Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
-        String indexName =
-                ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         DataStore dataStore = new ElasticDataStore(host, port, indexName);
         String[] typeNames = dataStore.getTypeNames();
@@ -61,8 +60,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Map<String, Serializable> params = createConnectionParams();
         String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
         Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
-        String indexName =
-                ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         HttpHost httpHost = new HttpHost(host, port, "http");
         try (RestClient client = RestClient.builder(httpHost).build()) {
@@ -78,19 +76,13 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Map<String, Serializable> params = createConnectionParams();
         String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
         Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
-        String indexName =
-                ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         HttpHost httpHost = new HttpHost(host, port, "http");
         try (RestClient client = RestClient.builder(httpHost).build()) {
 
-            DataStore dataStore =
-                    new ElasticDataStore(
-                            client,
-                            client,
-                            indexName,
-                            false,
-                            (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
+            DataStore dataStore = new ElasticDataStore(
+                    client, client, indexName, false, (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
             String[] typeNames = dataStore.getTypeNames();
             assertTrue(typeNames.length > 0);
         }
@@ -100,8 +92,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
-        String indexName =
-                ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         RestClient mockClient = mock(RestClient.class);
         Response mockResponse = mock(Response.class);
@@ -119,8 +110,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadProxyClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
-        String indexName =
-                ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
         RestClient mockClient = mock(RestClient.class);
         Response mockResponse = mock(Response.class);
@@ -131,14 +121,9 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         when(mockClient.performRequest(any(Request.class))).thenReturn(mockResponse);
 
         final AtomicInteger count = new AtomicInteger(0);
-        when(mockStatusLine.getStatusCode())
-                .thenAnswer((invocation) -> count.getAndIncrement() == 0 ? 200 : 400);
-        new ElasticDataStore(
-                mockClient,
-                mockClient,
-                indexName,
-                false,
-                (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
+        when(mockStatusLine.getStatusCode()).thenAnswer((invocation) -> count.getAndIncrement() == 0 ? 200 : 400);
+        new ElasticDataStore(mockClient, mockClient, indexName, false, (Integer)
+                ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
     }
 
     @Test
@@ -205,9 +190,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     public void testIsAnalyzed() {
         assertFalse(ElasticDataStore.isAnalyzed(new HashMap<>()));
         assertFalse(ElasticDataStore.isAnalyzed(ImmutableMap.of("type", "keyword")));
-        assertFalse(
-                ElasticDataStore.isAnalyzed(
-                        ImmutableMap.of("type", ImmutableMap.of("type", "keyword"))));
+        assertFalse(ElasticDataStore.isAnalyzed(ImmutableMap.of("type", ImmutableMap.of("type", "keyword"))));
         assertFalse(ElasticDataStore.isAnalyzed(ImmutableMap.of("type", "not_valid")));
         assertTrue(ElasticDataStore.isAnalyzed(ImmutableMap.of("type", "text")));
     }

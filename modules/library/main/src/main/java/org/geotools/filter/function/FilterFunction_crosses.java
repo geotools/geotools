@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_crosses extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "crosses",
-                    parameter("crosses", Boolean.class),
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "crosses",
+            parameter("crosses", Boolean.class),
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class));
 
     public FilterFunction_crosses() {
         super(NAME);

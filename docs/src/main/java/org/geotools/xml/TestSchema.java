@@ -24,9 +24,9 @@ import org.locationtech.jts.geom.Point;
  */
 public class TestSchema {
     /**
-     * An abstract feature provides a set of common properties. A concrete feature type must derive
-     * from this type and specify additional properties in an application schema. A feature may
-     * optionally possess an identifying attribute ('fid').
+     * An abstract feature provides a set of common properties. A concrete feature type must derive from this type and
+     * specify additional properties in an application schema. A feature may optionally possess an identifying attribute
+     * ('fid').
      */
     public static interface TestFeatureType extends GML2Schema.AbstractFeatureType {
         public Point pointProperty();
@@ -64,8 +64,7 @@ public class TestSchema {
     }
 
     /** A feature collection contains zero or more featureMember elements. */
-    public static interface TestFeatureCollectionType
-            extends GML2Schema.AbstractFeatureCollectionType {}
+    public static interface TestFeatureCollectionType extends GML2Schema.AbstractFeatureCollectionType {}
 
     public static class TestFeatureCollection implements TestFeatureCollectionType {
 

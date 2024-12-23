@@ -27,38 +27,38 @@ import java.net.URI;
  */
 public interface ElementGrouping {
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int ELEMENT = 1;
 
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int GROUP = 2;
 
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int ANY = 4;
 
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int SEQUENCE = 8;
 
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int CHOICE = 16;
 
     /**
-     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended
-     * to reduce the use of the instanceof operand, increasing performance.
+     * ElementGrouping mask to determine the type of ElementGrouping represented. This is intended to reduce the use of
+     * the instanceof operand, increasing performance.
      */
     public static final int ALL = 32;
 
@@ -68,9 +68,9 @@ public interface ElementGrouping {
     public int getGrouping();
 
     /**
-     * Convinience method which will search for the specified element within it's children. This is
-     * typically implemented recursively, and as such may be expensive to execute (so don't call me
-     * too much if you want to be fast).
+     * Convinience method which will search for the specified element within it's children. This is typically
+     * implemented recursively, and as such may be expensive to execute (so don't call me too much if you want to be
+     * fast).
      *
      * @param name The Element LocalName (namespace and prefix should not be included)
      * @return Element or null if not found.

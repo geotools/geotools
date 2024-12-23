@@ -24,9 +24,9 @@ import org.geotools.util.logging.Logging;
 import org.junit.runner.notification.RunNotifier;
 
 /**
- * A test runner that will skip tests if the build is headless or if the {@code
- * org.geotools.test.interactive} system property is {@code false} or undefined. To use this runner,
- * annotate the test class with {@code @RunWith(GraphicsTestRunner.class)}.
+ * A test runner that will skip tests if the build is headless or if the {@code org.geotools.test.interactive} system
+ * property is {@code false} or undefined. To use this runner, annotate the test class with
+ * {@code @RunWith(GraphicsTestRunner.class)}.
  *
  * <p>The system property can be set via the Maven command line with {@code -Dinteractive.tests}.
  *
@@ -39,8 +39,7 @@ public class GraphicsTestRunner extends org.junit.internal.runners.JUnit4ClassRu
 
     private static final Boolean INTERACTIVE = Boolean.getBoolean("org.geotools.test.interactive");
 
-    public GraphicsTestRunner(Class<?> klass)
-            throws org.junit.internal.runners.InitializationError {
+    public GraphicsTestRunner(Class<?> klass) throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 
@@ -48,9 +47,9 @@ public class GraphicsTestRunner extends org.junit.internal.runners.JUnit4ClassRu
     public void run(RunNotifier notifier) {
         Logger logger = Logging.getLogger(GraphicsTestRunner.class);
 
-        if (!INTERACTIVE
-                || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance()) {
-            logger.log(Level.INFO, "Skipping graphics tests in {0}", getTestClass().getName());
+        if (!INTERACTIVE || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance()) {
+            logger.log(
+                    Level.INFO, "Skipping graphics tests in {0}", getTestClass().getName());
         } else {
             super.run(notifier);
         }

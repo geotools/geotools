@@ -49,16 +49,14 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * A RasterManager allows to handle granules, decimation, overviews and spatial properties of a
- * raster.
+ * A RasterManager allows to handle granules, decimation, overviews and spatial properties of a raster.
  *
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  */
 class RasterManager {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterManager.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
     final SoftValueHashMap<String, Granule> granulesCache = new SoftValueHashMap<>();
 
@@ -78,10 +76,7 @@ class RasterManager {
         int imageChoice;
 
         public OverviewLevel(
-                final double scaleFactor,
-                final double resolutionX,
-                final double resolutionY,
-                int imageChoice) {
+                final double scaleFactor, final double resolutionX, final double resolutionY, int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;
@@ -123,12 +118,11 @@ class RasterManager {
             resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0));
             if (numberOfOverviews > 0) {
                 for (int i = 0; i < overviewsResolution.length; i++)
-                    resolutionsLevels.add(
-                            new OverviewLevel(
-                                    overviewsResolution[i][0] / highestRes[0],
-                                    overviewsResolution[i][0],
-                                    overviewsResolution[i][1],
-                                    i + 1));
+                    resolutionsLevels.add(new OverviewLevel(
+                            overviewsResolution[i][0] / highestRes[0],
+                            overviewsResolution[i][0],
+                            overviewsResolution[i][1],
+                            i + 1));
                 Collections.sort(resolutionsLevels);
             }
         }
@@ -164,8 +158,7 @@ class RasterManager {
                 requestedScaleFactorY = reqy / max.resolutionY;
             } else return 0;
             final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-            final double requestedScaleFactor =
-                    leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+            final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
             // are we looking for a resolution even higher than the native one?
             if (requestedScaleFactor <= 1) return max.imageChoice;
@@ -193,8 +186,8 @@ class RasterManager {
                 if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
                     if (policy == OverviewPolicy.QUALITY) return prev.imageChoice;
                     else if (policy == OverviewPolicy.SPEED) return curr.imageChoice;
-                    else if (requestedScaleFactor - prev.scaleFactor
-                            < curr.scaleFactor - requestedScaleFactor) return prev.imageChoice;
+                    else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor)
+                        return prev.imageChoice;
                     else return curr.imageChoice;
                 }
                 prev = curr;
@@ -209,17 +202,15 @@ class RasterManager {
         public DecimationController() {}
 
         /**
-         * This method is responsible for evaluating possible subsampling factors once the best
-         * resolution level has been found, in case we have support for overviews, or starting from
-         * the original coverage in case there are no overviews available.
+         * This method is responsible for evaluating possible subsampling factors once the best resolution level has
+         * been found, in case we have support for overviews, or starting from the original coverage in case there are
+         * no overviews available.
          *
-         * <p>Anyhow this method should not be called directly but subclasses should make use of the
-         * setReadParams method instead in order to transparently look for overviews.
+         * <p>Anyhow this method should not be called directly but subclasses should make use of the setReadParams
+         * method instead in order to transparently look for overviews.
          */
         void performDecimation(
-                final int imageIndex,
-                final ImageReadParam readParameters,
-                final RasterLayerRequest request) {
+                final int imageIndex, final ImageReadParam readParameters, final RasterLayerRequest request) {
 
             // the read parameters cannot be null
             Utilities.ensureNonNull("readParameters", readParameters);
@@ -252,28 +243,18 @@ class RasterManager {
                 // raster dimensions. The solution is to have the rater dimensions on each level and
                 // to confront raster dimensions,
                 // which means working
-                rasterWidth =
-                        (int)
-                                Math.round(
-                                        spatialDomainManager.coverageBBox.getSpan(0)
-                                                / selectedRes[0]);
-                rasterHeight =
-                        (int)
-                                Math.round(
-                                        spatialDomainManager.coverageBBox.getSpan(1)
-                                                / selectedRes[1]);
+                rasterWidth = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(0) / selectedRes[0]);
+                rasterHeight = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(1) / selectedRes[1]);
             }
-            ImageUtilities.setSubsamplingFactors(
-                    readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
+            ImageUtilities.setSubsamplingFactors(readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
         }
     }
 
     /**
-     * This class is responsible for putting together all the 2D spatial information needed for a
-     * certain raster.
+     * This class is responsible for putting together all the 2D spatial information needed for a certain raster.
      *
-     * <p>Notice that when this structure will be extended to work in ND this will become much more
-     * complex or as an alternative a sibling TemporalDomainManager will be created.
+     * <p>Notice that when this structure will be extended to work in ND this will become much more complex or as an
+     * alternative a sibling TemporalDomainManager will be created.
      *
      * @author Simone Giannecchini, GeoSolutions SAS
      */
@@ -310,9 +291,8 @@ class RasterManager {
             //
             // basic initialization
             //
-            coverageGeographicBBox =
-                    ImageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
-                            new GeographicBoundingBoxImpl(coverageEnvelope));
+            coverageGeographicBBox = ImageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
+                    new GeographicBoundingBoxImpl(coverageEnvelope));
             coverageGeographicCRS2D = coverageGeographicBBox.getCoordinateReferenceSystem();
 
             //
@@ -330,18 +310,14 @@ class RasterManager {
                 coverageBBox = new ReferencedEnvelope(coverageEnvelope);
             }
         }
-        /**
-         * Set the main parameters of this coverage request, getting basic information from the
-         * reader.
-         */
+        /** Set the main parameters of this coverage request, getting basic information from the reader. */
         private void setBaseParameters() {
             this.coverageEnvelope = RasterManager.this.getCoverageEnvelope().clone();
             this.coverageRasterArea = ((GridEnvelope2D) RasterManager.this.getCoverageGridrange());
             this.coverageCRS = RasterManager.this.getCoverageCRS();
             this.coverageGridToWorld2D = (MathTransform2D) RasterManager.this.getRaster2Model();
             this.coverageFullResolution = new double[2];
-            final OverviewLevel highestLevel =
-                    RasterManager.this.overviewsController.resolutionsLevels.get(0);
+            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
             coverageFullResolution[0] = highestLevel.resolutionX;
             coverageFullResolution[1] = highestLevel.resolutionY;
         }
@@ -412,13 +388,11 @@ class RasterManager {
     }
 
     /**
-     * This method is responsible for checking the overview policy as defined by the provided {@link
-     * Hints}.
+     * This method is responsible for checking the overview policy as defined by the provided {@link Hints}.
      *
      * @return the overview policy which can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
      *     {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_SPEED},
-     *     {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY}. Default is {@link
-     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}.
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY}. Default is {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}.
      */
     private OverviewPolicy extractOverviewPolicy() {
 
@@ -433,14 +407,12 @@ class RasterManager {
         return overviewPolicy;
     }
 
-    public Collection<GridCoverage2D> read(final GeneralParameterValue[] params)
-            throws IOException {
+    public Collection<GridCoverage2D> read(final GeneralParameterValue[] params) throws IOException {
 
         // create a request
         final RasterLayerRequest request = new RasterLayerRequest(params, this);
         if (request.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Request is empty: " + request.toString());
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Request is empty: " + request.toString());
             return Collections.emptyList();
         }
 

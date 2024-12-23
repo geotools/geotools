@@ -27,9 +27,9 @@ import org.geotools.referencing.CRS;
 /**
  * The geometry of the tiled space.
  *
- * <p>In a tiled map layer, the representation of the space is constrained in a discrete set of
- * parameters. A tile matrix set defines these parameters. Each tile matrix set contains one or more
- * "tile matrices" defining the tiles that are available for that coordinate reference system.
+ * <p>In a tiled map layer, the representation of the space is constrained in a discrete set of parameters. A tile
+ * matrix set defines these parameters. Each tile matrix set contains one or more "tile matrices" defining the tiles
+ * that are available for that coordinate reference system.
  *
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
@@ -67,8 +67,7 @@ public class TileMatrixSet {
         try {
             this.setCoordinateReferenceSystem(parseCoordinateReferenceSystem(crs));
         } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Can't parse crs " + crs + ":" + ex.getMessage(), ex);
+            throw new IllegalArgumentException("Can't parse crs " + crs + ":" + ex.getMessage(), ex);
         }
 
         this.crs = crs;
@@ -90,8 +89,7 @@ public class TileMatrixSet {
     /**
      * Try and parse the crs string.
      *
-     * <p>Also takes care of including deprecated codes like EPSG:900913 replacing them with
-     * EPSG:3857.
+     * <p>Also takes care of including deprecated codes like EPSG:900913 replacing them with EPSG:3857.
      */
     protected CoordinateReferenceSystem parseCoordinateReferenceSystem(String crs)
             throws NoSuchAuthorityCodeException, FactoryException {

@@ -36,26 +36,24 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * Describes a virtual table, that is, a feature type created starting from a generic SQL query.
- * This class also carries information about the primary key (to generate stable feature ids) and
- * the geometry type and native srid (as in most databases those informations are not available on.
+ * Describes a virtual table, that is, a feature type created starting from a generic SQL query. This class also carries
+ * information about the primary key (to generate stable feature ids) and the geometry type and native srid (as in most
+ * databases those informations are not available on.
  *
- * <p>The sql query can contain named parameters. Each parameter has a name, a default value and a
- * way to validate its contents to prevent sql injection.
+ * <p>The sql query can contain named parameters. Each parameter has a name, a default value and a way to validate its
+ * contents to prevent sql injection.
  *
- * <p>As well as passing validation, parameters are also passed through a function to escape double
- * quotes, single quotes and strip backslashes to guard against the cases where quotes are desired
- * in the parameters or backslashes have been allowed by an overly lax regular expression.
+ * <p>As well as passing validation, parameters are also passed through a function to escape double quotes, single
+ * quotes and strip backslashes to guard against the cases where quotes are desired in the parameters or backslashes
+ * have been allowed by an overly lax regular expression.
  *
- * <p>Escaping is enabled by default and can be controlled by a constructor argument or via the
- * setEscapeSql() method.
+ * <p>Escaping is enabled by default and can be controlled by a constructor argument or via the setEscapeSql() method.
  *
  * @author Andrea Aime - OpenGeo
  */
 public class VirtualTable implements Serializable {
 
-    private static final Hints.Key KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY =
-            new Hints.Key(Boolean.class);
+    private static final Hints.Key KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY = new Hints.Key(Boolean.class);
 
     public static String WHERE_CLAUSE_PLACE_HOLDER = ":where_clause:";
     public static int WHERE_CLAUSE_PLACE_HOLDER_LENGTH = 14;
@@ -79,30 +77,27 @@ public class VirtualTable implements Serializable {
     boolean escapeSql = false;
 
     /**
-     * If the provided query has a filter of a where clause place holder exists it will be
-     * preserved.
+     * If the provided query has a filter of a where clause place holder exists it will be preserved.
      *
      * @param query the query to test
-     * @return a query hints map that will contain an entry specifying if the the where clause place
-     *     holder should be keep or not
+     * @return a query hints map that will contain an entry specifying if the the where clause place holder should be
+     *     keep or not
      */
     public static Hints setKeepWhereClausePlaceHolderHint(Query query) {
         Filter filter = query.getFilter();
-        return setKeepWhereClausePlaceHolderHint(
-                query.getHints(), filter != null && filter != Filter.INCLUDE);
+        return setKeepWhereClausePlaceHolderHint(query.getHints(), filter != null && filter != Filter.INCLUDE);
     }
 
     /**
-     * Will add an entry to query hints specifying if the the where clause place holder should be
-     * keep or not. If the provided hints is NULL a new one will be instantiated and returned.
+     * Will add an entry to query hints specifying if the the where clause place holder should be keep or not. If the
+     * provided hints is NULL a new one will be instantiated and returned.
      *
      * @param hints query hints to update, if NULL a new hints map will be created
      * @param keepWhereClausePlaceHolder TRUE if the where clause place holder should be keep
-     * @return a query hints map that will contain an entry specifying if the the where clause place
-     *     holder should be keep or not
+     * @return a query hints map that will contain an entry specifying if the the where clause place holder should be
+     *     keep or not
      */
-    public static Hints setKeepWhereClausePlaceHolderHint(
-            Hints hints, boolean keepWhereClausePlaceHolder) {
+    public static Hints setKeepWhereClausePlaceHolderHint(Hints hints, boolean keepWhereClausePlaceHolder) {
         if (hints == null) {
             // create the hints map
             hints = new Hints();
@@ -123,8 +118,8 @@ public class VirtualTable implements Serializable {
     }
 
     /**
-     * Builds a new virtual table stating its name, the query to be executed to work on it and a
-     * flag to indicate if SQL special characters should be escaped.
+     * Builds a new virtual table stating its name, the query to be executed to work on it and a flag to indicate if SQL
+     * special characters should be escaped.
      */
     public VirtualTable(String name, String sql, boolean escapeSql) {
         this(name, sql);
@@ -154,8 +149,8 @@ public class VirtualTable implements Serializable {
     }
 
     /**
-     * Returns the virtual table primary key columns. It should refer to fields returned by the
-     * query, if that is not true the behavior is undefined
+     * Returns the virtual table primary key columns. It should refer to fields returned by the query, if that is not
+     * true the behavior is undefined
      */
     public List<String> getPrimaryKeyColumns() {
         return primaryKeyColumns;
@@ -192,10 +187,9 @@ public class VirtualTable implements Serializable {
 
         // grab the parameter values
         @SuppressWarnings("unchecked")
-        Map<String, String> values =
-                Optional.ofNullable(hints)
-                        .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
-                        .orElse(Collections.emptyMap());
+        Map<String, String> values = Optional.ofNullable(hints)
+                .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
+                .orElse(Collections.emptyMap());
 
         // perform the expansion, checking for validity and applying default values as needed
         for (VirtualTableParameter param : parameters.values()) {
@@ -219,8 +213,7 @@ public class VirtualTable implements Serializable {
                     } catch (IllegalArgumentException e) {
                         // fully log the exception, but only rethrow a more generic description as
                         // the message could be exposed to attackers
-                        LOGGER.log(
-                                Level.SEVERE, "Invalid value for parameter " + param.getName(), e);
+                        LOGGER.log(Level.SEVERE, "Invalid value for parameter " + param.getName(), e);
                         throw new SQLException("Invalid value for parameter " + param.getName());
                     }
                 }
@@ -233,18 +226,17 @@ public class VirtualTable implements Serializable {
     }
 
     /**
-     * Adds geometry metadata to the virtual table. This is important to get the datastore working,
-     * often that is not the case if the right native srid is not in place
+     * Adds geometry metadata to the virtual table. This is important to get the datastore working, often that is not
+     * the case if the right native srid is not in place
      */
-    public void addGeometryMetadatata(
-            String geometry, Class<? extends Geometry> binding, int nativeSrid) {
+    public void addGeometryMetadatata(String geometry, Class<? extends Geometry> binding, int nativeSrid) {
         geometryTypes.put(geometry, binding);
         nativeSrids.put(geometry, nativeSrid);
     }
 
     /**
-     * Adds geometry metadata to the virtual table. This is important to get the datastore working,
-     * often that is not the case if the right native srid is not in place
+     * Adds geometry metadata to the virtual table. This is important to get the datastore working, often that is not
+     * the case if the right native srid is not in place
      */
     public void addGeometryMetadatata(
             String geometry, Class<? extends Geometry> binding, int nativeSrid, int dimension) {
@@ -363,8 +355,8 @@ public class VirtualTable implements Serializable {
     }
 
     /**
-     * Helper method that return TRUE if the where clause place holder should be keep, otherwise
-     * FALSE if it should be removed.
+     * Helper method that return TRUE if the where clause place holder should be keep, otherwise FALSE if it should be
+     * removed.
      */
     private static boolean keepWhereClausePlaceHolder(Hints hints) {
         if (hints == null) {
@@ -377,8 +369,8 @@ public class VirtualTable implements Serializable {
     }
 
     /**
-     * Helper method that will remove, if present, the where clause place holder from the provided
-     * SQL query. If multiple where clause place holders are present an exception will be throw.
+     * Helper method that will remove, if present, the where clause place holder from the provided SQL query. If
+     * multiple where clause place holders are present an exception will be throw.
      */
     private static String removeWhereClausePlaceHolder(String sql) {
         int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
@@ -388,8 +380,7 @@ public class VirtualTable implements Serializable {
         }
         if (whereClauseIndex != sql.lastIndexOf(WHERE_CLAUSE_PLACE_HOLDER)) {
             // only a single where clause place holder is supported
-            throw new RuntimeException(
-                    String.format("SQL contains multiple where clause placeholders: %s.", sql));
+            throw new RuntimeException(String.format("SQL contains multiple where clause placeholders: %s.", sql));
         }
         // remove the where clause place holder
         return sql.replace(WHERE_CLAUSE_PLACE_HOLDER, "");

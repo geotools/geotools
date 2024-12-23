@@ -40,16 +40,15 @@ import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 /**
  * A compositing element used in rendering.
  *
- * <p>It may specify a Simple {@link BlendComposite} instance to define the type of compositing to
- * be applied to the coverage holding this property. It may also specify a compositing image to be
- * drawn on the current rendering as part of the compositing process.
+ * <p>It may specify a Simple {@link BlendComposite} instance to define the type of compositing to be applied to the
+ * coverage holding this property. It may also specify a compositing image to be drawn on the current rendering as part
+ * of the compositing process.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 class Compositing {
 
-    private static final Composite DEFAULT_COMPOSITE =
-            BlendComposite.getInstance(BlendingMode.MULTIPLY, 1.0f);
+    private static final Composite DEFAULT_COMPOSITE = BlendComposite.getInstance(BlendingMode.MULTIPLY, 1.0f);
 
     /** IDENTITY */
     private static final AffineTransform IDENTITY = AffineTransform2D.getTranslateInstance(0, 0);
@@ -97,20 +96,14 @@ class Compositing {
             int numBands = composedImage.getSampleModel().getNumBands();
             GridSampleDimension[] sd = new GridSampleDimension[numBands];
             for (int i = 0; i < numBands; i++) {
-                sd[i] =
-                        new GridSampleDimension(
-                                TypeMap.getColorInterpretation(composedImage.getColorModel(), i)
-                                        .name());
+                sd[i] = new GridSampleDimension(TypeMap.getColorInterpretation(composedImage.getColorModel(), i)
+                        .name());
             }
             RenderedImage gridCoverageImage = composedImage;
             if (translate) {
                 AffineTransform tx = AffineTransform2D.getTranslateInstance(minX, minY);
-                ImageWorker worker =
-                        new ImageWorker(composedImage)
-                                .affine(
-                                        tx,
-                                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                                        null);
+                ImageWorker worker = new ImageWorker(composedImage)
+                        .affine(tx, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
                 gridCoverageImage = worker.getRenderedImage();
                 gridCoverageImage.getMinX();
             }

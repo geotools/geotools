@@ -19,10 +19,10 @@ package org.geotools.referencing.operation.transform;
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Base class for transformations from a <cite>height above the ellipsoid</cite> to a <cite>height
- * above the geoid</cite>. This transform expects three-dimensional geographic coordinates in
- * (<var>longitude</var>,<var>latitude</var>,<var>height</var>) order. The transformations are
- * usually backed by some ellipsoid-dependent database.
+ * Base class for transformations from a <cite>height above the ellipsoid</cite> to a <cite>height above the
+ * geoid</cite>. This transform expects three-dimensional geographic coordinates in
+ * (<var>longitude</var>,<var>latitude</var>,<var>height</var>) order. The transformations are usually backed by some
+ * ellipsoid-dependent database.
  *
  * @since 2.3
  * @version $Id$
@@ -45,8 +45,8 @@ public abstract class VerticalTransform extends AbstractMathTransform {
     }
 
     /**
-     * Returns the value to add to a <cite>height above the ellipsoid</cite> in order to get a
-     * <cite>height above the geoid</cite> for the specified geographic coordinate.
+     * Returns the value to add to a <cite>height above the ellipsoid</cite> in order to get a <cite>height above the
+     * geoid</cite> for the specified geographic coordinate.
      *
      * @param longitude The geodetic longitude, in decimal degrees.
      * @param latitude The geodetic latitude, in decimal degrees.
@@ -54,13 +54,11 @@ public abstract class VerticalTransform extends AbstractMathTransform {
      * @return The value to add in order to get the height above the geoid (in metres).
      * @throws TransformException if the offset can't be computed for the specified coordinates.
      */
-    protected abstract double heightOffset(double longitude, double latitude, double height)
-            throws TransformException;
+    protected abstract double heightOffset(double longitude, double latitude, double height) throws TransformException;
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int step;
         if (srcPts == dstPts && srcOff < dstOff) {
@@ -82,8 +80,7 @@ public abstract class VerticalTransform extends AbstractMathTransform {
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int step;
         if (srcPts == dstPts && srcOff < dstOff) {

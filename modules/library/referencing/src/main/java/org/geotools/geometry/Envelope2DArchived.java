@@ -32,15 +32,15 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 
 /**
- * A two-dimensional envelope on top of {@link Rectangle2D}. This implementation is provided for
- * interoperability between Java2D and GeoAPI.
+ * A two-dimensional envelope on top of {@link Rectangle2D}. This implementation is provided for interoperability
+ * between Java2D and GeoAPI.
  *
- * <p><strong>Note:</strong> This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But
- * despite their names, they don't need to be oriented toward {@linkplain AxisDirection#EAST East}
- * and {@linkplain AxisDirection#NORTH North} respectively. The (<var>x</var>,<var>y</var>) axis can
- * have any orientation and should be understood as "ordinate 0" and "ordinate 1" values instead.
- * This is not specific to this implementation; in Java2D too, the visual axis orientation depend on
- * the {@linkplain java.awt.Graphics2D#getTransform affine transform in the graphics context}.
+ * <p><strong>Note:</strong> This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But despite their
+ * names, they don't need to be oriented toward {@linkplain AxisDirection#EAST East} and {@linkplain AxisDirection#NORTH
+ * North} respectively. The (<var>x</var>,<var>y</var>) axis can have any orientation and should be understood as
+ * "ordinate 0" and "ordinate 1" values instead. This is not specific to this implementation; in Java2D too, the visual
+ * axis orientation depend on the {@linkplain java.awt.Graphics2D#getTransform affine transform in the graphics
+ * context}.
  *
  * @since 2.1
  * @version 8.0
@@ -50,8 +50,7 @@ import org.geotools.util.Utilities;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class Envelope2DArchived extends Rectangle2D.Double
-        implements BoundingBox, Bounds, Cloneable {
+public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3319231220761419350L;
 
@@ -98,8 +97,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
         // TODO: check below should be first, if only Sun could fix RFE #4093999.
         final int dimension = envelope.getDimension();
         if (dimension != 2) {
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, dimension));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, dimension));
         }
         setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
     }
@@ -116,12 +114,11 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Constructs two-dimensional envelope defined by the specified coordinates. Despite their name,
-     * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
-     * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc}
-     * for details.
+     * Constructs two-dimensional envelope defined by the specified coordinates. Despite their name, the
+     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain AxisDirection#EAST East},
+     * {@linkplain AxisDirection#NORTH North}). Those parameter names simply match the {@linkplain #x x} and
+     * {@linkplain #y y} fields. The actual axis orientations are determined by the specified CRS. See the
+     * {@linkplain Envelope2DArchived class javadoc} for details.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @param x The <var>x</var> minimal value.
@@ -140,16 +137,14 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Constructs two-dimensional envelope defined by the specified coordinates. Despite their name,
-     * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
-     * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc}
-     * for details.
+     * Constructs two-dimensional envelope defined by the specified coordinates. Despite their name, the
+     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain AxisDirection#EAST East},
+     * {@linkplain AxisDirection#NORTH North}). Those parameter names simply match the {@linkplain #x x} and
+     * {@linkplain #y y} fields. The actual axis orientations are determined by the specified CRS. See the
+     * {@linkplain Envelope2DArchived class javadoc} for details.
      *
-     * <p>The {@code minDP} and {@code maxDP} arguments usually contains the minimal and maximal
-     * ordinate values respectively, but this is not mandatory. The ordinates will be rearanged as
-     * needed.
+     * <p>The {@code minDP} and {@code maxDP} arguments usually contains the minimal and maximal ordinate values
+     * respectively, but this is not mandatory. The ordinates will be rearanged as needed.
      *
      * @param minDP The fist position.
      * @param maxDP The second position.
@@ -196,12 +191,11 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * A coordinate position consisting of all the minimal ordinates for each dimension for all
-     * points within the {@code Envelope}.
+     * A coordinate position consisting of all the minimal ordinates for each dimension for all points within the
+     * {@code Envelope}.
      *
      * @return The lower corner.
-     * @todo Change the return type to {@link Position2D} when we will be allowed to compile for
-     *     J2SE 1.5.
+     * @todo Change the return type to {@link Position2D} when we will be allowed to compile for J2SE 1.5.
      */
     @Override
     public Position getLowerCorner() {
@@ -209,12 +203,11 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * A coordinate position consisting of all the maximal ordinates for each dimension for all
-     * points within the {@code Envelope}.
+     * A coordinate position consisting of all the maximal ordinates for each dimension for all points within the
+     * {@code Envelope}.
      *
      * @return The upper corner.
-     * @todo Change the return type to {@link Position2D} when we will be allowed to compile for
-     *     J2SE 1.5.
+     * @todo Change the return type to {@link Position2D} when we will be allowed to compile for J2SE 1.5.
      */
     @Override
     public Position getUpperCorner() {
@@ -223,8 +216,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
 
     /** Creates an exception for an index out of bounds. */
     private static IndexOutOfBoundsException indexOutOfBounds(final int dimension) {
-        return new IndexOutOfBoundsException(
-                MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
+        return new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
     }
 
     /**
@@ -266,8 +258,8 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Returns the median ordinate along the specified dimension. The result should be equals (minus
-     * rounding error) to <code>({@linkplain #getMaximum getMaximum}(dimension) -
+     * Returns the median ordinate along the specified dimension. The result should be equals (minus rounding error) to
+     * <code>({@linkplain #getMaximum getMaximum}(dimension) -
      * {@linkplain #getMinimum getMinimum}(dimension)) / 2</code>.
      *
      * @param dimension The dimension to query.
@@ -287,8 +279,8 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Returns the envelope span (typically width or height) along the specified dimension. The
-     * result should be equals (minus rounding error) to <code>{@linkplain #getMaximum
+     * Returns the envelope span (typically width or height) along the specified dimension. The result should be equals
+     * (minus rounding error) to <code>{@linkplain #getMaximum
      * getMaximum}(dimension) - {@linkplain #getMinimum getMinimum}(dimension)</code>.
      *
      * @param dimension The dimension to query.
@@ -308,8 +300,8 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Returns a hash value for this envelope. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this envelope. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -330,29 +322,26 @@ public class Envelope2DArchived extends Rectangle2D.Double
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof Envelope2DArchived)
-                            ? ((Envelope2DArchived) object).crs
-                            : null;
+                    (object instanceof Envelope2DArchived) ? ((Envelope2DArchived) object).crs : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;
     }
 
     /**
-     * Returns {@code true} if {@code this} envelope bounds is equals to {@code that} envelope
-     * bounds in two specified dimensions. The coordinate reference system is not compared, since it
-     * doesn't need to have the same number of dimensions.
+     * Returns {@code true} if {@code this} envelope bounds is equals to {@code that} envelope bounds in two specified
+     * dimensions. The coordinate reference system is not compared, since it doesn't need to have the same number of
+     * dimensions.
      *
      * @param that The envelope to compare to.
-     * @param xDim The dimension of {@code that} envelope to compare to the <var>x</var> dimension
-     *     of {@code this} envelope.
-     * @param yDim The dimension of {@code that} envelope to compare to the <var>y</var> dimension
-     *     of {@code this} envelope.
-     * @param eps A small tolerance number for floating point number comparaisons. This value will
-     *     be scaled according this envelope {@linkplain #width width} and {@linkplain #height
-     *     height}.
-     * @return {@code true} if the envelope bounds are the same (up to the specified tolerance
-     *     level) in the specified dimensions, or {@code false} otherwise.
+     * @param xDim The dimension of {@code that} envelope to compare to the <var>x</var> dimension of {@code this}
+     *     envelope.
+     * @param yDim The dimension of {@code that} envelope to compare to the <var>y</var> dimension of {@code this}
+     *     envelope.
+     * @param eps A small tolerance number for floating point number comparaisons. This value will be scaled according
+     *     this envelope {@linkplain #width width} and {@linkplain #height height}.
+     * @return {@code true} if the envelope bounds are the same (up to the specified tolerance level) in the specified
+     *     dimensions, or {@code false} otherwise.
      */
     public boolean boundsEquals(final Bounds that, final int xDim, final int yDim, double eps) {
         eps *= 0.5 * (width + height);
@@ -376,10 +365,9 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Returns a string representation of this envelope. The default implementation is okay for
-     * occasional formatting (for example for debugging purpose). But if there is a lot of envelopes
-     * to format, users will get more control by using their own instance of {@link
-     * org.geotools.referencing.CoordinateFormat}.
+     * Returns a string representation of this envelope. The default implementation is okay for occasional formatting
+     * (for example for debugging purpose). But if there is a lot of envelopes to format, users will get more control by
+     * using their own instance of {@link org.geotools.referencing.CoordinateFormat}.
      *
      * @since 2.4
      */
@@ -454,12 +442,11 @@ public class Envelope2DArchived extends Rectangle2D.Double
     }
 
     /**
-     * Returns {@code true} if the interior of this bounds intersects the interior of the provided
-     * bounds.
+     * Returns {@code true} if the interior of this bounds intersects the interior of the provided bounds.
      *
-     * <p>Note this method conflicts with {@link Rectangle2D#intersects(Rectangle2D)} so you may
-     * need to call it via envelope2d.intersects( (Envelope2DArchived) bounds ) in order to
-     * correctly check that the coordinate reference systems match.
+     * <p>Note this method conflicts with {@link Rectangle2D#intersects(Rectangle2D)} so you may need to call it via
+     * envelope2d.intersects( (Envelope2DArchived) bounds ) in order to correctly check that the coordinate reference
+     * systems match.
      *
      * @param bounds The bounds to test for intersection.
      * @return {@code true} if the two bounds intersect.
@@ -515,14 +502,12 @@ public class Envelope2DArchived extends Rectangle2D.Double
      * @param bbox The other bounding box to test for compatibility.
      * @throws MismatchedReferenceSystemException if the CRS are incompatibles.
      */
-    private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
-            throws MismatchedReferenceSystemException {
+    private void ensureCompatibleReferenceSystem(final BoundingBox bbox) throws MismatchedReferenceSystemException {
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }
@@ -533,16 +518,14 @@ public class Envelope2DArchived extends Rectangle2D.Double
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }
     }
 
     /**
-     * Used as a separate test from {@link #isEmpty()} so that we can detect when an envelope has
-     * never been used.
+     * Used as a separate test from {@link #isEmpty()} so that we can detect when an envelope has never been used.
      *
      * @return true if envelope has just been constructed
      */

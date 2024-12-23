@@ -36,9 +36,9 @@ public class MySQLTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest 
     }
 
     /**
-     * Override to use a {@code java.time.LocalDateTime} instead of a {@code java.util.Date} because
-     * that is what the MySQL JDBC driver always returns since 8.0.23 and there is no automatic
-     * conversion from {@LocalDateTime} to {@Date}.
+     * Override to use a {@code java.time.LocalDateTime} instead of a {@code java.util.Date} because that is what the
+     * MySQL JDBC driver always returns since 8.0.23 and there is no automatic conversion from {@LocalDateTime} to
+     * {@Date}.
      *
      * @param query actual query
      * @param dates expected dates
@@ -56,12 +56,9 @@ public class MySQLTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest 
             int i = 0;
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
-                LocalDateTime expected =
-                        new java.sql.Timestamp(date(dates[i++]).getTime()).toLocalDateTime();
+                LocalDateTime expected = new java.sql.Timestamp(date(dates[i++]).getTime()).toLocalDateTime();
 
-                assertEquals(
-                        Converters.convert(expected, LocalDateTime.class),
-                        f.getAttribute(aname("dt")));
+                assertEquals(Converters.convert(expected, LocalDateTime.class), f.getAttribute(aname("dt")));
             }
         }
     }

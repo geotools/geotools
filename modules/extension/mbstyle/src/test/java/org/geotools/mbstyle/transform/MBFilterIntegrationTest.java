@@ -18,11 +18,9 @@ import org.junit.Test;
 public class MBFilterIntegrationTest {
 
     /**
-     * Create a style with three layers, each of them with a filter requiring a '$type' (or a list
-     * of them).
+     * Create a style with three layers, each of them with a filter requiring a '$type' (or a list of them).
      *
-     * <p>Assert that the transformed {@link FeatureTypeStyle}s have the correct derived {@link
-     * SemanticType}s.
+     * <p>Assert that the transformed {@link FeatureTypeStyle}s have the correct derived {@link SemanticType}s.
      */
     @Test
     public void testSemanticTypes() throws IOException, ParseException {
@@ -38,19 +36,20 @@ public class MBFilterIntegrationTest {
         assertEquals("circle-layer", circleLayerFts.getName());
         assertEquals(1, circleLayerFts.semanticTypeIdentifiers().size());
         assertEquals(
-                SemanticType.POINT, circleLayerFts.semanticTypeIdentifiers().iterator().next());
+                SemanticType.POINT,
+                circleLayerFts.semanticTypeIdentifiers().iterator().next());
 
         FeatureTypeStyle lineLayerFts = ftss[1];
         assertEquals("line-layer", lineLayerFts.getName());
         assertEquals(1, lineLayerFts.semanticTypeIdentifiers().size());
-        assertEquals(SemanticType.LINE, lineLayerFts.semanticTypeIdentifiers().iterator().next());
+        assertEquals(
+                SemanticType.LINE,
+                lineLayerFts.semanticTypeIdentifiers().iterator().next());
 
         FeatureTypeStyle symbolLayerFts = ftss[2];
         assertEquals("symbol-layer", symbolLayerFts.getName());
         assertEquals(2, symbolLayerFts.semanticTypeIdentifiers().size());
         Set<SemanticType> semanticTypes = symbolLayerFts.semanticTypeIdentifiers();
-        assertTrue(
-                semanticTypes.contains(SemanticType.POINT)
-                        && semanticTypes.contains(SemanticType.POLYGON));
+        assertTrue(semanticTypes.contains(SemanticType.POINT) && semanticTypes.contains(SemanticType.POLYGON));
     }
 }

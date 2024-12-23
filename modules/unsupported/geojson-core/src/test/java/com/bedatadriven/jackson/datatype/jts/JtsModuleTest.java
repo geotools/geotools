@@ -48,8 +48,7 @@ public class JtsModuleTest {
     @Test(expected = JsonMappingException.class)
     @Ignore
     public void unsupportedGeometry() throws IOException {
-        Geometry unsupportedGeometry =
-                EasyMock.createNiceMock("NonEuclideanGeometry", Geometry.class);
+        Geometry unsupportedGeometry = EasyMock.createNiceMock("NonEuclideanGeometry", Geometry.class);
         EasyMock.replay(unsupportedGeometry);
 
         mapper.writeValue(System.out, unsupportedGeometry);

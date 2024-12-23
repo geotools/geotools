@@ -46,10 +46,9 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * A FeatureWriter for ShapefileDataStore. Uses a write and annotate technique to avoid buffering
- * attributes and geometries. Because the shapefile and dbf require header information which can
- * only be obtained by reading the entire series of Features, the headers are updated after the
- * initial write completes.
+ * A FeatureWriter for ShapefileDataStore. Uses a write and annotate technique to avoid buffering attributes and
+ * geometries. Because the shapefile and dbf require header information which can only be obtained by reading the entire
+ * series of Features, the headers are updated after the initial write completes.
  *
  * @author Jesse Eichar
  */
@@ -58,10 +57,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     /** Shapefile uses signed integer offsets, so it cannot grow past this size */
     static final long DEFAULT_MAX_SHAPE_SIZE = Integer.MAX_VALUE;
 
-    /**
-     * Many systems use signed integer offsets to handle the position in a DBF, making this a safe
-     * limit
-     */
+    /** Many systems use signed integer offsets to handle the position in a DBF, making this a safe limit */
     static final long DEFAULT_MAX_DBF_SIZE = Integer.MAX_VALUE;
 
     // the FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
@@ -122,10 +118,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     @SuppressWarnings("PMD.CloseResource") // closeables are managed as fields
     public ShapefileFeatureWriter(
-            ShpFiles shpFiles,
-            ShapefileFeatureReader featureReader,
-            Charset charset,
-            TimeZone timezone)
+            ShpFiles shpFiles, ShapefileFeatureReader featureReader, Charset charset, TimeZone timezone)
             throws IOException {
         this.shpFiles = shpFiles;
         this.dbfCharset = charset;
@@ -218,8 +211,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
             StorageFile.replaceOriginals(storageFiles.values().toArray(new StorageFile[0]));
         } catch (IOException e) {
             throw new IOException(
-                    "An error occured while replacing the original shapefiles. You're changes may have been lost.",
-                    e);
+                    "An error occured while replacing the original shapefiles. You're changes may have been lost.", e);
         }
     }
 
@@ -376,8 +368,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
                     shapeType = JTSUtilities.getShapeType(g, dims);
                 } else {
                     shapeType =
-                            JTSUtilities.getShapeType(
-                                    currentFeature.getType().getGeometryDescriptor());
+                            JTSUtilities.getShapeType(currentFeature.getType().getGeometryDescriptor());
                 }
 
                 // we must go back and annotate this after writing
@@ -417,15 +408,11 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         if (shapefileLength > maxShpSize) {
             currentFeature = null;
             throw new ShapefileSizeException(
-                    "Writing this feature will make the shapefile exceed the maximum size of "
-                            + maxShpSize
-                            + " bytes");
+                    "Writing this feature will make the shapefile exceed the maximum size of " + maxShpSize + " bytes");
         } else if (dbfWriter.getHeader().getLengthForRecords(records + 1) > maxDbfSize) {
             currentFeature = null;
             throw new ShapefileSizeException(
-                    "Writing this feature will make the DBF exceed the maximum size of "
-                            + maxDbfSize
-                            + " bytes");
+                    "Writing this feature will make the DBF exceed the maximum size of " + maxDbfSize + " bytes");
         }
 
         // write it

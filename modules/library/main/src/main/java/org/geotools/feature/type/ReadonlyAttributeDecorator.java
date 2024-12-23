@@ -26,8 +26,7 @@ import org.geotools.api.filter.identity.Identifier;
 /**
  * Readonly wrapper around the provided Attribute.
  *
- * <p>This class is used by Types in order to protect provided attributes from modification during
- * evaluation.
+ * <p>This class is used by Types in order to protect provided attributes from modification during evaluation.
  */
 public final class ReadonlyAttributeDecorator implements Attribute {
     private final Attribute delegate;

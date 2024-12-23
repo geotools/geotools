@@ -23,8 +23,8 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 
 /**
- * The low-level interface for reading Features. Will use the underlying AttributeReader and the
- * given FeatureType to create new Features.
+ * The low-level interface for reading Features. Will use the underlying AttributeReader and the given FeatureType to
+ * create new Features.
  *
  * <p>Typical use is as follows:
  *
@@ -54,17 +54,15 @@ import org.geotools.api.feature.type.FeatureType;
  *
  * <ul>
  *   <li>Q: Should FeatureReader provide access to the AttributeReaders it uses? <br>
- *       A: No, it looks like we will make a lazy Feature in order to cleanly allow for lazy parsing
- *       of attribtues.
+ *       A: No, it looks like we will make a lazy Feature in order to cleanly allow for lazy parsing of attribtues.
  *   <li>Q:FeatureReader has a close method, but no open method? <br>
- *       A: This is by design allowing FeatureReader to encapsulate its InputStream or Rowset).
- *       Please assume that FeatureReaders are a single use proposition.
- *   <li>Q: All that exception handling is a pain! A: Yes it is, we have constructed semi-normal
- *       Java iterators to cut down on the pain. But you *do* still have to close 'em - this is IO
- *       after all.
- *   <li>Q: Can we include skip(int) - SeanG A: The order of the contents is not "known" or
- *       predicatable to the end user, so skip( int ) would be useless. For random access (a higher
- *       order of abstraction then FeatureReader) please look at FeatureList.
+ *       A: This is by design allowing FeatureReader to encapsulate its InputStream or Rowset). Please assume that
+ *       FeatureReaders are a single use proposition.
+ *   <li>Q: All that exception handling is a pain! A: Yes it is, we have constructed semi-normal Java iterators to cut
+ *       down on the pain. But you *do* still have to close 'em - this is IO after all.
+ *   <li>Q: Can we include skip(int) - SeanG A: The order of the contents is not "known" or predicatable to the end
+ *       user, so skip( int ) would be useless. For random access (a higher order of abstraction then FeatureReader)
+ *       please look at FeatureList.
  * </ul>
  *
  * @author Ian Schneider
@@ -92,8 +90,8 @@ public interface FeatureReader<T extends FeatureType, F extends Feature> extends
     /**
      * Query whether this FeatureReader has another Feature.
      *
-     * @return True if there are more Features to be read. In other words, true if calls to next
-     *     would return a feature rather than throwing an exception.
+     * @return True if there are more Features to be read. In other words, true if calls to next would return a feature
+     *     rather than throwing an exception.
      * @throws IOException If an error occurs determining if there are more Features.
      */
     boolean hasNext() throws IOException;

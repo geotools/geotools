@@ -26,11 +26,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strToLowerCase extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strToLowerCase",
-                    parameter("lowercase", String.class),
-                    parameter("string", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strToLowerCase", parameter("lowercase", String.class), parameter("string", String.class));
 
     public FilterFunction_strToLowerCase() {
         super(NAME);

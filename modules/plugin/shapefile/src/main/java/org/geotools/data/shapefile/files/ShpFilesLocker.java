@@ -26,11 +26,10 @@ class ShpFilesLocker {
     static final Logger LOGGER = Logging.getLogger(ShpFilesLocker.class);
 
     /**
-     * When true, the stack trace that got a lock that wasn't released is recorded and then printed
-     * out when warning the user about this.
+     * When true, the stack trace that got a lock that wasn't released is recorded and then printed out when warning the
+     * user about this.
      */
-    protected static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
 
     final URI uri;
     final URL url;
@@ -81,15 +80,13 @@ class ShpFilesLocker {
             id = writer.id();
         }
         if (TRACE_ENABLED) {
-            trace =
-                    new Trace(
-                            "Locking " + url + " for " + type + " by " + id + " in thread " + name);
+            trace = new Trace("Locking " + url + " for " + type + " by " + id + " in thread " + name);
         }
     }
 
     /**
-     * Returns the Exception that is created when the Locker is created. This is simply a way of
-     * determining who created the Locker.
+     * Returns the Exception that is created when the Locker is created. This is simply a way of determining who created
+     * the Locker.
      *
      * @return the Exception that is created when the Locker is created
      */
@@ -98,8 +95,8 @@ class ShpFilesLocker {
     }
 
     /**
-     * Verifies that the url and requestor are the same as the url and the reader or writer of this
-     * class. assertions are used so this will do nothing if assertions are not enabled.
+     * Verifies that the url and requestor are the same as the url and the reader or writer of this class. assertions
+     * are used so this will do nothing if assertions are not enabled.
      */
     public void compare(URL url2, Object requestor) {
         URL url = this.url;

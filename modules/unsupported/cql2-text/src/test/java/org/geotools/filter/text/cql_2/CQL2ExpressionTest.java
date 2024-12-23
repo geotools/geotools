@@ -33,8 +33,7 @@ public class CQL2ExpressionTest extends CQLExpressionTest {
         Expression expression = parseExpression("one:two.three$four_five");
         Assert.assertNotNull(expression);
         Assert.assertTrue(expression instanceof PropertyName);
-        Assert.assertEquals(
-                "one:two/three$four_five", ((PropertyName) expression).getPropertyName());
+        Assert.assertEquals("one:two/three$four_five", ((PropertyName) expression).getPropertyName());
     }
 
     @Override

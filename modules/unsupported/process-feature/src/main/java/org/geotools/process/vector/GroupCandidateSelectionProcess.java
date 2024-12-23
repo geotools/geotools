@@ -64,14 +64,12 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     FeatureCollection<? extends FeatureType, ? extends Feature> features,
             @DescribeParameter(
                             name = "aggregation",
-                            description =
-                                    "The aggregate operation to be computed, it can be MAX or MIN",
+                            description = "The aggregate operation to be computed, it can be MAX or MIN",
                             min = 1)
                     String aggregation,
             @DescribeParameter(
                             name = "operationAttribute",
-                            description =
-                                    "The feature's attribute to be used to compute the aggregation",
+                            description = "The feature's attribute to be used to compute the aggregation",
                             min = 1)
                     String operationAttribute,
             @DescribeParameter(
@@ -83,46 +81,34 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     List<String> groupingAttributes) {
         try {
             if (features == null) {
-                throw new ProcessException(
-                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
+                throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
             }
             if (operationAttribute == null) {
-                throw new ProcessException(
-                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
+                throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
             }
             if (groupingAttributes == null || groupingAttributes.isEmpty()) {
-                throw new ProcessException(
-                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
+                throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
             }
             if (aggregation == null) {
-                throw new ProcessException(
-                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "aggregation"));
+                throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "aggregation"));
             }
             Operations op = Operations.valueOf(aggregation);
             FeatureType schema = features.getSchema();
             NamespaceSupport ns = declareNamespaces(schema);
-            List<PropertyName> groupingPn =
-                    groupingAttributes.stream()
-                            .map(
-                                    g ->
-                                            validatePropertyName(
-                                                    new AttributeExpressionImpl(g, ns), schema))
-                            .collect(Collectors.toList());
-            PropertyName opValue =
-                    validatePropertyName(ff.property(operationAttribute, ns), schema);
-            return new GroupCandidateSelectionFeatureCollection<>(
-                    features, groupingPn, opValue, op);
+            List<PropertyName> groupingPn = groupingAttributes.stream()
+                    .map(g -> validatePropertyName(new AttributeExpressionImpl(g, ns), schema))
+                    .collect(Collectors.toList());
+            PropertyName opValue = validatePropertyName(ff.property(operationAttribute, ns), schema);
+            return new GroupCandidateSelectionFeatureCollection<>(features, groupingPn, opValue, op);
         } catch (IllegalArgumentException e) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
         }
     }
 
     public Query invertQuery(
             @DescribeParameter(
                             name = "operationAttribute",
-                            description =
-                                    "The feature's attribute to be used to compute the aggregation",
+                            description = "The feature's attribute to be used to compute the aggregation",
                             min = 1)
                     String operationAttribute,
             @DescribeParameter(
@@ -162,8 +148,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         List<PropertyName> properties =
                 groupingAttributes.stream().map(s -> ff.property(s)).collect(Collectors.toList());
         for (PropertyName pn : properties) {
-            if (!sortByAlreadyExists(sorts, pn))
-                newSorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
+            if (!sortByAlreadyExists(sorts, pn)) newSorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
         }
         if (!newSorts.isEmpty()) {
             if (sorts == null) return newSorts.toArray(new SortBy[newSorts.size()]);
@@ -172,8 +157,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         return sorts;
     }
 
-    private List<PropertyName> getNewProperties(
-            List<PropertyName> toAdd, List<PropertyName> originalProperties) {
+    private List<PropertyName> getNewProperties(List<PropertyName> toAdd, List<PropertyName> originalProperties) {
         Set<PropertyName> properties = new HashSet<>();
         if (originalProperties != null) {
             properties.addAll(originalProperties);
@@ -199,8 +183,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
     private PropertyName validatePropertyName(PropertyName pn, FeatureType schema) {
         // checks propertyName against the schema
         if (pn.evaluate(schema) == null)
-            throw new ProcessException(
-                    "Unable to resolve " + pn.getPropertyName() + " against the FeatureType");
+            throw new ProcessException("Unable to resolve " + pn.getPropertyName() + " against the FeatureType");
         return pn;
     }
 
@@ -221,8 +204,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
     }
 
     /**
-     * A FeatureCollection wrapper to filter out features according to the aggregation parameter and
-     * the groups defined by the groupingAttributes
+     * A FeatureCollection wrapper to filter out features according to the aggregation parameter and the groups defined
+     * by the groupingAttributes
      */
     static class GroupCandidateSelectionFeatureCollection<T extends FeatureType, F extends Feature>
             extends DecoratingFeatureCollection<T, F> {
@@ -255,11 +238,10 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
     }
 
     /**
-     * A FeatureIterator wrapper to filter out features according to the aggregation parameter and
-     * the groups defined by the groupingAttributes
+     * A FeatureIterator wrapper to filter out features according to the aggregation parameter and the groups defined by
+     * the groupingAttributes
      */
-    static class GroupCandidateSelectionIterator<F extends Feature>
-            extends DecoratingFeatureIterator<F> {
+    static class GroupCandidateSelectionIterator<F extends Feature> extends DecoratingFeatureIterator<F> {
 
         private List<PropertyName> groupByAttributes;
 
@@ -322,9 +304,8 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             }
             if (toCompareValues.isEmpty()) toCompareValues = null;
             if (groupingValues == null && toCompareValues == null) return true;
-            else if (groupingValues != null
-                    && toCompareValues != null
-                    && groupingValues.equals(toCompareValues)) return true;
+            else if (groupingValues != null && toCompareValues != null && groupingValues.equals(toCompareValues))
+                return true;
             else return false;
         }
 

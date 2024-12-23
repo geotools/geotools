@@ -70,13 +70,7 @@ public class PolygonHandlerTest extends TestCaseSupport {
 
         for (int i = 0; i < nx; i++) {
             for (int j = 0; j < ny; j++) {
-                holes.add(
-                        copyTo(
-                                x + s + i * (w + s),
-                                y + s + j * (h + s),
-                                w,
-                                h,
-                                rectangle(precision, 0)));
+                holes.add(copyTo(x + s + i * (w + s), y + s + j * (h + s), w, h, rectangle(precision, 0)));
             }
         }
 
@@ -94,8 +88,7 @@ public class PolygonHandlerTest extends TestCaseSupport {
     }
 
     public static LinearRing copyTo(double x, double y, double w, double h, LinearRing g) {
-        if (g.getNumPoints() != 5)
-            throw new IllegalArgumentException("Geometry must have 5 points");
+        if (g.getNumPoints() != 5) throw new IllegalArgumentException("Geometry must have 5 points");
 
         Coordinate[] coords = g.getCoordinates();
         coords[0].x = x;

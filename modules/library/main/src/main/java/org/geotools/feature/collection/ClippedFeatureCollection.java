@@ -34,8 +34,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * SimpleFeatureCollection wrapper that clip (crops) features according to the clip geometry passed.
- * Can preserve the Z dimension.
+ * SimpleFeatureCollection wrapper that clip (crops) features according to the clip geometry passed. Can preserve the Z
+ * dimension.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -46,8 +46,7 @@ public class ClippedFeatureCollection extends DecoratingSimpleFeatureCollection 
 
     static final Logger LOGGER = Logging.getLogger(ClippedFeatureCollection.class);
 
-    public ClippedFeatureCollection(
-            SimpleFeatureCollection delegate, Geometry clip, boolean preserveZ) {
+    public ClippedFeatureCollection(SimpleFeatureCollection delegate, Geometry clip, boolean preserveZ) {
         super(delegate);
         this.clip = clip;
         this.targetSchema = buildTargetSchema(delegate.getSchema());
@@ -66,8 +65,7 @@ public class ClippedFeatureCollection extends DecoratingSimpleFeatureCollection 
             if (ad instanceof GeometryDescriptor) {
                 GeometryDescriptor gd = (GeometryDescriptor) ad;
                 Class<?> binding = ad.getType().getBinding();
-                if (Point.class.isAssignableFrom(binding)
-                        || GeometryCollection.class.isAssignableFrom(binding)) {
+                if (Point.class.isAssignableFrom(binding) || GeometryCollection.class.isAssignableFrom(binding)) {
                     tb.add(ad);
                 } else {
                     Class target;

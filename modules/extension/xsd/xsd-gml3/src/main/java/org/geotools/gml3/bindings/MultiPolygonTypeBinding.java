@@ -115,9 +115,8 @@ public class MultiPolygonTypeBinding extends AbstractComplexBinding implements C
     }
 
     /**
-     * Implement comparable because both MultiPolygonBinding and MultiSurfaceBinding are bound to
-     * the same class, MultiPolygon. Since MultiPolygon is deprecated by gml3 MultiSurface always
-     * wins.
+     * Implement comparable because both MultiPolygonBinding and MultiSurfaceBinding are bound to the same class,
+     * MultiPolygon. Since MultiPolygon is deprecated by gml3 MultiSurface always wins.
      */
     @Override
     public int compareTo(Object o) {

@@ -32,8 +32,7 @@ public class JSONNodePropertyAccessorFactoryTest {
 
     @Test
     public void test() {
-        Assert.assertNotNull(
-                factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
+        Assert.assertNotNull(factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
         Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, null, null, null));
     }
 }

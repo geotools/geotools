@@ -28,13 +28,8 @@ public class FeatureUtilitiesTest {
     @Test
     public void testConvertPolygonToPointArrayRounding() throws Exception {
         Polygon polygon =
-                (Polygon)
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((-9.9 -9.9, -9.9 9.9, 9.9 9.9, 9.9 -9.9, -9.9 -9.9))");
-        java.awt.Polygon poly =
-                FeatureUtilities.convertPolygonToPointArray(
-                        polygon, IdentityTransform.create(2), null);
+                (Polygon) new WKTReader().read("POLYGON((-9.9 -9.9, -9.9 9.9, 9.9 9.9, 9.9 -9.9, -9.9 -9.9))");
+        java.awt.Polygon poly = FeatureUtilities.convertPolygonToPointArray(polygon, IdentityTransform.create(2), null);
 
         assertEquals(-10, poly.getBounds().x);
         assertEquals(-10, poly.getBounds().y);

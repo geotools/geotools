@@ -66,17 +66,16 @@ public class MBStyleTransformer {
     }
 
     /**
-     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External
-     * Graphic referencing the full URL of the image for consumption by the {@link
-     * SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
+     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the
+     * full URL of the image for consumption by the {@link SpriteGraphicFactory}. (The format of the image will be
+     * {@link SpriteGraphicFactory#FORMAT}).
      *
      * @see org.geotools.mbstyle.sprite.SpriteGraphicFactory
      * @param iconName The name of the icon inside the spritesheet.
      * @param iconSize The size (scale multiplier) to apply to the icon. (Nullable).
-     * @param styleContext The style context in which to resolve the icon name to the full sprite
-     *     URL (for consumption by the {@link SpriteGraphicFactory}).
-     * @return An external graphic with the full URL of the mage for the {@link
-     *     SpriteGraphicFactory}.
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption
+     *     by the {@link SpriteGraphicFactory}).
+     * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
      */
     public ExternalGraphic createExternalGraphicForSprite(
             Expression iconName, Expression iconSize, MBStyle styleContext) {
@@ -113,25 +112,22 @@ public class MBStyleTransformer {
     }
 
     /**
-     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External
-     * Graphic referencing the full URL of the image for consumption by the {@link
-     * SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
+     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the
+     * full URL of the image for consumption by the {@link SpriteGraphicFactory}. (The format of the image will be
+     * {@link SpriteGraphicFactory#FORMAT}).
      *
      * @see SpriteGraphicFactory
      * @param iconName The name of the icon inside the spritesheet.
-     * @param styleContext The style context in which to resolve the icon name to the full sprite
-     *     URL (for consumption by the {@link SpriteGraphicFactory}).
-     * @return An external graphic with the full URL of the mage for the {@link
-     *     SpriteGraphicFactory}.
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption
+     *     by the {@link SpriteGraphicFactory}).
+     * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
      */
-    public ExternalGraphic createExternalGraphicForSprite(
-            Expression iconName, MBStyle styleContext) {
+    public ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
         return createExternalGraphicForSprite(iconName, ff.literal("1"), styleContext);
     }
 
     /**
-     * Given a string of "bottom-right" or "top-left" find the x,y coordinates and create an
-     * AnchorPoint
+     * Given a string of "bottom-right" or "top-left" find the x,y coordinates and create an AnchorPoint
      *
      * @param textAnchor The value of the "text-anchor" property in the mapbox style.
      * @return AnchorPoint
@@ -142,20 +138,17 @@ public class MBStyleTransformer {
     }
 
     /**
-     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression
-     * string.
+     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression string.
      *
      * <p>E.g., convert "<code>String with {tokens}</code>" to a CQL Expression (String) "<code>
      * String with ${tokens}</code>".
      *
      * <p>See documentation of Mapbox {token} values, linked below.
      *
-     * @see <a
-     *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox
-     *     Style Spec: {token} values for icon-image</a>
-     * @see <a
-     *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox
-     *     Style Spec: {token} values for text-field</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec:
+     *     {token} values for icon-image</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec:
+     *     {token} values for text-field</a>
      * @param tokenStr A string with mapbox-style tokens
      * @return A CQL Expression
      */
@@ -173,12 +166,10 @@ public class MBStyleTransformer {
      *
      * <p>See documentation of Mapbox {token} values, linked below.
      *
-     * @see <a
-     *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox
-     *     Style Spec: {token} values for icon-image</a>
-     * @see <a
-     *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox
-     *     Style Spec: {token} values for text-field</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec:
+     *     {token} values for icon-image</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec:
+     *     {token} values for text-field</a>
      * @param tokenStr A string with mapbox-style tokens
      * @return A CQL Expression
      */
@@ -186,41 +177,33 @@ public class MBStyleTransformer {
         try {
             return ExpressionExtractor.extractCqlExpressions(cqlStringFromTokens(tokenStr));
         } catch (IllegalArgumentException iae) {
-            LOGGER.warning(
-                    "Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
-                            + tokenStr
-                            + "\". Exception was: "
-                            + iae.getMessage());
+            LOGGER.warning("Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
+                    + tokenStr
+                    + "\". Exception was: "
+                    + iae.getMessage());
             return ff.literal(tokenStr);
         }
     }
 
     /**
-     * Utility method for getting a concrete value out of an expression, used by transformer methods
-     * when GeoTools is unable to accept an expression.
+     * Utility method for getting a concrete value out of an expression, used by transformer methods when GeoTools is
+     * unable to accept an expression.
      *
      * <ul>
-     *   <li>If the provided {@link Expression} is a {@link Literal}, evaluates it and returns the
-     *       value.
-     *   <li>Otherwise, returns the provided fallback value and logs a warning that dynamic styling
-     *       is not yet supported for this property.
+     *   <li>If the provided {@link Expression} is a {@link Literal}, evaluates it and returns the value.
+     *   <li>Otherwise, returns the provided fallback value and logs a warning that dynamic styling is not yet supported
+     *       for this property.
      * </ul>
      *
      * @param expression The expression
      * @param clazz The type to provide as the context for the expression's evaluation.
      * @param fallback The value to return if the expression is not a literal
-     * @param propertyName The name of the property that the expression corresponds to, for logging
-     *     purposes.
+     * @param propertyName The name of the property that the expression corresponds to, for logging purposes.
      * @param layerId The ID of the layer that the expression corresponds to, for logging purposes.
-     * @return The evaluated value of the provided {@link Expression}, or the provided fallback
-     *     value.
+     * @return The evaluated value of the provided {@link Expression}, or the provided fallback value.
      */
     public static <T> T requireLiteral(
-            Expression expression,
-            Class<T> clazz,
-            T fallback,
-            String propertyName,
-            String layerId) {
+            Expression expression, Class<T> clazz, T fallback, String propertyName, String layerId) {
         if (expression instanceof Literal) {
             T value = expression.evaluate(null, clazz);
             if (value != null) {
@@ -229,13 +212,12 @@ public class MBStyleTransformer {
                 return fallback;
             }
         } else {
-            LOGGER.warning(
-                    "Mapbox '"
-                            + propertyName
-                            + "' property: functions not yet supported for this property, falling back to default value."
-                            + " (layerId = '"
-                            + layerId
-                            + "')");
+            LOGGER.warning("Mapbox '"
+                    + propertyName
+                    + "' property: functions not yet supported for this property, falling back to default value."
+                    + " (layerId = '"
+                    + layerId
+                    + "')");
             return fallback;
         }
     }

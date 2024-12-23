@@ -30,10 +30,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class LengthFunction extends FunctionExpressionImpl {
     // public static FunctionName NAME = new FunctionNameImpl("length","string");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "length",
-                    parameter("length", Integer.class),
-                    parameter("string", String.class));
+            new FunctionNameImpl("length", parameter("length", Integer.class), parameter("string", String.class));
 
     public LengthFunction() {
         super(NAME);

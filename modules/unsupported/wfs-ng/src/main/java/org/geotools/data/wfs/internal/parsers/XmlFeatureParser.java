@@ -47,8 +47,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  *
  * @author Adam Brown (Curtin University of Technology)
  */
-public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature>
-        implements GetParser<F> {
+public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature> implements GetParser<F> {
 
     protected FT targetType;
 
@@ -97,10 +96,9 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
                     break;
                 }
             }
-            final String namespace =
-                    (strategy == null
-                            ? WFS.NAMESPACE
-                            : strategy.getWfsConfiguration().getNamespaceURI());
+            final String namespace = (strategy == null
+                    ? WFS.NAMESPACE
+                    : strategy.getWfsConfiguration().getNamespaceURI());
             parser.require(START_ELEMENT, namespace, WFS.FeatureCollection.getLocalPart());
 
             String nof = parser.getAttributeValue(null, "numberOfFeatures");
@@ -149,12 +147,8 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         }
     }
 
-    /**
-     * Parses the value of the current attribute, parser cursor shall be on a feature attribute
-     * START_ELEMENT event.
-     */
-    protected Object parseAttributeValue(AttributeDescriptor attribute)
-            throws XMLStreamException, IOException {
+    /** Parses the value of the current attribute, parser cursor shall be on a feature attribute START_ELEMENT event. */
+    protected Object parseAttributeValue(AttributeDescriptor attribute) throws XMLStreamException, IOException {
         final AttributeType type = attribute.getType();
         Object parsedValue;
         if (type instanceof GeometryType) {
@@ -188,9 +182,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
                 String name = parser.getLocalName();
 
                 if (featureNamespace.equals(namespace) && featureName.equals(name)) {
-                    String featureId =
-                            parser.getAttributeValue(
-                                    GML.id.getNamespaceURI(), GML.id.getLocalPart());
+                    String featureId = parser.getAttributeValue(GML.id.getNamespaceURI(), GML.id.getLocalPart());
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

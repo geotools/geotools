@@ -24,8 +24,7 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * Base HTTPClientFactory adding wrapper client's to the desired HTTP Client like for instance
- * LoggingHTTPClient.
+ * Base HTTPClientFactory adding wrapper client's to the desired HTTP Client like for instance LoggingHTTPClient.
  *
  * @author Roar Brænden
  */
@@ -35,19 +34,13 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
 
     public AbstractHTTPClientFactory() {}
 
-    /**
-     * Returns true if a given factory have a HTTP_CLIENT given by the hint, or meets the behaviors.
-     */
+    /** Returns true if a given factory have a HTTP_CLIENT given by the hint, or meets the behaviors. */
     @Override
     public final boolean canProcess(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
 
         Object val = hints.get(Hints.HTTP_CLIENT);
-        return clientClasses().stream()
-                .filter(cls -> matchClientHint(cls, val))
-                .anyMatch(
-                        cls ->
-                                behaviors.stream()
-                                        .allMatch(behavior -> behavior.isAssignableFrom(cls)));
+        return clientClasses().stream().filter(cls -> matchClientHint(cls, val)).anyMatch(cls -> behaviors.stream()
+                .allMatch(behavior -> behavior.isAssignableFrom(cls)));
     }
 
     private static boolean matchClientHint(Class<?> cls, Object val) {
@@ -72,28 +65,25 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     protected abstract List<Class<?>> clientClasses();
 
     /**
-     * Create instance of HTTPClient. Behaviors should be used if factory creates different
-     * client's. Otherwise it's excessive to use.
+     * Create instance of HTTPClient. Behaviors should be used if factory creates different client's. Otherwise it's
+     * excessive to use.
      */
     @Override
     public abstract HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors);
 
     @Override
-    public final HTTPClient createClient(
-            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+    public final HTTPClient createClient(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         HTTPClient client = createClient(behaviors);
-        Set<Class<? extends HTTPBehavior>> missingBehaviors =
-                behaviors.stream()
-                        .filter(behavior -> !behavior.isInstance(client))
-                        .collect(Collectors.toSet());
+        Set<Class<? extends HTTPBehavior>> missingBehaviors = behaviors.stream()
+                .filter(behavior -> !behavior.isInstance(client))
+                .collect(Collectors.toSet());
         if (!missingBehaviors.isEmpty()) {
-            throw new RuntimeException(
-                    String.format(
-                            "HTTP client %s doesn't support behaviors: %s",
-                            client.getClass().getName(),
-                            missingBehaviors.stream()
-                                    .map(behavior -> behavior.getSimpleName())
-                                    .collect(Collectors.joining(", "))));
+            throw new RuntimeException(String.format(
+                    "HTTP client %s doesn't support behaviors: %s",
+                    client.getClass().getName(),
+                    missingBehaviors.stream()
+                            .map(behavior -> behavior.getSimpleName())
+                            .collect(Collectors.joining(", "))));
         }
         if (hints.containsKey(Hints.HTTP_LOGGING)) {
             return applyLogging(client, hints);

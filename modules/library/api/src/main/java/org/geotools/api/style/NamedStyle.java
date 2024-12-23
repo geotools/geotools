@@ -19,10 +19,10 @@ package org.geotools.api.style;
 /**
  * A NamedStyle is used to refer to a style that has a name in a WMS.
  *
- * <p>A NamedStyle is a Style that has only Name, so all setters other than setName will throw an
- * <code>UnsupportedOperationException</code> The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>A NamedStyle is a Style that has only Name, so all setters other than setName will throw an <code>
+ * UnsupportedOperationException</code> The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor Report (OGC 02-070)
+ * version 1.0.0.</a>:
  *
  * <pre><code>
  * &lt;xsd:element name="NamedStyle"&gt;

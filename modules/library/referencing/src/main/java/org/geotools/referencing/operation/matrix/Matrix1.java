@@ -21,9 +21,8 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. This trivial matrix is returned as a
- * result of {@linkplain org.geotools.api.referencing.operation.MathTransform1D} derivative
- * computation.
+ * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. This trivial matrix is returned as a result of
+ * {@linkplain org.geotools.api.referencing.operation.MathTransform1D} derivative computation.
  *
  * @since 2.2
  * @version $Id$
@@ -50,8 +49,8 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /**
-     * Creates a new matrix initialized to the same value than the specified one. The specified
-     * matrix size must be {@value #SIZE}&times;{@value #SIZE}.
+     * Creates a new matrix initialized to the same value than the specified one. The specified matrix size must be
+     * {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix1(final Matrix matrix) {
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
@@ -60,19 +59,13 @@ public class Matrix1 implements XMatrix, Serializable {
         m00 = matrix.getElement(0, 0);
     }
 
-    /**
-     * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of rows in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumRow() {
         return SIZE;
     }
 
-    /**
-     * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumCol() {
         return SIZE;
@@ -192,8 +185,8 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /**
-     * Returns {@code true} if the specified object is of type {@code Matrix1} and all of the data
-     * members are equal to the corresponding data members in this matrix.
+     * Returns {@code true} if the specified object is of type {@code Matrix1} and all of the data members are equal to
+     * the corresponding data members in this matrix.
      */
     @Override
     public boolean equals(final Object object) {
@@ -211,8 +204,8 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this matrix. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes only.
      */
     @Override
     public String toString() {
@@ -233,15 +226,13 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void getRow(int row, double[] array) {
         if (array.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call getRow received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call getRow received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         if (row != 0) {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (" + row + " , 0)");
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row + " , 0)");
         }
         array[0] = m00;
     }
@@ -249,11 +240,10 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         m00 = values[0];
     }
@@ -261,15 +251,13 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void getColumn(int column, double[] array) {
         if (array.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call getColumn received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call getColumn received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         if (column != 0) {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (0 , " + column + ")");
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column + ")");
         }
         array[0] = m00;
     }
@@ -277,11 +265,10 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != 0) {
-            throw new IllegalArgumentException(
-                    "Call setColumn received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call setColumn received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         m00 = values[0];
     }

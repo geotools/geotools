@@ -68,8 +68,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
             Assert.assertNotNull(dataAccess);
             FeatureType mappedFeatureType = dataAccess.getSchema(MAPPED_FEATURE);
             Assert.assertNotNull(mappedFeatureType);
-            FeatureSource<FeatureType, Feature> source =
-                    dataAccess.getFeatureSource(MAPPED_FEATURE);
+            FeatureSource<FeatureType, Feature> source = dataAccess.getFeatureSource(MAPPED_FEATURE);
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
             Map<String, Feature> featureMap = new LinkedHashMap<>();
             try (FeatureIterator<Feature> iterator = features.features()) {
@@ -82,39 +81,23 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
             // test gml:name
             Assert.assertEquals(
                     "First",
-                    ((ComplexAttribute)
-                                    featureMap
-                                            .get("mf.1")
-                                            .getProperty(new NameImpl(GML.NAMESPACE, "name")))
+                    ((ComplexAttribute) featureMap.get("mf.1").getProperty(new NameImpl(GML.NAMESPACE, "name")))
                             .getProperty(new NameImpl("simpleContent"))
                             .getValue());
             Assert.assertEquals(
                     "Second",
-                    ((ComplexAttribute)
-                                    featureMap
-                                            .get("mf.2")
-                                            .getProperty(new NameImpl(GML.NAMESPACE, "name")))
+                    ((ComplexAttribute) featureMap.get("mf.2").getProperty(new NameImpl(GML.NAMESPACE, "name")))
                             .getProperty(new NameImpl("simpleContent"))
                             .getValue());
             // test gsml:resolutionScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer
             for (int i = 1; i <= 2; i++) {
                 Assert.assertEquals(
                         BigInteger.valueOf(250000),
-                        ((ComplexAttribute)
-                                        ((ComplexAttribute)
-                                                        ((ComplexAttribute)
-                                                                        featureMap
-                                                                                .get("mf." + i)
-                                                                                .getProperty(
-                                                                                        new NameImpl(
-                                                                                                GSML,
-                                                                                                "resolutionScale")))
-                                                                .getProperty(
-                                                                        new NameImpl(
-                                                                                GMD.NAMESPACE,
-                                                                                "MD_RepresentativeFraction")))
-                                                .getProperty(
-                                                        new NameImpl(GMD.NAMESPACE, "denominator")))
+                        ((ComplexAttribute) ((ComplexAttribute) ((ComplexAttribute) featureMap
+                                                        .get("mf." + i)
+                                                        .getProperty(new NameImpl(GSML, "resolutionScale")))
+                                                .getProperty(new NameImpl(GMD.NAMESPACE, "MD_RepresentativeFraction")))
+                                        .getProperty(new NameImpl(GMD.NAMESPACE, "denominator")))
                                 .getProperty(new NameImpl(GCO.NAMESPACE, "Integer"))
                                 .getValue());
             }

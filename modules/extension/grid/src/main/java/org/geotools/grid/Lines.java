@@ -38,26 +38,24 @@ import org.geotools.referencing.CRS;
 public class Lines {
 
     /**
-     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis
-     * or both according to the provided line definitions.
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis or both according to
+     * the provided line definitions.
      *
      * @param bounds the bounding envelope
      * @param lineDefs one or more ortho-line definitions
      * @return the vector grid of lines
      * @see OrthoLineDef
      */
-    public static SimpleFeatureSource createOrthoLines(
-            ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs) {
+    public static SimpleFeatureSource createOrthoLines(ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs) {
 
         return createOrthoLines(bounds, lineDefs, 0.0);
     }
 
     /**
-     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis
-     * or both according to the provided line definitions. Densified lines (lines strings with
-     * additional vertices along their length) can be created by setting the value of {@code
-     * vertexSpacing} greater than zero; if so, any lines more than twice as long as this value will
-     * be densified.
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis or both according to
+     * the provided line definitions. Densified lines (lines strings with additional vertices along their length) can be
+     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any lines more than twice as long
+     * as this value will be densified.
      *
      * @param bounds the bounding envelope
      * @param lineDefs one or more ortho-line definitions
@@ -68,18 +66,15 @@ public class Lines {
             ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs, double vertexSpacing) {
 
         return createOrthoLines(
-                bounds,
-                lineDefs,
-                vertexSpacing,
-                new OrthoLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                bounds, lineDefs, vertexSpacing, new OrthoLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
-     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis
-     * or both according to the provided line definitions. Line features will be created using the
-     * supplied feature builder. Densified lines (lines strings with additional vertices along their
-     * length) can be created by setting the value of {@code vertexSpacing} greater than zero; if
-     * so, any lines more than twice as long as this value will be densified.
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's X-axis, Y-axis or both according to
+     * the provided line definitions. Line features will be created using the supplied feature builder. Densified lines
+     * (lines strings with additional vertices along their length) can be created by setting the value of
+     * {@code vertexSpacing} greater than zero; if so, any lines more than twice as long as this value will be
+     * densified.
      *
      * @param bounds the bounding envelope
      * @param lineDefs one or more ortho-line definitions
@@ -102,13 +97,9 @@ public class Lines {
         }
 
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem builderCRS =
-                lineFeatureBuilder.getType().getCoordinateReferenceSystem();
-        if (boundsCRS != null
-                && builderCRS != null
-                && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException(
-                    "Different CRS set for bounds and the feature builder");
+        CoordinateReferenceSystem builderCRS = lineFeatureBuilder.getType().getCoordinateReferenceSystem();
+        if (boundsCRS != null && builderCRS != null && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final ListFeatureCollection fc = new ListFeatureCollection(lineFeatureBuilder.getType());

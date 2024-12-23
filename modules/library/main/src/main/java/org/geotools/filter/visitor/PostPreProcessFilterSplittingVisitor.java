@@ -91,40 +91,35 @@ import org.geotools.filter.IllegalFilterException;
 /**
  * Determines what queries can be processed server side and which can be processed client side.
  *
- * <p>IMPLEMENTATION NOTE: This class is implemented as a stack processor. If you're curious how it
- * works, compare it with the old SQLUnpacker class, which did the same thing using recursion in a
- * more straightforward way.
+ * <p>IMPLEMENTATION NOTE: This class is implemented as a stack processor. If you're curious how it works, compare it
+ * with the old SQLUnpacker class, which did the same thing using recursion in a more straightforward way.
  *
- * <p>Here's a non-implementors best-guess at the algorithm: Starting at the top of the filter,
- * split each filter into its constituent parts. If the given FilterCapabilities support the given
- * operator, then keep checking downwards.
+ * <p>Here's a non-implementors best-guess at the algorithm: Starting at the top of the filter, split each filter into
+ * its constituent parts. If the given FilterCapabilities support the given operator, then keep checking downwards.
  *
- * <p>The key is in knowing whether or not something "down the tree" from you wound up being
- * supported or not. This is where the stacks come in. Right before handing off to accept() the sub-
- * filters, we count how many things are currently on the "can be proccessed by the underlying
- * datastore" stack (the preStack) and we count how many things are currently on the "need to be
- * post- processed" stack.
+ * <p>The key is in knowing whether or not something "down the tree" from you wound up being supported or not. This is
+ * where the stacks come in. Right before handing off to accept() the sub- filters, we count how many things are
+ * currently on the "can be proccessed by the underlying datastore" stack (the preStack) and we count how many things
+ * are currently on the "need to be post- processed" stack.
  *
- * <p>After the accept() call returns, we look again at the preStack.size() and postStack.size(). If
- * the postStack has grown, that means that there was stuff down in the accept()-ed filter that
- * wasn't supportable. Usually this means that our filter isn't supportable, but not always.
+ * <p>After the accept() call returns, we look again at the preStack.size() and postStack.size(). If the postStack has
+ * grown, that means that there was stuff down in the accept()-ed filter that wasn't supportable. Usually this means
+ * that our filter isn't supportable, but not always.
  *
- * <p>In some cases a sub-filter being unsupported isn't necessarily bad, as we can 'unpack' OR
- * statements into AND statements (DeMorgans rule/modus poens) and still see if we can handle the
- * other side of the OR. Same with NOT and certain kinds of AND statements.
+ * <p>In some cases a sub-filter being unsupported isn't necessarily bad, as we can 'unpack' OR statements into AND
+ * statements (DeMorgans rule/modus poens) and still see if we can handle the other side of the OR. Same with NOT and
+ * certain kinds of AND statements.
  *
- * <p>In addition this class supports the case where we're doing an split in the middle of a
- * client-side transaction. I.e. imagine doing a <Transaction> against a WFS-T where you have to
- * filter against actions that happened previously in the transaction. That's what the
- * ClientTransactionAccessor interface does, and this class splits filters while respecting the
- * information about deletes and updates that have happened previously in the Transaction. I can't
- * say with certainty exactly how the logic for that part of this works, but the test suite does
- * seem to test it and the tests do pass.
+ * <p>In addition this class supports the case where we're doing an split in the middle of a client-side transaction.
+ * I.e. imagine doing a <Transaction> against a WFS-T where you have to filter against actions that happened previously
+ * in the transaction. That's what the ClientTransactionAccessor interface does, and this class splits filters while
+ * respecting the information about deletes and updates that have happened previously in the Transaction. I can't say
+ * with certainty exactly how the logic for that part of this works, but the test suite does seem to test it and the
+ * tests do pass.
  *
  * @author dzwiers
- * @author commented and ported from gt to ogc filters by saul.farber TODO: check if possible to
- *     deprecate @ deprecated use {@link CapabilitiesFilterSplitter} instead for geoapi
- *     FilterCapabilities
+ * @author commented and ported from gt to ogc filters by saul.farber TODO: check if possible to deprecate @ deprecated
+ *     use {@link CapabilitiesFilterSplitter} instead for geoapi FilterCapabilities
  */
 public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, ExpressionVisitor {
     private static final Logger logger =
@@ -138,15 +133,14 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     protected Stack<Object> postStack = new Stack<>();
 
     /**
-     * The stack holding the bits of the filter that <b>are</b> processable by something with the
-     * given {@link FilterCapabilities}
+     * The stack holding the bits of the filter that <b>are</b> processable by something with the given
+     * {@link FilterCapabilities}
      */
     protected Stack<Object> preStack = new Stack<>();
 
     /**
-     * Operates similar to postStack. When a update is determined to affect an attribute expression
-     * the update filter is pushed on to the stack, then ored with the filter that contains the
-     * expression.
+     * Operates similar to postStack. When a update is determined to affect an attribute expression the update filter is
+     * pushed on to the stack, then ored with the filter that contains the expression.
      */
     private Set<Object> changedStack = new HashSet<>();
 
@@ -157,8 +151,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     protected Filter original = null;
 
     /**
-     * If we're in the middle of a client-side transaction, this object will help us figure out what
-     * we need to handle from updates/deletes that we're tracking client-side.
+     * If we're in the middle of a client-side transaction, this object will help us figure out what we need to handle
+     * from updates/deletes that we're tracking client-side.
      */
     private ClientTransactionAccessor transactionAccessor;
 
@@ -171,28 +165,23 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     /**
      * Create a new instance.
      *
-     * @param fcs The FilterCapabilties that describes what Filters/Expressions the server can
-     *     process.
+     * @param fcs The FilterCapabilties that describes what Filters/Expressions the server can process.
      * @param parent The FeatureType that this filter involves. Why is this needed?
-     * @param transactionAccessor If the transaction is handled on the client and not the server
-     *     then different filters must be sent to the server. This class provides a generic way of
-     *     obtaining the information from the transaction.
+     * @param transactionAccessor If the transaction is handled on the client and not the server then different filters
+     *     must be sent to the server. This class provides a generic way of obtaining the information from the
+     *     transaction.
      */
     public PostPreProcessFilterSplittingVisitor(
-            FilterCapabilities fcs,
-            SimpleFeatureType parent,
-            ClientTransactionAccessor transactionAccessor) {
+            FilterCapabilities fcs, SimpleFeatureType parent, ClientTransactionAccessor transactionAccessor) {
         this.fcs = fcs;
         this.parent = parent;
         this.transactionAccessor = transactionAccessor;
     }
 
     /**
-     * Gets the filter that cannot be sent to the server and must be post-processed on the client by
-     * geotools.
+     * Gets the filter that cannot be sent to the server and must be post-processed on the client by geotools.
      *
-     * @return the filter that cannot be sent to the server and must be post-processed on the client
-     *     by geotools.
+     * @return the filter that cannot be sent to the server and must be post-processed on the client by geotools.
      */
     public Filter getFilterPost() {
         if (!changedStack.isEmpty())
@@ -274,8 +263,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 
     /**
      * @see FilterVisitor#visit(PropertyIsBetween, Object)
-     *     <p>NOTE: This method is extra documented as an example of how all the other methods are
-     *     implemented. If you want to know how this class works read this method first!
+     *     <p>NOTE: This method is extra documented as an example of how all the other methods are implemented. If you
+     *     want to know how this class works read this method first!
      * @param filter the {@link Filter} to visit
      */
     @Override
@@ -530,19 +519,18 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (original == null) original = filter;
 
         @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-        Class<? extends Filter>[] spatialOps =
-                new Class[] {
-                    Beyond.class,
-                    Contains.class,
-                    Crosses.class,
-                    Disjoint.class,
-                    DWithin.class,
-                    Equals.class,
-                    Intersects.class,
-                    Overlaps.class,
-                    Touches.class,
-                    Within.class
-                };
+        Class<? extends Filter>[] spatialOps = new Class[] {
+            Beyond.class,
+            Contains.class,
+            Crosses.class,
+            Disjoint.class,
+            DWithin.class,
+            Equals.class,
+            Intersects.class,
+            Overlaps.class,
+            Touches.class,
+            Within.class
+        };
 
         for (Class<? extends Filter> spatialOp : spatialOps) {
             if (spatialOp.isAssignableFrom(filter.getClass())) {
@@ -803,10 +791,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         // JD: use an expression to get at the attribute type intead of accessing directly
         if (parent != null && expression.evaluate(parent) == null) {
             throw new IllegalArgumentException(
-                    "Property '"
-                            + expression.getPropertyName()
-                            + "' could not be found in "
-                            + parent.getTypeName());
+                    "Property '" + expression.getPropertyName() + "' could not be found in " + parent.getTypeName());
         }
         if (transactionAccessor != null) {
             Filter updateFilter = transactionAccessor.getUpdateFilter(expression.getPropertyName());
@@ -851,10 +836,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     protected void visitMathExpression(BinaryExpression expression) {
-        if (!supports(Add.class)
-                && !supports(Subtract.class)
-                && !supports(Multiply.class)
-                && !supports(Divide.class)) {
+        if (!supports(Add.class) && !supports(Subtract.class) && !supports(Multiply.class) && !supports(Divide.class)) {
             postStack.push(expression);
             return;
         }
@@ -1080,8 +1062,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (value instanceof Class) supports = fcs.supports((Class) value);
         else if (value instanceof Filter) supports = fcs.supports((Filter) value);
         else if (value instanceof Expression) supports = fcs.supports(value.getClass());
-        else if (value instanceof FilterCapabilities)
-            supports = fcs.supports((FilterCapabilities) value);
+        else if (value instanceof FilterCapabilities) supports = fcs.supports((FilterCapabilities) value);
 
         return supports;
     }

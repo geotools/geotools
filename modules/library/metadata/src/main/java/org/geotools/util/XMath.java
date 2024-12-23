@@ -32,9 +32,8 @@ public final class XMath {
     private XMath() {}
 
     /**
-     * Finds the least float greater than d (if positive == true), or the greatest float less than d
-     * (if positive == false). If NaN, returns same value. This code is an adaptation of {@link
-     * java.text.ChoiceFormat#nextDouble}.
+     * Finds the least float greater than d (if positive == true), or the greatest float less than d (if positive ==
+     * false). If NaN, returns same value. This code is an adaptation of {@link java.text.ChoiceFormat#nextDouble}.
      *
      * @todo Remove this method when we will be allowed to use Java 6.
      */
@@ -114,38 +113,36 @@ public final class XMath {
     }
 
     /**
-     * Returns the next or previous representable number. If {@code amount} is equals to {@code 0},
-     * then this method returns the {@code value} unchanged. Otherwise, The operation performed
-     * depends on the specified {@code type}:
+     * Returns the next or previous representable number. If {@code amount} is equals to {@code 0}, then this method
+     * returns the {@code value} unchanged. Otherwise, The operation performed depends on the specified {@code type}:
      *
      * <ul>
      *   <li>
      *       <p>If the {@code type} is {@link Double}, then this method is equivalent to invoking
-     *       {@link #previous(double)} if {@code amount} is equals to {@code -1}, or invoking {@link
-     *       #next(double)} if {@code amount} is equals to {@code +1}. If {@code amount} is smaller
-     *       than {@code -1} or greater than {@code +1}, then this method invokes {@link
-     *       #previous(double)} or {@link #next(double)} in a loop for {@code abs(amount)} times.
+     *       {@link #previous(double)} if {@code amount} is equals to {@code -1}, or invoking {@link #next(double)} if
+     *       {@code amount} is equals to {@code +1}. If {@code amount} is smaller than {@code -1} or greater than
+     *       {@code +1}, then this method invokes {@link #previous(double)} or {@link #next(double)} in a loop for
+     *       {@code abs(amount)} times.
      *   <li>
      *       <p>If the {@code type} is {@link Float}, then this method is equivalent to invoking
-     *       {@link #previous(float)} if {@code amount} is equals to {@code -1}, or invoking {@link
-     *       #next(float)} if {@code amount} is equals to {@code +1}. If {@code amount} is smaller
-     *       than {@code -1} or greater than {@code +1}, then this method invokes {@link
-     *       #previous(float)} or {@link #next(float)} in a loop for {@code abs(amount)} times.
+     *       {@link #previous(float)} if {@code amount} is equals to {@code -1}, or invoking {@link #next(float)} if
+     *       {@code amount} is equals to {@code +1}. If {@code amount} is smaller than {@code -1} or greater than
+     *       {@code +1}, then this method invokes {@link #previous(float)} or {@link #next(float)} in a loop for
+     *       {@code abs(amount)} times.
      *   <li>
-     *       <p>If the {@code type} is an {@linkplain #isInteger integer}, then invoking this method
-     *       is equivalent to computing {@code value + amount}.
+     *       <p>If the {@code type} is an {@linkplain #isInteger integer}, then invoking this method is equivalent to
+     *       computing {@code value + amount}.
      * </ul>
      *
-     * @param type The type. Should be the class of {@link Double}, {@link Float}, {@link Long},
-     *     {@link Integer}, {@link Short} or {@link Byte}.
+     * @param type The type. Should be the class of {@link Double}, {@link Float}, {@link Long}, {@link Integer},
+     *     {@link Short} or {@link Byte}.
      * @param value The number to rool.
-     * @param amount -1 to return the previous representable number, +1 to return the next
-     *     representable number, or 0 to return the number with no change.
+     * @param amount -1 to return the previous representable number, +1 to return the next representable number, or 0 to
+     *     return the number with no change.
      * @return One of previous or next representable number as a {@code double}.
      * @throws IllegalArgumentException if {@code type} is not one of supported types.
      */
-    public static double rool(final Class type, double value, int amount)
-            throws IllegalArgumentException {
+    public static double rool(final Class type, double value, int amount) throws IllegalArgumentException {
         if (Double.class.equals(type)) {
             if (amount < 0) {
                 do {
@@ -174,7 +171,6 @@ public final class XMath {
         if (Classes.isInteger(type)) {
             return value + amount;
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
     }
 }

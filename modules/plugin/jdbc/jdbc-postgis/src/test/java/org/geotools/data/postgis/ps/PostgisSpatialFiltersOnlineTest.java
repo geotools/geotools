@@ -51,10 +51,7 @@ public class PostgisSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTes
         FilterFactory ff = dataStore.getFilterFactory();
         GeometryFactory gf = dataStore.getGeometryFactory();
         Function nearest =
-                ff.function(
-                        "pgNearest",
-                        ff.literal(gf.createPoint(new Coordinate(-0.5, -0.5))),
-                        ff.literal(1));
+                ff.function("pgNearest", ff.literal(gf.createPoint(new Coordinate(-0.5, -0.5))), ff.literal(1));
         Query q = new Query(tname("road"), ff.equals(nearest, ff.literal(true)));
         SimpleFeature feature = DataUtilities.first(fs.getFeatures(q));
         assertEquals(0, (int) feature.getAttribute("id"));
@@ -67,10 +64,7 @@ public class PostgisSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTes
         FilterFactory ff = dataStore.getFilterFactory();
         GeometryFactory gf = dataStore.getGeometryFactory();
         Function nearest =
-                ff.function(
-                        "pgNearest",
-                        ff.literal(gf.createPoint(new Coordinate(-0.5, -0.5))),
-                        ff.literal(2));
+                ff.function("pgNearest", ff.literal(gf.createPoint(new Coordinate(-0.5, -0.5))), ff.literal(2));
         Query q = new Query(tname("road"), ff.equals(nearest, ff.literal(true)));
         ContentFeatureCollection fc = fs.getFeatures(q);
         try (Stream<SimpleFeature> featuresStream = FeatureStreams.toFeatureStream(fc)) {

@@ -35,8 +35,8 @@ public class Text {
     /**
      * Create a international string based on the provided English text.
      *
-     * <p>We will hook up this method to a properties file at a later time, making other
-     * translations available via the Factory SPI mechanism.
+     * <p>We will hook up this method to a properties file at a later time, making other translations available via the
+     * Factory SPI mechanism.
      *
      * @return SimpleInternationalString
      */

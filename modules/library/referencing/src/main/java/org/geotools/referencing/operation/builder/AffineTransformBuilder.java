@@ -22,9 +22,9 @@ import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 
 /**
- * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as
- * Affine transformation from a list of {@linkplain MappedPosition MappedPosition}. The calculation
- * uses least square method. The Affine transform equation:
+ * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as Affine transformation
+ * from a list of {@linkplain MappedPosition MappedPosition}. The calculation uses least square method. The Affine
+ * transform equation:
  *
  * <pre>
  *  [ x']   [  m00  m01  m02  ] [ x ]   [ m00x + m01y + m02 ]
@@ -65,8 +65,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
      * @param vectors list of {@linkplain MappedPosition MappedPosition}
      */
     public AffineTransformBuilder(List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }
 
@@ -81,8 +80,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
     }
 
     /**
-     * Returns the matrix for Projective transformation setup as Affine. The M matrix looks like
-     * this:
+     * Returns the matrix for Projective transformation setup as Affine. The M matrix looks like this:
      *
      * <pre>
      * [  m00  m01  m02  ]
@@ -115,29 +113,20 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
 
         // Creates X matrix
         for (int j = 0; j < (numRow / 2); j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        getSourcePoints()[j].getCoordinate()[0],
-                        getSourcePoints()[j].getCoordinate()[1],
-                        1,
-                        0,
-                        0,
-                        0
-                    });
+            A.setRow(j, new double[] {
+                getSourcePoints()[j].getCoordinate()[0], getSourcePoints()[j].getCoordinate()[1], 1, 0, 0, 0
+            });
         }
 
         for (int j = numRow / 2; j < numRow; j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        0,
-                        0,
-                        0,
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
-                        1
-                    });
+            A.setRow(j, new double[] {
+                0,
+                0,
+                0,
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
+                1
+            });
         }
     }
 }

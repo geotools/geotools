@@ -26,10 +26,9 @@ import org.junit.Test;
 
 public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     /**
-     * nonPositiveInteger has a lexical representation consisting of an optional preceding sign
-     * followed by a finite-length sequence of decimal digits (#x30-#x39). The sign may be "+" or
-     * may be omitted only for lexical forms denoting zero; in all other lexical forms, the negative
-     * sign ("-") must be present.
+     * nonPositiveInteger has a lexical representation consisting of an optional preceding sign followed by a
+     * finite-length sequence of decimal digits (#x30-#x39). The sign may be "+" or may be omitted only for lexical
+     * forms denoting zero; in all other lexical forms, the negative sign ("-") must be present.
      *
      * <p>For example: -1, 0, -12678967543233, -100000.
      */
@@ -46,9 +45,7 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     }
 
     public BigInteger integer(Object value) {
-        return (value instanceof BigInteger)
-                ? ((BigInteger) value)
-                : BigInteger.valueOf(((Number) value).longValue());
+        return (value instanceof BigInteger) ? ((BigInteger) value) : BigInteger.valueOf(((Number) value).longValue());
     }
 
     public Number number(String number) {

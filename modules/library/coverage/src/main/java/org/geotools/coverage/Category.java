@@ -32,19 +32,18 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 
 /**
- * A category delimited by a range of values. A category may be either <em>qualitative</em> or
- * <em>quantitative</em>. For example, a classified image may have a qualitative category defining
- * sample value {@code 0} as water. An other qualitative category may defines sample value {@code 1}
- * as forest, etc. An other image may define elevation data as sample values in the range {@code
- * [0..100]}. The later is a <em>quantitative</em> category, because sample values are related to
- * some measurement in the real world. For example, elevation data may be related to an altitude in
- * metres through the following linear relation:
+ * A category delimited by a range of values. A category may be either <em>qualitative</em> or <em>quantitative</em>.
+ * For example, a classified image may have a qualitative category defining sample value {@code 0} as water. An other
+ * qualitative category may defines sample value {@code 1} as forest, etc. An other image may define elevation data as
+ * sample values in the range {@code [0..100]}. The later is a <em>quantitative</em> category, because sample values are
+ * related to some measurement in the real world. For example, elevation data may be related to an altitude in metres
+ * through the following linear relation:
  *
  * <p><var>altitude</var>&nbsp;=&nbsp;<var>sample&nbsp;value</var>&times;100.
  *
- * <p>Some image mixes both qualitative and quantitative categories. For example, images of Sea
- * Surface Temperature (SST) may have a quantitative category for temperature with values ranging
- * from 2 to 35°C, and three qualitative categories for cloud, land and ice.
+ * <p>Some image mixes both qualitative and quantitative categories. For example, images of Sea Surface Temperature
+ * (SST) may have a quantitative category for temperature with values ranging from 2 to 35°C, and three qualitative
+ * categories for cloud, land and ice.
  *
  * <p>All categories must have a human readable name.
  *
@@ -79,27 +78,23 @@ public class Category implements Serializable {
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     /**
-     * A default category for "no data" values. This default qualitative category use sample value
-     * 0, which is mapped to geophysics value {@link Float#NaN} for those who work with floating
-     * point images. The rendering color default to a fully transparent color and the name is "no
-     * data" localized to the requested locale.
+     * A default category for "no data" values. This default qualitative category use sample value 0, which is mapped to
+     * geophysics value {@link Float#NaN} for those who work with floating point images. The rendering color default to
+     * a fully transparent color and the name is "no data" localized to the requested locale.
      */
     public static final Category NODATA =
-            new Category(
-                    Vocabulary.formatInternational(VocabularyKeys.NODATA), TRANSPARENT, 0, false);
+            new Category(Vocabulary.formatInternational(VocabularyKeys.NODATA), TRANSPARENT, 0, false);
 
     /**
-     * A default category for the boolean "{@link Boolean#FALSE false}" value. This default identity
-     * category uses sample value 0, the color {@linkplain Color#BLACK black} and the name "false"
-     * localized to the specified locale.
+     * A default category for the boolean "{@link Boolean#FALSE false}" value. This default identity category uses
+     * sample value 0, the color {@linkplain Color#BLACK black} and the name "false" localized to the specified locale.
      */
     public static final Category FALSE =
             new Category(Vocabulary.formatInternational(VocabularyKeys.FALSE), Color.BLACK, false);
 
     /**
-     * A default category for the boolean "{@link Boolean#TRUE true}" value. This default identity
-     * category uses sample value 1, the color {@linkplain Color#WHITE white} and the name "true"
-     * localized to the specified locale.
+     * A default category for the boolean "{@link Boolean#TRUE true}" value. This default identity category uses sample
+     * value 1, the color {@linkplain Color#WHITE white} and the name "true" localized to the specified locale.
      */
     public static final Category TRUE =
             new Category(Vocabulary.formatInternational(VocabularyKeys.TRUE), Color.WHITE, true);
@@ -108,29 +103,26 @@ public class Category implements Serializable {
     private final InternationalString name;
 
     /**
-     * The minimal sample value (inclusive). This category is made of all values in the range {@code
-     * minimum} to {@code maximum} inclusive.
+     * The minimal sample value (inclusive). This category is made of all values in the range {@code minimum} to
+     * {@code maximum} inclusive.
      */
     final double minimum;
 
     /**
-     * The maximal sample value (inclusive). This category is made of all values in the range {@code
-     * minimum} to {@code maximum} inclusive.
+     * The maximal sample value (inclusive). This category is made of all values in the range {@code minimum} to
+     * {@code maximum} inclusive.
      */
     final double maximum;
 
     /**
-     * The range of values {@code [minimum..maximum]}. May be computed only when first requested, or
-     * may be user-supplied (which is why it must be serialized).
+     * The range of values {@code [minimum..maximum]}. May be computed only when first requested, or may be
+     * user-supplied (which is why it must be serialized).
      */
     NumberRange<? extends Number> range;
 
     final boolean isQuantitative;
 
-    /**
-     * ARGB codes of category colors. The colors by default will be a gradient going from black to
-     * opaque white.
-     */
+    /** ARGB codes of category colors. The colors by default will be a gradient going from black to opaque white. */
     private final int[] ARGB;
 
     /** Default ARGB codes. */
@@ -173,11 +165,7 @@ public class Category implements Serializable {
      * @param color The category color, or {@code null} for a default color.
      * @param sample The sample value as an integer, usually in the range 0 to 255.
      */
-    public Category(
-            final CharSequence name,
-            final Color color,
-            final int sample,
-            final boolean isQuantitative) {
+    public Category(final CharSequence name, final Color color, final int sample, final boolean isQuantitative) {
         this(name, toARGB(color, sample), Integer.valueOf(sample), isQuantitative);
         assert minimum == sample : minimum;
         assert maximum == sample : maximum;
@@ -198,11 +186,7 @@ public class Category implements Serializable {
 
     /** Constructs a category for sample value {@code sample}. */
     @SuppressWarnings("unchecked")
-    private Category(
-            final CharSequence name,
-            final int[] ARGB,
-            final Number sample,
-            final boolean isQuantitative) {
+    private Category(final CharSequence name, final int[] ARGB, final Number sample, final boolean isQuantitative) {
         this(name, ARGB, new NumberRange(sample.getClass(), sample, sample), isQuantitative);
     }
 
@@ -211,29 +195,28 @@ public class Category implements Serializable {
      *
      * @param name The category name as a {@link String} or {@link InternationalString} object.
      * @param color The category color, or {@code null} for a default color.
-     * @param sampleValueRange The range of sample values for this category. Element class is
-     *     usually {@link Integer}, but {@link Float} and {@link Double} are accepted as well.
+     * @param sampleValueRange The range of sample values for this category. Element class is usually {@link Integer},
+     *     but {@link Float} and {@link Double} are accepted as well.
      * @throws IllegalArgumentException If the given range is invalid.
      */
-    public Category(
-            final CharSequence name, final Color color, final NumberRange<?> sampleValueRange)
+    public Category(final CharSequence name, final Color color, final NumberRange<?> sampleValueRange)
             throws IllegalArgumentException {
         this(name, toArray(color), sampleValueRange, true);
     }
 
     /**
-     * Constructs a quantitative category for sample values ranging from {@code lower} inclusive to
-     * {@code upper} exclusive.
+     * Constructs a quantitative category for sample values ranging from {@code lower} inclusive to {@code upper}
+     * exclusive.
      *
      * @param name The category name as a {@link String} or {@link InternationalString} object.
-     * @param colors A set of colors for this category. This array may have any length; colors will
-     *     be interpolated as needed. An array of length 1 means that an uniform color should be
-     *     used for all sample values. An array of length 0 or a {@code null} array means that some
-     *     default colors should be used (usually a gradient from opaque black to opaque white).
+     * @param colors A set of colors for this category. This array may have any length; colors will be interpolated as
+     *     needed. An array of length 1 means that an uniform color should be used for all sample values. An array of
+     *     length 0 or a {@code null} array means that some default colors should be used (usually a gradient from
+     *     opaque black to opaque white).
      * @param lower The lower sample value, inclusive.
      * @param upper The upper sample value, exclusive.
-     * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}, or if
-     *     {@code scale} or {@code offset} are not real numbers.
+     * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}, or if {@code scale} or
+     *     {@code offset} are not real numbers.
      */
     public Category(final CharSequence name, final Color[] colors, final int lower, final int upper)
             throws IllegalArgumentException {
@@ -244,19 +227,16 @@ public class Category implements Serializable {
      * Constructs a quantitative category for sample values in the specified range.
      *
      * @param name The category name as a {@link String} or {@link InternationalString} object.
-     * @param colors A set of colors for this category. This array may have any length; colors will
-     *     be interpolated as needed. An array of length 1 means that an uniform color should be
-     *     used for all sample values. An array of length 0 or a {@code null} array means that some
-     *     default colors should be used (usually a gradient from opaque black to opaque white).
-     * @param sampleValueRange The range of sample values for this category. Element class is
-     *     usually {@link Integer}, but {@link Float} and {@link Double} are accepted as well.
-     * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}, or if
-     *     {@code scale} or {@code offset} are not real numbers.
+     * @param colors A set of colors for this category. This array may have any length; colors will be interpolated as
+     *     needed. An array of length 1 means that an uniform color should be used for all sample values. An array of
+     *     length 0 or a {@code null} array means that some default colors should be used (usually a gradient from
+     *     opaque black to opaque white).
+     * @param sampleValueRange The range of sample values for this category. Element class is usually {@link Integer},
+     *     but {@link Float} and {@link Double} are accepted as well.
+     * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}, or if {@code scale} or
+     *     {@code offset} are not real numbers.
      */
-    public Category(
-            final CharSequence name,
-            final Color[] colors,
-            final NumberRange<? extends Number> sampleValueRange)
+    public Category(final CharSequence name, final Color[] colors, final NumberRange<? extends Number> sampleValueRange)
             throws IllegalArgumentException {
         this(name, colors, sampleValueRange, true);
     }
@@ -265,12 +245,12 @@ public class Category implements Serializable {
      * Constructs a qualitative or quantitative category for samples in the specified range.
      *
      * @param name The category name as a {@link String} or {@link InternationalString} object.
-     * @param colors A set of colors for this category. This array may have any length; colors will
-     *     be interpolated as needed. An array of length 1 means that an uniform color should be
-     *     used for all sample values. An array of length 0 or a {@code null} array means that some
-     *     default colors should be used (usually a gradient from opaque black to opaque white).
-     * @param sampleValueRange The range of sample values for this category. Element class is
-     *     usually {@link Integer}, but {@link Float} and {@link Double} are accepted as well.
+     * @param colors A set of colors for this category. This array may have any length; colors will be interpolated as
+     *     needed. An array of length 1 means that an uniform color should be used for all sample values. An array of
+     *     length 0 or a {@code null} array means that some default colors should be used (usually a gradient from
+     *     opaque black to opaque white).
+     * @param sampleValueRange The range of sample values for this category. Element class is usually {@link Integer},
+     *     but {@link Float} and {@link Double} are accepted as well.
      * @throws ClassCastException if the range element class is not a {@link Number} subclass.
      * @throws IllegalArgumentException if the range is invalid.
      */
@@ -284,9 +264,9 @@ public class Category implements Serializable {
     }
 
     /**
-     * Constructs a category. This private constructor is used for both qualitative and quantitative
-     * category constructors. It also used by {@link #recolor} in order to construct a new category
-     * similar to this one except for ARGB codes.
+     * Constructs a category. This private constructor is used for both qualitative and quantitative category
+     * constructors. It also used by {@link #recolor} in order to construct a new category similar to this one except
+     * for ARGB codes.
      */
     private Category(
             final CharSequence name,
@@ -322,8 +302,7 @@ public class Category implements Serializable {
         if (!(minimum <= maximum) || Double.isInfinite(minimum) || Double.isInfinite(maximum)) {
             final Object arg0 = range.getMinValue();
             final Object arg1 = range.getMaxValue();
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, arg0, arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, arg0, arg1));
         }
     }
 
@@ -331,40 +310,35 @@ public class Category implements Serializable {
      * Returns a linear transform with the supplied scale and offset values.
      *
      * @param scale The scale factor. May be 0 for a constant transform.
-     * @param offset The offset value. May be NaN if this method is invoked from a constructor for
-     *     initializing {@link #transform} for a qualitative category.
+     * @param offset The offset value. May be NaN if this method is invoked from a constructor for initializing
+     *     {@link #transform} for a qualitative category.
      */
     static MathTransform1D createLinearTransform(final double scale, final double offset) {
         return LinearTransform1D.create(scale, offset);
     }
 
     /**
-     * Returns a {@code double} value for the specified number. If {@code direction} is non-zero,
-     * then this method will returns the closest representable number of type {@code type} before or
-     * after the double value.
+     * Returns a {@code double} value for the specified number. If {@code direction} is non-zero, then this method will
+     * returns the closest representable number of type {@code type} before or after the double value.
      *
-     * @param type The range element class. {@code number} must be an instance of this class (this
-     *     will not be checked).
+     * @param type The range element class. {@code number} must be an instance of this class (this will not be checked).
      * @param number The number to transform to a {@code double} value.
-     * @param direction -1 to return the previous representable number, +1 to return the next
-     *     representable number, or 0 to return the number with no change.
+     * @param direction -1 to return the previous representable number, +1 to return the next representable number, or 0
+     *     to return the number with no change.
      */
-    private static double doubleValue(
-            final Class<?> type, final Comparable number, final int direction) {
+    private static double doubleValue(final Class<?> type, final Comparable number, final int direction) {
         assert (direction >= -1) && (direction <= +1) : direction;
         return org.geotools.util.XMath.rool(type, ((Number) number).doubleValue(), direction);
     }
 
-    /**
-     * Returns the given color in an array of length 1, or {@code null} if {@code color} is null.
-     */
+    /** Returns the given color in an array of length 1, or {@code null} if {@code color} is null. */
     private static Color[] toArray(final Color color) {
         return (color != null) ? new Color[] {color} : null;
     }
 
     /**
-     * Convert an array of colors to an array of ARGB values. If {@code colors} is null, then a
-     * default array will be returned.
+     * Convert an array of colors to an array of ARGB values. If {@code colors} is null, then a default array will be
+     * returned.
      *
      * @param colors The array of colors to convert (may be null).
      * @return The colors as ARGB values. Never null.
@@ -386,10 +360,7 @@ public class Category implements Serializable {
         return ARGB;
     }
 
-    /**
-     * Returns ARGB values for the specified color. If {@code color} is null, a default ARGB code
-     * will be returned.
-     */
+    /** Returns ARGB values for the specified color. If {@code color} is null, a default ARGB code will be returned. */
     private static int[] toARGB(Color color, final int sample) {
         if (color == null) {
             color = CYCLE[Math.abs(sample) % CYCLE.length];
@@ -407,8 +378,7 @@ public class Category implements Serializable {
     }
 
     /**
-     * Returns the set of colors for this category. Change to the returned array will not affect
-     * this category.
+     * Returns the set of colors for this category. Change to the returned array will not affect this category.
      *
      * @return The colors palette for this category.
      * @see GridSampleDimension#getColorModel
@@ -438,23 +408,21 @@ public class Category implements Serializable {
     /**
      * Returns {@code true} if this category is quantitative.
      *
-     * @return {@code true} if this category is quantitative, or {@code false} if this category is
-     *     qualitative.
+     * @return {@code true} if this category is quantitative, or {@code false} if this category is qualitative.
      */
     public boolean isQuantitative() {
         return isQuantitative;
     }
 
     /**
-     * Returns a category for the same range of sample values but a different color palette. The
-     * array given in argument may have any length; colors will be interpolated as needed. An array
-     * of length 1 means that an uniform color should be used for all sample values. An array of
-     * length 0 or a {@code null} array means that some default colors should be used (usually a
-     * gradient from opaque black to opaque white).
+     * Returns a category for the same range of sample values but a different color palette. The array given in argument
+     * may have any length; colors will be interpolated as needed. An array of length 1 means that an uniform color
+     * should be used for all sample values. An array of length 0 or a {@code null} array means that some default colors
+     * should be used (usually a gradient from opaque black to opaque white).
      *
      * @param colors A set of colors for the new category.
-     * @return A category with the new color palette, or {@code this} if the new colors are
-     *     identical to the current ones.
+     * @return A category with the new color palette, or {@code this} if the new colors are identical to the current
+     *     ones.
      * @see org.geotools.coverage.processing.ColorMap#recolor
      */
     public Category recolor(final Color[] colors) {
@@ -468,8 +436,8 @@ public class Category implements Serializable {
     }
 
     /**
-     * Returns a hash value for this category. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this category. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -491,8 +459,7 @@ public class Category implements Serializable {
         if (object != null && object.getClass().equals(getClass())) {
             final Category that = (Category) object;
             if (Double.doubleToRawLongBits(minimum) == Double.doubleToRawLongBits(that.minimum)
-                    && Double.doubleToRawLongBits(maximum)
-                            == Double.doubleToRawLongBits(that.maximum)
+                    && Double.doubleToRawLongBits(maximum) == Double.doubleToRawLongBits(that.maximum)
                     && Utilities.equals(this.name, that.name)
                     && Arrays.equals(this.ARGB, that.ARGB)) {
                 if (this.range != null && that.range != null) {
@@ -508,17 +475,15 @@ public class Category implements Serializable {
     }
 
     /**
-     * Returns a string representation of this category. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes.
+     * Returns a string representation of this category. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes.
      */
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(this));
         buffer.append("(\"").append(name).append("\":[");
         if (Classes.isInteger(getRange().getElementClass())) {
-            buffer.append(Math.round(minimum))
-                    .append("...")
-                    .append(Math.round(maximum)); // Inclusive
+            buffer.append(Math.round(minimum)).append("...").append(Math.round(maximum)); // Inclusive
         } else {
             buffer.append(minimum).append(" ... ").append(maximum); // Inclusive
         }
@@ -532,11 +497,9 @@ public class Category implements Serializable {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

@@ -39,8 +39,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * A subclass of {@link GeometryFactory} with special optimizations for geometry collections made of
- * a single element (a typical case in shapefiles and data imported from shapefiles)
+ * A subclass of {@link GeometryFactory} with special optimizations for geometry collections made of a single element (a
+ * typical case in shapefiles and data imported from shapefiles)
  *
  * @author Andrea Aime
  */

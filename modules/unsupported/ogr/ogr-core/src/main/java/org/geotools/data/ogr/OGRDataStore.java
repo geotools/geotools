@@ -54,12 +54,7 @@ public class OGRDataStore extends ContentDataStore {
 
     String ogrDriver;
 
-    public OGRDataStore(
-            String ogrName,
-            String ogrDriver,
-            URI namespace,
-            OGR ogr,
-            OGRDataSourcePool dataSourcePool) {
+    public OGRDataStore(String ogrName, String ogrDriver, URI namespace, OGR ogr, OGRDataSourcePool dataSourcePool) {
         if (namespace != null) {
             setNamespaceURI(namespace.toString());
         }
@@ -69,8 +64,7 @@ public class OGRDataStore extends ContentDataStore {
         this.dataSourcePool = dataSourcePool;
     }
 
-    public OGRDataStore(String ogrName, String ogrDriver, URI namespace, OGR ogr)
-            throws IOException {
+    public OGRDataStore(String ogrName, String ogrDriver, URI namespace, OGR ogr) throws IOException {
         this(
                 ogrName,
                 ogrDriver,
@@ -111,8 +105,7 @@ public class OGRDataStore extends ContentDataStore {
         return this.dataSourcePool.getDataSource(update);
     }
 
-    Object openOGRLayer(OGRDataSource dataSource, String layerName, boolean allowPriming)
-            throws IOException {
+    Object openOGRLayer(OGRDataSource dataSource, String layerName, boolean allowPriming) throws IOException {
         Object layer = dataSource.getLayerByName(layerName, allowPriming);
         if (layer == null) {
             throw new IOException("OGR could not find layer '" + layerName + "'");
@@ -162,12 +155,11 @@ public class OGRDataStore extends ContentDataStore {
      * Creates a new OGR layer with provided schema and options
      *
      * @param schema the geotools schema
-     * @param approximateFields if true, OGR will try to create fields that are approximations of
-     *     the required ones when an exact match cannt be provided
+     * @param approximateFields if true, OGR will try to create fields that are approximations of the required ones when
+     *     an exact match cannt be provided
      * @param options OGR data source/layer creation options
      */
-    public void createSchema(SimpleFeatureType schema, boolean approximateFields, String[] options)
-            throws IOException {
+    public void createSchema(SimpleFeatureType schema, boolean approximateFields, String[] options) throws IOException {
         OGRDataSource dataSource = null;
         Object layer = null;
 
@@ -187,8 +179,7 @@ public class OGRDataStore extends ContentDataStore {
                     && !driverName.equalsIgnoreCase("gpx")
                     && !driverName.equalsIgnoreCase("sosi")
                     && !ogr.LayerCanCreateField(layer)) {
-                throw new DataSourceException(
-                        "OGR reports it's not possible to create fields on this layer");
+                throw new DataSourceException("OGR reports it's not possible to create fields on this layer");
             }
 
             // create fields
@@ -212,20 +203,18 @@ public class OGRDataStore extends ContentDataStore {
     }
 
     /**
-     * Creates a new OGR layer with provided data and options. This call is specifically made
-     * available for the OGC store since for some data source types, such as GML or KML, it is not
-     * possible to call createSchema() independently from a write, as the result will not contain
-     * the schema definition without having data too. Also, in those formats, the output is writable
-     * only so as long as it's empty, it's not possible to write against an existing GML file for
-     * example.
+     * Creates a new OGR layer with provided data and options. This call is specifically made available for the OGC
+     * store since for some data source types, such as GML or KML, it is not possible to call createSchema()
+     * independently from a write, as the result will not contain the schema definition without having data too. Also,
+     * in those formats, the output is writable only so as long as it's empty, it's not possible to write against an
+     * existing GML file for example.
      *
      * @param data The data to fill into the newly created layer
-     * @param approximateFields if true, OGR will try to create fields that are approximations of
-     *     the required ones when an exact match cannt be provided
+     * @param approximateFields if true, OGR will try to create fields that are approximations of the required ones when
+     *     an exact match cannt be provided
      * @param options OGR data source/layer creation options
      */
-    public void createSchema(
-            SimpleFeatureCollection data, boolean approximateFields, String[] options)
+    public void createSchema(SimpleFeatureCollection data, boolean approximateFields, String[] options)
             throws IOException {
         OGRDataSource dataSource = null;
         Object layer = null;
@@ -248,8 +237,7 @@ public class OGRDataStore extends ContentDataStore {
                     && !driverName.equalsIgnoreCase("sosi")
                     && !driverName.equalsIgnoreCase("geojson")
                     && !ogr.LayerCanCreateField(layer)) {
-                throw new DataSourceException(
-                        "OGR reports it's not possible to create fields on this layer");
+                throw new DataSourceException("OGR reports it's not possible to create fields on this layer");
             }
 
             // create fields
@@ -314,8 +302,7 @@ public class OGRDataStore extends ContentDataStore {
                         } else {
                             // remap index
                             int ogrIndex = indexMap.get(i);
-                            FeatureMapper.setFieldValue(
-                                    layerDefinition, ogrFeature, ogrIndex, value, ogr);
+                            FeatureMapper.setFieldValue(layerDefinition, ogrFeature, ogrIndex, value, ogr);
                         }
                     }
 
@@ -337,24 +324,17 @@ public class OGRDataStore extends ContentDataStore {
     }
 
     private Object createNewLayer(
-            SimpleFeatureType schema,
-            OGRDataSource dataSource,
-            String[] options,
-            FeatureTypeMapper mapper)
+            SimpleFeatureType schema, OGRDataSource dataSource, String[] options, FeatureTypeMapper mapper)
             throws IOException, DataSourceException {
         // get the spatial reference corresponding to the default geometry
         GeometryDescriptor geomType = schema.getGeometryDescriptor();
         long ogrGeomType = mapper.getOGRGeometryType(geomType);
-        Object spatialReference =
-                mapper.getSpatialReference(geomType.getCoordinateReferenceSystem());
+        Object spatialReference = mapper.getSpatialReference(geomType.getCoordinateReferenceSystem());
 
         // create the layer
-        Object layer =
-                dataSource.createLayer(
-                        schema.getTypeName(), spatialReference, ogrGeomType, options);
+        Object layer = dataSource.createLayer(schema.getTypeName(), spatialReference, ogrGeomType, options);
         if (layer == null) {
-            throw new DataSourceException(
-                    "Could not create the OGR layer: " + ogr.GetLastErrorMsg());
+            throw new DataSourceException("Could not create the OGR layer: " + ogr.GetLastErrorMsg());
         }
         return layer;
     }

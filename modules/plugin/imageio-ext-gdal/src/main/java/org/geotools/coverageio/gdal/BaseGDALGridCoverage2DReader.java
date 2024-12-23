@@ -46,14 +46,13 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.factory.Hints;
 
 /**
- * Base class for GridCoverage data access, leveraging on GDAL Java bindings provided by the
- * ImageIO-Ext project. See <a href="http://imageio-ext.dev.java.net">ImageIO-Ext project</a>.
+ * Base class for GridCoverage data access, leveraging on GDAL Java bindings provided by the ImageIO-Ext project. See <a
+ * href="http://imageio-ext.dev.java.net">ImageIO-Ext project</a>.
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
-public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DReader
-        implements GridCoverage2DReader {
+public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DReader implements GridCoverage2DReader {
 
     protected static final String DEFAULT_WORLDFILE_EXT = ".wld";
 
@@ -64,8 +63,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
     private PAMDataset pamDataset;
 
     /**
-     * Creates a new instance of a {@link BaseGDALGridCoverage2DReader}. I assume nothing about file
-     * extension.
+     * Creates a new instance of a {@link BaseGDALGridCoverage2DReader}. I assume nothing about file extension.
      *
      * @param input Source object for which we want to build a {@link BaseGDALGridCoverage2DReader}.
      * @param hints Hints to be used by this reader throughout his life.
@@ -73,10 +71,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
      * @param formatSpecificSpi an instance of a proper {@code ImageReaderSpi}.
      */
     protected BaseGDALGridCoverage2DReader(
-            Object input,
-            final Hints hints,
-            final String worldFileExtension,
-            final ImageReaderSpi formatSpecificSpi)
+            Object input, final Hints hints, final String worldFileExtension, final ImageReaderSpi formatSpecificSpi)
             throws DataSourceException {
         super(input, hints, worldFileExtension, formatSpecificSpi);
     }
@@ -84,8 +79,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
     /**
      * Setting Envelope, GridRange and CRS from the given {@code ImageReader}
      *
-     * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for
-     *     setting properties
+     * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for setting properties
      */
     @Override
     protected void setCoverageProperties(ImageReader reader) throws IOException {
@@ -120,14 +114,12 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
     }
 
     /**
-     * Given a {@link GDALCommonIIOImageMetadata} metadata object, retrieves several properties to
-     * properly set envelope, gridrange and crs.
+     * Given a {@link GDALCommonIIOImageMetadata} metadata object, retrieves several properties to properly set
+     * envelope, gridrange and crs.
      *
-     * @param metadata a {@link GDALCommonIIOImageMetadata} metadata instance from where to search
-     *     needed properties.
+     * @param metadata a {@link GDALCommonIIOImageMetadata} metadata instance from where to search needed properties.
      */
-    private void parseCommonMetadata(final GDALCommonIIOImageMetadata metadata, ImageReader reader)
-            throws IOException {
+    private void parseCommonMetadata(final GDALCommonIIOImageMetadata metadata, ImageReader reader) throws IOException {
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -180,8 +172,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
                         // unable to get CRS from WKT
                         if (LOGGER.isLoggable(Level.FINE)) {
                             LOGGER.log(
-                                    Level.FINE,
-                                    "Unable to get CRS from WKT contained in metadata. Looking for a PRJ.");
+                                    Level.FINE, "Unable to get CRS from WKT contained in metadata. Looking for a PRJ.");
                         }
                         // reset crs
                         this.crs = null;
@@ -195,16 +186,13 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
         //
         // //
         if (this.originalGridRange == null)
-            this.originalGridRange =
-                    new GridEnvelope2D(
-                            new Rectangle(0, 0, metadata.getWidth(), metadata.getHeight()));
+            this.originalGridRange = new GridEnvelope2D(new Rectangle(0, 0, metadata.getWidth(), metadata.getHeight()));
 
         // NO DATA
-        this.nodata =
-                Optional.ofNullable(metadata.getNoDataValues())
-                        .filter(nd -> nd.length > 0)
-                        .map(nd -> nd[0])
-                        .orElse(null);
+        this.nodata = Optional.ofNullable(metadata.getNoDataValues())
+                .filter(nd -> nd.length > 0)
+                .map(nd -> nd[0])
+                .orElse(null);
         if (nodata != null) {
             if (reader.getRawImageType(0).getSampleModel().getDataType() == DataBuffer.TYPE_FLOAT) {
                 this.nodata = Double.valueOf(nodata.floatValue());
@@ -223,24 +211,21 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
         if (this.originalEnvelope == null) {
             final double[] geoTransform = metadata.getGeoTransformation();
             if ((geoTransform != null) && (geoTransform.length == 6)) {
-                final AffineTransform tempTransform =
-                        new AffineTransform(
-                                geoTransform[1],
-                                geoTransform[4],
-                                geoTransform[2],
-                                geoTransform[5],
-                                geoTransform[0],
-                                geoTransform[3]);
+                final AffineTransform tempTransform = new AffineTransform(
+                        geoTransform[1],
+                        geoTransform[4],
+                        geoTransform[2],
+                        geoTransform[5],
+                        geoTransform[0],
+                        geoTransform[3]);
                 // ATTENTION: Gdal geotransform does not use the pixel is
                 // centre convention like world files.
                 if (this.originalEnvelope == null) {
                     try {
                         // Envelope setting
-                        this.originalEnvelope =
-                                CRS.transform(
-                                        ProjectiveTransform.create(tempTransform),
-                                        new GeneralBounds(
-                                                ((GridEnvelope2D) this.originalGridRange)));
+                        this.originalEnvelope = CRS.transform(
+                                ProjectiveTransform.create(tempTransform),
+                                new GeneralBounds(((GridEnvelope2D) this.originalGridRange)));
                     } catch (IllegalStateException | TransformException e) {
                         if (LOGGER.isLoggable(Level.WARNING)) {
                             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);

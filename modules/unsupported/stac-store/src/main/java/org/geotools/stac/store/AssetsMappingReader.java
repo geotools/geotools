@@ -27,8 +27,8 @@ import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 
 /**
- * Maps the "assets" extra property into a legit attribute (assumes the {@link
- * STACFeatureSource#ASSETS} property is in the target type
+ * Maps the "assets" extra property into a legit attribute (assumes the {@link STACFeatureSource#ASSETS} property is in
+ * the target type
  */
 public class AssetsMappingReader implements SimpleFeatureReader {
 
@@ -52,8 +52,7 @@ public class AssetsMappingReader implements SimpleFeatureReader {
 
     @Override
     @SuppressWarnings("unchecked")
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         SimpleFeature f = delegate.next();
         Object atts = f.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
         if (atts instanceof Map) {

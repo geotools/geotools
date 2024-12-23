@@ -46,8 +46,7 @@ public interface HandlerFactory {
      * @param parser The content handler driving the parser.
      * @return A new element handler, or null if one could not be created.
      */
-    ElementHandler createElementHandler(
-            XSDElementDeclaration element, Handler parent, ParserHandler parser);
+    ElementHandler createElementHandler(XSDElementDeclaration element, Handler parent, ParserHandler parser);
 
     /**
      * Creates a handler for a particular element in a document.

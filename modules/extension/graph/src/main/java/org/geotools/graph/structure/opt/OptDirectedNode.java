@@ -28,18 +28,17 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
 /**
- * Optimized implementation of DirectedNode. The following optimizations reduce space and increase
- * performance. <br>
+ * Optimized implementation of DirectedNode. The following optimizations reduce space and increase performance. <br>
  *
  * <UL>
  *   <LI>In and Out edge adjacency list stored as arrays of exact size.
  *   <LI>Support from removing edges is removed
- *   <LI>The related component iterators iterates over the underlying edge arrays of the node
- *       instread of newly created collections.
+ *   <LI>The related component iterators iterates over the underlying edge arrays of the node instread of newly created
+ *       collections.
  * </UL>
  *
- * Using an optimized directed node requires that the size of the in and out edge adjacency lists be
- * known before its creation.
+ * Using an optimized directed node requires that the size of the in and out edge adjacency lists be known before its
+ * creation.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @see DirectedNode
@@ -52,10 +51,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     /** out edge adjacency list * */
     private transient DirectedEdge[] m_out;
 
-    /**
-     * Constructs a new OptDirectedNode. This constructor does not create the edge adjacency arrays
-     * for the node.
-     */
+    /** Constructs a new OptDirectedNode. This constructor does not create the edge adjacency arrays for the node. */
     public OptDirectedNode() {
         this(0, 0);
     }
@@ -291,8 +287,8 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /**
-     * Overrides the default deserialization operation. Since edge adjacency lists of Nodes are not
-     * written out upon serialization, they must be recreated upon deserialization.
+     * Overrides the default deserialization operation. Since edge adjacency lists of Nodes are not written out upon
+     * serialization, they must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized objects.
      */
@@ -306,10 +302,10 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     }
 
     /**
-     * Overrides the default serialization operation. Since edge adjacency lists of Nodes are not
-     * written out upon serialization, all the information needed to recreate them must be written
-     * to the object stream as well. Since the edge list is not written out, and the node does not
-     * store its degree explicitly, it must be written to the output stream.
+     * Overrides the default serialization operation. Since edge adjacency lists of Nodes are not written out upon
+     * serialization, all the information needed to recreate them must be written to the object stream as well. Since
+     * the edge list is not written out, and the node does not store its degree explicitly, it must be written to the
+     * output stream.
      *
      * @param out Object output stream containing serialized objects.
      */

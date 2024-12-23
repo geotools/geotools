@@ -28,9 +28,9 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 
 /**
- * Builds parameters to pass to the stored query. It selects a value for each parameter in the
- * stored query. The value is primarily the one passed in as a view parameter and secondarily the
- * value of the mapping configured for the feature type.
+ * Builds parameters to pass to the stored query. It selects a value for each parameter in the stored query. The value
+ * is primarily the one passed in as a view parameter and secondarily the value of the mapping configured for the
+ * feature type.
  *
  * @author Sampo Savolainen (Spatineo)
  */
@@ -40,9 +40,7 @@ public class ParameterTypeFactory {
     private final FeatureTypeInfo featureTypeInfo;
 
     public ParameterTypeFactory(
-            StoredQueryConfiguration config,
-            StoredQueryDescriptionType desc,
-            FeatureTypeInfo featureTypeInfo) {
+            StoredQueryConfiguration config, StoredQueryDescriptionType desc, FeatureTypeInfo featureTypeInfo) {
         this.config = config;
         this.desc = desc;
         this.featureTypeInfo = featureTypeInfo;
@@ -65,16 +63,14 @@ public class ParameterTypeFactory {
         return ret;
     }
 
-    public List<ParameterType> buildStoredQueryParameters(
-            Map<String, String> viewParams, Filter filter) {
+    public List<ParameterType> buildStoredQueryParameters(Map<String, String> viewParams, Filter filter) {
         final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 
         if (filter == null) {
             filter = Filter.INCLUDE;
         }
 
-        ParameterMappingContext mappingContext =
-                new ParameterMappingContext(filter, viewParams, featureTypeInfo);
+        ParameterMappingContext mappingContext = new ParameterMappingContext(filter, viewParams, featureTypeInfo);
 
         List<ParameterType> ret = new ArrayList<>();
 
@@ -111,8 +107,7 @@ public class ParameterTypeFactory {
         return ret;
     }
 
-    protected String evaluateMapping(
-            ParameterMappingContext mappingContext, ParameterMapping mapping) {
+    protected String evaluateMapping(ParameterMappingContext mappingContext, ParameterMapping mapping) {
         String value;
 
         if (mapping instanceof ParameterMappingDefaultValue) {
@@ -122,8 +117,7 @@ public class ParameterTypeFactory {
         } else if (mapping instanceof ParameterMappingBlockValue) {
             value = null;
         } else {
-            throw new IllegalArgumentException(
-                    "Unknown StoredQueryParameterMapping: " + mapping.getClass());
+            throw new IllegalArgumentException("Unknown StoredQueryParameterMapping: " + mapping.getClass());
         }
         return value;
     }

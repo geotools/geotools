@@ -22,20 +22,18 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat
- * when possible. The class is not thread safe, create a new instance for each thread using it.
+ * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat when possible. The
+ * class is not thread safe, create a new instance for each thread using it.
  */
 public final class CoordinateFormatter {
 
     /**
-     * The min value at which the decimal notation is used (below it, the computerized scientific
-     * one is used instead)
+     * The min value at which the decimal notation is used (below it, the computerized scientific one is used instead)
      */
     private static final double DECIMAL_MIN = Math.pow(10, -3);
 
     /**
-     * The max value at which the decimal notation is used (above it, the computerized scientific
-     * one is used instead)
+     * The max value at which the decimal notation is used (above it, the computerized scientific one is used instead)
      */
     private static final double DECIMAL_MAX = Math.pow(10, 7);
 
@@ -44,9 +42,7 @@ public final class CoordinateFormatter {
 
     private final FieldPosition ZERO = new FieldPosition(0);
 
-    /**
-     * The power of ten used for fast rounding, computed using the provided number of decimal values
-     */
+    /** The power of ten used for fast rounding, computed using the provided number of decimal values */
     private final double scale;
 
     /** Whether we have to format in plain decimal numbers, or we can use scientific notation */
@@ -62,8 +58,8 @@ public final class CoordinateFormatter {
     }
 
     /**
-     * Formats a number with the configured number of decimals. For better performance best use
-     * {@link #format(double, StringBuffer)} against a re-used StringBuffer
+     * Formats a number with the configured number of decimals. For better performance best use {@link #format(double,
+     * StringBuffer)} against a re-used StringBuffer
      */
     public String format(double x) {
         StringBuffer sb = new StringBuffer();
@@ -77,11 +73,10 @@ public final class CoordinateFormatter {
             if (formatted.indexOf(".") == -1) {
                 return formatted + "." + repeatZeros(numDecimals);
             } else {
-                int decimals =
-                        numDecimals
-                                - formatted
-                                        .substring(formatted.toString().indexOf('.') + 1)
-                                        .length();
+                int decimals = numDecimals
+                        - formatted
+                                .substring(formatted.toString().indexOf('.') + 1)
+                                .length();
                 if (formatted.toString().toLowerCase().indexOf("e") == -1 && decimals > 0) {
                     return formatted + repeatZeros(decimals);
                 }
@@ -155,8 +150,8 @@ public final class CoordinateFormatter {
     }
 
     /**
-     * When set to true, forces decimal representation of numbers, otherwise allows scientific
-     * notation too (for very large of very small numbers). False by default.
+     * When set to true, forces decimal representation of numbers, otherwise allows scientific notation too (for very
+     * large of very small numbers). False by default.
      */
     public void setForcedDecimal(boolean forcedDecimal) {
         this.forcedDecimal = forcedDecimal;

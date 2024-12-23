@@ -42,8 +42,8 @@ import si.uom.NonSI;
 import tech.units.indriya.function.LogConverter;
 
 /**
- * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit
- * syntax transformation and allow setting up custom aliases just for the NetCDF case.
+ * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit syntax transformation
+ * and allow setting up custom aliases just for the NetCDF case.
  */
 public final class NetCDFUnitFormat extends BaseUnitFormatter {
 
@@ -62,23 +62,21 @@ public final class NetCDFUnitFormat extends BaseUnitFormatter {
     public static final String NETCDF_UNIT_REPLACEMENTS = "netcdf-unit-replacements.properties";
 
     /** Hard coded replacements for common operations */
-    private static final Map<String, String> CONTENT_REPLACEMENTS =
-            Map.ofEntries(
-                    entry(" ", "*"), //
-                    entry("-", "^-"),
-                    entry(".", "*"));
+    private static final Map<String, String> CONTENT_REPLACEMENTS = Map.ofEntries(
+            entry(" ", "*"), //
+            entry("-", "^-"),
+            entry(".", "*"));
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.GEOTOOLS)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toUnmodifiableList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.GEOTOOLS)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableList());
 
     private static final NetCDFUnitFormat INSTANCE = createWithBuiltInConfig();
 
@@ -87,19 +85,16 @@ public final class NetCDFUnitFormat extends BaseUnitFormatter {
         return new NetCDFUnitFormat(builtInReplacements(), builtInAliases());
     }
 
-    public static NetCDFUnitFormat create(
-            Map<String, String> replacements, Map<String, String> aliases) {
+    public static NetCDFUnitFormat create(Map<String, String> replacements, Map<String, String> aliases) {
         return new NetCDFUnitFormat(replacements, aliases);
     }
 
     public static Map<String, String> builtInReplacements() {
-        return loadPropertiesOrdered(
-                NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_REPLACEMENTS));
+        return loadPropertiesOrdered(NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_REPLACEMENTS));
     }
 
     public static Map<String, String> builtInAliases() {
-        return loadPropertiesOrdered(
-                NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_ALIASES));
+        return loadPropertiesOrdered(NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_ALIASES));
     }
 
     private Map<String, String> REPLACEMENTS;
@@ -119,38 +114,32 @@ public final class NetCDFUnitFormat extends BaseUnitFormatter {
     public static LinkedHashMap<String, String> loadPropertiesOrdered(InputStream is) {
         try {
             LinkedHashMap<String, String> result = new LinkedHashMap<>();
-            Properties props =
-                    new Properties() {
+            Properties props = new Properties() {
 
-                        @Override
-                        public Object put(Object key, Object value) {
-                            result.put((String) key, (String) value);
-                            return super.put(key, value);
-                        }
-                    };
+                @Override
+                public Object put(Object key, Object value) {
+                    result.put((String) key, (String) value);
+                    return super.put(key, value);
+                }
+            };
             props.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             return result;
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Failed to load the build-in config file: " + NETCDF_UNIT_ALIASES + e);
+            throw new RuntimeException("Failed to load the build-in config file: " + NETCDF_UNIT_ALIASES + e);
         }
     }
 
     /**
      * Configures the string replacements to be performed before trying to parse the units.
      *
-     * @param replacements The replacements to be used. It is strongly advised to use a {@link
-     *     LinkedHashMap} as replacements are run from top to bottom, in order, and the order might
-     *     influence the results
+     * @param replacements The replacements to be used. It is strongly advised to use a {@link LinkedHashMap} as
+     *     replacements are run from top to bottom, in order, and the order might influence the results
      */
     public void setReplacements(Map<String, String> replacements) {
         REPLACEMENTS = new LinkedHashMap<>(replacements);
     }
 
-    /**
-     * Configures the aliases to be used on the unit parser. An alias is a different name for a
-     * unit.
-     */
+    /** Configures the aliases to be used on the unit parser. An alias is a different name for a unit. */
     public void setAliases(Map<String, String> aliases) {
 
         // missing unit that cannot be expressed via config files
@@ -174,11 +163,7 @@ public final class NetCDFUnitFormat extends BaseUnitFormatter {
             } catch (MeasurementParseException ex) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Failed to parse "
-                                + entry.getKey()
-                                + " -> "
-                                + entry.getValue()
-                                + ", skipped.",
+                        "Failed to parse " + entry.getKey() + " -> " + entry.getValue() + ", skipped.",
                         ex);
             }
         }
@@ -220,8 +205,7 @@ public final class NetCDFUnitFormat extends BaseUnitFormatter {
         try {
             return super.parse(spec);
         } catch (MeasurementParseException e) {
-            throw new MeasurementParseException(
-                    "Failed to parse " + spec, e.getParsedString(), e.getPosition());
+            throw new MeasurementParseException("Failed to parse " + spec, e.getParsedString(), e.getPosition());
         }
     }
 }

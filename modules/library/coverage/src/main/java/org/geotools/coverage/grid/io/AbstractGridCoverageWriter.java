@@ -26,11 +26,10 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * An {@link AbstractGridCoverageWriter} is the base class for all {@link GridCoverageWriter}
- * implementations in GeoTools toolkit.
+ * An {@link AbstractGridCoverageWriter} is the base class for all {@link GridCoverageWriter} implementations in
+ * GeoTools toolkit.
  *
- * <p>We expect it to become the place where to move functionalities common to all {@link
- * GridCoverageWriter}.
+ * <p>We expect it to become the place where to move functionalities common to all {@link GridCoverageWriter}.
  *
  * @author Simone Giannecchini
  * @since 2.3.x
@@ -87,8 +86,8 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
     }
 
     /**
-     * Implementation of getMetadataNames. Currently unimplemented because it has not been specified
-     * where to retrieve the metadata
+     * Implementation of getMetadataNames. Currently unimplemented because it has not been specified where to retrieve
+     * the metadata
      *
      * @return null
      * @see org.geotools.api.coverage.grid.GridCoverageWriter#getMetadataNames()
@@ -98,26 +97,21 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
         throw new UnsupportedOperationException("Unsupported method");
     }
 
-    /**
-     * @see org.geotools.api.coverage.grid.GridCoverageWriter#setCurrentSubname(java.lang.String)
-     */
+    /** @see org.geotools.api.coverage.grid.GridCoverageWriter#setCurrentSubname(java.lang.String) */
     @Override
     public void setCurrentSubname(String name) throws IOException {
         throw new UnsupportedOperationException("Unsupported method");
     }
 
-    /**
-     * @see org.geotools.api.coverage.grid.GridCoverageWriter#setMetadataValue(java.lang.String,
-     *     java.lang.String)
-     */
+    /** @see org.geotools.api.coverage.grid.GridCoverageWriter#setMetadataValue(java.lang.String, java.lang.String) */
     @Override
     public void setMetadataValue(String name, String value) throws IOException {
         throw new UnsupportedOperationException("Unsupported method");
     }
 
     /**
-     * Forcing the disposal of this {@link AbstractGridCoverageWriter} which may keep a reference to
-     * an open {@link ImageOutputStream}
+     * Forcing the disposal of this {@link AbstractGridCoverageWriter} which may keep a reference to an open
+     * {@link ImageOutputStream}
      */
     @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9

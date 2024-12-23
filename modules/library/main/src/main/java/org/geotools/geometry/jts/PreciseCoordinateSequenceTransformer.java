@@ -23,11 +23,10 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 
 /**
- * This coordinate sequence transformer will take a Geometry and transform in a set of curved lines
- * that will be "flattened" in order to get back a set of straight segments. The error in the
- * transform is linked to the "flattening", the higher the flattening, the bigger the error, but
- * also, the lesser the number of points that will be used to represent the resulting coordinate
- * sequence.
+ * This coordinate sequence transformer will take a Geometry and transform in a set of curved lines that will be
+ * "flattened" in order to get back a set of straight segments. The error in the transform is linked to the
+ * "flattening", the higher the flattening, the bigger the error, but also, the lesser the number of points that will be
+ * used to represent the resulting coordinate sequence.
  *
  * @todo Not yet implemented.
  */
@@ -45,8 +44,7 @@ public class PreciseCoordinateSequenceTransformer implements CoordinateSequenceT
      *     org.geotools.ct.MathTransform2D)
      */
     @Override
-    public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform)
-            throws TransformException {
+    public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform) throws TransformException {
         //        Coordinate[] scs = cs.toCoordinateArray();
         //        GeneralPath path = new GeneralPath();
         //        path.moveTo(scs[0].x, scs[0].y);

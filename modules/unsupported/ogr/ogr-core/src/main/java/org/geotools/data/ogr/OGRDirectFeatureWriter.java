@@ -26,8 +26,7 @@ import org.geotools.filter.identity.FeatureIdImpl;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * OGR feature writer leveraging OGR capabilities to rewrite a file using random access and in place
- * deletes
+ * OGR feature writer leveraging OGR capabilities to rewrite a file using random access and in place deletes
  *
  * @author Andrea Aime - GeoSolutions
  */

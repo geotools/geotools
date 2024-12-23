@@ -43,9 +43,6 @@ public class MultiSurfacePropertyTypeBindingTest extends GML3TestSupport {
 
     @Test
     public void testMultiSurfacePropertyTypeAssignable() {
-        Assert.assertTrue(
-                GMLSchema.MULTISURFACEPROPERTYTYPE_TYPE
-                        .getBinding()
-                        .isAssignableFrom(MultiSurface.class));
+        Assert.assertTrue(GMLSchema.MULTISURFACEPROPERTYTYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
     }
 }

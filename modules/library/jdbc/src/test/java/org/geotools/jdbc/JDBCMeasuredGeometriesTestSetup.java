@@ -77,11 +77,7 @@ public abstract class JDBCMeasuredGeometriesTestSetup extends JDBCDelegatingTest
 
     /** Quietly drop the created tables, all exceptions will be ignored. */
     private void dropTables() {
-        quietly(
-                this::dropTablePointsM,
-                this::dropTablePointsZM,
-                this::dropTableLinesM,
-                this::dropTableLinesZM);
+        quietly(this::dropTablePointsM, this::dropTablePointsZM, this::dropTableLinesM, this::dropTableLinesZM);
     }
 
     /**
@@ -101,8 +97,7 @@ public abstract class JDBCMeasuredGeometriesTestSetup extends JDBCDelegatingTest
     protected abstract void dropTablePointsM() throws Exception;
 
     /**
-     * Creates the points_m table that contains points geometries with a measurement and elevation
-     * coordinate.
+     * Creates the points_m table that contains points geometries with a measurement and elevation coordinate.
      *
      * <pre>{@code
      * INSERT INTO points_zm (id, description, geometry) VALUES
@@ -131,8 +126,7 @@ public abstract class JDBCMeasuredGeometriesTestSetup extends JDBCDelegatingTest
     protected abstract void dropTableLinesM() throws Exception;
 
     /**
-     * Creates the lines_zm table that contains lines geometries with a measurement and elevation
-     * coordinate.
+     * Creates the lines_zm table that contains lines geometries with a measurement and elevation coordinate.
      *
      * <pre>{@code
      * INSERT INTO lines_zm (id, description, geometry) VALUES

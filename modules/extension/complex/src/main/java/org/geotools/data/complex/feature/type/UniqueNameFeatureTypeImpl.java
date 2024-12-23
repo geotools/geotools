@@ -29,20 +29,17 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.feature.type.FeatureTypeImpl;
 
 /**
- * A specialisation of {@link FeatureTypeImpl} that avoids equality tests on feature types with
- * cyclic definitions by considering features types to be equal if and only if their names are
- * equal.
+ * A specialisation of {@link FeatureTypeImpl} that avoids equality tests on feature types with cyclic definitions by
+ * considering features types to be equal if and only if their names are equal.
  *
- * <p>Users of this class must not create multiple instances with the same name unless they
- * represent the same type, because other parts of the implementation will assume they are equal,
- * and if they are not, Bad Things Will Happen.
+ * <p>Users of this class must not create multiple instances with the same name unless they represent the same type,
+ * because other parts of the implementation will assume they are equal, and if they are not, Bad Things Will Happen.
  *
- * <p>It should be noted that app-schema does not support the multiple definition XSD types with the
- * same name. This restriction allows multiple XSD elements and thus WFS feature types (with
- * different names) to have the same XSD type, because the XSD type can be recognised by name even
- * if it has a cyclic definition. This simplified equality testing allows {@link FeatureTypeCache}
- * to handle these types, despite their cyclic definition preventing a full recursive implementation
- * of {@link #equals(Object)}equals(). Unit test coverage is in GeoServer app-schema-test
+ * <p>It should be noted that app-schema does not support the multiple definition XSD types with the same name. This
+ * restriction allows multiple XSD elements and thus WFS feature types (with different names) to have the same XSD type,
+ * because the XSD type can be recognised by name even if it has a cyclic definition. This simplified equality testing
+ * allows {@link FeatureTypeCache} to handle these types, despite their cyclic definition preventing a full recursive
+ * implementation of {@link #equals(Object)}equals(). Unit test coverage is in GeoServer app-schema-test
  * DuplicateTypeTest.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)

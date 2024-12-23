@@ -80,8 +80,7 @@ public class DefaultTemporalGeometricPrimitiveTest {
         assertNotEquals(temporalGeomericPrimitive2.distance(other), result);
 
         // calcul Distance between Period objects
-        temporalGeomericPrimitive1 =
-                new DefaultPeriod(new DefaultInstant(position1), new DefaultInstant(position2));
+        temporalGeomericPrimitive1 = new DefaultPeriod(new DefaultInstant(position1), new DefaultInstant(position2));
         temporalGeomericPrimitive2 = new DefaultPeriod(i1, new DefaultInstant(position2));
         result = temporalGeomericPrimitive1.distance(other);
         assertEquals(temporalGeomericPrimitive2.distance(other), result);
@@ -91,12 +90,9 @@ public class DefaultTemporalGeometricPrimitiveTest {
     @Test
     public void testLength() {
         cal.set(2020, 0, 1);
-        temporalGeomericPrimitive1 =
-                new DefaultPeriod(new DefaultInstant(position1), new DefaultInstant(position2));
-        temporalGeomericPrimitive2 =
-                new DefaultPeriod(
-                        new DefaultInstant(position2),
-                        new DefaultInstant(new DefaultPosition(cal.getTime())));
+        temporalGeomericPrimitive1 = new DefaultPeriod(new DefaultInstant(position1), new DefaultInstant(position2));
+        temporalGeomericPrimitive2 = new DefaultPeriod(
+                new DefaultInstant(position2), new DefaultInstant(new DefaultPosition(cal.getTime())));
         Duration result = temporalGeomericPrimitive1.length();
         assertNotEquals(temporalGeomericPrimitive2.length(), result);
     }
@@ -104,17 +100,8 @@ public class DefaultTemporalGeometricPrimitiveTest {
     /** Test comparison of Instants */
     @Test
     public void testCompare() {
-        assertEquals(
-                -1,
-                ((DefaultTemporalPrimitive) temporalGeomericPrimitive1)
-                        .compareTo(temporalGeomericPrimitive2));
-        assertEquals(
-                0,
-                ((DefaultTemporalPrimitive) temporalGeomericPrimitive1)
-                        .compareTo(temporalGeomericPrimitive1));
-        assertEquals(
-                0,
-                ((DefaultTemporalPrimitive) temporalGeomericPrimitive2)
-                        .compareTo(temporalGeomericPrimitive2));
+        assertEquals(-1, ((DefaultTemporalPrimitive) temporalGeomericPrimitive1).compareTo(temporalGeomericPrimitive2));
+        assertEquals(0, ((DefaultTemporalPrimitive) temporalGeomericPrimitive1).compareTo(temporalGeomericPrimitive1));
+        assertEquals(0, ((DefaultTemporalPrimitive) temporalGeomericPrimitive2).compareTo(temporalGeomericPrimitive2));
     }
 }

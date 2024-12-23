@@ -21,12 +21,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Take an object as an argument and returns a boolean value. The result is false when then input is
- * an empty string, 0, false, null, or NaN; otherwise it is true.
+ * Take an object as an argument and returns a boolean value. The result is false when then input is an empty string, 0,
+ * false, null, or NaN; otherwise it is true.
  *
- * <p>This function is a helper to accommodate MBType expressions. Expressions in this section are
- * provided for the purpose of testing for and converting between different data types like strings,
- * numbers, and boolean values.
+ * <p>This function is a helper to accommodate MBType expressions. Expressions in this section are provided for the
+ * purpose of testing for and converting between different data types like strings, numbers, and boolean values.
  */
 class ToBoolFunction extends FunctionExpressionImpl {
 

@@ -62,8 +62,8 @@ import org.xml.sax.Attributes;
  */
 public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     /**
-     * id set in the document, used to check against duplicate gml:id. If an gml:id is already
-     * encoded for an featureMember, the next occurrence will be encoded with xlink:href
+     * id set in the document, used to check against duplicate gml:id. If an gml:id is already encoded for an
+     * featureMember, the next occurrence will be encoded with xlink:href
      */
     private XSDIdRegistry idSet;
 
@@ -130,10 +130,7 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
-    /**
-     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
-     *     org.w3c.dom.Element)
-     */
+    /** @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element) */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         if (object instanceof ComplexAttribute) {
@@ -144,8 +141,8 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * Check if the complex attribute contains a feature which id is pre-existing in the document.
-     * If it's true, make sure it's only encoded as an xlink:href to the existing id.
+     * Check if the complex attribute contains a feature which id is pre-existing in the document. If it's true, make
+     * sure it's only encoded as an xlink:href to the existing id.
      *
      * @param att The complex attribute itself
      */

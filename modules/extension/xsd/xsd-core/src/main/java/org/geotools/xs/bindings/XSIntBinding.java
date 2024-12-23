@@ -78,8 +78,7 @@ public class XSIntBinding implements SimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding returns objects of type {@link Integer}. This binding is an override of the
-     * parent.
+     * This binding returns objects of type {@link Integer}. This binding is an override of the parent.
      * <!-- end-user-doc -->
      */
     @Override

@@ -89,8 +89,7 @@ public class GeneralizationInfos {
     }
 
     /**
-     * This data source is the default data source for all GeneraliziationInfo objects in this
-     * container
+     * This data source is the default data source for all GeneraliziationInfo objects in this container
      *
      * @return the data source name or null
      */

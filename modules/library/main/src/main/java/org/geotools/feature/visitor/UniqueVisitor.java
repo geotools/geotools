@@ -52,8 +52,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     boolean preserveOrder = false;
     static FilterFactory factory = CommonFactoryFinder.getFilterFactory();
 
-    public UniqueVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public UniqueVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         this(type, attributeTypeIndex);
     }
 
@@ -74,8 +73,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         }
     }
 
-    public UniqueVisitor(SimpleFeatureType type, String... attributeNames)
-            throws IllegalFilterException {
+    public UniqueVisitor(SimpleFeatureType type, String... attributeNames) throws IllegalFilterException {
         for (String an : attributeNames) {
             String attrName = type.getDescriptor(an).getLocalName();
             expressions.add(factory.property(attrName));
@@ -274,8 +272,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
-            if (targetResults instanceof UniqueResult || targetResults == CalcResult.NULL_RESULT)
-                return true;
+            if (targetResults instanceof UniqueResult || targetResults == CalcResult.NULL_RESULT) return true;
             return false;
         }
 

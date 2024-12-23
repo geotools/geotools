@@ -64,15 +64,14 @@ public class ElementImpl extends MetadataEntity implements Element {
     private Citation evaluationProcedure;
 
     /**
-     * Date or range of dates on which a data quality measure was applied. The array length is 1 for
-     * a single date, or 2 for a range. Returns {@code null} if this information is not available.
+     * Date or range of dates on which a data quality measure was applied. The array length is 1 for a single date, or 2
+     * for a range. Returns {@code null} if this information is not available.
      */
     private long date1 = Long.MIN_VALUE, date2 = Long.MIN_VALUE;
 
     /**
-     * Value (or set of values) obtained from applying a data quality measure or the out come of
-     * evaluating the obtained value (or set of values) against a specified acceptable conformance
-     * quality level.
+     * Value (or set of values) obtained from applying a data quality measure or the out come of evaluating the obtained
+     * value (or set of values) against a specified acceptable conformance quality level.
      */
     private Collection<Result> results;
 
@@ -128,10 +127,7 @@ public class ElementImpl extends MetadataEntity implements Element {
         measureDescription = newValue;
     }
 
-    /**
-     * Returns the type of method used to evaluate quality of the dataset, or {@code null} if
-     * unspecified.
-     */
+    /** Returns the type of method used to evaluate quality of the dataset, or {@code null} if unspecified. */
     @Override
     public EvaluationMethodType getEvaluationMethodType() {
         return evaluationMethodType;
@@ -168,9 +164,8 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /**
-     * Returns the date or range of dates on which a data quality measure was applied. The array
-     * length is 1 for a single date, or 2 for a range. Returns an empty list if this information is
-     * not available.
+     * Returns the date or range of dates on which a data quality measure was applied. The array length is 1 for a
+     * single date, or 2 for a range. Returns an empty list if this information is not available.
      *
      * @since 2.4
      */
@@ -186,8 +181,8 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /**
-     * Set the date or range of dates on which a data quality measure was applied. The collection
-     * size is 1 for a single date, or 2 for a range.
+     * Set the date or range of dates on which a data quality measure was applied. The collection size is 1 for a single
+     * date, or 2 for a range.
      *
      * @since 2.4
      */
@@ -207,9 +202,8 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /**
-     * Returns the value (or set of values) obtained from applying a data quality measure or the out
-     * come of evaluating the obtained value (or set of values) against a specified acceptable
-     * conformance quality level.
+     * Returns the value (or set of values) obtained from applying a data quality measure or the out come of evaluating
+     * the obtained value (or set of values) against a specified acceptable conformance quality level.
      *
      * @since 2.4
      */
@@ -219,9 +213,8 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /**
-     * Set the value (or set of values) obtained from applying a data quality measure or the out
-     * come of evaluating the obtained value (or set of values) against a specified acceptable
-     * conformance quality level.
+     * Set the value (or set of values) obtained from applying a data quality measure or the out come of evaluating the
+     * obtained value (or set of values) against a specified acceptable conformance quality level.
      *
      * @since 2.4
      */

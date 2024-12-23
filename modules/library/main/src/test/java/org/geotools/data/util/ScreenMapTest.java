@@ -50,8 +50,7 @@ public class ScreenMapTest {
         setAll(map, false);
     }
 
-    private void setOne(
-            ScreenMap map, int xconst, int yconst, boolean bool, boolean expectedOldValue) {
+    private void setOne(ScreenMap map, int xconst, int yconst, boolean bool, boolean expectedOldValue) {
         Assert.assertEquals(expectedOldValue, map.get(xconst, yconst));
         map.set(xconst, yconst, bool);
 

@@ -31,8 +31,8 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.standard.DepthFirstIterator;
 
 /**
- * Creates a collection of connected graphs from a single graph. A connected graph in which for
- * every two pair of nodes, there is a path between them.
+ * Creates a collection of connected graphs from a single graph. A connected graph in which for every two pair of nodes,
+ * there is a path between them.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */

@@ -31,8 +31,8 @@ import org.geotools.swing.locale.LocaleUtils;
 /**
  * A cursor tool to zoom out the map pane display.
  *
- * <p>For mouse clicks, the display will be zoomed-out such that the map centre is the position of
- * the mouse click and the map width and height are calculated as:
+ * <p>For mouse clicks, the display will be zoomed-out such that the map centre is the position of the mouse click and
+ * the map width and height are calculated as:
  *
  * <pre>   {@code len = len.old * z} </pre>
  *
@@ -69,8 +69,8 @@ public class ZoomOutTool extends AbstractZoomTool {
     }
 
     /**
-     * Zoom out by the currently set increment, with the map centred at the location (in world
-     * coords) of the mouse click
+     * Zoom out by the currently set increment, with the map centred at the location (in world coords) of the mouse
+     * click
      *
      * @param ev the mouse event
      */
@@ -82,10 +82,9 @@ public class ZoomOutTool extends AbstractZoomTool {
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale / zoom;
 
-        Position2D corner =
-                new Position2D(
-                        mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
-                        mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
+        Position2D corner = new Position2D(
+                mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
+                mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 
         ReferencedEnvelope newMapArea = new ReferencedEnvelope();
         newMapArea.setFrameFromCenter(mapPos, corner);
@@ -99,8 +98,7 @@ public class ZoomOutTool extends AbstractZoomTool {
     }
 
     /**
-     * Returns false to indicate that this tool does not draw a box on the map display when the
-     * mouse is being dragged
+     * Returns false to indicate that this tool does not draw a box on the map display when the mouse is being dragged
      */
     @Override
     public boolean drawDragBox() {

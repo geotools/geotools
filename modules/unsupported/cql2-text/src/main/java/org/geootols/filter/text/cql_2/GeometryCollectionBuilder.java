@@ -24,8 +24,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 
 /**
- * Builds a {@link GeometryCollection} using the. Copied from gt-cql, should be removed once the
- * modules * are merged.
+ * Builds a {@link GeometryCollection} using the. Copied from gt-cql, should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -44,8 +43,7 @@ final class GeometryCollectionBuilder extends GeometryBuilder {
 
         Geometry[] geometries = geometryList.toArray(new Geometry[geometryList.size()]);
 
-        GeometryCollection geometryCollection =
-                getGeometryFactory().createGeometryCollection(geometries);
+        GeometryCollection geometryCollection = getGeometryFactory().createGeometryCollection(geometries);
 
         return geometryCollection;
     }

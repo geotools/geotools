@@ -20,9 +20,9 @@ import java.lang.ref.Reference; // For javadoc
 import java.util.Set;
 
 /**
- * A cache for arbitrary objects. Cache implementations are thread-safe and support concurrency. A
- * cache entry can be locked when an object is in process of being created, but the locking /
- * unlocking <strong>must</strong> be protected in a {@code try} ... {@code finally} block.
+ * A cache for arbitrary objects. Cache implementations are thread-safe and support concurrency. A cache entry can be
+ * locked when an object is in process of being created, but the locking / unlocking <strong>must</strong> be protected
+ * in a {@code try} ... {@code finally} block.
  *
  * <p>To use as a reader:
  *
@@ -99,20 +99,20 @@ public interface ObjectCache<K, V> {
     void clear();
 
     /**
-     * Returns an object from the pool for the specified code. If the object was retained as a
-     * {@linkplain Reference weak reference}, the {@link Reference#get referent} is returned.
+     * Returns an object from the pool for the specified code. If the object was retained as a {@linkplain Reference
+     * weak reference}, the {@link Reference#get referent} is returned.
      *
      * @param key The key whose associated value is to be returned.
-     * @returns The value to which the specified key is mapped, or {@code null} if this cache
-     *     contains no mapping for the key.
+     * @returns The value to which the specified key is mapped, or {@code null} if this cache contains no mapping for
+     *     the key.
      */
     V get(K key);
 
     /**
      * Use the write lock to test the value for the provided key.
      *
-     * <p>This method is used by a writer to test if someone (ie another writer) has provided the
-     * value for us (while we were blocked waiting for them).
+     * <p>This method is used by a writer to test if someone (ie another writer) has provided the value for us (while we
+     * were blocked waiting for them).
      *
      * @return The value, may be <code>null</code>
      */
@@ -154,8 +154,7 @@ public interface ObjectCache<K, V> {
     /**
      * Returns a set of all the keys currently contained within the ObjectCache.
      *
-     * <p>This is a static copy of the keys in the cache at the point in time when the function is
-     * called.
+     * <p>This is a static copy of the keys in the cache at the point in time when the function is called.
      *
      * @return a set of keys currently contained within the cache.
      */

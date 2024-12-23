@@ -45,14 +45,13 @@ public class OblongBuilder extends PolygonBuilder {
     }
 
     /**
-     * Creates a new {@code Oblong} positioned at the given neighbor position relative to the
-     * reference element.
+     * Creates a new {@code Oblong} positioned at the given neighbor position relative to the reference element.
      *
      * @param el the reference oblong
      * @param neighbor a neighbour position
      * @return a new {@code Oblong} object
-     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not
-     *     an instance of {@code Oblong}
+     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not an instance of
+     *     {@code Oblong}
      */
     @Override
     public Oblong createNeighbor(PolygonElement el, Neighbor neighbor) {

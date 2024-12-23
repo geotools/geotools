@@ -30,9 +30,9 @@ import java.util.List;
 public interface FCode {
 
     /**
-     * Array of attributes the FACC Code information is allowed to be stored under. The default
-     * allowed attribute names are "f_code" and "facc". This can be be overridden using the system
-     * property "gt.vpf.allowedFCodeAttributes" with a comma separated list of the desired values.
+     * Array of attributes the FACC Code information is allowed to be stored under. The default allowed attribute names
+     * are "f_code" and "facc". This can be be overridden using the system property "gt.vpf.allowedFCodeAttributes" with
+     * a comma separated list of the desired values.
      */
     public static final String[] ALLOWED_FCODE_ATTRIBUTES =
             System.getProperty("gt.vpf.allowedFCodeAttributes", "f_code,facc").split(",");

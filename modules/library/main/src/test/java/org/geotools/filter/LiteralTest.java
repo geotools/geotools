@@ -62,13 +62,9 @@ public class LiteralTest {
         Assert.assertEquals(Double.valueOf(12.0), ff.literal("12.0").evaluate(null, Double.class));
         Assert.assertEquals(Double.valueOf(12.5), ff.literal("12.5").evaluate(null, Double.class));
         Assert.assertEquals(
-                Long.valueOf(Long.MAX_VALUE),
-                ff.literal(Long.MAX_VALUE + "").evaluate(null, Long.class));
-        BigInteger doubleMaxLong =
-                BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(2));
-        Assert.assertEquals(
-                doubleMaxLong,
-                ff.literal(doubleMaxLong.toString()).evaluate(null, BigInteger.class));
+                Long.valueOf(Long.MAX_VALUE), ff.literal(Long.MAX_VALUE + "").evaluate(null, Long.class));
+        BigInteger doubleMaxLong = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(2));
+        Assert.assertEquals(doubleMaxLong, ff.literal(doubleMaxLong.toString()).evaluate(null, BigInteger.class));
     }
 
     @Test

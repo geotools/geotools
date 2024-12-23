@@ -100,9 +100,8 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
         }
 
         /**
-         * Schema-less extended data (see
-         * https://developers.google.com/kml/documentation/extendeddata especially the "Adding
-         * Untyped Name/Value Pairs" section):
+         * Schema-less extended data (see https://developers.google.com/kml/documentation/extendeddata especially the
+         * "Adding Untyped Name/Value Pairs" section):
          *
          * <p><ExtendedData> <Data name="string"> <displayName>...</displayName>
          * <!-- string -->

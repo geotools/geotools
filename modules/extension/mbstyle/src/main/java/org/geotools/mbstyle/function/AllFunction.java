@@ -24,11 +24,10 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if and only if all
- * expressions evaluate to {@link java.lang.Boolean#TRUE}, {@link java.lang.Boolean#FALSE}
- * otherwise. This function is implemented as a short- circuit in that it will return {@link
- * java.lang.Boolean#FALSE} for the first expression that does not evaluate to {@link
- * java.lang.Boolean#TRUE}.
+ * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if and only if all expressions evaluate to
+ * {@link java.lang.Boolean#TRUE}, {@link java.lang.Boolean#FALSE} otherwise. This function is implemented as a short-
+ * circuit in that it will return {@link java.lang.Boolean#FALSE} for the first expression that does not evaluate to
+ * {@link java.lang.Boolean#TRUE}.
  *
  * <p>Format:
  *

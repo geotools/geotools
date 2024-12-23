@@ -42,10 +42,10 @@ public interface Operation extends PropertyDescriptor {
     /**
      * Indicates if invoke may be called.
      *
-     * <p>In order allow for faithful description of a software system we will need construct models
-     * dynamically at runtime, possibly when no implementation of this Operation is available. As an
-     * example when working with features in a web application some operations may only be available
-     * when being executed on a remote web processing service.
+     * <p>In order allow for faithful description of a software system we will need construct models dynamically at
+     * runtime, possibly when no implementation of this Operation is available. As an example when working with features
+     * in a web application some operations may only be available when being executed on a remote web processing
+     * service.
      *
      * @return true if invoke may be called.
      */
@@ -54,13 +54,12 @@ public interface Operation extends PropertyDescriptor {
     /**
      * Invoke this operation on an attribute using the provided parameters.
      *
-     * <p>The state of the attribute may be used and / or updated during the execution of the
-     * operation.
+     * <p>The state of the attribute may be used and / or updated during the execution of the operation.
      *
      * <p>Please check to ensure that isImplemented returns <code>true</code> before calling invoke.
      *
-     * @param target Attribute this operation is being applied to, the state of this attribute may
-     *     be changed by this operation.
+     * @param target Attribute this operation is being applied to, the state of this attribute may be changed by this
+     *     operation.
      * @param params parameters used by the operation
      * @return the result of the operation
      * @throws InvoationTargetException if an error occurred while processing

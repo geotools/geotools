@@ -36,13 +36,12 @@ public class LineParser extends SymbolizerParser<LineSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(
-                new StrokeParser(factory) {
-                    @Override
-                    protected void stroke(Stroke stroke) {
-                        sym.setStroke(stroke);
-                    }
-                });
+        context.push(new StrokeParser(factory) {
+            @Override
+            protected void stroke(Stroke stroke) {
+                sym.setStroke(stroke);
+            }
+        });
         if (map.has("offset")) {
             sym.setPerpendicularOffset(Util.expression(map.str("offset"), factory));
         }

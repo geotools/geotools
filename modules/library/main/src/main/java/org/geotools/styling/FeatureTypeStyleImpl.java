@@ -222,8 +222,7 @@ public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
     /**
      * Compares this FeatureTypeStyleImpl with another.
      *
-     * <p>Two FeatureTypeStyles are equal if they contain equal properties and an equal list of
-     * Rules.
+     * <p>Two FeatureTypeStyles are equal if they contain equal properties and an equal list of Rules.
      *
      * @param oth The other FeatureTypeStyleImpl to compare with.
      * @return True if this and oth are equal.

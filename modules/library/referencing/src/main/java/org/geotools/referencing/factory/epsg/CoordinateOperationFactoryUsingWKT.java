@@ -49,20 +49,18 @@ import org.geotools.util.logging.Logging;
 /**
  * Authority factory that holds user-defined {@linkplain CoordinateOperation Coordinate Operations}.
  *
- * <p>This factory can be used as a replacement for Coordinate Operations when there is no access to
- * a complete EPSG database. Or can be used to override the coordinate operations defined in EPSG if
- * assigned a higher priority.
+ * <p>This factory can be used as a replacement for Coordinate Operations when there is no access to a complete EPSG
+ * database. Or can be used to override the coordinate operations defined in EPSG if assigned a higher priority.
  *
  * <p>The Coordinate Operations are defined as <cite>Well Known Text</cite> math transforms (see
  * {@link PropertyCoordinateOperationAuthorityFactory} for format specification and examples).
  *
- * <p>Property file name is {@value #FILENAME}, and its possible locations are described {@linkplain
- * #FILENAME here}. If no property file is found, the factory won't be activated.
+ * <p>Property file name is {@value #FILENAME}, and its possible locations are described {@linkplain #FILENAME here}. If
+ * no property file is found, the factory won't be activated.
  *
- * <p>If an operation is not found in the properties file, this factory will delegate creation on a
- * fallback factory. The fallback factory is the next registered {@link
- * CoordinateOperationAuthorityFactory} after this one in the {@linkplain
- * org.geotools.util.factory.AbstractFactory#priority priority} chain.
+ * <p>If an operation is not found in the properties file, this factory will delegate creation on a fallback factory.
+ * The fallback factory is the next registered {@link CoordinateOperationAuthorityFactory} after this one in the
+ * {@linkplain org.geotools.util.factory.AbstractFactory#priority priority} chain.
  *
  * @version $Id$
  * @author Oscar Fonts
@@ -77,16 +75,15 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
     protected Citation authority;
 
     /**
-     * The default filename to read. The default {@code FactoryUsingWKT} implementation will search
-     * for the first occurence of this file in the following places:
+     * The default filename to read. The default {@code FactoryUsingWKT} implementation will search for the first
+     * occurence of this file in the following places:
      *
      * <p>
      *
      * <ul>
-     *   <li>In the directory specified by the {@value
-     *       org.geotools.util.factory.GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY} system property.
-     *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the
-     *       classpath.
+     *   <li>In the directory specified by the {@value org.geotools.util.factory.GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY}
+     *       system property.
+     *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the classpath.
      * </ul>
      *
      * <p>
@@ -115,9 +112,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
         this(null, PRIORITY);
     }
 
-    /**
-     * Constructs an authority factory using a set of factories created from the specified hints.
-     */
+    /** Constructs an authority factory using a set of factories created from the specified hints. */
     public CoordinateOperationFactoryUsingWKT(Hints userHints) {
         this(userHints, PRIORITY);
     }
@@ -155,44 +150,38 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      *
      * @return The backing store to uses in {@code createXXX(...)} methods.
      * @throws FactoryNotFoundException if the {@code properties} file has not been found.
-     * @throws FactoryException if the constructor failed to find or read the file. This exception
-     *     usually has an {@link IOException} as its cause.
+     * @throws FactoryException if the constructor failed to find or read the file. This exception usually has an
+     *     {@link IOException} as its cause.
      */
     @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         try {
             URL url = getDefinitionsURL();
             if (url == null) {
-                throw new FactoryNotFoundException(
-                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
-            final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
+            final Iterator<? extends Identifier> ids =
+                    getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
             final LogRecord record =
-                    Loggings.format(
-                            Level.CONFIG,
-                            LoggingKeys.USING_FILE_AS_FACTORY_$2,
-                            url.getPath(),
-                            authority);
+                    Loggings.format(Level.CONFIG, LoggingKeys.USING_FILE_AS_FACTORY_$2, url.getPath(), authority);
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
-            return new PropertyCoordinateOperationAuthorityFactory(
-                    factories, this.getAuthority(), url);
+            return new PropertyCoordinateOperationAuthorityFactory(factories, this.getAuthority(), url);
         } catch (IOException exception) {
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 
     /**
-     * Returns the URL to the property file that contains Operation definitions. The default
-     * implementation performs the following search path:
+     * Returns the URL to the property file that contains Operation definitions. The default implementation performs the
+     * following search path:
      *
      * <ul>
-     *   <li>If a value is set for the {@value GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY} system
-     *       property key, then the {@value #FILENAME} file will be searched in this directory.
-     *   <li>If no value is set for the above-cited system property, or if no {@value #FILENAME}
-     *       file was found in that directory, then the first {@value #FILENAME} file found in any
+     *   <li>If a value is set for the {@value GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY} system property key, then the
+     *       {@value #FILENAME} file will be searched in this directory.
+     *   <li>If no value is set for the above-cited system property, or if no {@value #FILENAME} file was found in that
+     *       directory, then the first {@value #FILENAME} file found in any
      *       {@code org/geotools/referencing/factory/epsg} directory on the classpath will be used.
      *   <li>If no file was found on the classpath neither, then this factory will be disabled.
      * </ul>
@@ -214,13 +203,12 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
     }
 
     /**
-     * Creates operations from {@linkplain CoordinateReferenceSystem coordinate reference system}
-     * codes.
+     * Creates operations from {@linkplain CoordinateReferenceSystem coordinate reference system} codes.
      *
      * <p>This method searches in the {@linkplain #FILENAME properties file} for operations.
      *
-     * <p>If not found there, it will create operations from a fallback factory (see {@link
-     * #getFallbackAuthorityFactory}).
+     * <p>If not found there, it will create operations from a fallback factory (see
+     * {@link #getFallbackAuthorityFactory}).
      *
      * @param sourceCRS Coded value of source coordinate reference system.
      * @param targetCRS Coded value of target coordinate reference system.
@@ -229,11 +217,9 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
-    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS)
+    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
-        Set<CoordinateOperation> coordops =
-                super.createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS);
+        Set<CoordinateOperation> coordops = super.createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS);
         if (coordops.isEmpty()) {
             // If not found, delegate to the fallback factory.
             CoordinateOperationAuthorityFactory fallback = getFallbackAuthorityFactory();
@@ -249,8 +235,8 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      *
      * <p>This method searches in the {@linkplain #FILENAME properties file} for operations.
      *
-     * <p>If not found there, it will create operations from a fallback factory (see {@link
-     * #getFallbackAuthorityFactory}).
+     * <p>If not found there, it will create operations from a fallback factory (see
+     * {@link #getFallbackAuthorityFactory}).
      *
      * @param code Coded value for operation.
      * @return The operation from {@code sourceCRS} to {@code targetCRS}.

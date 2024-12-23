@@ -77,8 +77,8 @@ public class EMFUtils {
     /**
      * Returns a value from a map based property of an eobject.
      *
-     * <p>This method does not sort of checking of the property, use {@link #getFromMapSafe(EObject,
-     * String, String)} for more leniency.
+     * <p>This method does not sort of checking of the property, use {@link #getFromMapSafe(EObject, String, String)}
+     * for more leniency.
      *
      * @param eobject The object.
      * @param property The map property.
@@ -91,11 +91,10 @@ public class EMFUtils {
     }
 
     /**
-     * Returns a value from a map based property of an eobject, handling null cases and the case
-     * where the property is not actually a map.
+     * Returns a value from a map based property of an eobject, handling null cases and the case where the property is
+     * not actually a map.
      *
-     * <p>This method returns null in cases where the the property does not exist, or it is not a
-     * map.
+     * <p>This method returns null in cases where the the property does not exist, or it is not a map.
      *
      * @param eobject The object.
      * @param property The map property.
@@ -118,8 +117,8 @@ public class EMFUtils {
     /**
      * Adds a value to a multi-valued propert of an eobject.
      *
-     * <p>The <param>property</param> must map to a multi-valued property of the eobject. The {@link
-     * #isCollection(EObject, String)} method can be used to test this.
+     * <p>The <param>property</param> must map to a multi-valued property of the eobject. The
+     * {@link #isCollection(EObject, String)} method can be used to test this.
      *
      * @param eobject The object.
      * @param property The multi-valued property.
@@ -136,8 +135,8 @@ public class EMFUtils {
     /**
      * Adds a value to a multi-valued propert of an eobject.
      *
-     * <p>The <param>feature</param> must map to a multi-valued property of the eobject. The {@link
-     * #isCollection(EStructuralFeature)} method can be used to test this.
+     * <p>The <param>feature</param> must map to a multi-valued property of the eobject. The
+     * {@link #isCollection(EStructuralFeature)} method can be used to test this.
      *
      * @param eobject The object.
      * @param feature The multi-valued feature.
@@ -172,12 +171,11 @@ public class EMFUtils {
     }
 
     /**
-     * Returns a collection view for value, taking care of the case where value is of an array type,
-     * in which case the collection returned contains the array elements, not the array itself.
+     * Returns a collection view for value, taking care of the case where value is of an array type, in which case the
+     * collection returned contains the array elements, not the array itself.
      *
      * @param value a value to be added to an EObject collection property
-     * @return value wrapped in a collection, or a collection containing the array elements in case
-     *     value is an array.
+     * @return value wrapped in a collection, or a collection containing the array elements in case value is an array.
      * @see #add(EObject, String, Object)
      */
     @SuppressWarnings("unchecked") // playing with generic collections/arrays
@@ -247,8 +245,8 @@ public class EMFUtils {
     }
 
     /**
-     * Method which looks up a structure feature of an eobject, first doing an exact name match,
-     * then a case insensitive one.
+     * Method which looks up a structure feature of an eobject, first doing an exact name match, then a case insensitive
+     * one.
      *
      * @param eobject The eobject.
      * @param property The property
@@ -400,8 +398,7 @@ public class EMFUtils {
     }
 
     /**
-     * Clones an eobject, with the option of performing a deep clone in which referenced eobjects
-     * are also cloned.
+     * Clones an eobject, with the option of performing a deep clone in which referenced eobjects are also cloned.
      *
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.

@@ -80,8 +80,7 @@ public class WFSFeatureCollectionEncodingTest {
 
     @Test
     public void testEncodeFeatureCollectionCoordinatesFormatting10() throws Exception {
-        org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration =
-                new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
+        org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration = new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
         configuration.getDependency(GMLConfiguration.class).setForceDecimalEncoding(true);
         configuration.getDependency(GMLConfiguration.class).setNumDecimals(4);
@@ -117,18 +116,14 @@ public class WFSFeatureCollectionEncodingTest {
 
         Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
         Assert.assertNotNull(
-                ((Element) d.getElementsByTagName("geotools:feature").item(0))
-                        .getAttribute("gml:id"));
+                ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("gml:id"));
     }
 
     @Test
     public void testEncodeFeatureCollectionCoordinatesFormatting11() throws Exception {
-        org.geotools.wfs.v1_1.WFSConfiguration configuration =
-                new org.geotools.wfs.v1_1.WFSConfiguration();
+        org.geotools.wfs.v1_1.WFSConfiguration configuration = new org.geotools.wfs.v1_1.WFSConfiguration();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
-        configuration
-                .getDependency(org.geotools.gml3.GMLConfiguration.class)
-                .setForceDecimalEncoding(true);
+        configuration.getDependency(org.geotools.gml3.GMLConfiguration.class).setForceDecimalEncoding(true);
         configuration.getDependency(org.geotools.gml3.GMLConfiguration.class).setNumDecimals(4);
         configuration.getDependency(org.geotools.gml3.GMLConfiguration.class).setPadWithZeros(true);
         Encoder e = new Encoder(configuration);
@@ -144,8 +139,7 @@ public class WFSFeatureCollectionEncodingTest {
                 "1.0000 1.0000", d.getElementsByTagName("gml:pos").item(0).getTextContent());
         Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
         Assert.assertNotNull(
-                ((Element) d.getElementsByTagName("geotools:feature").item(0))
-                        .getAttribute("gml:id"));
+                ((Element) d.getElementsByTagName("geotools:feature").item(0)).getAttribute("gml:id"));
     }
 
     @Test

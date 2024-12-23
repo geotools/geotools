@@ -41,11 +41,11 @@ public class ChannelSelectionImpl implements ChannelSelection {
     /**
      * Retrieves the RGB channel that were selected.
      *
-     * <p><strong> Note that in case there is no RGB selection the returned {@link
-     * SelectedChannelType} array will contain null elements.
+     * <p><strong> Note that in case there is no RGB selection the returned {@link SelectedChannelType} array will
+     * contain null elements.
      *
-     * @return {@link SelectedChannelType} array that contains the {@link SelectedChannelType}
-     *     elements for the RGB channels.
+     * @return {@link SelectedChannelType} array that contains the {@link SelectedChannelType} elements for the RGB
+     *     channels.
      */
     @Override
     public SelectedChannelType[] getRGBChannels() {
@@ -78,8 +78,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
     }
 
     @Override
-    public void setRGBChannels(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
+    public void setRGBChannels(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;

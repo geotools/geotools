@@ -29,13 +29,10 @@ public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
-        run(
-                "CREATE TABLE seq (key INT, name VARCHAR(255),"
-                        + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key))");
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
-                        + " VALUES ('seq','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
+        run("CREATE TABLE seq (key INT, name VARCHAR(255)," + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key))");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
+                + " VALUES ('seq','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
         run("CREATE SEQUENCE seq_key_sequence START WITH 1");
 
         run("INSERT INTO seq VALUES (seq_key_sequence.NEXTVAL,'one',NULL)");
@@ -45,13 +42,10 @@ public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void createNonIncrementingPrimaryKeyTable() throws Exception {
-        run(
-                "CREATE TABLE noninc (key INT, name VARCHAR(255),"
-                        + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key))");
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
-                        + " VALUES ('noninc','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
+        run("CREATE TABLE noninc (key INT, name VARCHAR(255)," + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key))");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
+                + " VALUES ('noninc','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
         run("INSERT INTO noninc VALUES (1,'one',NULL)");
         run("INSERT INTO noninc VALUES (2,'two',NULL)");
         run("INSERT INTO noninc VALUES (3,'three',NULL)");
@@ -59,13 +53,11 @@ public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void createMultiColumnPrimaryKeyTable() throws Exception {
-        run(
-                "CREATE TABLE multi (key1 INT, key2 VARCHAR(255), name VARCHAR(255),"
-                        + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key1,key2))");
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
-                        + " VALUES ('multi','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
+        run("CREATE TABLE multi (key1 INT, key2 VARCHAR(255), name VARCHAR(255),"
+                + " geom MDSYS.SDO_GEOMETRY, PRIMARY KEY(key1,key2))");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
+                + " VALUES ('multi','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
         run("INSERT INTO multi VALUES (1,'x','one',NULL)");
         run("INSERT INTO multi VALUES (2,'y','two',NULL)");
         run("INSERT INTO multi VALUES (3,'z','three',NULL)");
@@ -82,10 +74,9 @@ public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
     @Override
     protected void createUniqueIndexTable() throws Exception {
         run("CREATE TABLE uniq (key INT, name VARCHAR(255)," + " geom MDSYS.SDO_GEOMETRY)");
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
-                        + " VALUES ('uniq','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
+                + " VALUES ('uniq','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
         run("CREATE UNIQUE INDEX uniq_key_index ON uniq(key)");
 
         run("INSERT INTO uniq VALUES (1,'one',NULL)");
@@ -96,10 +87,9 @@ public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
     @Override
     protected void createNonFirstColumnPrimaryKey() throws Exception {
         run("CREATE TABLE nonfirst (name VARCHAR(255), key INT, " + " geom MDSYS.SDO_GEOMETRY)");
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
-                        + " VALUES ('nonfirst','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID )"
+                + " VALUES ('nonfirst','geom',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)");
         run("CREATE UNIQUE INDEX nonfirst_key_index ON nonfirst(key)");
 
         run("INSERT INTO nonfirst VALUES ('one',1, NULL)");

@@ -61,11 +61,10 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 
 /**
- * A FilterVisitor responsible for providing the capabilities name used to identify the provided
- * filter.
+ * A FilterVisitor responsible for providing the capabilities name used to identify the provided filter.
  *
- * <p>These names will match those used by FilterCapabilities Operations and may be used to verify
- * that the provided filter is supported.
+ * <p>These names will match those used by FilterCapabilities Operations and may be used to verify that the provided
+ * filter is supported.
  *
  * <p>
  *

@@ -20,8 +20,8 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Support class providing {@link com.fasterxml.jackson.databind.ObjectMapper} instances configured
- * with the desired settings.
+ * Support class providing {@link com.fasterxml.jackson.databind.ObjectMapper} instances configured with the desired
+ * settings.
  */
 class ObjectMapperFactory {
 
@@ -33,10 +33,10 @@ class ObjectMapperFactory {
     }
 
     /**
-     * Returns an {@link ObjectMapper} set up to parse JTS geometries, with the default settings.
-     * See also {@link JtsModule#DEFAULT_MAX_DECIMALS}, {@link JtsModule#DEFAULT_MIN_DECIMALS} and
-     * {@link JtsModule#DEFAULT_ROUND_MODE}. It is to be noticed, the settings above only affects
-     * writing, so the default mapper should be used for all read operations.
+     * Returns an {@link ObjectMapper} set up to parse JTS geometries, with the default settings. See also
+     * {@link JtsModule#DEFAULT_MAX_DECIMALS}, {@link JtsModule#DEFAULT_MIN_DECIMALS} and
+     * {@link JtsModule#DEFAULT_ROUND_MODE}. It is to be noticed, the settings above only affects writing, so the
+     * default mapper should be used for all read operations.
      *
      * @return
      */

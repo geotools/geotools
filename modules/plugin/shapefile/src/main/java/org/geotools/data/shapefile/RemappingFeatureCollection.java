@@ -41,12 +41,10 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     /**
-     * Returns a shapefile compatible collection, that is, geometry field is always named the_geom
-     * and field names have a max length of 10. Will return the original collection if already
-     * compatible
+     * Returns a shapefile compatible collection, that is, geometry field is always named the_geom and field names have
+     * a max length of 10. Will return the original collection if already compatible
      */
-    public static SimpleFeatureCollection getShapefileCompatibleCollection(
-            SimpleFeatureCollection fc) {
+    public static SimpleFeatureCollection getShapefileCompatibleCollection(SimpleFeatureCollection fc) {
         Map<String, String> attributeMappings = createAttributeMappings(fc.getSchema());
 
         // check if the remapping is actually needed
@@ -101,8 +99,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     Map<String, String> attributesMapping;
 
-    public RemappingFeatureCollection(
-            SimpleFeatureCollection delegate, Map<String, String> attributesMapping) {
+    public RemappingFeatureCollection(SimpleFeatureCollection delegate, Map<String, String> attributesMapping) {
         super(delegate);
         this.attributesMapping = attributesMapping;
     }
@@ -112,10 +109,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return remapSchema(delegate.getSchema());
     }
 
-    /**
-     * Builds an inverted version of the given map. Inversion means that key->value becomes
-     * value->key
-     */
+    /** Builds an inverted version of the given map. Inversion means that key->value becomes value->key */
     static Map<String, String> invertMappings(Map<String, String> map) {
         Map<String, String> result = new HashMap<>();
         for (String key : map.keySet()) result.put(map.get(key), key);
@@ -151,14 +145,9 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return new RemappingIterator(delegate.features(), attributesMapping, getSchema());
     }
 
-    /**
-     * Remaps a SimpleFeature, using the given mappings (oldname -> mappedname). The builder uses
-     * the mapped schema.
-     */
+    /** Remaps a SimpleFeature, using the given mappings (oldname -> mappedname). The builder uses the mapped schema. */
     static SimpleFeature remap(
-            SimpleFeature source,
-            Map<String, String> attributeMappings,
-            SimpleFeatureBuilder builder) {
+            SimpleFeature source, Map<String, String> attributeMappings, SimpleFeatureBuilder builder) {
         SimpleFeatureType target = builder.getFeatureType();
         for (int i = 0; i < target.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = target.getDescriptor(i);
@@ -183,9 +172,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         SimpleFeatureBuilder builder;
 
         public RemappingIterator(
-                SimpleFeatureIterator delegate,
-                Map<String, String> attributesMapping,
-                SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate, Map<String, String> attributesMapping, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.attributesMapping = RemappingFeatureCollection.invertMappings(attributesMapping);
             this.builder = new SimpleFeatureBuilder(schema);

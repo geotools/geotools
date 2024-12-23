@@ -29,26 +29,18 @@ import org.w3c.dom.Document;
 public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeMultiCompound() throws Exception {
-        MultiLineStringEncoder encoder =
-                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
-        Geometry geometry =
-                new WKTReader2()
-                        .read(
-                                "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
+        Geometry geometry = new WKTReader2()
+                .read(
+                        "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
         assertThat(doc, hasXPath("count(//gml:MultiCurve)", equalTo("1")));
         assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember)", equalTo("2")));
         assertThat(
                 doc,
-                hasXPath(
-                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList",
-                        equalTo("100 100 120 120")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)",
-                        equalTo("2")));
+                hasXPath("//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", equalTo("100 100 120 120")));
+        assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)", equalTo("2")));
 
         assertThat(
                 doc,
@@ -75,26 +67,17 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
 
     @Test
     public void testEncodeMultiCurve() throws Exception {
-        MultiLineStringEncoder encoder =
-                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
-        Geometry geometry =
-                new WKTReader2()
-                        .read(
-                                "MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
+        Geometry geometry = new WKTReader2()
+                .read("MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
         assertThat(doc, hasXPath("count(//gml:MultiCurve)", equalTo("1")));
         assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember)", equalTo("2")));
         assertThat(
                 doc,
-                hasXPath(
-                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList",
-                        equalTo("105 105 125 125")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)",
-                        equalTo("1")));
+                hasXPath("//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", equalTo("105 105 125 125")));
+        assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)", equalTo("1")));
 
         assertThat(
                 doc,
@@ -110,14 +93,12 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
 
     @Test
     public void testEncodeMultiLineString() throws Exception {
-        MultiLineStringEncoder encoder =
-                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
         Geometry geometry = new WKTReader2().read("MULTILINESTRING((105 105, 125 125))");
         Document doc = encode(encoder, geometry, "multi");
         // XMLTestSupport.print(doc);
         assertThat(doc, hasXPath("count(//gml:MultiLineString)", equalTo("1")));
-        assertThat(
-                doc, hasXPath("count(//gml:MultiLineString/gml:lineStringMember)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:MultiLineString/gml:lineStringMember)", equalTo("1")));
         assertThat(
                 doc,
                 hasXPath(
@@ -127,9 +108,6 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
         // geometry ids
         assertThat(doc, hasXPath("/gml:MultiLineString/@gml:id", equalTo("multi")));
         assertThat(
-                doc,
-                hasXPath(
-                        "/gml:MultiLineString/gml:lineStringMember/gml:LineString/@gml:id",
-                        equalTo("multi.1")));
+                doc, hasXPath("/gml:MultiLineString/gml:lineStringMember/gml:LineString/@gml:id", equalTo("multi.1")));
     }
 }

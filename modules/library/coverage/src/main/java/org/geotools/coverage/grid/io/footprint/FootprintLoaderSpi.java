@@ -29,8 +29,7 @@ package org.geotools.coverage.grid.io.footprint;
  * <code>e.g.
  * org.geotools.coverage.grid.io.footprint.WKBLoaderSpi</code>
  *
- * <p>The factories are never called directly by users, instead the FootprintLoaderFinder class is
- * used.
+ * <p>The factories are never called directly by users, instead the FootprintLoaderFinder class is used.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  */

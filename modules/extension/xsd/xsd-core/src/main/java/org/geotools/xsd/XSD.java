@@ -42,8 +42,8 @@ import org.geotools.xs.XS;
 /**
  * Xml Schema for a particular namespace.
  *
- * <p>This class should is subclasses for the xs, gml, filter, sld, etc... schemas. Subclasses
- * should be implemented as singletons.
+ * <p>This class should is subclasses for the xs, gml, filter, sld, etc... schemas. Subclasses should be implemented as
+ * singletons.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.5
@@ -96,10 +96,7 @@ public abstract class XSD {
         return typeSchema;
     }
 
-    /**
-     * Returns the subset of {@link #getTypeSchema()} which maintains a unique java class to xml
-     * type mapping.
-     */
+    /** Returns the subset of {@link #getTypeSchema()} which maintains a unique java class to xml type mapping. */
     public final Schema getTypeMappingProfile() {
         if (typeMappingProfile == null) {
             synchronized (this) {
@@ -109,10 +106,7 @@ public abstract class XSD {
         return typeMappingProfile;
     }
 
-    /**
-     * Transitively returns the type mapping profile for this schema and all schemas that this
-     * schema depends on.
-     */
+    /** Transitively returns the type mapping profile for this schema and all schemas that this schema depends on. */
     public final List<Schema> getAllTypeMappingProfiles() {
         List<Schema> profiles = new LinkedList<>();
         for (XSD xsd : getAllDependencies()) {
@@ -284,8 +278,8 @@ public abstract class XSD {
     }
 
     /**
-     * Optionally, a schema locator that helps locating (other) schema's used for includes/imports
-     * that might already exist but are not in dependencies
+     * Optionally, a schema locator that helps locating (other) schema's used for includes/imports that might already
+     * exist but are not in dependencies
      *
      * @return Schema Locator
      */
@@ -294,9 +288,9 @@ public abstract class XSD {
     }
 
     /**
-     * Remove all references to this schema, and all schemas built in the same resource set It is
-     * important to call this method for every dynamic schema created that is not needed anymore,
-     * because references in the static schema's will otherwise keep it alive forever
+     * Remove all references to this schema, and all schemas built in the same resource set It is important to call this
+     * method for every dynamic schema created that is not needed anymore, because references in the static schema's
+     * will otherwise keep it alive forever
      */
     public void dispose() {
         if (schema != null) {

@@ -19,8 +19,7 @@ package org.geotools.data.hana.metadata;
 import org.geotools.data.hana.HanaUtil;
 
 /**
- * Helper class to create DDL statements for creating unit-of-measures and spatial reference
- * systems.
+ * Helper class to create DDL statements for creating unit-of-measures and spatial reference systems.
  *
  * @author Stefan Uhrig, SAP SE
  */
@@ -109,9 +108,7 @@ public final class MetadataDdl {
         sql.append(" SNAP TO GRID 0 ");
         sql.append(" POLYGON FORMAT 'EvenOdd' ");
         sql.append(" STORAGE FORMAT ");
-        sql.append(
-                HanaUtil.toStringLiteral(
-                        srs.getType() == Srs.Type.GEOGRAPHIC ? "Mixed" : "Internal"));
+        sql.append(HanaUtil.toStringLiteral(srs.getType() == Srs.Type.GEOGRAPHIC ? "Mixed" : "Internal"));
         return sql.toString();
     }
 

@@ -41,8 +41,7 @@ import org.locationtech.jts.geom.Geometry;
 
 public abstract class SolrTestSupport extends OnlineTestCase {
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
 
     static {
         // uncomment to turn up logging
@@ -50,8 +49,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class)
-                .setLevel(java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class).setLevel(java.util.logging.Level.FINE);
         org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class).addHandler(handler);
     }
 
@@ -135,8 +133,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
-        SolrLayerConfiguration solrLayerConfiguration =
-                new SolrLayerConfiguration(new ArrayList<>());
+        SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(new ArrayList<>());
         solrLayerConfiguration.setLayerName(this.layerName);
         List<SolrAttribute> layerAttributes = new ArrayList<>();
         for (SolrAttribute solrAttribute : attributes) {

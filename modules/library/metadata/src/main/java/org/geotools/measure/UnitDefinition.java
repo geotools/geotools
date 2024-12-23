@@ -24,8 +24,7 @@ import javax.measure.Unit;
 /**
  * This class holds a unit and associates it with its available prefixes and aliases.
  *
- * <p>It also allows overriding the symbol to use, in cases where the unit itself lacks this piece
- * of information.
+ * <p>It also allows overriding the symbol to use, in cases where the unit itself lacks this piece of information.
  */
 // class can be a `record` in future versions of Java
 public final class UnitDefinition {
@@ -36,10 +35,7 @@ public final class UnitDefinition {
     private final List<String> aliases;
 
     public static UnitDefinition of(
-            Unit<?> unit,
-            List<PrefixDefinition> prefixes,
-            String symbolOverride,
-            List<String> aliases) {
+            Unit<?> unit, List<PrefixDefinition> prefixes, String symbolOverride, List<String> aliases) {
         return new UnitDefinition(unit, prefixes, symbolOverride, aliases);
     }
 
@@ -47,11 +43,7 @@ public final class UnitDefinition {
         return new UnitDefinition(unit, PrefixDefinitions.STANDARD, null, emptyList());
     }
 
-    private UnitDefinition(
-            Unit<?> unit,
-            List<PrefixDefinition> prefixes,
-            String symbolOverride,
-            List<String> aliases) {
+    private UnitDefinition(Unit<?> unit, List<PrefixDefinition> prefixes, String symbolOverride, List<String> aliases) {
         this.unit = unit;
         this.prefixes = prefixes;
         this.symbolOverride = symbolOverride;

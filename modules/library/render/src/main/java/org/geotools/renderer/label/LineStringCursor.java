@@ -25,10 +25,9 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.LineString;
 
 /**
- * Allows to move a point cursor along the path of a LineString using a curvilinear coordinate
- * system and either absolute distances (from the start of the line) or offsets relative to the
- * current position, to return the absolute position of the cursor as a Point, and to get the
- * orientation of the current segment.
+ * Allows to move a point cursor along the path of a LineString using a curvilinear coordinate system and either
+ * absolute distances (from the start of the line) or offsets relative to the current position, to return the absolute
+ * position of the cursor as a Point, and to get the orientation of the current segment.
  *
  * @author Andrea Aime
  */
@@ -88,8 +87,7 @@ public class LineStringCursor {
 
             final double distance = c1.distance(c2);
             segmentLenghts[i - 1] = distance;
-            if (i < coords.size() - 1)
-                segmentStartOrdinate[i] = segmentStartOrdinate[i - 1] + distance;
+            if (i < coords.size() - 1) segmentStartOrdinate[i] = segmentStartOrdinate[i - 1] + distance;
         }
 
         // fill up the segment angles cache with placeholders
@@ -143,8 +141,8 @@ public class LineStringCursor {
     /**
      * Moves of the specified distance from the current position.
      *
-     * @return true if it was possible to move to the desired offset, false if the movement stopped
-     *     because the start or end of the LineString was reached
+     * @return true if it was possible to move to the desired offset, false if the movement stopped because the start or
+     *     end of the LineString was reached
      */
     public boolean moveRelative(double offset) {
         if (offset == 0) {
@@ -188,9 +186,8 @@ public class LineStringCursor {
                 }
             }
         }
-        throw new RuntimeException(
-                "You have stumbled into a software bug, "
-                        + "the code should never get here. Please report with a reproducable test case");
+        throw new RuntimeException("You have stumbled into a software bug, "
+                + "the code should never get here. Please report with a reproducable test case");
     }
 
     /** Returns the Point representing the current position along the LineString */
@@ -243,8 +240,8 @@ public class LineStringCursor {
     }
 
     /**
-     * Returns the maximum angle change (in radians) between two subsequent segments between the
-     * specified curvilinear coordinates.
+     * Returns the maximum angle change (in radians) between two subsequent segments between the specified curvilinear
+     * coordinates.
      */
     public double getMaxAngleChange(double startOrdinate, double endOrdinate) {
         if (startOrdinate > endOrdinate)
@@ -271,9 +268,9 @@ public class LineStringCursor {
     }
 
     /**
-     * A variant of {@link #getMaxAngleChange(double, double)} taking a step and evaluating angle
-     * differences at such step. This helps when a line has many little segments and chars would end
-     * up showing several segments apart (so the full angle change needs to be considered)
+     * A variant of {@link #getMaxAngleChange(double, double)} taking a step and evaluating angle differences at such
+     * step. This helps when a line has many little segments and chars would end up showing several segments apart (so
+     * the full angle change needs to be considered)
      *
      * @deprecated Does not work correctly, will be removed (tried too many times to fix it)
      */
@@ -294,8 +291,7 @@ public class LineStringCursor {
                 // but also to cover at least "step" distance (might require more than one segment)
                 double distance = segmentLenghts[delegate.segment] - delegate.offsetDistance;
                 delegate.offsetDistance = 0;
-                while (((distance < step && ordinate + distance < endOrdinate)
-                                || delegate.segment == prevSegment)
+                while (((distance < step && ordinate + distance < endOrdinate) || delegate.segment == prevSegment)
                         && delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     delegate.segment++;
                     distance += segmentLenghts[delegate.segment];
@@ -309,8 +305,7 @@ public class LineStringCursor {
 
                 // move to next segment
                 delegate.segment++;
-            } while (ordinate < endOrdinate
-                    && (delegate.segment < (delegate.segmentLenghts.length)));
+            } while (ordinate < endOrdinate && (delegate.segment < (delegate.segmentLenghts.length)));
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
         }
@@ -319,8 +314,8 @@ public class LineStringCursor {
     }
 
     /**
-     * A simple private class to factor out code that computes subequent angle differences and
-     * accumulates the max value found
+     * A simple private class to factor out code that computes subequent angle differences and accumulates the max value
+     * found
      */
     static final class MaxAngleDiffenceAccumulator {
         double previousAngle;
@@ -350,10 +345,7 @@ public class LineStringCursor {
         }
     }
 
-    /**
-     * Returns the maximum distance between the curve and a straight line connecting the start and
-     * end ordinates.
-     */
+    /** Returns the maximum distance between the curve and a straight line connecting the start and end ordinates. */
     public double getMaxDistanceFromStraightLine(double startOrdinate, double endOrdinate) {
         if (startOrdinate > endOrdinate)
             throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");

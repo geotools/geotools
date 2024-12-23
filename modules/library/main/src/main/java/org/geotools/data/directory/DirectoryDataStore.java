@@ -58,8 +58,8 @@ public class DirectoryDataStore implements DataStore {
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
         String typeName = query.getTypeName();
         return getDataStore(typeName).getFeatureReader(query, transaction);
     }
@@ -83,8 +83,8 @@ public class DirectoryDataStore implements DataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
         return getDataStore(typeName).getFeatureWriter(typeName, transaction);
     }
 

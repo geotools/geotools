@@ -32,8 +32,7 @@ import org.geotools.util.Utilities;
  * Very simple bean to hold the configuration of the mosaic.
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
- *     jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
 public class MosaicConfigurationBean {
 
@@ -53,8 +52,8 @@ public class MosaicConfigurationBean {
     }
 
     /**
-     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a
-     * different {@link IndexColorModel}.
+     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different
+     * {@link IndexColorModel}.
      */
     private boolean expandToRGB;
 
@@ -94,9 +93,8 @@ public class MosaicConfigurationBean {
     private CoordinateReferenceSystem crs;
 
     /**
-     * mosaic's dummy sample model useful to store dataType and number of bands. All the other
-     * fields shouldn't be queried since they are meaningless for the whole mosaic (width, height,
-     * ...)
+     * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be
+     * queried since they are meaningless for the whole mosaic (width, height, ...)
      */
     private SampleModel sampleModel;
 

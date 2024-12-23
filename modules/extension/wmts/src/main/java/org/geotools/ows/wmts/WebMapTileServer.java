@@ -49,8 +49,8 @@ import org.geotools.tile.Tile;
 /**
  * WebMapTileServer is a class representing a WMTS.
  *
- * <p>It is used to access the Capabilities document and perform requests. It will perform version
- * negotiation automatically and use the highest known version that the server can communicate.
+ * <p>It is used to access the Capabilities document and perform requests. It will perform version negotiation
+ * automatically and use the highest known version that the server can communicate.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -67,15 +67,13 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws ServiceException
      * @throws IOException
      */
-    public WebMapTileServer(URL serverURL, HTTPClient httpClient)
-            throws ServiceException, IOException {
+    public WebMapTileServer(URL serverURL, HTTPClient httpClient) throws ServiceException, IOException {
         super(serverURL, httpClient);
         setupType();
     }
 
     /**
-     * Set up the WebMapTileServer by the given serverUrl, using the http client with additional
-     * headers.
+     * Set up the WebMapTileServer by the given serverUrl, using the http client with additional headers.
      *
      * @param serverURL
      * @param httpClient
@@ -90,22 +88,19 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     /**
-     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the
-     * default httpClient.
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the default httpClient.
      *
      * @param serverURL
      * @param capabilities
      * @throws ServiceException
      * @throws IOException
      */
-    public WebMapTileServer(URL serverURL, WMTSCapabilities capabilities)
-            throws ServiceException, IOException {
+    public WebMapTileServer(URL serverURL, WMTSCapabilities capabilities) throws ServiceException, IOException {
         this(serverURL, HTTPClientFinder.createClient(), capabilities, null);
     }
 
     /**
-     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the
-     * given httpClient.
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the given httpClient.
      *
      * @param serverURL
      * @param httpClient
@@ -119,8 +114,8 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     /**
-     * Set up the WebMapTileServer by the given capabilities, with the given serverURL and
-     * additional hints. Using the given http client.
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL and additional hints. Using the
+     * given http client.
      *
      * @param serverURL
      * @param httpClient
@@ -130,10 +125,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws IOException
      */
     public WebMapTileServer(
-            URL serverURL,
-            HTTPClient httpClient,
-            WMTSCapabilities capabilities,
-            Map<String, Object> hints)
+            URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities, Map<String, Object> hints)
             throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities, hints);
         setupType();
@@ -152,8 +144,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     /**
-     * Set up a WebMapTileServer by the same serverURL, httpClient, capabilities and hints as
-     * delegate
+     * Set up a WebMapTileServer by the same serverURL, httpClient, capabilities and hints as delegate
      *
      * @param delegate
      * @throws ServiceException
@@ -194,11 +185,8 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return tileRequest.getTiles();
     }
 
-    /**
-     * The new issueRequest, which gives a GetTileResponse in response for a GetSingleTileRequest.
-     */
-    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest)
-            throws IOException, ServiceException {
+    /** The new issueRequest, which gives a GetTileResponse in response for a GetSingleTileRequest. */
+    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest) throws IOException, ServiceException {
         return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
@@ -217,9 +205,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         props.put("type", type.name());
 
         GetTileRequest request =
-                getSpecification()
-                        .createGetMultiTileRequest(
-                                url, props, getCapabilities(), this.getHTTPClient());
+                getSpecification().createGetMultiTileRequest(url, props, getCapabilities(), this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);
@@ -232,8 +218,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      *
      * <p>GetSingleTileRequest is either KVP or REST
      *
-     * <p>The url served to GetRestTileRequest is just the serverUrl. The proper templateUrl is
-     * found at a later stage.
+     * <p>The url served to GetRestTileRequest is just the serverUrl. The proper templateUrl is found at a later stage.
      */
     public GetTileRequest createGetTileRequest(boolean multiTile) {
         if (multiTile) {
@@ -314,10 +299,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         // The layer does not provide the requested CRS, so just take any one
         if (retMatrixSet == null) {
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info(
-                        "Failed to match the requested CRS ("
-                                + requestCRS.getName()
-                                + ") with any of the tile matrices!");
+                LOGGER.info("Failed to match the requested CRS ("
+                        + requestCRS.getName()
+                        + ") with any of the tile matrices!");
             }
             for (TileMatrixSet matrix : capabilities.getMatrixSets()) {
                 if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
@@ -331,11 +315,10 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             }
         }
         if (retMatrixSet == null) {
-            throw new ServiceException(
-                    "Unable to find a matching TileMatrixSet for layer "
-                            + layer.getName()
-                            + " and SRS: "
-                            + requestCRS.getName());
+            throw new ServiceException("Unable to find a matching TileMatrixSet for layer "
+                    + layer.getName()
+                    + " and SRS: "
+                    + requestCRS.getName());
         }
         return retMatrixSet;
     }

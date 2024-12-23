@@ -39,11 +39,9 @@ public abstract class AbstractTransformTest {
         Logging.getLogger(AbstractTransformTest.class).setLevel(java.util.logging.Level.FINE);
 
         WGS84 = CRS.decode("EPSG:4326");
-        DELAWARE_BOUNDS =
-                new ReferencedEnvelope(-75.791435, -75.045998, 38.44949, 39.826435000000004, WGS84);
+        DELAWARE_BOUNDS = new ReferencedEnvelope(-75.791435, -75.045998, 38.44949, 39.826435000000004, WGS84);
 
-        PropertyDataStore pds =
-                new PropertyDataStore(new File("./src/test/resources/org/geotools/data/transform"));
+        PropertyDataStore pds = new PropertyDataStore(new File("./src/test/resources/org/geotools/data/transform"));
         STATES = pds.getFeatureSource("states");
         STATES2 = pds.getFeatureSource("states");
     }
@@ -58,22 +56,17 @@ public abstract class AbstractTransformTest {
         definitions.add(new Definition("state_name"));
         definitions.add(new Definition("persons"));
 
-        SimpleFeatureSource transformed =
-                TransformFactory.transform(states, "states_mini", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(states, "states_mini", definitions);
         return transformed;
     }
 
-    SimpleFeatureSource transformWithSelectionAndDescription(SimpleFeatureSource states)
-            throws IOException {
+    SimpleFeatureSource transformWithSelectionAndDescription(SimpleFeatureSource states) throws IOException {
         List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("the_geom", new SimpleInternationalString("the geometry")));
-        definitions.add(
-                new Definition("state_name", new SimpleInternationalString("the state name")));
-        definitions.add(
-                new Definition("persons", new SimpleInternationalString("the number of persons")));
+        definitions.add(new Definition("state_name", new SimpleInternationalString("the state name")));
+        definitions.add(new Definition("persons", new SimpleInternationalString("the number of persons")));
 
-        SimpleFeatureSource transformed =
-                TransformFactory.transform(states, "states_described", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(states, "states_described", definitions);
         return transformed;
     }
 
@@ -85,8 +78,7 @@ public abstract class AbstractTransformTest {
         return transformWithRename(STATES);
     }
 
-    SimpleFeatureSource transformWithRename(SimpleFeatureSource states)
-            throws CQLException, IOException {
+    SimpleFeatureSource transformWithRename(SimpleFeatureSource states) throws CQLException, IOException {
         List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("the_geom")));
         definitions.add(new Definition("name", ECQL.toExpression("state_name")));
@@ -103,8 +95,7 @@ public abstract class AbstractTransformTest {
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));
         definitions.add(new Definition("logp", ECQL.toExpression("log(persons)")));
 
-        SimpleFeatureSource transformed =
-                TransformFactory.transform(STATES, "bstates", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(STATES, "bstates", definitions);
         return transformed;
     }
 
@@ -118,8 +109,7 @@ public abstract class AbstractTransformTest {
         ListFeatureCollection fc = new ListFeatureCollection(STATES.getSchema());
         SimpleFeatureSource emptySource = DataUtilities.source(fc);
 
-        SimpleFeatureSource transformed =
-                TransformFactory.transform(emptySource, "bstates", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(emptySource, "bstates", definitions);
         return transformed;
     }
 }

@@ -36,8 +36,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testBuildFeatureType() {
-        String input =
-                CSVTestStrategySupport.buildInputString("lat,lon,quux,morx\n1.0,2.3,dkdkd,dkskd");
+        String input = CSVTestStrategySupport.buildInputString("lat,lon,quux,morx\n1.0,2.3,dkdkd,dkskd");
         CSVFileState fileState = new CSVFileState(input, "foo");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -65,9 +64,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testBuildFeature() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "lat,lon,fleem,zoo", "3,4,car,cdr", "8,9,blub,frob");
+        String input = CSVTestStrategySupport.buildInputString("lat,lon,fleem,zoo", "3,4,car,cdr", "8,9,blub,frob");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
 
@@ -80,8 +77,13 @@ public class CSVLatLonStrategyTest {
             assertEquals("Invalid point", 3, coordinate.y, 0.1);
             assertEquals("Invalid point", 4, coordinate.x, 0.1);
             assertEquals(
-                    "Invalid feature property", "car", feature.getAttribute("fleem").toString());
-            assertEquals("Invalid feature property", "cdr", feature.getAttribute("zoo").toString());
+                    "Invalid feature property",
+                    "car",
+                    feature.getAttribute("fleem").toString());
+            assertEquals(
+                    "Invalid feature property",
+                    "cdr",
+                    feature.getAttribute("zoo").toString());
 
             assertTrue("next value not read", iterator.hasNext());
             feature = iterator.next();
@@ -90,9 +92,13 @@ public class CSVLatLonStrategyTest {
             assertEquals("Invalid point", 8, coordinate.y, 0.1);
             assertEquals("Invalid point", 9, coordinate.x, 0.1);
             assertEquals(
-                    "Invalid feature property", "blub", feature.getAttribute("fleem").toString());
+                    "Invalid feature property",
+                    "blub",
+                    feature.getAttribute("fleem").toString());
             assertEquals(
-                    "Invalid feature property", "frob", feature.getAttribute("zoo").toString());
+                    "Invalid feature property",
+                    "frob",
+                    feature.getAttribute("zoo").toString());
             assertFalse("extra next value", iterator.hasNext());
 
             try {
@@ -108,12 +114,9 @@ public class CSVLatLonStrategyTest {
     /* check for GEOT-6387 */
     public void testAxisOrder() throws IOException {
         String input =
-                CSVTestStrategySupport.buildInputString(
-                        "lat,lon,fleem,zoo", "-90,-180,car,cdr", "90,180,blub,frob");
+                CSVTestStrategySupport.buildInputString("lat,lon,fleem,zoo", "-90,-180,car,cdr", "90,180,blub,frob");
         checkAxisOrder(input);
-        input =
-                CSVTestStrategySupport.buildInputString(
-                        "lon,lat,fleem,zoo", "-180,-90,car,cdr", "180,90,blub,frob");
+        input = CSVTestStrategySupport.buildInputString("lon,lat,fleem,zoo", "-180,-90,car,cdr", "180,90,blub,frob");
         checkAxisOrder(input);
     }
 
@@ -135,12 +138,8 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testBuildFeatureDifferentTypes() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "doubleval,intval,lat,stringval,lon",
-                        "3.8,7,73.28,foo,-14.39",
-                        "9.12,-38,0,bar,29",
-                        "-37,0,49,baz,0");
+        String input = CSVTestStrategySupport.buildInputString(
+                "doubleval,intval,lat,stringval,lon", "3.8,7,73.28,foo,-14.39", "9.12,-38,0,bar,29", "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         try (CSVIterator iterator = strategy.iterator()) {
@@ -152,18 +151,9 @@ public class CSVLatLonStrategyTest {
             String localName = geometryDescriptor.getLocalName();
             assertEquals("Invalid geometry name", "location", localName);
 
-            assertEquals(
-                    "Invalid attribute type",
-                    "java.lang.Double",
-                    getBindingName(featureType, "doubleval"));
-            assertEquals(
-                    "Invalid attribute type",
-                    "java.lang.Integer",
-                    getBindingName(featureType, "intval"));
-            assertEquals(
-                    "Invalid attribute type",
-                    "java.lang.String",
-                    getBindingName(featureType, "stringval"));
+            assertEquals("Invalid attribute type", "java.lang.Double", getBindingName(featureType, "doubleval"));
+            assertEquals("Invalid attribute type", "java.lang.Integer", getBindingName(featureType, "intval"));
+            assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "stringval"));
 
             // iterate through values and verify
             Object[][] expValues = {
@@ -203,10 +193,8 @@ public class CSVLatLonStrategyTest {
 
         assertEquals("Invalid number of attributes", 2, featureType.getAttributeCount());
         assertNull("Expected no geometry in feature type", featureType.getGeometryDescriptor());
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "a"));
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "b"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "a"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "b"));
 
         try (CSVIterator iterator = strategy.iterator()) {
             SimpleFeature feature = iterator.next();
@@ -224,10 +212,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid number of attributes", 2, featureType.getAttributeCount());
         assertNull("Unexpected geometry", featureType.getGeometryDescriptor());
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "lat"));
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "quux"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "lat"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "quux"));
         try (CSVIterator iterator = strategy.iterator()) {
             SimpleFeature feature = iterator.next();
             assertEquals("Invalid lat value", "foo", feature.getAttribute("lat"));
@@ -237,8 +223,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testDataDoesNotContainAllFields() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("lat,lon,foo,bar", "-72.3829,42.29,quux");
+        String input = CSVTestStrategySupport.buildInputString("lat,lon,foo,bar", "-72.3829,42.29,quux");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -256,8 +241,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testDataContainsMoreFields() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("lat,lon,foo", "-72.3829,42.29,quux,morx");
+        String input = CSVTestStrategySupport.buildInputString("lat,lon,foo", "-72.3829,42.29,quux,morx");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -272,19 +256,15 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testDataDifferentTypes() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "lat,lon,foo", "-72.3829,42.29,38", "12,-13.21,9", "foo,2.5,7.8");
+        String input = CSVTestStrategySupport.buildInputString(
+                "lat,lon,foo", "-72.3829,42.29,38", "12,-13.21,9", "foo,2.5,7.8");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 3, featureType.getAttributeCount());
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "lat"));
-        assertEquals(
-                "Invalid attribute type", "java.lang.Double", getBindingName(featureType, "lon"));
-        assertEquals(
-                "Invalid attribute type", "java.lang.Double", getBindingName(featureType, "foo"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "lat"));
+        assertEquals("Invalid attribute type", "java.lang.Double", getBindingName(featureType, "lon"));
+        assertEquals("Invalid attribute type", "java.lang.Double", getBindingName(featureType, "foo"));
         assertNull("Unexpected geometry", featureType.getGeometryDescriptor());
         try (CSVIterator iterator = strategy.iterator()) {
             String[] expLats = {"-72.3829", "12", "foo"};
@@ -295,10 +275,8 @@ public class CSVLatLonStrategyTest {
                 SimpleFeature feature = iterator.next();
                 assertEquals("Invalid attribute count", 3, feature.getAttributeCount());
                 assertEquals("Invalid lat value", expLats[i], feature.getAttribute("lat"));
-                assertEquals(
-                        "Invalid lat value", expLons[i], (Double) feature.getAttribute("lon"), 0.1);
-                assertEquals(
-                        "Invalid foo value", expFoos[i], (Double) feature.getAttribute("foo"), 0.1);
+                assertEquals("Invalid lat value", expLons[i], (Double) feature.getAttribute("lon"), 0.1);
+                assertEquals("Invalid foo value", expFoos[i], (Double) feature.getAttribute("foo"), 0.1);
                 i++;
             }
         }
@@ -311,16 +289,13 @@ public class CSVLatLonStrategyTest {
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
-        assertEquals(
-                "Invalid attribute type", "java.lang.String", getBindingName(featureType, "a"));
-        assertEquals(
-                "Invalid attribute type", "java.lang.Integer", getBindingName(featureType, "b"));
+        assertEquals("Invalid attribute type", "java.lang.String", getBindingName(featureType, "a"));
+        assertEquals("Invalid attribute type", "java.lang.Integer", getBindingName(featureType, "b"));
     }
 
     @Test
     public void testLngColumnSpelling() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("lat,lng,fleem", "73.239,-42.389,morx");
+        String input = CSVTestStrategySupport.buildInputString("lat,lng,fleem", "73.239,-42.389,morx");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -338,8 +313,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testLongColumnSpelling() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("lat,long,fleem", "73.239,-42.389,morx");
+        String input = CSVTestStrategySupport.buildInputString("lat,long,fleem", "73.239,-42.389,morx");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -357,9 +331,7 @@ public class CSVLatLonStrategyTest {
 
     @Test
     public void testLatLngColumnsSpelledOut() throws Exception {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "latitude,longitude,fleem", "73.239,-42.389,morx");
+        String input = CSVTestStrategySupport.buildInputString("latitude,longitude,fleem", "73.239,-42.389,morx");
         CSVFileState fileState = new CSVFileState(input, "typename");
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -395,14 +367,12 @@ public class CSVLatLonStrategyTest {
         assertEquals("Invalid name", "foo", featureType.getTypeName());
 
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-        assertEquals(
-                "Invalid geometry attribute name", "location", geometryDescriptor.getLocalName());
+        assertEquals("Invalid geometry attribute name", "location", geometryDescriptor.getLocalName());
     }
 
     @Test
     public void testCreateFeature() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car", "8,9.9,cdr");
+        String input = CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car", "8,9.9,cdr");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVStrategy strategy = new CSVLatLonStrategy(fileState, "fleem", "zoo");
 
@@ -482,10 +452,7 @@ public class CSVLatLonStrategyTest {
         CSVStrategy strategy = new CSVLatLonStrategy(csvFileState, "lat_field", "long_field");
         strategy.createSchema(featureType);
 
-        assertEquals(
-                "Stragegy does not have provided feature type",
-                featureType,
-                strategy.getFeatureType());
+        assertEquals("Stragegy does not have provided feature type", featureType, strategy.getFeatureType());
         List<String> content = Files.readAllLines(csvFile.toPath());
         assertEquals("long_field,lat_field,id,int_field,string_field", content.get(0));
         csvFile.delete();

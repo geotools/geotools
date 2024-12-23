@@ -27,11 +27,9 @@ public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureCo
 
     private P parent;
 
-    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> x =
-            new ChildExpressionBuilder<>(this);
+    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> x = new ChildExpressionBuilder<>(this);
 
-    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> y =
-            new ChildExpressionBuilder<>(this);
+    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> y = new ChildExpressionBuilder<>(this);
 
     boolean unset = true; // current value is null
 
@@ -50,8 +48,7 @@ public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureCo
             return null;
         }
         FeatureTypeConstraint[] featureTypeConstraints = null;
-        LayerFeatureConstraints constraints =
-                sf.createLayerFeatureConstraints(featureTypeConstraints);
+        LayerFeatureConstraints constraints = sf.createLayerFeatureConstraints(featureTypeConstraints);
         return constraints;
     }
 

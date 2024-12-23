@@ -39,8 +39,7 @@ import org.geotools.util.factory.Hints;
  *   <li>{@link XMLGregorianCalendar} to {@link to {@link String}}
  * </ul>
  *
- * <p>The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be
- * applied.
+ * <p>The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be applied.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 9.0
@@ -103,9 +102,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof XMLGregorianCalendar) {
                             XMLGregorianCalendar xmlc = (XMLGregorianCalendar) source;
-                            Date date =
-                                    xmlc.toGregorianCalendar(GMT, Locale.getDefault(), null)
-                                            .getTime();
+                            Date date = xmlc.toGregorianCalendar(GMT, Locale.getDefault(), null)
+                                    .getTime();
                             return target.cast(df.format(date));
                         }
                         return null;

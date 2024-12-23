@@ -21,25 +21,20 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Builds {@link ProjectionHandler} instances WARNING: this API is not finalized and is meant to be
- * used by StreamingRenderer only
+ * Builds {@link ProjectionHandler} instances WARNING: this API is not finalized and is meant to be used by
+ * StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
  */
 public interface ProjectionHandlerFactory {
 
     /**
-     * Returns an handler capable of dealing with the specified envelope, or null if this factory
-     * cannot create one
+     * Returns an handler capable of dealing with the specified envelope, or null if this factory cannot create one
      *
      * @param wrap enables map wrapping, if it's possible and makes sense for this projection
-     * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory
-     *     usage)
+     * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory usage)
      */
     ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCRS,
-            boolean wrap,
-            int wrapLimit)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit)
             throws FactoryException;
 }

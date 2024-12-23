@@ -28,8 +28,7 @@ public interface FeatureListener extends java.util.EventListener {
     /**
      * Gets called when a FeatureEvent is fired.
      *
-     * <p>Typically fired to signify that a change has occurred in the DataStore backing the
-     * FeatureSource.
+     * <p>Typically fired to signify that a change has occurred in the DataStore backing the FeatureSource.
      *
      * @param featureEvent The FeatureEvent being fired
      */

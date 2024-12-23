@@ -89,8 +89,8 @@ public class OGCExpressionTypeBinding extends AbstractComplexBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding simply looks for any text in the node and turns it into a literal expression. If
-     * differnt behaviour is required by a sub binding then they should ovveride.
+     * This binding simply looks for any text in the node and turns it into a literal expression. If differnt behaviour
+     * is required by a sub binding then they should ovveride.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

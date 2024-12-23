@@ -25,9 +25,8 @@ import org.geotools.util.factory.FactoryRegistry;
 /**
  * Searches for all available {@link GeoPkgExtensionFactory} implementations.
  *
- * <p>In addition to implementing this interface GeoPackage extension providers should have a
- * services file, <code>META-INF/services/org.geotools.geopkg.GeoPkgExtensionFactory</code>,
- * declaring the factory.
+ * <p>In addition to implementing this interface GeoPackage extension providers should have a services file, <code>
+ * META-INF/services/org.geotools.geopkg.GeoPkgExtensionFactory</code>, declaring the factory.
  *
  * <p>The file should contain a single line which gives the full name of the implementing class.
  *
@@ -46,8 +45,7 @@ final class GeoPkgExtensionFactoryFinder {
     private GeoPkgExtensionFactoryFinder() {}
 
     /**
-     * Finds all implementations of {@link GeoPkgExtensionFactory} which have registered using the
-     * services mechanism.
+     * Finds all implementations of {@link GeoPkgExtensionFactory} which have registered using the services mechanism.
      *
      * @return An iterator over all discovered GeoPkgExtensionFactory.
      */
@@ -57,29 +55,22 @@ final class GeoPkgExtensionFactoryFinder {
                 .iterator();
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(GeoPkgExtensionFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        GeoPkgExtensionFactory.class,
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                GeoPkgExtensionFactory.class,
+            }));
         }
         return registry;
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {

@@ -54,12 +54,8 @@ public class ZeroImageNode extends BaseCoverageProcessingNode {
         final ImageLayout layout = new ImageLayout(sourceImage);
         layout.unsetValid(ImageLayout.COLOR_MODEL_MASK).unsetValid(ImageLayout.SAMPLE_MODEL_MASK);
         hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
-        final RenderedOp constant =
-                ConstantDescriptor.create(
-                        (float) sourceImage.getWidth(),
-                        (float) sourceImage.getHeight(),
-                        bandValues,
-                        hints);
+        final RenderedOp constant = ConstantDescriptor.create(
+                (float) sourceImage.getWidth(), (float) sourceImage.getHeight(), bandValues, hints);
 
         final GridCoverageFactory factory = getCoverageFactory();
         Map<String, Object> properties = null;
@@ -68,7 +64,6 @@ public class ZeroImageNode extends BaseCoverageProcessingNode {
             properties = new HashMap<>();
             properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(255));
         }
-        return factory.create(
-                "zero", constant, sourceCoverage.getGridGeometry(), null, null, properties);
+        return factory.create("zero", constant, sourceCoverage.getGridGeometry(), null, null, properties);
     }
 }

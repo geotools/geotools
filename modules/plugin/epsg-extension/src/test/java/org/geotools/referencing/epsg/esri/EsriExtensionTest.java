@@ -136,10 +136,8 @@ public class EsriExtensionTest {
         Assert.assertFalse(identifiers.isEmpty());
 
         String asString = identifiers.toString();
-        Assert.assertTrue(
-                asString, identifiers.contains(new NamedIdentifier(Citations.ESRI, "30591")));
-        Assert.assertTrue(
-                asString, identifiers.contains(new NamedIdentifier(Citations.EPSG, "30591")));
+        Assert.assertTrue(asString, identifiers.contains(new NamedIdentifier(Citations.ESRI, "30591")));
+        Assert.assertTrue(asString, identifiers.contains(new NamedIdentifier(Citations.EPSG, "30591")));
 
         final Iterator iterator = identifiers.iterator();
 

@@ -14,9 +14,8 @@ package org.geotools.api.filter.expression;
 /**
  * Encodes the operation of subtraction where the second argument is subtracted from the first.
  *
- * <p>Instances of this interface implement their {@link #evaluate evaluate} method by computing the
- * numeric difference between the {@linkplain #getExpression1 first} and {@linkplain #getExpression2
- * second} operand.
+ * <p>Instances of this interface implement their {@link #evaluate evaluate} method by computing the numeric difference
+ * between the {@linkplain #getExpression1 first} and {@linkplain #getExpression2 second} operand.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

@@ -10,8 +10,8 @@
 package org.geotools.api.geometry;
 
 /**
- * Indicates that an operation cannot be completed properly because of a mismatch in the dimensions
- * of object attributes.
+ * Indicates that an operation cannot be completed properly because of a mismatch in the dimensions of object
+ * attributes.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -28,8 +28,8 @@ public class MismatchedDimensionException extends IllegalArgumentException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public MismatchedDimensionException(final String message) {
         super(message);
@@ -38,8 +38,8 @@ public class MismatchedDimensionException extends IllegalArgumentException {
     /**
      * Creates an exception with the specified message and cause.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param cause The cause.
      */
     public MismatchedDimensionException(final String message, final Throwable cause) {

@@ -33,8 +33,8 @@ import org.locationtech.jts.geom.Geometry;
 public abstract class VPFGeometryFactory {
     // private static final GeometryFactory m_GeometryFactory = new GeometryFactory();
     /**
-     * Constructs a geometry for the appropriate feature type based on values currently on the
-     * object, retrieving values as needed from the various VPFFile objects
+     * Constructs a geometry for the appropriate feature type based on values currently on the object, retrieving values
+     * as needed from the various VPFFile objects
      *
      * @param featureType the VPFFeatureType to use
      * @param values the current feature

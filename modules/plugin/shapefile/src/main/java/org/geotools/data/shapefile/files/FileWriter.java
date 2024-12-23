@@ -17,8 +17,7 @@
 package org.geotools.data.shapefile.files;
 
 /**
- * Indicates that the object writes to one of the Shapefile related files controlled by {@link
- * ShpFiles}
+ * Indicates that the object writes to one of the Shapefile related files controlled by {@link ShpFiles}
  *
  * @author jesse
  */

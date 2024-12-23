@@ -38,8 +38,8 @@ import javax.media.jai.operator.ConstantDescriptor;
 import org.geotools.util.factory.Hints;
 
 /**
- * A property generator for the Warp operation that builds the expected ROI bounds even when the
- * source and target image bounds are not superimposed
+ * A property generator for the Warp operation that builds the expected ROI bounds even when the source and target image
+ * bounds are not superimposed
  *
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
@@ -80,9 +80,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             // Retrieve the rendered source image and its ROI.
             RenderedImage src = pb.getRenderedSource(0);
             Object property = src.getProperty("ROI");
-            if (property == null
-                    || property.equals(java.awt.Image.UndefinedProperty)
-                    || !(property instanceof ROI)) {
+            if (property == null || property.equals(java.awt.Image.UndefinedProperty) || !(property instanceof ROI)) {
                 return java.awt.Image.UndefinedProperty;
             }
 
@@ -98,18 +96,14 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             // Determine the effective source bounds.
             Rectangle srcBounds = null;
             PlanarImage dst = op.getRendering();
-            if (dst instanceof GeometricOpImage
-                    && ((GeometricOpImage) dst).getBorderExtender() == null) {
-                srcBounds =
-                        new Rectangle(
-                                src.getMinX() + interp.getLeftPadding(),
-                                src.getMinY() + interp.getTopPadding(),
-                                src.getWidth() - interp.getWidth() + 1,
-                                src.getHeight() - interp.getHeight() + 1);
+            if (dst instanceof GeometricOpImage && ((GeometricOpImage) dst).getBorderExtender() == null) {
+                srcBounds = new Rectangle(
+                        src.getMinX() + interp.getLeftPadding(),
+                        src.getMinY() + interp.getTopPadding(),
+                        src.getWidth() - interp.getWidth() + 1,
+                        src.getHeight() - interp.getHeight() + 1);
             } else {
-                srcBounds =
-                        new Rectangle(
-                                src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight());
+                srcBounds = new Rectangle(src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight());
             }
 
             // If necessary, clip the ROI to the effective source bounds.
@@ -139,8 +133,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
             final PlanarImage constantImage =
-                    ConstantDescriptor.create(
-                            Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
+                    ConstantDescriptor.create(Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
             PlanarImage roiImage = null;
 
@@ -175,8 +168,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
                 roiImage = JAI.create("Warp", paramBlk, localHints);
             } else {
                 // force JAI-EXT usage
-                roiImage =
-                        PlanarImage.wrapRenderedImage(new WarpRIF().create(paramBlk, localHints));
+                roiImage = PlanarImage.wrapRenderedImage(new WarpRIF().create(paramBlk, localHints));
             }
             ROI dstROI = new ROI(roiImage, 1);
 

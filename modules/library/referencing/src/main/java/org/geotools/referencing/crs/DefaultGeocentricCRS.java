@@ -34,9 +34,8 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.wkt.Formatter;
 
 /**
- * A 3D coordinate reference system with the origin at the approximate centre of mass of the earth.
- * A geocentric CRS deals with the earth's curvature by taking a 3D spatial view, which obviates the
- * need to model the earth's curvature.
+ * A 3D coordinate reference system with the origin at the approximate centre of mass of the earth. A geocentric CRS
+ * deals with the earth's curvature by taking a 3D spatial view, which obviates the need to model the earth's curvature.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
@@ -54,33 +53,25 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
     private static final long serialVersionUID = 6784642848287659827L;
 
     /**
-     * The default geocentric CRS with a {@linkplain DefaultCartesianCS#GEOCENTRIC cartesian
-     * coordinate system}. Prime meridian is Greenwich, geodetic datum is WGS84 and linear units are
-     * metres. The <var>X</var> axis points towards the prime meridian. The <var>Y</var> axis points
-     * East. The <var>Z</var> axis points North.
+     * The default geocentric CRS with a {@linkplain DefaultCartesianCS#GEOCENTRIC cartesian coordinate system}. Prime
+     * meridian is Greenwich, geodetic datum is WGS84 and linear units are metres. The <var>X</var> axis points towards
+     * the prime meridian. The <var>Y</var> axis points East. The <var>Z</var> axis points North.
      */
-    public static final DefaultGeocentricCRS CARTESIAN =
-            new DefaultGeocentricCRS(
-                    name(VocabularyKeys.CARTESIAN),
-                    DefaultGeodeticDatum.WGS84,
-                    DefaultCartesianCS.GEOCENTRIC);
+    public static final DefaultGeocentricCRS CARTESIAN = new DefaultGeocentricCRS(
+            name(VocabularyKeys.CARTESIAN), DefaultGeodeticDatum.WGS84, DefaultCartesianCS.GEOCENTRIC);
 
     /**
-     * The default geocentric CRS with a {@linkplain DefaultSphericalCS#GEOCENTRIC spherical
-     * coordinate system}. Prime meridian is Greenwich, geodetic datum is WGS84 and linear units are
-     * metres.
+     * The default geocentric CRS with a {@linkplain DefaultSphericalCS#GEOCENTRIC spherical coordinate system}. Prime
+     * meridian is Greenwich, geodetic datum is WGS84 and linear units are metres.
      */
-    public static final DefaultGeocentricCRS SPHERICAL =
-            new DefaultGeocentricCRS(
-                    name(VocabularyKeys.SPHERICAL),
-                    DefaultGeodeticDatum.WGS84,
-                    DefaultSphericalCS.GEOCENTRIC);
+    public static final DefaultGeocentricCRS SPHERICAL = new DefaultGeocentricCRS(
+            name(VocabularyKeys.SPHERICAL), DefaultGeodeticDatum.WGS84, DefaultSphericalCS.GEOCENTRIC);
 
     /**
-     * Constructs a new geocentric CRS with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new geocentric CRS with the same values than the specified one. This copy constructor provides a way
+     * to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order
+     * to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are
+     * not cloned.
      *
      * @param crs The coordinate reference system to copy.
      * @since 2.2
@@ -96,8 +87,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final String name, final GeodeticDatum datum, final CartesianCS cs) {
+    public DefaultGeocentricCRS(final String name, final GeodeticDatum datum, final CartesianCS cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
@@ -108,36 +98,31 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final String name, final GeodeticDatum datum, final SphericalCS cs) {
+    public DefaultGeocentricCRS(final String name, final GeodeticDatum datum, final SphericalCS cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
     /**
-     * Constructs a geographic CRS from a set of properties. The properties are given unchanged to
-     * the {@linkplain AbstractReferenceSystem#AbstractReferenceSystem(Map) super-class
-     * constructor}.
+     * Constructs a geographic CRS from a set of properties. The properties are given unchanged to the
+     * {@linkplain AbstractReferenceSystem#AbstractReferenceSystem(Map) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final Map<String, ?> properties, final GeodeticDatum datum, final CartesianCS cs) {
+    public DefaultGeocentricCRS(final Map<String, ?> properties, final GeodeticDatum datum, final CartesianCS cs) {
         super(properties, datum, cs);
     }
 
     /**
-     * Constructs a geographic CRS from a set of properties. The properties are given unchanged to
-     * the {@linkplain AbstractReferenceSystem#AbstractReferenceSystem(Map) super-class
-     * constructor}.
+     * Constructs a geographic CRS from a set of properties. The properties are given unchanged to the
+     * {@linkplain AbstractReferenceSystem#AbstractReferenceSystem(Map) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final Map<String, ?> properties, final GeodeticDatum datum, final SphericalCS cs) {
+    public DefaultGeocentricCRS(final Map<String, ?> properties, final GeodeticDatum datum, final SphericalCS cs) {
         super(properties, datum, cs);
     }
 
@@ -150,8 +135,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
     /**
      * Returns a hash value for this geocentric CRS.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -161,8 +145,8 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * @param formatter The formatter to use.
      * @return The name of the WKT element type, which is {@code "GEOCCS"}.

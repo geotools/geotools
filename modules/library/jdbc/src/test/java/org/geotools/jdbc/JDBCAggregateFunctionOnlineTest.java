@@ -125,8 +125,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
         SumAreaVisitor v = new MySumAreaVisitor(p);
         dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
-        assertEquals(
-                visited, !dataStore.getFilterCapabilities().supports(FilterFunction_area.class));
+        assertEquals(visited, !dataStore.getFilterCapabilities().supports(FilterFunction_area.class));
         assertEquals(30.0, v.getResult().toDouble(), 0.01);
     }
 
@@ -135,14 +134,11 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName p = ff.property(aname("geom"));
 
-        GroupByVisitor v =
-                new GroupByVisitorBuilder()
-                        .withAggregateAttribute(ff.function("area2", p))
-                        .withAggregateVisitor("SumArea")
-                        .withGroupByAttributes(
-                                Collections.singleton(aname("name")),
-                                dataStore.getSchema(tname("aggregate")))
-                        .build();
+        GroupByVisitor v = new GroupByVisitorBuilder()
+                .withAggregateAttribute(ff.function("area2", p))
+                .withAggregateVisitor("SumArea")
+                .withGroupByAttributes(Collections.singleton(aname("name")), dataStore.getSchema(tname("aggregate")))
+                .build();
 
         dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
         if (dataStore.getFilterCapabilities().supports(FilterFunction_area.class)) {
@@ -174,13 +170,9 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
         SumVisitor v = new MySumVisitor(p);
 
-        Filter f =
-                ff.equals(
-                        ff.function(
-                                "strMatches",
-                                ff.property(aname("stringProperty")),
-                                ff.literal("zero*")),
-                        ff.literal(false));
+        Filter f = ff.equals(
+                ff.function("strMatches", ff.property(aname("stringProperty")), ff.literal("zero*")),
+                ff.literal(false));
         Query q = new Query(tname("ft1"), f);
 
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
@@ -464,16 +456,15 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName p = ff.property(aname("stringProperty"));
 
-        UniqueVisitor v =
-                new MyUniqueVisitor(p) {
-                    @Override
-                    public boolean hasLimits() {
-                        // forced to return true, to check that the JDBCDataStore
-                        // asks the visitor if it has limits, and if answered true
-                        // it ignores query limits
-                        return true;
-                    }
-                };
+        UniqueVisitor v = new MyUniqueVisitor(p) {
+            @Override
+            public boolean hasLimits() {
+                // forced to return true, to check that the JDBCDataStore
+                // asks the visitor if it has limits, and if answered true
+                // it ignores query limits
+                return true;
+            }
+        };
         v.setPreserveOrder(true);
 
         Query q = new Query(tname("ft1"));
@@ -546,8 +537,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         testNearest("ft1", "doubleProperty", 10d, 2.2); // above
     }
 
-    private void testNearest(
-            String typeName, String attributeName, Object target, Object... validResults)
+    private void testNearest(String typeName, String attributeName, Object target, Object... validResults)
             throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName expr = ff.property(aname(attributeName));
@@ -567,10 +557,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
                 }
             }
             assertTrue(
-                    "Could not match nearest "
-                            + nearestMatch
-                            + " among valid values "
-                            + Arrays.asList(validResults),
+                    "Could not match nearest " + nearestMatch + " among valid values " + Arrays.asList(validResults),
                     found);
         }
     }
@@ -813,8 +800,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
     @SuppressWarnings("unchecked")
     private void addValues(Set set, Object... values) {
-        LinkedList<Object> list =
-                Arrays.stream(values).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<Object> list = Arrays.stream(values).collect(Collectors.toCollection(LinkedList::new));
         set.add(list);
     }
 

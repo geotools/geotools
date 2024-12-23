@@ -57,8 +57,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
     private final SimpleFeatureType schema;
     private final SimpleFeatureBuilder featureBuilder;
 
-    protected FileViewCollection(GranuleCatalog catalog, Query query, RasterManager manager)
-            throws IOException {
+    protected FileViewCollection(GranuleCatalog catalog, Query query, RasterManager manager) throws IOException {
         super(getDelegateCollection(catalog, query, manager));
         pathType = manager.getPathType();
         parentLocation = manager.getParentLocation();
@@ -138,10 +137,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
 
         schema.getAttributeDescriptors().stream()
                 .filter(d -> !location.equals(d.getLocalName()))
-                .forEach(
-                        d ->
-                                featureBuilder.set(
-                                        d.getLocalName(), feature.getAttribute(d.getLocalName())));
+                .forEach(d -> featureBuilder.set(d.getLocalName(), feature.getAttribute(d.getLocalName())));
         File mainFile = URLs.urlToFile(path);
         if (mainFile != null) {
             SupportFilesCollector collector = SupportFilesCollector.getCollectorFor(mainFile);
@@ -151,8 +147,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
             }
             featureBuilder.featureUserData(
                     GranuleSource.FILES,
-                    new FileGroupProvider.FileGroup(
-                            mainFile, supportFiles, Collections.emptyMap()));
+                    new FileGroupProvider.FileGroup(mainFile, supportFiles, Collections.emptyMap()));
         } else {
             featureBuilder.featureUserData(GranuleSource.FILES, path);
         }

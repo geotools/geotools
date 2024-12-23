@@ -22,10 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.measure.MetricPrefix;
 
-/**
- * This class contains a unit prefix and allows the definition of additional aliases for this unit
- * prefix.
- */
+/** This class contains a unit prefix and allows the definition of additional aliases for this unit prefix. */
 // class can be a `record` in future versions of Java
 public final class PrefixDefinition {
 

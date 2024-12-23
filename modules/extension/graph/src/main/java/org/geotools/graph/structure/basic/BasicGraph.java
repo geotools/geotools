@@ -40,16 +40,13 @@ public class BasicGraph implements Graph, Serializable {
     /** Edges belonging to the graph */
     private transient Collection<Edge> m_edges;
 
-    /**
-     * Constructs an empty graph with edge and node collections uninitialized. Mainly for
-     * serializability purposes.
-     */
+    /** Constructs an empty graph with edge and node collections uninitialized. Mainly for serializability purposes. */
     public BasicGraph() {}
 
     /**
-     * Constructs a graph from a collection of nodes and a collection of edges. The relationships
-     * between the nodes (edges) are already assumed to be formed. Only the references to the node
-     * and edge collections are copied, not the underlying collections themselves.
+     * Constructs a graph from a collection of nodes and a collection of edges. The relationships between the nodes
+     * (edges) are already assumed to be formed. Only the references to the node and edge collections are copied, not
+     * the underlying collections themselves.
      *
      * @param nodes Collection of nodes to be contained by the graph.
      * @param edges Collection of edges to be contained by the graph.
@@ -123,11 +120,10 @@ public class BasicGraph implements Graph, Serializable {
     public List<Node> getNodesOfDegree(int n) {
         final int degree = n;
 
-        return (queryNodes(
-                component -> {
-                    if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
-                    return (FAIL_QUERY);
-                }));
+        return (queryNodes(component -> {
+            if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
+            return (FAIL_QUERY);
+        }));
     }
 
     /** @see Graph#getVisitedNodes(boolean) */
@@ -145,8 +141,7 @@ public class BasicGraph implements Graph, Serializable {
     }
 
     /**
-     * Initializes the nodes in the graph by setting all visited flags to false and all visited
-     * counts to zero.
+     * Initializes the nodes in the graph by setting all visited flags to false and all visited counts to zero.
      *
      * @see BasicGraphable#isVisited()
      * @see BasicGraphable#getCount()
@@ -159,8 +154,7 @@ public class BasicGraph implements Graph, Serializable {
     }
 
     /**
-     * Initializes the edges in the graph by setting all visited flags to false and all visited
-     * counts to zero.
+     * Initializes the edges in the graph by setting all visited flags to false and all visited counts to zero.
      *
      * @see BasicGraphable#isVisited()
      * @see BasicGraphable#getCount()
@@ -173,8 +167,8 @@ public class BasicGraph implements Graph, Serializable {
     }
 
     /**
-     * Returns the string representation of the graph which is just the string representation of the
-     * edge and node collections.
+     * Returns the string representation of the graph which is just the string representation of the edge and node
+     * collections.
      *
      * @return String represtentaton of graph.
      */
@@ -185,8 +179,7 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal query method.
      */
-    private List<? extends Graphable> query(
-            Collection<? extends Graphable> components, GraphVisitor visitor) {
+    private List<? extends Graphable> query(Collection<? extends Graphable> components, GraphVisitor visitor) {
         ArrayList<Graphable> result = new ArrayList<>();
 
         for (Graphable component : components) {
@@ -219,14 +212,11 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal getVisited method.
      */
-    private List<? extends Graphable> getVisited(
-            Collection<? extends Graphable> components, boolean visited) {
+    private List<? extends Graphable> getVisited(Collection<? extends Graphable> components, boolean visited) {
         final boolean isVisited = visited;
-        return (query(
-                components,
-                component -> {
-                    if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
-                    return (FAIL_QUERY);
-                }));
+        return (query(components, component -> {
+            if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
+            return (FAIL_QUERY);
+        }));
     }
 }

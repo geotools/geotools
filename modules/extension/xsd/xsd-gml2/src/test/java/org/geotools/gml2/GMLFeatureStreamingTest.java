@@ -40,8 +40,7 @@ public class GMLFeatureStreamingTest {
         try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
 
             StreamingParser parser =
-                    new StreamingParser(
-                            new TestConfiguration(), in, new QName(GML.NAMESPACE, "featureMember"));
+                    new StreamingParser(new TestConfiguration(), in, new QName(GML.NAMESPACE, "featureMember"));
             makeAssertions(parser);
         }
     }

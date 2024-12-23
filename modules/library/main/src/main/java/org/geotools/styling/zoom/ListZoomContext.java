@@ -40,8 +40,7 @@ public class ListZoomContext extends MedialZoomContext {
     public static void validate(List<Double> scales) {
         double last = Double.POSITIVE_INFINITY;
         for (double x : scales) {
-            if (x >= last)
-                throw new IllegalArgumentException("Scale denominator list must be decreasing");
+            if (x >= last) throw new IllegalArgumentException("Scale denominator list must be decreasing");
             if (x <= 0) throw new IllegalArgumentException("Scale Denominators must be positive");
             if (Double.isInfinite(x) || Double.isNaN(x))
                 throw new IllegalArgumentException("Scale Denominators must be finite");
@@ -74,8 +73,7 @@ public class ListZoomContext extends MedialZoomContext {
 
         if (nextScale == 0) return 0;
 
-        return Math.sqrt(
-                scale * nextScale); // Geometric mean as zoom levels are usually exponential
+        return Math.sqrt(scale * nextScale); // Geometric mean as zoom levels are usually exponential
     }
 
     @Override

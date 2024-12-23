@@ -29,15 +29,14 @@ public interface GridCoverageReader {
     Format getFormat();
 
     /**
-     * Returns the input source. It can be a {@link java.lang.String}, an {@link
-     * java.io.InputStream}, a {@link java.nio.channels.FileChannel}, whatever.
+     * Returns the input source. It can be a {@link java.lang.String}, an {@link java.io.InputStream}, a
+     * {@link java.nio.channels.FileChannel}, whatever.
      */
     Object getSource();
 
     /**
-     * Returns the list of metadata keywords associated with the {@linkplain #getSource input
-     * source} as a whole (not associated with any particular grid coverage). If no metadata is
-     * available, the array will be empty.
+     * Returns the list of metadata keywords associated with the {@linkplain #getSource input source} as a whole (not
+     * associated with any particular grid coverage). If no metadata is available, the array will be empty.
      *
      * @return The list of metadata keywords for the input source.
      * @throws IOException if an error occurs during reading.
@@ -46,8 +45,8 @@ public interface GridCoverageReader {
     String[] getMetadataNames() throws IOException;
 
     /**
-     * Returns the list of metadata keywords associated with a specific gridCoverage referred by
-     * name. If no metadata is available, the array will be empty.
+     * Returns the list of metadata keywords associated with a specific gridCoverage referred by name. If no metadata is
+     * available, the array will be empty.
      *
      * @return The list of metadata keywords for the input source.
      * @throws IOException if an error occurs during reading.
@@ -78,10 +77,10 @@ public interface GridCoverageReader {
     String getMetadataValue(String coverageName, String name) throws IOException;
 
     /**
-     * Retrieve the list of coverages contained within the {@linkplain #getSource input source}.
-     * Each grid can have a different coordinate system, number of dimensions and grid geometry. For
-     * example, a HDF-EOS file (GRID.HDF) contains 6 grid coverages each having a different
-     * projection. An empty array will be returned if no sub names exist.
+     * Retrieve the list of coverages contained within the {@linkplain #getSource input source}. Each grid can have a
+     * different coordinate system, number of dimensions and grid geometry. For example, a HDF-EOS file (GRID.HDF)
+     * contains 6 grid coverages each having a different projection. An empty array will be returned if no sub names
+     * exist.
      *
      * @return The list of grid coverages contained within the input source.
      * @throws IOException if an error occurs during reading.
@@ -97,58 +96,50 @@ public interface GridCoverageReader {
     int getGridCoverageCount() throws IOException;
 
     /**
-     * Read the only available grid coverage. Use {@link #read(String, GeneralParameterValue[])} in
-     * case of multiple grid coverages available.
+     * Read the only available grid coverage. Use {@link #read(String, GeneralParameterValue[])} in case of multiple
+     * grid coverages available.
      *
-     * @param parameters An optional set of parameters. Should be any or all of the parameters
-     *     returned by {@link Format#getReadParameters}.
+     * @param parameters An optional set of parameters. Should be any or all of the parameters returned by
+     *     {@link Format#getReadParameters}.
      * @return A new {@linkplain GridCoverage grid coverage} from the input source.
-     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a
-     *     recognized name.
-     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a
-     *     valid value.
-     * @throws ParameterNotFoundException if a parameter was required for the operation but was not
-     *     provided in the {@code parameters} list.
-     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical
-     *     reason (for example an unsupported format, or an inconsistency found in the data).
+     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a recognized name.
+     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a valid value.
+     * @throws ParameterNotFoundException if a parameter was required for the operation but was not provided in the
+     *     {@code parameters} list.
+     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical reason (for example an
+     *     unsupported format, or an inconsistency found in the data).
      * @throws IOException if a read operation failed for some other input/output reason, including
      *     {@link FileNotFoundException} if no file with the given {@code name} can be found, or
-     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image
-     *     library.
+     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
-    GridCoverage read(GeneralParameterValue... parameters)
-            throws IllegalArgumentException, IOException;
+    GridCoverage read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException;
 
     /**
      * Read the grid coverage specified by coverageName parameter.
      *
-     * @param parameters An optional set of parameters. Should be any or all of the parameters
-     *     returned by {@link Format#getReadParameters}.
+     * @param parameters An optional set of parameters. Should be any or all of the parameters returned by
+     *     {@link Format#getReadParameters}.
      * @return A new {@linkplain GridCoverage grid coverage} from the input source.
-     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a
-     *     recognized name.
-     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a
-     *     valid value.
-     * @throws ParameterNotFoundException if a parameter was required for the operation but was not
-     *     provided in the {@code parameters} list.
-     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical
-     *     reason (for example an unsupported format, or an inconsistency found in the data).
+     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a recognized name.
+     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a valid value.
+     * @throws ParameterNotFoundException if a parameter was required for the operation but was not provided in the
+     *     {@code parameters} list.
+     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical reason (for example an
+     *     unsupported format, or an inconsistency found in the data).
      * @throws IOException if a read operation failed for some other input/output reason, including
      *     {@link FileNotFoundException} if no file with the given {@code name} can be found, or
-     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image
-     *     library.
+     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
     GridCoverage read(String coverageName, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException;
 
     /**
-     * Allows any resources held by this object to be released. The result of calling any other
-     * method subsequent to a call to this method is undefined. It is important for applications to
-     * call this method when they know they will no longer be using this {@code GridCoverageReader}.
-     * Otherwise, the reader may continue to hold on to resources indefinitely.
+     * Allows any resources held by this object to be released. The result of calling any other method subsequent to a
+     * call to this method is undefined. It is important for applications to call this method when they know they will
+     * no longer be using this {@code GridCoverageReader}. Otherwise, the reader may continue to hold on to resources
+     * indefinitely.
      *
-     * @throws IOException if an error occured while disposing resources (for example while closing
-     *     a file).
+     * @throws IOException if an error occured while disposing resources (for example while closing a file).
      */
     void dispose() throws IOException;
 }

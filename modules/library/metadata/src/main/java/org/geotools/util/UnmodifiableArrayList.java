@@ -41,16 +41,14 @@ import java.util.AbstractList;
  *
  * </blockquote>
  *
- * But this class provides a very slight performance improvement since it uses one less level of
- * indirection.
+ * But this class provides a very slight performance improvement since it uses one less level of indirection.
  *
  * @param <E> The type of elements in the list.
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class UnmodifiableArrayList<E> extends AbstractList<E>
-        implements CheckedCollection<E>, Serializable {
+public class UnmodifiableArrayList<E> extends AbstractList<E> implements CheckedCollection<E>, Serializable {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = -3605810209653785967L;
 
@@ -58,12 +56,12 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
     private final E[] array;
 
     /**
-     * Creates a new instance of an array list. A direct reference to the given array is retained
-     * (i.e. the array is <strong>not</strong> cloned). Consequently the given array should not be
-     * modified after construction if this list is intented to be immutable.
+     * Creates a new instance of an array list. A direct reference to the given array is retained (i.e. the array is
+     * <strong>not</strong> cloned). Consequently the given array should not be modified after construction if this list
+     * is intented to be immutable.
      *
-     * <p>This constructor is for subclassing only. Users should invoke the {@link #wrap} static
-     * factory method, which provides more convenient handling of parameterized types.
+     * <p>This constructor is for subclassing only. Users should invoke the {@link #wrap} static factory method, which
+     * provides more convenient handling of parameterized types.
      *
      * @param array The array to wrap.
      */
@@ -73,9 +71,9 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * Creates a new instance of an array list. A direct reference to the given array is retained
-     * (i.e. the array is <strong>not</strong> cloned). Consequently the given array should not be
-     * modified after construction if this list is intented to be immutable.
+     * Creates a new instance of an array list. A direct reference to the given array is retained (i.e. the array is
+     * <strong>not</strong> cloned). Consequently the given array should not be modified after construction if this list
+     * is intented to be immutable.
      *
      * @param  <E> The type of elements in the list.
      * @param array The array to wrap.
@@ -111,9 +109,9 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * Returns the index in this list of the first occurence of the specified element, or -1 if the
-     * list does not contain this element. This method is overridden only for performance reason
-     * (the default implementation would work as well).
+     * Returns the index in this list of the first occurence of the specified element, or -1 if the list does not
+     * contain this element. This method is overridden only for performance reason (the default implementation would
+     * work as well).
      *
      * @param object The element to search for.
      */
@@ -136,9 +134,9 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * Returns the index in this list of the last occurence of the specified element, or -1 if the
-     * list does not contain this element. This method is overridden only for performance reason
-     * (the default implementation would work as well).
+     * Returns the index in this list of the last occurence of the specified element, or -1 if the list does not contain
+     * this element. This method is overridden only for performance reason (the default implementation would work as
+     * well).
      *
      * @param object The element to searcch for.
      */
@@ -162,8 +160,8 @@ public class UnmodifiableArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * Returns {@code true} if this collection contains the specified element. This method is
-     * overridden only for performance reason (the default implementation would work as well).
+     * Returns {@code true} if this collection contains the specified element. This method is overridden only for
+     * performance reason (the default implementation would work as well).
      *
      * @param object The element to check for existence.
      */

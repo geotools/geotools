@@ -58,25 +58,20 @@ public class RemoteTest {
         // we have to be sure that we are working against a valid grid range.
         final GridEnvelope2D testRange = new GridEnvelope2D(minX, minY, maxX, maxY);
         // build the corresponding envelope
-        final MathTransform gridToWorldCorner =
-                reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralBounds testEnvelope =
-                CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
+        final MathTransform gridToWorldCorner = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        final GeneralBounds testEnvelope = CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
         final GridCoverage2D gc = reader.read(new ParameterValue<?>[] {pam});
         Assert.assertNotNull(gc);
-        assertNotBlank(
-                "remote image mosaic",
-                ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage(),
-                Color.BLACK);
+        assertNotBlank("remote image mosaic", ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage(), Color.BLACK);
         reader.dispose();
     }
 
     /**
-     * Asserts that the image is not blank, in the sense that there must be pixels different from
-     * the passed background color.
+     * Asserts that the image is not blank, in the sense that there must be pixels different from the passed background
+     * color.
      *
      * @param testName the name of the test to throw meaningfull messages if something goes wrong
      * @param image the imgage to check it is not "blank"

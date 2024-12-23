@@ -36,11 +36,8 @@ public class FilterFunction_property extends FunctionExpressionImpl implements V
 
     FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "property",
-                    parameter("propertyValue", Object.class),
-                    parameter("propertyName", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "property", parameter("propertyValue", Object.class), parameter("propertyName", String.class));
 
     /** Cache the last PropertyName used in a thead safe way */
     volatile PropertyName lastPropertyName;

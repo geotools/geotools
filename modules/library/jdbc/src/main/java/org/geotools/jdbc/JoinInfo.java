@@ -42,8 +42,7 @@ public class JoinInfo {
         return create(query, featureSource.getSchema(), featureSource.getDataStore());
     }
 
-    public static JoinInfo create(
-            Query query, SimpleFeatureType featureType, JDBCDataStore dataStore)
+    public static JoinInfo create(Query query, SimpleFeatureType featureType, JDBCDataStore dataStore)
             throws IOException {
 
         JoinInfo info = new JoinInfo();
@@ -56,8 +55,7 @@ public class JoinInfo {
             info.getParts().add(part);
 
             // load the feature type being joined to
-            JDBCFeatureSource joinFeatureSource =
-                    dataStore.getAbsoluteFeatureSource(j.getTypeName());
+            JDBCFeatureSource joinFeatureSource = dataStore.getAbsoluteFeatureSource(j.getTypeName());
             part.setFeatureSource(joinFeatureSource);
 
             // ensure every join as a unique alias
@@ -82,29 +80,23 @@ public class JoinInfo {
 
             // qualify all property names in the join filter so that they known about their
             // feature type and alias
-            joinFilter =
-                    (Filter)
-                            joinFilter.accept(
-                                    new JoinQualifier(
-                                            featureType, "a", joinFeatureSource.getSchema(), alias),
-                                    null);
+            joinFilter = (Filter)
+                    joinFilter.accept(new JoinQualifier(featureType, "a", joinFeatureSource.getSchema(), alias), null);
             part.setJoinFilter(joinFilter);
 
             // split the other filter
             Filter[] prePostFilters = joinFeatureSource.splitFilter(j.getFilter());
 
             // build the query and return feature types based on the post filter
-            SimpleFeatureType[] types =
-                    joinFeatureSource.buildQueryAndReturnFeatureTypes(
-                            joinFeatureSource.getSchema(), j.getPropertyNames(), prePostFilters[1]);
+            SimpleFeatureType[] types = joinFeatureSource.buildQueryAndReturnFeatureTypes(
+                    joinFeatureSource.getSchema(), j.getPropertyNames(), prePostFilters[1]);
 
             // alias any attributes in this feature type that clash with attributes in the primary
             // feature type
             types[0] = SimpleFeatureTypeBuilder.copy(types[0]);
             for (AttributeDescriptor att : types[0].getAttributeDescriptors()) {
                 if (featureType.getDescriptor(att.getName()) != null) {
-                    att.getUserData()
-                            .put(JDBCDataStore.JDBC_COLUMN_ALIAS, alias + "_" + att.getLocalName());
+                    att.getUserData().put(JDBCDataStore.JDBC_COLUMN_ALIAS, alias + "_" + att.getLocalName());
                 }
             }
 
@@ -113,11 +105,8 @@ public class JoinInfo {
 
             // qualify the pre filter
             if (prePostFilters[0] != null && prePostFilters[0] != Filter.INCLUDE) {
-                prePostFilters[0] =
-                        (Filter)
-                                prePostFilters[0].accept(
-                                        new JoinQualifier(joinFeatureSource.getSchema(), alias),
-                                        null);
+                prePostFilters[0] = (Filter)
+                        prePostFilters[0].accept(new JoinQualifier(joinFeatureSource.getSchema(), alias), null);
             }
             part.setPreFilter(prePostFilters[0]);
             part.setPostFilter(prePostFilters[1]);
@@ -314,8 +303,7 @@ public class JoinInfo {
             this(ft, alias, null, null);
         }
 
-        public JoinQualifier(
-                SimpleFeatureType ft1, String alias1, SimpleFeatureType ft2, String alias2) {
+        public JoinQualifier(SimpleFeatureType ft1, String alias1, SimpleFeatureType ft2, String alias2) {
             this.ft1 = ft1;
             this.ft2 = ft2;
             this.alias1 = alias1;
@@ -342,33 +330,26 @@ public class JoinInfo {
 
             // if we only have one feature type its easy, use the first feature type
             if (ft2 == null) {
-                propertyName =
-                        new JoinPropertyName(ft1, alias1, split.length > 1 ? split[1] : split[0]);
+                propertyName = new JoinPropertyName(ft1, alias1, split.length > 1 ? split[1] : split[0]);
             } else {
                 if (split.length == 1) {
                     // name was unprefixed, figure out what feature type the meant
-                    SimpleFeatureType ft =
-                            ft1.getDescriptor(split[0]) != null
-                                    ? ft1
-                                    : ft2.getDescriptor(split[0]) != null ? ft2 : null;
+                    SimpleFeatureType ft = ft1.getDescriptor(split[0]) != null
+                            ? ft1
+                            : ft2.getDescriptor(split[0]) != null ? ft2 : null;
                     if (ft == null) {
-                        throw new IllegalArgumentException(
-                                String.format(
-                                        "Attribute '%s' not present in"
-                                                + " either type '%s' or '%s'",
-                                        split[0], ft1.getTypeName(), ft2.getTypeName()));
+                        throw new IllegalArgumentException(String.format(
+                                "Attribute '%s' not present in" + " either type '%s' or '%s'",
+                                split[0], ft1.getTypeName(), ft2.getTypeName()));
                     }
 
                     propertyName = new JoinPropertyName(ft, ft == ft1 ? alias1 : alias2, split[0]);
                 } else {
                     // name was prefixed, look up the type based on prefix
-                    SimpleFeatureType ft =
-                            split[0].equals(alias1) ? ft1 : split[0].equals(alias2) ? ft2 : null;
+                    SimpleFeatureType ft = split[0].equals(alias1) ? ft1 : split[0].equals(alias2) ? ft2 : null;
                     if (ft == null) {
-                        throw new IllegalArgumentException(
-                                String.format(
-                                        "Prefix '%s' does not match " + "either alias '%s' or '%s'",
-                                        split[0], alias1, alias2));
+                        throw new IllegalArgumentException(String.format(
+                                "Prefix '%s' does not match " + "either alias '%s' or '%s'", split[0], alias1, alias2));
                     }
 
                     propertyName = new JoinPropertyName(ft, split[0], split[1]);
@@ -378,10 +359,7 @@ public class JoinInfo {
             return propertyName;
         }
 
-        /**
-         * Makes the assumption that the Id filter is run against the primary feature type in the
-         * join
-         */
+        /** Makes the assumption that the Id filter is run against the primary feature type in the join */
         @Override
         public Object visit(Id filter, Object extraData) {
             return new JoinId(ft1, alias1, filter.getIdentifiers());

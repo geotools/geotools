@@ -224,8 +224,8 @@ public class CalcUtil {
     }
 
     /**
-     * Given an array of objects, traverses the array and determines the most suitable data type to
-     * perform the calculation in. An empty object of the correct class is returned;
+     * Given an array of objects, traverses the array and determines the most suitable data type to perform the
+     * calculation in. An empty object of the correct class is returned;
      */
     static Object getObject(Object... objects) {
         Class bestClass = bestClass(objects);
@@ -270,14 +270,13 @@ public class CalcUtil {
     }
 
     /**
-     * Utility method for {@link FeatureAttributeVisitor} implementations that are simply returnin
-     * the same type as the inputs
+     * Utility method for {@link FeatureAttributeVisitor} implementations that are simply returnin the same type as the
+     * inputs
      *
      * @param inputTypes
      * @return
      */
-    public static Optional<List<Class>> reflectInputTypes(
-            int expectedInputCount, List<Class> inputTypes) {
+    public static Optional<List<Class>> reflectInputTypes(int expectedInputCount, List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != expectedInputCount)
             throw new IllegalArgumentException(
                     "Expecting " + expectedInputCount + " types in input, but got " + inputTypes);

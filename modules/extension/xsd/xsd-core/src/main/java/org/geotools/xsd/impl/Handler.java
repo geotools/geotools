@@ -24,14 +24,13 @@ import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 /**
- * Class implementing this interface serve has handlers for content of an instance document as it is
- * parsed.
+ * Class implementing this interface serve has handlers for content of an instance document as it is parsed.
  *
- * <p>A handler is repsonsible for parsing and validating content. Upon a successful parse and
- * validation, the handler must return the "parsed" content from a call to {@link #getValue}.
+ * <p>A handler is repsonsible for parsing and validating content. Upon a successful parse and validation, the handler
+ * must return the "parsed" content from a call to {@link #getValue}.
  *
- * <p>A handler corresponds to a specific component in a schema. Processing is delegated to the
- * handler when an instance of the component is encountered in an instance document.
+ * <p>A handler corresponds to a specific component in a schema. Processing is delegated to the handler when an instance
+ * of the component is encountered in an instance document.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  */
@@ -67,8 +66,7 @@ public interface Handler {
      * <p>This method will return null in two situations:
      *
      * <ol>
-     *   <li>The schema component being handled does not support children (for example, an
-     *       attribute).
+     *   <li>The schema component being handled does not support children (for example, an attribute).
      *   <li>A child with the specified qName could not be found.
      * </ol>
      *

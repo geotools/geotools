@@ -78,9 +78,7 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                     RIVER_TABLE,
                     htu.nextTestSequenceValueForColumn(RIVER_TABLE, "fid"),
                     0,
-                    htu.geometry(
-                            "MULTILINESTRING((5 5, 7 4), (7 5, 9 7, 13 7), (7 5, 9 3, 11 3))",
-                            1000004326),
+                    htu.geometry("MULTILINESTRING((5 5, 7 4), (7 5, 9 7, 13 7), (7 5, 9 3, 11 3))", 1000004326),
                     "rv1",
                     4.5);
             htu.insertIntoTestTable(

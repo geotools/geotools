@@ -54,43 +54,33 @@ public class SchemaFactoryResolveTest {
 
     @Test
     public void testLocalPathResolve() throws Exception {
-        Assert.assertNotNull(
-                SchemaFactory.getInstance(
-                        URI.create("http://www.w3.org/XML/1998/namespace/test"),
-                        URI.create("http://geotools.org/xml/test.xsd")));
+        Assert.assertNotNull(SchemaFactory.getInstance(
+                URI.create("http://www.w3.org/XML/1998/namespace/test"),
+                URI.create("http://geotools.org/xml/test.xsd")));
     }
 
     @Test
     public void testCachedPathResolve() throws Exception {
         File folder =
-                new File(
-                        tempFolder
-                                + File.separator
-                                + "org"
-                                + File.separator
-                                + "geotools"
-                                + File.separator
-                                + "xml");
+                new File(tempFolder + File.separator + "org" + File.separator + "geotools" + File.separator + "xml");
         Assert.assertTrue(folder.mkdirs());
 
         copy("/org/geotools/xml/test.xsd", "cached.xsd", folder);
         copy("/org/geotools/xml/XMLSchema.dtd", "XMLSchema.dtd", folder);
         copy("/org/geotools/xml/datatypes.dtd", "datatypes.dtd", folder);
 
-        Assert.assertNotNull(
-                SchemaFactory.getInstance(
-                        URI.create("http://www.w3.org/XML/1998/namespace/cached"),
-                        // URI.create("http://geotools.org/xml/cached.xsd")));
-                        new File(folder, "cached.xsd").toURI()));
+        Assert.assertNotNull(SchemaFactory.getInstance(
+                URI.create("http://www.w3.org/XML/1998/namespace/cached"),
+                // URI.create("http://geotools.org/xml/cached.xsd")));
+                new File(folder, "cached.xsd").toURI()));
     }
 
     @Test
     public void testRemotePathResolve() throws Exception {
         try {
-            Assert.assertNotNull(
-                    SchemaFactory.getInstance(
-                            URI.create("http://www.w3.org/XML/1998/namespace/remote"),
-                            URI.create("http://www.w3.org/2001/03/xml.xsd")));
+            Assert.assertNotNull(SchemaFactory.getInstance(
+                    URI.create("http://www.w3.org/XML/1998/namespace/remote"),
+                    URI.create("http://www.w3.org/2001/03/xml.xsd")));
         } catch (RuntimeException e) {
             if (e.getCause() instanceof UnknownHostException) {
                 // fine, it just means the test is running offline
@@ -118,8 +108,7 @@ public class SchemaFactoryResolveTest {
 
     private void copy(String sourceFile, String name, File outFolder) throws IOException {
         try (InputStream in = this.getClass().getResource(sourceFile).openStream();
-                OutputStream out =
-                        new FileOutputStream(outFolder.getAbsolutePath() + File.separator + name)) {
+                OutputStream out = new FileOutputStream(outFolder.getAbsolutePath() + File.separator + name)) {
             final byte[] buffer = new byte[4096];
             int count;
             while ((count = in.read(buffer)) >= 0) {

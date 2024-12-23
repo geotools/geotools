@@ -32,8 +32,8 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.logging.Logging;
 
 /**
- * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as
- * at least a chance to match a feature (e.g., the rule selectors are not contractiding each other)
+ * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as at least a chance
+ * to match a feature (e.g., the rule selectors are not contractiding each other)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -50,9 +50,8 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
     UnboundSimplifyingFilterVisitor simplifier;
 
     /**
-     * These are pseudo class bits that mix in the main rule set, or not, depending on whether their
-     * pseudo class is a match. They are treated separately to reduce the number of rules the power
-     * set generates
+     * These are pseudo class bits that mix in the main rule set, or not, depending on whether their pseudo class is a
+     * match. They are treated separately to reduce the number of rules the power set generates
      */
     List<CssRule> mixins;
 
@@ -78,8 +77,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         this(classifyRules(domain), simplifier, -1);
     }
 
-    RulePowerSetBuilder(
-            List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier, int maxCombinations) {
+    RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier, int maxCombinations) {
         this(classifyRules(domain), simplifier, maxCombinations);
     }
 
@@ -128,8 +126,7 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                 // let's see if all mixins are applying without conditions
                 for (; idx < applicableMixins.size(); idx++) {
                     CssRule mixin = applicableMixins.get(idx);
-                    Selector mixedSelector =
-                            Selector.and(mixin.selector, combined.selector, simplifier);
+                    Selector mixedSelector = Selector.and(mixin.selector, combined.selector, simplifier);
                     if (mixedSelector == Selector.REJECT) {
                         // this mixin is no good
                         continue;
@@ -148,11 +145,8 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                     List<CssRule> list = new ArrayList<>();
                     list.add(combined);
                     list.addAll(applicableMixins.subList(idx, applicableMixins.size()));
-                    RulePowerSetBuilder builder =
-                            new RulePowerSetBuilder(
-                                    new List[] {list, Collections.emptyList()},
-                                    simplifier,
-                                    maxCombinations - count);
+                    RulePowerSetBuilder builder = new RulePowerSetBuilder(
+                            new List[] {list, Collections.emptyList()}, simplifier, maxCombinations - count);
                     List<CssRule> conditionalPowerSet = builder.buildPowerSet();
                     results.addAll(conditionalPowerSet);
                 } else {
@@ -167,9 +161,8 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         // make sure we're not going beyond the max generated rules
         count += results.size();
         if (maxCombinations > 0 && count > maxCombinations) {
-            LOGGER.severe(
-                    "Bailing out, the CSS rule combinations have already generated more than "
-                            + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
+            LOGGER.severe("Bailing out, the CSS rule combinations have already generated more than "
+                    + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
         } else if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("New rule (" + count + "):" + combined);
         }
@@ -178,10 +171,10 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
     }
 
     /**
-     * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have
-     * their pseudo-classes matched by the main rule symbolizers. Two lists will be returned, an
-     * in-conditional one, where the mixins just blend into the main rule, and a conditional one,
-     * where the mixin adds its own conditions, and thus require its own power set expansion
+     * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have their pseudo-classes
+     * matched by the main rule symbolizers. Two lists will be returned, an in-conditional one, where the mixins just
+     * blend into the main rule, and a conditional one, where the mixin adds its own conditions, and thus require its
+     * own power set expansion
      */
     private List<CssRule> getApplicableMixins(CssRule rule) {
         Set<PseudoClass> mixablePseudoClasses = rule.getMixablePseudoClasses();

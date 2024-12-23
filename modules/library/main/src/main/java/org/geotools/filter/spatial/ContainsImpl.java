@@ -38,20 +38,17 @@ public class ContainsImpl extends AbstractPreparedGeometryFilter implements Cont
         switch (literals) {
             case BOTH:
                 return cacheValue;
-            case RIGHT:
-                {
-                    // since it is left contains right there is no
-                    // benefit of having a prepared geometry for the right side
-                    return basicEvaluate(left, right);
-                }
-            case LEFT:
-                {
-                    return leftPreppedGeom.contains(right);
-                }
-            default:
-                {
-                    return basicEvaluate(left, right);
-                }
+            case RIGHT: {
+                // since it is left contains right there is no
+                // benefit of having a prepared geometry for the right side
+                return basicEvaluate(left, right);
+            }
+            case LEFT: {
+                return leftPreppedGeom.contains(right);
+            }
+            default: {
+                return basicEvaluate(left, right);
+            }
         }
     }
 

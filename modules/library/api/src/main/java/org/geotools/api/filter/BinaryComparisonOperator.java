@@ -14,8 +14,8 @@ package org.geotools.api.filter;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * Abstract base class for filters that compare exactly two values against each other. The nature of
- * the comparison is dependent on the subclass.
+ * Abstract base class for filters that compare exactly two values against each other. The nature of the comparison is
+ * dependent on the subclass.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

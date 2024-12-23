@@ -159,20 +159,11 @@ public class SLDStyleTest {
         Assert.assertNotNull(xml);
         Assert.assertTrue(xml.contains("<sld:Title>title"));
         Assert.assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.ITALIAN.toString()
-                                + "\">titolo</sld:Localized>"));
+                xml.contains("<sld:Localized lang=\"" + Locale.ITALIAN.toString() + "\">titolo</sld:Localized>"));
         Assert.assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.FRENCH.toString()
-                                + "\">titre</sld:Localized>"));
+                xml.contains("<sld:Localized lang=\"" + Locale.FRENCH.toString() + "\">titre</sld:Localized>"));
         Assert.assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.CANADA_FRENCH.toString()
-                                + "\">titre</sld:Localized>"));
+                xml.contains("<sld:Localized lang=\"" + Locale.CANADA_FRENCH.toString() + "\">titre</sld:Localized>"));
     }
 
     @Test
@@ -280,16 +271,14 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        TextSymbolizer ts =
-                (TextSymbolizer)
-                        ((NamedLayer) sld.getStyledLayers()[0])
-                                .getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        TextSymbolizer ts = (TextSymbolizer) ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         PropertyName property = (PropertyName) ts.getLabel();
         Assert.assertEquals("testProperty", property.getPropertyName());
@@ -304,14 +293,13 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        List<Symbolizer> symbolizers =
-                ((NamedLayer) sld.getStyledLayers()[0])
-                        .getStyles()[0]
-                        .featureTypeStyles()
-                        .get(0)
-                        .rules()
-                        .get(0)
-                        .symbolizers();
+        List<Symbolizer> symbolizers = ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers();
 
         PolygonSymbolizer polygon = (PolygonSymbolizer) symbolizers.get(0);
         TextSymbolizer text = (TextSymbolizer) symbolizers.get(1);
@@ -323,8 +311,7 @@ public class SLDStyleTest {
         String labelValue = label.evaluate(null, String.class);
 
         Assert.assertEquals("#96C3F5", fillValue);
-        Assert.assertEquals(
-                "this is a prefix; this is an expression; this is a postfix", labelValue);
+        Assert.assertEquals("this is a prefix; this is an expression; this is a postfix", labelValue);
     }
 
     @Test
@@ -333,17 +320,15 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        RasterSymbolizer rs =
-                (RasterSymbolizer)
-                        ((UserLayer) sld.getStyledLayers()[0])
-                                .userStyles()
-                                .get(0)
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        RasterSymbolizer rs = (RasterSymbolizer) ((UserLayer) sld.getStyledLayers()[0])
+                .userStyles()
+                .get(0)
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         Assert.assertTrue(rs.getColorMap().getExtendedColors());
         Assert.assertEquals(rs.getColorMap().getType(), org.geotools.api.style.ColorMap.TYPE_RAMP);
@@ -355,16 +340,14 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        TextSymbolizer text =
-                (TextSymbolizer)
-                        ((NamedLayer) sld.getStyledLayers()[0])
-                                .getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        TextSymbolizer text = (TextSymbolizer) ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         Expression label = text.getLabel();
 
@@ -379,16 +362,14 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        TextSymbolizer text =
-                (TextSymbolizer)
-                        ((NamedLayer) sld.getStyledLayers()[0])
-                                .getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        TextSymbolizer text = (TextSymbolizer) ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         Expression label = text.getLabel();
 
@@ -403,16 +384,14 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        TextSymbolizer text =
-                (TextSymbolizer)
-                        ((NamedLayer) sld.getStyledLayers()[0])
-                                .getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        TextSymbolizer text = (TextSymbolizer) ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         Expression label = text.getLabel();
 
@@ -429,23 +408,18 @@ public class SLDStyleTest {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        PolygonSymbolizer ps =
-                (PolygonSymbolizer)
-                        ((NamedLayer) sld.getStyledLayers()[0])
-                                .getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        PolygonSymbolizer ps = (PolygonSymbolizer) ((NamedLayer) sld.getStyledLayers()[0])
+                .getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         Expression color = ps.getStroke().getColor();
-        Expression expected =
-                ff.function(
-                        "strConcat",
-                        ff.literal("#"),
-                        ff.function("env", ff.literal("stroke"), ff.literal("0000FF")));
+        Expression expected = ff.function(
+                "strConcat", ff.literal("#"), ff.function("env", ff.literal("stroke"), ff.literal("0000FF")));
         Assert.assertEquals(expected, color);
     }
 
@@ -548,8 +522,7 @@ public class SLDStyleTest {
     }
 
     /**
-     * Test of parseSLD method to ensure NamedLayer/Name and NamedLayer/NamedStyle are parsed
-     * correctly
+     * Test of parseSLD method to ensure NamedLayer/Name and NamedLayer/NamedStyle are parsed correctly
      *
      * @throws Exception boom
      */
@@ -600,8 +573,7 @@ public class SLDStyleTest {
     }
 
     /**
-     * Test of parseSLD method to ensure NamedLayer/Name and NamedLayer/NamedStyle are parsed
-     * correctly
+     * Test of parseSLD method to ensure NamedLayer/Name and NamedLayer/NamedStyle are parsed correctly
      *
      * @throws Exception boom
      */
@@ -734,9 +706,13 @@ public class SLDStyleTest {
     @Test
     public void testParseAnchorDisplacement() throws IOException {
         Style[] styles = getStyles("markDisplacementTest.sld");
-        PointSymbolizer ps =
-                (PointSymbolizer)
-                        styles[0].featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        PointSymbolizer ps = (PointSymbolizer) styles[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
         Graphic graphic = ps.getGraphic();
         Displacement displacement = graphic.getDisplacement();
         Assert.assertNotNull(displacement);
@@ -865,9 +841,7 @@ public class SLDStyleTest {
         Assert.assertEquals(1.5, v, 0d);
     }
 
-    /**
-     * Tests the parsing of a raster symbolizer sld with ENV function expression on SelectedChannel
-     */
+    /** Tests the parsing of a raster symbolizer sld with ENV function expression on SelectedChannel */
     @Test
     public void testParseRasterChannelExpression() throws IOException {
         Style[] styles = getStyles("raster-channel-expression.xml");
@@ -936,8 +910,7 @@ public class SLDStyleTest {
             "#c85000", "#be4100", "#963000", "#3c0200", "#ffffff", "#ffffff"
         };
         int[] values = {
-            -500, -417, -333, -250, -167, -83, -1, 0, 30, 105, 300, 400, 700, 1200, 1400, 1600,
-            2000, 3000, 5000, 13000
+            -500, -417, -333, -250, -167, -83, -1, 0, 30, 105, 300, 400, 700, 1200, 1400, 1600, 2000, 3000, 5000, 13000
         };
         for (int i = 0; i < centeries.length; i++) {
             ColorMapEntry entry = centeries[i];
@@ -1019,8 +992,10 @@ public class SLDStyleTest {
         Assert.assertEquals(1, styles[0].featureTypeStyles().size());
         final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
-        RasterSymbolizer symbolizer = (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
-        final SelectedChannelType[] rgbChannels = symbolizer.getChannelSelection().getRGBChannels();
+        RasterSymbolizer symbolizer =
+                (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
+        final SelectedChannelType[] rgbChannels =
+                symbolizer.getChannelSelection().getRGBChannels();
         Assert.assertNotNull(rgbChannels);
         Assert.assertNull(rgbChannels[0]);
         Assert.assertNotNull(rgbChannels[1]);
@@ -1095,8 +1070,7 @@ public class SLDStyleTest {
         Assert.assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
         Assert.assertTrue(firstSymbol instanceof Mark);
-        Assert.assertEquals(
-                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+        Assert.assertEquals("square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 
     public Style[] getStyles(String s) throws IOException {
@@ -1142,8 +1116,7 @@ public class SLDStyleTest {
 
     private static void assertImagesEqual(BufferedImage expected, Icon icon) {
         BufferedImage actual =
-                new BufferedImage(
-                        icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+                new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = actual.createGraphics();
         try {
             icon.paintIcon(null, g, 0, 0);
@@ -1158,10 +1131,7 @@ public class SLDStyleTest {
         int h = actual.getHeight();
         for (int x = 0; x < w; ++x) {
             for (int y = 0; y < h; ++y) {
-                Assert.assertEquals(
-                        "mismatch at (" + x + ", " + y + ")",
-                        actual.getRGB(x, y),
-                        expected.getRGB(x, y));
+                Assert.assertEquals("mismatch at (" + x + ", " + y + ")", actual.getRGB(x, y), expected.getRGB(x, y));
             }
         }
     }

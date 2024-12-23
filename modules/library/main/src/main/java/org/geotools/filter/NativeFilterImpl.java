@@ -21,8 +21,8 @@ import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.NativeFilter;
 
 /**
- * Default implementation of a native filter that works like an holder for the native expression.
- * This should be enough for most of the situations.
+ * Default implementation of a native filter that works like an holder for the native expression. This should be enough
+ * for most of the situations.
  */
 public final class NativeFilterImpl implements NativeFilter {
 
@@ -39,8 +39,7 @@ public final class NativeFilterImpl implements NativeFilter {
 
     @Override
     public boolean evaluate(Object object) {
-        throw new RuntimeException(
-                String.format("Native filter '%s' can be executed in memory.", nativeFilter));
+        throw new RuntimeException(String.format("Native filter '%s' can be executed in memory.", nativeFilter));
     }
 
     @Override

@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 /**
  * Default LoggerFactory using java util logging framework directly.
  *
- * <p>This is a no-op factory placeholder delegating directly to the java util logging framework. It
- * is used by {@link Logging} as a default (rather than null {@link null}).
+ * <p>This is a no-op factory placeholder delegating directly to the java util logging framework. It is used by
+ * {@link Logging} as a default (rather than null {@link null}).
  *
  * @author Jody Garnett (GeoCat)
  */
@@ -44,8 +44,8 @@ public class DefaultLoggerFactory extends LoggerFactory<Logger> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegate to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if the logger would
+     * delegate to Java logging anyway.
      */
     @Override
     protected Logger getImplementation(final String name) {
@@ -59,8 +59,8 @@ public class DefaultLoggerFactory extends LoggerFactory<Logger> {
     }
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none.
      */
     @Override
     protected Logger unwrap(final Logger logger) {

@@ -133,8 +133,7 @@ public class CRSTest {
         CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
 
         CoordinateOperation op =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                        .createOperation(WGS84, WGS84);
+                ReferencingFactoryFinder.getCoordinateOperationFactory(null).createOperation(WGS84, WGS84);
         MathTransform math = op.getMathTransform();
 
         Position pt1 = new GeneralPosition(0.0, 0.0);
@@ -148,8 +147,7 @@ public class CRSTest {
         };
         double[] tst = new double[pts.length];
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
-        for (int i = 0; i < pts.length; i++)
-            Assert.assertNotEquals("pts[" + i + "]", pts[i], tst[i]);
+        for (int i = 0; i < pts.length; i++) Assert.assertNotEquals("pts[" + i + "]", pts[i], tst[i]);
     }
     /** Taken from empty udig map calculation of scale. */
     @Test
@@ -160,9 +158,7 @@ public class CRSTest {
         // ReferencedEnvelope[-0.24291497975705742 : 0.24291497975711265, -0.5056179775280899 :
         // -0.0]
         CoordinateReferenceSystem EPSG4326 = CRS.decode("EPSG:4326");
-        double[] pixelBounds = {
-            -0.24291497975705742, 0.24291497975711265, -0.5056179775280899, 0.0
-        };
+        double[] pixelBounds = {-0.24291497975705742, 0.24291497975711265, -0.5056179775280899, 0.0};
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         MathTransform mt = CRS.findMathTransform(EPSG4326, WGS84, true);
         double[] result = new double[4];

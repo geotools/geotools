@@ -75,8 +75,8 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     /**
      * Setter for crs.
      *
-     * <p>This is used to allow containing entities (liek a wfs query) to provide a coordinate
-     * reference system in the context.
+     * <p>This is used to allow containing entities (liek a wfs query) to provide a coordinate reference system in the
+     * context.
      */
     public void setCRS(CoordinateReferenceSystem crs) {
         this.crs = crs;
@@ -108,9 +108,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         Envelope box = node.getChildValue(Envelope.class);
 
         if (box instanceof ReferencedEnvelope) {
-            return factory.bbox(
-                    propertyName == null ? factory.property("") : propertyName,
-                    (ReferencedEnvelope) box);
+            return factory.bbox(propertyName == null ? factory.property("") : propertyName, (ReferencedEnvelope) box);
         } else {
             String name = null;
             if (propertyName != null) {
@@ -131,8 +129,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
                 srs = GML2EncodingUtils.toURI(crs);
             }
 
-            return factory.bbox(
-                    name, box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY(), srs);
+            return factory.bbox(name, box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY(), srs);
         }
     }
 

@@ -96,8 +96,8 @@ public class MapLayerEvent extends EventObject {
     }
 
     /**
-     * Returns the reason why this event is fired. It is one of {@link #VISIBILITY_CHANGED} or
-     * {@link #TITLE_CHANGED} constants.
+     * Returns the reason why this event is fired. It is one of {@link #VISIBILITY_CHANGED} or {@link #TITLE_CHANGED}
+     * constants.
      */
     public int getReason() {
         return reason;

@@ -21,8 +21,8 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.line.BasicDirectedXYNode;
 
 /**
- * An implementation of GraphBuilder extended from BasicDirectedGraphBuilder used to build graphs
- * representing directed line networks.
+ * An implementation of GraphBuilder extended from BasicDirectedGraphBuilder used to build graphs representing directed
+ * line networks.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */

@@ -39,9 +39,9 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Range;
 
 /**
- * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class
- * works correctly only if all the range based filters have the same MatchAction, but does not check
- * it internally, so it is suitable for usage only in a simple feature context
+ * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class works correctly
+ * only if all the range based filters have the same MatchAction, but does not check it internally, so it is suitable
+ * for usage only in a simple feature context
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -59,8 +59,7 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected <T extends Comparable<T>> MultiRange<T> combineRanges(
-                MultiRange<T> r1, MultiRange<T> r2) {
+        protected <T extends Comparable<T>> MultiRange<T> combineRanges(MultiRange<T> r1, MultiRange<T> r2) {
             return r1.merge(r2);
         }
 
@@ -86,8 +85,7 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected <T extends Comparable<T>> MultiRange<T> combineRanges(
-                MultiRange<T> r1, MultiRange<T> r2) {
+        protected <T extends Comparable<T>> MultiRange<T> combineRanges(MultiRange<T> r1, MultiRange<T> r2) {
             return r1.intersect(r2);
         }
 
@@ -138,8 +136,7 @@ abstract class RangeCombiner {
 
         boolean combinationHappened;
 
-        public CombinationResult(
-                Map<Expression, List<FilterRange>> rangeMap, boolean combinationHappened) {
+        public CombinationResult(Map<Expression, List<FilterRange>> rangeMap, boolean combinationHappened) {
             this.rangeMap = rangeMap;
             this.combinationHappened = combinationHappened;
         }
@@ -213,14 +210,12 @@ abstract class RangeCombiner {
                 // Right now, only PropertyIsEqualTo actually considers matchcase, all others
                 // behave as if they were case sensitive regardgless of the setting.
                 // TODO: change the logic to consider matchcase when
-                if (er.range != null
-                        && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
+                if (er.range != null && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
                     addRange(rangeMap, er.expression, new MultiRange(er.range));
                 } else {
                     otherFilters.add(f);
                 }
-            } else if (f instanceof org.geotools.api.filter.And
-                    || f instanceof org.geotools.api.filter.Or) {
+            } else if (f instanceof org.geotools.api.filter.And || f instanceof org.geotools.api.filter.Or) {
                 BinaryLogicOperator logic = (BinaryLogicOperator) f;
                 List<Filter> children = logic.getChildren();
                 RangeCombiner subCombiner;
@@ -341,12 +336,10 @@ abstract class RangeCombiner {
     protected abstract void addFiltersToResults(List<Filter> result, Filter filter);
 
     /** Combines two multiranges */
-    protected abstract <T extends Comparable<T>> MultiRange<T> combineRanges(
-            MultiRange<T> r1, MultiRange<T> r2);
+    protected abstract <T extends Comparable<T>> MultiRange<T> combineRanges(MultiRange<T> r1, MultiRange<T> r2);
 
     @SuppressWarnings("unchecked")
-    private void addRange(
-            Map<Expression, MultiRange> rangeMap, Expression expression, MultiRange other) {
+    private void addRange(Map<Expression, MultiRange> rangeMap, Expression expression, MultiRange other) {
         MultiRange ranges = rangeMap.get(expression);
         if (ranges == null) {
             rangeMap.put(expression, other);

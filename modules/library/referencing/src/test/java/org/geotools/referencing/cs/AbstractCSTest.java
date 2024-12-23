@@ -43,77 +43,55 @@ public final class AbstractCSTest {
     /** Tests the swapping of axis. */
     @Test
     public void testAxisSwapping() {
-        CoordinateSystem cs1 =
-                new DefaultEllipsoidalCS(
-                        "cs1",
-                        DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
-                        DefaultCoordinateSystemAxis.GEODETIC_LATITUDE);
-        CoordinateSystem cs2 =
-                new DefaultEllipsoidalCS(
-                        "cs2",
-                        DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
-                        DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE);
+        CoordinateSystem cs1 = new DefaultEllipsoidalCS(
+                "cs1", DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE, DefaultCoordinateSystemAxis.GEODETIC_LATITUDE);
+        CoordinateSystem cs2 = new DefaultEllipsoidalCS(
+                "cs2", DefaultCoordinateSystemAxis.GEODETIC_LATITUDE, DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE);
         assertTrue(AbstractCS.swapAndScaleAxis(cs1, cs1).isIdentity());
         assertTrue(AbstractCS.swapAndScaleAxis(cs2, cs2).isIdentity());
-        compareMatrix(
-                cs1,
-                cs2,
-                new double[] {
-                    0, 1, 0,
-                    1, 0, 0,
-                    0, 0, 1
-                });
+        compareMatrix(cs1, cs2, new double[] {
+            0, 1, 0,
+            1, 0, 0,
+            0, 0, 1
+        });
 
-        cs1 =
-                new DefaultEllipsoidalCS(
-                        "cs1",
-                        DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
-                        DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
-                        DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
-        cs2 =
-                new DefaultEllipsoidalCS(
-                        "cs2",
-                        DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
-                        DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
-                        DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
-        compareMatrix(
-                cs1,
-                cs2,
-                new double[] {
-                    0, 1, 0, 0,
-                    1, 0, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1
-                });
+        cs1 = new DefaultEllipsoidalCS(
+                "cs1",
+                DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
+                DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
+                DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
+        cs2 = new DefaultEllipsoidalCS(
+                "cs2",
+                DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
+                DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
+                DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
+        compareMatrix(cs1, cs2, new double[] {
+            0, 1, 0, 0,
+            1, 0, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        });
 
-        cs1 =
-                new DefaultCartesianCS(
-                        "cs1",
-                        DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT,
-                        DefaultCoordinateSystemAxis.EASTING,
-                        DefaultCoordinateSystemAxis.NORTHING);
-        cs2 =
-                new DefaultCartesianCS(
-                        "cs2",
-                        DefaultCoordinateSystemAxis.SOUTHING,
-                        DefaultCoordinateSystemAxis.EASTING,
-                        DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
-        compareMatrix(
-                cs1,
-                cs2,
-                new double[] {
-                    0, 0, -1, 0,
-                    0, 1, 0, 0,
-                    1, 0, 0, 0,
-                    0, 0, 0, 1
-                });
+        cs1 = new DefaultCartesianCS(
+                "cs1",
+                DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT,
+                DefaultCoordinateSystemAxis.EASTING,
+                DefaultCoordinateSystemAxis.NORTHING);
+        cs2 = new DefaultCartesianCS(
+                "cs2",
+                DefaultCoordinateSystemAxis.SOUTHING,
+                DefaultCoordinateSystemAxis.EASTING,
+                DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
+        compareMatrix(cs1, cs2, new double[] {
+            0, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 0, 0,
+            0, 0, 0, 1
+        });
     }
 
-    /**
-     * Compares the matrix computes by {@link AbstractCS#swapAndScaleAxis} with the specified one.
-     */
-    private static void compareMatrix(
-            final CoordinateSystem cs1, final CoordinateSystem cs2, final double[] expected) {
+    /** Compares the matrix computes by {@link AbstractCS#swapAndScaleAxis} with the specified one. */
+    private static void compareMatrix(final CoordinateSystem cs1, final CoordinateSystem cs2, final double[] expected) {
         final Matrix matrix = AbstractCS.swapAndScaleAxis(cs1, cs2);
         final int numRow = matrix.getNumRow();
         final int numCol = matrix.getNumCol();
@@ -125,9 +103,7 @@ public final class AbstractCSTest {
     /** Tests {@link AbstractCS#axisUsingUnit}. */
     @Test
     public void testAxisUsingUnit() {
-        assertNull(
-                "Should detect that no axis change is needed",
-                DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METRE));
+        assertNull("Should detect that no axis change is needed", DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METRE));
 
         final Unit<Length> KILOMETER = MetricPrefix.KILO(SI.METRE);
         final CoordinateSystemAxis[] axis = DefaultCartesianCS.PROJECTED.axisUsingUnit(KILOMETER);

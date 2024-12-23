@@ -68,8 +68,7 @@ public class BufferFeatureCollectionTest {
                 Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
 
-            Assert.assertEquals(
-                    new ReferencedEnvelope(-500, 501, -500, 501, null), output.getBounds());
+            Assert.assertEquals(new ReferencedEnvelope(-500, 501, -500, 501, null), output.getBounds());
             Assert.assertEquals(2, output.size());
         }
     }
@@ -114,8 +113,7 @@ public class BufferFeatureCollectionTest {
                 Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
 
-            Assert.assertEquals(
-                    new ReferencedEnvelope(-500, 507, -500, 507, null), output.getBounds());
+            Assert.assertEquals(new ReferencedEnvelope(-500, 507, -500, 507, null), output.getBounds());
             Assert.assertEquals(5, output.size());
         }
     }
@@ -165,8 +163,7 @@ public class BufferFeatureCollectionTest {
                 Assert.assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
 
-            Assert.assertEquals(
-                    new ReferencedEnvelope(-500, 506, -500, 506, null), output.getBounds());
+            Assert.assertEquals(new ReferencedEnvelope(-500, 506, -500, 506, null), output.getBounds());
             Assert.assertEquals(5, output.size());
         }
     }

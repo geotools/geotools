@@ -51,8 +51,8 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.geom.util.GeometryEditor;
 
 /**
- * SimpleFeatureIterator wrapper that clip (crops) features according to the clip geometry passed.
- * Can preserve the Z dimension.
+ * SimpleFeatureIterator wrapper that clip (crops) features according to the clip geometry passed. Can preserve the Z
+ * dimension.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -75,10 +75,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
     boolean preserveZ;
 
     public ClippedFeatureIterator(
-            SimpleFeatureIterator delegate,
-            Geometry clip,
-            SimpleFeatureType schema,
-            boolean preserveZ) {
+            SimpleFeatureIterator delegate, Geometry clip, SimpleFeatureType schema, boolean preserveZ) {
         this.delegate = delegate;
 
         // can we use the fast clipper?
@@ -121,11 +118,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
             Object attribute = f.getAttribute(ad.getName());
             if (ad instanceof GeometryDescriptor) {
                 Class target = ad.getType().getBinding();
-                attribute =
-                        clipGeometry(
-                                (Geometry) attribute,
-                                target,
-                                ((GeometryDescriptor) ad).getCoordinateReferenceSystem());
+                attribute = clipGeometry(
+                        (Geometry) attribute, target, ((GeometryDescriptor) ad).getCoordinateReferenceSystem());
                 if (attribute == null && f.getFeatureType().getGeometryDescriptor() == ad) {
                     // the feature has been clipped out
                     fb.reset();
@@ -176,16 +170,12 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         if (preserveZ && !geom.equalsExact(clipped)) {
             // Check if the clipped geometry has 3 ordinates across entire area.
             GeometryEditor editor = new GeometryEditor();
-            result =
-                    editor.edit(
-                            result,
-                            new GeometryEditor.CoordinateOperation() {
-                                @Override
-                                public Coordinate[] edit(
-                                        Coordinate[] coordinates, Geometry geometry) {
-                                    return CoordinateArrays.enforceConsistency(coordinates, 3, 0);
-                                }
-                            });
+            result = editor.edit(result, new GeometryEditor.CoordinateOperation() {
+                @Override
+                public Coordinate[] edit(Coordinate[] coordinates, Geometry geometry) {
+                    return CoordinateArrays.enforceConsistency(coordinates, 3, 0);
+                }
+            });
             // for polygons we need to go idw, for points and multipoints idw will do and will
             // not
             // add much overhead (it has optimizations for points that were already in the
@@ -207,8 +197,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
     }
 
     /**
-     * An interpolator that will copy over the Z from the original points where possible, and will
-     * use the IDW Interpolation algorithm for the missing ones
+     * An interpolator that will copy over the Z from the original points where possible, and will use the IDW
+     * Interpolation algorithm for the missing ones
      *
      * @author Andrea Aime - GeoSolutions
      */
@@ -227,41 +217,39 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
 
         List<PointDistance> gatherElevationPointCloud(Geometry geom) {
             final List<PointDistance> results = new ArrayList<>();
-            geom.apply(
-                    new CoordinateSequenceFilter() {
+            geom.apply(new CoordinateSequenceFilter() {
 
-                        @Override
-                        public boolean isGeometryChanged() {
-                            return false;
-                        }
+                @Override
+                public boolean isGeometryChanged() {
+                    return false;
+                }
 
-                        @Override
-                        public boolean isDone() {
-                            return false;
-                        }
+                @Override
+                public boolean isDone() {
+                    return false;
+                }
 
-                        @Override
-                        public void filter(CoordinateSequence seq, int i) {
-                            // we do all the collecting when called for the first ordinate
-                            if (i > 0) {
-                                return;
-                            }
-                            // collects only points with a Z
-                            if (hasElevations(seq)) {
-                                Coordinate[] coords = seq.toCoordinateArray();
-                                for (int j = 0; j < coords.length; j++) {
-                                    Coordinate c = coords[j];
-                                    // avoid adding the last element of a ring to avoid
-                                    // un-balancing the
-                                    // weights (the fist/last coordinate would be counted twice)
-                                    if ((j < coords.length - 1 || !c.equals(coords[0]))
-                                            && !Double.isNaN(c.getZ())) {
-                                        results.add(new PointDistance(c));
-                                    }
-                                }
+                @Override
+                public void filter(CoordinateSequence seq, int i) {
+                    // we do all the collecting when called for the first ordinate
+                    if (i > 0) {
+                        return;
+                    }
+                    // collects only points with a Z
+                    if (hasElevations(seq)) {
+                        Coordinate[] coords = seq.toCoordinateArray();
+                        for (int j = 0; j < coords.length; j++) {
+                            Coordinate c = coords[j];
+                            // avoid adding the last element of a ring to avoid
+                            // un-balancing the
+                            // weights (the fist/last coordinate would be counted twice)
+                            if ((j < coords.length - 1 || !c.equals(coords[0])) && !Double.isNaN(c.getZ())) {
+                                results.add(new PointDistance(c));
                             }
                         }
-                    });
+                    }
+                }
+            });
 
             if (results.isEmpty()) {
                 return null;
@@ -323,8 +311,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
     }
 
     /**
-     * Helper that keeps in the same container the point and its distance to a certain reference
-     * point. Allows for sorting on said distance
+     * Helper that keeps in the same container the point and its distance to a certain reference point. Allows for
+     * sorting on said distance
      */
     static final class PointDistance implements Comparable<PointDistance> {
         static final double EPS_METERS = 1e-6;
@@ -344,10 +332,9 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
 
         public double updateDistance(double x, double y, CoordinateReferenceSystem crs) {
             if (crs instanceof DefaultGeographicCRS) {
-                double d =
-                        ((DefaultGeographicCRS) crs)
-                                .distance(new double[] {c.x, c.y}, new double[] {x, y})
-                                .doubleValue();
+                double d = ((DefaultGeographicCRS) crs)
+                        .distance(new double[] {c.x, c.y}, new double[] {x, y})
+                        .doubleValue();
                 this.squareDistance = d * d;
             } else {
                 double dx = c.x - x;
@@ -374,13 +361,11 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
 
         public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
             originalLines = new ArrayList<>();
-            original.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof LineString) {
-                                    originalLines.add((LineString) geom);
-                                }
-                            });
+            original.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof LineString) {
+                    originalLines.add((LineString) geom);
+                }
+            });
         }
 
         @Override
@@ -393,9 +378,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
                 if (original == null) {
                     LOGGER.log(
                             java.util.logging.Level.WARNING,
-                            "Could not find the original line from which the output line "
-                                    + geom
-                                    + " originated");
+                            "Could not find the original line from which the output line " + geom + " originated");
                     return;
                 }
 
@@ -476,14 +459,13 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
                             o2 = csOrig.getCoordinate(1);
                             origIdx = 0;
                         } else {
-                            throw new ClippingException(
-                                    "Could not find collinear segments between "
-                                            + ls.toText()
-                                            + "\n and \n"
-                                            + original.toText()
-                                            + "\n after matching "
-                                            + matched
-                                            + " points");
+                            throw new ClippingException("Could not find collinear segments between "
+                                    + ls.toText()
+                                    + "\n and \n"
+                                    + original.toText()
+                                    + "\n after matching "
+                                    + matched
+                                    + " points");
                         }
                     } else {
                         o1 = o2;
@@ -493,8 +475,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
             }
         }
 
-        private void applyZValues(
-                CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
+        private void applyZValues(CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
 
             if (!cs.hasZ()) return;
 
@@ -527,8 +508,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         }
 
         /**
-         * TODO: should we use a spatial index? Would be warranted only if the input has a very
-         * large amount of sub-lines
+         * TODO: should we use a spatial index? Would be warranted only if the input has a very large amount of
+         * sub-lines
          */
         private LineString getOriginator(LineString ls) {
             LineString original = null;

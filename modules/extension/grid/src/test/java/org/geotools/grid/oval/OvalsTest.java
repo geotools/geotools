@@ -59,8 +59,7 @@ public class OvalsTest extends TestBase {
 
     @Test
     public void createGrid() throws Exception {
-        final SimpleFeatureType TYPE =
-                DataUtilities.createType("obtype", "oval:Polygon,id:Integer");
+        final SimpleFeatureType TYPE = DataUtilities.createType("obtype", "oval:Polygon,id:Integer");
 
         final double SPAN = 100;
         final ReferencedEnvelope bounds = new ReferencedEnvelope(0, SPAN, 0, SPAN, null);
@@ -104,24 +103,18 @@ public class OvalsTest extends TestBase {
 
     @Test(expected = IllegalArgumentException.class)
     public void createGrid_badWidth() {
-        Ovals.createGrid(
-                new ReferencedEnvelope(0, 10, 0, 10, null),
-                0,
-                1.0,
-                new DefaultGridFeatureBuilder());
+        Ovals.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 0, 1.0, new DefaultGridFeatureBuilder());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createGrid_badHeight() {
-        Ovals.createGrid(
-                new ReferencedEnvelope(0, 10, 0, 10, null), 1, 0, new DefaultGridFeatureBuilder());
+        Ovals.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 1, 0, new DefaultGridFeatureBuilder());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createGrid_MisMatchedCRS() {
         try {
-            ReferencedEnvelope env =
-                    new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope env = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
             CoordinateReferenceSystem otherCRS = CRS.parseWKT(getSydneyWKT());
             GridFeatureBuilder builder = new DefaultGridFeatureBuilder(otherCRS);
 

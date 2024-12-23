@@ -115,8 +115,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 
 /**
- * Encodes an OGC {@link Filter} and creates a filter for an Elasticsearch query. Optionally applies
- * SQL View parameters from {@link Query} defining Elasticsearch query directly.
+ * Encodes an OGC {@link Filter} and creates a filter for an Elasticsearch query. Optionally applies SQL View parameters
+ * from {@link Query} defining Elasticsearch query directly.
  *
  * <p>Based on org.geotools.data.jdbc.FilterToSQL in the GeoTools library/jdbc module.
  */
@@ -192,8 +192,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Performs the encoding. If SQL View parameters are provided in the query hints, they will be
-     * used to define and/or update the query.
+     * Performs the encoding. If SQL View parameters are provided in the query hints, they will be used to define and/or
+     * update the query.
      *
      * @param query the Query to be encoded.
      * @throws FilterToElasticException If there were io problems.
@@ -226,8 +226,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     /**
      * Describes the capabilities of this encoder.
      *
-     * <p>Performs lazy creation of capabilities. If you're extending this class, override {@link
-     * #createCapabilities()} to declare which capabilities you support. Don't use this method.
+     * <p>Performs lazy creation of capabilities. If you're extending this class, override {@link #createCapabilities()}
+     * to declare which capabilities you support. Don't use this method.
      *
      * @return The capabilities supported by this encoder.
      */
@@ -248,8 +248,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      */
     @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
-        queryBuilder =
-                ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
+        queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
         return extraData;
     }
 
@@ -304,12 +303,9 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             path = extractNestedPath(key);
         }
 
-        queryBuilder =
-                ImmutableMap.of(
-                        "range", ImmutableMap.of(key, ImmutableMap.of("gte", lower, "lte", upper)));
+        queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gte", lower, "lte", upper)));
         if (nested) {
-            queryBuilder =
-                    ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
+            queryBuilder = ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
         }
 
         return extraData;
@@ -364,17 +360,13 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
         if (analyzed) {
             // use query string query for analyzed fields
-            queryBuilder =
-                    ImmutableMap.of(
-                            "query_string",
-                            ImmutableMap.of("query", pattern, "default_field", key));
+            queryBuilder = ImmutableMap.of("query_string", ImmutableMap.of("query", pattern, "default_field", key));
         } else {
             // default to regexp query
             queryBuilder = ImmutableMap.of("regexp", ImmutableMap.of(key, pattern));
         }
         if (nested) {
-            queryBuilder =
-                    ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
+            queryBuilder = ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
         }
 
         return extraData;
@@ -426,8 +418,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Common implementation for BinaryLogicOperator filters. This way they're all handled
-     * centrally.
+     * Common implementation for BinaryLogicOperator filters. This way they're all handled centrally.
      *
      * @param filter the logic statement.
      * @param extraData extra filter data. Not modified directly by this method.
@@ -595,38 +586,25 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                 queryBuilder = ImmutableMap.of("term", ImmutableMap.of(key, field));
                 break;
             case "!=":
-                queryBuilder =
-                        ImmutableMap.of(
-                                "bool",
-                                ImmutableMap.of(
-                                        "must_not",
-                                        ImmutableMap.of("term", ImmutableMap.of(key, field))));
+                queryBuilder = ImmutableMap.of(
+                        "bool", ImmutableMap.of("must_not", ImmutableMap.of("term", ImmutableMap.of(key, field))));
                 break;
             case ">":
-                queryBuilder =
-                        ImmutableMap.of(
-                                "range", ImmutableMap.of(key, ImmutableMap.of("gt", field)));
+                queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gt", field)));
                 break;
             case ">=":
-                queryBuilder =
-                        ImmutableMap.of(
-                                "range", ImmutableMap.of(key, ImmutableMap.of("gte", field)));
+                queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gte", field)));
                 break;
             case "<":
-                queryBuilder =
-                        ImmutableMap.of(
-                                "range", ImmutableMap.of(key, ImmutableMap.of("lt", field)));
+                queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("lt", field)));
                 break;
             case "<=":
-                queryBuilder =
-                        ImmutableMap.of(
-                                "range", ImmutableMap.of(key, ImmutableMap.of("lte", field)));
+                queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("lte", field)));
                 break;
         }
 
         if (nested) {
-            queryBuilder =
-                    ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
+            queryBuilder = ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
         }
     }
 
@@ -650,12 +628,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
         expr.accept(this, extraData);
 
-        queryBuilder =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of("exists", ImmutableMap.of("field", field))));
+        queryBuilder = ImmutableMap.of(
+                "bool", ImmutableMap.of("must_not", ImmutableMap.of("exists", ImmutableMap.of("field", field))));
 
         return extraData;
     }
@@ -753,11 +727,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         if (e1 instanceof PropertyName && e2 instanceof Literal) {
             // call the "regular" method
             return visitBinarySpatialOperator(
-                    filter,
-                    (PropertyName) e1,
-                    (Literal) e2,
-                    filter.getExpression1() instanceof Literal,
-                    extraData);
+                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinarySpatialOperator(filter, e1, e2, extraData);
@@ -780,11 +750,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         if (e1 instanceof PropertyName && e2 instanceof Literal) {
             // call the "regular" method
             return visitBinaryTemporalOperator(
-                    filter,
-                    (PropertyName) e1,
-                    (Literal) e2,
-                    filter.getExpression1() instanceof Literal,
-                    extraData);
+                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinaryTemporalOperator();
@@ -794,15 +760,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     /**
      * Handles the common case of a PropertyName,Literal geometry binary temporal operator.
      *
-     * <p>Subclasses should override if they support more temporal operators than what is handled in
-     * this base class.
+     * <p>Subclasses should override if they support more temporal operators than what is handled in this base class.
      */
     private Object visitBinaryTemporalOperator(
-            BinaryTemporalOperator filter,
-            PropertyName property,
-            Literal temporal,
-            boolean swapped,
-            Object extraData) {
+            BinaryTemporalOperator filter, PropertyName property, Literal temporal, boolean swapped, Object extraData) {
 
         AttributeDescriptor attType = (AttributeDescriptor) property.evaluate(featureType);
 
@@ -837,12 +798,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         }
 
         // ensure the time period is the correct argument
-        if ((filter instanceof Begins || filter instanceof Ends || filter instanceof During)
-                && swapped) {
+        if ((filter instanceof Begins || filter instanceof Ends || filter instanceof During) && swapped) {
             throw new IllegalArgumentException("Time period must be second argument of Filter");
         }
-        if ((filter instanceof BegunBy || filter instanceof EndedBy || filter instanceof TContains)
-                && !swapped) {
+        if ((filter instanceof BegunBy || filter instanceof EndedBy || filter instanceof TContains) && !swapped) {
             throw new IllegalArgumentException("Time period must be first argument of Filter");
         }
 
@@ -895,23 +854,15 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         if (filter instanceof After || filter instanceof Before) {
             if (period != null) {
                 if ((op.equals(" > ") && !swapped) || (op.equals(" < ") && swapped)) {
-                    queryBuilder =
-                            ImmutableMap.of(
-                                    "range", ImmutableMap.of(key, ImmutableMap.of("gt", end)));
+                    queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gt", end)));
                 } else {
-                    queryBuilder =
-                            ImmutableMap.of(
-                                    "range", ImmutableMap.of(key, ImmutableMap.of("lt", begin)));
+                    queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("lt", begin)));
                 }
             } else {
                 if (op.equals(" < ") || swapped) {
-                    queryBuilder =
-                            ImmutableMap.of(
-                                    "range", ImmutableMap.of(key, ImmutableMap.of("lt", field)));
+                    queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("lt", field)));
                 } else {
-                    queryBuilder =
-                            ImmutableMap.of(
-                                    "range", ImmutableMap.of(key, ImmutableMap.of("gt", field)));
+                    queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gt", field)));
                 }
             }
         } else if (filter instanceof Begins
@@ -921,17 +872,13 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
             queryBuilder = ImmutableMap.of("term", ImmutableMap.of(key, field));
         } else if (filter instanceof During || filter instanceof TContains) {
-            queryBuilder =
-                    ImmutableMap.of(
-                            "range",
-                            ImmutableMap.of(key, ImmutableMap.of("gt", lower, "lt", field)));
+            queryBuilder = ImmutableMap.of("range", ImmutableMap.of(key, ImmutableMap.of("gt", lower, "lt", field)));
         } else if (filter instanceof TEquals) {
             queryBuilder = ImmutableMap.of("term", ImmutableMap.of(key, field));
         }
 
         if (nested) {
-            queryBuilder =
-                    ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
+            queryBuilder = ImmutableMap.of("nested", ImmutableMap.of("path", path, "query", queryBuilder));
         }
 
         return extraData;
@@ -948,12 +895,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     /**
      * Handles the general case of two expressions in a binary temporal filter.
      *
-     * <p>Subclasses should override if they support more temporal operators than what is handled in
-     * this base class.
+     * <p>Subclasses should override if they support more temporal operators than what is handled in this base class.
      */
     Object visitBinaryTemporalOperator() {
-        throw new UnsupportedOperationException(
-                "Join version of binary temporal operator not supported");
+        throw new UnsupportedOperationException("Join version of binary temporal operator not supported");
     }
 
     /**
@@ -1092,9 +1037,9 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Writes out a non null, non geometry literal. The base class properly handles null, numeric
-     * and booleans (true|false), and turns everything else into a string. Subclasses are expected
-     * to override this shall they need a different treatment (e.g. for dates)
+     * Writes out a non null, non geometry literal. The base class properly handles null, numeric and booleans
+     * (true|false), and turns everything else into a string. Subclasses are expected to override this shall they need a
+     * different treatment (e.g. for dates)
      *
      * @param literal Literal
      */
@@ -1107,9 +1052,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     void visitLiteralTimePeriod() {
-        throw new UnsupportedOperationException(
-                "Time periods not supported, subclasses must implement this "
-                        + "method to support encoding timeperiods");
+        throw new UnsupportedOperationException("Time periods not supported, subclasses must implement this "
+                + "method to support encoding timeperiods");
     }
 
     @Override
@@ -1228,9 +1172,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     protected static int getMaxDecimalsForEnvelope(Envelope envelope) {
         double min = Math.min(Math.abs(envelope.getWidth()), Math.abs(envelope.getHeight()));
         if (min == 0) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "BBox Geometry has no width or height, it is either a point or a line.");
+            LOGGER.log(Level.WARNING, "BBox Geometry has no width or height, it is either a point or a line.");
             return JtsModule.DEFAULT_MAX_DECIMALS;
         }
         double decimalPart = min - Math.floor(min);
@@ -1248,11 +1190,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     private Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         return helper.visitBinarySpatialOperator(filter, property, geometry, swapped, extraData);
     }
 
@@ -1279,8 +1217,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                         dateFormatter = ElasticsearchDateConverter.forFormat(format);
                         break;
                     } catch (Exception e) {
-                        LOGGER.fine(
-                                "Unable to parse date format ('" + format + "') for " + attType);
+                        LOGGER.fine("Unable to parse date format ('" + format + "') for " + attType);
                     }
                 }
             }
@@ -1294,11 +1231,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * helper to do a safe convesion of expression to a number
      */
     private Number safeConvertToNumber(Expression expression, Class<?> target) {
-        return (Number)
-                Converters.convert(
-                        expression.evaluate(null),
-                        target,
-                        new Hints(ConverterFactory.SAFE_CONVERSION, true));
+        return (Number) Converters.convert(
+                expression.evaluate(null), target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
     }
 
     void addViewParams(Query query) {
@@ -1315,8 +1249,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                 }
             }
             if (nativeOnly) {
-                LOGGER.fine(
-                        "Ignoring GeoServer filter (Elasticsearch native query/post filter only)");
+                LOGGER.fine("Ignoring GeoServer filter (Elasticsearch native query/post filter only)");
                 queryBuilder = ElasticConstants.MATCH_ALL;
             }
 
@@ -1371,8 +1304,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    public static String convertToQueryString(
-            char escape, char multi, char single, String pattern) {
+    public static String convertToQueryString(char escape, char multi, char single, String pattern) {
 
         StringBuilder result = new StringBuilder(pattern.length() + 5);
         for (int i = 0; i < pattern.length(); i++) {
@@ -1441,12 +1373,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         } else if (this.queryBuilder.equals(ElasticConstants.MATCH_ALL)) {
             queryBuilder = nativeQueryBuilder;
         } else {
-            queryBuilder =
-                    ImmutableMap.of(
-                            "bool",
-                            ImmutableMap.of(
-                                    "must",
-                                    ImmutableList.of(nativeQueryBuilder, this.queryBuilder)));
+            queryBuilder = ImmutableMap.of(
+                    "bool", ImmutableMap.of("must", ImmutableList.of(nativeQueryBuilder, this.queryBuilder)));
         }
         return queryBuilder;
     }

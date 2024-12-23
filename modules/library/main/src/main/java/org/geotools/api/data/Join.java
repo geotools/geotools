@@ -27,8 +27,8 @@ import org.geotools.factory.CommonFactoryFinder;
 /**
  * Represents the joining of two feature types within a {@link Query}.
  *
- * <p>The Join class is similar to Query in that it allows one to specify a FeatureType name, a set
- * of properties, and a filter. A Join must specify:
+ * <p>The Join class is similar to Query in that it allows one to specify a FeatureType name, a set of properties, and a
+ * filter. A Join must specify:
  *
  * <ol>
  *   <li>A type name that references the feature type to join to, see {@link #getTypeName()}
@@ -38,14 +38,11 @@ import org.geotools.factory.CommonFactoryFinder;
  * Optionally a Join may also specify:
  *
  * <ul>
- *   <li>A set of property names constraining the attributes of joined features, see {@link
- *       #getProperties()}
- *   <li>A secondary filter used to constrained features from the joined feature type, see {@link
- *       #getFilter()}
- *   <li>An alias for the joined feature type, which can be used in the join filter to disambiguate
- *       attributes of the feature types being joined, see {@link #getAlias()}
- *   <li>A join type specifying what type of join (inner, outer, etc...) should be performed, see
- *       {@link #getType()}
+ *   <li>A set of property names constraining the attributes of joined features, see {@link #getProperties()}
+ *   <li>A secondary filter used to constrained features from the joined feature type, see {@link #getFilter()}
+ *   <li>An alias for the joined feature type, which can be used in the join filter to disambiguate attributes of the
+ *       feature types being joined, see {@link #getAlias()}
+ *   <li>A join type specifying what type of join (inner, outer, etc...) should be performed, see {@link #getType()}
  * </ul>
  *
  * @author Justin Deoliveira, OpenGeo
@@ -84,8 +81,7 @@ public class Join {
      * Constructs a join.
      *
      * @param typeName The name of the feature type to join to.
-     * @param join The filter specifying the join condition between the two feature types being
-     *     joined.
+     * @param join The filter specifying the join condition between the two feature types being joined.
      */
     public Join(String typeName, Filter join) {
         this.typeName = typeName;
@@ -110,26 +106,24 @@ public class Join {
     /**
      * The name of the feature type being joined to.
      *
-     * <p>This name may be the same as the name of the primary feature type, this is how a self join
-     * is specified.
+     * <p>This name may be the same as the name of the primary feature type, this is how a self join is specified.
      */
     public String getTypeName() {
         return typeName;
     }
 
     /**
-     * The filter defining the join condition between the primary feature type and the feature type
-     * being joined to.
+     * The filter defining the join condition between the primary feature type and the feature type being joined to.
      *
-     * <p>This filter should be a comparison operator whose contents are two {@link PropertyName}
-     * instances. For example:
+     * <p>This filter should be a comparison operator whose contents are two {@link PropertyName} instances. For
+     * example:
      *
      * <pre>
      * new Join("theOtherType", propertyIsEqualTo(propertyName("foo"), propertyName("bar")));
      * </pre>
      *
-     * In instances where the two property names involved in the join are the same a prefix or alias
-     * must be used to differentiate:
+     * In instances where the two property names involved in the join are the same a prefix or alias must be used to
+     * differentiate:
      *
      * <pre>
      * Join j = new Join("theOtherType", propertyIsEqualTo(propertyName("foo"), propertyName("other.bar")));
@@ -208,8 +202,8 @@ public class Join {
     /**
      * Filter used to constrain which features from the joined feature type to return.
      *
-     * <p>This filter must only reference attributes from the joined feature type, and not of any
-     * other feature types involved in the join.
+     * <p>This filter must only reference attributes from the joined feature type, and not of any other feature types
+     * involved in the join.
      */
     public Filter getFilter() {
         return filter;
@@ -227,8 +221,8 @@ public class Join {
     /**
      * An alias for the feature type being joined to.
      *
-     * <p>This method is useful in cases where the two feature types being joined contain attributes
-     * identically named, or in cases where a self join is being performed:
+     * <p>This method is useful in cases where the two feature types being joined contain attributes identically named,
+     * or in cases where a self join is being performed:
      *
      * <pre>
      * Join j = new Join("theOtherType", PropertyIsEqualTo(PropertyName("foo"), PropertyName("other.foo")));

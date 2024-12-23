@@ -35,20 +35,18 @@ public interface VerticalExtent {
     Double getMaximumValue();
 
     /**
-     * Provides information about the vertical coordinate reference system to which the maximum and
-     * minimum elevation values are measured. The CRS identification includes unit of measure.
+     * Provides information about the vertical coordinate reference system to which the maximum and minimum elevation
+     * values are measured. The CRS identification includes unit of measure.
      *
-     * @departure ISO 19115 specifies a generic {@linkplain
-     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem Coordinate Reference System}
-     *     instead than the more restrictive {@linkplain VerticalCRS Vertical CRS}. It may be
-     *     because ISO 19111 does not allows vertical CRS to express height above the ellipsoid, so
-     *     the full three-dimensional {@linkplain org.geotools.api.referencing.crs.GeographicCRS
-     *     Geographic CRS} is needed in such case. However GeoAPI allows such vertical CRS since it
-     *     imported the {@linkplain org.geotools.api.referencing.datum.VerticalDatumType#ELLIPSOIDAL
-     *     ellipsoidal vertical datum type} from OGC 01-009. Giving this capability, this method
-     *     returns a vertical CRS in accordance with the method name, documentation and historical
-     *     version of ISO 19115 which used {@linkplain
-     *     org.geotools.api.referencing.datum.VerticalDatum vertical datum}.
+     * @departure ISO 19115 specifies a generic {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem
+     *     Coordinate Reference System} instead than the more restrictive {@linkplain VerticalCRS Vertical CRS}. It may
+     *     be because ISO 19111 does not allows vertical CRS to express height above the ellipsoid, so the full
+     *     three-dimensional {@linkplain org.geotools.api.referencing.crs.GeographicCRS Geographic CRS} is needed in
+     *     such case. However GeoAPI allows such vertical CRS since it imported the
+     *     {@linkplain org.geotools.api.referencing.datum.VerticalDatumType#ELLIPSOIDAL ellipsoidal vertical datum type}
+     *     from OGC 01-009. Giving this capability, this method returns a vertical CRS in accordance with the method
+     *     name, documentation and historical version of ISO 19115 which used
+     *     {@linkplain org.geotools.api.referencing.datum.VerticalDatum vertical datum}.
      * @issue http://jira.codehaus.org/browse/GEO-134
      * @return The vertical CRS.
      * @since GeoAPI 2.1

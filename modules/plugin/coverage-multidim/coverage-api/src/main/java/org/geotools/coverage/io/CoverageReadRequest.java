@@ -44,8 +44,7 @@ import org.geotools.util.NumberRange;
 /**
  * Request information from a {@link CoverageSource}.
  *
- * <p>Note that we are working with the assumption that the queried coverage has separable
- * dimensions.
+ * <p>Note that we are working with the assumption that the queried coverage has separable dimensions.
  */
 public class CoverageReadRequest extends CoverageRequest {
 
@@ -59,8 +58,8 @@ public class CoverageReadRequest extends CoverageRequest {
     protected Rectangle rasterArea;
 
     /**
-     * The requested area in geographic coordinates, which means the area in destination world space
-     * which we want to get data for.
+     * The requested area in geographic coordinates, which means the area in destination world space which we want to
+     * get data for.
      *
      * @uml.property name="geographicArea"
      */
@@ -69,8 +68,8 @@ public class CoverageReadRequest extends CoverageRequest {
     /**
      * The request {@link MathTransform2D} which would map the pixel into the requested world area.
      *
-     * <p>Note that having a raster are and a world area is not enough, unless we have a simple
-     * scale-and-translate grid-to-workd transform.
+     * <p>Note that having a raster are and a world area is not enough, unless we have a simple scale-and-translate
+     * grid-to-workd transform.
      *
      * @uml.property name="gridToWorldTransform"
      */
@@ -117,9 +116,7 @@ public class CoverageReadRequest extends CoverageRequest {
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public void setDomainSubset(
-            final Rectangle rasterArea,
-            final MathTransform2D gridToWorldTrasform,
-            final CoordinateReferenceSystem crs)
+            final Rectangle rasterArea, final MathTransform2D gridToWorldTrasform, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException, TransformException {
 
         // get input elements
@@ -127,9 +124,7 @@ public class CoverageReadRequest extends CoverageRequest {
         this.gridToWorldTransform = gridToWorldTrasform;
 
         // create a bbox
-        GeneralBounds env =
-                CRS.transform(
-                        gridToWorldTrasform, new ReferencedEnvelope(rasterArea.getBounds2D(), crs));
+        GeneralBounds env = CRS.transform(gridToWorldTrasform, new ReferencedEnvelope(rasterArea.getBounds2D(), crs));
         this.geographicArea = new ReferencedEnvelope(new ReferencedEnvelope(env), crs);
     }
 
@@ -146,8 +141,7 @@ public class CoverageReadRequest extends CoverageRequest {
 
         // create a math transform
         final GridToEnvelopeMapper mapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
+                new GridToEnvelopeMapper(new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
         mapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         this.gridToWorldTransform = (MathTransform2D) mapper.createTransform();
     }

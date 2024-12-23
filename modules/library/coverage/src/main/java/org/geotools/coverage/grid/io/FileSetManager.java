@@ -30,9 +30,6 @@ public interface FileSetManager {
     /** Remove a file from the manager (An implementation may also physically remove the file) */
     void removeFile(final String filePath);
 
-    /**
-     * Remove all the files from the manager (An implementation may also physically remove all the
-     * files)
-     */
+    /** Remove all the files from the manager (An implementation may also physically remove all the files) */
     void purge();
 }

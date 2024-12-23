@@ -76,8 +76,7 @@ public class ParameterMappingExpressionValue implements ParameterMapping, Serial
         if (cqlExpression != null) return cqlExpression;
 
         try {
-            cqlExpression =
-                    CQL.toExpression(expression, new ParameterCQLExpressionFilterFactoryImpl());
+            cqlExpression = CQL.toExpression(expression, new ParameterCQLExpressionFilterFactoryImpl());
         } catch (CQLException ce) {
             throw new IllegalArgumentException("Illegal CQL expression", ce);
         }

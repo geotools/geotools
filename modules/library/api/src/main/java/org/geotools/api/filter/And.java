@@ -12,9 +12,9 @@ package org.geotools.api.filter;
 // Annotations
 
 /**
- * {@linkplain #evaluate Evaluates} to {@code true} if all the combined expressions evaluate to
- * {@code true}. This interface exposes no additional methods beyond those of {@link
- * BinaryLogicOperator}. It only serves as a marker of what type of operator this is.
+ * {@linkplain #evaluate Evaluates} to {@code true} if all the combined expressions evaluate to {@code true}. This
+ * interface exposes no additional methods beyond those of {@link BinaryLogicOperator}. It only serves as a marker of
+ * what type of operator this is.
  *
  * <p>You can check if the And operation is supported using:
  *

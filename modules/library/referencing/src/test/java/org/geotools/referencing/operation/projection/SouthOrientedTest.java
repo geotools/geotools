@@ -42,43 +42,39 @@ public final class SouthOrientedTest {
     private static final double EPS = 1E-10;
 
     /**
-     * Parse a test CRS north or south oriented. If the CRS is fully south-oriented with 0.0
-     * northing, then it should be the EPSG:22285 one.
+     * Parse a test CRS north or south oriented. If the CRS is fully south-oriented with 0.0 northing, then it should be
+     * the EPSG:22285 one.
      */
     private static ProjectedCRS parseTransverseMercator(
-            final boolean methodSouth, final boolean axisSouth, final double northing)
-            throws FactoryException {
-        final String method =
-                methodSouth ? "Transverse Mercator (South Orientated)" : "Transverse Mercator";
+            final boolean methodSouth, final boolean axisSouth, final double northing) throws FactoryException {
+        final String method = methodSouth ? "Transverse Mercator (South Orientated)" : "Transverse Mercator";
         final String axis = axisSouth ? "\"Southing\", SOUTH" : "\"Northing\", NORTH";
-        return (ProjectedCRS)
-                CRS.parseWKT(
-                        "PROJCS[\"South African Coordinate System zone 25\", "
-                                + "GEOGCS[\"Cape\", "
-                                + "DATUM[\"Cape\", "
-                                + "SPHEROID[\"Clarke 1880 (Arc)\", 6378249.145, 293.4663077, AUTHORITY[\"EPSG\",\"7013\"]], "
-                                + "TOWGS84[-136.0, -108.0, -292.0, 0.0, 0.0, 0.0, 0.0], "
-                                + "AUTHORITY[\"EPSG\",\"6222\"]], "
-                                + "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], "
-                                + "UNIT[\"degree\", 0.017453292519943295], "
-                                + "AXIS[\"Geodetic latitude\", NORTH], "
-                                + "AXIS[\"Geodetic longitude\", EAST], "
-                                + "AUTHORITY[\"EPSG\",\"4222\"]], "
-                                + "PROJECTION[\""
-                                + method
-                                + "\"], "
-                                + "PARAMETER[\"central_meridian\", 25.0], "
-                                + "PARAMETER[\"latitude_of_origin\", 0.0], "
-                                + "PARAMETER[\"scale_factor\", 1.0], "
-                                + "PARAMETER[\"false_easting\", 0.0], "
-                                + "PARAMETER[\"false_northing\", "
-                                + northing
-                                + "], "
-                                + "UNIT[\"m\", 1.0], "
-                                + "AXIS[\"Westing\", WEST], "
-                                + "AXIS["
-                                + axis
-                                + "]]");
+        return (ProjectedCRS) CRS.parseWKT("PROJCS[\"South African Coordinate System zone 25\", "
+                + "GEOGCS[\"Cape\", "
+                + "DATUM[\"Cape\", "
+                + "SPHEROID[\"Clarke 1880 (Arc)\", 6378249.145, 293.4663077, AUTHORITY[\"EPSG\",\"7013\"]], "
+                + "TOWGS84[-136.0, -108.0, -292.0, 0.0, 0.0, 0.0, 0.0], "
+                + "AUTHORITY[\"EPSG\",\"6222\"]], "
+                + "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], "
+                + "UNIT[\"degree\", 0.017453292519943295], "
+                + "AXIS[\"Geodetic latitude\", NORTH], "
+                + "AXIS[\"Geodetic longitude\", EAST], "
+                + "AUTHORITY[\"EPSG\",\"4222\"]], "
+                + "PROJECTION[\""
+                + method
+                + "\"], "
+                + "PARAMETER[\"central_meridian\", 25.0], "
+                + "PARAMETER[\"latitude_of_origin\", 0.0], "
+                + "PARAMETER[\"scale_factor\", 1.0], "
+                + "PARAMETER[\"false_easting\", 0.0], "
+                + "PARAMETER[\"false_northing\", "
+                + northing
+                + "], "
+                + "UNIT[\"m\", 1.0], "
+                + "AXIS[\"Westing\", WEST], "
+                + "AXIS["
+                + axis
+                + "]]");
     }
 
     /** Tests the Transverse Mercator South-Oriented case. */
@@ -138,21 +134,19 @@ public final class SouthOrientedTest {
     /** Tests a Krovak projection with (SOUTH,WEST) axis. */
     @Test
     public void testKrovak() throws FactoryException {
-        final String geoWKT =
-                "GEOGCS[\"S-JTSK (Ferro)\", "
-                        + "DATUM[\"S_JTSK_Ferro\", "
-                        + "SPHEROID[\"Bessel 1841\", 6377397.155, 299.1528128], "
-                        + "TOWGS84[570.8,85.7,462.8,4.998,1.587,5.261,3.56]], "
-                        + "PRIMEM[\"Greenwich\",0], "
-                        + "UNIT[\"degree\",0.0174532925199433]]";
-        final String prjWKT =
-                "PROJCS[\"S-JTSK(Ferro) / krovak\", "
-                        + geoWKT
-                        + ", "
-                        + "PROJECTION[\"Krovak\"], "
-                        + "UNIT[\"metre\",1.0], "
-                        + "AXIS[\"y\",WEST], "
-                        + "AXIS[\"x\",SOUTH]]";
+        final String geoWKT = "GEOGCS[\"S-JTSK (Ferro)\", "
+                + "DATUM[\"S_JTSK_Ferro\", "
+                + "SPHEROID[\"Bessel 1841\", 6377397.155, 299.1528128], "
+                + "TOWGS84[570.8,85.7,462.8,4.998,1.587,5.261,3.56]], "
+                + "PRIMEM[\"Greenwich\",0], "
+                + "UNIT[\"degree\",0.0174532925199433]]";
+        final String prjWKT = "PROJCS[\"S-JTSK(Ferro) / krovak\", "
+                + geoWKT
+                + ", "
+                + "PROJECTION[\"Krovak\"], "
+                + "UNIT[\"metre\",1.0], "
+                + "AXIS[\"y\",WEST], "
+                + "AXIS[\"x\",SOUTH]]";
 
         final CoordinateReferenceSystem sourceCRS = CRS.parseWKT(geoWKT);
         final CoordinateReferenceSystem targetCRS = CRS.parseWKT(prjWKT);

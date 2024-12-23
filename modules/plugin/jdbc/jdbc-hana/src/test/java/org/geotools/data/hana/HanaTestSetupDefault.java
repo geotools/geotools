@@ -36,24 +36,23 @@ public class HanaTestSetupDefault extends HanaTestSetupPSPooling {
         try (Connection conn = getConnection()) {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
 
-            Srs srs =
-                    new Srs(
-                            "NAD27 / UTM zone 13N",
-                            26713,
-                            "EPSG",
-                            26713,
-                            "PROJCS[\"NAD27 / UTM zone 13N\",GEOGCS[\"NAD27\",DATUM[\"North_American_Datum_1927\",SPHEROID[\"Clarke 1866\",6378206.4,294.9786982139006,AUTHORITY[\"EPSG\",\"7008\"]],AUTHORITY[\"EPSG\",\"6267\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4267\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-105],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"26713\"]]",
-                            "+proj=utm +zone=13 +datum=NAD27 +units=m +no_defs ",
-                            "meter",
-                            "degree",
-                            Srs.Type.PROJECTED,
-                            6378206.4,
-                            null,
-                            294.9786982139006,
-                            182039.12436568446,
-                            561468.8948154468,
-                            1977132.0405078614,
-                            8818299.223581277);
+            Srs srs = new Srs(
+                    "NAD27 / UTM zone 13N",
+                    26713,
+                    "EPSG",
+                    26713,
+                    "PROJCS[\"NAD27 / UTM zone 13N\",GEOGCS[\"NAD27\",DATUM[\"North_American_Datum_1927\",SPHEROID[\"Clarke 1866\",6378206.4,294.9786982139006,AUTHORITY[\"EPSG\",\"7008\"]],AUTHORITY[\"EPSG\",\"6267\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4267\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-105],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"26713\"]]",
+                    "+proj=utm +zone=13 +datum=NAD27 +units=m +no_defs ",
+                    "meter",
+                    "degree",
+                    Srs.Type.PROJECTED,
+                    6378206.4,
+                    null,
+                    294.9786982139006,
+                    182039.12436568446,
+                    561468.8948154468,
+                    1977132.0405078614,
+                    8818299.223581277);
             htu.createSrs(srs);
 
             htu.createTestSchema();

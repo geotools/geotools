@@ -24,8 +24,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
 /**
- * Encapsulates the results from a FeatureCalc, and includes methods for obtaining and merging
- * results.
+ * Encapsulates the results from a FeatureCalc, and includes methods for obtaining and merging results.
  *
  * @author Cory Horner, Refractions
  * @see FeatureCalc
@@ -33,27 +32,28 @@ import org.locationtech.jts.geom.Point;
  */
 public interface CalcResult {
     /**
-     * The result obtained when a FeatureCalc found no features to visit. It lets itself merge with
-     * any other result by just returning the other result as the output of the merge
+     * The result obtained when a FeatureCalc found no features to visit. It lets itself merge with any other result by
+     * just returning the other result as the output of the merge
      */
-    public static final CalcResult NULL_RESULT =
-            new AbstractCalcResult() {
-                /** Always compatible */
-                @Override
-                public boolean isCompatible(CalcResult targetResults) {
-                    return true;
-                };
+    public static final CalcResult NULL_RESULT = new AbstractCalcResult() {
+        /** Always compatible */
+        @Override
+        public boolean isCompatible(CalcResult targetResults) {
+            return true;
+        }
+        ;
 
-                /** Just returns the other result */
-                @Override
-                public CalcResult merge(CalcResult resultsToAdd) {
-                    return resultsToAdd;
-                };
-            };
+        /** Just returns the other result */
+        @Override
+        public CalcResult merge(CalcResult resultsToAdd) {
+            return resultsToAdd;
+        }
+        ;
+    };
 
     /**
-     * Returns true if the target results is a compatible type with the current results, with
-     * compatible meaning that the two results may be merged.
+     * Returns true if the target results is a compatible type with the current results, with compatible meaning that
+     * the two results may be merged.
      *
      * @param targetResults the second CalcResult Object
      * @return true if the targetResults can be merged with the current results
@@ -61,12 +61,11 @@ public interface CalcResult {
     public boolean isCompatible(CalcResult targetResults);
 
     /**
-     * Returns the merged results of two CalcResult. The way in which the results are merged is
-     * dependent on the type of the results added. A new instance is created containing the merged
-     * results.
+     * Returns the merged results of two CalcResult. The way in which the results are merged is dependent on the type of
+     * the results added. A new instance is created containing the merged results.
      *
-     * <p>For example: merging two min functions would return the smaller of the two values; merging
-     * a count and a sum would return an average.
+     * <p>For example: merging two min functions would return the smaller of the two values; merging a count and a sum
+     * would return an average.
      *
      * @return the merged results
      */

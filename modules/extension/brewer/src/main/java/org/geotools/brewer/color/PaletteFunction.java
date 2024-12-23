@@ -37,12 +37,11 @@ public class PaletteFunction extends FunctionExpressionImpl {
     FilterFactory ff;
 
     // public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Palette",
-                    parameter("color", Color.class),
-                    parameter("classifier", ClassificationFunction.class),
-                    parameter("paletteName", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Palette",
+            parameter("color", Color.class),
+            parameter("classifier", ClassificationFunction.class),
+            parameter("paletteName", String.class));
 
     /** Creates a new instance of PaletteFunction */
     public PaletteFunction() {
@@ -119,11 +118,10 @@ public class PaletteFunction extends FunctionExpressionImpl {
 
         BrewerPalette pal = brewer.getPalette(paletteName);
         Color[] colors = pal.getColors(classNum);
-        String color =
-                "#"
-                        + intToHex(colors[klass].getRed())
-                        + intToHex(colors[klass].getGreen())
-                        + intToHex(colors[klass].getBlue());
+        String color = "#"
+                + intToHex(colors[klass].getRed())
+                + intToHex(colors[klass].getGreen())
+                + intToHex(colors[klass].getBlue());
 
         return color;
     }

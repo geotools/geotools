@@ -23,17 +23,16 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.Hints;
 
 /**
- * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "urn:ogc:def"} name space. An
- * example of complete URN is {@code "urn:ogc:def:crs:EPSG:6.8:4326"}.
+ * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "urn:ogc:def"} name space. An example of complete
+ * URN is {@code "urn:ogc:def:crs:EPSG:6.8:4326"}.
  *
- * <p>Users don't need to create an instance of this class, since one is automatically registered
- * for use in {@link org.geotools.api.referencing.ReferencingFactoryFinder}.
+ * <p>Users don't need to create an instance of this class, since one is automatically registered for use in
+ * {@link org.geotools.api.referencing.ReferencingFactoryFinder}.
  *
  * @author Justin Deoliveira
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @see <A HREF="https://portal.opengeospatial.org/files/?artifact_id=8814">URNs of definitions in
- *     OGC namespace</A>
+ * @see <A HREF="https://portal.opengeospatial.org/files/?artifact_id=8814">URNs of definitions in OGC namespace</A>
  */
 public class URN_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 
@@ -73,10 +72,7 @@ public class URN_AuthorityFactory extends Abstract_URI_AuthorityFactory {
         return Citations.URN_OGC;
     }
 
-    /**
-     * @see
-     *     org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String)
-     */
+    /** @see org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String) */
     @Override
     protected URI_Parser buildParser(String code) throws NoSuchAuthorityCodeException {
         return URN_Parser.buildParser(code);

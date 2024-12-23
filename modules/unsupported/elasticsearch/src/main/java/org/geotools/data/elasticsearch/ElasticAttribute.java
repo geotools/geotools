@@ -22,8 +22,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Class describing and Elasticsearch attribute including name, type and optional information on
- * geometry and date types.
+ * Class describing and Elasticsearch attribute including name, type and optional information on geometry and date
+ * types.
  */
 public class ElasticAttribute implements Serializable, Comparable<ElasticAttribute> {
 

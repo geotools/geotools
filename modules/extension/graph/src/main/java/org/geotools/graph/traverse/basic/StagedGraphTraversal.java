@@ -34,12 +34,10 @@ public class StagedGraphTraversal extends BasicGraphTraversal {
     @Override
     public void init() {
         // initialize the nodes of the graph by setting counts to 0
-        getGraph()
-                .visitNodes(
-                        component -> {
-                            component.setCount(0);
-                            return (0);
-                        });
+        getGraph().visitNodes(component -> {
+            component.setCount(0);
+            return (0);
+        });
     }
 
     @Override

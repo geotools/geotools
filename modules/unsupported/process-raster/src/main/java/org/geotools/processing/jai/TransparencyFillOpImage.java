@@ -212,8 +212,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     int srcStride2,
                     int dstOffset) {
                 for (int k = 0; k < numBands; k++) {
-                    dstData[k][dstOffset + k] =
-                            ((float) ((srcData[k][srcOffset - srcStride1 + k])));
+                    dstData[k][dstOffset + k] = ((float) ((srcData[k][srcOffset - srcStride1 + k])));
                 }
             }
         },
@@ -340,15 +339,14 @@ public class TransparencyFillOpImage extends AreaOpImage {
     private TransparencyFillAlgorithm fillAlgorithm = null;
 
     /**
-     * Creates a TransparencyFillOpImage given a ParameterBlock containing the image source. The
-     * image dimensions are derived from the source image. The tile grid layout, SampleModel, and
-     * ColorModel may optionally be specified by an ImageLayout object.
+     * Creates a TransparencyFillOpImage given a ParameterBlock containing the image source. The image dimensions are
+     * derived from the source image. The tile grid layout, SampleModel, and ColorModel may optionally be specified by
+     * an ImageLayout object.
      *
      * @param source a RenderedImage.
      * @param extender a BorderExtender, or null.
      * @param type a {@link FillType} type to be used for transparency filling
-     * @param layout an ImageLayout optionally containing the tile grid layout, SampleModel, and
-     *     ColorModel, or null.
+     * @param layout an ImageLayout optionally containing the tile grid layout, SampleModel, and ColorModel, or null.
      */
     public TransparencyFillOpImage(
             RenderedImage source,
@@ -382,8 +380,8 @@ public class TransparencyFillOpImage extends AreaOpImage {
     /**
      * Performs fill on a specified rectangle. The sources are cobbled.
      *
-     * @param sources an array of source Rasters, guaranteed to provide all necessary source data
-     *     for computing the output.
+     * @param sources an array of source Rasters, guaranteed to provide all necessary source data for computing the
+     *     output.
      * @param dest a WritableRaster tile containing the area to be computed.
      * @param destRect the rectangle within dest to be processed.
      */
@@ -395,11 +393,9 @@ public class TransparencyFillOpImage extends AreaOpImage {
         Raster source = sources[0];
         Rectangle srcRect = mapDestRect(destRect, 0);
 
-        RasterAccessor srcAccessor =
-                new RasterAccessor(
-                        source, srcRect, formatTags[0], getSourceImage(0).getColorModel());
-        RasterAccessor dstAccessor =
-                new RasterAccessor(dest, destRect, formatTags[1], getColorModel());
+        RasterAccessor srcAccessor = new RasterAccessor(
+                source, srcRect, formatTags[0], getSourceImage(0).getColorModel());
+        RasterAccessor dstAccessor = new RasterAccessor(dest, destRect, formatTags[1], getColorModel());
 
         switch (dstAccessor.getDataType()) {
             case DataBuffer.TYPE_BYTE:
@@ -482,8 +478,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -495,8 +490,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -522,8 +516,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -559,8 +552,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;
@@ -628,8 +620,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -641,8 +632,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -668,8 +658,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -705,8 +694,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;
@@ -774,8 +762,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -787,8 +774,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -814,8 +800,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -851,8 +836,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;
@@ -920,8 +904,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -933,8 +916,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -960,8 +942,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -997,8 +978,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;
@@ -1066,8 +1046,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -1079,8 +1058,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -1106,8 +1084,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -1143,8 +1120,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;
@@ -1212,8 +1188,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (leftPixel == transparentValue && widthI < width) {
                         leftPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset - leftPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            leftPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) leftPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -1225,8 +1200,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                     while (rightPixel == transparentValue && widthI < width) {
                         rightPixelStride += srcPixelStride;
                         int elementAt = imageVerticalOffset + rightPixelStride;
-                        if (elementAt < srcData.length && elementAt >= 0)
-                            rightPixel = srcData[elementAt];
+                        if (elementAt < srcData.length && elementAt >= 0) rightPixel = srcData[elementAt];
                         else break;
                         widthI++;
                     }
@@ -1252,8 +1226,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                         while (upperPixel == transparentValue && widthI < width) {
                             upperScanlineStride += srcScanlineStride;
                             int elementAt = imageVerticalOffset - upperScanlineStride;
-                            if (elementAt < srcData.length && elementAt >= 0)
-                                upperPixel = srcData[elementAt];
+                            if (elementAt < srcData.length && elementAt >= 0) upperPixel = srcData[elementAt];
                             else break;
                             widthI++;
                         }
@@ -1289,8 +1262,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 }
                 if (copySource) {
                     for (int k = 0; k < numBands; k++) {
-                        dstDataArrays[k][dstPixelOffset + k] =
-                                srcDataArrays[k][imageDataVerticalOffset + k];
+                        dstDataArrays[k][dstPixelOffset + k] = srcDataArrays[k][imageDataVerticalOffset + k];
                     }
                 }
                 imageOffset += srcPixelStride;

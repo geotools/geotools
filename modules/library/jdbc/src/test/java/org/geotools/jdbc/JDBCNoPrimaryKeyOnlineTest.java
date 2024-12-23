@@ -48,10 +48,8 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
     @Override
     protected void connect() throws Exception {
         super.connect();
-        lakeSchema =
-                DataUtilities.createType(
-                        dataStore.getNamespaceURI() + "." + LAKE,
-                        ID + ":0," + GEOM + ":Polygon," + NAME + ":String");
+        lakeSchema = DataUtilities.createType(
+                dataStore.getNamespaceURI() + "." + LAKE, ID + ":0," + GEOM + ":Polygon," + NAME + ":String");
     }
 
     @Test
@@ -82,8 +80,7 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Subclasses may want to override this in case the database has a native way, other than the
-     * pk, to identify a row
+     * Subclasses may want to override this in case the database has a native way, other than the pk, to identify a row
      */
     @Test
     public void testReadOnly() throws Exception {

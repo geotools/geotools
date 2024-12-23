@@ -26,12 +26,11 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Transformation;
 
 /**
- * An operation on coordinates that usually includes a change of Datum. The parameters of a
- * coordinate transformation are empirically derived from data containing the coordinates of a
- * series of points in both coordinate reference systems. This computational process is usually
- * "over-determined", allowing derivation of error (or accuracy) estimates for the transformation.
- * Also, the stochastic nature of the parameters may result in multiple (different) versions of the
- * same coordinate transformation.
+ * An operation on coordinates that usually includes a change of Datum. The parameters of a coordinate transformation
+ * are empirically derived from data containing the coordinates of a series of points in both coordinate reference
+ * systems. This computational process is usually "over-determined", allowing derivation of error (or accuracy)
+ * estimates for the transformation. Also, the stochastic nature of the parameters may result in multiple (different)
+ * versions of the same coordinate transformation.
  *
  * @since 2.1
  * @version $Id$
@@ -43,14 +42,14 @@ public class DefaultTransformation extends DefaultOperation implements Transform
     private static final long serialVersionUID = -7486704846151648971L;
 
     /**
-     * Constructs a transformation from a set of properties. The properties given in argument follow
-     * the same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a transformation from a set of properties. The properties given in argument follow the same rules than
+     * for the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      * @param method The operation method.
      */
     public DefaultTransformation(

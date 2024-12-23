@@ -40,12 +40,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * This class is a hard-coded version of the XLink Schema. The results of parsing the schema in
- * through the parser and calling the resulting Schema objects methods should be the same as calling
- * these methods, except that these methods should be faster.
+ * This class is a hard-coded version of the XLink Schema. The results of parsing the schema in through the parser and
+ * calling the resulting Schema objects methods should be the same as calling these methods, except that these methods
+ * should be faster.
  *
- * <p>This class consists of a series of internal private classes and an implementation of the
- * Schema interface which is public.
+ * <p>This class consists of a series of internal private classes and an implementation of the Schema interface which is
+ * public.
  *
  * @author dzwiers www.refractions.net
  * @see Schema
@@ -244,8 +244,7 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
-         *     java.lang.Object, java.util.Map)
+         * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
@@ -254,12 +253,11 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
-         *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
+         * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
+         *     org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
+        public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -308,8 +306,7 @@ public class XLinkSchema implements Schema {
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
-        public Object getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -327,12 +324,11 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
-         *     java.lang.Object, java.util.Map)
+         * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute, java.lang.Object,
+         *     java.util.Map)
          */
         @Override
-        public AttributeValue toAttribute(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -341,13 +337,11 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see
-         *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
+         * @see org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canCreateAttributes(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -393,12 +387,11 @@ public class XLinkSchema implements Schema {
         private static List<String> lookUpTable = loadTable();
 
         /**
-         * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
-         *     java.lang.Object, java.util.Map)
+         * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute, java.lang.Object,
+         *     java.util.Map)
          */
         @Override
-        public AttributeValue toAttribute(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -413,13 +406,11 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see
-         *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
+         * @see org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canCreateAttributes(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -471,8 +462,7 @@ public class XLinkSchema implements Schema {
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
-        public Object getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -490,8 +480,7 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
-         *     java.lang.Object, java.util.Map)
+         * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
@@ -500,12 +489,11 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
-         *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
+         * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
+         *     org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
+        public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -599,8 +587,7 @@ public class XLinkSchema implements Schema {
         /**
          * Href constructor
          *
-         * <p>Creates an instance of the Href Attribute of the XLink Schema. Sets the usage to
-         * Optional.
+         * <p>Creates an instance of the Href Attribute of the XLink Schema. Sets the usage to Optional.
          */
         public Href() {
             use = Attribute.OPTIONAL;
@@ -1062,12 +1049,7 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-            Href.instance1,
-            Role.instance1,
-            Arcrole.instance1,
-            Title.instance1,
-            Show.instance1,
-            Actuate.instance1,
+            Href.instance1, Role.instance1, Arcrole.instance1, Title.instance1, Show.instance1, Actuate.instance1,
         };
 
         /** @see schema.AttributeGroup#getAttributeDescriptors() */
@@ -1139,11 +1121,7 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-            new Type("extended"),
-            new Href(Attribute.REQUIRED),
-            Role.instance1,
-            Title.instance1,
-            Label.instance1
+            new Type("extended"), new Href(Attribute.REQUIRED), Role.instance1, Title.instance1, Label.instance1
         };
 
         /** @see schema.AttributeGroup#getAttributeDescriptors() */

@@ -56,8 +56,8 @@ public class ElementTypeHandlerTest {
     }
 
     /**
-     * Test that the presence of both {@code ref} and {@code name} attributes results in a {@link
-     * SAXException} with the expected message.
+     * Test that the presence of both {@code ref} and {@code name} attributes results in a {@link SAXException} with the
+     * expected message.
      */
     @Test
     public void refAndName() {
@@ -75,8 +75,8 @@ public class ElementTypeHandlerTest {
     }
 
     /**
-     * Test that the presence of both {@code ref} and {@code type} attributes results in a {@link
-     * SAXException} with the expected message.
+     * Test that the presence of both {@code ref} and {@code type} attributes results in a {@link SAXException} with the
+     * expected message.
      */
     @Test
     public void refAndType() {

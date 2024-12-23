@@ -10,11 +10,10 @@
 package org.geotools.api.style;
 
 /**
- * The LabelPlacement element is used to position a label relative to a point, line string or
- * polygon.
+ * The LabelPlacement element is used to position a label relative to a point, line string or polygon.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
@@ -23,8 +22,8 @@ public interface LabelPlacement {
     /**
      * Calls the visit method of a StyleVisitor.
      *
-     * <p>Please note that LabelPalcement is not intended to be used as is; the StyleVisitor visit
-     * method must traverse an instance of LinePlacement or PointPlacement.
+     * <p>Please note that LabelPalcement is not intended to be used as is; the StyleVisitor visit method must traverse
+     * an instance of LinePlacement or PointPlacement.
      *
      * @param visitor the style visitor
      */

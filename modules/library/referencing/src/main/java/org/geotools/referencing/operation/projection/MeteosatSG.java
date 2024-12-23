@@ -42,36 +42,31 @@ import org.geotools.referencing.NamedIdentifier;
 /**
  * Meteosat Second Generation imagery projection
  *
- * <p>Conversion of image coordinates (pixel column and row) into the corresponding geographical
- * coordinates (Latitude and Longitude) of all MSG Satellites (Meteosat-8, Meteosat-9 and
- * Meteosat-10) Level 1.5 VIS/IR data.
+ * <p>Conversion of image coordinates (pixel column and row) into the corresponding geographical coordinates (Latitude
+ * and Longitude) of all MSG Satellites (Meteosat-8, Meteosat-9 and Meteosat-10) Level 1.5 VIS/IR data.
  *
  * <p>Code based on reference software provided by EUMETSAT "MSG_navigation" v1.02 (see link below).
  *
- * <p>Please be aware, that the program assumes the MSG image is ordered in the operational scanning
- * direction which means from south to north and from east to west. With that the VIS/IR channels
- * contains of 3712 x 3712 pixels, start to count on the most southern line and the most eastern
- * column with pixel number 1,1.
+ * <p>Please be aware, that the program assumes the MSG image is ordered in the operational scanning direction which
+ * means from south to north and from east to west. With that the VIS/IR channels contains of 3712 x 3712 pixels, start
+ * to count on the most southern line and the most eastern column with pixel number 1,1.
  *
- * <p>Conversion from native MSG files (delivered by EumetCAST) to geotiff format could be done with
- * <a href="http://sourceforge.net/projects/meteosatlib">Meteosatlib package</a>.
+ * <p>Conversion from native MSG files (delivered by EumetCAST) to geotiff format could be done with <a
+ * href="http://sourceforge.net/projects/meteosatlib">Meteosatlib package</a>.
  *
- * <p>To extract the European area using "products" utility: {@code examples/products -a
- * 1572,1024,90,560 -t 201505080600 --products=Vis006} Coordinates above are calculated from the
- * upper left corner. Therefore, it is necessary to change it according to the EUMETCAST
- * specification. {@code gdal_translate -a_ullr 2140.5 3622.5 1116.5 3062.5 file_in.tif
- * file_out.tif}
+ * <p>To extract the European area using "products" utility: {@code examples/products -a 1572,1024,90,560 -t
+ * 201505080600 --products=Vis006} Coordinates above are calculated from the upper left corner. Therefore, it is
+ * necessary to change it according to the EUMETCAST specification. {@code gdal_translate -a_ullr 2140.5 3622.5 1116.5
+ * 3062.5 file_in.tif file_out.tif}
  *
  * <p>Additional examples could be find in the "MeteosatSG.txt" file in tests directory.
  *
- * <p>References: [1] LRIT/HRIT Global Specification (CGMS 03, Issue 2.6, 12.08.1999) for the
- * parameters used in the program. [2] MSG Ground Segment LRIT/HRIT Mission Specific Implementation,
- * EUMETSAT Document, (EUM/MSG/SPE/057, Issue 6, 21. June 2006). [3] MSG Level 1.5 Image Data Format
- * Description (EUM/MSG/ICD/105, Issue v6, 23. February 2010).
+ * <p>References: [1] LRIT/HRIT Global Specification (CGMS 03, Issue 2.6, 12.08.1999) for the parameters used in the
+ * program. [2] MSG Ground Segment LRIT/HRIT Mission Specific Implementation, EUMETSAT Document, (EUM/MSG/SPE/057, Issue
+ * 6, 21. June 2006). [3] MSG Level 1.5 Image Data Format Description (EUM/MSG/ICD/105, Issue v6, 23. February 2010).
  *
- * @see <a
- *     href="http://www.eumetsat.int/website/home/Data/DataDelivery/SupportSoftwareandTools/index.html">
- *     Navigation Software for Meteosat-9 (MSG) - Level 1.5 VIS/IR/HRV data</a>
+ * @see <a href="http://www.eumetsat.int/website/home/Data/DataDelivery/SupportSoftwareandTools/index.html">Navigation
+ *     Software for Meteosat-9 (MSG) - Level 1.5 VIS/IR/HRV data</a>
  * @since 14.0
  * @version $Id$
  * @author Maciej Filocha (ICM)
@@ -94,32 +89,32 @@ public class MeteosatSG extends MapProjection {
     private static final double SUB_LON = 0.0;
 
     /**
-     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. CFAC/LFAC are
-     * responsible for the image "spread" in the NS and EW directions. They are calculated as
-     * follows: CFAC = LFAC = 2^16 / delta with delta = 83.84333 micro Radian (size of one VIS/IR
-     * MSG pixel) delta_HRV = 83.84333/3 micro Radian (size of one HRV MSG pixel)
+     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. CFAC/LFAC are responsible for the image
+     * "spread" in the NS and EW directions. They are calculated as follows: CFAC = LFAC = 2^16 / delta with delta =
+     * 83.84333 micro Radian (size of one VIS/IR MSG pixel) delta_HRV = 83.84333/3 micro Radian (size of one HRV MSG
+     * pixel)
      */
     private static final double CFAC_NONHRV = -781648343;
 
     /**
-     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. CFAC/LFAC are
-     * responsible for the image "spread" in the NS and EW directions. They are calculated as
-     * follows: CFAC = LFAC = 2^16 / delta with delta = 83.84333 micro Radian (size of one VIS/IR
-     * MSG pixel) delta_HRV = 83.84333/3 micro Radian (size of one HRV MSG pixel)
+     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. CFAC/LFAC are responsible for the image
+     * "spread" in the NS and EW directions. They are calculated as follows: CFAC = LFAC = 2^16 / delta with delta =
+     * 83.84333 micro Radian (size of one VIS/IR MSG pixel) delta_HRV = 83.84333/3 micro Radian (size of one HRV MSG
+     * pixel)
      */
     private static final double LFAC_NONHRV = -781648343;
 
     /**
-     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. COFF/LOFF are the
-     * offsets for column and line which are defining the middle of the Image (centre pixel) and are
-     * basically 1856/1856 for the VIS/IR channels and 5566/5566 for the HRV channel reference grid.
+     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. COFF/LOFF are the offsets for column and
+     * line which are defining the middle of the Image (centre pixel) and are basically 1856/1856 for the VIS/IR
+     * channels and 5566/5566 for the HRV channel reference grid.
      */
     private static final long COFF_NONHRV = 1856;
 
     /**
-     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. COFF/LOFF are the
-     * offsets for column and line which are defining the middle of the Image (centre pixel) and are
-     * basically 1856/1856 for the VIS/IR channels and 5566/5566 for the HRV channel reference grid.
+     * Scaling coefficient provided by the navigation record of the LRIT/HRIT. COFF/LOFF are the offsets for column and
+     * line which are defining the middle of the Image (centre pixel) and are basically 1856/1856 for the VIS/IR
+     * channels and 5566/5566 for the HRV channel reference grid.
      */
     private static final long LOFF_NONHRV = 1856;
 
@@ -137,15 +132,14 @@ public class MeteosatSG extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (pixel coordinates).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (pixel coordinates).
      *
      * @param x The longitude of the coordinate, in <strong>radians</strong>.
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         /* x - lon, y -lat */
 
@@ -191,10 +185,7 @@ public class MeteosatSG extends MapProjection {
         /* If the dot product is positive the point is visible otherwise it */
         /* is invisible. */
 
-        double dotprod =
-                r1 * (rl * cos_c_lat * cos_x_SUB_LON)
-                        - r2 * r2
-                        - r3 * r3 * (pow((R_EQ / R_POL), 2));
+        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * (pow((R_EQ / R_POL), 2));
 
         if (dotprod <= 0) {
             /*
@@ -245,12 +236,11 @@ public class MeteosatSG extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>column</var>,<var>row</var>) coordinates (units in
-     * "normalized" pixels) and stores the result in {@code ptDst}.
+     * Transforms the specified (<var>column</var>,<var>row</var>) coordinates (units in "normalized" pixels) and stores
+     * the result in {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         // x- column, y -row
         double s1 = 0.0, s2 = 0.0, s3 = 0.0, sn = 0.0;
@@ -286,9 +276,7 @@ public class MeteosatSG extends MapProjection {
         /* located in space, otherwise all is fine and the pixel is located on the */
         /* Earth surface. */
 
-        double sa =
-                pow(SAT_HEIGHT * cos_x1 * cos_y1, 2)
-                        - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.;
+        double sa = pow(SAT_HEIGHT * cos_x1 * cos_y1, 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.;
 
         /* produce @TODO error values */
         if (sa <= 0.0) {
@@ -312,10 +300,8 @@ public class MeteosatSG extends MapProjection {
         /* now calculate the rest of the formulas using equations on */
         /* page 25, Ref. [1] */
 
-        double sd =
-                sqrt(
-                        pow((SAT_HEIGHT * cos_x1 * cos_y1), 2)
-                                - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
+        double sd = sqrt(
+                pow((SAT_HEIGHT * cos_x1 * cos_y1), 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
         sn = (SAT_HEIGHT * cos_x1 * cos_y1 - sd) / (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1);
 
         s1 = SAT_HEIGHT - sn * cos_x1 * cos_y1;
@@ -345,8 +331,7 @@ public class MeteosatSG extends MapProjection {
          * Relaxed tolerance - pixel resolution of sub-satellite point is
          * 3 kilometers.
          */
-        final double delta =
-                abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
+        final double delta = abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
         if (delta > 40) {
             // When far from the valid area, use a larger tolerance.
             return 3;
@@ -370,9 +355,9 @@ public class MeteosatSG extends MapProjection {
     // ////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for an {@linkplain org.geotools.referencing.operation.projection.MeteosatSG
-     * Meteosat Second Generation image} projection.
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for an
+     * {@linkplain org.geotools.referencing.operation.projection.MeteosatSG Meteosat Second Generation image}
+     * projection.
      *
      * @since 14.0
      * @version $Id$
@@ -385,20 +370,19 @@ public class MeteosatSG extends MapProjection {
         private static final long serialVersionUID = -2722451724278085168L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.AUTO, "MeteosatSG"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.AUTO, "MeteosatSG"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

@@ -61,16 +61,13 @@ public final class DC extends XSD {
 
     /* Type Definitions */
     /** @generated */
-    public static final QName elementContainer =
-            new QName("http://purl.org/dc/elements/1.1/", "elementContainer");
+    public static final QName elementContainer = new QName("http://purl.org/dc/elements/1.1/", "elementContainer");
     /** @generated */
-    public static final QName SimpleLiteral =
-            new QName("http://purl.org/dc/elements/1.1/", "SimpleLiteral");
+    public static final QName SimpleLiteral = new QName("http://purl.org/dc/elements/1.1/", "SimpleLiteral");
 
     /* Elements */
     /** @generated */
-    public static final QName contributor =
-            new QName("http://purl.org/dc/elements/1.1/", "contributor");
+    public static final QName contributor = new QName("http://purl.org/dc/elements/1.1/", "contributor");
     /** @generated */
     public static final QName coverage = new QName("http://purl.org/dc/elements/1.1/", "coverage");
     /** @generated */
@@ -78,21 +75,17 @@ public final class DC extends XSD {
     /** @generated */
     public static final QName date = new QName("http://purl.org/dc/elements/1.1/", "date");
     /** @generated */
-    public static final QName DCelement =
-            new QName("http://purl.org/dc/elements/1.1/", "DC-element");
+    public static final QName DCelement = new QName("http://purl.org/dc/elements/1.1/", "DC-element");
     /** @generated */
-    public static final QName description =
-            new QName("http://purl.org/dc/elements/1.1/", "description");
+    public static final QName description = new QName("http://purl.org/dc/elements/1.1/", "description");
     /** @generated */
     public static final QName format = new QName("http://purl.org/dc/elements/1.1/", "format");
     /** @generated */
-    public static final QName identifier =
-            new QName("http://purl.org/dc/elements/1.1/", "identifier");
+    public static final QName identifier = new QName("http://purl.org/dc/elements/1.1/", "identifier");
     /** @generated */
     public static final QName language = new QName("http://purl.org/dc/elements/1.1/", "language");
     /** @generated */
-    public static final QName publisher =
-            new QName("http://purl.org/dc/elements/1.1/", "publisher");
+    public static final QName publisher = new QName("http://purl.org/dc/elements/1.1/", "publisher");
     /** @generated */
     public static final QName relation = new QName("http://purl.org/dc/elements/1.1/", "relation");
     /** @generated */

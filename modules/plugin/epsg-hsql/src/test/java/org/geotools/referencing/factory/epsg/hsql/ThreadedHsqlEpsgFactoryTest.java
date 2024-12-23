@@ -58,9 +58,7 @@ public class ThreadedHsqlEpsgFactoryTest {
     @Before
     public void setUp() throws Exception {
         if (factory == null) {
-            factory =
-                    (ThreadedHsqlEpsgFactory)
-                            ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+            factory = (ThreadedHsqlEpsgFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
         }
         // force in the standard timeout
         factory.setTimeout(30 * 60 * 1000);
@@ -85,8 +83,7 @@ public class ThreadedHsqlEpsgFactoryTest {
     @SuppressWarnings("PMD.CloseResource")
     private void corruptConnection() throws Exception {
         java.lang.reflect.Field field =
-                org.geotools.referencing.factory.BufferedAuthorityFactory.class.getDeclaredField(
-                        "backingStore");
+                org.geotools.referencing.factory.BufferedAuthorityFactory.class.getDeclaredField("backingStore");
         field.setAccessible(true);
         Object def = field.get(factory);
         Method getConnection = DirectEpsgFactory.class.getDeclaredMethod("getConnection");
@@ -125,14 +122,13 @@ public class ThreadedHsqlEpsgFactoryTest {
 
     @Test
     public void testFindWSG84() throws FactoryException {
-        String wkt =
-                "GEOGCS[\"WGS 84\",\n"
-                        + "  DATUM[\"World Geodetic System 1984\",\n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "  UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "  AXIS[\"Geodetic latitude\", NORTH],\n"
-                        + "  AXIS[\"Geodetic longitude\", EAST]]";
+        String wkt = "GEOGCS[\"WGS 84\",\n"
+                + "  DATUM[\"World Geodetic System 1984\",\n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                + "  UNIT[\"degree\", 0.017453292519943295],\n"
+                + "  AXIS[\"Geodetic latitude\", NORTH],\n"
+                + "  AXIS[\"Geodetic longitude\", EAST]]";
 
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         IdentifiedObject find = finder.find(crs);
@@ -142,8 +138,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
-        ReferenceIdentifier found =
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
+        ReferenceIdentifier found = AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
         // assertEquals("4326",found.getCode());
         assertNotNull(found);
         finder.setFullScanAllowed(false);
@@ -158,24 +153,23 @@ public class ThreadedHsqlEpsgFactoryTest {
          * EPSG database, in order to force a full scan (otherwise the EPSG database would
          * find it by name, but we want to test the scan).
          */
-        String wkt =
-                "PROJCS[\"Beijing 1954\",\n"
-                        + "   GEOGCS[\"Beijing 1954\",\n"
-                        + "     DATUM[\"Beijing 1954\",\n"
-                        + "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n"
-                        + "     PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "     UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "     AXIS[\"Geodetic latitude\", NORTH],\n"
-                        + "     AXIS[\"Geodetic longitude\", EAST]],\n"
-                        + "   PROJECTION[\"Transverse Mercator\"],\n"
-                        + "   PARAMETER[\"central_meridian\", 135.0],\n"
-                        + "   PARAMETER[\"latitude_of_origin\", 0.0],\n"
-                        + "   PARAMETER[\"scale_factor\", 1.0],\n"
-                        + "   PARAMETER[\"false_easting\", 500000.0],\n"
-                        + "   PARAMETER[\"false_northing\", 0.0],\n"
-                        + "   UNIT[\"m\", 1.0],\n"
-                        + "   AXIS[\"Northing\", NORTH],\n"
-                        + "   AXIS[\"Easting\", EAST]]";
+        String wkt = "PROJCS[\"Beijing 1954\",\n"
+                + "   GEOGCS[\"Beijing 1954\",\n"
+                + "     DATUM[\"Beijing 1954\",\n"
+                + "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n"
+                + "     PRIMEM[\"Greenwich\", 0.0],\n"
+                + "     UNIT[\"degree\", 0.017453292519943295],\n"
+                + "     AXIS[\"Geodetic latitude\", NORTH],\n"
+                + "     AXIS[\"Geodetic longitude\", EAST]],\n"
+                + "   PROJECTION[\"Transverse Mercator\"],\n"
+                + "   PARAMETER[\"central_meridian\", 135.0],\n"
+                + "   PARAMETER[\"latitude_of_origin\", 0.0],\n"
+                + "   PARAMETER[\"scale_factor\", 1.0],\n"
+                + "   PARAMETER[\"false_easting\", 500000.0],\n"
+                + "   PARAMETER[\"false_northing\", 0.0],\n"
+                + "   UNIT[\"m\", 1.0],\n"
+                + "   AXIS[\"Northing\", NORTH],\n"
+                + "   AXIS[\"Easting\", EAST]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
         IdentifiedObject find = finder.find(crs);
@@ -187,7 +181,8 @@ public class ThreadedHsqlEpsgFactoryTest {
 
         assertEquals(
                 "2442",
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority())
+                        .getCode());
         finder.setFullScanAllowed(false);
         String id = finder.findIdentifier(crs);
         assertEquals("The CRS should still be in the cache.", "EPSG:2442", id);
@@ -198,26 +193,25 @@ public class ThreadedHsqlEpsgFactoryTest {
         CoordinateReferenceSystem epsg4326 = CRS.decode("EPSG:4326");
         CoordinateReferenceSystem epsg3785 = CRS.decode("EPSG:3857");
 
-        String wkt900913 =
-                "PROJCS[\"WGS84 / Google Mercator\", "
-                        + "GEOGCS[\"WGS 84\", "
-                        + "  DATUM[\"World Geodetic System 1984\", "
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], "
-                        + "    AUTHORITY[\"EPSG\",\"6326\"]], "
-                        + "  PRIMEM[\"Greenwich\", 0.0, "
-                        + "  AUTHORITY[\"EPSG\",\"8901\"]], "
-                        + "  UNIT[\"degree\", 0.017453292519943295], AUTHORITY[\"EPSG\",\"4326\"]], "
-                        + "PROJECTION[\"Mercator (1SP)\", "
-                        + "AUTHORITY[\"EPSG\",\"9804\"]], "
-                        + "PARAMETER[\"semi_major\", 6378137.0], "
-                        + "PARAMETER[\"semi_minor\", 6378137.0], "
-                        + "PARAMETER[\"latitude_of_origin\", 0.0], "
-                        + "PARAMETER[\"central_meridian\", 0.0], "
-                        + "PARAMETER[\"scale_factor\", 1.0], "
-                        + "PARAMETER[\"false_easting\", 0.0], "
-                        + "PARAMETER[\"false_northing\", 0.0], "
-                        + "UNIT[\"m\", 1.0],  "
-                        + "AUTHORITY[\"EPSG\",\"900913\"]]";
+        String wkt900913 = "PROJCS[\"WGS84 / Google Mercator\", "
+                + "GEOGCS[\"WGS 84\", "
+                + "  DATUM[\"World Geodetic System 1984\", "
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], "
+                + "    AUTHORITY[\"EPSG\",\"6326\"]], "
+                + "  PRIMEM[\"Greenwich\", 0.0, "
+                + "  AUTHORITY[\"EPSG\",\"8901\"]], "
+                + "  UNIT[\"degree\", 0.017453292519943295], AUTHORITY[\"EPSG\",\"4326\"]], "
+                + "PROJECTION[\"Mercator (1SP)\", "
+                + "AUTHORITY[\"EPSG\",\"9804\"]], "
+                + "PARAMETER[\"semi_major\", 6378137.0], "
+                + "PARAMETER[\"semi_minor\", 6378137.0], "
+                + "PARAMETER[\"latitude_of_origin\", 0.0], "
+                + "PARAMETER[\"central_meridian\", 0.0], "
+                + "PARAMETER[\"scale_factor\", 1.0], "
+                + "PARAMETER[\"false_easting\", 0.0], "
+                + "PARAMETER[\"false_northing\", 0.0], "
+                + "UNIT[\"m\", 1.0],  "
+                + "AUTHORITY[\"EPSG\",\"900913\"]]";
         CoordinateReferenceSystem epsg900913 = CRS.parseWKT(wkt900913);
 
         MathTransform t1 = CRS.findMathTransform(epsg4326, epsg3785);
@@ -249,9 +243,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         }
     }
 
-    /**
-     * GEOT-3497 (given the same accuracy use the transformation method with the largest valid area)
-     */
+    /** GEOT-3497 (given the same accuracy use the transformation method with the largest valid area) */
     @Test
     public void testNad83() throws Exception {
         GeographicCRS crs = (GeographicCRS) CRS.decode("EPSG:4269");
@@ -342,10 +334,8 @@ public class ThreadedHsqlEpsgFactoryTest {
             // force data source re-creation
             factory.dispose();
             assertNotNull(factory.createCoordinateReferenceSystem("EPSG:4326"));
-            String creationMarker =
-                    String.format(
-                            "GeoTools/Databases/HSQL/v%s/EPSG_creation_marker.txt",
-                            ThreadedHsqlEpsgFactory.VERSION);
+            String creationMarker = String.format(
+                    "GeoTools/Databases/HSQL/v%s/EPSG_creation_marker.txt", ThreadedHsqlEpsgFactory.VERSION);
             assertTrue((new File(tmpDir, creationMarker)).exists());
         } finally {
             System.setProperty(JAVA_IO_TMPDIR_PROPERTY, oldTmpDir);

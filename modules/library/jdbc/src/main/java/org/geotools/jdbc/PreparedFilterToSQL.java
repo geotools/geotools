@@ -35,9 +35,8 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Extension of FilterToSQL intended for use with prepared statements.
  *
- * <p>Each time a {@link Literal} is visited, a '?' is encoded, and the value and type of the
- * literal are stored, available after the fact via {@link #getLiteralValues()} and {@link
- * #getLiteralTypes()}.
+ * <p>Each time a {@link Literal} is visited, a '?' is encoded, and the value and type of the literal are stored,
+ * available after the fact via {@link #getLiteralValues()} and {@link #getLiteralTypes()}.
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
@@ -53,17 +52,12 @@ public class PreparedFilterToSQL extends FilterToSQL {
     protected PreparedStatementSQLDialect dialect;
     boolean prepareEnabled = true;
 
-    /**
-     * Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders
-     */
+    /** Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders */
     public PreparedFilterToSQL(PreparedStatementSQLDialect dialect) {
         this.dialect = dialect;
     }
 
-    /**
-     * If true (default) a sql statement with literal placemarks is created, otherwise a normal
-     * statement is created
-     */
+    /** If true (default) a sql statement with literal placemarks is created, otherwise a normal statement is created */
     public boolean isPrepareEnabled() {
         return prepareEnabled;
     }
@@ -99,8 +93,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
-        descriptors.add(
-                context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
+        descriptors.add(context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
         literalTypes.add(clazz);
 
         try {
@@ -111,8 +104,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                 if (Geometry.class.isAssignableFrom(literalValue.getClass())) {
                     int srid = currentSRID != null ? currentSRID : -1;
                     int dimension = currentDimension != null ? currentDimension : -1;
-                    dialect.prepareGeometryValue(
-                            (Geometry) literalValue, dimension, srid, Geometry.class, sb);
+                    dialect.prepareGeometryValue((Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {
@@ -128,9 +120,9 @@ public class PreparedFilterToSQL extends FilterToSQL {
     }
 
     /**
-     * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically
-     * coming from {@link org.geotools.api.filter.spatial.BBOX} filters) into {@link Polygon}.
-     * Defaults to true, subclasses can override.
+     * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically coming from
+     * {@link org.geotools.api.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults to true, subclasses can
+     * override.
      */
     protected boolean convertEnvelopeToPolygon() {
         return true;
@@ -213,25 +205,19 @@ public class PreparedFilterToSQL extends FilterToSQL {
         return literalTypes;
     }
 
-    /**
-     * Returns the list of native SRID for each literal that happens to be a geometry, or null
-     * otherwise
-     */
+    /** Returns the list of native SRID for each literal that happens to be a geometry, or null otherwise */
     public List<Integer> getSRIDs() {
         return SRIDs;
     }
 
-    /**
-     * Returns the list of dimensions for each literal tha happens to be a geometry, or null
-     * otherwise
-     */
+    /** Returns the list of dimensions for each literal tha happens to be a geometry, or null otherwise */
     public List<Integer> getDimensions() {
         return dimensions;
     }
 
     /**
-     * Returns the attribute descriptors compared to a given literal (if any, not always available,
-     * normally only needed if arrays are involved)
+     * Returns the attribute descriptors compared to a given literal (if any, not always available, normally only needed
+     * if arrays are involved)
      */
     public List<AttributeDescriptor> getDescriptors() {
         return descriptors;

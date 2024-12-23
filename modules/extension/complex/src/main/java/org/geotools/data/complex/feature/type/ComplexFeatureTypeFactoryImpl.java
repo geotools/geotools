@@ -28,9 +28,9 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Feature type factory to produce complex feature type that can be used in feature chaining. The
- * specific complex feature type will have an additional system field called "FEATURE_LINK" that can
- * be used to link the feature type to its parent, i.e. allow the type to be nested.
+ * Feature type factory to produce complex feature type that can be used in feature chaining. The specific complex
+ * feature type will have an additional system field called "FEATURE_LINK" that can be used to link the feature type to
+ * its parent, i.e. allow the type to be nested.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */

@@ -19,8 +19,7 @@ package org.geotools.data.gen;
 
 import org.junit.Test;
 
-public class HorizontalPreGeneralizedFeatureSourceTest
-        extends AbstractPreGeneralizedFeatureSourceTest {
+public class HorizontalPreGeneralizedFeatureSourceTest extends AbstractPreGeneralizedFeatureSourceTest {
 
     static final String ConfigName = "src/test/resources/geninfo_horizontal.xml";
 

@@ -27,8 +27,8 @@ import org.geotools.api.util.InternationalString;
 /**
  * Factory used in the production of style objects.
  *
- * <p>This factory is responsible for the production of style objects; where noted these create
- * methods are in agreement with the Symbology Encoding 1.1 specification.
+ * <p>This factory is responsible for the production of style objects; where noted these create methods are in agreement
+ * with the Symbology Encoding 1.1 specification.
  *
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
@@ -57,12 +57,7 @@ public interface StyleFactory {
     PointSymbolizer createPointSymbolizer();
 
     //    public  PointPlacement createPointPlacement();
-    Mark createMark(
-            Expression wellKnownName,
-            Stroke stroke,
-            Fill fill,
-            Expression size,
-            Expression rotation);
+    Mark createMark(Expression wellKnownName, Stroke stroke, Fill fill, Expression size, Expression rotation);
 
     /**
      * Convinence method for obtaining a mark of a fixed shape
@@ -123,11 +118,9 @@ public interface StyleFactory {
      * @param extents The extents.
      * @return The new feature type constaint.
      */
-    FeatureTypeConstraint createFeatureTypeConstraint(
-            String featureTypeName, Filter filter, Extent... extents);
+    FeatureTypeConstraint createFeatureTypeConstraint(String featureTypeName, Filter filter, Extent... extents);
 
-    LayerFeatureConstraints createLayerFeatureConstraints(
-            FeatureTypeConstraint... featureTypeConstraints);
+    LayerFeatureConstraints createLayerFeatureConstraints(FeatureTypeConstraint... featureTypeConstraints);
 
     FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
 
@@ -145,8 +138,7 @@ public interface StyleFactory {
 
     Halo createHalo(Fill fill, Expression radius);
 
-    Fill createFill(
-            Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
+    Fill createFill(Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
 
     /** Create default line symbolizer */
     LineSymbolizer createLineSymbolizer();
@@ -163,8 +155,7 @@ public interface StyleFactory {
 
     TextSymbolizer createTextSymbolizer();
 
-    PointPlacement createPointPlacement(
-            AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
+    PointPlacement createPointPlacement(AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
 
     /**
      * A convienice method to make a simple stroke
@@ -224,16 +215,11 @@ public interface StyleFactory {
             Expression size,
             Expression rotation);
 
-    Font createFont(
-            Expression fontFamily,
-            Expression fontStyle,
-            Expression fontWeight,
-            Expression fontSize);
+    Font createFont(Expression fontFamily, Expression fontStyle, Expression fontWeight, Expression fontSize);
 
     Mark createMark();
 
-    PolygonSymbolizer createPolygonSymbolizer(
-            Stroke stroke, Fill fill, String geometryPropertyName);
+    PolygonSymbolizer createPolygonSymbolizer(Stroke stroke, Fill fill, String geometryPropertyName);
 
     RasterSymbolizer createRasterSymbolizer();
 
@@ -280,9 +266,8 @@ public interface StyleFactory {
     LineSymbolizer getDefaultLineSymbolizer();
 
     /**
-     * Creates a default Text Symbolizer, using the defaultFill, defaultFont and
-     * defaultPointPlacement, Sets the geometry attribute name to be geometry:text. No Halo is set.
-     * <b>The label is not set</b>
+     * Creates a default Text Symbolizer, using the defaultFill, defaultFont and defaultPointPlacement, Sets the
+     * geometry attribute name to be geometry:text. No Halo is set. <b>The label is not set</b>
      *
      * @return A default TextSymbolizer
      */
@@ -311,8 +296,7 @@ public interface StyleFactory {
     /** */
     ChannelSelection channelSelection(SelectedChannelType gray);
     /** */
-    ChannelSelection channelSelection(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+    ChannelSelection channelSelection(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
 
     /**
      * Wrap up a "Categorize" function using the provided expressions.
@@ -355,14 +339,13 @@ public interface StyleFactory {
     Displacement displacement(Expression dx, Expression dy);
 
     /** Create externalGraphic */
-    ExternalGraphic externalGraphic(
-            OnLineResource resource, String format, Collection<ColorReplacement> replacements);
+    ExternalGraphic externalGraphic(OnLineResource resource, String format, Collection<ColorReplacement> replacements);
 
     /**
      * Create ExternalGraphic using a Java Icon.
      *
-     * <p>This is used to produce high quality output by allowing you to directly draw each symbol
-     * by supplying your own Icon implementation.
+     * <p>This is used to produce high quality output by allowing you to directly draw each symbol by supplying your own
+     * Icon implementation.
      */
     ExternalGraphic externalGraphic(Icon inline, Collection<ColorReplacement> replacements);
 
@@ -385,12 +368,10 @@ public interface StyleFactory {
     Fill fill(GraphicFill fill, Expression color, Expression opacity);
 
     /**
-     * Create font entry; note this captures a list of font families in the preferred order, with
-     * the rendering engine choosing the first entry in the list available to the runtime
-     * environment.
+     * Create font entry; note this captures a list of font families in the preferred order, with the rendering engine
+     * choosing the first entry in the list available to the runtime environment.
      *
-     * <p>If fonts are not showing up as you expect please review the list of fonts installed into
-     * your JRE.
+     * <p>If fonts are not showing up as you expect please review the list of fonts installed into your JRE.
      *
      * @return Font
      */
@@ -452,20 +433,14 @@ public interface StyleFactory {
      * @return Newly created Line Symbolizer
      */
     LineSymbolizer lineSymbolizer(
-            String name,
-            Expression geometry,
-            Description description,
-            Unit<?> unit,
-            Stroke stroke,
-            Expression offset);
+            String name, Expression geometry, Description description, Unit<?> unit, Stroke stroke, Expression offset);
 
     /** */
     Mark mark(Expression wellKnownName, Fill fill, Stroke stroke);
     /** */
     Mark mark(ExternalMark externalMark, Fill fill, Stroke stroke);
     /** */
-    PointPlacement pointPlacement(
-            AnchorPoint anchor, Displacement displacement, Expression rotation);
+    PointPlacement pointPlacement(AnchorPoint anchor, Displacement displacement, Expression rotation);
     /**
      * Creation of a PointSymbolizer to describe how geometry can be rendered as a point.
      *
@@ -477,11 +452,7 @@ public interface StyleFactory {
      * @return Newly created PointSymbolizer
      */
     PointSymbolizer pointSymbolizer(
-            String name,
-            Expression geometry,
-            Description description,
-            Unit<?> unit,
-            Graphic graphic);
+            String name, Expression geometry, Description description, Unit<?> unit, Graphic graphic);
     /**
      * @param name handle used to refer to this symbolizer (machine readable)
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
@@ -517,17 +488,16 @@ public interface StyleFactory {
             ShadedRelief shaded,
             Symbolizer outline);
     /**
-     * Used to represent a symbolizer intended for a vendor specific rendering process. This
-     * facility should be used to control subject matter that is beyond the scope of the traditional
-     * symbology encoding data structure (subject matter like wind barbs or extra deegrees of
-     * freedom like temporal symbolizers are good examples of the use of this facility).
+     * Used to represent a symbolizer intended for a vendor specific rendering process. This facility should be used to
+     * control subject matter that is beyond the scope of the traditional symbology encoding data structure (subject
+     * matter like wind barbs or extra deegrees of freedom like temporal symbolizers are good examples of the use of
+     * this facility).
      *
      * @param name handle used to refer to this symbolizer (machine readible)
      * @param geometry Geometry expression to renderer; formally a PropertyName
      * @param description Description of this symbolizer; human readable
      * @param unit Unit of measure to use when interpretting this symbolizer
-     * @param extensionName Extension name used to identify the vendor specific extension being
-     *     controlled
+     * @param extensionName Extension name used to identify the vendor specific extension being controlled
      * @param parameters Named expressions used to configure the vendor specific rendering process
      * @return newly created ExtensionSymbolizer
      */
@@ -559,8 +529,7 @@ public interface StyleFactory {
             Filter filter);
 
     /** @return SelectedChannelType */
-    SelectedChannelType selectedChannelType(
-            Expression channelName, ContrastEnhancement contrastEnhancement);
+    SelectedChannelType selectedChannelType(Expression channelName, ContrastEnhancement contrastEnhancement);
 
     /** @return SelectedChannelType */
     SelectedChannelType selectedChannelType(

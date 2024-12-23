@@ -71,11 +71,10 @@ import tech.units.indriya.unit.ProductUnit;
 import tech.units.indriya.unit.TransformedUnit;
 
 /**
- * This class implements the {@link UnitFormat} interface for formatting and parsing {@link Unit
- * units}.
+ * This class implements the {@link UnitFormat} interface for formatting and parsing {@link Unit units}.
  *
- * <p>For all SI units, the <b>24 SI prefixes</b> used to form decimal multiples and sub-multiples
- * are recognized. As well as the <b>8 binary prefixes</b>.<br>
+ * <p>For all SI units, the <b>24 SI prefixes</b> used to form decimal multiples and sub-multiples are recognized. As
+ * well as the <b>8 binary prefixes</b>.<br>
  * {@link Units} are directly recognized. For example:<br>
  * <code>
  *        UnitFormat format = SimpleUnitFormat.getInstance();<br>
@@ -95,8 +94,7 @@ public class BaseUnitFormatter implements UnitFormatter {
     private static final char MIDDLE_DOT = '\u00b7';
 
     /**
-     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit
-     * definitions.
+     * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit definitions.
      *
      * @param unitDefinitions a list of unit definitions used to initialize this new instance
      */
@@ -104,9 +102,7 @@ public class BaseUnitFormatter implements UnitFormatter {
         for (UnitDefinition unitDefinition : unitDefinitions) {
             Unit<?> unit = unitDefinition.getUnit();
             String unitSymbol =
-                    unitDefinition.getSymbolOverride() != null
-                            ? unitDefinition.getSymbolOverride()
-                            : unit.getSymbol();
+                    unitDefinition.getSymbolOverride() != null ? unitDefinition.getSymbolOverride() : unit.getSymbol();
 
             // add units
             this.addLabel(unit, unitSymbol);
@@ -150,20 +146,18 @@ public class BaseUnitFormatter implements UnitFormatter {
      * Indicates if the specified name can be used as unit identifier.
      *
      * @param name the identifier to be tested.
-     * @return <code>true</code> if the name specified can be used as label or alias for this
-     *     format;<code>false</code> otherwise.
+     * @return <code>true</code> if the name specified can be used as label or alias for this format;<code>false</code>
+     *     otherwise.
      */
 
     /**
-     * Parses the text from a string to produce an object (implements <code>java.text.Format</code>
-     * ).
+     * Parses the text from a string to produce an object (implements <code>java.text.Format</code> ).
      *
      * @param source the string source, part of which should be parsed.
      * @param pos the cursor position.
      * @return the corresponding unit or <code>null</code> if the string cannot be parsed.
      */
-    public final Unit<?> parseObject(String source, ParsePosition pos)
-            throws MeasurementParseException {
+    public final Unit<?> parseObject(String source, ParsePosition pos) throws MeasurementParseException {
         return parseProductUnit(source, pos);
     }
 
@@ -182,29 +176,25 @@ public class BaseUnitFormatter implements UnitFormatter {
     // TODO: investigate whether these should better operate on `PrefixDefinitions`,
     //       or even prefix definitions passed in the constructor of this class.
 
-    private static final String[] METRIC_PREFIX_SYMBOLS =
-            Stream.of(MetricPrefix.values())
-                    .map(Prefix::getSymbol)
-                    .collect(Collectors.toList())
-                    .toArray(new String[] {});
+    private static final String[] METRIC_PREFIX_SYMBOLS = Stream.of(MetricPrefix.values())
+            .map(Prefix::getSymbol)
+            .collect(Collectors.toList())
+            .toArray(new String[] {});
 
-    private static final UnitConverter[] METRIC_PREFIX_CONVERTERS =
-            Stream.of(MetricPrefix.values())
-                    .map(MultiplyConverter::ofPrefix)
-                    .collect(Collectors.toList())
-                    .toArray(new UnitConverter[] {});
+    private static final UnitConverter[] METRIC_PREFIX_CONVERTERS = Stream.of(MetricPrefix.values())
+            .map(MultiplyConverter::ofPrefix)
+            .collect(Collectors.toList())
+            .toArray(new UnitConverter[] {});
 
-    private static final String[] BINARY_PREFIX_SYMBOLS =
-            Stream.of(BinaryPrefix.values())
-                    .map(Prefix::getSymbol)
-                    .collect(Collectors.toList())
-                    .toArray(new String[] {});
+    private static final String[] BINARY_PREFIX_SYMBOLS = Stream.of(BinaryPrefix.values())
+            .map(Prefix::getSymbol)
+            .collect(Collectors.toList())
+            .toArray(new String[] {});
 
-    private static final UnitConverter[] BINARY_PREFIX_CONVERTERS =
-            Stream.of(BinaryPrefix.values())
-                    .map(MultiplyConverter::ofPrefix)
-                    .collect(Collectors.toList())
-                    .toArray(new UnitConverter[] {});
+    private static final UnitConverter[] BINARY_PREFIX_CONVERTERS = Stream.of(BinaryPrefix.values())
+            .map(MultiplyConverter::ofPrefix)
+            .collect(Collectors.toList())
+            .toArray(new UnitConverter[] {});
 
     private enum Token {
         EOF,
@@ -230,15 +220,14 @@ public class BaseUnitFormatter implements UnitFormatter {
     /**
      * Attaches a system-wide label to the specified unit. For example: <code>
      * SimpleUnitFormat.getInstance().label(DAY.multiply(365), "year");
-     * SimpleUnitFormat.getInstance().label(METER.multiply(0.3048), "ft");</code> If the specified
-     * label is already associated to a unit the previous association is discarded or ignored. The
-     * old label is overwritten for <b>labeling/<b> purposes, but it remains like an <b>alias</b>
-     * (it still works for parsing)
+     * SimpleUnitFormat.getInstance().label(METER.multiply(0.3048), "ft");</code> If the specified label is already
+     * associated to a unit the previous association is discarded or ignored. The old label is overwritten for
+     * <b>labeling/<b> purposes, but it remains like an <b>alias</b> (it still works for parsing)
      *
      * @param unit the unit being labeled.
      * @param label the new label for this unit.
-     * @throws IllegalArgumentException if the label is not a {@link
-     *     BaseUnitFormatter#isValidIdentifier(String)} valid identifier.
+     * @throws IllegalArgumentException if the label is not a {@link BaseUnitFormatter#isValidIdentifier(String)} valid
+     *     identifier.
      */
     protected void addLabel(Unit<?> unit, String label) {
         if (!isValidIdentifier(label))
@@ -250,17 +239,17 @@ public class BaseUnitFormatter implements UnitFormatter {
     }
 
     /**
-     * Attaches a system-wide alias to this unit. Multiple aliases may be attached to the same unit.
-     * Aliases are used during parsing to recognize different variants of the same unit. For
-     * example: <code> SimpleUnitFormat.getInstance().alias(METER.multiply(0.3048), "foot");
+     * Attaches a system-wide alias to this unit. Multiple aliases may be attached to the same unit. Aliases are used
+     * during parsing to recognize different variants of the same unit. For example: <code>
+     *  SimpleUnitFormat.getInstance().alias(METER.multiply(0.3048), "foot");
      * SimpleUnitFormat.getInstance().alias(METER.multiply(0.3048), "feet"); SimpleUnitFormat.getInstance().alias(METER, "meter");
-     * SimpleUnitFormat.getInstance().alias(METER, "metre"); </code> If the specified label is
-     * already associated to an unit the previous association is discarded or ignored.
+     * SimpleUnitFormat.getInstance().alias(METER, "metre"); </code> If the specified label is already associated to an
+     * unit the previous association is discarded or ignored.
      *
      * @param unit the unit being aliased.
      * @param alias the alias attached to this unit.
-     * @throws IllegalArgumentException if the label is not a {@link
-     *     BaseUnitFormatter#isValidIdentifier(String)} valid identifier.
+     * @throws IllegalArgumentException if the label is not a {@link BaseUnitFormatter#isValidIdentifier(String)} valid
+     *     identifier.
      */
     protected void addAlias(Unit<?> unit, String alias) {
         if (!isValidIdentifier(alias))
@@ -357,11 +346,9 @@ public class BaseUnitFormatter implements UnitFormatter {
         }
         if (unit instanceof AnnotatedUnit<?>) {
             AnnotatedUnit<?> annotatedUnit = (AnnotatedUnit<?>) unit;
-            final StringBuilder annotable =
-                    new StringBuilder(nameFor(annotatedUnit.getActualUnit()));
+            final StringBuilder annotable = new StringBuilder(nameFor(annotatedUnit.getActualUnit()));
             if (annotatedUnit.getAnnotation() != null) {
-                annotable.append(
-                        '{'); // TODO maybe also configure this one similar to mix delimiter
+                annotable.append('{'); // TODO maybe also configure this one similar to mix delimiter
                 annotable.append(annotatedUnit.getAnnotation());
                 annotable.append('}');
             }
@@ -393,8 +380,7 @@ public class BaseUnitFormatter implements UnitFormatter {
      * @param csq the <code>CharSequence</code> to parse.
      * @param pos an object holding the parsing index and error position.
      * @return an {@link Unit} parsed from the character sequence.
-     * @throws IllegalArgumentException if the character sequence does not contain a valid unit
-     *     identifier.
+     * @throws IllegalArgumentException if the character sequence does not contain a valid unit identifier.
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Unit<? extends Quantity> parseSingleUnit(CharSequence csq, ParsePosition pos)
@@ -508,8 +494,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                 case CLOSE_PAREN:
                     return result;
                 default:
-                    throw new MeasurementParseException(
-                            "unexpected token " + token, csq, pos.getIndex());
+                    throw new MeasurementParseException("unexpected token " + token, csq, pos.getIndex());
             }
             token = nextToken(csq, pos);
         }
@@ -542,8 +527,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                 return Token.PLUS;
             } else if ((c == '-') || Character.isDigit(c)) {
                 int index = pos.getIndex() + 1;
-                while ((index < length)
-                        && (Character.isDigit(c) || (c == '-') || (c == '.') || (c == 'E'))) {
+                while ((index < length) && (Character.isDigit(c) || (c == '-') || (c == '.') || (c == 'E'))) {
                     c = csq.charAt(index++);
                     if (c == '.') {
                         return Token.FLOAT;
@@ -559,8 +543,7 @@ public class BaseUnitFormatter implements UnitFormatter {
     private static void check(boolean expr, String message, CharSequence csq, int index)
             throws MeasurementParseException {
         if (!expr) {
-            throw new MeasurementParseException(
-                    message + " (in " + csq + " at index " + index + ")", index);
+            throw new MeasurementParseException(message + " (in " + csq + " at index " + index + ")", index);
         }
     }
 
@@ -751,8 +734,7 @@ public class BaseUnitFormatter implements UnitFormatter {
         return appendable;
     }
 
-    private static void append(Appendable appendable, CharSequence symbol, int pow, int root)
-            throws IOException {
+    private static void append(Appendable appendable, CharSequence symbol, int pow, int root) throws IOException {
         appendable.append(symbol);
         if ((pow != 1) || (root != 1)) {
             // Write exponent.

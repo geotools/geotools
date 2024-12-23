@@ -81,9 +81,7 @@ public class BinaryOpTest extends GridProcessingTestBase {
      * @param coverage0 The coverage to scale.
      */
     private GridCoverage2D doOp(
-            final String operationName,
-            final GridCoverage2D coverage0,
-            final GridCoverage2D coverage1)
+            final String operationName, final GridCoverage2D coverage0, final GridCoverage2D coverage1)
             throws IOException {
 
         // Getting parameters for doing a scale.

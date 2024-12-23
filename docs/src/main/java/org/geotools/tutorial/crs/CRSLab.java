@@ -110,10 +110,7 @@ public class CRSLab {
     }
     // docs end display
 
-    /**
-     * Export features to a new shapefile using the map projection in which they are currently
-     * displayed
-     */
+    /** Export features to a new shapefile using the map projection in which they are currently displayed */
     // docs start export
     private void exportToShapefile() throws Exception {
         SimpleFeatureType schema = featureSource.getSchema();
@@ -180,10 +177,7 @@ public class CRSLab {
     }
     // docs end export
 
-    /**
-     * Export features to a new shapefile using the map projection in which they are currently
-     * displayed
-     */
+    /** Export features to a new shapefile using the map projection in which they are currently displayed */
     // docs start export2
     private void exportToShapefile2() throws Exception {
         FeatureType schema = featureSource.getSchema();
@@ -198,8 +192,7 @@ public class CRSLab {
 
         File file = chooser.getSelectedFile();
         if (file.equals(sourceFile)) {
-            JOptionPane.showMessageDialog(
-                    null, "Cannot replace " + file, "File warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Cannot replace " + file, "File warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         // We can now query to retrieve a FeatureCollection in the desired crs
@@ -218,22 +211,17 @@ public class CRSLab {
 
         newDataStore.createSchema(featureCollection.getSchema());
         Transaction transaction = new DefaultTransaction("Reproject");
-        SimpleFeatureStore featureStore =
-                (SimpleFeatureStore) newDataStore.getFeatureSource(typeName);
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) newDataStore.getFeatureSource(typeName);
         featureStore.setTransaction(transaction);
         try {
             featureStore.addFeatures(featureCollection);
             transaction.commit();
             JOptionPane.showMessageDialog(
-                    null,
-                    "Export to shapefile complete",
-                    "Export",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    null, "Export to shapefile complete", "Export", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception problem) {
             transaction.rollback();
             problem.printStackTrace();
-            JOptionPane.showMessageDialog(
-                    null, "Export to shapefile failed", "Export", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Export to shapefile failed", "Export", JOptionPane.ERROR_MESSAGE);
         } finally {
             transaction.close();
         }
@@ -241,11 +229,11 @@ public class CRSLab {
     // docs end export2
 
     /**
-     * Check the Geometry (point, line or polygon) of each feature to make sure that it is
-     * topologically valid and report on any errors found.
+     * Check the Geometry (point, line or polygon) of each feature to make sure that it is topologically valid and
+     * report on any errors found.
      *
-     * <p>See also the nested ValidateGeometryAction class below which runs this method in a
-     * background thread and reports on the results
+     * <p>See also the nested ValidateGeometryAction class below which runs this method in a background thread and
+     * reports on the results
      *
      * @return the number of invalid geometries found
      */
@@ -276,9 +264,8 @@ public class CRSLab {
     // docs end validate
 
     /**
-     * This class performs the task of exporting the features to a new shapefile using the map
-     * projection that they are currently displayed in. It also supplies the name and tool tip for
-     * the toolbar button.
+     * This class performs the task of exporting the features to a new shapefile using the map projection that they are
+     * currently displayed in. It also supplies the name and tool tip for the toolbar button.
      */
     // docs start export action
     class ExportShapefileAction extends SafeAction {
@@ -294,8 +281,8 @@ public class CRSLab {
     // docs end export action
 
     /**
-     * This class performs the task of checking that the Geometry of each feature is topologically
-     * valid and reports on the results. It also supplies the name and tool tip.
+     * This class performs the task of checking that the Geometry of each feature is topologically valid and reports on
+     * the results. It also supplies the name and tool tip.
      */
     // docs start validate action
     class ValidateGeometryAction extends SafeAction {
@@ -312,15 +299,14 @@ public class CRSLab {
             } else {
                 msg = "Invalid geometries: " + numInvalid;
             }
-            JOptionPane.showMessageDialog(
-                    null, msg, "Geometry results", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg, "Geometry results", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     // docs end validate action
 
     /**
-     * This class performs the task of checking that the Geometry of each feature is topologically
-     * valid and reports on the results. It also supplies the name and tool tip.
+     * This class performs the task of checking that the Geometry of each feature is topologically valid and reports on
+     * the results. It also supplies the name and tool tip.
      */
     // docs start validate action2
     class ValidateGeometryAction2 extends SafeAction {
@@ -333,33 +319,29 @@ public class CRSLab {
             // Here we use the SwingWorker helper class to run the validation routine in a
             // background thread, otherwise the GUI would wait and the progress bar would not be
             // displayed properly
-            SwingWorker worker =
-                    new SwingWorker<String, Object>() {
-                        protected String doInBackground() throws Exception {
-                            // For shapefiles with many features its nice to display a progress bar
-                            final JProgressWindow progress = new JProgressWindow(null);
-                            progress.setTitle("Validating feature geometry");
+            SwingWorker worker = new SwingWorker<String, Object>() {
+                protected String doInBackground() throws Exception {
+                    // For shapefiles with many features its nice to display a progress bar
+                    final JProgressWindow progress = new JProgressWindow(null);
+                    progress.setTitle("Validating feature geometry");
 
-                            int numInvalid = validateFeatureGeometry(progress);
-                            if (numInvalid == 0) {
-                                return "All feature geometries are valid";
-                            } else {
-                                return "Invalid geometries: " + numInvalid;
-                            }
-                        }
+                    int numInvalid = validateFeatureGeometry(progress);
+                    if (numInvalid == 0) {
+                        return "All feature geometries are valid";
+                    } else {
+                        return "Invalid geometries: " + numInvalid;
+                    }
+                }
 
-                        protected void done() {
-                            try {
-                                Object result = get();
-                                JOptionPane.showMessageDialog(
-                                        null,
-                                        result,
-                                        "Geometry results",
-                                        JOptionPane.INFORMATION_MESSAGE);
-                            } catch (Exception ignore) {
-                            }
-                        }
-                    };
+                protected void done() {
+                    try {
+                        Object result = get();
+                        JOptionPane.showMessageDialog(
+                                null, result, "Geometry results", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ignore) {
+                    }
+                }
+            };
             // This statement runs the validation method in a background thread
             worker.execute();
         }

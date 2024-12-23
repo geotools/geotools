@@ -106,8 +106,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                 if (anyAttribute == null) {
                     anyAttribute = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -118,8 +117,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
@@ -208,9 +206,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
             attributes = ag.getAttributes();
         }
 
-        cache =
-                new AttributeGroupGT(
-                        id, name1, parent.getTargetNamespace(), attributes, anyAttributeNamespace);
+        cache = new AttributeGroupGT(id, name1, parent.getTargetNamespace(), attributes, anyAttributeNamespace);
 
         return cache;
     }

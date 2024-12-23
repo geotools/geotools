@@ -34,9 +34,9 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
 
 /**
- * A VPF feature type. Note that feature classes may contain one or more feature types. However, all
- * of the feature types of a feature class share the same schema. A feature type will therefore
- * delegate its schema related operations to its feature class.
+ * A VPF feature type. Note that feature classes may contain one or more feature types. However, all of the feature
+ * types of a feature class share the same schema. A feature type will therefore delegate its schema related operations
+ * to its feature class.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$
@@ -91,8 +91,8 @@ public class VPFFeatureType implements SimpleFeatureType {
      * Constructor
      *
      * @param cFeatureClass The owning feature class
-     * @param cFeature A <code>Feature</code> from the CHAR.VDT file with more detailed information
-     *     for this feature type
+     * @param cFeature A <code>Feature</code> from the CHAR.VDT file with more detailed information for this feature
+     *     type
      */
     public VPFFeatureType(VPFFeatureClass cFeatureClass, SimpleFeature cFeature) {
         featureClass = cFeatureClass;
@@ -104,7 +104,8 @@ public class VPFFeatureType implements SimpleFeatureType {
         // This block helps us give tables a distinguishing suffix
         try {
             int index = mainTableFileName.lastIndexOf(".") + 1;
-            String dimensionality = mainTableFileName.substring(index, index + 1).toLowerCase();
+            String dimensionality =
+                    mainTableFileName.substring(index, index + 1).toLowerCase();
             if (dimensionality.equals("a")) {
                 tempTypeName = tempTypeName.concat(" Area");
             } else if (dimensionality.equals("l")) {
@@ -173,9 +174,8 @@ public class VPFFeatureType implements SimpleFeatureType {
         return featureClass.getFileList();
     }
     /**
-     * @return A <code>List</code> containing the <code>ColumnPair</code> objects which identify the
-     *     file joins for the <code>VPFFeatureClass</code> that this <code>FeatureType</code>
-     *     belongs to.
+     * @return A <code>List</code> containing the <code>ColumnPair</code> objects which identify the file joins for the
+     *     <code>VPFFeatureClass</code> that this <code>FeatureType</code> belongs to.
      */
     /*
     public List getJoinList() {

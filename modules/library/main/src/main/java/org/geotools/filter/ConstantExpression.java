@@ -27,8 +27,8 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * The Expression class is not immutable!
  *
- * <p>However we do have a need for immutable literal expressions when defining our API for SLD, and
- * any other standards based on Expression.
+ * <p>However we do have a need for immutable literal expressions when defining our API for SLD, and any other standards
+ * based on Expression.
  *
  * @author Jody Garnett, Refractions Research
  */

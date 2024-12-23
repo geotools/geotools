@@ -20,19 +20,19 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Creates an Oracle datastore based on a thick OCI client connection, instead of the traditional
- * (thin) jdbc connection. The thin JDBC connection was designed for clients requiring no more
- * classes than just ojdbc14.jar. The OCI JDBC drivers are based on the Oracle client software and
- * rely mostly on the C/C++ based OCI (Oracle Call Interface) runtime.
+ * Creates an Oracle datastore based on a thick OCI client connection, instead of the traditional (thin) jdbc
+ * connection. The thin JDBC connection was designed for clients requiring no more classes than just ojdbc14.jar. The
+ * OCI JDBC drivers are based on the Oracle client software and rely mostly on the C/C++ based OCI (Oracle Call
+ * Interface) runtime.
  *
- * <p>Looking over the internet it's not clear whether the OCI setup is faster than thin driver,
- * different benchmarks report different results, but for sure OCI allows to expose a wider set of
- * configurations and in particular it's recognized as the best way to connect to an Oracle cluster.
+ * <p>Looking over the internet it's not clear whether the OCI setup is faster than thin driver, different benchmarks
+ * report different results, but for sure OCI allows to expose a wider set of configurations and in particular it's
+ * recognized as the best way to connect to an Oracle cluster.
  *
- * <p>Instead of the instance, host, port requirements of the normal oracle factory this driver just
- * requires the 'alias', which refers to values defined by the Oracle Net Configuration assistant
- * and stored in $ORACLE_HOME/NETWORK/ADMIN/tnsnames.ora. We have also had luck on the same computer
- * with just leaving 'alias' as an empty string, and it seems to have a reasonable default behavior.
+ * <p>Instead of the instance, host, port requirements of the normal oracle factory this driver just requires the
+ * 'alias', which refers to values defined by the Oracle Net Configuration assistant and stored in
+ * $ORACLE_HOME/NETWORK/ADMIN/tnsnames.ora. We have also had luck on the same computer with just leaving 'alias' as an
+ * empty string, and it seems to have a reasonable default behavior.
  *
  * @author Chris Holmes, TOPP
  * @author Bernard de Terwangne, star.be
@@ -40,12 +40,8 @@ import java.util.Map;
  */
 public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
     /** The alias parameter used to specify the database to connect to */
-    public static final Param ALIAS =
-            new Param(
-                    "alias",
-                    String.class,
-                    "The alias to the oracle server, as defined in the tnsnames.ora file",
-                    true);
+    public static final Param ALIAS = new Param(
+            "alias", String.class, "The alias to the oracle server, as defined in the tnsnames.ora file", true);
 
     @Override
     public String getDisplayName() {
@@ -70,13 +66,7 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         // a full override is needed to make sure we get a good looking param order
 
         parameters.put(
-                DBTYPE.key,
-                new Param(
-                        DBTYPE.key,
-                        DBTYPE.type,
-                        DBTYPE.description,
-                        DBTYPE.required,
-                        getDatabaseID()));
+                DBTYPE.key, new Param(DBTYPE.key, DBTYPE.type, DBTYPE.description, DBTYPE.required, getDatabaseID()));
         parameters.put(SCHEMA.key, SCHEMA);
 
         parameters.put(ALIAS.key, ALIAS);
@@ -95,12 +85,9 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         parameters.put(OracleNGDataStoreFactory.LOOSEBBOX.key, OracleNGDataStoreFactory.LOOSEBBOX);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
 
+        parameters.put(OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key, OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
         parameters.put(
-                OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key,
-                OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
-        parameters.put(
-                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key,
-                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
+                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key, OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
         parameters.put(METADATA_BBOX.key, METADATA_BBOX);
         parameters.put(GET_REMARKS.key, GET_REMARKS);
     }

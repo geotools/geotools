@@ -11,11 +11,8 @@ public class PullParserTest {
 
     @Test
     public void testParse() throws Exception {
-        PullParser parser =
-                new PullParser(
-                        new MLConfiguration(),
-                        ML.class.getResourceAsStream("mails.xml"),
-                        new QName(ML.NAMESPACE, "mail"));
+        PullParser parser = new PullParser(
+                new MLConfiguration(), ML.class.getResourceAsStream("mails.xml"), new QName(ML.NAMESPACE, "mail"));
 
         Mail m = (Mail) parser.parse();
         Assert.assertNotNull(m);

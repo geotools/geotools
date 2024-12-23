@@ -28,8 +28,8 @@ public interface MultiLevelROIProvider {
     /**
      * Returns a {@link MultiLevelROI} object from a granule
      *
-     * @param sf {@link SimpleFeature} related to a granule (if several are available). Specifying a
-     *     null feature should return the default provider.
+     * @param sf {@link SimpleFeature} related to a granule (if several are available). Specifying a null feature should
+     *     return the default provider.
      * @return a {@link MultiLevelROI} object associated to the input SimpleFeature
      */
     public MultiLevelROI getMultiScaleROI(SimpleFeature sf) throws IOException;

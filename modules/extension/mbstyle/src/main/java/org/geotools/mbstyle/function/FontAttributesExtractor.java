@@ -22,10 +22,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.geotools.util.logging.Logging;
 
-/**
- * Function object parsing a full font name and returning its base name, bold and italic modifiers
- * as properties.
- */
+/** Function object parsing a full font name and returning its base name, bold and italic modifiers as properties. */
 public class FontAttributesExtractor {
 
     private static final Pattern SPACE_SPLITTER = Pattern.compile("\\s+");

@@ -49,10 +49,7 @@ import org.geotools.data.solr.SolrFeatureSource;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.util.Converters;
 
-/**
- * This class covers \ uses the available App-Schema extension points to make Apache Solr usable in
- * the mappings.
- */
+/** This class covers \ uses the available App-Schema extension points to make Apache Solr usable in the mappings. */
 public final class ComplexDataStoreFactory implements CustomSourceDataStore {
 
     private final FilterFactory filterFactory = new FilterFactoryImplReportInvalidProperty();
@@ -76,11 +73,9 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
 
     @Override
     public void configXmlDigesterAttributesMappings(Digester digester) {
-        String rootPath =
-                "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
+        String rootPath = "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
         String multipleValuePath = rootPath + "/solrMultipleValue";
-        digester.addObjectCreate(
-                multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
+        digester.addObjectCreate(multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
         digester.addCallMethod(multipleValuePath, "setExpression", 1);
         digester.addCallParam(multipleValuePath, 0);
         digester.addSetNext(multipleValuePath, "setMultipleValue");
@@ -88,10 +83,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
 
     @Override
     public DataAccessMappingFeatureIterator buildIterator(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping featureTypeMapping,
-            Query query,
-            Transaction transaction) {
+            AppSchemaDataAccess store, FeatureTypeMapping featureTypeMapping, Query query, Transaction transaction) {
         if (!(featureTypeMapping.getSource() instanceof SolrFeatureSource)) {
             // not an Apache Solr feature type mapping
             return null;
@@ -100,8 +92,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         query.setSortBy(sortByFeatureTypeIds(featureTypeMapping));
         try {
             // build the iterator using the adapted query
-            return new DataAccessMappingFeatureIterator(
-                    store, featureTypeMapping, query, false, true);
+            return new DataAccessMappingFeatureIterator(store, featureTypeMapping, query, false, true);
         } catch (Exception exception) {
             throw new RuntimeException(
                     String.format(
@@ -134,13 +125,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             }
         }
         // build the Apache Solr store
-        return new SolrDataStore(
-                complexDataStoreConfig.getUrl(), new SingleLayerMapper(), indexesConfig);
+        return new SolrDataStore(complexDataStoreConfig.getUrl(), new SingleLayerMapper(), indexesConfig);
     }
 
     /**
-     * Auxiliary class for the XML configuration parsing of the complex data store. It basically
-     * allow us to store to keep track of the index name whose configuration is being parsed.
+     * Auxiliary class for the XML configuration parsing of the complex data store. It basically allow us to store to
+     * keep track of the index name whose configuration is being parsed.
      */
     public static final class ComplexDataStoreConfigWithContext extends ComplexDataStoreConfig {
 
@@ -157,14 +147,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         }
 
         /**
-         * Adds the specification of a geometry attribute of the index to the current index
-         * configuration.
+         * Adds the specification of a geometry attribute of the index to the current index configuration.
          *
          * @param attributeName the index attribute name
          * @param srid the SIRD of the geometry, e.g. EPSG:4326
          * @param type the type of the geometry, e.g. POINT
-         * @param isDefault TRUE fi this attribute contains the default geometry of the feature
-         *     type, otherwise FALSE
+         * @param isDefault TRUE fi this attribute contains the default geometry of the feature type, otherwise FALSE
          */
         public void addGeometry(String attributeName, String srid, String type, String isDefault) {
             super.addGeometry(currentIndex, attributeName, srid, type, isDefault);
@@ -172,8 +160,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     /**
-     * Helper method that retrieves all the attributes names used in a feature type mapping in an
-     * App-Schema file.
+     * Helper method that retrieves all the attributes names used in a feature type mapping in an App-Schema file.
      *
      * @param typeMapping the feature type mapping
      * @return set of the attributes names found
@@ -195,8 +182,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             }
             // solr multiple values expressions
             if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
-                SolrMultipleValue multipleValue =
-                        (SolrMultipleValue) attributeMapping.getMultipleValue();
+                SolrMultipleValue multipleValue = (SolrMultipleValue) attributeMapping.getMultipleValue();
                 attributes.addAll(extractAttributesNames(multipleValue.getExpression()));
             }
         }
@@ -204,8 +190,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     /**
-     * Helper method that retrieves all the attributes names used in the source expression of an
-     * attribute mapping in an App-Schema file.
+     * Helper method that retrieves all the attributes names used in the source expression of an attribute mapping in an
+     * App-Schema file.
      *
      * @param expression the attribute source expression
      * @return set of the attributes names found
@@ -217,8 +203,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     /**
-     * Expression visitor that retrieves all the attributes names used in the source expression of
-     * an attribute mapping in an App-Schema file.
+     * Expression visitor that retrieves all the attributes names used in the source expression of an attribute mapping
+     * in an App-Schema file.
      */
     private static class AttributesExtractor extends AbstractExpressionVisitor {
 
@@ -233,8 +219,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         }
 
         /**
-         * Return the set of attributes names found by visiting the expression, as per its
-         * definition the set doesn't contain duplicates.
+         * Return the set of attributes names found by visiting the expression, as per its definition the set doesn't
+         * contain duplicates.
          *
          * @return set of the attributes names found
          */
@@ -244,17 +230,14 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     /**
-     * Helper method that builds sort by expression for all the identifier attributes of the
-     * provided feature type.
+     * Helper method that builds sort by expression for all the identifier attributes of the provided feature type.
      *
      * @param featureTypeMapping the feature type from where to extract the identifier attributes
-     * @return an arrays contain ascending sort by expression on the featrue type identifier
-     *     attributes
+     * @return an arrays contain ascending sort by expression on the featrue type identifier attributes
      */
     private SortBy[] sortByFeatureTypeIds(FeatureTypeMapping featureTypeMapping) {
         ArrayList<SortBy> sortByExpressions = new ArrayList<>();
-        for (org.geotools.data.complex.AttributeMapping mapping :
-                featureTypeMapping.getAttributeMappings()) {
+        for (org.geotools.data.complex.AttributeMapping mapping : featureTypeMapping.getAttributeMappings()) {
             if (mapping.getIdentifierExpression() != null
                     && !mapping.getIdentifierExpression().equals(Expression.NIL)) {
                 // we have an identifier expression
@@ -268,8 +251,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     /**
-     * Helper that returns the provided value as is if its already an expression, otherwise converts
-     * it to a string and parses it.
+     * Helper that returns the provided value as is if its already an expression, otherwise converts it to a string and
+     * parses it.
      *
      * @param value value to handle
      * @return an expression obtained from the provided value
@@ -291,8 +274,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         try {
             return AppSchemaDataAccessConfigurator.parseOgcCqlExpression(expression, filterFactory);
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    String.format("Error parsing expression '%s'.", expression), exception);
+            throw new RuntimeException(String.format("Error parsing expression '%s'.", expression), exception);
         }
     }
 

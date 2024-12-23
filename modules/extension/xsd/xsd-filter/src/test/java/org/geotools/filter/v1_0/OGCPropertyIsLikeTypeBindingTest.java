@@ -104,9 +104,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
         // print(doc);
 
-        NodeList property =
-                doc.getDocumentElement()
-                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
+        NodeList property = doc.getDocumentElement().getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
         assertEquals(1, property.getLength());
 
         assertNotNull(property.item(0).getChildNodes());

@@ -39,10 +39,9 @@ import org.geotools.util.SoftValueHashMap;
 /**
  * Vocabulary translation; using an external lookup table.
  *
- * <p>This is similar to a Recode function from the Symbology Enoding 1.1 specifcation with the
- * difference that the lookup table is named by a URI. This URI can be handled internally as an
- * optimization; or it can be resolved to an external URL which is dragged down (as a property file)
- * and cached.
+ * <p>This is similar to a Recode function from the Symbology Enoding 1.1 specifcation with the difference that the
+ * lookup table is named by a URI. This URI can be handled internally as an optimization; or it can be resolved to an
+ * external URL which is dragged down (as a property file) and cached.
  *
  * <p>This function expects:
  *

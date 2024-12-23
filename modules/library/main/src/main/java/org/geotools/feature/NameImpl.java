@@ -23,8 +23,8 @@ import org.geotools.util.Utilities;
 /**
  * Simple implementation of Name.
  *
- * <p>This class emulates QName, and is used as the implementation of both AttributeName and
- * TypeName (so when the API settles down we should have a quick fix.
+ * <p>This class emulates QName, and is used as the implementation of both AttributeName and TypeName (so when the API
+ * settles down we should have a quick fix.
  *
  * <p>Its is advantageous to us to be able to:
  *
@@ -33,16 +33,15 @@ import org.geotools.util.Utilities;
  *   <li>Strongly type AttributeName and TypeName separately
  * </ul>
  *
- * The ISO interface move towards combining the AttributeName and Attribute classes, and TypeName
- * and Type classes, while we understand the attractiveness of this on a UML diagram it is very
- * helpful to keep these concepts separate when playing with a strongly typed language like java.
+ * The ISO interface move towards combining the AttributeName and Attribute classes, and TypeName and Type classes,
+ * while we understand the attractiveness of this on a UML diagram it is very helpful to keep these concepts separate
+ * when playing with a strongly typed language like java.
  *
  * <p>It case it is not obvious this is a value object and equality is based on namespace and name.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public class NameImpl
-        implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
+public class NameImpl implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
     private static final long serialVersionUID = 4564070184645559899L;
 
     /** namespace / scope */
@@ -125,8 +124,7 @@ public class NameImpl
     /** Returns a hash code value for this operand. */
     @Override
     public int hashCode() {
-        return (namespace == null ? 0 : namespace.hashCode())
-                + 37 * (local == null ? 0 : local.hashCode());
+        return (namespace == null ? 0 : namespace.hashCode()) + 37 * (local == null ? 0 : local.hashCode());
     }
 
     /** value object with equality based on name and namespace. */

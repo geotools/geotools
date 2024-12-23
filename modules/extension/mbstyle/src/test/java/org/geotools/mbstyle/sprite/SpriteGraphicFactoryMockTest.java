@@ -34,10 +34,8 @@ import org.junit.Test;
 
 public class SpriteGraphicFactoryMockTest {
 
-    static final URL pngURL =
-            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
-    static final URL jsonURL =
-            SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
+    static final URL pngURL = SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
+    static final URL jsonURL = SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
 
     @Before
     public void setup() throws Exception {
@@ -82,8 +80,6 @@ public class SpriteGraphicFactoryMockTest {
 
         Literal spriteExpression = getAerialWayLocation();
         SpriteGraphicFactory factory = new SpriteGraphicFactory();
-        assertThrows(
-                URLCheckerException.class,
-                () -> factory.getIcon(null, spriteExpression, "mbsprite", 15));
+        assertThrows(URLCheckerException.class, () -> factory.getIcon(null, spriteExpression, "mbsprite", 15));
     }
 }

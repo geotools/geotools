@@ -140,9 +140,7 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
-        return encodingUtils.AbstractFeatureTypeGetProperties(
-                object, element, schemaIndex, configuration);
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        return encodingUtils.AbstractFeatureTypeGetProperties(object, element, schemaIndex, configuration);
     }
 }

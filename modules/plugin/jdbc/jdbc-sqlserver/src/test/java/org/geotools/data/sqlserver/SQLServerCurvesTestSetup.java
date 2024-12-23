@@ -26,9 +26,8 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
 
     @Override
     protected void createCircularStringsTable() throws Exception {
-        String sql =
-                "CREATE TABLE \"circularStrings\" ("
-                        + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
+        String sql = "CREATE TABLE \"circularStrings\" ("
+                + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
         run(sql);
 
         sql =
@@ -38,9 +37,8 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
 
     @Override
     protected void createCompoundCurvesTable() throws Exception {
-        String sql =
-                "CREATE TABLE \"compoundCurves\" ("
-                        + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
+        String sql = "CREATE TABLE \"compoundCurves\" ("
+                + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
         run(sql);
 
         sql =
@@ -50,9 +48,8 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
 
     @Override
     protected void createCurvesTable() throws Exception {
-        String sql =
-                "CREATE TABLE \"curves\" ("
-                        + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
+        String sql = "CREATE TABLE \"curves\" ("
+                + "\"id\" INT, \"name\" VARCHAR(255), \"geometry\" geometry, PRIMARY KEY(id))";
         run(sql);
 
         sql =
@@ -85,10 +82,9 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
                 "INSERT INTO CURVES VALUES (5, 'Compound polygon', geometry::STGeomFromText('CURVEPOLYGON(COMPOUNDCURVE((6 10, 10 1, 14 10), CIRCULARSTRING(14 10, 10 14, 6 10)))', 32632))";
         run(sql);
 
-        sql =
-                "INSERT INTO CURVES VALUES (6, 'Compound polygon with hole', geometry::STGeomFromText('CURVEPOLYGON("
-                        + "COMPOUNDCURVE((20 30, 11 30, 7 22, 7 15, 11 10, 21 10, 27 30), CIRCULARSTRING(27 30, 25 27, 20 30)), "
-                        + "CIRCULARSTRING(10 17, 15 12, 20 17, 15 22, 10 17))', 32632))";
+        sql = "INSERT INTO CURVES VALUES (6, 'Compound polygon with hole', geometry::STGeomFromText('CURVEPOLYGON("
+                + "COMPOUNDCURVE((20 30, 11 30, 7 22, 7 15, 11 10, 21 10, 27 30), CIRCULARSTRING(27 30, 25 27, 20 30)), "
+                + "CIRCULARSTRING(10 17, 15 12, 20 17, 15 22, 10 17))', 32632))";
         run(sql);
 
         sql =

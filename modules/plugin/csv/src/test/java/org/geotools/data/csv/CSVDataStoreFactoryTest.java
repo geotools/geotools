@@ -137,10 +137,7 @@ public class CSVDataStoreFactoryTest {
     public void testCSVStrategyDefault() throws Exception {
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(file);
         CSVStrategy csvStrategy = datastore.getCSVStrategy();
-        assertEquals(
-                "Unexpected default csv strategy",
-                CSVAttributesOnlyStrategy.class,
-                csvStrategy.getClass());
+        assertEquals("Unexpected default csv strategy", CSVAttributesOnlyStrategy.class, csvStrategy.getClass());
     }
 
     @Test

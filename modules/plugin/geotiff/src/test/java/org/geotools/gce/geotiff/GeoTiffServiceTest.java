@@ -32,7 +32,8 @@ public class GeoTiffServiceTest {
 
     @Test
     public void testIsAvailable() {
-        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        Iterator<GridFormatFactorySpi> list =
+                GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
 
         while (list.hasNext()) {

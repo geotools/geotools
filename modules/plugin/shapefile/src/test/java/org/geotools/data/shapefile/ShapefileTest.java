@@ -111,8 +111,8 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     /**
-     * It is posible for a point in a hole to touch the edge of its containing shell This test
-     * checks that such polygons can be loaded ok.
+     * It is posible for a point in a hole to touch the edge of its containing shell This test checks that such polygons
+     * can be loaded ok.
      */
     @Test
     public void testPolygonHoleTouchAtEdge() throws Exception {
@@ -121,8 +121,8 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     /**
-     * It is posible for a shapefile to have extra information past the end of the normal feature
-     * area, this tests checks that this situation is delt with ok.
+     * It is posible for a shapefile to have extra information past the end of the normal feature area, this tests
+     * checks that this situation is delt with ok.
      */
     @Test
     public void testExtraAtEnd() throws Exception {
@@ -137,12 +137,8 @@ public class ShapefileTest extends TestCaseSupport {
         final URL url1 = TestData.url(STATEPOP); // Backed by InputStream
         final URL url2 = TestData.url(TestCaseSupport.class, STATEPOP); // Backed by File
         final URL url3 = TestData.url(TestCaseSupport.class, STATEPOP_IDX);
-        try (ShapefileReader reader1 =
-                        new ShapefileReader(
-                                new ShpFiles(url1), false, false, new GeometryFactory());
-                ShapefileReader reader2 =
-                        new ShapefileReader(
-                                new ShpFiles(url2), false, false, new GeometryFactory());
+        try (ShapefileReader reader1 = new ShapefileReader(new ShpFiles(url1), false, false, new GeometryFactory());
+                ShapefileReader reader2 = new ShapefileReader(new ShpFiles(url2), false, false, new GeometryFactory());
                 IndexFile index = new IndexFile(new ShpFiles(url3), false)) {
             for (int i = 0; i < index.getRecordCount(); i++) {
                 if (reader1.hasNext()) {
@@ -188,8 +184,7 @@ public class ShapefileTest extends TestCaseSupport {
     @Test
     public void testSkippingRecords() throws Exception {
         final URL url = TestData.url(STATEPOP);
-        try (ShapefileReader r =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
+        try (ShapefileReader r = new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             int idx = 0;
             while (r.hasNext()) {
                 idx++;
@@ -215,24 +210,21 @@ public class ShapefileTest extends TestCaseSupport {
         final URL c1 = TestData.url(STATEPOP);
         URL c2;
         ArrayList<Integer> offsets = new ArrayList<>();
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(c1), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(c1), false, false, new GeometryFactory())) {
 
             while (reader.hasNext()) {
                 ShapefileReader.Record record = reader.nextRecord();
                 offsets.add(Integer.valueOf(record.offset()));
                 Geometry geom = (Geometry) record.shape();
                 assertEquals(
-                        new Envelope(record.minX, record.maxX, record.minY, record.maxY),
-                        geom.getEnvelopeInternal());
+                        new Envelope(record.minX, record.maxX, record.minY, record.maxY), geom.getEnvelopeInternal());
             }
             copyShapefiles(STATEPOP);
             reader.close();
             c2 = TestData.url(TestCaseSupport.class, STATEPOP);
         }
 
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory())) {
             for (Integer offset : offsets) {
                 reader.shapeAt(offset.intValue());
             }
@@ -250,8 +242,7 @@ public class ShapefileTest extends TestCaseSupport {
         }
         URL shpUrl = tmp.toURI().toURL();
         params.put("url", shpUrl);
-        ShapefileDataStore ds =
-                (ShapefileDataStore) new ShapefileDataStoreFactory().createNewDataStore(params);
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createNewDataStore(params);
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("shapefile");
         tb.add("the_geom", Point.class);
@@ -267,8 +258,7 @@ public class ShapefileTest extends TestCaseSupport {
 
         // Read the same file and check the geometry is null
         ShpFiles shpFiles = new ShpFiles(shpUrl);
-        try (ShapefileReader reader =
-                new ShapefileReader(shpFiles, false, true, new GeometryFactory(), false)) {
+        try (ShapefileReader reader = new ShapefileReader(shpFiles, false, true, new GeometryFactory(), false)) {
             assertTrue(reader.hasNext());
             assertNull(reader.nextRecord().shape());
         }
@@ -278,8 +268,7 @@ public class ShapefileTest extends TestCaseSupport {
         final URL url = TestData.url(resource);
 
         int cnt = 0;
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
@@ -292,8 +281,7 @@ public class ShapefileTest extends TestCaseSupport {
     public void testReadingSparse() throws IOException {
         File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
         int cnt = 0;
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
@@ -307,8 +295,7 @@ public class ShapefileTest extends TestCaseSupport {
     public void testReadingEmptyDbf() throws IOException {
         File file = TestData.file(TestCaseSupport.class, "missing/aaa1.shp");
         int cnt = 0;
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
@@ -335,31 +322,23 @@ public class ShapefileTest extends TestCaseSupport {
 
     @Test
     public void testScreenMapIndexedReader() throws Exception {
-        URL shpUrl =
-                TestData.url(
-                        this,
-                        SHP_FILTER_BEFORE_SCREENMAP + "/" + SHP_FILTER_BEFORE_SCREENMAP + ".shp");
+        URL shpUrl = TestData.url(this, SHP_FILTER_BEFORE_SCREENMAP + "/" + SHP_FILTER_BEFORE_SCREENMAP + ".shp");
 
         Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
 
-        ShapefileDataStore ds =
-                (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
 
         // make a fid query to get a indexed reader
 
         String fidPrefix = ds.getTypeName().getLocalPart();
         Filter filter =
-                ff.id(
-                        ff.featureId(fidPrefix + ".0"),
-                        ff.featureId(fidPrefix + ".1"),
-                        ff.featureId(fidPrefix + ".2"));
+                ff.id(ff.featureId(fidPrefix + ".0"), ff.featureId(fidPrefix + ".1"), ff.featureId(fidPrefix + ".2"));
         // force creation of a fid index
         ds.indexManager.hasFidIndex(true);
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                ds.getFeatureReader(
-                        new Query(ds.getTypeNames()[0], filter), Transaction.AUTO_COMMIT)) {
+                ds.getFeatureReader(new Query(ds.getTypeNames()[0], filter), Transaction.AUTO_COMMIT)) {
             assertTrue(reader instanceof IndexedShapefileFeatureReader);
 
             // prepare a screenmap that will heavily prune features
@@ -390,12 +369,7 @@ public class ShapefileTest extends TestCaseSupport {
         String expectedName = "b";
         int expectedFid = 2;
 
-        testScreenMap(
-                SHP_SCREENMAP_WITH_DELETED_ROW,
-                isFilterBeforeScreenMap,
-                filterFid,
-                expectedName,
-                expectedFid);
+        testScreenMap(SHP_SCREENMAP_WITH_DELETED_ROW, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
 
     @Test
@@ -407,12 +381,7 @@ public class ShapefileTest extends TestCaseSupport {
         String expectedName = "a";
         int expectedFid = 1;
 
-        testScreenMap(
-                SHP_FILTER_BEFORE_SCREENMAP,
-                isFilterBeforeScreenMap,
-                filterFid,
-                expectedName,
-                expectedFid);
+        testScreenMap(SHP_FILTER_BEFORE_SCREENMAP, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
 
     @Test
@@ -424,12 +393,7 @@ public class ShapefileTest extends TestCaseSupport {
         String expectedName = "b";
         int expectedFid = filterFid;
 
-        testScreenMap(
-                SHP_FILTER_BEFORE_SCREENMAP,
-                isFilterBeforeScreenMap,
-                filterFid,
-                expectedName,
-                expectedFid);
+        testScreenMap(SHP_FILTER_BEFORE_SCREENMAP, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
 
     @Test
@@ -442,36 +406,23 @@ public class ShapefileTest extends TestCaseSupport {
         String expectedName = "c";
         int expectedFid = filterFid;
 
-        testScreenMap(
-                SHP_SCREENMAP_WITH_DELETED_ROW,
-                isFilterBeforeScreenMap,
-                filterFid,
-                expectedName,
-                expectedFid);
+        testScreenMap(SHP_SCREENMAP_WITH_DELETED_ROW, isFilterBeforeScreenMap, filterFid, expectedName, expectedFid);
     }
 
     private void testScreenMap(
-            String shpName,
-            boolean isFilterBeforeScreenMap,
-            Integer filterFid,
-            String expectedName,
-            int expectedFid)
+            String shpName, boolean isFilterBeforeScreenMap, Integer filterFid, String expectedName, int expectedFid)
             throws Exception {
         URL shpUrl = TestData.url(this, shpName + "/" + shpName + ".shp");
 
         Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, shpUrl);
 
-        ShapefileDataStore ds =
-                (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
+        ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(params);
 
         Query query = new Query(ds.getTypeNames()[0]);
         if (isFilterBeforeScreenMap && filterFid != null) {
             FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-            Id id =
-                    factory.id(
-                            Collections.singleton(
-                                    ff.featureId(shpName + "." + filterFid.toString())));
+            Id id = factory.id(Collections.singleton(ff.featureId(shpName + "." + filterFid.toString())));
             query.setFilter(id);
         }
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -497,8 +448,7 @@ public class ShapefileTest extends TestCaseSupport {
     protected void loadMemoryMapped(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);
         int cnt = 0;
-        try (ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;

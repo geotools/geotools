@@ -50,11 +50,11 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     Boolean isAvailable = null;
 
     /**
-     * Test to see if this DataStore is available, for example if it has all the appropriate
-     * libraries to construct an instance.
+     * Test to see if this DataStore is available, for example if it has all the appropriate libraries to construct an
+     * instance.
      *
-     * <p>This method is used for interactive applications, so as to not advertise support for
-     * formats that will not function.
+     * <p>This method is used for interactive applications, so as to not advertise support for formats that will not
+     * function.
      *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      */
@@ -75,13 +75,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // getParametersInfo start
     /** Parameter description of information required to connect */
     public static final Param FILE_PARAM =
-            new Param(
-                    "file",
-                    File.class,
-                    "Comma seperated value file",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "csv"));
+            new Param("file", File.class, "Comma seperated value file", true, null, new KVP(Param.EXT, "csv"));
 
     public Param[] getParametersInfo() {
         return new Param[] {FILE_PARAM};

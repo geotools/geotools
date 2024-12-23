@@ -122,10 +122,7 @@ public class VPFLibrary extends ContentDataStore {
         }
     }
 
-    /**
-     * The namespace to create FeatureTypes with. Set with a reasonable default of
-     * http://vpf.org/default.
-     */
+    /** The namespace to create FeatureTypes with. Set with a reasonable default of http://vpf.org/default. */
     private URI namespace = DEFAULT_NAMESPACE;
 
     /**
@@ -150,8 +147,8 @@ public class VPFLibrary extends ContentDataStore {
     */
 
     /**
-     * Constructor that adds a namespace to the File only constructor. If using another constructor
-     * then use setNamespace(URI) ((javadocTODO: add the correct link to previous method.))
+     * Constructor that adds a namespace to the File only constructor. If using another constructor then use
+     * setNamespace(URI) ((javadocTODO: add the correct link to previous method.))
      *
      * @param dir the containing directory
      * @throws SchemaException for problems making a featureType.
@@ -163,15 +160,14 @@ public class VPFLibrary extends ContentDataStore {
     */
 
     /**
-     * Constructor which defaults the containing database to null and looks up the first (and
-     * presumably only) entry in the library attribute table
+     * Constructor which defaults the containing database to null and looks up the first (and presumably only) entry in
+     * the library attribute table
      *
      * @param dir the containing directory
      * @param namespace the namespace to create features with.
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFLibrary(SimpleFeature libraryFeature, File dir, URI namespace)
-            throws IOException, SchemaException {
+    public VPFLibrary(SimpleFeature libraryFeature, File dir, URI namespace) throws IOException, SchemaException {
         // read libraries info
         String vpfTableName = new File(dir, LIBRARY_HEADER_TABLE).toString();
         VPFFile lhtFile = VPFFileFactory.getInstance().getFile(vpfTableName);
@@ -330,20 +326,13 @@ public class VPFLibrary extends ContentDataStore {
     @Override
     public String toString() {
         return String.format(
-                "{"
-                        + "library: \"%s\","
-                        + "xmin: %f,"
-                        + "xmax: %f,"
-                        + "ymin: %f,"
-                        + "ymax: %f"
-                        + "}",
+                "{" + "library: \"%s\"," + "xmin: %f," + "xmax: %f," + "ymin: %f," + "ymax: %f" + "}",
                 libraryName, getXmin(), getXmax(), getYmin(), getYmax());
     }
     /** A map containing the tiles used by this library */
     private final Map<Short, String> tileMap = new HashMap<>();
     /**
-     * Returns a map containing the tiles used by this library. The map has Short keys and and
-     * string values.
+     * Returns a map containing the tiles used by this library. The map has Short keys and and string values.
      *
      * @return a <code>Map</code> value
      */
@@ -557,8 +546,8 @@ public class VPFLibrary extends ContentDataStore {
     }
 
     /**
-     * Returns the coordinate reference system appropriate for this library. If the coordinate
-     * reference system cannot be determined null will be returned.
+     * Returns the coordinate reference system appropriate for this library. If the coordinate reference system cannot
+     * be determined null will be returned.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         if (crs == null) {

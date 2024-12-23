@@ -34,15 +34,14 @@ public class DefaultPeriodDurationTest {
 
     @Before
     public void setUp() {
-        periodDuration1 =
-                new DefaultPeriodDuration(
-                        new SimpleInternationalString("5"),
-                        new SimpleInternationalString("2"),
-                        new SimpleInternationalString("1"),
-                        new SimpleInternationalString("12"),
-                        new SimpleInternationalString("15"),
-                        new SimpleInternationalString("5"),
-                        new SimpleInternationalString("23"));
+        periodDuration1 = new DefaultPeriodDuration(
+                new SimpleInternationalString("5"),
+                new SimpleInternationalString("2"),
+                new SimpleInternationalString("1"),
+                new SimpleInternationalString("12"),
+                new SimpleInternationalString("15"),
+                new SimpleInternationalString("5"),
+                new SimpleInternationalString("23"));
         periodDuration2 = new DefaultPeriodDuration(1535148449548L);
     }
 

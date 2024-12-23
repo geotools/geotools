@@ -41,8 +41,8 @@ public class OperationNotFoundException extends IllegalArgumentException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public OperationNotFoundException(String message) {
         super(message);
@@ -51,8 +51,8 @@ public class OperationNotFoundException extends IllegalArgumentException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param cause The cause, or {@code null}.
      * @since GeoAPI 2.2
      */

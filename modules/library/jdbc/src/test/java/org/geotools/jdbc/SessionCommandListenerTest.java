@@ -27,7 +27,8 @@ public class SessionCommandListenerTest {
                 }
             };
         }
-    };
+    }
+    ;
 
     RecordingConnection conn = new RecordingConnection();
 
@@ -81,8 +82,7 @@ public class SessionCommandListenerTest {
     @Test
     public void testTwoExpandVariablesAreReplaced() throws Exception {
         SessionCommandsListener listener =
-                new SessionCommandsListener(
-                        "call startSession('select ${user}, ${version} from 1')", null);
+                new SessionCommandsListener("call startSession('select ${user}, ${version} from 1')", null);
 
         // check borrow
         EnvFunction.setLocalValue("user", "user1");
@@ -102,10 +102,8 @@ public class SessionCommandListenerTest {
 
     @Test
     public void testValidSqlUsingCurlyBracketsOutOfAVariableDefinition() throws Exception {
-        SessionCommandsListener listener =
-                new SessionCommandsListener(
-                        "select set_config('my.userString', substring('${GSUSER}', 'user#\"[0-9]{5}#\"%', '#'), false) ",
-                        null);
+        SessionCommandsListener listener = new SessionCommandsListener(
+                "select set_config('my.userString', substring('${GSUSER}', 'user#\"[0-9]{5}#\"%', '#'), false) ", null);
 
         EnvFunction.setLocalValue("GSUSER", "user11111");
         listener.onBorrow(store, conn);
@@ -117,8 +115,7 @@ public class SessionCommandListenerTest {
 
     @Test
     public void testOneExpandVariablesIsReplaced() throws Exception {
-        SessionCommandsListener listener =
-                new SessionCommandsListener("call startSession('${user}')", null);
+        SessionCommandsListener listener = new SessionCommandsListener("call startSession('${user}')", null);
 
         // check borrow
         EnvFunction.setLocalValue("user", "abcde");
@@ -130,8 +127,7 @@ public class SessionCommandListenerTest {
     // this tests checks the same of previos but for the release connection sql script
     @Test
     public void testReleaseConnectionsScript() throws Exception {
-        SessionCommandsListener listener =
-                new SessionCommandsListener(null, "call endSession('${user,joe}')");
+        SessionCommandsListener listener = new SessionCommandsListener(null, "call endSession('${user,joe}')");
 
         // check release
         listener.onRelease(store, conn);
@@ -142,8 +138,7 @@ public class SessionCommandListenerTest {
     @Test
     public void testInvalidVariableDefinitionMissingClosingBracket() throws Exception {
         Assert.assertThrows(
-                IllegalArgumentException.class,
-                () -> new SessionCommandsListener("select ${user from 1)", null));
+                IllegalArgumentException.class, () -> new SessionCommandsListener("select ${user from 1)", null));
     }
 
     @After

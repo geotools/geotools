@@ -24,14 +24,14 @@ import org.geotools.ows.ServiceException;
 /**
  * Process GetFeatureInfoResponse.
  *
- * <p>FeatureInfoResponse is not well specified by any of the WMS specifications. What this class
- * decides to do with the response will largely depend on the contentType.
+ * <p>FeatureInfoResponse is not well specified by any of the WMS specifications. What this class decides to do with the
+ * response will largely depend on the contentType.
  *
  * <ul>
  *   <li>text/xml: could be GML
  *   <li>text/html: coudl be a description
- *   <li>Really this could be anything we will have to add to this class as different responses are
- *       actually found in the wild.
+ *   <li>Really this could be anything we will have to add to this class as different responses are actually found in
+ *       the wild.
  * </ul>
  *
  * @author Richard Gould

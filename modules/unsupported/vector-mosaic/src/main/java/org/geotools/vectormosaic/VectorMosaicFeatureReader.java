@@ -36,9 +36,8 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.logging.Logging;
 
 /**
- * Feature reader for vector mosaics, it reads from the delegate and granule stores, merges the
- * features, applies the required filtering, and retypes the result to match the Query property
- * selection.
+ * Feature reader for vector mosaics, it reads from the delegate and granule stores, merges the features, applies the
+ * required filtering, and retypes the result to match the Query property selection.
  */
 class VectorMosaicFeatureReader implements SimpleFeatureReader {
     static final Logger LOGGER = Logging.getLogger(VectorMosaicFeatureReader.class);
@@ -65,8 +64,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
      * @param vectorMosaicFeatureSource the source of the vector mosaic
      */
     public VectorMosaicFeatureReader(
-            GranuleSourceProvider granuleSourceProvider,
-            VectorMosaicFeatureSource vectorMosaicFeatureSource) {
+            GranuleSourceProvider granuleSourceProvider, VectorMosaicFeatureSource vectorMosaicFeatureSource) {
         this.granuleSourceProvider = granuleSourceProvider;
         this.source = vectorMosaicFeatureSource;
         this.query = granuleSourceProvider.getQuery();
@@ -75,10 +73,8 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
         // if the query is not using all attributes, we migth need to retype the result post merge
         if (query.getPropertyNames() != null) {
-            this.targetSchema =
-                    SimpleFeatureTypeBuilder.retype(internalSchema, query.getPropertyNames());
-            if (!internalSchema.equals(targetSchema))
-                this.retypeBuilder = new SimpleFeatureBuilder(targetSchema);
+            this.targetSchema = SimpleFeatureTypeBuilder.retype(internalSchema, query.getPropertyNames());
+            if (!internalSchema.equals(targetSchema)) this.retypeBuilder = new SimpleFeatureBuilder(targetSchema);
         }
     }
 
@@ -88,8 +84,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         Feature f = null;
         if (hasNext()) {
             f = nextGranule;
@@ -155,8 +150,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
      * @param delegateFeature the delegate feature
      * @return the merged feature
      */
-    private SimpleFeature mergeGranuleAndDelegate(
-            SimpleFeature peekGranule, SimpleFeature delegateFeature) {
+    private SimpleFeature mergeGranuleAndDelegate(SimpleFeature peekGranule, SimpleFeature delegateFeature) {
         // collect attributes from the granule and the delegate, making no assumption
         // on the order, the query might have imposed one that does not match the
         // normal layout of the mosaic features

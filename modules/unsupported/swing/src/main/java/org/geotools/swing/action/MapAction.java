@@ -23,8 +23,8 @@ import javax.swing.ImageIcon;
 import org.geotools.swing.MapPane;
 
 /**
- * Base class for map pane actions; just provides a common initializing method and a reference to
- * the map pane being serviced.
+ * Base class for map pane actions; just provides a common initializing method and a reference to the map pane being
+ * serviced.
  *
  * @author Michael Bedward
  * @since 2.6

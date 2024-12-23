@@ -21,8 +21,8 @@ import org.geotools.api.util.ProgressListener;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Base class for GridCoverageProgressAdapter implementations to reporto progress about I/O
- * operations with GridCoverages.
+ * Base class for GridCoverageProgressAdapter implementations to reporto progress about I/O operations with
+ * GridCoverages.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
@@ -44,8 +44,7 @@ public abstract class BaseGridCoverageProgressAdapter {
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numImages", numImages));
         this.numImages = numImages;
         if (monitor == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "monitor"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "monitor"));
         this.monitor = monitor;
         init();
     }

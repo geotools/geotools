@@ -23,11 +23,11 @@ import java.util.Locale;
 import org.geotools.util.ClassChanger;
 
 /**
- * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane into
- * coincidence with another, generally measured in degrees, sexagesimal degrees or grads.
+ * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane into coincidence with
+ * another, generally measured in degrees, sexagesimal degrees or grads.
  *
- * <p>This class is registered with {@link org.geotools.util.ClassChanger}, which means it can be
- * converted to and from {@link Double}.
+ * <p>This class is registered with {@link org.geotools.util.ClassChanger}, which means it can be converted to and from
+ * {@link Double}.
  *
  * @since 2.0
  * @version $Id$
@@ -45,18 +45,17 @@ public class Angle implements Comparable<Angle>, Serializable {
 
     /** Define how angle can be converted to {@link Number} objects. */
     static {
-        ClassChanger.register(
-                new ClassChanger<Angle, Double>(Angle.class, Double.class) {
-                    @Override
-                    protected Double convert(final Angle o) {
-                        return o.theta;
-                    }
+        ClassChanger.register(new ClassChanger<Angle, Double>(Angle.class, Double.class) {
+            @Override
+            protected Double convert(final Angle o) {
+                return o.theta;
+            }
 
-                    @Override
-                    protected Angle inverseConvert(final Double value) {
-                        return new Angle(value);
-                    }
-                });
+            @Override
+            protected Angle inverseConvert(final Double value) {
+                return new Angle(value);
+            }
+        });
     }
 
     /** Angle value in degres. */
@@ -72,9 +71,9 @@ public class Angle implements Comparable<Angle>, Serializable {
     }
 
     /**
-     * Constructs a newly allocated {@code Angle} object that represents the angle value represented
-     * by the string. The string should represents an angle in either fractional degrees (e.g.
-     * 45.5°) or degrees with minutes and seconds (e.g. 45°30').
+     * Constructs a newly allocated {@code Angle} object that represents the angle value represented by the string. The
+     * string should represents an angle in either fractional degrees (e.g. 45.5°) or degrees with minutes and seconds
+     * (e.g. 45°30').
      *
      * @param string A string to be converted to an {@code Angle}.
      * @throws NumberFormatException if the string does not contain a parsable angle.
@@ -130,8 +129,8 @@ public class Angle implements Comparable<Angle>, Serializable {
     }
 
     /**
-     * Compares two {@code Angle} objects numerically. The comparaison is done as if by the {@link
-     * Double#compare(double,double)} method.
+     * Compares two {@code Angle} objects numerically. The comparaison is done as if by the
+     * {@link Double#compare(double,double)} method.
      */
     @Override
     public int compareTo(final Angle that) {
@@ -150,8 +149,8 @@ public class Angle implements Comparable<Angle>, Serializable {
     }
 
     /**
-     * Returns a shared instance of {@link AngleFormat}. The return type is {@link Format} in order
-     * to avoid class loading before necessary.
+     * Returns a shared instance of {@link AngleFormat}. The return type is {@link Format} in order to avoid class
+     * loading before necessary.
      */
     private static Format getAngleFormat() {
         assert Thread.holdsLock(Angle.class);

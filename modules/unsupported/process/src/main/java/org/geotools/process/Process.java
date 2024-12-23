@@ -22,19 +22,18 @@ import java.util.concurrent.Executors;
 import org.geotools.api.util.ProgressListener;
 
 /**
- * A Process that returns a result and reports progress. Implementors define a single method called
- * <tt>execute</tt> that accepts the inputs to process and a ProgressListener.
+ * A Process that returns a result and reports progress. Implementors define a single method called <tt>execute</tt>
+ * that accepts the inputs to process and a ProgressListener.
  *
- * <p>The <tt>Process</tt> interface is similar to {@link java.util.concurrent.Callable}, in that
- * both are designed for classes whose instances are potentially executed by another thread. A
- * <tt>Callable</tt>, however, does not report progress.
+ * <p>The <tt>Process</tt> interface is similar to {@link java.util.concurrent.Callable}, in that both are designed for
+ * classes whose instances are potentially executed by another thread. A <tt>Callable</tt>, however, does not report
+ * progress.
  *
- * <p>The {@link Executors} class contains utility methods to convert from other common forms to
- * <tt>Callable</tt> classes.
+ * <p>The {@link Executors} class contains utility methods to convert from other common forms to <tt>Callable</tt>
+ * classes.
  *
  * @see Executor
- *     <p>/** Used to process inputs and is reported using a ProgressListener. Results are available
- *     after being run.
+ *     <p>/** Used to process inputs and is reported using a ProgressListener. Results are available after being run.
  * @author gdavis
  */
 public interface Process {
@@ -45,6 +44,5 @@ public interface Process {
      * @param monitor listener for handling the progress of the process
      * @return Map of results, (@see ProcessFactory for details), or null if canceled
      */
-    public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor)
-            throws ProcessException;
+    public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) throws ProcessException;
 }

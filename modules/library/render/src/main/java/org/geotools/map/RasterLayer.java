@@ -32,8 +32,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 public abstract class RasterLayer extends StyleLayer {
 
     /**
-     * SimpleFeatureSource used to provide the outline of the raster content. Created in a lazy
-     * fashion by getFeatureSource().
+     * SimpleFeatureSource used to provide the outline of the raster content. Created in a lazy fashion by
+     * getFeatureSource().
      */
     protected SimpleFeatureSource source;
 
@@ -82,19 +82,17 @@ public abstract class RasterLayer extends StyleLayer {
     }
 
     /**
-     * Supply a FeatureCollection indicating where the raster is located, we ask that the features
-     * use the same coordinate reference system as your raster data and form an outline or foot
-     * print of the information you have available.
+     * Supply a FeatureCollection indicating where the raster is located, we ask that the features use the same
+     * coordinate reference system as your raster data and form an outline or foot print of the information you have
+     * available.
      *
-     * <p>This is an interesting method for a RasterLayer to have; some of the rendering systems are
-     * willing to render your raster content as an outline; for this to work they need this method
-     * to supply a feature collection indicating where the content is located. The information may
-     * also be used to determine if any of your raster content is on screen (and thus needs to be
-     * rendered).
+     * <p>This is an interesting method for a RasterLayer to have; some of the rendering systems are willing to render
+     * your raster content as an outline; for this to work they need this method to supply a feature collection
+     * indicating where the content is located. The information may also be used to determine if any of your raster
+     * content is on screen (and thus needs to be rendered).
      *
-     * <p>Note this is a feature collection to allow for raster content that contains more than one
-     * image; and is not based bounding boxes (as sometimes rasters are rotated or stretched into
-     * position).
+     * <p>Note this is a feature collection to allow for raster content that contains more than one image; and is not
+     * based bounding boxes (as sometimes rasters are rotated or stretched into position).
      *
      * <p>You may find the {@link FeatureUtilities} useful in wrapping up your raster content.
      *

@@ -32,9 +32,9 @@ import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
  * A factory for loggers that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
- * <p>The {@code GeoTools.init()} method will select Log4J2LoggerFactory if log4j api is available
- * on the classpath, however if you have several logging libraries on the classpath call {@code
- * GeoTools.setLoggerFactory(Log4J2LoggerFactory#getInstance())}.
+ * <p>The {@code GeoTools.init()} method will select Log4J2LoggerFactory if log4j api is available on the classpath,
+ * however if you have several logging libraries on the classpath call
+ * {@code GeoTools.setLoggerFactory(Log4J2LoggerFactory#getInstance())}.
  *
  * @since 27
  * @version $Id$
@@ -66,8 +66,8 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegates to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if the logger would
+     * delegates to Java logging anyway.
      */
     @Override
     protected org.apache.logging.log4j.Logger getImplementation(final String name) {
@@ -81,8 +81,8 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
     }
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none.
      */
     @Override
     protected org.apache.logging.log4j.Logger unwrap(final Logger logger) {

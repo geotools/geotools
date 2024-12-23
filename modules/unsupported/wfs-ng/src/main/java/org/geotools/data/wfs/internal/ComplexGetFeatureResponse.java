@@ -35,9 +35,7 @@ public class ComplexGetFeatureResponse extends WFSResponse {
     private final XmlComplexFeatureParser parser;
 
     public ComplexGetFeatureResponse(
-            WFSRequest originatingRequest,
-            HTTPResponse httpResponse,
-            XmlComplexFeatureParser parser)
+            WFSRequest originatingRequest, HTTPResponse httpResponse, XmlComplexFeatureParser parser)
             throws ServiceException, IOException {
         super(originatingRequest, httpResponse);
         this.parser = parser;

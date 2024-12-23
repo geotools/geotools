@@ -36,11 +36,8 @@ public class PointHandler implements ShapeHandler {
     GeometryFactory geometryFactory;
 
     public PointHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
-        if ((type != ShapeType.POINT)
-                && (type != ShapeType.POINTM)
-                && (type != ShapeType.POINTZ)) { // 2d, 2d+m, 3d+m
-            throw new ShapefileException(
-                    "PointHandler constructor: expected a type of 1, 11 or 21");
+        if ((type != ShapeType.POINT) && (type != ShapeType.POINTM) && (type != ShapeType.POINTZ)) { // 2d, 2d+m, 3d+m
+            throw new ShapefileException("PointHandler constructor: expected a type of 1, 11 or 21");
         }
 
         shapeType = type;

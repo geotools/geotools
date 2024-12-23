@@ -21,10 +21,9 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 
 /**
- * Used by {@linkplain DefaultRenderingExecutor} to hold a single {@code Layer} that is being passed
- * to a renderer. Calling the {@code dispose} method of this class does not dispose of the layer
- * unlike {@linkplain MapContent#dispose()}. It does not permit subsequent changes to its layer
- * list.
+ * Used by {@linkplain DefaultRenderingExecutor} to hold a single {@code Layer} that is being passed to a renderer.
+ * Calling the {@code dispose} method of this class does not dispose of the layer unlike
+ * {@linkplain MapContent#dispose()}. It does not permit subsequent changes to its layer list.
  *
  * @author Michael Bedward
  * @since 8.0

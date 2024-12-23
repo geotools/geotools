@@ -80,8 +80,7 @@ public class GMLStreamingParserStressTest {
         XSISAXHandler.setLogLevel(Level.FINEST);
         XMLElementHandler.setLogLevel(Level.FINEST);
         XSIElementHandler.setLogLevel(Level.FINEST);
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                FCBuffer.getFeatureReader(u, 10, 10000)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr = FCBuffer.getFeatureReader(u, 10, 10000)) {
 
             Assert.assertNotNull("FeatureReader missing", fr);
 
@@ -106,8 +105,7 @@ public class GMLStreamingParserStressTest {
         TestData.copy(this, "xml/fme/roads/roads.xsd");
         URI u = f.toURI();
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                FCBuffer.getFeatureReader(u, 10, 10000)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr = FCBuffer.getFeatureReader(u, 10, 10000)) {
 
             Assert.assertNotNull("FeatureReader missing", fr);
 
@@ -134,8 +132,7 @@ public class GMLStreamingParserStressTest {
         TestData.copy(this, "xml/fme/lakes/lakes.xsd");
         URI u = f.toURI();
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                FCBuffer.getFeatureReader(u, 10, 10000)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr = FCBuffer.getFeatureReader(u, 10, 10000)) {
 
             Assert.assertNotNull("FeatureReader missing", fr);
 
@@ -167,10 +164,8 @@ public class GMLStreamingParserStressTest {
         TestData.copy(this, "xml/geoserver/roadSchema.xsd");
         URI u2 = f.toURI();
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr1 =
-                        FCBuffer.getFeatureReader(u1, 10, 10000);
-                FeatureReader<SimpleFeatureType, SimpleFeature> fr2 =
-                        FCBuffer.getFeatureReader(u2, 10, 10000)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr1 = FCBuffer.getFeatureReader(u1, 10, 10000);
+                FeatureReader<SimpleFeatureType, SimpleFeature> fr2 = FCBuffer.getFeatureReader(u2, 10, 10000)) {
 
             Assert.assertNotNull("FeatureReader missing", fr1);
             Assert.assertNotNull("FeatureReader missing", fr2);

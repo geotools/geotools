@@ -23,22 +23,22 @@ import java.net.URL;
  *
  * <p>This class operates as a Factory creating request for Open Web Services.
  *
- * <p>The idea is that this class operates a Toolkit for all things assocated with an Open Web
- * Service specification. The various objects produced by this toolkit are used as strategy objects
- * for the top level AbstractOpenWebService subclass. Example:
+ * <p>The idea is that this class operates a Toolkit for all things assocated with an Open Web Service specification.
+ * The various objects produced by this toolkit are used as strategy objects for the top level AbstractOpenWebService
+ * subclass. Example:
  *
  * <ul>
  *   <li>WebMapServer - uses a GetCapabilitiesRequest during version negotiation.
  * </ul>
  *
- * <p>Both name and version information that may be checked against a GetCapabilities document
- * during version negotiation. Specific Open Web Service implementations can extend this interface
- * to include details that are specific to their specification. Example: The Web Map Service
- * specification includes more operations such as GetMap and GetFeatureInfo.
+ * <p>Both name and version information that may be checked against a GetCapabilities document during version
+ * negotiation. Specific Open Web Service implementations can extend this interface to include details that are specific
+ * to their specification. Example: The Web Map Service specification includes more operations such as GetMap and
+ * GetFeatureInfo.
  *
  * <p><b>Q:</b> Why are these not static?<br>
- * <b>A:</b> Because we want to place new specifications into a data structure for WebMapServer to
- * search through dynamically
+ * <b>A:</b> Because we want to place new specifications into a data structure for WebMapServer to search through
+ * dynamically
  *
  * @author Jody Garnett, Refractions Reasearch
  * @author rgould

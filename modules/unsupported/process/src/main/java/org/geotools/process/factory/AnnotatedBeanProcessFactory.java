@@ -32,8 +32,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.FactoryRegistry;
 
 /**
- * Annotation driven process factory; used to wrap up a bunch of Java beans as a single Process
- * Factory.
+ * Annotation driven process factory; used to wrap up a bunch of Java beans as a single Process Factory.
  *
  * <p>To make use of this class you will need to:
  *
@@ -60,8 +59,8 @@ import org.geotools.util.factory.FactoryRegistry;
  *    }
  *    </pre>
  *       </ul>
- *   <li>Optional: If you are using this technique in an environment such as Spring you may wish to
- *       use a "marker interface" to allow Spring to discover implementations on the classpath.
+ *   <li>Optional: If you are using this technique in an environment such as Spring you may wish to use a "marker
+ *       interface" to allow Spring to discover implementations on the classpath.
  *       <pre>
  * public class BoundsProcess implements GeoServerProcess {
  *     ...
@@ -72,18 +71,16 @@ import org.geotools.util.factory.FactoryRegistry;
 public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory {
     Map<String, Class<?>> classMap;
 
-    public AnnotatedBeanProcessFactory(
-            InternationalString title, String namespace, Class<?>... beanClasses) {
+    public AnnotatedBeanProcessFactory(InternationalString title, String namespace, Class<?>... beanClasses) {
         super(title, namespace);
         classMap = classMap(beanClasses);
     }
 
     /**
-     * Method responsible for using reflection on the list of bean classes and producing a map of
-     * process names to implementing java bean.
+     * Method responsible for using reflection on the list of bean classes and producing a map of process names to
+     * implementing java bean.
      *
-     * <p>This is isolated as a static method to allow for unit test; it is called by the
-     * constructor.
+     * <p>This is isolated as a static method to allow for unit test; it is called by the constructor.
      *
      * @return class map from process name to implementing class.
      */
@@ -100,8 +97,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
     }
 
     /**
-     * Used to go through the list of java beans; returning the DescribeProcess annotation for each
-     * one.
+     * Used to go through the list of java beans; returning the DescribeProcess annotation for each one.
      *
      * @param name Process name
      * @return DescribeProcess annotation for the named process
@@ -143,9 +139,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
                     if (hasProcessAnnotations(m)) {
                         if (selection != null) {
                             throw new IllegalArgumentException(
-                                    "Invalid process bean "
-                                            + className
-                                            + ", has two annotated execute methods");
+                                    "Invalid process bean " + className + ", has two annotated execute methods");
                         } else {
                             selection = m;
                         }
@@ -201,9 +195,8 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
     /**
      * Create an instance of the named process bean.
      *
-     * <p>By having an actual object here we allow implementors to hold onto a bit of state if they
-     * wish. The object will need to have an <n>execute</b> method and be annotated with a describe
-     * process annotation.
+     * <p>By having an actual object here we allow implementors to hold onto a bit of state if they wish. The object
+     * will need to have an <n>execute</b> method and be annotated with a describe process annotation.
      */
     @Override
     protected Object createProcessBean(Name name) {
@@ -219,8 +212,8 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
     }
 
     /**
-     * Subclass of FactoryRegistry meant for convenience of looking up all the classes that
-     * implement a specific bean interface.
+     * Subclass of FactoryRegistry meant for convenience of looking up all the classes that implement a specific bean
+     * interface.
      */
     public static class BeanFactoryRegistry<T> extends FactoryRegistry {
 
@@ -230,18 +223,15 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
 
         public Class<T> getBeanClass() {
             @SuppressWarnings("unchecked")
-            Class<T> result =
-                    (Class<T>)
-                            streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            Class<T> result = (Class<T>) streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
             return result;
         }
 
         public Class<? extends T>[] lookupBeanClasses() {
             @SuppressWarnings("unchecked")
-            Class<? extends T>[] classes =
-                    getFactories(getBeanClass(), null, null)
-                            .map(Object::getClass)
-                            .toArray(Class[]::new);
+            Class<? extends T>[] classes = getFactories(getBeanClass(), null, null)
+                    .map(Object::getClass)
+                    .toArray(Class[]::new);
             return classes;
         }
     }

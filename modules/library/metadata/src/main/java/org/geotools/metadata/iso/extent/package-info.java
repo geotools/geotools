@@ -15,8 +15,8 @@
  *    Lesser General Public License for more details.
  */
 /**
- * {@linkplain org.geotools.metadata.iso.extent.ExtentImpl Extent} implementation. An explanation
- * for this package is provided in the {@linkplain org.geotools.api.metadata.extent OpenGIS&reg;
- * javadoc}. The remaining discussion on this page is specific to the Geotools implementation.
+ * {@linkplain org.geotools.metadata.iso.extent.ExtentImpl Extent} implementation. An explanation for this package is
+ * provided in the {@linkplain org.geotools.api.metadata.extent OpenGIS&reg; javadoc}. The remaining discussion on this
+ * page is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.extent;

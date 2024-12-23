@@ -37,9 +37,7 @@ public class PostgisPreserveTopologyOnlineTest extends JDBCTestSupport {
     @Override
     protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
         Map<String, Object> params = super.createDataStoreFactoryParams();
-        params.put(
-                PostgisNGDataStoreFactory.SIMPLIFICATION_METHOD.key,
-                SimplificationMethod.PRESERVETOPOLOGY);
+        params.put(PostgisNGDataStoreFactory.SIMPLIFICATION_METHOD.key, SimplificationMethod.PRESERVETOPOLOGY);
         return params;
     }
 

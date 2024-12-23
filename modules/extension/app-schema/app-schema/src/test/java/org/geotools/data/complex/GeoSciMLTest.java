@@ -90,8 +90,8 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
-     * can parse the GeoSciML types
+     * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading can parse the
+     * GeoSciML types
      */
     @Test
     public void testParseSchema() throws Exception {
@@ -223,8 +223,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Checks that declared namespaces are included on FeatureType's userData Map for the complex
-     * features collection.
+     * Checks that declared namespaces are included on FeatureType's userData Map for the complex features collection.
      */
     @Test
     public void testComplexFeatureNamespaces() throws Exception {
@@ -238,19 +237,16 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         try (final Stream<Feature> featureStream = toFeatureStream(features)) {
             Optional<Feature> first = featureStream.findFirst();
             @SuppressWarnings("unchecked")
-            Optional<Map<String, String>> mapOpt =
-                    first.map(Feature::getDescriptor)
-                            .map(AttributeDescriptor::getType)
-                            .map(AttributeType::getUserData)
-                            .map(m -> m.get(Types.DECLARED_NAMESPACES_MAP))
-                            .filter(v -> v instanceof Map)
-                            .map(x -> (Map<String, String>) x);
+            Optional<Map<String, String>> mapOpt = first.map(Feature::getDescriptor)
+                    .map(AttributeDescriptor::getType)
+                    .map(AttributeType::getUserData)
+                    .map(m -> m.get(Types.DECLARED_NAMESPACES_MAP))
+                    .filter(v -> v instanceof Map)
+                    .map(x -> (Map<String, String>) x);
             assertTrue(mapOpt.isPresent());
             final Map<String, String> namespacesMap = mapOpt.get();
             assertEquals(3, namespacesMap.keySet().size());
-            assertTrue(
-                    getExpectedNamespaces().stream()
-                            .allMatch(ns -> namespacesMap.containsValue(ns)));
+            assertTrue(getExpectedNamespaces().stream().allMatch(ns -> namespacesMap.containsValue(ns)));
         }
     }
 

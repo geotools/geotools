@@ -43,8 +43,7 @@ import org.geotools.util.factory.Hints;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public abstract class GeoSpatialImageReader extends ImageReader
-        implements FileSetManager, InitializingReader {
+public abstract class GeoSpatialImageReader extends ImageReader implements FileSetManager, InitializingReader {
 
     /** The source file */
     protected File file;
@@ -93,24 +92,19 @@ public abstract class GeoSpatialImageReader extends ImageReader
     }
 
     /**
-     * Simple check of the specified image index. Valid indexes are belonging the range [0 -
-     * numRasters]. In case this constraint is not respected, an {@link IndexOutOfBoundsException}
-     * is thrown.
+     * Simple check of the specified image index. Valid indexes are belonging the range [0 - numRasters]. In case this
+     * constraint is not respected, an {@link IndexOutOfBoundsException} is thrown.
      *
      * @param imageIndex the index to be checked
-     * @throw {@link IndexOutOfBoundsException} in case the provided imageIndex is not in the range
-     *     of supported ones.
+     * @throw {@link IndexOutOfBoundsException} in case the provided imageIndex is not in the range of supported ones.
      */
     @SuppressFBWarnings("INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE")
     protected void checkImageIndex(final int imageIndex) {
         if (imageIndex < 0 || imageIndex >= numImages) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid imageIndex "
-                            + imageIndex
-                            + ", it should "
-                            + (numImages > 0
-                                    ? ("belong the range [0," + (numImages - 1))
-                                    : "be 0"));
+            throw new IndexOutOfBoundsException("Invalid imageIndex "
+                    + imageIndex
+                    + ", it should "
+                    + (numImages > 0 ? ("belong the range [0," + (numImages - 1)) : "be 0"));
         }
     }
 
@@ -136,18 +130,15 @@ public abstract class GeoSpatialImageReader extends ImageReader
     }
 
     /**
-     * Return the list of imageIndex related to the feature in the slicesCatalog which result from
-     * the specified query.
+     * Return the list of imageIndex related to the feature in the slicesCatalog which result from the specified query.
      *
-     * @param filterQuery the filter query (temporal, vertical, name selection) to restrict the
-     *     requested imageIndexes
+     * @param filterQuery the filter query (temporal, vertical, name selection) to restrict the requested imageIndexes
      */
     public List<Integer> getImageIndex(Query filterQuery) throws IOException {
         List<CoverageSlice> descs = slicesCatalog.getGranules(filterQuery);
         List<Integer> indexes = new ArrayList<>();
         for (CoverageSlice desc : descs) {
-            Integer index =
-                    (Integer) desc.getOriginator().getAttribute(CoverageSlice.Attributes.INDEX);
+            Integer index = (Integer) desc.getOriginator().getAttribute(CoverageSlice.Attributes.INDEX);
             indexes.add(index);
         }
         return indexes;
@@ -180,10 +171,9 @@ public abstract class GeoSpatialImageReader extends ImageReader
 
     /** Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} instance */
     protected void initCatalog(DataStoreConfiguration datastoreConfig) throws IOException {
-        slicesCatalog =
-                datastoreConfig.isShared()
-                        ? new WrappedCoverageSlicesCatalog(datastoreConfig, file, repository)
-                        : new CoverageSlicesCatalog(datastoreConfig, repository);
+        slicesCatalog = datastoreConfig.isShared()
+                ? new WrappedCoverageSlicesCatalog(datastoreConfig, file, repository)
+                : new CoverageSlicesCatalog(datastoreConfig, repository);
     }
 
     @Override

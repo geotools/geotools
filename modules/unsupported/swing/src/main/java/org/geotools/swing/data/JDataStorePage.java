@@ -34,12 +34,10 @@ import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 
 /**
- * A wizard page that will prompt the user for a file of the supplied format ask for any additional
- * information.
+ * A wizard page that will prompt the user for a file of the supplied format ask for any additional information.
  *
- * <p>This page will allow the user to edit and modify the provided connectionParameters map - but
- * will only show parameters that match the indicated "level". If level is null it assumed to be
- * "user".
+ * <p>This page will allow the user to edit and modify the provided connectionParameters map - but will only show
+ * parameters that match the indicated "level". If level is null it assumed to be "user".
  */
 public class JDataStorePage extends JPage {
     /** Factory for which we are collection connection parameters */
@@ -97,10 +95,7 @@ public class JDataStorePage extends JPage {
 
         for (Param param : format.getParametersInfo()) {
             if (level != null) {
-                String check =
-                        param.metadata == null
-                                ? "user"
-                                : (String) param.metadata.get(Parameter.LEVEL);
+                String check = param.metadata == null ? "user" : (String) param.metadata.get(Parameter.LEVEL);
 
                 if (check == null) {
                     check = "user";

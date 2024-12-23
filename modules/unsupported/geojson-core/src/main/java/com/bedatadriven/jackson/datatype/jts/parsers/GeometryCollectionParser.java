@@ -29,13 +29,11 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /** Created by mihaildoronin on 11/11/15. */
-public class GeometryCollectionParser extends BaseParser
-        implements GeometryParser<GeometryCollection> {
+public class GeometryCollectionParser extends BaseParser implements GeometryParser<GeometryCollection> {
 
     private GenericGeometryParser genericGeometriesParser;
 
-    public GeometryCollectionParser(
-            GeometryFactory geometryFactory, GenericGeometryParser genericGeometriesParser) {
+    public GeometryCollectionParser(GeometryFactory geometryFactory, GenericGeometryParser genericGeometriesParser) {
         super(geometryFactory);
         this.genericGeometriesParser = genericGeometriesParser;
     }

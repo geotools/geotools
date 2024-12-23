@@ -22,8 +22,8 @@ import org.geotools.filter.text.commons.AbstractFilterBuilder;
 /**
  * Filter builder for CQL expressions.
  *
- * <p>Builds Filter or Expression and their components (literal, functions, etc). It maintains the
- * results of semantic actions in the stack used to build complex filters and expressions.
+ * <p>Builds Filter or Expression and their components (literal, functions, etc). It maintains the results of semantic
+ * actions in the stack used to build complex filters and expressions.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @version Revision: 1.9

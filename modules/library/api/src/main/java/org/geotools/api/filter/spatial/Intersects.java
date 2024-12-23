@@ -12,9 +12,8 @@ package org.geotools.api.filter.spatial;
 // Annotations
 
 /**
- * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code
- * true} if the two geometric operands intersect. This is the opposite of the {@link Disjoint}
- * operator.
+ * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code true} if the two
+ * geometric operands intersect. This is the opposite of the {@link Disjoint} operator.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

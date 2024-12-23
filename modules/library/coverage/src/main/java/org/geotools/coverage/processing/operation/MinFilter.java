@@ -21,8 +21,7 @@ import javax.media.jai.operator.MinFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**
- * For each position of the mask, replaces the center pixel by the minimum of the pixel values
- * covered by the mask.
+ * For each position of the mask, replaces the center pixel by the minimum of the pixel values covered by the mask.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MinFilter"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MinFilterDescriptor MinFilter}"</CODE><br>

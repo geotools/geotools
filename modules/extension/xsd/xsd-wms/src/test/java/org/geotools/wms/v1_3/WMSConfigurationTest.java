@@ -27,9 +27,7 @@ public class WMSConfigurationTest {
         if (!p.getValidationErrors().isEmpty()) {
             for (Exception exception : p.getValidationErrors()) {
                 SAXParseException ex = (SAXParseException) exception;
-                LOGGER.log(
-                        Level.SEVERE,
-                        ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
+                LOGGER.log(Level.SEVERE, ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
             }
             fail("Document did not validate.");
         }

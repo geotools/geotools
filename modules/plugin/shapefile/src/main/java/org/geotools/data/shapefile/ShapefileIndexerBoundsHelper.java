@@ -43,32 +43,29 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
- * Utility class to assist {@link ShapeFileIndexer} in speeding up the {@link QuadTree} optimization
- * phase through a {@link BoundsReader strategy object} that provides quick access to each shapefile
- * record envelope, potentially avoiding an immense amount of random disk I/O calls through {@link
- * ShapefileReader}, as the quad tree internal nodes get split/shrank.
+ * Utility class to assist {@link ShapeFileIndexer} in speeding up the {@link QuadTree} optimization phase through a
+ * {@link BoundsReader strategy object} that provides quick access to each shapefile record envelope, potentially
+ * avoiding an immense amount of random disk I/O calls through {@link ShapefileReader}, as the quad tree internal nodes
+ * get split/shrank.
  *
- * <p>Since the {@link QuadTree} leaf nodes hold only the shapefile record ids, and not their
- * bounds, the tree layout optimization phase may incur into too much random disk reads on the
- * {@code .shp} file.
+ * <p>Since the {@link QuadTree} leaf nodes hold only the shapefile record ids, and not their bounds, the tree layout
+ * optimization phase may incur into too much random disk reads on the {@code .shp} file.
  *
  * <p>The strategy object {@link #create provided} is meant to avoid that to the extent possible.
  *
- * <p>To a given point, record bounds will be stored in heap memory (up to 1MiB, accounting for 32K
- * records, or 64K records if it's a points shapefile).
+ * <p>To a given point, record bounds will be stored in heap memory (up to 1MiB, accounting for 32K records, or 64K
+ * records if it's a points shapefile).
  *
- * <p>For a bigger number of {@link IndexFile#getRecordCount() shapefile records}, the strategy is
- * to store the bounds in a temporary file (named {@code GeoTools_shp_qix_bounds_<random
- * number>.tmp} under {@code java.io.tmpdir}), which is memory mapped and deleted at {@link
- * BoundsReader#close()}. This leverages the Operating System's native paging, and due to the
- * reduced size of the bounds file compared to the actual {@code.shp} and avoiding the parsing
- * performed by {@link ShapefileReader#nextRecord()}, results in dramatically less random I/O and
- * computing.
+ * <p>For a bigger number of {@link IndexFile#getRecordCount() shapefile records}, the strategy is to store the bounds
+ * in a temporary file (named {@code GeoTools_shp_qix_bounds_<random number>.tmp} under {@code java.io.tmpdir}), which
+ * is memory mapped and deleted at {@link BoundsReader#close()}. This leverages the Operating System's native paging,
+ * and due to the reduced size of the bounds file compared to the actual {@code.shp} and avoiding the parsing performed
+ * by {@link ShapefileReader#nextRecord()}, results in dramatically less random I/O and computing.
  *
- * <p>Note, however, that if there's not enough temporary space in the file system where the {@code
- * java.io.tmpdir} directory resides, a fall back strategy that reads directly from the {@link
- * ShapefileReader} will be used. This should be a very edge case though, since with a bounds record
- * size of 32 bytes, the required temporary storage is 30.1MiB per million features.
+ * <p>Note, however, that if there's not enough temporary space in the file system where the {@code java.io.tmpdir}
+ * directory resides, a fall back strategy that reads directly from the {@link ShapefileReader} will be used. This
+ * should be a very edge case though, since with a bounds record size of 32 bytes, the required temporary storage is
+ * 30.1MiB per million features.
  */
 class ShapefileIndexerBoundsHelper {
 
@@ -77,9 +74,8 @@ class ShapefileIndexerBoundsHelper {
     /**
      * A record count threshold past which bounds storage falls back to a temporary file.
      *
-     * <p>Set to the equivalent of 1MB of heap memory, accounting for 32768 records (for a 32 byte
-     * serialized envelope size), or 65536 records if the shapefile geometry type is POINT (using 16
-     * bytes per envelope).
+     * <p>Set to the equivalent of 1MB of heap memory, accounting for 32768 records (for a 32 byte serialized envelope
+     * size), or 65536 records if the shapefile geometry type is POINT (using 16 bytes per envelope).
      */
     private static final int FALLBACK_TO_FILE_REC_COUNT_THRESHOLD = (1024 * 1024) / 32;
 
@@ -88,16 +84,14 @@ class ShapefileIndexerBoundsHelper {
      *
      * @param reader the shapefile reader used to build the QuadTree
      * @param shpIndex provided shapefile record count, and file offsets if necesasry
-     * @return a reader optimized to quickly store and serve the shapefile records bounds, may fall
-     *     back to random disk I/O on the {@code .shp} itself through {@link ShapefileReader}.
+     * @return a reader optimized to quickly store and serve the shapefile records bounds, may fall back to random disk
+     *     I/O on the {@code .shp} itself through {@link ShapefileReader}.
      */
     static BoundsReader createBoundsReader(final ShapefileReader reader, final IndexFile shpIndex) {
         final int numRecs = shpIndex.getRecordCount();
         final ShapeType shapeType = reader.getHeader().getShapeType();
-        final boolean pointBounds =
-                shapeType == POINT || shapeType == POINTM || shapeType == POINTZ;
-        final int fileRecCountThreshold =
-                (pointBounds ? 2 : 1) * FALLBACK_TO_FILE_REC_COUNT_THRESHOLD;
+        final boolean pointBounds = shapeType == POINT || shapeType == POINTM || shapeType == POINTZ;
+        final int fileRecCountThreshold = (pointBounds ? 2 : 1) * FALLBACK_TO_FILE_REC_COUNT_THRESHOLD;
 
         if (numRecs <= fileRecCountThreshold) {
             return new HeapBoundsReader(numRecs, pointBounds);
@@ -114,16 +108,15 @@ class ShapefileIndexerBoundsHelper {
     }
 
     /**
-     * Strategy to save the {@code .shp} records bounds while building the {@link QuadTree} and
-     * quickly access them when optimizing its layout.
+     * Strategy to save the {@code .shp} records bounds while building the {@link QuadTree} and quickly access them when
+     * optimizing its layout.
      *
-     * <p>While building the in memory {@link Quadtree}, the {@link ShapefileReader} is traversed
-     * sequentially. At that point, {@link #insert(int, Envelope)} should be called with each
-     * record's index and bounds, for this strategy object to save the bounds in its internal
-     * storage.
+     * <p>While building the in memory {@link Quadtree}, the {@link ShapefileReader} is traversed sequentially. At that
+     * point, {@link #insert(int, Envelope)} should be called with each record's index and bounds, for this strategy
+     * object to save the bounds in its internal storage.
      *
-     * <p>While optimizing the {@link QuadTree} layout, {@link #read(int, Envelope)} and {@link
-     * #expandEnvelope(int, Envelope)} provided quick access to each record bounds.
+     * <p>While optimizing the {@link QuadTree} layout, {@link #read(int, Envelope)} and {@link #expandEnvelope(int,
+     * Envelope)} provided quick access to each record bounds.
      *
      * <p>Finally, {@link #close()} must be called to release any internal resources being used.
      */
@@ -132,21 +125,13 @@ class ShapefileIndexerBoundsHelper {
         /** Records the bounds of the given shapefile record to be read after. */
         void insert(int recNumber, Envelope env);
 
-        /**
-         * Initializes the provided envelope to the bounds of the requested shapefile record {@code
-         * recNumber}.
-         */
+        /** Initializes the provided envelope to the bounds of the requested shapefile record {@code recNumber}. */
         void read(int recNumber, Envelope env) throws IOException;
 
-        /**
-         * Expands the provided envelope to cover the bounds of the shapefile record {@code
-         * recNumber}.
-         */
+        /** Expands the provided envelope to cover the bounds of the shapefile record {@code recNumber}. */
         void expandEnvelope(int recNumber, Envelope env) throws IOException;
 
-        /**
-         * Releases the underlying bounds storage and any other resource being used to such effect.
-         */
+        /** Releases the underlying bounds storage and any other resource being used to such effect. */
         @Override
         default void close() throws IOException {}
     }
@@ -155,9 +140,8 @@ class ShapefileIndexerBoundsHelper {
      * A fallback strategy to use {@link ShapefileReader}'s random access to records through (e.g.
      * {@link ShapefileReader#recordAt(int)}).
      *
-     * <p>Note {@link #insert(int, Envelope)} is a no-op operation, {@link #read} and {@link
-     * #expand} will incur into random disk reads as they position on the {@code .shp} record index
-     * and read them to obtain each record bounds.
+     * <p>Note {@link #insert(int, Envelope)} is a no-op operation, {@link #read} and {@link #expand} will incur into
+     * random disk reads as they position on the {@code .shp} record index and read them to obtain each record bounds.
      */
     private static class ShapefileReaderBoundsReader implements BoundsReader {
 
@@ -193,8 +177,8 @@ class ShapefileIndexerBoundsHelper {
     }
 
     /**
-     * Stores record bounds in a {@link DoubleBuffer}, in {@code minx,miny[,maxx,maxy]} order; point
-     * bounds are stored as a single ordinate pair.
+     * Stores record bounds in a {@link DoubleBuffer}, in {@code minx,miny[,maxx,maxy]} order; point bounds are stored
+     * as a single ordinate pair.
      */
     private static class BufferBoundsReader implements BoundsReader {
 
@@ -260,8 +244,7 @@ class ShapefileIndexerBoundsHelper {
     }
 
     /**
-     * Uses a memory mapped temporary file as the source for the {@link DoubleBuffer} where to store
-     * the record bounds.
+     * Uses a memory mapped temporary file as the source for the {@link DoubleBuffer} where to store the record bounds.
      *
      * <p>{@link #close()} releases the memory mapped byte buffer and deletes the temporary file.
      */
@@ -322,10 +305,8 @@ class ShapefileIndexerBoundsHelper {
             final FileStore fileStore = Files.getFileStore(path);
             final long usableSpace = fileStore.getUsableSpace();
             if (usableSpace < fileSize) {
-                throw new FileSystemException(
-                        String.format(
-                                "Not enough disk space. Required %,d bytes, available: %,d ",
-                                fileSize, usableSpace));
+                throw new FileSystemException(String.format(
+                        "Not enough disk space. Required %,d bytes, available: %,d ", fileSize, usableSpace));
             }
         }
     }

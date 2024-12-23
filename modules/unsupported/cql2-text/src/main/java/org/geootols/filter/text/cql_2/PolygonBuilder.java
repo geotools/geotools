@@ -28,8 +28,8 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Builds a Polygon using the lines (shell and Holes) made in the parsing process. Copied from
- * gt-cql, should be removed once the modules * are merged.
+ * Builds a Polygon using the lines (shell and Holes) made in the parsing process. Copied from gt-cql, should be removed
+ * once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -68,8 +68,7 @@ class PolygonBuilder extends GeometryBuilder {
                 for (int i = 1; i < geometryList.size(); i++) {
 
                     LineString holeLines = (LineString) geometryList.get(i);
-                    LinearRing ring =
-                            getGeometryFactory().createLinearRing(holeLines.getCoordinates());
+                    LinearRing ring = getGeometryFactory().createLinearRing(holeLines.getCoordinates());
                     holeList.add(ring);
                 }
                 int holesSize = holeList.size();

@@ -12,15 +12,14 @@ package org.geotools.api.temporal;
 import java.util.Collection;
 
 /**
- * An aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological
- * primitives}. This is the only subclass of {@linkplain TemporalComplex temporal complex}.
+ * An aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological primitives}. This is the
+ * only subclass of {@linkplain TemporalComplex temporal complex}.
  *
  * @author Alexander Petkov
  */
 public interface TemporalTopologicalComplex extends TemporalComplex {
     /**
-     * The aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological
-     * primitives}.
+     * The aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological primitives}.
      *
      * @todo Missing UML annotation.
      */

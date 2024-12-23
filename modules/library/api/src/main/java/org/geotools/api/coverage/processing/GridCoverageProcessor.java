@@ -14,32 +14,29 @@ import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.coverage.grid.GridCoverage;
 
 /**
- * Provides operations for different ways of accessing the grid coverage values as well as image
- * processing functionality. The list of available processing operations is implementation
- * dependent. The interface has a discovery mechanism to determine the available processing
- * operations.
+ * Provides operations for different ways of accessing the grid coverage values as well as image processing
+ * functionality. The list of available processing operations is implementation dependent. The interface has a discovery
+ * mechanism to determine the available processing operations.
  *
- * <p>These processing operations will transform values within a single sample dimension, and leave
- * the values in other sample dimensions unaffected. The modified sample dimension may also change
- * its type (e.g. from {@link SampleDimensionType#UNSIGNED_4BITS UNSIGNED_4BITS} to {@link
- * SampleDimensionType#UNSIGNED_1BIT UNSIGNED_1BIT}). The actual underlying grid data remains
- * unchanged.
+ * <p>These processing operations will transform values within a single sample dimension, and leave the values in other
+ * sample dimensions unaffected. The modified sample dimension may also change its type (e.g. from
+ * {@link SampleDimensionType#UNSIGNED_4BITS UNSIGNED_4BITS} to {@link SampleDimensionType#UNSIGNED_1BIT
+ * UNSIGNED_1BIT}). The actual underlying grid data remains unchanged.
  *
- * <p>The interface has been designed to allow the adaptations to be done in a "pipe-lined" manner.
- * The interface operates on {@link GridCoverage} to create new a {@link GridCoverage}. The
- * interface does not need to make a copy of the source grid data. Instead, it can return a grid
- * coverage object which applies the adaptations on the original grid coverage whenever a block of
- * data is requested. In this way, a pipeline of several grid coverages can be constructed cheaply.
+ * <p>The interface has been designed to allow the adaptations to be done in a "pipe-lined" manner. The interface
+ * operates on {@link GridCoverage} to create new a {@link GridCoverage}. The interface does not need to make a copy of
+ * the source grid data. Instead, it can return a grid coverage object which applies the adaptations on the original
+ * grid coverage whenever a block of data is requested. In this way, a pipeline of several grid coverages can be
+ * constructed cheaply.
  *
  * <p>This interface can perform any of the following:
  *
  * <ul>
  *   <li>Change the number of bands being accessed.
  *   <li>Change the value sequencing in which the grid values are retrieved.
- *   <li>Allow re-sampling of the grid coverage for a different geometry. Creating a new {@link
- *       GridCoverage} with different grid geometry allows for reprojecting the grid coverage to
- *       another projection and another georeferencing type, resampling to another cell resolution
- *       and subsetting the grid coverage.
+ *   <li>Allow re-sampling of the grid coverage for a different geometry. Creating a new {@link GridCoverage} with
+ *       different grid geometry allows for reprojecting the grid coverage to another projection and another
+ *       georeferencing type, resampling to another cell resolution and subsetting the grid coverage.
  *   <li>Modify the way the grid values are accessed (filtered, classified...).
  *   <li>Change the interpolation method used when evaluating points which fall between grid cells.
  *   <li>Filtering.
@@ -66,8 +63,8 @@ import org.geotools.api.coverage.grid.GridCoverage;
  */
 public interface GridCoverageProcessor {
     /**
-     * Retrieves grid processing operations information. Each operation information will contain the
-     * name of the operation as well as a list of its parameters.
+     * Retrieves grid processing operations information. Each operation information will contain the name of the
+     * operation as well as a list of its parameters.
      *
      * @return The available operations.
      */

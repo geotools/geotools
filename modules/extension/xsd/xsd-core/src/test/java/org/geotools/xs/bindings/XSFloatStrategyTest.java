@@ -29,10 +29,7 @@ public class XSFloatStrategyTest extends TestSchema {
         assertEquals(given, expected, actual);
     }
 
-    /**
-     * For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for
-     * float.
-     */
+    /** For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for float. */
     @Test
     public void testWhiteSpace() throws Exception {
         validateValues(" \n12", Float.valueOf(12));
@@ -54,10 +51,7 @@ public class XSFloatStrategyTest extends TestSchema {
         return XS.FLOAT;
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues("", null);

@@ -45,8 +45,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // getDataStore end
 
     // reader start
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new CSVFeatureReader(getState(), query);
     }
 
@@ -75,10 +74,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // count end
 
     // bounds start
-    /**
-     * Implementation that generates the total bounds (many file formats record this information in
-     * the header)
-     */
+    /** Implementation that generates the total bounds (many file formats record this information in the header) */
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return null; // feature by feature scan required to establish bounds
     }

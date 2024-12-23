@@ -54,10 +54,7 @@ public class ClippingFeatureCollectionTest {
             if (i < 2) {
                 // adding a Point that will not intersect the first
                 // two features
-                feature.getUserData()
-                        .put(
-                                Hints.GEOMETRY_CLIP,
-                                factory.createPoint(new Coordinate(i + 1, i + 1)));
+                feature.getUserData().put(Hints.GEOMETRY_CLIP, factory.createPoint(new Coordinate(i + 1, i + 1)));
             }
             delegate.add(feature);
         }

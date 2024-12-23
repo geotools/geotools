@@ -19,10 +19,10 @@ package org.geotools.referencing.operation.matrix;
 import org.geotools.api.referencing.operation.Matrix;
 
 /**
- * Static utility methods for creating matrix. This factory selects one of the {@link Matrix1},
- * {@link Matrix2}, {@link Matrix3}, {@link Matrix4} or {@link GeneralMatrix} implementation
- * according the desired matrix size. Note that if the matrix size is know at compile time, it may
- * be more efficient to invoke directly the constructor of the appropriate class instead.
+ * Static utility methods for creating matrix. This factory selects one of the {@link Matrix1}, {@link Matrix2},
+ * {@link Matrix3}, {@link Matrix4} or {@link GeneralMatrix} implementation according the desired matrix size. Note that
+ * if the matrix size is know at compile time, it may be more efficient to invoke directly the constructor of the
+ * appropriate class instead.
  *
  * @since 2.2
  * @version $Id$
@@ -54,15 +54,13 @@ public final class MatrixFactory {
     }
 
     /**
-     * Creates a matrix of size {@code numRow}&nbsp;&times;&nbsp;{@code numCol}. Elements on the
-     * diagonal <var>j==i</var> are set to 1.
+     * Creates a matrix of size {@code numRow}&nbsp;&times;&nbsp;{@code numCol}. Elements on the diagonal
+     * <var>j==i</var> are set to 1.
      *
-     * @param numRow For an affine transform, this is the number of {@linkplain
-     *     org.geotools.api.referencing.operation.MathTransform#getTargetDimensions target
-     *     dimensions} + 1.
-     * @param numCol For an affine transform, this is the number of {@linkplain
-     *     org.geotools.api.referencing.operation.MathTransform#getSourceDimensions source
-     *     dimensions} + 1.
+     * @param numRow For an affine transform, this is the number of
+     *     {@linkplain org.geotools.api.referencing.operation.MathTransform#getTargetDimensions target dimensions} + 1.
+     * @param numCol For an affine transform, this is the number of
+     *     {@linkplain org.geotools.api.referencing.operation.MathTransform#getSourceDimensions source dimensions} + 1.
      * @return An identity matrix of the given size.
      */
     public static XMatrix create(final int numRow, final int numCol) {

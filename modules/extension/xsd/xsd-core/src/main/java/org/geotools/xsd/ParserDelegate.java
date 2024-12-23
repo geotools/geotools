@@ -50,8 +50,7 @@ public interface ParserDelegate extends ContentHandler {
      * @param handler The parse handler that would normally handle the element, possibly <code>null
      *     </code>
      * @param parent The parse handler for the parent element, possibly <code>null</code>.
-     * @return True if this delegate handles elements of the specified name and should take over
-     *     parsing.
+     * @return True if this delegate handles elements of the specified name and should take over parsing.
      */
     boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent);
 

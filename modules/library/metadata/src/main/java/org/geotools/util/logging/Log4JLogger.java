@@ -19,8 +19,8 @@ package org.geotools.util.logging;
 import java.util.logging.Level;
 
 /**
- * An adapter that redirect all Java logging events to the Apache's <A
- * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
+ * An adapter that redirect all Java logging events to the Apache's <A HREF="http://logging.apache.org/log4j">Log4J</A>
+ * framework.
  *
  * <ul>
  *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.log4j.Level#ALL}
@@ -53,17 +53,11 @@ public final class Log4JLogger extends LoggerAdapter {
     }
 
     private static final int CONFIG_INT = 15000;
-    /**
-     * Maps to Java Utility Logging {@link Level#CONFIG}, showing up below INFO messages when used
-     * in Log4J setup.
-     */
+    /** Maps to Java Utility Logging {@link Level#CONFIG}, showing up below INFO messages when used in Log4J setup. */
     public static final org.apache.log4j.Level CONFIG = new Log4JLevel(CONFIG_INT, "CONFIG", 6);
 
     private static final int FINEST_INT = 4000;
-    /**
-     * Maps to Java Utility Logging {@link Level#FINEST}, showing up below TRACE messages when used
-     * in Log4J setup
-     */
+    /** Maps to Java Utility Logging {@link Level#FINEST}, showing up below TRACE messages when used in Log4J setup */
     public static final org.apache.log4j.Level FINEST = new Log4JLevel(FINEST_INT, "FINEST", 7);
 
     /**

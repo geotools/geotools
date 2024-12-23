@@ -118,7 +118,8 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testFidTransformation() throws Exception {
         SimpleFeatureSource transformedSource = transformWithSelection();
-        try (SimpleFeatureIterator transformedIt = transformedSource.getFeatures().features();
+        try (SimpleFeatureIterator transformedIt =
+                        transformedSource.getFeatures().features();
                 SimpleFeatureIterator originalIt = STATES.getFeatures().features()) {
             while (transformedIt.hasNext()) {
                 SimpleFeature original = originalIt.next();
@@ -156,8 +157,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testReprojectWithSelect() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
-        Query query =
-                new Query("states_mini", Filter.INCLUDE, new String[] {"the_geom", "persons"});
+        Query query = new Query("states_mini", Filter.INCLUDE, new String[] {"the_geom", "persons"});
         query.setHandle("web mercator");
         query.setCoordinateSystem(DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3857");
@@ -183,8 +183,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testBoundsWithSelectNoGeom() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
         ReferencedEnvelope re =
-                transformed.getBounds(
-                        new Query("states_mini", Filter.INCLUDE, new String[] {"state_name"}));
+                transformed.getBounds(new Query("states_mini", Filter.INCLUDE, new String[] {"state_name"}));
         assertNull(re);
     }
 
@@ -196,9 +195,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(expected, actual);
 
         actual = STATES.getCount(new Query("states", CQL.toFilter("state_name = 'Illinois'")));
-        expected =
-                transformed.getCount(
-                        new Query("states_mini", CQL.toFilter("state_name = 'Illinois'")));
+        expected = transformed.getCount(new Query("states_mini", CQL.toFilter("state_name = 'Illinois'")));
 
         assertEquals(expected, actual);
     }
@@ -377,8 +374,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         checkTransfomedSchemaWithExpressions(transformed);
     }
 
-    private void checkTransfomedSchemaWithExpressions(SimpleFeatureSource transformed)
-            throws FactoryException {
+    private void checkTransfomedSchemaWithExpressions(SimpleFeatureSource transformed) throws FactoryException {
         SimpleFeatureType schema = transformed.getSchema();
         SimpleFeatureType original = STATES.getSchema();
         assertEquals("bstates", schema.getTypeName());
@@ -423,13 +419,8 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         SimpleFeatureCollection fc = transformed.getFeatures();
         assertEquals(transformed.getSchema(), fc.getSchema());
         assertEquals(transformed.getCount(Query.ALL), fc.size());
-        ReferencedEnvelope bufferedStateBounds =
-                new ReferencedEnvelope(
-                        -110.04782099895442,
-                        -74.04752638847438,
-                        34.98970859966714,
-                        43.50933565139621,
-                        WGS84);
+        ReferencedEnvelope bufferedStateBounds = new ReferencedEnvelope(
+                -110.04782099895442, -74.04752638847438, 34.98970859966714, 43.50933565139621, WGS84);
         assertEquals(bufferedStateBounds, fc.getBounds());
 
         // and now with a specific one, here the property feature source will return null values
@@ -437,13 +428,8 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         fc = transformed.getFeatures(q);
         assertEquals(transformed.getSchema(), fc.getSchema());
         assertEquals(1, fc.size());
-        ReferencedEnvelope bufferedDelawareBounds =
-                new ReferencedEnvelope(
-                        -76.78885040499915,
-                        -74.05085782368926,
-                        37.450389376543036,
-                        40.82235239392104,
-                        WGS84);
+        ReferencedEnvelope bufferedDelawareBounds = new ReferencedEnvelope(
+                -76.78885040499915, -74.05085782368926, 37.450389376543036, 40.82235239392104, WGS84);
         assertEquals(bufferedDelawareBounds, fc.getBounds());
 
         // and now read for good

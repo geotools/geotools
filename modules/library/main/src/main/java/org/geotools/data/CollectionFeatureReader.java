@@ -30,8 +30,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 
 /**
- * FeatureReader<SimpleFeatureType, SimpleFeature> that reads features from a java.util.collection
- * of features, an array of features or a FeatureCollection.
+ * FeatureReader<SimpleFeatureType, SimpleFeature> that reads features from a java.util.collection of features, an array
+ * of features or a FeatureCollection.
  *
  * @author jones
  */
@@ -43,12 +43,10 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
     /**
      * Create a new instance.
      *
-     * @param featuresArg a colleciton of features. <b>All features must be of the same
-     *     FeatureType</b>
+     * @param featuresArg a colleciton of features. <b>All features must be of the same FeatureType</b>
      * @param typeArg the Feature type of of the features.
      */
-    public CollectionFeatureReader(
-            Collection<SimpleFeature> featuresArg, SimpleFeatureType typeArg) {
+    public CollectionFeatureReader(Collection<SimpleFeature> featuresArg, SimpleFeatureType typeArg) {
         assert !featuresArg.isEmpty();
         this.features = new DelegateSimpleFeatureIterator(featuresArg.iterator());
         this.type = typeArg;
@@ -86,8 +84,7 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
 
     /** @see FeatureReader#next() */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (closed) {
             throw new NoSuchElementException("Reader has been closed");
         }

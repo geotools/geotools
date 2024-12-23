@@ -82,22 +82,16 @@ public class FilterCQLSample {
     public static final String FILTER_EQUAL_DATETIME = "ATTR1 TEQUALS " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE = "ATTR1 BEFORE " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE_MILLIS = "ATTR1 BEFORE " + FIRST_DATE_MILLIS;
-    public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES =
-            "ATTR1 BEFORE " + FIRST_DATE + "/" + LAST_DATE;
+    public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES = "ATTR1 BEFORE " + FIRST_DATE + "/" + LAST_DATE;
     public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES_MILLIS =
             "ATTR1 BEFORE " + FIRST_DATE_MILLIS + "/" + LAST_DATE_MILLIS;
-    public static final String FILTER_BEFORE_PERIOD_DATE_AND_DAYS =
-            "ATTR1 BEFORE  " + FIRST_DATE + "/" + "P30D";
-    public static final String FILTER_BEFORE_PERIOD_DATE_AND_YEARS =
-            "ATTR1 BEFORE " + FIRST_DATE + "/P1Y";
-    public static final String FILTER_BEFORE_PERIOD_DATE_AND_MONTHS =
-            "ATTR1 BEFORE " + FIRST_DATE + "/P12M";
+    public static final String FILTER_BEFORE_PERIOD_DATE_AND_DAYS = "ATTR1 BEFORE  " + FIRST_DATE + "/" + "P30D";
+    public static final String FILTER_BEFORE_PERIOD_DATE_AND_YEARS = "ATTR1 BEFORE " + FIRST_DATE + "/P1Y";
+    public static final String FILTER_BEFORE_PERIOD_DATE_AND_MONTHS = "ATTR1 BEFORE " + FIRST_DATE + "/P12M";
     public static final String FILTER_AFTER_DATE = "ATTR1 AFTER " + LAST_DATE;
-    public static final String FILTER_AFTER_PERIOD_BETWEEN_DATES =
-            "ATTR1 AFTER " + FIRST_DATE + "/" + LAST_DATE;
+    public static final String FILTER_AFTER_PERIOD_BETWEEN_DATES = "ATTR1 AFTER " + FIRST_DATE + "/" + LAST_DATE;
     private static final String DURATION_DATE = "10";
-    public static final String FILTER_AFTER_PERIOD_DATE_DAYS =
-            "ATTR1 AFTER " + FIRST_DATE + "/P" + DURATION_DATE + "D";
+    public static final String FILTER_AFTER_PERIOD_DATE_DAYS = "ATTR1 AFTER " + FIRST_DATE + "/P" + DURATION_DATE + "D";
     public static final String FILTER_AFTER_PERIOD_DATE_MONTH =
             "ATTR1 AFTER " + FIRST_DATE + "/P" + DURATION_DATE + "M";
     public static final String FILTER_AFTER_PERIOD_DATE_YEARS =
@@ -111,165 +105,153 @@ public class FilterCQLSample {
             "ATTR1 AFTER " + FIRST_DATE + "/T" + DURATION_TIME + "M";
     public static final String FILTER_AFTER_PERIOD_DATE_SECONDS =
             "ATTR1 AFTER " + FIRST_DATE + "/T" + DURATION_TIME + "S";
-    public static final String FILTER_AFTER_PERIOD_DATE_YMD_HMS =
-            "ATTR1 AFTER "
-                    + FIRST_DATE
-                    + "/P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S";
-    public static final String FILTER_DURING_PERIOD_BETWEEN_DATES =
-            "ATTR1 DURING " + FIRST_DATE + "/" + LAST_DATE;
-    public static final String FILTER_DURING_PERIOD_DATE_YMD_HMS =
-            "ATTR1 DURING "
-                    + FIRST_DATE
-                    + "/P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S";
-    public static final String FILTER_DURING_PERIOD_YMD_HMS_DATE =
-            "ATTR1 DURING "
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S"
-                    + "/"
-                    + LAST_DATE;
-    public static final String FILTER_BEFORE_PERIOD_YMD_HMS_DATE =
-            "ATTR1 BEFORE "
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S"
-                    + "/"
-                    + LAST_DATE;
+    public static final String FILTER_AFTER_PERIOD_DATE_YMD_HMS = "ATTR1 AFTER "
+            + FIRST_DATE
+            + "/P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S";
+    public static final String FILTER_DURING_PERIOD_BETWEEN_DATES = "ATTR1 DURING " + FIRST_DATE + "/" + LAST_DATE;
+    public static final String FILTER_DURING_PERIOD_DATE_YMD_HMS = "ATTR1 DURING "
+            + FIRST_DATE
+            + "/P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S";
+    public static final String FILTER_DURING_PERIOD_YMD_HMS_DATE = "ATTR1 DURING "
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S"
+            + "/"
+            + LAST_DATE;
+    public static final String FILTER_BEFORE_PERIOD_YMD_HMS_DATE = "ATTR1 BEFORE "
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S"
+            + "/"
+            + LAST_DATE;
     public static final String FILTER_BEFORE_OR_DURING_PERIOD_BETWEEN_DATES =
             "ATTR1 BEFORE OR DURING " + FIRST_DATE + "/" + LAST_DATE;
-    public static final String FILTER_BEFORE_OR_DURING_PERIOD_YMD_HMS_DATE =
-            "ATTR1 BEFORE OR DURING "
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S"
-                    + "/"
-                    + LAST_DATE;
-    public static final String FILTER_BEFORE_OR_DURING_PERIOD_DATE_YMD_HMS =
-            "ATTR1 BEFORE OR DURING "
-                    + FIRST_DATE
-                    + "/"
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S";
+    public static final String FILTER_BEFORE_OR_DURING_PERIOD_YMD_HMS_DATE = "ATTR1 BEFORE OR DURING "
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S"
+            + "/"
+            + LAST_DATE;
+    public static final String FILTER_BEFORE_OR_DURING_PERIOD_DATE_YMD_HMS = "ATTR1 BEFORE OR DURING "
+            + FIRST_DATE
+            + "/"
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S";
     public static final String FILTER_DURING_OR_AFTER_PERIOD_BETWEEN_DATES =
             "ATTR1 DURING OR AFTER " + FIRST_DATE + "/" + LAST_DATE;
-    public static final String FILTER_DURING_OR_AFTER_PERIOD_YMD_HMS_DATE =
-            "ATTR1 DURING OR AFTER "
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S"
-                    + "/"
-                    + LAST_DATE;
-    public static final String FILTER_DURING_OR_AFTER_PERIOD_DATE_YMD_HMS =
-            "ATTR1 DURING OR AFTER "
-                    + FIRST_DATE
-                    + "/"
-                    + "P"
-                    + DURATION_DATE
-                    + "Y"
-                    + DURATION_DATE
-                    + "M"
-                    + DURATION_DATE
-                    + "D"
-                    + "T"
-                    + DURATION_TIME
-                    + "H"
-                    + DURATION_TIME
-                    + "M"
-                    + DURATION_TIME
-                    + "S";
+    public static final String FILTER_DURING_OR_AFTER_PERIOD_YMD_HMS_DATE = "ATTR1 DURING OR AFTER "
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S"
+            + "/"
+            + LAST_DATE;
+    public static final String FILTER_DURING_OR_AFTER_PERIOD_DATE_YMD_HMS = "ATTR1 DURING OR AFTER "
+            + FIRST_DATE
+            + "/"
+            + "P"
+            + DURATION_DATE
+            + "Y"
+            + DURATION_DATE
+            + "M"
+            + DURATION_DATE
+            + "D"
+            + "T"
+            + DURATION_TIME
+            + "H"
+            + DURATION_TIME
+            + "M"
+            + DURATION_TIME
+            + "S";
     public static final String ATTRIBUTE_NAME_EXISTS = "ATTR1 EXISTS";
     public static final String ATTRIBUTE_NAME_DOES_NOT_EXIST = "ATTR1 DOES-NOT-EXIST";
     public static final String FILTER_AND = "ATTR1 < 10 AND ATTR2 < 2";
     public static final String FILTER_OR = "ATTR1 > 10 OR ATTR2 < 2";
     public static final String FILTER_OR_AND = "ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10";
-    public static final String FILTER_OR_AND_PARENTHESIS =
-            "ATTR3 < 4 AND (ATTR1 > 10 OR ATTR2 < 2)";
-    public static final String FILTER_AND_NOT_AND =
-            "ATTR3 < 4 AND (NOT( ATTR1 < 10 AND ATTR2 < 2))";
-    public static final String FILTER_AND_NOT_COMPARASION =
-            "ATTR1 < 1 AND (NOT (ATTR2 < 2)) AND ATTR3 < 3";
+    public static final String FILTER_OR_AND_PARENTHESIS = "ATTR3 < 4 AND (ATTR1 > 10 OR ATTR2 < 2)";
+    public static final String FILTER_AND_NOT_AND = "ATTR3 < 4 AND (NOT( ATTR1 < 10 AND ATTR2 < 2))";
+    public static final String FILTER_AND_NOT_COMPARASION = "ATTR1 < 1 AND (NOT (ATTR2 < 2)) AND ATTR3 < 3";
     public static final String FILTER_WITH_FUNCTION_ABS = "ATTR1 < abs(10)";
     public static final String FILTER__WITH_FUNCTION_STR_CONCAT = "ATTR1 = strConcat(A, '1')";
     public static final String LIKE_FILTER = "ATTR1 LIKE 'abc%'";
@@ -301,39 +283,28 @@ public class FilterCQLSample {
             SAMPLES.put(EQ_FILTER, filter);
 
             // ---------------------------------------
-            filter =
-                    FACTORY.greater(
-                            FACTORY.property("ATTR1"),
-                            FACTORY.divide(
-                                    FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)),
-                                    FACTORY.literal(3)));
+            filter = FACTORY.greater(
+                    FACTORY.property("ATTR1"),
+                    FACTORY.divide(FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)), FACTORY.literal(3)));
             SAMPLES.put(FILTER_WITH_PAREN_ROUNDTRIP_EXPR, filter);
 
             // ---------------------------------------
-            filter =
-                    FACTORY.greater(
-                            FACTORY.property("ATTR1"),
-                            FACTORY.divide(
-                                    FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)),
-                                    FACTORY.literal(3)));
+            filter = FACTORY.greater(
+                    FACTORY.property("ATTR1"),
+                    FACTORY.divide(FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)), FACTORY.literal(3)));
             SAMPLES.put(FILTER_WITH_BRACKET_ROUNDTRIP_EXPR, filter);
 
             // ---------------------------------------
             // ATTR1 < (1 + ((2 / 3) * 4))
-            filter =
-                    FACTORY.less(
-                            FACTORY.property("ATTR1"),
-                            FACTORY.add(
-                                    FACTORY.literal(1),
-                                    FACTORY.multiply(
-                                            FACTORY.divide(FACTORY.literal(2), FACTORY.literal(3)),
-                                            FACTORY.literal(4))));
+            filter = FACTORY.less(
+                    FACTORY.property("ATTR1"),
+                    FACTORY.add(
+                            FACTORY.literal(1),
+                            FACTORY.multiply(
+                                    FACTORY.divide(FACTORY.literal(2), FACTORY.literal(3)), FACTORY.literal(4))));
             SAMPLES.put(FILTER_WITH_NESTED_PAREN_EXPR, filter);
             // ---------------------------------------
-            filter =
-                    FACTORY.greater(
-                            FACTORY.property("ATTR1"),
-                            FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)));
+            filter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.add(FACTORY.literal(1), FACTORY.literal(2)));
             SAMPLES.put(FILTER_SIMPLE_EXPR, filter);
         }
 
@@ -357,8 +328,7 @@ public class FilterCQLSample {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
                 dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
                 Date dateTime = dateFormatter.parse(FIRST_DATE);
-                tEqualsFilter =
-                        FACTORY.tequals(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
+                tEqualsFilter = FACTORY.tequals(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
@@ -401,8 +371,7 @@ public class FilterCQLSample {
                     Date lastDate = strToDate(LAST_DATE);
                     Date firstDate = subtractDuration(lastDate, DURATION_DATE, DURATION_TIME);
 
-                    Before before =
-                            FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(firstDate));
+                    Before before = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(firstDate));
 
                     SAMPLES.put(FILTER_BEFORE_PERIOD_YMD_HMS_DATE, before);
                 } catch (ParseException e) {
@@ -417,8 +386,7 @@ public class FilterCQLSample {
             Before beforeFilter = null;
 
             try {
-                SimpleDateFormat dateFormatterWithMillis =
-                        new SimpleDateFormat(DATE_TIME_FORMATTER_MILLIS);
+                SimpleDateFormat dateFormatterWithMillis = new SimpleDateFormat(DATE_TIME_FORMATTER_MILLIS);
                 dateFormatterWithMillis.setTimeZone(TimeZone.getTimeZone("GMT"));
                 Date dateTime = dateFormatterWithMillis.parse(FIRST_DATE_MILLIS);
                 beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
@@ -547,8 +515,7 @@ public class FilterCQLSample {
         try {
             // During with period between dates
             Period period = createPeriod(FIRST_DATE, LAST_DATE);
-            During duringFilter =
-                    FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
+            During duringFilter = FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
 
             SAMPLES.put(FILTER_DURING_PERIOD_BETWEEN_DATES, duringFilter);
         } catch (ParseException e) {
@@ -566,8 +533,7 @@ public class FilterCQLSample {
                 // creates an And filter firstDate <= prop <= lastDate
                 Period period = createPeriod(firstDate, lastDate);
 
-                During duringFilter =
-                        FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
+                During duringFilter = FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
 
                 SAMPLES.put(FILTER_DURING_PERIOD_DATE_YMD_HMS, duringFilter);
             }
@@ -580,8 +546,7 @@ public class FilterCQLSample {
 
                 Period period = createPeriod(firstDate, lastDate);
 
-                During duringFilter =
-                        FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
+                During duringFilter = FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period));
 
                 SAMPLES.put(FILTER_DURING_PERIOD_YMD_HMS_DATE, duringFilter);
             }
@@ -710,17 +675,13 @@ public class FilterCQLSample {
 
             // "ATT1 < 10 AND ATT2 < 2";
             And andFilter =
-                    FACTORY.and(
-                            FACTORY.less(attr1, FACTORY.literal(10)),
-                            FACTORY.less(attr2, FACTORY.literal(2)));
+                    FACTORY.and(FACTORY.less(attr1, FACTORY.literal(10)), FACTORY.less(attr2, FACTORY.literal(2)));
 
             SAMPLES.put(FILTER_AND, andFilter);
 
             // "ATT1 > 10 OR ATT2 < 2";
             Or orFilter =
-                    FACTORY.or(
-                            FACTORY.greater(attr1, FACTORY.literal(10)),
-                            FACTORY.less(attr2, FACTORY.literal(2)));
+                    FACTORY.or(FACTORY.greater(attr1, FACTORY.literal(10)), FACTORY.less(attr2, FACTORY.literal(2)));
 
             SAMPLES.put(FILTER_OR, orFilter);
 
@@ -735,23 +696,19 @@ public class FilterCQLSample {
             SAMPLES.put(FILTER_OR_AND_PARENTHESIS, parenthesisFilter);
 
             // ATTR3 < 4 AND (NOT( ATTR1 < 10 AND ATTR2 < 2))
-            And andNotAnd =
-                    FACTORY.and(
-                            FACTORY.less(attr3, FACTORY.literal(4)),
-                            FACTORY.not(
-                                    FACTORY.and(
-                                            FACTORY.less(attr1, FACTORY.literal(10)),
-                                            FACTORY.less(attr2, FACTORY.literal(2)))));
+            And andNotAnd = FACTORY.and(
+                    FACTORY.less(attr3, FACTORY.literal(4)),
+                    FACTORY.not(FACTORY.and(
+                            FACTORY.less(attr1, FACTORY.literal(10)), FACTORY.less(attr2, FACTORY.literal(2)))));
 
             SAMPLES.put(FILTER_AND_NOT_AND, andNotAnd);
 
             // ATTR1 < 1 AND (NOT (ATTR2 < 2)) AND ATTR3 < 3
-            And andNotComparasion =
+            And andNotComparasion = FACTORY.and(
                     FACTORY.and(
-                            FACTORY.and(
-                                    FACTORY.less(attr1, FACTORY.literal(1)),
-                                    FACTORY.not(FACTORY.less(attr2, FACTORY.literal(2)))),
-                            FACTORY.less(attr3, FACTORY.literal(3)));
+                            FACTORY.less(attr1, FACTORY.literal(1)),
+                            FACTORY.not(FACTORY.less(attr2, FACTORY.literal(2)))),
+                    FACTORY.less(attr3, FACTORY.literal(3)));
 
             SAMPLES.put(FILTER_AND_NOT_COMPARASION, andNotComparasion);
         } catch (Exception e) {
@@ -791,8 +748,7 @@ public class FilterCQLSample {
 
             PropertyName property = FACTORY.property("ATTR1");
 
-            PropertyIsLike likeFilter =
-                    FACTORY.like(property, "abc" + WC_MULTI, WC_MULTI, WC_SINGLE, ESCAPE);
+            PropertyIsLike likeFilter = FACTORY.like(property, "abc" + WC_MULTI, WC_MULTI, WC_SINGLE, ESCAPE);
 
             SAMPLES.put(LIKE_FILTER, likeFilter);
 
@@ -819,8 +775,7 @@ public class FilterCQLSample {
         }
     } // end static initialization
 
-    private static Or buildDuringOrAfterFilter(final PropertyName property, Period period)
-            throws ParseException {
+    private static Or buildDuringOrAfterFilter(final PropertyName property, Period period) throws ParseException {
         During during = FACTORY.during(property, FACTORY.literal(period));
 
         final Date lastDate = period.getEnding().getPosition().getDate();
@@ -862,8 +817,7 @@ public class FilterCQLSample {
     }
 
     /** Add duration to date */
-    private static Date addDuration(
-            final Date date, final String durationDate, final String durationTime) {
+    private static Date addDuration(final Date date, final String durationDate, final String durationTime) {
         CALENDAR.setTime(date);
 
         int durDate = Integer.parseInt(durationDate);
@@ -887,8 +841,7 @@ public class FilterCQLSample {
      * @param lastDate a Date
      * @return Date
      */
-    private static Date subtractDuration(
-            final Date lastDate, final String durationDate, final String durationTime) {
+    private static Date subtractDuration(final Date lastDate, final String durationDate, final String durationTime) {
         CALENDAR.setTime(lastDate);
 
         int durDate = -1 * Integer.parseInt(durationDate);

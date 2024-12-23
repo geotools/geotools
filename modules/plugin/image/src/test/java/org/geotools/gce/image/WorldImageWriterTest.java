@@ -38,8 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test class for WorldImageWriter. This test tries to read, writer and re-read successive images
- * checking for errors.
+ * Test class for WorldImageWriter. This test tries to read, writer and re-read successive images checking for errors.
  *
  * @author Simone Giannecchini
  * @author rgould
@@ -55,20 +54,21 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
         new File(testData, "write").mkdir();
     }
     /**
-     * This method simply read all the respecting a predefined pattern inside the testData directory
-     * and then it tries to read, write and re-read them back. All the possible errors are caught.
+     * This method simply read all the respecting a predefined pattern inside the testData directory and then it tries
+     * to read, write and re-read them back. All the possible errors are caught.
      */
     @Test
     public void testWrite()
-            throws MalformedURLException, IOException, IllegalArgumentException, FactoryException,
-                    TransformException, ParseException {
+            throws MalformedURLException, IOException, IllegalArgumentException, FactoryException, TransformException,
+                    ParseException {
 
         // checking test data directory for all kind of inputs
         final File test_data_dir = TestData.file(this, null);
         File output;
         final String[] fileList = test_data_dir.list(new MyFileFilter());
         for (String format : supportedFormat) {
-            final StringBuffer buff = new StringBuffer("Format is ").append(format).append("\n");
+            final StringBuffer buff =
+                    new StringBuffer("Format is ").append(format).append("\n");
             for (String filePath : fileList) {
                 buff.append(" Testing ability to write ").append(filePath);
                 // url
@@ -89,15 +89,13 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
     }
 
     /**
-     * This method is responsible for loading the provided source object as a cverage then for
-     * writing it on the temp directoy and finally for rereading the coverage back into memory in
-     * order to display it.
+     * This method is responsible for loading the provided source object as a cverage then for writing it on the temp
+     * directoy and finally for rereading the coverage back into memory in order to display it.
      *
      * @param source Object The object on disk representing the coverage to test.
      */
     private File write(Object source, String format)
-            throws IOException, IllegalArgumentException, FactoryException, TransformException,
-                    ParseException {
+            throws IOException, IllegalArgumentException, FactoryException, TransformException, ParseException {
         // instantiating a reader
         WorldImageReader wiReader = new WorldImageReader(source);
 

@@ -27,26 +27,24 @@ import org.geotools.api.referencing.operation.TransformException;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ConcatenatedTransformDirect1D extends ConcatenatedTransformDirect
-        implements MathTransform1D {
+final class ConcatenatedTransformDirect1D extends ConcatenatedTransformDirect implements MathTransform1D {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1064398659892864966L;
 
     /**
-     * The first math transform. This field is identical to {@link
-     * ConcatenatedTransform#transform1}. Only the type is different.
+     * The first math transform. This field is identical to {@link ConcatenatedTransform#transform1}. Only the type is
+     * different.
      */
     private final MathTransform1D transform1;
 
     /**
-     * The second math transform. This field is identical to {@link
-     * ConcatenatedTransform#transform1}. Only the type is different.
+     * The second math transform. This field is identical to {@link ConcatenatedTransform#transform1}. Only the type is
+     * different.
      */
     private final MathTransform1D transform2;
 
     /** Constructs a concatenated transform. */
-    public ConcatenatedTransformDirect1D(
-            final MathTransform1D transform1, final MathTransform1D transform2) {
+    public ConcatenatedTransformDirect1D(final MathTransform1D transform1, final MathTransform1D transform2) {
         super(transform1, transform2);
         this.transform1 = transform1;
         this.transform2 = transform2;

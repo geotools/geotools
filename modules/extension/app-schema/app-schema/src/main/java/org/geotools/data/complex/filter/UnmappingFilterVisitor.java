@@ -101,10 +101,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * A Filter visitor that traverse a Filter or Expression made against a complex FeatureType, and
- * that uses the attribute and type mapping information given by a {@linkplain
- * org.geotools.data.complex.FeatureTypeMapping} object to produce an equivalent Filter that
- * operates against the original FeatureType.
+ * A Filter visitor that traverse a Filter or Expression made against a complex FeatureType, and that uses the attribute
+ * and type mapping information given by a {@linkplain org.geotools.data.complex.FeatureTypeMapping} object to produce
+ * an equivalent Filter that operates against the original FeatureType.
  *
  * <p>Usage:
  *
@@ -123,25 +122,21 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @since 2.4
  */
-public class UnmappingFilterVisitor
-        implements org.geotools.api.filter.FilterVisitor, ExpressionVisitor {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(UnmappingFilterVisitor.class);
+public class UnmappingFilterVisitor implements org.geotools.api.filter.FilterVisitor, ExpressionVisitor {
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(UnmappingFilterVisitor.class);
 
     protected FeatureTypeMapping mappings;
 
     private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    /**
-     * visit(*Expression) holds the unmapped expression here. Package visible just for unit tests
-     */
+    /** visit(*Expression) holds the unmapped expression here. Package visible just for unit tests */
     public UnmappingFilterVisitor(FeatureTypeMapping mappings) {
         this.mappings = mappings;
     }
 
     /**
-     * Used by methods that visited a filter that produced one or more filters over the surrogate
-     * feature type to combine them in an Or filter if necessary.
+     * Used by methods that visited a filter that produced one or more filters over the surrogate feature type to
+     * combine them in an Or filter if necessary.
      */
     private Filter combineOred(List<Filter> combinedFilters) {
         switch (combinedFilters.size()) {
@@ -155,8 +150,8 @@ public class UnmappingFilterVisitor
     }
 
     /**
-     * Returns a CompareFilter of the same type than <code>filter</code>, but built on the unmapped
-     * expressions pointing to the surrogate type attributes.
+     * Returns a CompareFilter of the same type than <code>filter</code>, but built on the unmapped expressions pointing
+     * to the surrogate type attributes.
      *
      * @return the scalar product of the evaluation of both expressions
      */
@@ -183,8 +178,7 @@ public class UnmappingFilterVisitor
     private Expression[][] buildExpressionsMatrix(List leftExpressions, List rightExpressions) {
         Expression left;
         Expression right;
-        Expression[][] product =
-                new Expression[leftExpressions.size() * rightExpressions.size()][2];
+        Expression[][] product = new Expression[leftExpressions.size() * rightExpressions.size()][2];
 
         int index = 0;
         for (Object leftExpression : leftExpressions) {
@@ -298,9 +292,7 @@ public class UnmappingFilterVisitor
 
         if (fidExpression == null) {
             throw new IllegalStateException(
-                    "No FID expression found for type "
-                            + target
-                            + ". Did you mean Expression.NIL?");
+                    "No FID expression found for type " + target + ". Did you mean Expression.NIL?");
         }
 
         if (Expression.NIL.equals(fidExpression)) {
@@ -321,9 +313,8 @@ public class UnmappingFilterVisitor
         try {
             for (Object o : fids) {
                 Identifier fid = (Identifier) o;
-                Filter comparison =
-                        UnmappingFilterVisitor.ff.equals(
-                                fidExpression, UnmappingFilterVisitor.ff.literal(fid.toString()));
+                Filter comparison = UnmappingFilterVisitor.ff.equals(
+                        fidExpression, UnmappingFilterVisitor.ff.literal(fid.toString()));
                 UnmappingFilterVisitor.LOGGER.finest("Adding unmapped fid filter " + comparison);
                 filters.add(comparison);
             }
@@ -362,8 +353,7 @@ public class UnmappingFilterVisitor
         List lowerExpressions = (List) lower.accept(this, null);
         List upperExpressions = (List) upper.accept(this, null);
 
-        final int combinedSize =
-                expressions.size() * lowerExpressions.size() * upperExpressions.size();
+        final int combinedSize = expressions.size() * lowerExpressions.size() * upperExpressions.size();
         List<Filter> combinedFilters = new ArrayList<>(combinedSize);
 
         for (Object lowerExpression : lowerExpressions) {
@@ -391,8 +381,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.equal(left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.equal(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -409,8 +398,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.notEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.notEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -427,8 +415,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.greater(left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.greater(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -445,9 +432,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.greaterOrEqual(
-                            left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.greaterOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -464,8 +449,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.less(left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.less(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -482,8 +466,7 @@ public class UnmappingFilterVisitor
         for (Expression[] expression : expressions) {
             Expression left = expression[0];
             Expression right = expression[1];
-            Filter unrolled =
-                    ff.lessOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
+            Filter unrolled = ff.lessOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -506,8 +489,7 @@ public class UnmappingFilterVisitor
 
         List<Filter> combined = new ArrayList<>(unrolledValues.size());
         for (Expression sourceValue : unrolledValues) {
-            Filter newFilter =
-                    ff.like(sourceValue, literal, wildcard, single, escape, matchCase, matchAction);
+            Filter newFilter = ff.like(sourceValue, literal, wildcard, single, escape, matchCase, matchAction);
             combined.add(newFilter);
         }
         Filter unrolled = combineOred(combined);
@@ -573,12 +555,7 @@ public class UnmappingFilterVisitor
             Expression right = exp[1];
 
             Filter unrolled =
-                    ff.beyond(
-                            left,
-                            right,
-                            filter.getDistance(),
-                            filter.getDistanceUnits(),
-                            filter.getMatchAction());
+                    ff.beyond(left, right, filter.getDistance(), filter.getDistanceUnits(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -651,12 +628,7 @@ public class UnmappingFilterVisitor
             Expression right = exp[1];
 
             Filter unrolled =
-                    ff.dwithin(
-                            left,
-                            right,
-                            filter.getDistance(),
-                            filter.getDistanceUnits(),
-                            filter.getMatchAction());
+                    ff.dwithin(left, right, filter.getDistance(), filter.getDistanceUnits(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -797,9 +769,9 @@ public class UnmappingFilterVisitor
     }
 
     /**
-     * @todo: support function arguments that map to more than one source expression. For example,
-     *     if the argumen <code>gml:name</code> maps to source expressions <code>name</code> and
-     *     <code>description</code> because the mapping has attribute mappings for both <code>
+     * @todo: support function arguments that map to more than one source expression. For example, if the argumen <code>
+     *     gml:name</code> maps to source expressions <code>name</code> and <code>description</code> because the mapping
+     *     has attribute mappings for both <code>
      *     gml:name[1] = name</code> and <code>gml:name[2] = description</code>.
      */
     @Override
@@ -812,10 +784,9 @@ public class UnmappingFilterVisitor
         for (Expression mappingExpression : expressions) {
             List sourceExpressions = (List) mappingExpression.accept(this, null);
             if (sourceExpressions.size() > 1) {
-                throw new UnsupportedOperationException(
-                        "unrolling function arguments "
-                                + "that map to more than one source expressions "
-                                + "is not supported yet");
+                throw new UnsupportedOperationException("unrolling function arguments "
+                        + "that map to more than one source expressions "
+                        + "is not supported yet");
             }
             Expression unrolledExpression = (Expression) sourceExpressions.get(0);
             arguments.add(unrolledExpression);
@@ -881,13 +852,11 @@ public class UnmappingFilterVisitor
             for (NestedAttributeMapping nestedMapping : nestedMappings) {
                 if (simplifiedSteps.startsWith(nestedMapping.getTargetXPath())) {
                     Expression nestedAttributeExpression =
-                            CustomImplementationsFinder.find(
-                                    mappings, simplifiedSteps, nestedMapping);
+                            CustomImplementationsFinder.find(mappings, simplifiedSteps, nestedMapping);
                     if (nestedAttributeExpression != null) {
                         matchingMappings.add(nestedAttributeExpression);
                     } else {
-                        matchingMappings.add(
-                                new NestedAttributeExpression(simplifiedSteps, nestedMapping));
+                        matchingMappings.add(new NestedAttributeExpression(simplifiedSteps, nestedMapping));
                     }
                 }
             }

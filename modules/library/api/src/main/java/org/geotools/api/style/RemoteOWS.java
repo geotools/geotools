@@ -20,8 +20,8 @@ package org.geotools.api.style;
  * A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server.
  *
  * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor Report (OGC 02-070)
+ * version 1.0.0.</a>:
  *
  * <pre><code>
  * &lt;xsd:element name="RemoteOWS"&gt;

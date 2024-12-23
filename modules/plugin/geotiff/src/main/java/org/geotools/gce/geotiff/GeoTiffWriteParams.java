@@ -24,12 +24,11 @@ import javax.imageio.ImageWriteParam;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 
 /**
- * Subclass of {@link GeoToolsWriteParams} the allows the user to specify parameters to control the
- * process of writing out a GeoTiff file through standards {@link ImageWriteParam} (with possible
- * extensions).
+ * Subclass of {@link GeoToolsWriteParams} the allows the user to specify parameters to control the process of writing
+ * out a GeoTiff file through standards {@link ImageWriteParam} (with possible extensions).
  *
- * <p>This class allows the user to control the output tile size for the GeoTiff file we are going
- * to create as well as the possible compression.
+ * <p>This class allows the user to control the output tile size for the GeoTiff file we are going to create as well as
+ * the possible compression.
  *
  * <p>An example of usage of this parameters is as follows:
  *
@@ -95,8 +94,8 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
     }
 
     /**
-     * Returns the current <code>TIFFColorConverter</code> object that will be used to perform color
-     * conversion when writing the image, or <code>null</code> if none is set.
+     * Returns the current <code>TIFFColorConverter</code> object that will be used to perform color conversion when
+     * writing the image, or <code>null</code> if none is set.
      *
      * @return a <code>TIFFColorConverter</code> object, or <code>null</code>.
      * @see #setColorConverter(TIFFColorConverter, int)
@@ -106,8 +105,8 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
     }
 
     /**
-     * Returns the current value that will be written to the <code>Photometricinterpretation</code>
-     * tag. This method should only be called if a value has been set using the <code>
+     * Returns the current value that will be written to the <code>Photometricinterpretation</code> tag. This method
+     * should only be called if a value has been set using the <code>
      * setColorConverter</code> method.
      *
      * @return an <code>int</code> to be used as the value of the <code>PhotometricInterpretation
@@ -121,8 +120,7 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
 
     /**
      * Returns the <code>TIFFCompressor</code> that is currently set to be used by the <code>
-     * ImageWriter</code> to encode each image strip or tile, or <code>null</code> if none has been
-     * set.
+     * ImageWriter</code> to encode each image strip or tile, or <code>null</code> if none has been set.
      *
      * @return compressor the <code>TIFFCompressor</code> to be used for encoding, or <code>null
      *     </code> if none has been set (allowing the writer to choose its own).
@@ -139,9 +137,9 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
     }
 
     /**
-     * Sets the <code>TIFFColorConverter</code> object describing the color space to which the input
-     * data should be converted for storage in the input stream. In addition, the value to be
-     * written to the <code>PhotometricInterpretation</code> tag is supplied.
+     * Sets the <code>TIFFColorConverter</code> object describing the color space to which the input data should be
+     * converted for storage in the input stream. In addition, the value to be written to the <code>
+     * PhotometricInterpretation</code> tag is supplied.
      *
      * @param colorConverter a <code>TIFFColorConverter</code> object, or <code>null</code>.
      * @param photometricInterpretation the value to be written to the <code>
@@ -149,20 +147,17 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
      * @see #getColorConverter
      * @see #getPhotometricInterpretation
      */
-    public void setColorConverter(
-            TIFFColorConverter colorConverter, int photometricInterpretation) {
-        ((TIFFImageWriteParam) adaptee)
-                .setColorConverter(colorConverter, photometricInterpretation);
+    public void setColorConverter(TIFFColorConverter colorConverter, int photometricInterpretation) {
+        ((TIFFImageWriteParam) adaptee).setColorConverter(colorConverter, photometricInterpretation);
     }
 
     /**
-     * Sets the <code>TIFFCompressor</code> object to be used by the <code>ImageWriter</code> to
-     * encode each image strip or tile. A value of <code>null</code> allows the writer to choose its
-     * own TIFFCompressor.
+     * Sets the <code>TIFFCompressor</code> object to be used by the <code>ImageWriter</code> to encode each image strip
+     * or tile. A value of <code>null</code> allows the writer to choose its own TIFFCompressor.
      *
-     * <p>Note that invoking this method is not sufficient to set the compression type: {@link
-     * ImageWriteParam#setCompressionType(String) <code>setCompressionType()</code>} must be invoked
-     * explicitly for this purpose. The following code illustrates the correct procedure:
+     * <p>Note that invoking this method is not sufficient to set the compression type:
+     * {@link ImageWriteParam#setCompressionType(String) <code>setCompressionType()</code>} must be invoked explicitly
+     * for this purpose. The following code illustrates the correct procedure:
      *
      * <pre>
      * TIFFImageWriteParam writeParam;
@@ -175,11 +170,11 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
      * If <code>compressionType</code> is set to a value different from that supported by the <code>
      * TIFFCompressor</code> then the compressor object will not be used.
      *
-     * <p>If the compression type supported by the supplied <code>TIFFCompressor</code> is not among
-     * those in {@link ImageWriteParam#compressionTypes <code>compressionTypes</code>}, then it will
-     * be appended to this array after removing any previously appended compression type. If <code>
-     * compressor</code> is <code>null</code> this will also cause any previously appended type to
-     * be removed from the array.
+     * <p>If the compression type supported by the supplied <code>TIFFCompressor</code> is not among those in
+     * {@link ImageWriteParam#compressionTypes <code>compressionTypes</code>}, then it will be appended to this array
+     * after removing any previously appended compression type. If <code>
+     * compressor</code> is <code>null</code> this will also cause any previously appended type to be removed from the
+     * array.
      *
      * @param compressor the <code>TIFFCompressor</code> to be used for encoding, or <code>null
      *     </code> to allow the writer to choose its own.

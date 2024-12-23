@@ -28,8 +28,7 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * Collects type of properties, by name. When a property is given multiple types, a common ancestor
- * is found
+ * Collects type of properties, by name. When a property is given multiple types, a common ancestor is found
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -39,8 +38,7 @@ class TypeAggregator {
     static final List<Class<?>> INTEGRAL_NUMBER_TYPES =
             Arrays.asList(Byte.class, Short.class, Integer.class, Long.class, BigInteger.class);
 
-    static final List<Class<?>> FLOAT_NUMBER_TYPES =
-            Arrays.asList(Float.class, Double.class, BigDecimal.class);
+    static final List<Class<?>> FLOAT_NUMBER_TYPES = Arrays.asList(Float.class, Double.class, BigDecimal.class);
 
     /** Adds/merges a property and its type */
     public void addType(String name, Class<?> binding) {
@@ -51,8 +49,7 @@ class TypeAggregator {
             if (!existingBinding.isAssignableFrom(binding)) {
                 if (binding.isAssignableFrom(existingBinding)) {
                     types.put(name, binding);
-                } else if (Number.class.isAssignableFrom(binding)
-                        && Number.class.isAssignableFrom(existingBinding)) {
+                } else if (Number.class.isAssignableFrom(binding) && Number.class.isAssignableFrom(existingBinding)) {
                     // go towards the larger number class, fall back on
                     // Number if the binding is not integral nor float (custom/unforeseen Number
                     // subclass)
@@ -69,8 +66,7 @@ class TypeAggregator {
                         }
                     } else if (FLOAT_NUMBER_TYPES.contains(existingBinding)) {
                         if (FLOAT_NUMBER_TYPES.contains(binding)) {
-                            if (FLOAT_NUMBER_TYPES.indexOf(binding)
-                                    > FLOAT_NUMBER_TYPES.indexOf(existingBinding)) {
+                            if (FLOAT_NUMBER_TYPES.indexOf(binding) > FLOAT_NUMBER_TYPES.indexOf(existingBinding)) {
                                 types.put(name, binding);
                             } else if (!INTEGRAL_NUMBER_TYPES.contains(binding)) {
                                 types.put(name, Number.class);

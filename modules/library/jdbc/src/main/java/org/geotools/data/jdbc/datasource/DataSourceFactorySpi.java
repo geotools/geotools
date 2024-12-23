@@ -25,9 +25,8 @@ import org.geotools.util.factory.Factory;
 /**
  * Constructs a live DataSource from a set of parameters.
  *
- * <p>An instance of this interface should exist for all DataSource providers, common examples being
- * JNDI, DBCP, C3P0. In addition to implementing this interface data source providers should have a
- * services file:
+ * <p>An instance of this interface should exist for all DataSource providers, common examples being JNDI, DBCP, C3P0.
+ * In addition to implementing this interface data source providers should have a services file:
  *
  * <p><code>META-INF/services/org.geotools.data.DataSourceFactorySpi</code>
  *
@@ -37,8 +36,7 @@ import org.geotools.util.factory.Factory;
  * <code>e.g.
  * org.geotools.data.dbpc.DBCPDataSourceFactory</code>
  *
- * <p>The factories are never called directly by client code, instead the DataSourceFinder class is
- * used.
+ * <p>The factories are never called directly by client code, instead the DataSourceFinder class is used.
  *
  * <p>The following example shows how a user might setup a DBCP connection pool::
  *
@@ -59,15 +57,13 @@ import org.geotools.util.factory.Factory;
  */
 public interface DataSourceFactorySpi extends Factory {
     /**
-     * Construct a live data source using the params specifed. The returned DataSource may be
-     * pooled.
+     * Construct a live data source using the params specifed. The returned DataSource may be pooled.
      *
      * @param params The full set of information needed to construct a live DataSource.
-     * @return The created DataSource, this may be null if the required resource was not found or if
-     *     insufficent parameters were given. Note that canProcess() should have returned false if
-     *     the problem is to do with insuficent parameters.
-     * @throws IOException if there were any problems setting up (creating or connecting) the
-     *     datasource.
+     * @return The created DataSource, this may be null if the required resource was not found or if insufficent
+     *     parameters were given. Note that canProcess() should have returned false if the problem is to do with
+     *     insuficent parameters.
+     * @throws IOException if there were any problems setting up (creating or connecting) the datasource.
      */
     DataSource createDataSource(Map<String, ?> params) throws IOException;
 
@@ -88,8 +84,7 @@ public interface DataSourceFactorySpi extends Factory {
      *
      * <p>A non localized description of this data store type.
      *
-     * @return A human readable description that is suitable for inclusion in a list of available
-     *     datasources.
+     * @return A human readable description that is suitable for inclusion in a list of available datasources.
      */
     String getDescription();
 
@@ -103,21 +98,20 @@ public interface DataSourceFactorySpi extends Factory {
     /**
      * Test to see if this factory is suitable for processing the data pointed to by the params map.
      *
-     * <p>If this data source requires a number of parameters then this mehtod should check that
-     * they are all present and that they are all valid.
+     * <p>If this data source requires a number of parameters then this mehtod should check that they are all present
+     * and that they are all valid.
      *
      * @param params The full set of information needed to construct a live data source.
-     * @return booean true if and only if this factory can process the resource indicated by the
-     *     param set and all the required params are pressent.
+     * @return booean true if and only if this factory can process the resource indicated by the param set and all the
+     *     required params are pressent.
      */
     boolean canProcess(Map<String, ?> params);
 
     /**
-     * Test to see if this data source is available, if it has all the appropriate libraries to
-     * construct a datastore.
+     * Test to see if this data source is available, if it has all the appropriate libraries to construct a datastore.
      *
-     * @return <tt>true</tt> if and only if this factory has all the appropriate jars on the
-     *     classpath to create DataSource.
+     * @return <tt>true</tt> if and only if this factory has all the appropriate jars on the classpath to create
+     *     DataSource.
      */
     boolean isAvailable();
 }

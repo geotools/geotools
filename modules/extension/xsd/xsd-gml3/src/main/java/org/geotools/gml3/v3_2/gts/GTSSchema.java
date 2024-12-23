@@ -52,15 +52,12 @@ public class GTSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType TM_PERIODDURATION_PROPERTYTYPE_TYPE =
-            build_TM_PERIODDURATION_PROPERTYTYPE_TYPE();
+    public static final ComplexType TM_PERIODDURATION_PROPERTYTYPE_TYPE = build_TM_PERIODDURATION_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_TM_PERIODDURATION_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gts",
-                                "TM_PeriodDuration_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gts", "TM_PeriodDuration_PropertyType"),
                         false,
                         false,
                         null,
@@ -73,25 +70,20 @@ public class GTSSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.DURATION_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gts",
-                                                "TM_PeriodDuration"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.DURATION_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gts", "TM_PeriodDuration"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -116,14 +108,12 @@ public class GTSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType TM_PRIMITIVE_PROPERTYTYPE_TYPE =
-            build_TM_PRIMITIVE_PROPERTYTYPE_TYPE();
+    public static final ComplexType TM_PRIMITIVE_PROPERTYTYPE_TYPE = build_TM_PRIMITIVE_PROPERTYTYPE_TYPE();
 
     private static ComplexType build_TM_PRIMITIVE_PROPERTYTYPE_TYPE() {
         ComplexType builtType =
                 new AbstractLazyComplexTypeImpl(
-                        new NameImpl(
-                                "http://www.isotc211.org/2005/gts", "TM_Primitive_PropertyType"),
+                        new NameImpl("http://www.isotc211.org/2005/gts", "TM_Primitive_PropertyType"),
                         false,
                         false,
                         null,
@@ -136,89 +126,71 @@ public class GTSSchema extends SchemaImpl {
                     @Override
                     public Collection<PropertyDescriptor> buildDescriptors() {
                         List<PropertyDescriptor> descriptors = new ArrayList<>();
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.ABSTRACTTIMEPRIMITIVETYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.opengis.net/gml/3.2",
-                                                "AbstractTimePrimitive"),
-                                        1,
-                                        1,
-                                        false,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._ACTUATE_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.ANYURI_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XLINKSchema._SHOW_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        XSSchema.STRING_TYPE,
-                                        new NameImpl("uuidref"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
-                        descriptors.add(
-                                new AttributeDescriptorImpl(
-                                        GMLSchema.NILREASONTYPE_TYPE,
-                                        new NameImpl(
-                                                "http://www.isotc211.org/2005/gco", "nilReason"),
-                                        0,
-                                        1,
-                                        true,
-                                        null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.ABSTRACTTIMEPRIMITIVETYPE_TYPE,
+                                new NameImpl("http://www.opengis.net/gml/3.2", "AbstractTimePrimitive"),
+                                1,
+                                1,
+                                false,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._ACTUATE_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.ANYURI_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XLINKSchema._SHOW_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE,
+                                new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                0,
+                                1,
+                                true,
+                                null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                XSSchema.STRING_TYPE, new NameImpl("uuidref"), 0, 1, true, null));
+                        descriptors.add(new AttributeDescriptorImpl(
+                                GMLSchema.NILREASONTYPE_TYPE,
+                                new NameImpl("http://www.isotc211.org/2005/gco", "nilReason"),
+                                0,
+                                1,
+                                true,
+                                null));
                         return descriptors;
                     }
                 };
@@ -234,11 +206,10 @@ public class GTSSchema extends SchemaImpl {
     /**
      * Complete the definition of a type and store it in the schema.
      *
-     * <p>This method calls {@link AttributeType#getSuper()} (and {@link
-     * ComplexType#getDescriptors()} where applicable) to ensure the construction of the type (a
-     * concrete {@link AbstractLazyAttributeTypeImpl} or {@link AbstractLazyComplexTypeImpl}
-     * sublass) is complete. This should be sufficient to avoid any nasty thread-safety surprises in
-     * code using this schema.
+     * <p>This method calls {@link AttributeType#getSuper()} (and {@link ComplexType#getDescriptors()} where applicable)
+     * to ensure the construction of the type (a concrete {@link AbstractLazyAttributeTypeImpl} or
+     * {@link AbstractLazyComplexTypeImpl} sublass) is complete. This should be sufficient to avoid any nasty
+     * thread-safety surprises in code using this schema.
      *
      * @param type the type to complete and store
      */

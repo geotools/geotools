@@ -41,8 +41,7 @@ class TestReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         next = false;
         return feature;
     }

@@ -48,8 +48,7 @@ public class XPathUtilTest {
     @Test
     public void testSteps() throws Exception {
         FeatureType complexType =
-                ComplexTestData.createExample01MultiValuedComplexProperty(
-                        new UniqueNameFeatureTypeFactoryImpl());
+                ComplexTestData.createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
         Name name = complexType.getName();
         AttributeDescriptor descriptor =
                 new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true, null);
@@ -80,47 +79,35 @@ public class XPathUtilTest {
         xpath = "wq_plus/measurement/result/../../measurement/determinand_description/../..";
         assertEquals(expected, XPathUtil.steps(descriptor, xpath, namespaces));
 
-        expected =
-                Arrays.asList(
-                        new XPathUtil.Step[] {
-                            new XPathUtil.Step(
-                                    new QName(rootQName.getNamespaceURI(), "measurement"), 2),
-                            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "result"), 1)
-                        });
+        expected = Arrays.asList(new XPathUtil.Step[] {
+            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "measurement"), 2),
+            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "result"), 1)
+        });
 
         xpath = "wq_plus/measurement/result/../../measurement[2]/result";
         assertEquals(expected, XPathUtil.steps(descriptor, xpath, namespaces));
 
-        expected =
-                Arrays.asList(
-                        new XPathUtil.Step[] {
-                            new XPathUtil.Step(
-                                    new QName(rootQName.getNamespaceURI(), "measurement"), 1),
-                            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "result"), 1)
-                        });
+        expected = Arrays.asList(new XPathUtil.Step[] {
+            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "measurement"), 1),
+            new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "result"), 1)
+        });
         xpath = "wq_plus/measurement/result/../result/.";
         assertEquals(expected, XPathUtil.steps(descriptor, xpath, namespaces));
 
-        expected =
-                Arrays.asList(
-                        new XPathUtil.Step[] {
-                            new XPathUtil.Step(
-                                    new QName(rootQName.getNamespaceURI(), "measurement"), 5)
-                        });
+        expected = Arrays.asList(
+                new XPathUtil.Step[] {new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "measurement"), 5)});
         xpath = "measurement/result/../../measurement[5]";
         assertEquals(expected, XPathUtil.steps(descriptor, xpath, namespaces));
     }
 
     /**
-     * Tests a location path of the form <code>"foo/bar/@baz"</code> gets built as a {@link
-     * StepList} of attribute names <code>"foo/bar/baz"</code> (i.e. no distinction between what's a
-     * "property" and what's an (xml) "attribute".
+     * Tests a location path of the form <code>"foo/bar/@baz"</code> gets built as a {@link StepList} of attribute names
+     * <code>"foo/bar/baz"</code> (i.e. no distinction between what's a "property" and what's an (xml) "attribute".
      */
     @Test
     public void testStepsWithXmlAttribute() throws Exception {
         FeatureType complexType =
-                ComplexTestData.createExample01MultiValuedComplexProperty(
-                        new UniqueNameFeatureTypeFactoryImpl());
+                ComplexTestData.createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
         Name name = complexType.getName();
         AttributeDescriptor descriptor =
                 new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true, null);
@@ -130,13 +117,11 @@ public class XPathUtilTest {
         namespaces.declarePrefix("wq", name.getNamespaceURI());
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        StepList steps =
-                XPathUtil.steps(descriptor, "wq_plus/measurement[2]/@xlink:href", namespaces);
+        StepList steps = XPathUtil.steps(descriptor, "wq_plus/measurement[2]/@xlink:href", namespaces);
         assertNotNull(steps);
         assertEquals(steps.toString(), 2, steps.size());
 
-        XPathUtil.Step step1 =
-                new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "measurement"), 2, false);
+        XPathUtil.Step step1 = new XPathUtil.Step(new QName(rootQName.getNamespaceURI(), "measurement"), 2, false);
         XPathUtil.Step step2 = new XPathUtil.Step(XLINK.HREF, 1, true);
 
         assertEquals(step1, steps.get(0));
@@ -173,9 +158,7 @@ public class XPathUtilTest {
         } catch (NullPointerException e) {
         }
 
-        FeatureType complexType =
-                ComplexTestData.createExample05NoNamespaceURI(
-                        new UniqueNameFeatureTypeFactoryImpl());
+        FeatureType complexType = ComplexTestData.createExample05NoNamespaceURI(new UniqueNameFeatureTypeFactoryImpl());
         Name name = complexType.getName();
         AttributeDescriptor descriptor =
                 new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true, null);
@@ -191,12 +174,9 @@ public class XPathUtilTest {
         QName rootQName = new QName(name.getNamespaceURI(), name.getLocalPart(), "");
         assertEquals(rootQName, step.getName());
 
-        complexType =
-                ComplexTestData.createExample01MultiValuedComplexProperty(
-                        new UniqueNameFeatureTypeFactoryImpl());
+        complexType = ComplexTestData.createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
         name = complexType.getName();
-        descriptor =
-                new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true, null);
+        descriptor = new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true, null);
 
         String prefix = "wq";
         namespaces.declarePrefix(prefix, name.getNamespaceURI());

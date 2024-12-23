@@ -17,9 +17,8 @@
 package org.geotools.wfs.v1_0;
 
 /**
- * Parser configuration for the wfs 1.0 {@link WFSCapabilities schema}, different from the {@link
- * WFSConfiguration_1_0} because WFS 1.0 bases capabilities document and request/response documents
- * on different schemas.
+ * Parser configuration for the wfs 1.0 {@link WFSCapabilities schema}, different from the {@link WFSConfiguration_1_0}
+ * because WFS 1.0 bases capabilities document and request/response documents on different schemas.
  *
  * @see WFSCapabilities
  */
@@ -38,14 +37,11 @@ public class WFSCapabilitiesConfiguration extends org.geotools.wfs.WFSConfigurat
     @Override
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
 
-        container.registerComponentImplementation(
-                WFSCapabilities.Service, ServiceTypeBinding.class);
-        container.registerComponentImplementation(
-                WFSCapabilities.LatLongBoundingBox, LatLongBoundingBoxBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.Service, ServiceTypeBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.LatLongBoundingBox, LatLongBoundingBoxBinding.class);
 
         container.registerComponentImplementation(WFSCapabilities.DCPType, DCPTypeBinding.class);
-        container.registerComponentImplementation(
-                WFSCapabilities.Capability, CapabilityBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.Capability, CapabilityBinding.class);
 
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
     }

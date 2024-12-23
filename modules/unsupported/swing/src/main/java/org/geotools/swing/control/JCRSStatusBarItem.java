@@ -30,8 +30,8 @@ import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.menu.JCRSPopupMenu;
 
 /**
- * A status bar item that displays the coordinate reference system name and provides a pop-up menu
- * to inspect or change the CRS.
+ * A status bar item that displays the coordinate reference system name and provides a pop-up menu to inspect or change
+ * the CRS.
  *
  * @see JMapStatusBar
  * @author Michael Bedward
@@ -73,14 +73,13 @@ public class JCRSStatusBarItem extends StatusBarItem {
         }
         displayCRS(crs);
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onDisplayAreaChanged(MapPaneEvent ev) {
-                        ReferencedEnvelope env = (ReferencedEnvelope) ev.getData();
-                        displayCRS(env.getCoordinateReferenceSystem());
-                    }
-                });
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onDisplayAreaChanged(MapPaneEvent ev) {
+                ReferencedEnvelope env = (ReferencedEnvelope) ev.getData();
+                displayCRS(env.getCoordinateReferenceSystem());
+            }
+        });
 
         final JPopupMenu menu = new JCRSPopupMenu(mapPane);
         btn.addActionListener(e -> menu.show(btn, 0, 0));

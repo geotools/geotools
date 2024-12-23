@@ -37,8 +37,7 @@ public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {
     }
 
     private boolean supportsColumnsWoSridConstraint(HanaVersion version) {
-        return ((version.getVersion() > 2)
-                || ((version.getVersion() == 2) && (version.getRevision() >= 60)));
+        return ((version.getVersion() > 2) || ((version.getVersion() == 2) && (version.getRevision() >= 60)));
     }
 
     @Test
@@ -50,8 +49,7 @@ public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {
             HanaDialect dialect = (HanaDialect) this.dialect;
             dialect.initializeConnection(conn);
             Integer srid =
-                    dialect.getGeometrySRID(
-                            dataStore.getDatabaseSchema(), tname("tabwosc"), aname("geom"), conn);
+                    dialect.getGeometrySRID(dataStore.getDatabaseSchema(), tname("tabwosc"), aname("geom"), conn);
             assertEquals(Integer.valueOf(3857), srid);
         }
     }

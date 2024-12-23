@@ -33,8 +33,8 @@ import org.junit.Test;
  */
 public final class PositionTest {
     /**
-     * Tests {@link GeneralPosition#equals} method between different implementations. The purpose of
-     * this test is also to run the assertion in the direct position implementations.
+     * Tests {@link GeneralPosition#equals} method between different implementations. The purpose of this test is also
+     * to run the assertion in the direct position implementations.
      */
     @Test
     public void testEquals() {

@@ -25,10 +25,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 
-/**
- * Bridges between {@link FeatureLocking<SimpleFeatureType, SimpleFeature>} and {@link
- * SimpleFeatureLocking}
- */
+/** Bridges between {@link FeatureLocking<SimpleFeatureType, SimpleFeature>} and {@link SimpleFeatureLocking} */
 class SimpleFeatureLockingBridge extends SimpleFeatureStoreBridge implements SimpleFeatureLocking {
 
     public SimpleFeatureLockingBridge(FeatureLocking<SimpleFeatureType, SimpleFeature> delegate) {

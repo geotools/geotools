@@ -83,8 +83,7 @@ public final class DbfOnlyShapefileTest {
 
         final Query query = new Query(typeName);
         int count = 0;
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(query, AUTO_COMMIT)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, AUTO_COMMIT)) {
             assertNull(reader.getFeatureType().getGeometryDescriptor());
             while (reader.hasNext()) {
                 final SimpleFeature feature = reader.next();

@@ -30,14 +30,14 @@ public class TransformerBaseTest {
 
     @Test
     public void testUnbufferedUsageNoErrors() throws TransformerException {
-        Source expected =
-                Input.fromString(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
-                        .build();
+        Source expected = Input.fromString(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                .build();
         ExampleTransformer tx = new ExampleTransformer(0, 0, false);
         Source actual = Input.fromString(tx.transform(10)).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff =
+                DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
@@ -50,13 +50,15 @@ public class TransformerBaseTest {
             tx.transform(10, w);
             Assert.fail("Should have thrown an exception before reaching this point");
         } catch (TransformerException e) {
-            Source expected =
-                    Input.fromString(
-                                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
-                            .build();
+            Source expected = Input.fromString(
+                            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                    .build();
             Source actual = Input.fromString(w.toString() + "</test:integers>").build();
 
-            Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+            Diff diff = DiffBuilder.compare(expected)
+                    .withTest(actual)
+                    .checkForSimilar()
+                    .build();
 
             Assert.assertFalse(diff.toString(), diff.hasDifferences());
         }
@@ -64,14 +66,14 @@ public class TransformerBaseTest {
 
     @Test
     public void testBufferedUsageNoErrors() throws TransformerException {
-        Source expected =
-                Input.fromString(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
-                        .build();
+        Source expected = Input.fromString(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                .build();
         ExampleTransformer tx = new ExampleTransformer(1, 0, false);
         Source actual = Input.fromString(tx.transform(10)).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff =
+                DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
@@ -84,13 +86,15 @@ public class TransformerBaseTest {
             tx.transform(10, w);
             Assert.fail("Should have thrown an exception before reaching this point!");
         } catch (TransformerException e) {
-            Source expected =
-                    Input.fromString(
-                                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
-                            .build();
+            Source expected = Input.fromString(
+                            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
+                    .build();
             Source actual = Input.fromString(w.toString() + "</test:integers>").build();
 
-            Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+            Diff diff = DiffBuilder.compare(expected)
+                    .withTest(actual)
+                    .checkForSimilar()
+                    .build();
 
             Assert.assertFalse(diff.toString(), diff.hasDifferences());
         }
@@ -99,13 +103,13 @@ public class TransformerBaseTest {
     @Test
     public void testBufferedUsageIgnoringOneError() throws TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 10, true);
-        Source expected =
-                Input.fromString(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
-                        .build();
+        Source expected = Input.fromString(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
+                .build();
         Source actual = Input.fromString(tx.transform(10)).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff =
+                DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
@@ -113,13 +117,13 @@ public class TransformerBaseTest {
     @Test
     public void testBufferedUsageIgnoringMultipleErrors() throws TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 2, true);
-        Source expected =
-                Input.fromString(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>3</test:integer><test:integer>5</test:integer><test:integer>7</test:integer><test:integer>9</test:integer></test:integers>")
-                        .build();
+        Source expected = Input.fromString(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>3</test:integer><test:integer>5</test:integer><test:integer>7</test:integer><test:integer>9</test:integer></test:integers>")
+                .build();
         Source actual = Input.fromString(tx.transform(10)).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff =
+                DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }

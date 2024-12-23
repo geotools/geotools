@@ -41,8 +41,7 @@ import org.geotools.util.Converters;
  */
 @DescribeProcess(
         title = "ClassifyByRange",
-        description =
-                "Computes a new attribute to classify another attribute by intervals over vector data sets.")
+        description = "Computes a new attribute to classify another attribute by intervals over vector data sets.")
 public class ClassifyByRangeProcess implements VectorProcess {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
@@ -64,8 +63,7 @@ public class ClassifyByRangeProcess implements VectorProcess {
             @DescribeParameter(
                             name = "outputValues",
                             min = 0,
-                            description =
-                                    "List of class values for each given threshold (+1 for out of range).")
+                            description = "List of class values for each given threshold (+1 for out of range).")
                     String[] outputValues,
             @DescribeParameter(
                             name = "classifier",
@@ -76,8 +74,7 @@ public class ClassifyByRangeProcess implements VectorProcess {
             @DescribeParameter(
                             name = "classes",
                             min = 0,
-                            description =
-                                    "Classifier # of classes, used when classifier is specified (defaults to 5).")
+                            description = "Classifier # of classes, used when classifier is specified (defaults to 5).")
                     Integer classes,
             @DescribeParameter(
                             name = "include",
@@ -88,14 +85,12 @@ public class ClassifyByRangeProcess implements VectorProcess {
             @DescribeParameter(
                             name = "outputAttribute",
                             min = 0,
-                            description =
-                                    "Name of the output attribute with class values (defaults to class).")
+                            description = "Name of the output attribute with class values (defaults to class).")
                     String outputAttribute,
             @DescribeParameter(
                             name = "outputType",
                             min = 0,
-                            description =
-                                    "Optional binding type for output values (defaults to String).")
+                            description = "Optional binding type for output values (defaults to String).")
                     String outputType)
             throws ProcessException {
 
@@ -120,15 +115,12 @@ public class ClassifyByRangeProcess implements VectorProcess {
         try {
             classify.binding = outputType != null ? Class.forName(outputType) : String.class;
         } catch (ClassNotFoundException e) {
-            throw new ProcessException(
-                    outputType + " is not a valid value for outputType: should be a class name");
+            throw new ProcessException(outputType + " is not a valid value for outputType: should be a class name");
         }
 
-        AttributeDescriptor classifyDescriptor =
-                features.getSchema().getDescriptor(classifyOnAttribute);
+        AttributeDescriptor classifyDescriptor = features.getSchema().getDescriptor(classifyOnAttribute);
         if (classifyDescriptor == null) {
-            throw new ProcessException(
-                    "classifyOnAttribute is not a valid schema attribute: " + classifyOnAttribute);
+            throw new ProcessException("classifyOnAttribute is not a valid schema attribute: " + classifyOnAttribute);
         }
         Class<?> rangeType = classifyDescriptor.getType().getBinding();
         if (rangeType == null) {
@@ -145,8 +137,7 @@ public class ClassifyByRangeProcess implements VectorProcess {
             if (classes == null) {
                 classes = 5;
             }
-            Function classifyFun =
-                    FF.function(classifier, FF.property(classifyOnAttribute), FF.literal(classes));
+            Function classifyFun = FF.function(classifier, FF.property(classifyOnAttribute), FF.literal(classes));
             RangedClassifier rc = (RangedClassifier) classifyFun.evaluate(features);
             for (int i = 0; i < rc.getSize(); i++) {
                 ranges.add(rc.getMin(i));
@@ -171,29 +162,21 @@ public class ClassifyByRangeProcess implements VectorProcess {
         for (int count = 0; count < ranges.size(); count++) {
             Object outputValue = Converters.convert(outputValues[count], classify.binding);
             if (outputValue == null) {
-                throw new ProcessException(
-                        "Incompatible output value found "
-                                + outputValues[count]
-                                + " for type "
-                                + classify.binding.getName());
+                throw new ProcessException("Incompatible output value found "
+                        + outputValues[count]
+                        + " for type "
+                        + classify.binding.getName());
             }
             params.add(FF.literal(outputValue));
             Object rangeValue = Converters.convert(ranges.get(count), rangeType);
             if (rangeValue == null) {
                 throw new ProcessException(
-                        "Incompatible range value found "
-                                + rangeValue
-                                + " for type "
-                                + rangeType.getName());
+                        "Incompatible range value found " + rangeValue + " for type " + rangeType.getName());
             }
             params.add(FF.literal(rangeValue));
         }
-        params.add(
-                FF.literal(
-                        Converters.convert(
-                                outputValues[outputValues.length - 1], classify.binding)));
-        params.add(
-                FF.literal(include ? CategorizeFunction.PRECEDING : CategorizeFunction.SUCCEEDING));
+        params.add(FF.literal(Converters.convert(outputValues[outputValues.length - 1], classify.binding)));
+        params.add(FF.literal(include ? CategorizeFunction.PRECEDING : CategorizeFunction.SUCCEEDING));
         classify.expression = new CategorizeFunction(params, null);
 
         transform.add(classify);

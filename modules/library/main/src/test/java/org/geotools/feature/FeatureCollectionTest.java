@@ -28,8 +28,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
 
     @Override
-    protected SimpleFeatureCollection newCollection(
-            SimpleFeatureType schema, List<SimpleFeature> list) {
+    protected SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list) {
         DefaultFeatureCollection features = new DefaultFeatureCollection();
         features.addAll(list);
         return features;

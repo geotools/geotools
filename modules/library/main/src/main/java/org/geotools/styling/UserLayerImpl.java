@@ -33,11 +33,10 @@ import org.geotools.api.style.UserLayer;
 import org.geotools.util.Utilities;
 
 /**
- * DJB: on inlinefeature support: The inline features also lets you "sort of" make your WMS into a
- * WFS-T.
+ * DJB: on inlinefeature support: The inline features also lets you "sort of" make your WMS into a WFS-T.
  *
- * <p>I was going to implement this after SLD POST on monday, but I was expecting the definition in
- * the spec to be a bit "nicer". Right now its just:
+ * <p>I was going to implement this after SLD POST on monday, but I was expecting the definition in the spec to be a bit
+ * "nicer". Right now its just:
  *
  * <pre>
  * {@code <element name="InlineFeature"> <complexType> <sequence> <element ref="gml:_Feature" maxOccurs="unbounded"/> </sequence> </complexType>}
@@ -45,32 +44,29 @@ import org.geotools.util.Utilities;
  *
  * <p>(the spec hasnt been finalized)
  *
- * <p>I guess if we make some assumptions about the data coming in - ie. every feature is the same
- * type, and its simple (no nesting, no <choices>, and no attributes), then we can parse ones that
- * look like:
+ * <p>I guess if we make some assumptions about the data coming in - ie. every feature is the same type, and its simple
+ * (no nesting, no <choices>, and no attributes), then we can parse ones that look like:
  *
  * <pre>
  * {@code <Feature> <Name>David Blasby</Name> <Location> ... GML ... </Location> </Feature>}
  * </pre>
  *
- * <p>I'm not the best at reading .xsd, but I think that means you can stick in ANY GML Feature. If
- * so, its way too general.
+ * <p>I'm not the best at reading .xsd, but I think that means you can stick in ANY GML Feature. If so, its way too
+ * general.
  *
- * <p>My plan was to parse the first Feature (or, the given schema if there is one) to find out all
- * the property names (and which one(s) are the geometry) and make a FeatureType. (I'd assume all
- * the properties were strings)
+ * <p>My plan was to parse the first Feature (or, the given schema if there is one) to find out all the property names
+ * (and which one(s) are the geometry) and make a FeatureType. (I'd assume all the properties were strings)
  *
- * <p>Then, make a MemoryDataStore and put the features in it. I can pass this off to the lite
- * renderer as normal.
+ * <p>Then, make a MemoryDataStore and put the features in it. I can pass this off to the lite renderer as normal.
  *
  * @author jamesm
  */
 public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
 
     /**
-     * the (memory) datastore that will contain the inline features. The initial implementation has
-     * this as a MemoryDataStore with one FeatureType in it. You should ensure that you dont keep
-     * references to it around so it can be GCed.
+     * the (memory) datastore that will contain the inline features. The initial implementation has this as a
+     * MemoryDataStore with one FeatureType in it. You should ensure that you dont keep references to it around so it
+     * can be GCed.
      */
     private DataStore inlineFeatureDatastore = null;
 
@@ -177,7 +173,6 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
+        return Objects.hash(inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
     }
 }

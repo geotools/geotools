@@ -21,14 +21,12 @@ import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.WritableRectIter;
 
 /**
- * A {@linkplain WritableRectIter writable iterator} that read pixel values from an image, and write
- * pixel values to a different image. All {@code get} methods read values from the
- * <cite>source</cite> image specified at {@linkplain #create creation time}. All {@code set}
- * methods write values to the <cite>destination</cite> image specified at {@linkplain #create
- * creation time}, which may or may not be the same than the <cite>source</cite> image. This is
- * different than the usual {@link WritableRectIter} contract, which read and write values in the
- * same image. This {@code TransfertRectIter} is convenient for the implementation of some image
- * operations.
+ * A {@linkplain WritableRectIter writable iterator} that read pixel values from an image, and write pixel values to a
+ * different image. All {@code get} methods read values from the <cite>source</cite> image specified at
+ * {@linkplain #create creation time}. All {@code set} methods write values to the <cite>destination</cite> image
+ * specified at {@linkplain #create creation time}, which may or may not be the same than the <cite>source</cite> image.
+ * This is different than the usual {@link WritableRectIter} contract, which read and write values in the same image.
+ * This {@code TransfertRectIter} is convenient for the implementation of some image operations.
  *
  * @since 2.3
  * @version $Id$
@@ -55,14 +53,14 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /**
-     * Creates a {@link WritableRectIter} for the specified source and destination iterator. The two
-     * iterators must iterate over a rectangle of the same size, otherwise a {@link
-     * RasterFormatException} may be thrown during the iteration.
+     * Creates a {@link WritableRectIter} for the specified source and destination iterator. The two iterators must
+     * iterate over a rectangle of the same size, otherwise a {@link RasterFormatException} may be thrown during the
+     * iteration.
      *
      * @param src The source iterator.
      * @param dst The destination iterator.
-     * @return An iterator that read sample from {@code src} and write sample to {@code dst}. If
-     *     {@code src == dst}, then the destination iterator itself is returned.
+     * @return An iterator that read sample from {@code src} and write sample to {@code dst}. If {@code src == dst},
+     *     then the destination iterator itself is returned.
      */
     public static WritableRectIter create(final RectIter src, final WritableRectIter dst) {
         if (src == dst) {
@@ -128,8 +126,8 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /**
-     * Sets the iterator to the next line in the image, and returns {@code true} if the bottom row
-     * of the bounding rectangle has been passed.
+     * Sets the iterator to the next line in the image, and returns {@code true} if the bottom row of the bounding
+     * rectangle has been passed.
      */
     @Override
     public boolean nextLineDone() {
@@ -150,10 +148,7 @@ public final class TransfertRectIter implements WritableRectIter {
         throw new RasterFormatException(ERROR);
     }
 
-    /**
-     * Sets the iterator to the next band in the image, and returns {@code true} if the max band has
-     * been exceeded.
-     */
+    /** Sets the iterator to the next band in the image, and returns {@code true} if the max band has been exceeded. */
     @Override
     public boolean nextBandDone() {
         boolean check = src.nextBandDone();

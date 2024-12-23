@@ -20,8 +20,8 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper around a {@link JSONObject} holding a Mapbox GeoJSON source. Data must be provided via a
- * "data" property, whose value can be a URL or inline GeoJSON.
+ * Wrapper around a {@link JSONObject} holding a Mapbox GeoJSON source. Data must be provided via a "data" property,
+ * whose value can be a URL or inline GeoJSON.
  *
  * @see MBSource
  * @see <a
@@ -47,8 +47,8 @@ public class GeoJsonMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to 18. Maximum zoom level at which to create vector tiles (higher means
-     * greater detail at high zoom levels).
+     * (Optional) Defaults to 18. Maximum zoom level at which to create vector tiles (higher means greater detail at
+     * high zoom levels).
      *
      * @return Number for the max zoom, defaulting to 18.
      */
@@ -57,9 +57,9 @@ public class GeoJsonMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to 128. Size of the tile buffer on each side. A value of 0 produces no
-     * buffer. A value of 512 produces a buffer as wide as the tile itself. Larger values produce
-     * fewer rendering artifacts near tile edges and slower performance.
+     * (Optional) Defaults to 128. Size of the tile buffer on each side. A value of 0 produces no buffer. A value of 512
+     * produces a buffer as wide as the tile itself. Larger values produce fewer rendering artifacts near tile edges and
+     * slower performance.
      *
      * @return Number for the size of the tile buffer
      */
@@ -68,8 +68,8 @@ public class GeoJsonMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to 0.375. Douglas-Peucker simplification tolerance (higher means simpler
-     * geometries and faster performance).
+     * (Optional) Defaults to 0.375. Douglas-Peucker simplification tolerance (higher means simpler geometries and
+     * faster performance).
      *
      * @return Number for the simplification tolerance, defaulting to 0.375
      */
@@ -78,8 +78,8 @@ public class GeoJsonMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to false. If the data is a collection of point features, setting this to
-     * true clusters the points by radius into groups.
+     * (Optional) Defaults to false. If the data is a collection of point features, setting this to true clusters the
+     * points by radius into groups.
      *
      * @return Boolean, whether to cluster, defaulting to false
      */
@@ -90,8 +90,8 @@ public class GeoJsonMBSource extends MBSource {
     /**
      * (Optional) Defaults to 50.
      *
-     * <p>Radius of each cluster if clustering is enabled. A value of 512 indicates a radius equal
-     * to the width of a tile.
+     * <p>Radius of each cluster if clustering is enabled. A value of 512 indicates a radius equal to the width of a
+     * tile.
      *
      * @return Number for the cluster radius, defaulting to 50
      */
@@ -100,13 +100,14 @@ public class GeoJsonMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Max zoom on which to cluster points if clustering is enabled. Defaults to one zoom
-     * less than maxzoom (so that last zoom features are not clustered).
+     * (Optional) Max zoom on which to cluster points if clustering is enabled. Defaults to one zoom less than maxzoom
+     * (so that last zoom features are not clustered).
      *
      * @return Number for the cluster max zoom
      */
     public Number getClusterMaxZoom() {
-        return parser.optional(Number.class, json, "clusterMaxZoom", getMaxZoom().intValue() - 1);
+        return parser.optional(
+                Number.class, json, "clusterMaxZoom", getMaxZoom().intValue() - 1);
     }
 
     @Override

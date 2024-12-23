@@ -142,8 +142,7 @@ public class MBFunctionFactoryTest {
         //
         // base 1.0 works as a simple interpolate
         //
-        Function expr =
-                (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,'#000000', 10,'#ffffff')");
+        Function expr = (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,'#000000', 10,'#ffffff')");
         assertEquals(Color.BLACK, expr.evaluate(null, Color.class));
 
         expr = (Function) ECQL.toExpression("Exponential( 5, 1.0, 0,'#000000', 10,'#ffffff')");
@@ -180,8 +179,7 @@ public class MBFunctionFactoryTest {
     /** A function must implement evaluate(Object) without a target, Exponential did not */
     @Test
     public void exponentialFunctionContext() throws Exception {
-        Function expColor =
-                (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,'#000000', 10,'#ffffff')");
+        Function expColor = (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,'#000000', 10,'#ffffff')");
         assertEquals(Color.BLACK, expColor.evaluate(null));
 
         Function expNumeric = (Function) ECQL.toExpression("Exponential( 0, 1.0, 0,0, 10,100)");
@@ -189,8 +187,8 @@ public class MBFunctionFactoryTest {
     }
 
     /**
-     * Tests for the {@link DefaultIfNullFunction} to verify that it falls back to the provided
-     * value when the input value is null in various contexts.
+     * Tests for the {@link DefaultIfNullFunction} to verify that it falls back to the provided value when the input
+     * value is null in various contexts.
      */
     @Test
     public void defaultIfNullFunctionTest() throws Exception {
@@ -204,35 +202,31 @@ public class MBFunctionFactoryTest {
         assertEquals(Color.BLACK, f.evaluate(null, Color.class));
 
         // Test fallback to default when the input conversion fails and returns null
-        SimpleFeatureType SAMPLE =
-                DataUtilities.createType("SAMPLE", "id:\"\",temperature:0.0,location=4326");
-        SimpleFeature feature =
-                DataUtilities.createFeature(SAMPLE, "measure1=A|NOT_A_VALID_NUMBER|POINT(0,0)");
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|NOT_A_VALID_NUMBER|POINT(0,0)");
         f = ff.function("DefaultIfNull", ff.property("temperature"), ff.literal(789));
         assertEquals(789, f.evaluate(feature, Number.class).intValue());
 
         // Test fallback to default when exponential fails and returns null)
-        Function exp =
-                ff.function(
-                        "Exponential",
-                        ff.property("temperature"),
-                        ff.literal(1),
-                        ff.literal(0),
-                        ff.literal("#000000"),
-                        ff.literal(10),
-                        ff.literal("#ffffff"));
+        Function exp = ff.function(
+                "Exponential",
+                ff.property("temperature"),
+                ff.literal(1),
+                ff.literal(0),
+                ff.literal("#000000"),
+                ff.literal(10),
+                ff.literal("#ffffff"));
         f = ff.function("DefaultIfNull", exp, ff.literal(789));
         assertEquals(789, f.evaluate(feature, Number.class));
 
         // Test fallback to default when recode returns null
-        Function recode =
-                ff.function(
-                        "Recode",
-                        ff.property("temperature"),
-                        ff.literal(1),
-                        ff.literal("Output1"),
-                        ff.literal(2),
-                        ff.literal("Output2"));
+        Function recode = ff.function(
+                "Recode",
+                ff.property("temperature"),
+                ff.literal(1),
+                ff.literal("Output1"),
+                ff.literal(2),
+                ff.literal("Output2"));
         f = ff.function("DefaultIfNull", recode, ff.literal("DefautValue"));
         assertEquals("DefautValue", f.evaluate(feature, String.class));
     }
@@ -253,33 +247,19 @@ public class MBFunctionFactoryTest {
         double tol = .00000001;
 
         Function f =
-                (Function)
-                        ECQL.toExpression(
-                                "zoomLevel("
-                                        + ZoomLevelFunction.EPSG_3857_O_SCALE
-                                        + ", 'EPSG:3857')");
+                (Function) ECQL.toExpression("zoomLevel(" + ZoomLevelFunction.EPSG_3857_O_SCALE + ", 'EPSG:3857')");
         assertEquals(0.0, f.evaluate(null, Number.class).doubleValue(), tol);
 
-        Function f2 =
-                (Function)
-                        ECQL.toExpression(
-                                "zoomLevel("
-                                        + (ZoomLevelFunction.EPSG_3857_O_SCALE / 2.0)
-                                        + ", 'EPSG:3857')");
+        Function f2 = (Function)
+                ECQL.toExpression("zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / 2.0) + ", 'EPSG:3857')");
         assertEquals(1.0, f2.evaluate(null, Number.class).doubleValue(), tol);
 
-        Function fhalf =
-                (Function)
-                        ECQL.toExpression(
-                                "zoomLevel("
-                                        + (ZoomLevelFunction.EPSG_3857_O_SCALE
-                                                / (Math.pow(2.0, 0.5)))
-                                        + ", 'EPSG:3857')");
+        Function fhalf = (Function) ECQL.toExpression(
+                "zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / (Math.pow(2.0, 0.5))) + ", 'EPSG:3857')");
         assertEquals(0.5, fhalf.evaluate(null, Number.class).doubleValue(), tol);
 
         double scaleDenomForZoom21 = 133.295598972;
-        Function f21 =
-                (Function) ECQL.toExpression("zoomLevel(" + scaleDenomForZoom21 + ", 'EPSG:3857')");
+        Function f21 = (Function) ECQL.toExpression("zoomLevel(" + scaleDenomForZoom21 + ", 'EPSG:3857')");
         assertEquals(21.0, f21.evaluate(null, Number.class).doubleValue(), tol);
     }
 
@@ -335,9 +315,7 @@ public class MBFunctionFactoryTest {
         @SuppressWarnings("unchecked")
         List<String> listAlternatives = (List<String>) alternatives.evaluate(null, List.class);
 
-        assertThat(
-                listAlternatives,
-                hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
+        assertThat(listAlternatives, hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
 
         Literal regularFont = ff.literal("Droid Sans Regular");
         Literal boldItalic = ff.literal("Droid Sans Italic Bold");
@@ -352,10 +330,9 @@ public class MBFunctionFactoryTest {
     }
 
     private Font loadFont(String fontName) {
-        String url =
-                StreamingRendererTest.class
-                        .getResource("/org/geotools/renderer/lite/test-data/" + fontName)
-                        .toExternalForm();
+        String url = StreamingRendererTest.class
+                .getResource("/org/geotools/renderer/lite/test-data/" + fontName)
+                .toExternalForm();
         return FontCache.loadFromUrl(url);
     }
 }

@@ -21,35 +21,32 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
 
 /**
- * A mathematical operation on coordinates that transforms or converts coordinates to another
- * coordinate reference system. Many but not all coordinate operations (from {@linkplain
- * CoordinateReferenceSystem coordinate reference system} <VAR>A</VAR> to {@linkplain
- * CoordinateReferenceSystem coordinate reference system} <VAR>B</VAR>) also uniquely define the
- * inverse operation (from {@linkplain CoordinateReferenceSystem coordinate reference system}
- * <VAR>B</VAR> to {@linkplain CoordinateReferenceSystem coordinate reference system} <VAR>A</VAR>).
- * In some cases, the operation method algorithm for the inverse operation is the same as for the
- * forward algorithm, but the signs of some operation parameter values must be reversed. In other
- * cases, different algorithms are required for the forward and inverse operations, but the same
- * operation parameter values are used. If (some) entirely different parameter values are needed, a
- * different coordinate operation shall be defined.
+ * A mathematical operation on coordinates that transforms or converts coordinates to another coordinate reference
+ * system. Many but not all coordinate operations (from {@linkplain CoordinateReferenceSystem coordinate reference
+ * system} <VAR>A</VAR> to {@linkplain CoordinateReferenceSystem coordinate reference system} <VAR>B</VAR>) also
+ * uniquely define the inverse operation (from {@linkplain CoordinateReferenceSystem coordinate reference system}
+ * <VAR>B</VAR> to {@linkplain CoordinateReferenceSystem coordinate reference system} <VAR>A</VAR>). In some cases, the
+ * operation method algorithm for the inverse operation is the same as for the forward algorithm, but the signs of some
+ * operation parameter values must be reversed. In other cases, different algorithms are required for the forward and
+ * inverse operations, but the same operation parameter values are used. If (some) entirely different parameter values
+ * are needed, a different coordinate operation shall be defined.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
 public interface CoordinateOperation extends IdentifiedObject {
     /**
-     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
-     * by {@link #getOperationVersion}.
+     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned by
+     * {@link #getOperationVersion}.
      *
      * @see #getOperationVersion
      */
     String OPERATION_VERSION_KEY = "operationVersion";
 
     /**
-     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
-     * by {@link #getCoordinateOperationAccuracy}.
+     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned by
+     * {@link #getCoordinateOperationAccuracy}.
      *
      * @see #getCoordinateOperationAccuracy
      * @since GeoAPI 2.1
@@ -57,8 +54,8 @@ public interface CoordinateOperation extends IdentifiedObject {
     String COORDINATE_OPERATION_ACCURACY_KEY = "coordinateOperationAccuracy";
 
     /**
-     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
-     * by {@link #getDomainOfValidity}.
+     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned by
+     * {@link #getDomainOfValidity}.
      *
      * @see #getDomainOfValidity
      * @since GeoAPI 2.1
@@ -66,18 +63,17 @@ public interface CoordinateOperation extends IdentifiedObject {
     String DOMAIN_OF_VALIDITY_KEY = "domainOfValidity";
 
     /**
-     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
-     * by {@link #getScope}.
+     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned by
+     * {@link #getScope}.
      *
      * @see #getScope
      */
     String SCOPE_KEY = "scope";
 
     /**
-     * Returns the source CRS. The source CRS is mandatory for {@linkplain Transformation
-     * transformations} only. {@linkplain Conversion Conversions} may have a source CRS that is not
-     * specified here, but through {@link
-     * org.geotools.api.referencing.crs.GeneralDerivedCRS#getBaseCRS} instead.
+     * Returns the source CRS. The source CRS is mandatory for {@linkplain Transformation transformations} only.
+     * {@linkplain Conversion Conversions} may have a source CRS that is not specified here, but through
+     * {@link org.geotools.api.referencing.crs.GeneralDerivedCRS#getBaseCRS} instead.
      *
      * @return The source CRS, or {@code null} if not available.
      * @see Conversion#getSourceCRS
@@ -86,10 +82,9 @@ public interface CoordinateOperation extends IdentifiedObject {
     CoordinateReferenceSystem getSourceCRS();
 
     /**
-     * Returns the target CRS. The target CRS is mandatory for {@linkplain Transformation
-     * transformations} only. {@linkplain Conversion Conversions} may have a target CRS that is not
-     * specified here, but through {@link org.geotools.api.referencing.crs.GeneralDerivedCRS}
-     * instead.
+     * Returns the target CRS. The target CRS is mandatory for {@linkplain Transformation transformations} only.
+     * {@linkplain Conversion Conversions} may have a target CRS that is not specified here, but through
+     * {@link org.geotools.api.referencing.crs.GeneralDerivedCRS} instead.
      *
      * @return The target CRS, or {@code null} if not available.
      * @see Conversion#getTargetCRS
@@ -98,26 +93,21 @@ public interface CoordinateOperation extends IdentifiedObject {
     CoordinateReferenceSystem getTargetCRS();
 
     /**
-     * Version of the coordinate transformation (i.e., instantiation due to the stochastic nature of
-     * the parameters). Mandatory when describing a transformation, and should not be supplied for a
-     * conversion.
+     * Version of the coordinate transformation (i.e., instantiation due to the stochastic nature of the parameters).
+     * Mandatory when describing a transformation, and should not be supplied for a conversion.
      *
      * @return The coordinate operation version, or {@code null} in none.
      */
     String getOperationVersion();
 
     /**
-     * Estimate(s) of the impact of this operation on point accuracy. Gives position error estimates
-     * for target coordinates of this coordinate operation, assuming no errors in source
-     * coordinates.
+     * Estimate(s) of the impact of this operation on point accuracy. Gives position error estimates for target
+     * coordinates of this coordinate operation, assuming no errors in source coordinates.
      *
      * @return The position error estimates, or an empty collection if not available.
      * @since GeoAPI 2.1
      */
-    @UML(
-            identifier = "coordinateOperationAccuracy",
-            obligation = OPTIONAL,
-            specification = ISO_19111)
+    @UML(identifier = "coordinateOperationAccuracy", obligation = OPTIONAL, specification = ISO_19111)
     Collection<PositionalAccuracy> getCoordinateOperationAccuracy();
 
     /**
@@ -136,10 +126,10 @@ public interface CoordinateOperation extends IdentifiedObject {
     InternationalString getScope();
 
     /**
-     * Gets the math transform. The math transform will transform positions in the {@linkplain
-     * #getSourceCRS source coordinate reference system} into positions in the {@linkplain
-     * #getTargetCRS target coordinate reference system}. It may be {@code null} in the case of
-     * {@linkplain CoordinateOperationFactory#createDefiningConversion defining conversions}.
+     * Gets the math transform. The math transform will transform positions in the {@linkplain #getSourceCRS source
+     * coordinate reference system} into positions in the {@linkplain #getTargetCRS target coordinate reference system}.
+     * It may be {@code null} in the case of {@linkplain CoordinateOperationFactory#createDefiningConversion defining
+     * conversions}.
      *
      * @return The transform from source to target CRS, or {@code null} if not applicable.
      */

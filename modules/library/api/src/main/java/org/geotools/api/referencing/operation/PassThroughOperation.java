@@ -10,11 +10,9 @@
 package org.geotools.api.referencing.operation;
 
 /**
- * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific
- * coordinate operation.
+ * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific coordinate operation.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
@@ -27,8 +25,8 @@ public interface PassThroughOperation extends SingleOperation {
     Operation getOperation();
 
     /**
-     * Ordered sequence of positive integers defining the positions in a coordinate tuple of the
-     * coordinates affected by this pass-through operation.
+     * Ordered sequence of positive integers defining the positions in a coordinate tuple of the coordinates affected by
+     * this pass-through operation.
      *
      * @return The modified coordinates.
      */

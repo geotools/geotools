@@ -82,10 +82,7 @@ public class BilinearInterpolatorTest {
         return slice;
     }
 
-    /**
-     * Checks if a sequence of values is monotonic, ignoring values at the end of the sequence which
-     * are NO_DATA.
-     */
+    /** Checks if a sequence of values is monotonic, ignoring values at the end of the sequence which are NO_DATA. */
     private boolean isMonotonicSequence(float[] seq, final float noDataValue) {
         int istart = 0;
         for (int i = 0; i < seq.length; i++) {

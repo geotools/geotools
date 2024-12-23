@@ -36,8 +36,7 @@ public class MockFeatureCollection implements SimpleFeatureCollection {
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress) {}
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress) {}
 
     public void addListener(CollectionListener listener) throws NullPointerException {}
 
@@ -81,8 +80,7 @@ public class MockFeatureCollection implements SimpleFeatureCollection {
         return false;
     }
 
-    public boolean addAll(
-            FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> resource) {
+    public boolean addAll(FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> resource) {
         return false;
     }
 

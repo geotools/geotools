@@ -29,12 +29,11 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_min extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("min","double","double");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "min",
-                    parameter("minium", Double.class),
-                    parameter("double", Double.class),
-                    parameter("double", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "min",
+            parameter("minium", Double.class),
+            parameter("double", Double.class),
+            parameter("double", Double.class));
 
     public FilterFunction_min() {
         super("min");

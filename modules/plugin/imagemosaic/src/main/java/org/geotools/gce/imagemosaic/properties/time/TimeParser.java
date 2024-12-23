@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 import org.geotools.util.DateTimeParser;
 
 /**
- * Parses the {@code time} parameter of the request. The date, time and period are expected to be
- * formatted according ISO-8601 standard.
+ * Parses the {@code time} parameter of the request. The date, time and period are expected to be formatted according
+ * ISO-8601 standard.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @deprecated use #org.geotools.util.DateTimeParser instead.
@@ -37,21 +37,19 @@ public class TimeParser {
 
     /** Creates the parser */
     public TimeParser() {
-        parser =
-                new DateTimeParser(
-                        -1,
-                        DateTimeParser.FLAG_GET_TIME_ON_CURRENT
-                                | DateTimeParser.FLAG_GET_TIME_ON_NOW
-                                | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
-                                | DateTimeParser.FLAG_IS_LENIENT);
+        parser = new DateTimeParser(
+                -1,
+                DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+                        | DateTimeParser.FLAG_GET_TIME_ON_NOW
+                        | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
+                        | DateTimeParser.FLAG_IS_LENIENT);
     }
 
     /**
-     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The
-     * string may contains either a single date, or a start time, end time and a period. In the
-     * first case, this method returns a singleton containing only the parsed date. In the second
-     * case, this method returns a list including all dates from start time up to the end time with
-     * the interval specified in the {@code value} string.
+     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The string may contains
+     * either a single date, or a start time, end time and a period. In the first case, this method returns a singleton
+     * containing only the parsed date. In the second case, this method returns a list including all dates from start
+     * time up to the end time with the interval specified in the {@code value} string.
      *
      * @param value The date, time and period to parse.
      * @return A list of dates, or an empty list of the {@code value} string is null or empty.
@@ -59,11 +57,10 @@ public class TimeParser {
      */
     public List<Date> parse(String value) throws ParseException {
         Collection<?> results = parser.parse(value);
-        List<Date> dates =
-                results.stream()
-                        .filter(o -> o instanceof Date)
-                        .map(o -> (Date) o)
-                        .collect(Collectors.toList());
+        List<Date> dates = results.stream()
+                .filter(o -> o instanceof Date)
+                .map(o -> (Date) o)
+                .collect(Collectors.toList());
         return dates;
     }
 }

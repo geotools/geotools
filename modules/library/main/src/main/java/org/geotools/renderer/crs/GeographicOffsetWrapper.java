@@ -24,8 +24,7 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Wraps a datum shift math transform and makes sure we are not introducing dateline jumps when
- * applying the datum shift
+ * Wraps a datum shift math transform and makes sure we are not introducing dateline jumps when applying the datum shift
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -48,8 +47,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public Position transform(Position ptSrc, Position ptDst)
-            throws MismatchedDimensionException, TransformException {
+    public Position transform(Position ptSrc, Position ptDst) throws MismatchedDimensionException, TransformException {
         return delegate.transform(ptSrc, ptDst);
     }
 
@@ -200,8 +198,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public Matrix derivative(Position point)
-            throws MismatchedDimensionException, TransformException {
+    public Matrix derivative(Position point) throws MismatchedDimensionException, TransformException {
         return delegate.derivative(point);
     }
 

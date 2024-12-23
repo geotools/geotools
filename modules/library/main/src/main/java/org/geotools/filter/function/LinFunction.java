@@ -26,19 +26,17 @@ import org.geotools.filter.capability.FunctionNameImpl;
 /**
  * The function checks whether a candidate value is contained in a list object.
  *
- * <p>If the candidate value is found, the function returns <code>true</code>; otherwise, it returns
- * <code>false</code>.
+ * <p>If the candidate value is found, the function returns <code>true</code>; otherwise, it returns <code>false</code>.
  *
  * @author Niels Charlier
  */
 public class LinFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "lin",
-                    parameter("result", Boolean.class, "Result", "whether the item is in the list"),
-                    parameter("item", Object.class, "item", "The item"),
-                    parameter("source", List.class, "Source", "The list"));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "lin",
+            parameter("result", Boolean.class, "Result", "whether the item is in the list"),
+            parameter("item", Object.class, "item", "The item"),
+            parameter("source", List.class, "Source", "The list"));
 
     public LinFunction() {
         super(NAME);

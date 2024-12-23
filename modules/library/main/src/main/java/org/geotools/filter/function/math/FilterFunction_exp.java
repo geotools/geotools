@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_exp extends FunctionExpressionImpl {
     // public static FunctionName NAME = new FunctionNameImpl("exp","number");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "exp", parameter("exponent", Double.class), parameter("number", Number.class));
+            new FunctionNameImpl("exp", parameter("exponent", Double.class), parameter("number", Number.class));
 
     public FilterFunction_exp() {
         super("exp");

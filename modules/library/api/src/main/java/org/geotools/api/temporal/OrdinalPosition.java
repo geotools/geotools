@@ -10,8 +10,7 @@
 package org.geotools.api.temporal;
 
 /**
- * A data type that shall be used for identifying temporal position within an ordinal temporal
- * reference system.
+ * A data type that shall be used for identifying temporal position within an ordinal temporal reference system.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov

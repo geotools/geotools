@@ -57,19 +57,17 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * Authority factory for {@linkplain CoordinateReferenceSystem Coordinate Reference Systems} beyong
- * the one defined in the EPSG database. This factory is used as a fallback when a requested code is
- * not found in the EPSG database, or when there is no connection at all to the EPSG database. The
- * additional CRS are defined as <cite>Well Known Text</cite> in a property file located by default
- * in the {@code org.geotools.referencing.factory.epsg} package, and whose name should be {@value
- * #FILENAME}. If no property file is found, the factory won't be activated. The property file can
- * also be located in a custom directory; See {@link #getDefinitionsURL()} for more details.
+ * Authority factory for {@linkplain CoordinateReferenceSystem Coordinate Reference Systems} beyong the one defined in
+ * the EPSG database. This factory is used as a fallback when a requested code is not found in the EPSG database, or
+ * when there is no connection at all to the EPSG database. The additional CRS are defined as <cite>Well Known
+ * Text</cite> in a property file located by default in the {@code org.geotools.referencing.factory.epsg} package, and
+ * whose name should be {@value #FILENAME}. If no property file is found, the factory won't be activated. The property
+ * file can also be located in a custom directory; See {@link #getDefinitionsURL()} for more details.
  *
- * <p>This factory can also be used to provide custom extensions or overrides to a main EPSG
- * factory. In order to provide a custom extension file, override the {@link #getDefinitionsURL()}
- * method. In order to make the factory be an override, change the default priority by using the two
- * arguments constructor (this factory defaults to {@link ThreadedEpsgFactory#PRIORITY} - 10, so
- * it's used as an extension).
+ * <p>This factory can also be used to provide custom extensions or overrides to a main EPSG factory. In order to
+ * provide a custom extension file, override the {@link #getDefinitionsURL()} method. In order to make the factory be an
+ * override, change the default priority by using the two arguments constructor (this factory defaults to
+ * {@link ThreadedEpsgFactory#PRIORITY} - 10, so it's used as an extension).
  *
  * @since 2.1
  * @version $Id$
@@ -87,22 +85,21 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     private Citation authority;
 
     /**
-     * The default filename to read. The default {@code FactoryUsingWKT} implementation will search
-     * for the first occurence of this file in the following places:
+     * The default filename to read. The default {@code FactoryUsingWKT} implementation will search for the first
+     * occurence of this file in the following places:
      *
      * <p>
      *
      * <ul>
-     *   <li>In the directory specified by the {@value
-     *       org.geotools.util.factory.GeoTools#CRS_DIRECTORY_KEY} system property.
-     *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the
-     *       classpath.
+     *   <li>In the directory specified by the {@value org.geotools.util.factory.GeoTools#CRS_DIRECTORY_KEY} system
+     *       property.
+     *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the classpath.
      * </ul>
      *
-     * <p>The filename part before the extension ({@code "epsg"}) denotes the authority namespace
-     * where to register the content of this file. The user-directory given by the system property
-     * may contains other property files for other authorities, like {@code "esri.properties"}, but
-     * those additional authorities are not handled by the default {@code FactoryUsingWKT} class.
+     * <p>The filename part before the extension ({@code "epsg"}) denotes the authority namespace where to register the
+     * content of this file. The user-directory given by the system property may contains other property files for other
+     * authorities, like {@code "esri.properties"}, but those additional authorities are not handled by the default
+     * {@code FactoryUsingWKT} class.
      *
      * @see #getDefinitionsURL
      */
@@ -127,10 +124,9 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /**
-     * Constructs an authority factory using a set of factories created from the specified hints.
-     * This constructor recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS},
-     * {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM}
-     * {@code FACTORY} hints.
+     * Constructs an authority factory using a set of factories created from the specified hints. This constructor
+     * recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
+     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      */
     public FactoryUsingWKT(final Hints userHints) {
         this(userHints, DEFAULT_PRIORITY);
@@ -158,8 +154,8 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
 
     /**
      * Returns the authority. The default implementation returns the first citation returned by
-     * {@link #getAuthorities()}, with the addition of identifiers from all additional authorities
-     * returned by the above method.
+     * {@link #getAuthorities()}, with the addition of identifiers from all additional authorities returned by the above
+     * method.
      *
      * @see #getAuthorities
      */
@@ -175,32 +171,31 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
                 case 1:
                     authority = authorities[0];
                     break;
-                default:
-                    {
-                        final CitationImpl c = new CitationImpl(authorities[0]);
-                        final Collection<Identifier> identifiers = c.getIdentifiers();
-                        for (int i = 1; i < authorities.length; i++) {
-                            identifiers.addAll(authorities[i].getIdentifiers());
-                        }
-                        c.freeze();
-                        authority = c;
-                        break;
+                default: {
+                    final CitationImpl c = new CitationImpl(authorities[0]);
+                    final Collection<Identifier> identifiers = c.getIdentifiers();
+                    for (int i = 1; i < authorities.length; i++) {
+                        identifiers.addAll(authorities[i].getIdentifiers());
                     }
+                    c.freeze();
+                    authority = c;
+                    break;
+                }
             }
         }
         return authority;
     }
 
     /**
-     * Returns the set of authorities to use as {@linkplain CoordinateReferenceSystem#getIdentifiers
-     * identifiers} for the CRS to be created. This set is given to the {@linkplain
-     * PropertyAuthorityFactory#PropertyAuthorityFactory(ReferencingFactoryContainer, Citation[],
-     * URL) properties-backed factory constructor}.
+     * Returns the set of authorities to use as {@linkplain CoordinateReferenceSystem#getIdentifiers identifiers} for
+     * the CRS to be created. This set is given to the
+     * {@linkplain PropertyAuthorityFactory#PropertyAuthorityFactory(ReferencingFactoryContainer, Citation[], URL)
+     * properties-backed factory constructor}.
      *
-     * <p>The default implementation returns a singleton containing only {@linkplain Citations#EPSG
-     * EPSG}. Subclasses should override this method in order to enumerate all relevant authorities,
-     * with {@linkplain Citations#EPSG EPSG} in last position. For example {@link EsriExtension}
-     * returns {{@linkplain Citations#ESRI ESRI}, {@linkplain Citations#EPSG EPSG}}.
+     * <p>The default implementation returns a singleton containing only {@linkplain Citations#EPSG EPSG}. Subclasses
+     * should override this method in order to enumerate all relevant authorities, with {@linkplain Citations#EPSG EPSG}
+     * in last position. For example {@link EsriExtension} returns {{@linkplain Citations#ESRI ESRI},
+     * {@linkplain Citations#EPSG EPSG}}.
      *
      * @since 2.4
      */
@@ -209,14 +204,14 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /**
-     * Returns the URL to the property file that contains CRS definitions. The default
-     * implementation performs the following search path:
+     * Returns the URL to the property file that contains CRS definitions. The default implementation performs the
+     * following search path:
      *
      * <ul>
-     *   <li>If a value is set for the {@value #CRS_DIRECTORY_KEY} system property key, then the
-     *       {@value #FILENAME} file will be searched in this directory.
-     *   <li>If no value is set for the above-cited system property, or if no {@value #FILENAME}
-     *       file was found in that directory, then the first {@value #FILENAME} file found in any
+     *   <li>If a value is set for the {@value #CRS_DIRECTORY_KEY} system property key, then the {@value #FILENAME} file
+     *       will be searched in this directory.
+     *   <li>If no value is set for the above-cited system property, or if no {@value #FILENAME} file was found in that
+     *       directory, then the first {@value #FILENAME} file found in any
      *       {@code org/geotools/referencing/factory/epsg} directory on the classpath will be used.
      *   <li>If no file was found on the classpath neither, then this factory will be disabled.
      * </ul>
@@ -242,53 +237,44 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      *
      * @return The backing store to uses in {@code createXXX(...)} methods.
      * @throws FactoryNotFoundException if the no {@code epsg.properties} file has been found.
-     * @throws FactoryException if the constructor failed to find or read the file. This exception
-     *     usually has an {@link IOException} as its cause.
+     * @throws FactoryException if the constructor failed to find or read the file. This exception usually has an
+     *     {@link IOException} as its cause.
      */
     @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         try {
             URL url = getDefinitionsURL();
             if (url == null) {
-                throw new FactoryNotFoundException(
-                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
-            final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
+            final Iterator<? extends Identifier> ids =
+                    getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
             final LogRecord record =
-                    Loggings.format(
-                            Level.CONFIG,
-                            LoggingKeys.USING_FILE_AS_FACTORY_$2,
-                            url.getPath(),
-                            authority);
+                    Loggings.format(Level.CONFIG, LoggingKeys.USING_FILE_AS_FACTORY_$2, url.getPath(), authority);
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
             return new PropertyAuthorityFactory(factories, getAuthorities(), url);
         } catch (IOException exception) {
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 
     /** Returns a factory of the given type. */
     private static final <T extends AbstractAuthorityFactory> T getFactory(final Class<T> type) {
         return type.cast(
-                ReferencingFactoryFinder.getCRSAuthorityFactory(
-                        "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
+                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
     }
 
-    protected static final <T extends AbstractAuthorityFactory> T getFactory(
-            String authority, final Class<T> type) {
-        return type.cast(
-                ReferencingFactoryFinder.getCRSAuthorityFactory(
-                        authority, new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
+    protected static final <T extends AbstractAuthorityFactory> T getFactory(String authority, final Class<T> type) {
+        return type.cast(ReferencingFactoryFinder.getCRSAuthorityFactory(
+                authority, new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
     }
 
     /**
-     * Prints a list of codes that duplicate the ones provided by {@link ThreadedEpsgFactory}. This
-     * is used for implementation of {@linkplain #main main method} in order to check the content of
-     * the {@value #FILENAME} file (or whatever property file used as backing store for this
-     * factory) from the command line.
+     * Prints a list of codes that duplicate the ones provided by {@link ThreadedEpsgFactory}. This is used for
+     * implementation of {@linkplain #main main method} in order to check the content of the {@value #FILENAME} file (or
+     * whatever property file used as backing store for this factory) from the command line.
      *
      * @param out The writer where to print the report.
      * @return The set of duplicated codes.
@@ -337,14 +323,13 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /**
-     * Prints a list of CRS that can't be instantiated. This is used for implementation of
-     * {@linkplain #main main method} in order to check the content of the {@value #FILENAME} file
-     * (or whatever property file used as backing store for this factory) from the command line.
+     * Prints a list of CRS that can't be instantiated. This is used for implementation of {@linkplain #main main
+     * method} in order to check the content of the {@value #FILENAME} file (or whatever property file used as backing
+     * store for this factory) from the command line.
      *
      * @param out The writer where to print the report.
      * @return The set of codes that can't be instantiated.
-     * @throws FactoryException if an error occured while {@linkplain #getAuthorityCodes fetching
-     *     authority codes}.
+     * @throws FactoryException if an error occured while {@linkplain #getAuthorityCodes fetching authority codes}.
      * @since 2.4
      */
     public Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
@@ -377,11 +362,10 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /**
-     * Prints a list of codes that duplicate the ones provided in the {@link ThreadedEpsgFactory}.
-     * The factory tested is the one registered in {@link ReferencingFactoryFinder}. By default,
-     * this is this {@code FactoryUsingWKT} class backed by the {@value #FILENAME} property file.
-     * This method can be invoked from the command line in order to check the content of the
-     * property file. Valid arguments are:
+     * Prints a list of codes that duplicate the ones provided in the {@link ThreadedEpsgFactory}. The factory tested is
+     * the one registered in {@link ReferencingFactoryFinder}. By default, this is this {@code FactoryUsingWKT} class
+     * backed by the {@value #FILENAME} property file. This method can be invoked from the command line in order to
+     * check the content of the property file. Valid arguments are:
      *
      * <p>
      *
@@ -401,8 +385,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Implementation of the {@link #main} method, shared by subclasses. */
-    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
-            throws FactoryException {
+    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type) throws FactoryException {
         final Arguments arguments = new Arguments(args);
         Locale.setDefault(arguments.locale);
         final boolean duplicated = arguments.getFlag("-duplicated");

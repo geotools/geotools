@@ -50,8 +50,7 @@ public interface GlyphFactory {
      * return glyphFactory.point( SLD.pointColor( symbolizer ), SLD.fillColor( symbolizer ) );
      * </code></pre>
      *
-     * <p>Implementations have the option of going into greater detail, picking up on
-     * TextSymbolizers and so on.
+     * <p>Implementations have the option of going into greater detail, picking up on TextSymbolizers and so on.
      *
      * @param rule Rule used to render a Point
      * @return Icon representing a Point
@@ -76,8 +75,7 @@ public interface GlyphFactory {
      * return glyphFactory.point( SLD.lineColor( symbolizer ), SLD.lineWidth( symbolizer ) );
      * </code></pre>
      *
-     * <p>Implementations have the option of going into greater detail, picking up on
-     * TextSymbolizers and so on.
+     * <p>Implementations have the option of going into greater detail, picking up on TextSymbolizers and so on.
      *
      * @param rule Rule used to render a Point
      * @return Icon representing a Point

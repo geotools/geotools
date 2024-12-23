@@ -44,19 +44,16 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
-     * Test method for {@link
-     * org.geotools.data.collection.SpatialIndexFeatureCollection#subCollection(org.geotools.api.filter.Filter)}.
+     * Test method for
+     * {@link org.geotools.data.collection.SpatialIndexFeatureCollection#subCollection(org.geotools.api.filter.Filter)}.
      */
     @Test
     public void testSimpleSubCollection() {
         // delegate has 5 points running diagonally from -140,45 -> -136,49
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-145, -139.5, 44, 47, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-145, -139.5, 44, 47, DefaultGeographicCRS.WGS84);
 
         Filter filter =
-                ff.bbox(
-                        ff.property(delegate.getSchema().getGeometryDescriptor().getLocalName()),
-                        bbox);
+                ff.bbox(ff.property(delegate.getSchema().getGeometryDescriptor().getLocalName()), bbox);
         SpatialIndexFeatureCollection collection = null;
         try {
             collection = new SpatialIndexFeatureCollection(delegate);
@@ -70,8 +67,7 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
     @Test
     public void testLineSubCollection() {
         // delegate has 5 Lines running diagonally from -140,45 -> -136,49
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-145, -139.5, 44, 47, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-145, -139.5, 44, 47, DefaultGeographicCRS.WGS84);
 
         Filter filter = ff.bbox(ff.property("otherGeom"), bbox);
         SpatialIndexFeatureCollection collection = null;
@@ -134,8 +130,7 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
 
             indexedCollection.add(feature);
         }
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-120, -42, -93, -33, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-120, -42, -93, -33, DefaultGeographicCRS.WGS84);
         Filter filter = ff.bbox(ff.property("polyGeom"), bbox);
         SimpleFeatureCollection sub = indexedCollection.subCollection(filter);
         assertEquals(3, sub.size());

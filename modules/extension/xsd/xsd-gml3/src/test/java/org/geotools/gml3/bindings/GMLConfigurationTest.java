@@ -29,10 +29,7 @@ import org.junit.Test;
 /** Test {@link GMLConfiguration}. */
 public class GMLConfigurationTest {
 
-    /**
-     * Check that all bindings in GMLConfiguration have a target (XSD name), and that the GML ones
-     * have a Java type.
-     */
+    /** Check that all bindings in GMLConfiguration have a target (XSD name), and that the GML ones have a Java type. */
     @Test
     public void testBindingTypes() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration();
@@ -47,8 +44,7 @@ public class GMLConfigurationTest {
                     Binding binding = (Binding) c.newInstance(params);
                     Assert.assertNotNull(binding.getTarget());
                     if (binding.getTarget().getNamespaceURI().equals(GML.NAMESPACE)) {
-                        Assert.assertNotNull(
-                                binding.getTarget() + " has a null type", binding.getType());
+                        Assert.assertNotNull(binding.getTarget() + " has a null type", binding.getType());
                     }
                 }
             }

@@ -32,8 +32,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
 
 /**
- * Abstract base class for helper classes used by {@linkplain InfoTool} to query features in map
- * layers.
+ * Abstract base class for helper classes used by {@linkplain InfoTool} to query features in map layers.
  *
  * @author Michael Bedward
  * @since 2.6
@@ -43,8 +42,8 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     private static final Logger LOGGER = Logging.getLogger(InfoToolHelper.class);
 
     /**
-     * String key used for the position element in the {@code Map} passed to {@linkplain
-     * #getInfo(org.geotools.geometry.Position2D)}.
+     * String key used for the position element in the {@code Map} passed to
+     * {@linkplain #getInfo(org.geotools.geometry.Position2D)}.
      */
     public static final String KEY_POSITION = "pos";
 
@@ -64,8 +63,8 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     public abstract boolean isSupportedLayer(Layer layer);
 
     /**
-     * Gets layer data at the specified position. If there are no feature data at the position, an
-     * empty {@code InfoToolResult} object is returned.
+     * Gets layer data at the specified position. If there are no feature data at the position, an empty
+     * {@code InfoToolResult} object is returned.
      *
      * @param pos query position
      * @return layer data
@@ -74,17 +73,14 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     public abstract InfoToolResult getInfo(Position2D pos) throws Exception;
 
     /**
-     * Checks if this helper is holding a reference to a {@code MapContent} and a {@code
-     * Layer}.Helpers only hold a {@code WeakReference} to both the map content and layer to avoid
-     * blocking garbage collection when layers are discarded.
+     * Checks if this helper is holding a reference to a {@code MapContent} and a {@code Layer}.Helpers only hold a
+     * {@code WeakReference} to both the map content and layer to avoid blocking garbage collection when layers are
+     * discarded.
      *
      * @return {@code true} if both map content and layer references are valid
      */
     public boolean isValid() {
-        return contentRef != null
-                && contentRef.get() != null
-                && layerRef != null
-                && layerRef.get() != null;
+        return contentRef != null && contentRef.get() != null && layerRef != null && layerRef.get() != null;
     }
 
     /**
@@ -132,8 +128,8 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     }
 
     /**
-     * A method from the {@code MapBoundsListener} interface used to listen for a change to the map
-     * content's coordinate reference system.
+     * A method from the {@code MapBoundsListener} interface used to listen for a change to the map content's coordinate
+     * reference system.
      */
     @Override
     public void mapBoundsChanged(MapBoundsEvent event) {
@@ -141,11 +137,11 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     }
 
     /**
-     * Gets the {@code MathTransform} used to convert coordinates from the projection being used by
-     * the {@code MapContent} to that of the {@code Layer}.
+     * Gets the {@code MathTransform} used to convert coordinates from the projection being used by the
+     * {@code MapContent} to that of the {@code Layer}.
      *
-     * @return the transform or {@code null} if the layer's CRS is the same as that of the map
-     *     content, or if either has no CRS defined
+     * @return the transform or {@code null} if the layer's CRS is the same as that of the map content, or if either has
+     *     no CRS defined
      */
     protected MathTransform getContentToLayerTransform() {
         if (transform == null && !transformFailed) {

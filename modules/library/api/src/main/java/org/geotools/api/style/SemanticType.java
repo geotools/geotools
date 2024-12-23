@@ -14,9 +14,8 @@ import java.util.List;
 import org.geotools.api.util.CodeList;
 
 /**
- * Identifies the more general "type" of geometry that this style is meant to act upon. In the
- * current OGC SE specifications, this is an experimental element and can take only one of the
- * following values:
+ * Identifies the more general "type" of geometry that this style is meant to act upon. In the current OGC SE
+ * specifications, this is an experimental element and can take only one of the following values:
  *
  * <p>
  *
@@ -31,8 +30,8 @@ import org.geotools.api.util.CodeList;
  *
  * <p>
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
@@ -63,8 +62,8 @@ public final class SemanticType extends CodeList<SemanticType> {
     public static final SemanticType ANY = new SemanticType("ANY");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -90,8 +89,7 @@ public final class SemanticType extends CodeList<SemanticType> {
     }
 
     /**
-     * Returns the semantic type that matches the given string, or returns a new one if none match
-     * it.
+     * Returns the semantic type that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

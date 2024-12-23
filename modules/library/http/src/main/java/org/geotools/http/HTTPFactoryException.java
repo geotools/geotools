@@ -27,29 +27,21 @@ public class HTTPFactoryException extends RuntimeException {
     /** */
     private static final long serialVersionUID = 3038706500613959333L;
 
-    public HTTPFactoryException(
-            String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+    public HTTPFactoryException(String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         super(createMessage(message, hints, behaviors));
     }
 
-    private static String createMessage(
-            String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+    private static String createMessage(String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         if (hints.containsKey(Hints.HTTP_CLIENT_FACTORY) || hints.containsKey(Hints.HTTP_CLIENT)) {
-            message =
-                    String.format(
-                            "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)",
-                            message,
-                            hints.get(Hints.HTTP_CLIENT_FACTORY),
-                            hints.get(Hints.HTTP_CLIENT));
+            message = String.format(
+                    "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)",
+                    message, hints.get(Hints.HTTP_CLIENT_FACTORY), hints.get(Hints.HTTP_CLIENT));
         }
         if (!behaviors.isEmpty()) {
-            message =
-                    String.format(
-                            "%s\nBehaviors:%s",
-                            message,
-                            behaviors.stream()
-                                    .map(behavior -> behavior.getSimpleName())
-                                    .collect(Collectors.joining(",")));
+            message = String.format(
+                    "%s\nBehaviors:%s",
+                    message,
+                    behaviors.stream().map(behavior -> behavior.getSimpleName()).collect(Collectors.joining(",")));
         }
         return message;
     }

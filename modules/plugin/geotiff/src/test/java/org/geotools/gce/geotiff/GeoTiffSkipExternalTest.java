@@ -35,9 +35,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * Testing the external files (prjs, masks, overviews) aren't retrieved when the skip flag is on.
- */
+/** Testing the external files (prjs, masks, overviews) aren't retrieved when the skip flag is on. */
 public class GeoTiffSkipExternalTest extends org.junit.Assert {
 
     private static void setStaticField(Class<?> clazz, String fieldName, Object value)
@@ -73,8 +71,7 @@ public class GeoTiffSkipExternalTest extends org.junit.Assert {
 
         final File prj = TestData.file(GeoTiffSkipExternalTest.class, "override/sample.prj");
         try (FileInputStream fis = new FileInputStream(prj)) {
-            CoordinateReferenceSystem crs_ =
-                    new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
+            CoordinateReferenceSystem crs_ = new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
 
             // Check External PRJ isn't found due to SKIP external files flag
             assertFalse(CRS.equalsIgnoreMetadata(crs, crs_));

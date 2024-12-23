@@ -41,8 +41,8 @@ import org.geotools.util.Utilities;
 
 /**
  * Transforms two-dimensional coordinate points using an affine transform. This class both extends
- * {@link AffineTransform} and implements {@link MathTransform2D}, so it can be used as a bridge
- * between Java2D and the referencing module.
+ * {@link AffineTransform} and implements {@link MathTransform2D}, so it can be used as a bridge between Java2D and the
+ * referencing module.
  *
  * @since 2.5
  * @version $Id$
@@ -62,21 +62,19 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /**
-     * Constructs a new {@code AffineTransform2D} from 6 values representing the 6 specifiable
-     * entries of the 3&times;3 transformation matrix. Those values are given unchanged to the
-     * {@link AffineTransform#AffineTransform(double,double,double,double,double,double) super class
-     * constructor}.
+     * Constructs a new {@code AffineTransform2D} from 6 values representing the 6 specifiable entries of the 3&times;3
+     * transformation matrix. Those values are given unchanged to the
+     * {@link AffineTransform#AffineTransform(double,double,double,double,double,double) super class constructor}.
      *
      * @since 2.5
      */
-    public AffineTransform2D(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public AffineTransform2D(double m00, double m10, double m01, double m11, double m02, double m12) {
         super(m00, m10, m01, m11, m02, m12);
     }
 
     /**
-     * Throws an {@link UnsupportedOperationException} when a mutable method is invoked, since
-     * {@code AffineTransform2D} must be immutable.
+     * Throws an {@link UnsupportedOperationException} when a mutable method is invoked, since {@code AffineTransform2D}
+     * must be immutable.
      */
     @Override
     protected final void checkPermission() throws UnsupportedOperationException {
@@ -84,9 +82,8 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /**
-     * Returns the matrix elements as a group of parameters values. The number of parameters depends
-     * on the matrix size. Only matrix elements different from their default value will be included
-     * in this group.
+     * Returns the matrix elements as a group of parameters values. The number of parameters depends on the matrix size.
+     * Only matrix elements different from their default value will be included in this group.
      *
      * @return A copy of the parameter values for this math transform.
      */
@@ -115,8 +112,7 @@ public class AffineTransform2D extends XAffineTransform
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
             }
         }
         final double[] array = ptSrc.getCoordinate();
@@ -144,8 +140,7 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /**
-     * Gets the derivative of this transform at a point. For an affine transform, the derivative is
-     * the same everywhere.
+     * Gets the derivative of this transform at a point. For an affine transform, the derivative is the same everywhere.
      */
     @Override
     public Matrix derivative(final Point2D point) {
@@ -155,8 +150,7 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /**
-     * Gets the derivative of this transform at a point. For an affine transform, the derivative is
-     * the same everywhere.
+     * Gets the derivative of this transform at a point. For an affine transform, the derivative is the same everywhere.
      */
     @Override
     public Matrix derivative(final Position point) {
@@ -180,18 +174,16 @@ public class AffineTransform2D extends XAffineTransform
                         inverse.inverse = this;
                     }
                 } catch (java.awt.geom.NoninvertibleTransformException exception) {
-                    throw new NoninvertibleTransformException(
-                            exception.getLocalizedMessage(), exception);
+                    throw new NoninvertibleTransformException(exception.getLocalizedMessage(), exception);
                 }
         }
         return inverse;
     }
 
     /**
-     * Returns a new affine transform which is a modifiable copy of this transform. We override this
-     * method because it is {@linkplain AffineTransform#clone defined in the super-class}. However
-     * this implementation do not returns a new {@code AffineTransform2D} instance because the later
-     * is unmodifiable, which make exact cloning useless.
+     * Returns a new affine transform which is a modifiable copy of this transform. We override this method because it
+     * is {@linkplain AffineTransform#clone defined in the super-class}. However this implementation do not returns a
+     * new {@code AffineTransform2D} instance because the later is unmodifiable, which make exact cloning useless.
      */
     @Override
     public AffineTransform clone() {
@@ -200,8 +192,8 @@ public class AffineTransform2D extends XAffineTransform
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * @param formatter The formatter to use.
      * @return The WKT element name.
@@ -219,9 +211,8 @@ public class AffineTransform2D extends XAffineTransform
     public String toWKT() {
         int indentation = 2;
         try {
-            indentation =
-                    Preferences.userNodeForPackage(org.geotools.referencing.wkt.Formattable.class)
-                            .getInt("Indentation", indentation);
+            indentation = Preferences.userNodeForPackage(org.geotools.referencing.wkt.Formattable.class)
+                    .getInt("Indentation", indentation);
         } catch (SecurityException ignore) {
             // Ignore. Will fallback on the default indentation.
         }

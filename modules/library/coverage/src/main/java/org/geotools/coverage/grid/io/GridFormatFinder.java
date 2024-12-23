@@ -36,8 +36,8 @@ import org.geotools.util.factory.Hints;
 /**
  * Enable programs to find all available grid format implementations.
  *
- * <p>In order to be located by this finder datasources must provide an implementation of the {@link
- * GridFormatFactorySpi} interface.
+ * <p>In order to be located by this finder datasources must provide an implementation of the
+ * {@link GridFormatFactorySpi} interface.
  *
  * <p>In addition to implementing this interface datasouces should have a services file:<br>
  * <code>META-INF/services/org.geotools.data.GridFormatFactorySpi</code>
@@ -59,11 +59,11 @@ public final class GridFormatFinder {
     }
 
     /**
-     * Finds all avalaible implementations of {@link GridFormatFactorySpi} which have registered
-     * using the services mechanism, and that have the appropriate libraries on the classpath.
+     * Finds all avalaible implementations of {@link GridFormatFactorySpi} which have registered using the services
+     * mechanism, and that have the appropriate libraries on the classpath.
      *
-     * @return An unmodifiable {@link Set} of all discovered datastores which have registered
-     *     factories, and whose available method returns true.
+     * @return An unmodifiable {@link Set} of all discovered datastores which have registered factories, and whose
+     *     available method returns true.
      */
     public static synchronized Set<GridFormatFactorySpi> getAvailableFormats() {
         // get all GridFormatFactorySpi implementations
@@ -74,25 +74,20 @@ public final class GridFormatFinder {
                 .collect(toUnmodifiableSet());
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(GridFormatFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {GridFormatFactorySpi.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GridFormatFactorySpi.class}));
         }
         return registry;
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {
@@ -102,9 +97,8 @@ public final class GridFormatFinder {
     /**
      * Returns an array with all available {@link GridFormatFactorySpi} implementations.
      *
-     * <p>It can be used toget basic information about all the available {@link GridCoverage}
-     * plugins. Note that this method finds all the implemented plugins but returns only the
-     * available one.
+     * <p>It can be used toget basic information about all the available {@link GridCoverage} plugins. Note that this
+     * method finds all the implemented plugins but returns only the available one.
      *
      * <p>A plugin could be implemented but not available due to missing dependencies.
      *
@@ -123,8 +117,7 @@ public final class GridFormatFinder {
      * Returns all the {@link Format}s that can read the supplied {@link Object} o.
      *
      * @param o is the object to search a {@link Format} that is able to read
-     * @return an unmodifiable {@link Set} comprising all the {@link Format} that can read the
-     *     {@link Object} o.
+     * @return an unmodifiable {@link Set} comprising all the {@link Format} that can read the {@link Object} o.
      */
     public static synchronized Set<AbstractGridFormat> findFormats(Object o) {
         return findFormats(o, GeoTools.getDefaultHints());
@@ -135,8 +128,7 @@ public final class GridFormatFinder {
      *
      * @param o is the object to search a {@link Format} that is able to read
      * @param hints the {@link Hints} to control the format search.
-     * @return an unmodifiable {@link Set} comprising all the {@link Format} that can read the
-     *     {@link Object} o.
+     * @return an unmodifiable {@link Set} comprising all the {@link Format} that can read the {@link Object} o.
      */
     public static synchronized Set<AbstractGridFormat> findFormats(Object o, Hints hints) {
         final Set<GridFormatFactorySpi> availableFormats = getAvailableFormats();
@@ -157,35 +149,35 @@ public final class GridFormatFinder {
     }
 
     /**
-     * Returns a {@link Format} that is able to read a certain object. If no {@link Format} is able
-     * to read such an {@link Object} we return an {@link UnknownFormat} object.
+     * Returns a {@link Format} that is able to read a certain object. If no {@link Format} is able to read such an
+     * {@link Object} we return an {@link UnknownFormat} object.
      *
-     * <p>It is worth to point out that this method will try to convert each format implementation
-     * to {@link AbstractGridFormat} because the original {@link Format} interface did not allow for
-     * an accept method hence we had to subclass the interface to add such method and we did so by
-     * the {@link AbstractGridFormat} abstract class.
+     * <p>It is worth to point out that this method will try to convert each format implementation to
+     * {@link AbstractGridFormat} because the original {@link Format} interface did not allow for an accept method hence
+     * we had to subclass the interface to add such method and we did so by the {@link AbstractGridFormat} abstract
+     * class.
      *
      * @param o the object to check for acceptance.
-     * @return an {@link AbstractGridFormat} that has stated to accept this {@link Object} o or
-     *     <code>null</code> in no plugins was able to accept it.
+     * @return an {@link AbstractGridFormat} that has stated to accept this {@link Object} o or <code>null</code> in no
+     *     plugins was able to accept it.
      */
     public static synchronized AbstractGridFormat findFormat(Object o) {
         return findFormat(o, GeoTools.getDefaultHints());
     }
 
     /**
-     * Returns a {@link Format} that is able to read a certain object. If no {@link Format} is able
-     * to read such an {@link Object} we return an {@link UnknownFormat} object.
+     * Returns a {@link Format} that is able to read a certain object. If no {@link Format} is able to read such an
+     * {@link Object} we return an {@link UnknownFormat} object.
      *
-     * <p>It is worth to point out that this method will try to convert each format implementation
-     * to {@link AbstractGridFormat} because the original {@link Format} interface did not allow for
-     * an accept method hence we had to subclass the interface to add such method and we did so by
-     * the {@link AbstractGridFormat} abstract class.
+     * <p>It is worth to point out that this method will try to convert each format implementation to
+     * {@link AbstractGridFormat} because the original {@link Format} interface did not allow for an accept method hence
+     * we had to subclass the interface to add such method and we did so by the {@link AbstractGridFormat} abstract
+     * class.
      *
      * @param o the object to check for acceptance.
      * @param hints the {@link Hints} to control the format search.
-     * @return an {@link AbstractGridFormat} that has stated to accept this {@link Object} o or
-     *     <code>null</code> in no plugins was able to accept it.
+     * @return an {@link AbstractGridFormat} that has stated to accept this {@link Object} o or <code>null</code> in no
+     *     plugins was able to accept it.
      */
     public static synchronized AbstractGridFormat findFormat(Object o, Hints hints) {
         final Set<AbstractGridFormat> formats = findFormats(o, hints);

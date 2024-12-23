@@ -118,9 +118,7 @@ public class GetFeatureRequest extends WFSRequest {
         this.propertyNames = propertyNames;
     }
 
-    /**
-     * Looks for a srs specified in the configuration that matches the coordinate reference system
-     */
+    /** Looks for a srs specified in the configuration that matches the coordinate reference system */
     public void findSupportedSrsName(CoordinateReferenceSystem crs) {
         String identifier = GML2EncodingUtils.toURI(crs, SrsSyntax.AUTH_CODE, false);
         if (identifier != null) {
@@ -136,8 +134,7 @@ public class GetFeatureRequest extends WFSRequest {
                 }
             }
         } else {
-            LOGGER.log(
-                    Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
+            LOGGER.log(Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
         }
     }
 

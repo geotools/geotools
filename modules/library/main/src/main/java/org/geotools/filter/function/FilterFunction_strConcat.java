@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strConcat extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strConcat",
-                    parameter("strConcat", String.class),
-                    parameter("string1", String.class),
-                    parameter("string2", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strConcat",
+            parameter("strConcat", String.class),
+            parameter("string1", String.class),
+            parameter("string2", String.class));
 
     public FilterFunction_strConcat() {
         super(NAME);

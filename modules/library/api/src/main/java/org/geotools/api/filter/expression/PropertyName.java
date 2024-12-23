@@ -16,21 +16,18 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * Expression class whose value is computed by retrieving the value indicated by the provided name.
  *
- * <p>The most common applicatoin of this is to retrive a {@linkplain
- * org.geotools.api.feature.Feature feature}'s property using an xpath expression.
+ * <p>The most common applicatoin of this is to retrive a {@linkplain org.geotools.api.feature.Feature feature}'s
+ * property using an xpath expression.
  *
- * <p>Please note that the Filter specification allows a limited subset of XPath to be used for the
- * PropertyName. We encourage implementations to match this functionality.
+ * <p>Please note that the Filter specification allows a limited subset of XPath to be used for the PropertyName. We
+ * encourage implementations to match this functionality.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
 public interface PropertyName extends Expression {
-    /**
-     * Returns the name of the property whose value will be returned by the {@link #evaluate
-     * evaluate} method.
-     */
+    /** Returns the name of the property whose value will be returned by the {@link #evaluate evaluate} method. */
     String getPropertyName();
 
     /**

@@ -29,9 +29,8 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
 /**
- * Support class helping to read tile images from a geopackage. This class keeps state to avoid
- * performing repeated image reader lookups, it is not thread safe, create one for each thread
- * reading data.
+ * Support class helping to read tile images from a geopackage. This class keeps state to avoid performing repeated
+ * image reader lookups, it is not thread safe, create one for each thread reading data.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -46,8 +45,7 @@ class TileImageReader {
             lastReader.reset();
             lastReader.setInput(getImageInputStream(data));
         }
-        if (lastReader == null
-                || !lastReader.getOriginatingProvider().canDecodeInput(getImageInputStream(data))) {
+        if (lastReader == null || !lastReader.getOriginatingProvider().canDecodeInput(getImageInputStream(data))) {
             boolean found = false;
             for (ImageReader ir : readersCache) {
                 if (ir != lastReader) {
@@ -62,8 +60,7 @@ class TileImageReader {
             if (!found) {
                 Iterator<ImageReader> readers = ImageIO.getImageReaders(getImageInputStream(data));
                 if (!readers.hasNext()) {
-                    throw new IOException(
-                            "Unexpected, cannot find a reader for the current tile image format");
+                    throw new IOException("Unexpected, cannot find a reader for the current tile image format");
                 }
                 lastReader = readers.next();
                 lastReader.setInput(getImageInputStream(data));
@@ -76,9 +73,9 @@ class TileImageReader {
     }
 
     /**
-     * Methods to create a {@link ImageInputStream} out of a byte array. Gets called over and over
-     * because just marking the stream and resetting it was not working against some sample
-     * GeoPackage files, and the result was not finding the readers to use
+     * Methods to create a {@link ImageInputStream} out of a byte array. Gets called over and over because just marking
+     * the stream and resetting it was not working against some sample GeoPackage files, and the result was not finding
+     * the readers to use
      */
     ImageInputStream getImageInputStream(byte[] data) {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);

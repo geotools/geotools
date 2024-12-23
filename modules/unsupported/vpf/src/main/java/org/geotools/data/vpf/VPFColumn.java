@@ -45,10 +45,7 @@ import org.locationtech.jts.geom.Geometry;
  * @source $URL$
  */
 public class VPFColumn {
-    /**
-     * If the value is a short integer, that often means it has an accompanying value in a string
-     * lookup table.
-     */
+    /** If the value is a short integer, that often means it has an accompanying value in a string lookup table. */
     private boolean attemptLookup = false;
 
     /** Attribute descriptor generated from this column definition. */
@@ -90,13 +87,12 @@ public class VPFColumn {
         this.thematicIdx = thematicIdx;
         this.narrTable = narrTable;
         // VPFLogger.log("buildDescriptor: " + name);
-        descriptor =
-                new AttributeTypeBuilder()
-                        .length(getColumnSize())
-                        .description(colDesc)
-                        .binding(getColumnClass())
-                        .nillable(true)
-                        .buildDescriptor(name);
+        descriptor = new AttributeTypeBuilder()
+                .length(getColumnSize())
+                .description(colDesc)
+                .binding(getColumnClass())
+                .nillable(true)
+                .buildDescriptor(name);
         descriptor.getUserData().put("column", this);
     }
 

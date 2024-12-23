@@ -30,16 +30,13 @@ import java.util.Map;
 public class WMTSHelper {
 
     /**
-     * Performs a case-insensitive replacement of the first occurrence of {dimName} with dimValue
-     * within the baseUrl. The curly braces are added by this function so dimName should not contain
-     * them. dimValue should be encoded using {@link #encodeParameter(String)} before passing into
-     * this function
+     * Performs a case-insensitive replacement of the first occurrence of {dimName} with dimValue within the baseUrl.
+     * The curly braces are added by this function so dimName should not contain them. dimValue should be encoded using
+     * {@link #encodeParameter(String)} before passing into this function
      *
      * @param baseUrl the string which contains {dimName}
-     * @param dimName the value in baseurl that needs to be replaced. Should NOT have the curly
-     *     braces around it
-     * @param dimValue the encoded value to replace {dimName} with. If this is null then a blank
-     *     string is used
+     * @param dimName the value in baseurl that needs to be replaced. Should NOT have the curly braces around it
+     * @param dimValue the encoded value to replace {dimName} with. If this is null then a blank string is used
      * @return baseUrl with {dimName} substituted with dimValue
      */
     public static String replaceToken(String baseUrl, String dimName, String dimValue) {
@@ -81,10 +78,7 @@ public class WMTSHelper {
                                 .append(separator)
                                 .append(key)
                                 .append("=")
-                                .append(
-                                        valString.startsWith("{")
-                                                ? valString
-                                                : URLEncoder.encode(valString, "UTF-8"));
+                                .append(valString.startsWith("{") ? valString : URLEncoder.encode(valString, "UTF-8"));
                         separator = "&";
                     }
                 }
@@ -96,9 +90,8 @@ public class WMTSHelper {
     }
 
     /**
-     * Encodes a parameter using UTF-8 encoding (suitable for URLs). It will also replace spaces
-     * with %20 instead of + (as raised in GEOT-4317) so that the encoded parameter can be used in
-     * any part of a URL
+     * Encodes a parameter using UTF-8 encoding (suitable for URLs). It will also replace spaces with %20 instead of +
+     * (as raised in GEOT-4317) so that the encoded parameter can be used in any part of a URL
      *
      * @param name The parameter to be encoded
      * @return the encoded parameter

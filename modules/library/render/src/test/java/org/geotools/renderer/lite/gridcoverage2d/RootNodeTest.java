@@ -44,21 +44,16 @@ public class RootNodeTest {
     @Before
     public void setUp() throws Exception {
         // get a coverage
-        final GridCoverage2D gc =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "name",
-                                PlanarImage.wrapRenderedImage(
-                                        RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
-                                new GridSampleDimension[] {
-                                    new GridSampleDimension(
-                                            "sd",
-                                            new Category[] {new Category("", Color.BLACK, 0)},
-                                            null)
-                                },
-                                null,
-                                null);
+        final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "name",
+                        PlanarImage.wrapRenderedImage(RasterSymbolizerTest.getSynthetic(Double.NaN)),
+                        new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
+                        new GridSampleDimension[] {
+                            new GridSampleDimension("sd", new Category[] {new Category("", Color.BLACK, 0)}, null)
+                        },
+                        null,
+                        null);
 
         root1 = new RootNode(gc);
         root2 = new RootNode(gc);

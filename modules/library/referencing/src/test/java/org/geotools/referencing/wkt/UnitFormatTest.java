@@ -29,9 +29,8 @@ import org.junit.Test;
 public class UnitFormatTest {
 
     /**
-     * Test method for {@link org.geotools.measure.UnitFormatter#format(javax.measure.Unit,
-     * java.lang.Appendable)} for units that have labels or aliases defined by GT in the default
-     * format
+     * Test method for {@link org.geotools.measure.UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for
+     * units that have labels or aliases defined by GT in the default format
      */
     @Test
     public void testFormatForGTDefinedUnits() throws IOException {
@@ -39,15 +38,14 @@ public class UnitFormatTest {
         doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, unitFormatter, "D.MS");
     }
 
-    public static void doTestFormatForGTDefinedUnits(
-            Unit<?> u, UnitFormatter unitFormatter, String expected) throws IOException {
+    public static void doTestFormatForGTDefinedUnits(Unit<?> u, UnitFormatter unitFormatter, String expected)
+            throws IOException {
         Appendable appendable = new StringBuilder();
         unitFormatter.format(u, appendable);
         assertEquals("Missing symbol formats", expected, appendable.toString());
     }
 
-    public static void doTestNotModifiedUnits(Unit<?> u, UnitFormatter unitFormatter)
-            throws IOException {
+    public static void doTestNotModifiedUnits(Unit<?> u, UnitFormatter unitFormatter) throws IOException {
         Appendable appendable = new StringBuilder();
         unitFormatter.format(u, appendable);
         assertEquals("Missing symbol formats", u.toString(), appendable.toString());

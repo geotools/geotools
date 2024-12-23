@@ -51,8 +51,7 @@ class FeatureTypeMapper {
     }
 
     /** Returns the geotools feature type equivalent from the native OGR one */
-    SimpleFeatureType getFeatureType(Object layer, String typeName, String namespaceURI)
-            throws IOException {
+    SimpleFeatureType getFeatureType(Object layer, String typeName, String namespaceURI) throws IOException {
         Object definition = null;
         try {
             // setup the builder
@@ -89,11 +88,9 @@ class FeatureTypeMapper {
             // compute a default parent feature type
             if ((geometryBinding == Point.class) || (geometryBinding == MultiPoint.class)) {
                 tb.setSuperType(BasicFeatureTypes.POINT);
-            } else if ((geometryBinding == Polygon.class)
-                    || (geometryBinding == MultiPolygon.class)) {
+            } else if ((geometryBinding == Polygon.class) || (geometryBinding == MultiPolygon.class)) {
                 tb.setSuperType(BasicFeatureTypes.POLYGON);
-            } else if ((geometryBinding == LineString.class)
-                    || (geometryBinding == MultiLineString.class)) {
+            } else if ((geometryBinding == LineString.class) || (geometryBinding == MultiLineString.class)) {
                 tb.setSuperType(BasicFeatureTypes.LINE);
             }
 
@@ -274,8 +271,7 @@ class FeatureTypeMapper {
                 || value == ogr.GetMultiPolygonType()
                 || value == ogr.GetMultiPolygon25DType()) {
             return MultiPolygon.class;
-        } else if (value == ogr.GetGeometryCollectionType()
-                || value == ogr.GetGeometryCollection25DType()) {
+        } else if (value == ogr.GetGeometryCollectionType() || value == ogr.GetGeometryCollection25DType()) {
             return GeometryCollection.class;
         } else if (value == ogr.GetGeometryNoneType()) {
             return null;
@@ -319,9 +315,7 @@ class FeatureTypeMapper {
         }
     }
 
-    /**
-     * Returns a Pointer to a OGR spatial reference object equivalent to the specified GeoTools CRS
-     */
+    /** Returns a Pointer to a OGR spatial reference object equivalent to the specified GeoTools CRS */
     public Object getSpatialReference(CoordinateReferenceSystem crs) {
         if (crs == null) {
             return null;

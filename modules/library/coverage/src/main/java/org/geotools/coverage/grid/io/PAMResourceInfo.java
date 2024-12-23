@@ -19,10 +19,7 @@ package org.geotools.coverage.grid.io;
 import it.geosolutions.imageio.pam.PAMDataset;
 import java.io.IOException;
 
-/**
- * A {@link org.geotools.data.ResourceInfo} that can return a {@link
- * it.geosolutions.imageio.pam.PAMDataset}
- */
+/** A {@link org.geotools.data.ResourceInfo} that can return a {@link it.geosolutions.imageio.pam.PAMDataset} */
 public interface PAMResourceInfo {
 
     /**
@@ -35,8 +32,7 @@ public interface PAMResourceInfo {
     /**
      * Hints to reload the PAMDataset, if possible. By default, it's a no-op.
      *
-     * @return True if the PAM dataset has been reloaded, false if it was not possible or not
-     *     implemented
+     * @return True if the PAM dataset has been reloaded, false if it was not possible or not implemented
      */
     default boolean reloadPAMDataset() throws IOException {
         return false;

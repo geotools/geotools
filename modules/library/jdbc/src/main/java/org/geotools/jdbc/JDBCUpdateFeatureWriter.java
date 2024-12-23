@@ -40,8 +40,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
     ResultSetFeature last;
     ReferencedEnvelope lastBounds;
 
-    public JDBCUpdateFeatureWriter(
-            String sql, Connection cx, JDBCFeatureSource featureSource, Query query)
+    public JDBCUpdateFeatureWriter(String sql, Connection cx, JDBCFeatureSource featureSource, Query query)
             throws SQLException, IOException {
 
         super(sql, cx, featureSource, featureSource.getSchema(), query);
@@ -49,8 +48,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         last = new ResultSetFeature(rs, cx);
     }
 
-    public JDBCUpdateFeatureWriter(
-            PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
+    public JDBCUpdateFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
             throws SQLException, IOException {
 
         super(ps, cx, featureSource, featureSource.getSchema(), query);
@@ -59,8 +57,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
 
         ensureNext();
 
@@ -103,10 +100,9 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
             PrimaryKey key = dataStore.getPrimaryKey(featureType);
             String fid = dataStore.encodeFID(key, rs);
 
-            Id filter =
-                    dataStore
-                            .getFilterFactory()
-                            .id(Collections.singleton(dataStore.getFilterFactory().featureId(fid)));
+            Id filter = dataStore
+                    .getFilterFactory()
+                    .id(Collections.singleton(dataStore.getFilterFactory().featureId(fid)));
 
             // figure out which attributes changed
             List<AttributeDescriptor> changed = new ArrayList<>();

@@ -10,8 +10,7 @@
 package org.geotools.api.referencing.operation;
 
 /**
- * Thrown when an operation is applied in a manner inconsistent with one or both of two particular
- * CRS objects.
+ * Thrown when an operation is applied in a manner inconsistent with one or both of two particular CRS objects.
  *
  * @author Jesse Crossley (SYS Technologies)
  * @since GeoAPI 1.0
@@ -26,8 +25,8 @@ public class IncompatibleOperationException extends Exception {
     /**
      * Creates an exception with the specified message and operation name.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param operationName The invalid operation name.
      */
     public IncompatibleOperationException(String message, String operationName) {

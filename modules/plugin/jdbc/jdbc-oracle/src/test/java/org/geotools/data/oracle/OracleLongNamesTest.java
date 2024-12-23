@@ -139,11 +139,8 @@ public class OracleLongNamesTest extends JDBCTestSupport {
 
         SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TABLE_NAME));
         final Geometry point = new WKTReader().read("POINT( 2 2)");
-        final SimpleFeature feature =
-                SimpleFeatureBuilder.build(fs.getSchema(), new Object[] {point, 789}, null);
+        final SimpleFeature feature = SimpleFeatureBuilder.build(fs.getSchema(), new Object[] {point, 789}, null);
         fs.addFeatures(DataUtilities.collection(feature));
-        assertEquals(
-                1,
-                fs.getCount(new Query(TABLE_NAME, toFilter("BBOX(" + GEOM_NAME + ",1,1,10,10)"))));
+        assertEquals(1, fs.getCount(new Query(TABLE_NAME, toFilter("BBOX(" + GEOM_NAME + ",1,1,10,10)"))));
     }
 }

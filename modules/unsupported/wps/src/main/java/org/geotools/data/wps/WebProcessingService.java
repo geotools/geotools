@@ -78,8 +78,7 @@ import org.geotools.wps.WPS;
 public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Object> {
 
     /**
-     * Utility method to fetch the GET or POST URL of the given operation from the capabilities
-     * document
+     * Utility method to fetch the GET or POST URL of the given operation from the capabilities document
      *
      * @param operation the operation URL to find in the capabilities doc
      * @param cap the capabilities document (need to pass as the method is static)
@@ -88,7 +87,8 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
      */
     public static URL getOperationURL(String operation, WPSCapabilitiesType cap, boolean getGet) {
         @SuppressWarnings("unchecked")
-        Iterator<OperationType> iterator = cap.getOperationsMetadata().getOperation().iterator();
+        Iterator<OperationType> iterator =
+                cap.getOperationsMetadata().getOperation().iterator();
         while (iterator.hasNext()) {
             OperationType next = iterator.next();
             if (operation.compareToIgnoreCase(next.getName()) == 0) {
@@ -98,11 +98,13 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
                     DCPType next2 = iterator2.next();
                     HTTPType http = next2.getHTTP();
                     if (getGet && !http.getGet().isEmpty()) {
-                        RequestMethodType rmt = (RequestMethodType) http.getGet().get(0);
+                        RequestMethodType rmt =
+                                (RequestMethodType) http.getGet().get(0);
 
                         return makeURL(rmt.getHref());
                     } else if (!http.getPost().isEmpty()) {
-                        RequestMethodType rmt = (RequestMethodType) http.getPost().get(0);
+                        RequestMethodType rmt =
+                                (RequestMethodType) http.getPost().get(0);
 
                         return makeURL(rmt.getHref());
                     }
@@ -141,17 +143,13 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
      * <p>The implementation assumes that the server is located at:
      * capabilities.getRequest().getGetCapabilities().getGet()
      */
-    public WebProcessingService(WPSCapabilitiesType capabilities)
-            throws IOException, ServiceException {
-        super(
-                getOperationURL("getcapabilities", capabilities, true),
-                HTTPClientFinder.createClient(),
-                capabilities);
+    public WebProcessingService(WPSCapabilitiesType capabilities) throws IOException, ServiceException {
+        super(getOperationURL("getcapabilities", capabilities, true), HTTPClientFinder.createClient(), capabilities);
     }
 
     /**
-     * Creates a new WebProcessingService instance and attempts to retrieve the Capabilities
-     * document specified by serverURL.
+     * Creates a new WebProcessingService instance and attempts to retrieve the Capabilities document specified by
+     * serverURL.
      *
      * @param serverURL a URL that points to the capabilities document of a server
      * @throws IOException if there is an error communicating with the server
@@ -162,9 +160,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
     }
 
     public WebProcessingService(
-            final URL serverURL,
-            final HTTPClient httpClient,
-            final WPSCapabilitiesType capabilities)
+            final URL serverURL, final HTTPClient httpClient, final WPSCapabilitiesType capabilities)
             throws IOException, ServiceException {
         super(serverURL, httpClient, capabilities);
     }
@@ -193,18 +189,15 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         return (AbstractWPSGetCapabilitiesResponse) internalIssueRequest(request);
     }
 
-    public DescribeProcessResponse issueRequest(DescribeProcessRequest request)
-            throws IOException, ServiceException {
+    public DescribeProcessResponse issueRequest(DescribeProcessRequest request) throws IOException, ServiceException {
         return (DescribeProcessResponse) internalIssueRequest(request);
     }
 
-    public ExecuteProcessResponse issueRequest(ExecuteProcessRequest request)
-            throws IOException, ServiceException {
+    public ExecuteProcessResponse issueRequest(ExecuteProcessRequest request) throws IOException, ServiceException {
         return (ExecuteProcessResponse) internalIssueRequest(request);
     }
 
-    public ExecuteProcessResponse issueStatusRequest(URL statusURL)
-            throws IOException, ServiceException {
+    public ExecuteProcessResponse issueStatusRequest(URL statusURL) throws IOException, ServiceException {
 
         final HTTPResponse httpResponse = httpClient.get(statusURL);
 
@@ -213,8 +206,8 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
     }
 
     /**
-     * Get the getCapabilities document. If there was an error parsing it during creation, it will
-     * return null (and it should have thrown an exception during creation).
+     * Get the getCapabilities document. If there was an error parsing it during creation, it will return null (and it
+     * should have thrown an exception during creation).
      *
      * @return a WPSCapabilitiesType object, representing the Capabilities of the server
      */
@@ -222,8 +215,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         return capabilities;
     }
 
-    public DescribeProcessRequest createDescribeProcessRequest()
-            throws UnsupportedOperationException {
+    public DescribeProcessRequest createDescribeProcessRequest() throws UnsupportedOperationException {
         if (getCapabilities().getProcessOfferings() == null) {
             throw new UnsupportedOperationException(
                     "Server does not specify a DescribeProcess operation. Cannot be performed.");
@@ -234,14 +226,12 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             onlineResource = serverURL;
         }
 
-        DescribeProcessRequest request =
-                getSpecification().createDescribeProcessRequest(onlineResource);
+        DescribeProcessRequest request = getSpecification().createDescribeProcessRequest(onlineResource);
 
         return request;
     }
 
-    public ExecuteProcessRequest createExecuteProcessRequest()
-            throws UnsupportedOperationException {
+    public ExecuteProcessRequest createExecuteProcessRequest() throws UnsupportedOperationException {
         ProcessOfferingsType processOfferings = getCapabilities().getProcessOfferings();
         if ((processOfferings == null) || !processOfferings.eAllContents().hasNext()) {
             throw new UnsupportedOperationException(
@@ -253,8 +243,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             onlineResource = serverURL;
         }
 
-        ExecuteProcessRequest request =
-                getSpecification().createExecuteProcessRequest(onlineResource);
+        ExecuteProcessRequest request = getSpecification().createExecuteProcessRequest(onlineResource);
 
         return request;
     }
@@ -269,19 +258,16 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
 
     public EObject createBoundingBoxInputValue(
             String crs, int dimensions, List<Double> lowerCorner, List<Double> upperCorner) {
-        return getSpecification()
-                .createBoundingBoxInputValue(crs, dimensions, lowerCorner, upperCorner);
+        return getSpecification().createBoundingBoxInputValue(crs, dimensions, lowerCorner, upperCorner);
     }
 
-    public ResponseFormType createResponseForm(
-            ResponseDocumentType responseDoc, OutputDefinitionType rawOutput) {
+    public ResponseFormType createResponseForm(ResponseDocumentType responseDoc, OutputDefinitionType rawOutput) {
         return getSpecification().createResponseForm(responseDoc, rawOutput);
     }
 
     public ResponseDocumentType createResponseDocumentType(
             boolean lineage, boolean status, boolean storeExecuteResponse, String outputType) {
-        return getSpecification()
-                .createResponseDocumentType(lineage, status, storeExecuteResponse, outputType);
+        return getSpecification().createResponseDocumentType(lineage, status, storeExecuteResponse, outputType);
     }
 
     public OutputDefinitionType createOutputDefinitionType(String identifier) {
@@ -341,8 +327,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         /**
          * The source of this WPS is the capabilities document.
          *
-         * <p>We make an effort here to look in the capabilities document provided for the
-         * unambiguous capabilities URI.
+         * <p>We make an effort here to look in the capabilities document provided for the unambiguous capabilities URI.
          */
         @Override
         public URI getSource() {

@@ -41,20 +41,18 @@ public class DirectedDepthFirstIteratorTest extends DepthFirstIteratorTest {
 
         DummyGraphWalker walker = new DummyGraphWalker();
         DirectedDepthFirstIterator iterator = new DirectedDepthFirstIterator();
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
 
         iterator.setSource(ends[1]);
         traversal.traverse();
 
         // ensure only last node visited
-        GraphVisitor visitor =
-                component -> {
-                    if (component == ends[1]) assertTrue(component.isVisited());
-                    else assertFalse(component.isVisited());
-                    return (0);
-                };
+        GraphVisitor visitor = component -> {
+            if (component == ends[1]) assertTrue(component.isVisited());
+            else assertFalse(component.isVisited());
+            return (0);
+        };
         builder().getGraph().visitNodes(visitor);
     }
 

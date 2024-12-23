@@ -52,17 +52,13 @@ import org.geotools.util.logging.Logging;
 public class JMapStatusBar extends JPanel {
     private static final Logger LOGGER = Logging.getLogger(JMapStatusBar.class);
 
-    private static final String CONFIGURE_TOOL_TIP =
-            LocaleUtils.getValue("StatusBar", "ConfigureTooltip");
+    private static final String CONFIGURE_TOOL_TIP = LocaleUtils.getValue("StatusBar", "ConfigureTooltip");
 
-    private static final String SET_DECIMALS_STRING =
-            LocaleUtils.getValue("StatusBar", "ConfigureSetNumDecimals");
+    private static final String SET_DECIMALS_STRING = LocaleUtils.getValue("StatusBar", "ConfigureSetNumDecimals");
 
-    private static final String DECIMAL_DIALOG_TITLE =
-            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogTitle");
+    private static final String DECIMAL_DIALOG_TITLE = LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogTitle");
 
-    private static final String DECIMAL_DIALOG_LABEL =
-            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogLabel");
+    private static final String DECIMAL_DIALOG_LABEL = LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogLabel");
 
     private static final int INSET = 0;
 
@@ -82,8 +78,7 @@ public class JMapStatusBar extends JPanel {
         final int componentIndex;
         boolean showing;
 
-        public ItemInfo(
-                StatusBarItem item, boolean configurable, int componentIndex, boolean showing) {
+        public ItemInfo(StatusBarItem item, boolean configurable, int componentIndex, boolean showing) {
 
             this.item = item;
             this.configurable = configurable;
@@ -96,8 +91,8 @@ public class JMapStatusBar extends JPanel {
     private int minItemHeight;
 
     /**
-     * Creates a new status bar, with the default set of items, linked to the given map pane. This
-     * method can be called safely from any thread.
+     * Creates a new status bar, with the default set of items, linked to the given map pane. This method can be called
+     * safely from any thread.
      *
      * <p>The default items are:
      *
@@ -120,8 +115,7 @@ public class JMapStatusBar extends JPanel {
 
         } else {
             try {
-                SwingUtilities.invokeAndWait(
-                        () -> statusBar[0] = doCreateDefaultStatusBar(mapPane));
+                SwingUtilities.invokeAndWait(() -> statusBar[0] = doCreateDefaultStatusBar(mapPane));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -149,8 +143,7 @@ public class JMapStatusBar extends JPanel {
     }
 
     /**
-     * Creates a new status bar. Sets a {@code MigLayout} layout manager and adds the default config
-     * menu status item.
+     * Creates a new status bar. Sets a {@code MigLayout} layout manager and adds the default config menu status item.
      */
     public JMapStatusBar() {
         this.itemInfo = new ArrayList<>();
@@ -161,22 +154,21 @@ public class JMapStatusBar extends JPanel {
 
         URL url = this.getClass().getResource("icons/configure-3.png");
         ImageIcon icon = new ImageIcon(url);
-        PopupMenuProvider menuProvider =
-                () -> {
-                    if (configMenu == null) {
-                        configMenu = createItemMenu();
-                    }
-                    return configMenu;
-                };
+        PopupMenuProvider menuProvider = () -> {
+            if (configMenu == null) {
+                configMenu = createItemMenu();
+            }
+            return configMenu;
+        };
 
         StatusBarItem item = new JMenuStatusBarItem("", icon, CONFIGURE_TOOL_TIP, menuProvider);
         addItem(item, false, true);
     }
 
     /**
-     * Adds a new item to the status bar. The item will display a border and appear in the status
-     * bar configuration menu. If the item is already present in the status bar it will not added
-     * again and the method will return {@code false}.
+     * Adds a new item to the status bar. The item will display a border and appear in the status bar configuration
+     * menu. If the item is already present in the status bar it will not added again and the method will return
+     * {@code false}.
      *
      * @param item the item to add
      * @return {@code true} if the item was added
@@ -186,8 +178,8 @@ public class JMapStatusBar extends JPanel {
     }
 
     /**
-     * Adds a new item to the status bar. If the item is already present in the status bar it will
-     * not added again and the method will return {@code false}.
+     * Adds a new item to the status bar. If the item is already present in the status bar it will not added again and
+     * the method will return {@code false}.
      *
      * @param item the item to add
      * @param configurable whether the item should appear in the status bar configuration menu
@@ -217,10 +209,9 @@ public class JMapStatusBar extends JPanel {
             return true;
 
         } else {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Item label:{0} id:{1} is already in the status bar",
-                    new Object[] {item.getName(), item.getID()});
+            LOGGER.log(Level.WARNING, "Item label:{0} id:{1} is already in the status bar", new Object[] {
+                item.getName(), item.getID()
+            });
             return false;
         }
     }
@@ -235,8 +226,8 @@ public class JMapStatusBar extends JPanel {
     }
 
     /**
-     * Searches for the given item in the current set of status bar items. If found, the item's
-     * position index is returned; otherwise -1.
+     * Searches for the given item in the current set of status bar items. If found, the item's position index is
+     * returned; otherwise -1.
      *
      * @param item the item to search for
      * @return position index or -1 if not found
@@ -256,8 +247,8 @@ public class JMapStatusBar extends JPanel {
     }
 
     /**
-     * Gets the item at the specified position index. Position 0 is always occupied by the status
-     * bar's configuration menu item.
+     * Gets the item at the specified position index. Position 0 is always occupied by the status bar's configuration
+     * menu item.
      *
      * @param index position index between 0 and {@link #getNumItems()} - 1
      * @return the item
@@ -272,9 +263,9 @@ public class JMapStatusBar extends JPanel {
     }
 
     /**
-     * Creates a popup menu to configure the status bar. The names of configurable items will appear
-     * as checkbox menu items to set whether they are shown or hidden. An additional item allows a
-     * custom number of decimal places to be set for numeric items.
+     * Creates a popup menu to configure the status bar. The names of configurable items will appear as checkbox menu
+     * items to set whether they are shown or hidden. An additional item allows a custom number of decimal places to be
+     * set for numeric items.
      *
      * @return the new pop-up menu
      */
@@ -285,18 +276,17 @@ public class JMapStatusBar extends JPanel {
         for (final ItemInfo info : itemInfo) {
             if (info.configurable) {
                 JMenuItem menuItem = new JCheckBoxMenuItem(info.item.getName(), info.showing);
-                menuItem.addActionListener(
-                        e -> {
-                            info.showing = !info.showing;
-                            Rectangle r = info.item.getBounds();
-                            if (info.showing) {
-                                add(info.item, info.componentIndex);
-                            } else {
-                                remove(info.item);
-                            }
-                            revalidate();
-                            repaint(r);
-                        });
+                menuItem.addActionListener(e -> {
+                    info.showing = !info.showing;
+                    Rectangle r = info.item.getBounds();
+                    if (info.showing) {
+                        add(info.item, info.componentIndex);
+                    } else {
+                        remove(info.item);
+                    }
+                    revalidate();
+                    repaint(r);
+                });
                 menu.add(menuItem);
             }
         }

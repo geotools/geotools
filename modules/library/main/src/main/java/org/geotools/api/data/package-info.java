@@ -17,9 +17,9 @@
 /**
  * Defines the DataStore API via which all data is imported or exported.
  *
- * <p>All DataStores (e.g. PostGIS, Shapefile(tm), GML...) must provide implementations of the
- * DataStore interface and the DataStoreFactorySpi interface. These interfaces allow new types of
- * datastore to be plugged into applications which use GeoTools without the need to modify any code.
+ * <p>All DataStores (e.g. PostGIS, Shapefile(tm), GML...) must provide implementations of the DataStore interface and
+ * the DataStoreFactorySpi interface. These interfaces allow new types of datastore to be plugged into applications
+ * which use GeoTools without the need to modify any code.
  *
  * <p>Example:
  *

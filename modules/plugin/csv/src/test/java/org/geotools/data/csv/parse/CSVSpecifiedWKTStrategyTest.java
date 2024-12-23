@@ -40,9 +40,7 @@ public class CSVSpecifiedWKTStrategyTest {
 
     @Test
     public void testCreateFeature() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "fleem,zoo,morx", "foo,POINT(3.14 1.59),car");
+        String input = CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "foo,POINT(3.14 1.59),car");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVStrategy strategy = new CSVSpecifiedWKTStrategy(fileState, "zoo");
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -95,10 +93,7 @@ public class CSVSpecifiedWKTStrategyTest {
         CSVStrategy strategy = new CSVSpecifiedWKTStrategy(csvFileState, "the_geom_wkt");
         strategy.createSchema(featureType);
 
-        assertEquals(
-                "Stragegy does not have provided feature type",
-                featureType,
-                strategy.getFeatureType());
+        assertEquals("Stragegy does not have provided feature type", featureType, strategy.getFeatureType());
         List<String> content = Files.readAllLines(csvFile.toPath());
         assertEquals("the_geom_wkt,id,int_field,string_field", content.get(0));
         csvFile.delete();

@@ -22,8 +22,7 @@ import org.geotools.api.referencing.datum.GeodeticDatum;
  *   {@link org.geotools.api.referencing.cs.EllipsoidalCS Ellipsoidal}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */

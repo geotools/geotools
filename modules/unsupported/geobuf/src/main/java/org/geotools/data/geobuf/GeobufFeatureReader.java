@@ -47,20 +47,17 @@ public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, Sim
 
     private SimpleFeatureBuilder featureBuilder;
 
-    public GeobufFeatureReader(ContentState state, Query query, int precision, int dimension)
-            throws IOException {
+    public GeobufFeatureReader(ContentState state, Query query, int precision, int dimension) throws IOException {
         this.state = state;
-        this.geobufGeometry =
-                new GeobufGeometry(precision, dimension, JTSFactoryFinder.getGeometryFactory(null));
+        this.geobufGeometry = new GeobufGeometry(precision, dimension, JTSFactoryFinder.getGeometryFactory(null));
         this.geobufFeature = new GeobufFeature(geobufGeometry);
         this.featureBuilder = new SimpleFeatureBuilder(state.getFeatureType());
         File file;
         DataStore dataStore = state.getEntry().getDataStore();
         if (dataStore instanceof GeobufDirectoryDataStore) {
-            file =
-                    ((GeobufDirectoryDataStore) dataStore)
-                            .getDataStore(state.getFeatureType().getTypeName())
-                            .getFile();
+            file = ((GeobufDirectoryDataStore) dataStore)
+                    .getDataStore(state.getFeatureType().getTypeName())
+                    .getFile();
         } else {
             file = ((GeobufDataStore) dataStore).getFile();
         }
@@ -74,8 +71,7 @@ public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, Sim
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature feature;
         if (nextFeature != null) {
             feature = nextFeature;

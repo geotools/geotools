@@ -17,8 +17,7 @@
 package org.geotools.data.directory;
 
 /**
- * Implementors will provide a service that checks if directory contents are changed since last
- * refresh.
+ * Implementors will provide a service that checks if directory contents are changed since last refresh.
  *
  * @author Andrea Aime
  */

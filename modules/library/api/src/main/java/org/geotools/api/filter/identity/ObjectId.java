@@ -12,12 +12,10 @@ package org.geotools.api.filter.identity;
 /**
  * ObjectId refered to by Filter 1.1 specification (as an example).
  *
- * <p>Although ObjectId is refered to as an example we are making explicit use of it here in order
- * to show identification being defined with a long (as with several popular object relational
- * mappers).
+ * <p>Although ObjectId is refered to as an example we are making explicit use of it here in order to show
+ * identification being defined with a long (as with several popular object relational mappers).
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=5929">Implementation
- *     specification 1.1</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=5929">Implementation specification 1.1</A>
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1
  */

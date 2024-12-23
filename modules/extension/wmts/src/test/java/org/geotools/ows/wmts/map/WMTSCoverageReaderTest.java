@@ -76,11 +76,8 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testRESTInitMapRequest() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"),
-                        REST_CAPA_RESOURCENAME);
-        WMTSLayer layer =
-                server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
+                createServer(new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"), REST_CAPA_RESOURCENAME);
+        WMTSLayer layer = server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
@@ -89,33 +86,25 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testKVPInitMapRequest() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"),
-                        KVP_CAPA_RESOURCENAME);
+                createServer(new URL("http://localhost:8080/geoserver/gwc/service/wmts"), KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
     }
 
     @Test
     public void testKVPInitMapRequestJpegOnly() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"),
-                        KVP_CAPA_RESOURCENAME);
+                createServer(new URL("http://localhost:8080/geoserver/gwc/service/wmts"), KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states_jpeg");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
         URL url = responses.iterator().next().getUrl();
         assertThat(
-                "Expect format=image/jpeg in the request url",
-                url.toString(),
-                containsString("format=image%2Fjpeg"));
+                "Expect format=image/jpeg in the request url", url.toString(), containsString("format=image%2Fjpeg"));
     }
 
     @Test
@@ -127,60 +116,50 @@ public class WMTSCoverageReaderTest {
 
         // Mock HTTPClient
         final File kvpCapaFile = getResourceFile(KVP_CAPA_RESOURCENAME);
-        HTTPResponse getCapabilitiesResponse =
-                new MockHttpResponse(kvpCapaFile, "application/xml; UTF-8");
+        HTTPResponse getCapabilitiesResponse = new MockHttpResponse(kvpCapaFile, "application/xml; UTF-8");
 
         final File worldFile = getResourceFile("test-data/world.png");
         HTTPResponse getTileResponse = new MockHttpResponse(worldFile, "application/xml; UTF-8");
 
         final Map<String, String> getTileHeadersCalled = new HashMap<>();
 
-        HTTPClient owsHttpClient =
-                new AbstractHttpClient() {
+        HTTPClient owsHttpClient = new AbstractHttpClient() {
 
-                    @Override
-                    public HTTPResponse get(URL url) throws IOException {
-                        throw new NotImplementedException(
-                                "For this test. GET with headers should be called.\n"
-                                        + url.toExternalForm());
-                    }
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                throw new NotImplementedException(
+                        "For this test. GET with headers should be called.\n" + url.toExternalForm());
+            }
 
-                    @Override
-                    public HTTPResponse get(URL url, Map<String, String> headers) {
-                        getTileHeadersCalled.clear();
-                        getTileHeadersCalled.putAll(headers);
-                        if (url.toString().toLowerCase().contains("request=getcapabilities")) {
-                            return getCapabilitiesResponse;
-                        } else if (url.toString().toLowerCase().contains("request=gettile")) {
-                            return getTileResponse;
-                        } else {
-                            throw new NotImplementedException(
-                                    "request is not implemented. " + url.toString());
-                        }
-                    }
+            @Override
+            public HTTPResponse get(URL url, Map<String, String> headers) {
+                getTileHeadersCalled.clear();
+                getTileHeadersCalled.putAll(headers);
+                if (url.toString().toLowerCase().contains("request=getcapabilities")) {
+                    return getCapabilitiesResponse;
+                } else if (url.toString().toLowerCase().contains("request=gettile")) {
+                    return getTileResponse;
+                } else {
+                    throw new NotImplementedException("request is not implemented. " + url.toString());
+                }
+            }
 
-                    @Override
-                    public HTTPResponse post(
-                            URL url, InputStream postContent, String postContentType)
-                            throws IOException {
-                        throw new UnsupportedOperationException("POST shouldn't be called.");
-                    }
-                };
+            @Override
+            public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
+                throw new UnsupportedOperationException("POST shouldn't be called.");
+            }
+        };
         owsHttpClient.setUser("username");
         owsHttpClient.setPassword("userpassword");
 
         WebMapTileServer server =
-                new WebMapTileServer(
-                        wmtsUrl, owsHttpClient, Collections.singletonMap("header1", "value1"));
+                new WebMapTileServer(wmtsUrl, owsHttpClient, Collections.singletonMap("header1", "value1"));
         assertNotNull(server.getCapabilities());
-        assertTrue(
-                "Expected header1 in the GetCapabilities request",
-                getTileHeadersCalled.containsKey("header1"));
+        assertTrue("Expected header1 in the GetCapabilities request", getTileHeadersCalled.containsKey("header1"));
 
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
         Tile firstTile = responses.iterator().next();
@@ -189,42 +168,31 @@ public class WMTSCoverageReaderTest {
 
         // check headers defined at WebMapTileServer are sent with GetTileRequest
         assertNotNull(getTileHeadersCalled);
-        assertTrue(
-                "Expected header1 in the GetTile request",
-                getTileHeadersCalled.containsKey("header1"));
+        assertTrue("Expected header1 in the GetTile request", getTileHeadersCalled.containsKey("header1"));
     }
 
     @Test
     public void testGEOT6754() throws Exception {
-        HTTPClient httpClientMock =
-                new MockHttpClient() {
-                    @Override
-                    public HTTPResponse get(URL url, Map<String, String> headers)
-                            throws IOException {
-                        if (url.toString().toLowerCase().contains("request=gettile")) {
-                            final File worldFile =
-                                    WMTSCoverageReaderTest.this.getResourceFile(
-                                            "test-data/world.png");
-                            return new MockHttpResponse(worldFile, "application/xml; UTF-8");
-                        } else {
-                            throw new NotImplementedException(
-                                    "request is not implemented. " + url.toString());
-                        }
-                    }
-                };
+        HTTPClient httpClientMock = new MockHttpClient() {
+            @Override
+            public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+                if (url.toString().toLowerCase().contains("request=gettile")) {
+                    final File worldFile = WMTSCoverageReaderTest.this.getResourceFile("test-data/world.png");
+                    return new MockHttpResponse(worldFile, "application/xml; UTF-8");
+                } else {
+                    throw new NotImplementedException("request is not implemented. " + url.toString());
+                }
+            }
+        };
         File fileCapabilities = getResourceFile("test-data/topp_states.getcapa.xml");
         WMTSCapabilities capabilities = createCapabilities(fileCapabilities);
-        WebMapTileServer server =
-                new WebMapTileServer(
-                        new URL("http://fake.fake/fake"), httpClientMock, capabilities);
+        WebMapTileServer server = new WebMapTileServer(new URL("http://fake.fake/fake"), httpClientMock, capabilities);
 
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader coverageReader = new WMTSCoverageReader(server, layer);
 
-        ReferencedEnvelope requestedEnvelope =
-                new ReferencedEnvelope(-100, -98, 41, 43, CRS.decode("EPSG:4326", true));
-        GridGeometry2D gridGeometry =
-                new GridGeometry2D(new GridEnvelope2D(0, 0, 1018, 632), requestedEnvelope);
+        ReferencedEnvelope requestedEnvelope = new ReferencedEnvelope(-100, -98, 41, 43, CRS.decode("EPSG:4326", true));
+        GridGeometry2D gridGeometry = new GridGeometry2D(new GridEnvelope2D(0, 0, 1018, 632), requestedEnvelope);
 
         final Parameter<Interpolation> paramInterpolation =
                 (Parameter<Interpolation>) AbstractGridFormat.INTERPOLATION.createValue();
@@ -239,9 +207,7 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testRESTInitMapRequestWithJpegTemplatesOnly() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("https://maps.wien.gv.at/basemap"),
-                        "test-data/GetCapaJPEGOnly.xml");
+                createServer(new URL("https://maps.wien.gv.at/basemap"), "test-data/GetCapaJPEGOnly.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
@@ -259,15 +225,12 @@ public class WMTSCoverageReaderTest {
     @Test
     public void testDoubleEncoding() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("https://geoportal.asig.gov.al/service/wmts"),
-                        "test-data/albania.xml");
+                createServer(new URL("https://geoportal.asig.gov.al/service/wmts"), "test-data/albania.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("orthophoto_2007:OrthoImagery");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
 
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(
-                        18.773065, 21.179343, 39.538499, 42.758209, DefaultGeographicCRS.WGS84);
+                new ReferencedEnvelope(18.773065, 21.179343, 39.538499, 42.758209, DefaultGeographicCRS.WGS84);
         int width = 400;
         int height = 200;
         TileRequest request = wcr.initTileRequest(bbox, width, height, null);
@@ -282,8 +245,7 @@ public class WMTSCoverageReaderTest {
         }
     }
 
-    protected Set<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
-            throws Exception {
+    protected Set<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox) throws Exception {
 
         int width = 400;
         int height = 200;

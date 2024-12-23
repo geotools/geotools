@@ -44,16 +44,13 @@ public class AbstractPyramidTest {
     }
 
     protected void cleanFiles(File mosaicFolder) {
-        FileFilter filter =
-                or(
-                        suffixFileFilter("db"),
-                        suffixFileFilter("sample_image"),
-                        and(
-                                suffixFileFilter(".properties"),
-                                notFileFilter(
-                                        or(
-                                                nameFileFilter("indexer.properties"),
-                                                nameFileFilter("datastore.properties")))));
+        FileFilter filter = or(
+                suffixFileFilter("db"),
+                suffixFileFilter("sample_image"),
+                and(
+                        suffixFileFilter(".properties"),
+                        notFileFilter(
+                                or(nameFileFilter("indexer.properties"), nameFileFilter("datastore.properties")))));
         for (File configFile : mosaicFolder.listFiles(filter)) {
             configFile.delete();
         }

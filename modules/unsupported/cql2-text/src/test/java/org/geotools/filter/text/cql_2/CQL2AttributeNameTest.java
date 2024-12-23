@@ -26,10 +26,9 @@ import org.geotools.filter.text.cql2.CQLException;
  *
  * <ul>
  *   <li>ECQL allowed the column already
- *   <li>The period is hopefully not going be a problem, as long as it's encoded back as a dot and
- *       not a /.
- *   <li>Interpretation of the period as a separator might be problematic though, CQL2 has no notion
- *       of nesting AFAIK (research is needed to confirm/deny).
+ *   <li>The period is hopefully not going be a problem, as long as it's encoded back as a dot and not a /.
+ *   <li>Interpretation of the period as a separator might be problematic though, CQL2 has no notion of nesting AFAIK
+ *       (research is needed to confirm/deny).
  * </ul>
  */
 public class CQL2AttributeNameTest extends CQLAttributeNameTest {

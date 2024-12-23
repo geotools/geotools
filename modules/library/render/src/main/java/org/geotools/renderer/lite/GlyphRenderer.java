@@ -27,9 +27,6 @@ public interface GlyphRenderer {
     public boolean canRender(String format);
 
     public List getFormats();
-    /**
-     * @param height use <=0 if you dont want any scaling done. THIS MIGHT BE IGNORED by the
-     *     renderer!
-     */
+    /** @param height use <=0 if you dont want any scaling done. THIS MIGHT BE IGNORED by the renderer! */
     public BufferedImage render(Graphic graphic, ExternalGraphic eg, Object feature, int height);
 }

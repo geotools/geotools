@@ -135,8 +135,7 @@ public final class Geobuf {
          */
         org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getFeatureCollection();
         /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
-        org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder
-                getFeatureCollectionOrBuilder();
+        org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder getFeatureCollectionOrBuilder();
 
         /**
          * <code>.org.geotools.data.geobuf.Data.Feature feature = 5;</code>
@@ -199,8 +198,7 @@ public final class Geobuf {
         }
 
         private Data(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             this();
             if (extensionRegistry == null) {
@@ -217,115 +215,81 @@ public final class Geobuf {
                         case 0:
                             done = true;
                             break;
-                        case 10:
-                            {
-                                com.google.protobuf.ByteString bs = input.readBytes();
-                                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                                    keys_ = new com.google.protobuf.LazyStringArrayList();
-                                    mutable_bitField0_ |= 0x00000001;
-                                }
-                                keys_.add(bs);
-                                break;
+                        case 10: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                                keys_ = new com.google.protobuf.LazyStringArrayList();
+                                mutable_bitField0_ |= 0x00000001;
                             }
-                        case 16:
-                            {
-                                bitField0_ |= 0x00000001;
-                                dimensions_ = input.readUInt32();
-                                break;
+                            keys_.add(bs);
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000001;
+                            dimensions_ = input.readUInt32();
+                            break;
+                        }
+                        case 24: {
+                            bitField0_ |= 0x00000002;
+                            precision_ = input.readUInt32();
+                            break;
+                        }
+                        case 34: {
+                            org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder subBuilder = null;
+                            if (dataTypeCase_ == 4) {
+                                subBuilder = ((org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_)
+                                        .toBuilder();
                             }
-                        case 24:
-                            {
-                                bitField0_ |= 0x00000002;
-                                precision_ = input.readUInt32();
-                                break;
+                            dataType_ = input.readMessage(
+                                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(
+                                        (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_);
+                                dataType_ = subBuilder.buildPartial();
                             }
-                        case 34:
-                            {
-                                org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder
-                                        subBuilder = null;
-                                if (dataTypeCase_ == 4) {
-                                    subBuilder =
-                                            ((org.geotools.data.geobuf.Geobuf.Data
-                                                                    .FeatureCollection)
-                                                            dataType_)
-                                                    .toBuilder();
-                                }
-                                dataType_ =
-                                        input.readMessage(
-                                                org.geotools.data.geobuf.Geobuf.Data
-                                                        .FeatureCollection.PARSER,
-                                                extensionRegistry);
-                                if (subBuilder != null) {
-                                    subBuilder.mergeFrom(
-                                            (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection)
-                                                    dataType_);
-                                    dataType_ = subBuilder.buildPartial();
-                                }
-                                dataTypeCase_ = 4;
-                                break;
+                            dataTypeCase_ = 4;
+                            break;
+                        }
+                        case 42: {
+                            org.geotools.data.geobuf.Geobuf.Data.Feature.Builder subBuilder = null;
+                            if (dataTypeCase_ == 5) {
+                                subBuilder = ((org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_).toBuilder();
                             }
-                        case 42:
-                            {
-                                org.geotools.data.geobuf.Geobuf.Data.Feature.Builder subBuilder =
-                                        null;
-                                if (dataTypeCase_ == 5) {
-                                    subBuilder =
-                                            ((org.geotools.data.geobuf.Geobuf.Data.Feature)
-                                                            dataType_)
-                                                    .toBuilder();
-                                }
-                                dataType_ =
-                                        input.readMessage(
-                                                org.geotools.data.geobuf.Geobuf.Data.Feature.PARSER,
-                                                extensionRegistry);
-                                if (subBuilder != null) {
-                                    subBuilder.mergeFrom(
-                                            (org.geotools.data.geobuf.Geobuf.Data.Feature)
-                                                    dataType_);
-                                    dataType_ = subBuilder.buildPartial();
-                                }
-                                dataTypeCase_ = 5;
-                                break;
+                            dataType_ = input.readMessage(
+                                    org.geotools.data.geobuf.Geobuf.Data.Feature.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom((org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_);
+                                dataType_ = subBuilder.buildPartial();
                             }
-                        case 50:
-                            {
-                                org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder subBuilder =
-                                        null;
-                                if (dataTypeCase_ == 6) {
-                                    subBuilder =
-                                            ((org.geotools.data.geobuf.Geobuf.Data.Geometry)
-                                                            dataType_)
-                                                    .toBuilder();
-                                }
-                                dataType_ =
-                                        input.readMessage(
-                                                org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                                        .PARSER,
-                                                extensionRegistry);
-                                if (subBuilder != null) {
-                                    subBuilder.mergeFrom(
-                                            (org.geotools.data.geobuf.Geobuf.Data.Geometry)
-                                                    dataType_);
-                                    dataType_ = subBuilder.buildPartial();
-                                }
-                                dataTypeCase_ = 6;
-                                break;
+                            dataTypeCase_ = 5;
+                            break;
+                        }
+                        case 50: {
+                            org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder subBuilder = null;
+                            if (dataTypeCase_ == 6) {
+                                subBuilder = ((org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_).toBuilder();
                             }
-                        default:
-                            {
-                                if (!parseUnknownField(
-                                        input, unknownFields, extensionRegistry, tag)) {
-                                    done = true;
-                                }
-                                break;
+                            dataType_ = input.readMessage(
+                                    org.geotools.data.geobuf.Geobuf.Data.Geometry.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom((org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_);
+                                dataType_ = subBuilder.buildPartial();
                             }
+                            dataTypeCase_ = 6;
+                            break;
+                        }
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                 throw e.setUnfinishedMessage(this);
             } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(e)
-                        .setUnfinishedMessage(this);
+                throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
             } finally {
                 if (((mutable_bitField0_ & 0x00000001) != 0)) {
                     keys_ = keys_.getUnmodifiableView();
@@ -336,15 +300,12 @@ public final class Geobuf {
         }
 
         public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return org.geotools.data.geobuf.Geobuf
-                    .internal_static_org_geotools_data_geobuf_Data_descriptor;
+            return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_descriptor;
         }
 
         @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                internalGetFieldAccessorTable() {
-            return org.geotools.data.geobuf.Geobuf
-                    .internal_static_org_geotools_data_geobuf_Data_fieldAccessorTable
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_fieldAccessorTable
                     .ensureFieldAccessorsInitialized(
                             org.geotools.data.geobuf.Geobuf.Data.class,
                             org.geotools.data.geobuf.Geobuf.Data.Builder.class);
@@ -441,8 +402,7 @@ public final class Geobuf {
              *
              * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
              */
-            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
-                    getValuesOrBuilderList();
+            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder> getValuesOrBuilderList();
             /**
              *
              *
@@ -579,117 +539,94 @@ public final class Geobuf {
                             case 0:
                                 done = true;
                                 break;
-                            case 10:
-                                {
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder
-                                            subBuilder = null;
-                                    if (((bitField0_ & 0x00000001) != 0)) {
-                                        subBuilder = geometry_.toBuilder();
-                                    }
-                                    geometry_ =
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                                            .PARSER,
-                                                    extensionRegistry);
-                                    if (subBuilder != null) {
-                                        subBuilder.mergeFrom(geometry_);
-                                        geometry_ = subBuilder.buildPartial();
-                                    }
-                                    bitField0_ |= 0x00000001;
-                                    break;
+                            case 10: {
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder subBuilder = null;
+                                if (((bitField0_ & 0x00000001) != 0)) {
+                                    subBuilder = geometry_.toBuilder();
                                 }
-                            case 90:
-                                {
-                                    com.google.protobuf.ByteString bs = input.readBytes();
-                                    idTypeCase_ = 11;
-                                    idType_ = bs;
-                                    break;
+                                geometry_ = input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Geometry.PARSER, extensionRegistry);
+                                if (subBuilder != null) {
+                                    subBuilder.mergeFrom(geometry_);
+                                    geometry_ = subBuilder.buildPartial();
                                 }
-                            case 96:
-                                {
-                                    idTypeCase_ = 12;
-                                    idType_ = input.readSInt64();
-                                    break;
+                                bitField0_ |= 0x00000001;
+                                break;
+                            }
+                            case 90: {
+                                com.google.protobuf.ByteString bs = input.readBytes();
+                                idTypeCase_ = 11;
+                                idType_ = bs;
+                                break;
+                            }
+                            case 96: {
+                                idTypeCase_ = 12;
+                                idType_ = input.readSInt64();
+                                break;
+                            }
+                            case 106: {
+                                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                                    values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>();
+                                    mutable_bitField0_ |= 0x00000008;
                                 }
-                            case 106:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-                                        values_ =
-                                                new java.util.ArrayList<
-                                                        org.geotools.data.geobuf.Geobuf.Data
-                                                                .Value>();
-                                        mutable_bitField0_ |= 0x00000008;
-                                    }
-                                    values_.add(
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                                            .PARSER,
-                                                    extensionRegistry));
-                                    break;
+                                values_.add(input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Value.PARSER, extensionRegistry));
+                                break;
+                            }
+                            case 112: {
+                                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                                    properties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000010;
                                 }
-                            case 112:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-                                        properties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000010;
-                                    }
+                                properties_.addInt(input.readUInt32());
+                                break;
+                            }
+                            case 114: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000010) != 0) && input.getBytesUntilLimit() > 0) {
+                                    properties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000010;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     properties_.addInt(input.readUInt32());
-                                    break;
                                 }
-                            case 114:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000010) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        properties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000010;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        properties_.addInt(input.readUInt32());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            case 120: {
+                                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000020;
                                 }
-                            case 120:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000020;
-                                    }
+                                customProperties_.addInt(input.readUInt32());
+                                break;
+                            }
+                            case 122: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000020) != 0) && input.getBytesUntilLimit() > 0) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000020;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     customProperties_.addInt(input.readUInt32());
-                                    break;
                                 }
-                            case 122:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000020) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000020;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        customProperties_.addInt(input.readUInt32());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            default: {
+                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                    done = true;
                                 }
-                            default:
-                                {
-                                    if (!parseUnknownField(
-                                            input, unknownFields, extensionRegistry, tag)) {
-                                        done = true;
-                                    }
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
                 } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                     throw e.setUnfinishedMessage(this);
                 } catch (java.io.IOException e) {
-                    throw new com.google.protobuf.InvalidProtocolBufferException(e)
-                            .setUnfinishedMessage(this);
+                    throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
                 } finally {
                     if (((mutable_bitField0_ & 0x00000008) != 0)) {
                         values_ = java.util.Collections.unmodifiableList(values_);
@@ -706,13 +643,11 @@ public final class Geobuf {
             }
 
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return org.geotools.data.geobuf.Geobuf
-                        .internal_static_org_geotools_data_geobuf_Data_Feature_descriptor;
+                return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_Feature_descriptor;
             }
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                    internalGetFieldAccessorTable() {
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                 return org.geotools.data.geobuf.Geobuf
                         .internal_static_org_geotools_data_geobuf_Data_Feature_fieldAccessorTable
                         .ensureFieldAccessorsInitialized(
@@ -938,8 +873,7 @@ public final class Geobuf {
              * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
              */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                    int index) {
+            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                 return values_.get(index);
             }
 
@@ -1062,8 +996,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public void writeTo(com.google.protobuf.CodedOutputStream output)
-                    throws java.io.IOException {
+            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
                 getSerializedSize();
                 if (((bitField0_ & 0x00000001) != 0)) {
                     output.writeMessage(1, getGeometry());
@@ -1101,52 +1034,40 @@ public final class Geobuf {
 
                 size = 0;
                 if (((bitField0_ & 0x00000001) != 0)) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    1, getGeometry());
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getGeometry());
                 }
                 if (idTypeCase_ == 11) {
                     size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, idType_);
                 }
                 if (idTypeCase_ == 12) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeSInt64Size(
-                                    12, (long) ((java.lang.Long) idType_));
+                    size += com.google.protobuf.CodedOutputStream.computeSInt64Size(
+                            12, (long) ((java.lang.Long) idType_));
                 }
                 for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, values_.get(i));
                 }
                 {
                     int dataSize = 0;
                     for (int i = 0; i < properties_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
-                                        properties_.getInt(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(properties_.getInt(i));
                     }
                     size += dataSize;
                     if (!getPropertiesList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     propertiesMemoizedSerializedSize = dataSize;
                 }
                 {
                     int dataSize = 0;
                     for (int i = 0; i < customProperties_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
-                                        customProperties_.getInt(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
+                                customProperties_.getInt(i));
                     }
                     size += dataSize;
                     if (!getCustomPropertiesList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     customPropertiesMemoizedSerializedSize = dataSize;
                 }
@@ -1163,8 +1084,7 @@ public final class Geobuf {
                 if (!(obj instanceof org.geotools.data.geobuf.Geobuf.Data.Feature)) {
                     return super.equals(obj);
                 }
-                org.geotools.data.geobuf.Geobuf.Data.Feature other =
-                        (org.geotools.data.geobuf.Geobuf.Data.Feature) obj;
+                org.geotools.data.geobuf.Geobuf.Data.Feature other = (org.geotools.data.geobuf.Geobuf.Data.Feature) obj;
 
                 if (hasGeometry() != other.hasGeometry()) return false;
                 if (hasGeometry()) {
@@ -1172,8 +1092,7 @@ public final class Geobuf {
                 }
                 if (!getValuesList().equals(other.getValuesList())) return false;
                 if (!getPropertiesList().equals(other.getPropertiesList())) return false;
-                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList()))
-                    return false;
+                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList())) return false;
                 if (!getIdTypeCase().equals(other.getIdTypeCase())) return false;
                 switch (idTypeCase_) {
                     case 11:
@@ -1229,28 +1148,24 @@ public final class Geobuf {
                 return hash;
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    java.nio.ByteBuffer data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(java.nio.ByteBuffer data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    java.nio.ByteBuffer data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    com.google.protobuf.ByteString data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(com.google.protobuf.ByteString data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    com.google.protobuf.ByteString data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
@@ -1266,28 +1181,24 @@ public final class Geobuf {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    java.io.InputStream input) throws java.io.IOException {
+            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(java.io.InputStream input)
+                    throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Feature parseFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseDelimitedFrom(java.io.InputStream input)
+                    throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Feature parseDelimitedFrom(
-                    java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
-                        PARSER, input);
-            }
-
-            public static org.geotools.data.geobuf.Geobuf.Data.Feature parseDelimitedFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
                         PARSER, input, extensionRegistry);
@@ -1302,8 +1213,7 @@ public final class Geobuf {
                     com.google.protobuf.CodedInputStream input,
                     com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
             }
 
             @java.lang.Override
@@ -1315,8 +1225,7 @@ public final class Geobuf {
                 return DEFAULT_INSTANCE.toBuilder();
             }
 
-            public static Builder newBuilder(
-                    org.geotools.data.geobuf.Geobuf.Data.Feature prototype) {
+            public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.Feature prototype) {
                 return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
             }
 
@@ -1326,14 +1235,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected Builder newBuilderForType(
-                    com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
                 Builder builder = new Builder(parent);
                 return builder;
             }
             /** Protobuf type {@code org.geotools.data.geobuf.Data.Feature} */
-            public static final class Builder
-                    extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+            public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
                     implements
                     // @@protoc_insertion_point(builder_implements:org.geotools.data.geobuf.Data.Feature)
                     org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder {
@@ -1343,8 +1250,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                        internalGetFieldAccessorTable() {
+                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                     return org.geotools.data.geobuf.Geobuf
                             .internal_static_org_geotools_data_geobuf_Data_Feature_fieldAccessorTable
                             .ensureFieldAccessorsInitialized(
@@ -1464,9 +1370,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public Builder setField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.setField(field, value);
                 }
 
@@ -1482,16 +1386,13 @@ public final class Geobuf {
 
                 @java.lang.Override
                 public Builder setRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        int index,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
                     return super.setRepeatedField(field, index, value);
                 }
 
                 @java.lang.Override
                 public Builder addRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.addRepeatedField(field, value);
                 }
 
@@ -1506,8 +1407,7 @@ public final class Geobuf {
                 }
 
                 public Builder mergeFrom(org.geotools.data.geobuf.Geobuf.Data.Feature other) {
-                    if (other == org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance())
-                        return this;
+                    if (other == org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance()) return this;
                     if (other.hasGeometry()) {
                         mergeGeometry(other.getGeometry());
                     }
@@ -1529,11 +1429,9 @@ public final class Geobuf {
                                 valuesBuilder_ = null;
                                 values_ = other.values_;
                                 bitField0_ = (bitField0_ & ~0x00000008);
-                                valuesBuilder_ =
-                                        com.google.protobuf.GeneratedMessageV3
-                                                        .alwaysUseFieldBuilders
-                                                ? getValuesFieldBuilder()
-                                                : null;
+                                valuesBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders
+                                        ? getValuesFieldBuilder()
+                                        : null;
                             } else {
                                 valuesBuilder_.addAllMessages(other.values_);
                             }
@@ -1560,22 +1458,19 @@ public final class Geobuf {
                         onChanged();
                     }
                     switch (other.getIdTypeCase()) {
-                        case ID:
-                            {
-                                idTypeCase_ = 11;
-                                idType_ = other.idType_;
-                                onChanged();
-                                break;
-                            }
-                        case INT_ID:
-                            {
-                                setIntId(other.getIntId());
-                                break;
-                            }
-                        case IDTYPE_NOT_SET:
-                            {
-                                break;
-                            }
+                        case ID: {
+                            idTypeCase_ = 11;
+                            idType_ = other.idType_;
+                            onChanged();
+                            break;
+                        }
+                        case INT_ID: {
+                            setIntId(other.getIntId());
+                            break;
+                        }
+                        case IDTYPE_NOT_SET: {
+                            break;
+                        }
                     }
                     this.mergeUnknownFields(other.unknownFields);
                     onChanged();
@@ -1602,9 +1497,7 @@ public final class Geobuf {
                     try {
                         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
                     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                        parsedMessage =
-                                (org.geotools.data.geobuf.Geobuf.Data.Feature)
-                                        e.getUnfinishedMessage();
+                        parsedMessage = (org.geotools.data.geobuf.Geobuf.Data.Feature) e.getUnfinishedMessage();
                         throw e.unwrapIOException();
                     } finally {
                         if (parsedMessage != null) {
@@ -1673,8 +1566,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
-                public Builder setGeometry(
-                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
+                public Builder setGeometry(org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
                     if (geometryBuilder_ == null) {
                         geometry_ = builderForValue.build();
                         onChanged();
@@ -1689,14 +1581,10 @@ public final class Geobuf {
                     if (geometryBuilder_ == null) {
                         if (((bitField0_ & 0x00000001) != 0)
                                 && geometry_ != null
-                                && geometry_
-                                        != org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                                .getDefaultInstance()) {
-                            geometry_ =
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry.newBuilder(
-                                                    geometry_)
-                                            .mergeFrom(value)
-                                            .buildPartial();
+                                && geometry_ != org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance()) {
+                            geometry_ = org.geotools.data.geobuf.Geobuf.Data.Geometry.newBuilder(geometry_)
+                                    .mergeFrom(value)
+                                    .buildPartial();
                         } else {
                             geometry_ = value;
                         }
@@ -1725,8 +1613,7 @@ public final class Geobuf {
                     return getGeometryFieldBuilder().getBuilder();
                 }
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder
-                        getGeometryOrBuilder() {
+                public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometryOrBuilder() {
                     if (geometryBuilder_ != null) {
                         return geometryBuilder_.getMessageOrBuilder();
                     } else {
@@ -1742,12 +1629,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>
                         getGeometryFieldBuilder() {
                     if (geometryBuilder_ == null) {
-                        geometryBuilder_ =
-                                new com.google.protobuf.SingleFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Geometry,
-                                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
-                                        getGeometry(), getParentForChildren(), isClean());
+                        geometryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry,
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
+                                getGeometry(), getParentForChildren(), isClean());
                         geometry_ = null;
                     }
                     return geometryBuilder_;
@@ -1902,9 +1788,7 @@ public final class Geobuf {
 
                 private void ensureValuesIsMutable() {
                     if (!((bitField0_ & 0x00000008) != 0)) {
-                        values_ =
-                                new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(
-                                        values_);
+                        values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(values_);
                         bitField0_ |= 0x00000008;
                     }
                 }
@@ -1972,8 +1856,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public Builder setValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder setValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -1996,8 +1879,7 @@ public final class Geobuf {
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
                 public Builder setValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.set(index, builderForValue.build());
@@ -2038,8 +1920,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public Builder addValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder addValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -2061,8 +1942,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public Builder addValues(
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                public Builder addValues(org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(builderForValue.build());
@@ -2082,8 +1962,7 @@ public final class Geobuf {
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
                 public Builder addValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(index, builderForValue.build());
@@ -2103,8 +1982,7 @@ public final class Geobuf {
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
                 public Builder addAllValues(
-                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value>
-                                values) {
+                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value> values) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         com.google.protobuf.AbstractMessageLite.Builder.addAll(values, values_);
@@ -2161,8 +2039,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(int index) {
                     return getValuesFieldBuilder().getBuilder(index);
                 }
                 /**
@@ -2174,8 +2051,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                     if (valuesBuilder_ == null) {
                         return values_.get(index);
                     } else {
@@ -2210,9 +2086,7 @@ public final class Geobuf {
                  */
                 public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder() {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /**
                  *
@@ -2223,13 +2097,9 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(int index) {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    index,
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(index, org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /**
                  *
@@ -2240,8 +2110,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder>
-                        getValuesBuilderList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder> getValuesBuilderList() {
                     return getValuesFieldBuilder().getBuilderList();
                 }
 
@@ -2251,15 +2120,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
                         getValuesFieldBuilder() {
                     if (valuesBuilder_ == null) {
-                        valuesBuilder_ =
-                                new com.google.protobuf.RepeatedFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Value,
-                                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
-                                        values_,
-                                        ((bitField0_ & 0x00000008) != 0),
-                                        getParentForChildren(),
-                                        isClean());
+                        valuesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Value,
+                                org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
+                                values_, ((bitField0_ & 0x00000008) != 0), getParentForChildren(), isClean());
                         values_ = null;
                     }
                     return valuesBuilder_;
@@ -2367,8 +2232,7 @@ public final class Geobuf {
                  * @param values The properties to add.
                  * @return This builder for chaining.
                  */
-                public Builder addAllProperties(
-                        java.lang.Iterable<? extends java.lang.Integer> values) {
+                public Builder addAllProperties(java.lang.Iterable<? extends java.lang.Integer> values) {
                     ensurePropertiesIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, properties_);
                     onChanged();
@@ -2494,11 +2358,9 @@ public final class Geobuf {
                  * @param values The customProperties to add.
                  * @return This builder for chaining.
                  */
-                public Builder addAllCustomProperties(
-                        java.lang.Iterable<? extends java.lang.Integer> values) {
+                public Builder addAllCustomProperties(java.lang.Iterable<? extends java.lang.Integer> values) {
                     ensureCustomPropertiesIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(
-                            values, customProperties_);
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, customProperties_);
                     onChanged();
                     return this;
                 }
@@ -2521,14 +2383,12 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public final Builder setUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.setUnknownFields(unknownFields);
                 }
 
                 @java.lang.Override
-                public final Builder mergeUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.mergeUnknownFields(unknownFields);
                 }
 
@@ -2677,8 +2537,7 @@ public final class Geobuf {
             java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>
                     getGeometriesOrBuilderList();
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-            org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometriesOrBuilder(
-                    int index);
+            org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometriesOrBuilder(int index);
 
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList();
@@ -2687,8 +2546,7 @@ public final class Geobuf {
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             int getValuesCount();
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
-                    getValuesOrBuilderList();
+            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder> getValuesOrBuilderList();
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index);
 
@@ -2762,140 +2620,113 @@ public final class Geobuf {
                             case 0:
                                 done = true;
                                 break;
-                            case 8:
-                                {
-                                    int rawValue = input.readEnum();
-                                    @SuppressWarnings("deprecation")
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry.Type value =
-                                            org.geotools.data.geobuf.Geobuf.Data.Geometry.Type
-                                                    .valueOf(rawValue);
-                                    if (value == null) {
-                                        unknownFields.mergeVarintField(1, rawValue);
-                                    } else {
-                                        bitField0_ |= 0x00000001;
-                                        type_ = rawValue;
-                                    }
-                                    break;
+                            case 8: {
+                                int rawValue = input.readEnum();
+                                @SuppressWarnings("deprecation")
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry.Type value =
+                                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.valueOf(rawValue);
+                                if (value == null) {
+                                    unknownFields.mergeVarintField(1, rawValue);
+                                } else {
+                                    bitField0_ |= 0x00000001;
+                                    type_ = rawValue;
                                 }
-                            case 16:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                                        lengths_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000002;
-                                    }
+                                break;
+                            }
+                            case 16: {
+                                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                                    lengths_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000002;
+                                }
+                                lengths_.addInt(input.readUInt32());
+                                break;
+                            }
+                            case 18: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000002) != 0) && input.getBytesUntilLimit() > 0) {
+                                    lengths_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000002;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     lengths_.addInt(input.readUInt32());
-                                    break;
                                 }
-                            case 18:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000002) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        lengths_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000002;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        lengths_.addInt(input.readUInt32());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            case 24: {
+                                if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                                    coords_ = newLongList();
+                                    mutable_bitField0_ |= 0x00000004;
                                 }
-                            case 24:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                                        coords_ = newLongList();
-                                        mutable_bitField0_ |= 0x00000004;
-                                    }
+                                coords_.addLong(input.readSInt64());
+                                break;
+                            }
+                            case 26: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000004) != 0) && input.getBytesUntilLimit() > 0) {
+                                    coords_ = newLongList();
+                                    mutable_bitField0_ |= 0x00000004;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     coords_.addLong(input.readSInt64());
-                                    break;
                                 }
-                            case 26:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000004) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        coords_ = newLongList();
-                                        mutable_bitField0_ |= 0x00000004;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        coords_.addLong(input.readSInt64());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            case 34: {
+                                if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                                    geometries_ =
+                                            new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Geometry>();
+                                    mutable_bitField0_ |= 0x00000008;
                                 }
-                            case 34:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-                                        geometries_ =
-                                                new java.util.ArrayList<
-                                                        org.geotools.data.geobuf.Geobuf.Data
-                                                                .Geometry>();
-                                        mutable_bitField0_ |= 0x00000008;
-                                    }
-                                    geometries_.add(
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                                            .PARSER,
-                                                    extensionRegistry));
-                                    break;
+                                geometries_.add(input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Geometry.PARSER, extensionRegistry));
+                                break;
+                            }
+                            case 106: {
+                                if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                                    values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>();
+                                    mutable_bitField0_ |= 0x00000010;
                                 }
-                            case 106:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-                                        values_ =
-                                                new java.util.ArrayList<
-                                                        org.geotools.data.geobuf.Geobuf.Data
-                                                                .Value>();
-                                        mutable_bitField0_ |= 0x00000010;
-                                    }
-                                    values_.add(
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                                            .PARSER,
-                                                    extensionRegistry));
-                                    break;
+                                values_.add(input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Value.PARSER, extensionRegistry));
+                                break;
+                            }
+                            case 120: {
+                                if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000020;
                                 }
-                            case 120:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000020;
-                                    }
+                                customProperties_.addInt(input.readUInt32());
+                                break;
+                            }
+                            case 122: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000020) != 0) && input.getBytesUntilLimit() > 0) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000020;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     customProperties_.addInt(input.readUInt32());
-                                    break;
                                 }
-                            case 122:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000020) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000020;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        customProperties_.addInt(input.readUInt32());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            default: {
+                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                    done = true;
                                 }
-                            default:
-                                {
-                                    if (!parseUnknownField(
-                                            input, unknownFields, extensionRegistry, tag)) {
-                                        done = true;
-                                    }
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
                 } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                     throw e.setUnfinishedMessage(this);
                 } catch (java.io.IOException e) {
-                    throw new com.google.protobuf.InvalidProtocolBufferException(e)
-                            .setUnfinishedMessage(this);
+                    throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
                 } finally {
                     if (((mutable_bitField0_ & 0x00000002) != 0)) {
                         lengths_.makeImmutable(); // C
@@ -2923,8 +2754,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                    internalGetFieldAccessorTable() {
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                 return org.geotools.data.geobuf.Geobuf
                         .internal_static_org_geotools_data_geobuf_Data_Geometry_fieldAccessorTable
                         .ensureFieldAccessorsInitialized(
@@ -3008,16 +2838,14 @@ public final class Geobuf {
                     return internalValueMap;
                 }
 
-                private static final com.google.protobuf.Internal.EnumLiteMap<Type>
-                        internalValueMap =
-                                new com.google.protobuf.Internal.EnumLiteMap<Type>() {
-                                    public Type findValueByNumber(int number) {
-                                        return Type.forNumber(number);
-                                    }
-                                };
+                private static final com.google.protobuf.Internal.EnumLiteMap<Type> internalValueMap =
+                        new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+                            public Type findValueByNumber(int number) {
+                                return Type.forNumber(number);
+                            }
+                        };
 
-                public final com.google.protobuf.Descriptors.EnumValueDescriptor
-                        getValueDescriptor() {
+                public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
                     return getDescriptor().getValues().get(ordinal());
                 }
 
@@ -3033,11 +2861,9 @@ public final class Geobuf {
 
                 private static final Type[] VALUES = values();
 
-                public static Type valueOf(
-                        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+                public static Type valueOf(com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
                     if (desc.getType() != getDescriptor()) {
-                        throw new java.lang.IllegalArgumentException(
-                                "EnumValueDescriptor is not for this type.");
+                        throw new java.lang.IllegalArgumentException("EnumValueDescriptor is not for this type.");
                     }
                     return VALUES[desc.getIndex()];
                 }
@@ -3073,9 +2899,7 @@ public final class Geobuf {
                 @SuppressWarnings("deprecation")
                 org.geotools.data.geobuf.Geobuf.Data.Geometry.Type result =
                         org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.valueOf(type_);
-                return result == null
-                        ? org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.POINT
-                        : result;
+                return result == null ? org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.POINT : result;
             }
 
             public static final int LENGTHS_FIELD_NUMBER = 2;
@@ -3180,8 +3004,7 @@ public final class Geobuf {
             private java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry> geometries_;
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
             @java.lang.Override
-            public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry>
-                    getGeometriesList() {
+            public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry> getGeometriesList() {
                 return geometries_;
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
@@ -3202,8 +3025,7 @@ public final class Geobuf {
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometriesOrBuilder(
-                    int index) {
+            public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometriesOrBuilder(int index) {
                 return geometries_.get(index);
             }
 
@@ -3232,8 +3054,7 @@ public final class Geobuf {
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                    int index) {
+            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                 return values_.get(index);
             }
 
@@ -3291,8 +3112,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public void writeTo(com.google.protobuf.CodedOutputStream output)
-                    throws java.io.IOException {
+            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
                 getSerializedSize();
                 if (((bitField0_ & 0x00000001) != 0)) {
                     output.writeEnum(1, type_);
@@ -3339,58 +3159,43 @@ public final class Geobuf {
                 {
                     int dataSize = 0;
                     for (int i = 0; i < lengths_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
-                                        lengths_.getInt(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(lengths_.getInt(i));
                     }
                     size += dataSize;
                     if (!getLengthsList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     lengthsMemoizedSerializedSize = dataSize;
                 }
                 {
                     int dataSize = 0;
                     for (int i = 0; i < coords_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeSInt64SizeNoTag(
-                                        coords_.getLong(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeSInt64SizeNoTag(coords_.getLong(i));
                     }
                     size += dataSize;
                     if (!getCoordsList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     coordsMemoizedSerializedSize = dataSize;
                 }
                 for (int i = 0; i < geometries_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    4, geometries_.get(i));
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, geometries_.get(i));
                 }
                 for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, values_.get(i));
                 }
                 {
                     int dataSize = 0;
                     for (int i = 0; i < customProperties_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
-                                        customProperties_.getInt(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
+                                customProperties_.getInt(i));
                     }
                     size += dataSize;
                     if (!getCustomPropertiesList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     customPropertiesMemoizedSerializedSize = dataSize;
                 }
@@ -3418,8 +3223,7 @@ public final class Geobuf {
                 if (!getCoordsList().equals(other.getCoordsList())) return false;
                 if (!getGeometriesList().equals(other.getGeometriesList())) return false;
                 if (!getValuesList().equals(other.getValuesList())) return false;
-                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList()))
-                    return false;
+                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList())) return false;
                 if (!unknownFields.equals(other.unknownFields)) return false;
                 return true;
             }
@@ -3460,28 +3264,24 @@ public final class Geobuf {
                 return hash;
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    java.nio.ByteBuffer data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(java.nio.ByteBuffer data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    java.nio.ByteBuffer data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    com.google.protobuf.ByteString data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(com.google.protobuf.ByteString data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    com.google.protobuf.ByteString data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
@@ -3497,28 +3297,24 @@ public final class Geobuf {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    java.io.InputStream input) throws java.io.IOException {
+            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(java.io.InputStream input)
+                    throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseDelimitedFrom(java.io.InputStream input)
+                    throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseDelimitedFrom(
-                    java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
-                        PARSER, input);
-            }
-
-            public static org.geotools.data.geobuf.Geobuf.Data.Geometry parseDelimitedFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
                         PARSER, input, extensionRegistry);
@@ -3533,8 +3329,7 @@ public final class Geobuf {
                     com.google.protobuf.CodedInputStream input,
                     com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
             }
 
             @java.lang.Override
@@ -3546,8 +3341,7 @@ public final class Geobuf {
                 return DEFAULT_INSTANCE.toBuilder();
             }
 
-            public static Builder newBuilder(
-                    org.geotools.data.geobuf.Geobuf.Data.Geometry prototype) {
+            public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.Geometry prototype) {
                 return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
             }
 
@@ -3557,14 +3351,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected Builder newBuilderForType(
-                    com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
                 Builder builder = new Builder(parent);
                 return builder;
             }
             /** Protobuf type {@code org.geotools.data.geobuf.Data.Geometry} */
-            public static final class Builder
-                    extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+            public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
                     implements
                     // @@protoc_insertion_point(builder_implements:org.geotools.data.geobuf.Data.Geometry)
                     org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder {
@@ -3574,8 +3366,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                        internalGetFieldAccessorTable() {
+                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                     return org.geotools.data.geobuf.Geobuf
                             .internal_static_org_geotools_data_geobuf_Data_Geometry_fieldAccessorTable
                             .ensureFieldAccessorsInitialized(
@@ -3700,9 +3491,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public Builder setField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.setField(field, value);
                 }
 
@@ -3718,16 +3507,13 @@ public final class Geobuf {
 
                 @java.lang.Override
                 public Builder setRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        int index,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
                     return super.setRepeatedField(field, index, value);
                 }
 
                 @java.lang.Override
                 public Builder addRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.addRepeatedField(field, value);
                 }
 
@@ -3742,8 +3528,7 @@ public final class Geobuf {
                 }
 
                 public Builder mergeFrom(org.geotools.data.geobuf.Geobuf.Data.Geometry other) {
-                    if (other == org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance())
-                        return this;
+                    if (other == org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance()) return this;
                     if (other.hasType()) {
                         setType(other.getType());
                     }
@@ -3785,11 +3570,9 @@ public final class Geobuf {
                                 geometriesBuilder_ = null;
                                 geometries_ = other.geometries_;
                                 bitField0_ = (bitField0_ & ~0x00000008);
-                                geometriesBuilder_ =
-                                        com.google.protobuf.GeneratedMessageV3
-                                                        .alwaysUseFieldBuilders
-                                                ? getGeometriesFieldBuilder()
-                                                : null;
+                                geometriesBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders
+                                        ? getGeometriesFieldBuilder()
+                                        : null;
                             } else {
                                 geometriesBuilder_.addAllMessages(other.geometries_);
                             }
@@ -3813,11 +3596,9 @@ public final class Geobuf {
                                 valuesBuilder_ = null;
                                 values_ = other.values_;
                                 bitField0_ = (bitField0_ & ~0x00000010);
-                                valuesBuilder_ =
-                                        com.google.protobuf.GeneratedMessageV3
-                                                        .alwaysUseFieldBuilders
-                                                ? getValuesFieldBuilder()
-                                                : null;
+                                valuesBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders
+                                        ? getValuesFieldBuilder()
+                                        : null;
                             } else {
                                 valuesBuilder_.addAllMessages(other.values_);
                             }
@@ -3860,9 +3641,7 @@ public final class Geobuf {
                     try {
                         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
                     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                        parsedMessage =
-                                (org.geotools.data.geobuf.Geobuf.Data.Geometry)
-                                        e.getUnfinishedMessage();
+                        parsedMessage = (org.geotools.data.geobuf.Geobuf.Data.Geometry) e.getUnfinishedMessage();
                         throw e.unwrapIOException();
                     } finally {
                         if (parsedMessage != null) {
@@ -3894,9 +3673,7 @@ public final class Geobuf {
                     @SuppressWarnings("deprecation")
                     org.geotools.data.geobuf.Geobuf.Data.Geometry.Type result =
                             org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.valueOf(type_);
-                    return result == null
-                            ? org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.POINT
-                            : result;
+                    return result == null ? org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.POINT : result;
                 }
                 /**
                  * <code>required .org.geotools.data.geobuf.Data.Geometry.Type type = 1;</code>
@@ -4027,8 +3804,7 @@ public final class Geobuf {
                  * @param values The lengths to add.
                  * @return This builder for chaining.
                  */
-                public Builder addAllLengths(
-                        java.lang.Iterable<? extends java.lang.Integer> values) {
+                public Builder addAllLengths(java.lang.Iterable<? extends java.lang.Integer> values) {
                     ensureLengthsIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, lengths_);
                     onChanged();
@@ -4072,9 +3848,7 @@ public final class Geobuf {
                  * @return A list containing the coords.
                  */
                 public java.util.List<java.lang.Long> getCoordsList() {
-                    return ((bitField0_ & 0x00000004) != 0)
-                            ? java.util.Collections.unmodifiableList(coords_)
-                            : coords_;
+                    return ((bitField0_ & 0x00000004) != 0) ? java.util.Collections.unmodifiableList(coords_) : coords_;
                 }
                 /**
                  *
@@ -4184,8 +3958,7 @@ public final class Geobuf {
                 private void ensureGeometriesIsMutable() {
                     if (!((bitField0_ & 0x00000008) != 0)) {
                         geometries_ =
-                                new java.util.ArrayList<
-                                        org.geotools.data.geobuf.Geobuf.Data.Geometry>(geometries_);
+                                new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Geometry>(geometries_);
                         bitField0_ |= 0x00000008;
                     }
                 }
@@ -4197,8 +3970,7 @@ public final class Geobuf {
                         geometriesBuilder_;
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry>
-                        getGeometriesList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry> getGeometriesList() {
                     if (geometriesBuilder_ == null) {
                         return java.util.Collections.unmodifiableList(geometries_);
                     } else {
@@ -4222,8 +3994,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public Builder setGeometries(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Geometry value) {
+                public Builder setGeometries(int index, org.geotools.data.geobuf.Geobuf.Data.Geometry value) {
                     if (geometriesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -4238,8 +4009,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
                 public Builder setGeometries(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
                     if (geometriesBuilder_ == null) {
                         ensureGeometriesIsMutable();
                         geometries_.set(index, builderForValue.build());
@@ -4264,8 +4034,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public Builder addGeometries(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Geometry value) {
+                public Builder addGeometries(int index, org.geotools.data.geobuf.Geobuf.Data.Geometry value) {
                     if (geometriesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -4279,8 +4048,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public Builder addGeometries(
-                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
+                public Builder addGeometries(org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
                     if (geometriesBuilder_ == null) {
                         ensureGeometriesIsMutable();
                         geometries_.add(builderForValue.build());
@@ -4292,8 +4060,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
                 public Builder addGeometries(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
                     if (geometriesBuilder_ == null) {
                         ensureGeometriesIsMutable();
                         geometries_.add(index, builderForValue.build());
@@ -4305,8 +4072,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
                 public Builder addAllGeometries(
-                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Geometry>
-                                values) {
+                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Geometry> values) {
                     if (geometriesBuilder_ == null) {
                         ensureGeometriesIsMutable();
                         com.google.protobuf.AbstractMessageLite.Builder.addAll(values, geometries_);
@@ -4339,13 +4105,11 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder getGeometriesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder getGeometriesBuilder(int index) {
                     return getGeometriesFieldBuilder().getBuilder(index);
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder
-                        getGeometriesOrBuilder(int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder getGeometriesOrBuilder(int index) {
                     if (geometriesBuilder_ == null) {
                         return geometries_.get(index);
                     } else {
@@ -4353,8 +4117,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public java.util.List<
-                                ? extends org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>
+                public java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>
                         getGeometriesOrBuilderList() {
                     if (geometriesBuilder_ != null) {
                         return geometriesBuilder_.getMessageOrBuilderList();
@@ -4363,21 +4126,14 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder
-                        addGeometriesBuilder() {
+                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder addGeometriesBuilder() {
                     return getGeometriesFieldBuilder()
-                            .addBuilder(
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                            .getDefaultInstance());
+                            .addBuilder(org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder addGeometriesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder addGeometriesBuilder(int index) {
                     return getGeometriesFieldBuilder()
-                            .addBuilder(
-                                    index,
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                            .getDefaultInstance());
+                            .addBuilder(index, org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder>
@@ -4391,15 +4147,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>
                         getGeometriesFieldBuilder() {
                     if (geometriesBuilder_ == null) {
-                        geometriesBuilder_ =
-                                new com.google.protobuf.RepeatedFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Geometry,
-                                        org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
-                                        geometries_,
-                                        ((bitField0_ & 0x00000008) != 0),
-                                        getParentForChildren(),
-                                        isClean());
+                        geometriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry,
+                                org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
+                                geometries_, ((bitField0_ & 0x00000008) != 0), getParentForChildren(), isClean());
                         geometries_ = null;
                     }
                     return geometriesBuilder_;
@@ -4410,9 +4162,7 @@ public final class Geobuf {
 
                 private void ensureValuesIsMutable() {
                     if (!((bitField0_ & 0x00000010) != 0)) {
-                        values_ =
-                                new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(
-                                        values_);
+                        values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(values_);
                         bitField0_ |= 0x00000010;
                     }
                 }
@@ -4448,8 +4198,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder setValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder setValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -4464,8 +4213,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder setValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.set(index, builderForValue.build());
@@ -4490,8 +4238,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder addValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder addValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -4505,8 +4252,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder addValues(
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                public Builder addValues(org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(builderForValue.build());
@@ -4518,8 +4264,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder addValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(index, builderForValue.build());
@@ -4531,8 +4276,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder addAllValues(
-                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value>
-                                values) {
+                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value> values) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         com.google.protobuf.AbstractMessageLite.Builder.addAll(values, values_);
@@ -4565,13 +4309,11 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(int index) {
                     return getValuesFieldBuilder().getBuilder(index);
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                     if (valuesBuilder_ == null) {
                         return values_.get(index);
                     } else {
@@ -4590,22 +4332,15 @@ public final class Geobuf {
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder() {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(int index) {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    index,
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(index, org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder>
-                        getValuesBuilderList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder> getValuesBuilderList() {
                     return getValuesFieldBuilder().getBuilderList();
                 }
 
@@ -4615,15 +4350,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
                         getValuesFieldBuilder() {
                     if (valuesBuilder_ == null) {
-                        valuesBuilder_ =
-                                new com.google.protobuf.RepeatedFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Value,
-                                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
-                                        values_,
-                                        ((bitField0_ & 0x00000010) != 0),
-                                        getParentForChildren(),
-                                        isClean());
+                        valuesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Value,
+                                org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
+                                values_, ((bitField0_ & 0x00000010) != 0), getParentForChildren(), isClean());
                         values_ = null;
                     }
                     return valuesBuilder_;
@@ -4695,11 +4426,9 @@ public final class Geobuf {
                  * @param values The customProperties to add.
                  * @return This builder for chaining.
                  */
-                public Builder addAllCustomProperties(
-                        java.lang.Iterable<? extends java.lang.Integer> values) {
+                public Builder addAllCustomProperties(java.lang.Iterable<? extends java.lang.Integer> values) {
                     ensureCustomPropertiesIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(
-                            values, customProperties_);
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, customProperties_);
                     onChanged();
                     return this;
                 }
@@ -4716,14 +4445,12 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public final Builder setUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.setUnknownFields(unknownFields);
                 }
 
                 @java.lang.Override
-                public final Builder mergeUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.mergeUnknownFields(unknownFields);
                 }
 
@@ -4780,8 +4507,7 @@ public final class Geobuf {
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
             int getFeaturesCount();
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>
-                    getFeaturesOrBuilderList();
+            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder> getFeaturesOrBuilderList();
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
             org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder getFeaturesOrBuilder(int index);
 
@@ -4792,8 +4518,7 @@ public final class Geobuf {
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             int getValuesCount();
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
-                    getValuesOrBuilderList();
+            java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder> getValuesOrBuilderList();
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index);
 
@@ -4864,77 +4589,57 @@ public final class Geobuf {
                             case 0:
                                 done = true;
                                 break;
-                            case 10:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                                        features_ =
-                                                new java.util.ArrayList<
-                                                        org.geotools.data.geobuf.Geobuf.Data
-                                                                .Feature>();
-                                        mutable_bitField0_ |= 0x00000001;
-                                    }
-                                    features_.add(
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Feature
-                                                            .PARSER,
-                                                    extensionRegistry));
-                                    break;
+                            case 10: {
+                                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                                    features_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Feature>();
+                                    mutable_bitField0_ |= 0x00000001;
                                 }
-                            case 106:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                                        values_ =
-                                                new java.util.ArrayList<
-                                                        org.geotools.data.geobuf.Geobuf.Data
-                                                                .Value>();
-                                        mutable_bitField0_ |= 0x00000002;
-                                    }
-                                    values_.add(
-                                            input.readMessage(
-                                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                                            .PARSER,
-                                                    extensionRegistry));
-                                    break;
+                                features_.add(input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Feature.PARSER, extensionRegistry));
+                                break;
+                            }
+                            case 106: {
+                                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                                    values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>();
+                                    mutable_bitField0_ |= 0x00000002;
                                 }
-                            case 120:
-                                {
-                                    if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000004;
-                                    }
+                                values_.add(input.readMessage(
+                                        org.geotools.data.geobuf.Geobuf.Data.Value.PARSER, extensionRegistry));
+                                break;
+                            }
+                            case 120: {
+                                if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000004;
+                                }
+                                customProperties_.addInt(input.readUInt32());
+                                break;
+                            }
+                            case 122: {
+                                int length = input.readRawVarint32();
+                                int limit = input.pushLimit(length);
+                                if (!((mutable_bitField0_ & 0x00000004) != 0) && input.getBytesUntilLimit() > 0) {
+                                    customProperties_ = newIntList();
+                                    mutable_bitField0_ |= 0x00000004;
+                                }
+                                while (input.getBytesUntilLimit() > 0) {
                                     customProperties_.addInt(input.readUInt32());
-                                    break;
                                 }
-                            case 122:
-                                {
-                                    int length = input.readRawVarint32();
-                                    int limit = input.pushLimit(length);
-                                    if (!((mutable_bitField0_ & 0x00000004) != 0)
-                                            && input.getBytesUntilLimit() > 0) {
-                                        customProperties_ = newIntList();
-                                        mutable_bitField0_ |= 0x00000004;
-                                    }
-                                    while (input.getBytesUntilLimit() > 0) {
-                                        customProperties_.addInt(input.readUInt32());
-                                    }
-                                    input.popLimit(limit);
-                                    break;
+                                input.popLimit(limit);
+                                break;
+                            }
+                            default: {
+                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                    done = true;
                                 }
-                            default:
-                                {
-                                    if (!parseUnknownField(
-                                            input, unknownFields, extensionRegistry, tag)) {
-                                        done = true;
-                                    }
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
                 } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                     throw e.setUnfinishedMessage(this);
                 } catch (java.io.IOException e) {
-                    throw new com.google.protobuf.InvalidProtocolBufferException(e)
-                            .setUnfinishedMessage(this);
+                    throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
                 } finally {
                     if (((mutable_bitField0_ & 0x00000001) != 0)) {
                         features_ = java.util.Collections.unmodifiableList(features_);
@@ -4956,14 +4661,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                    internalGetFieldAccessorTable() {
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                 return org.geotools.data.geobuf.Geobuf
                         .internal_static_org_geotools_data_geobuf_Data_FeatureCollection_fieldAccessorTable
                         .ensureFieldAccessorsInitialized(
                                 org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.class,
-                                org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder
-                                        .class);
+                                org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder.class);
             }
 
             public static final int FEATURES_FIELD_NUMBER = 1;
@@ -4991,8 +4694,7 @@ public final class Geobuf {
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder getFeaturesOrBuilder(
-                    int index) {
+            public org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder getFeaturesOrBuilder(int index) {
                 return features_.get(index);
             }
 
@@ -5021,8 +4723,7 @@ public final class Geobuf {
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                    int index) {
+            public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                 return values_.get(index);
             }
 
@@ -5076,8 +4777,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public void writeTo(com.google.protobuf.CodedOutputStream output)
-                    throws java.io.IOException {
+            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
                 getSerializedSize();
                 for (int i = 0; i < features_.size(); i++) {
                     output.writeMessage(1, features_.get(i));
@@ -5102,28 +4802,21 @@ public final class Geobuf {
 
                 size = 0;
                 for (int i = 0; i < features_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    1, features_.get(i));
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, features_.get(i));
                 }
                 for (int i = 0; i < values_.size(); i++) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                    13, values_.get(i));
+                    size += com.google.protobuf.CodedOutputStream.computeMessageSize(13, values_.get(i));
                 }
                 {
                     int dataSize = 0;
                     for (int i = 0; i < customProperties_.size(); i++) {
-                        dataSize +=
-                                com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
-                                        customProperties_.getInt(i));
+                        dataSize += com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(
+                                customProperties_.getInt(i));
                     }
                     size += dataSize;
                     if (!getCustomPropertiesList().isEmpty()) {
                         size += 1;
-                        size +=
-                                com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(
-                                        dataSize);
+                        size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                     }
                     customPropertiesMemoizedSerializedSize = dataSize;
                 }
@@ -5145,8 +4838,7 @@ public final class Geobuf {
 
                 if (!getFeaturesList().equals(other.getFeaturesList())) return false;
                 if (!getValuesList().equals(other.getValuesList())) return false;
-                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList()))
-                    return false;
+                if (!getCustomPropertiesList().equals(other.getCustomPropertiesList())) return false;
                 if (!unknownFields.equals(other.unknownFields)) return false;
                 return true;
             }
@@ -5175,34 +4867,30 @@ public final class Geobuf {
                 return hash;
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    java.nio.ByteBuffer data)
+            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(java.nio.ByteBuffer data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    java.nio.ByteBuffer data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    com.google.protobuf.ByteString data)
-                    throws com.google.protobuf.InvalidProtocolBufferException {
+                    com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    com.google.protobuf.ByteString data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(byte[] data)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
@@ -5212,28 +4900,24 @@ public final class Geobuf {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    java.io.InputStream input) throws java.io.IOException {
+            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(java.io.InputStream input)
+                    throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseDelimitedFrom(
                     java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
-                        PARSER, input);
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection parseDelimitedFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
                         PARSER, input, extensionRegistry);
@@ -5248,8 +4932,7 @@ public final class Geobuf {
                     com.google.protobuf.CodedInputStream input,
                     com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
             }
 
             @java.lang.Override
@@ -5261,8 +4944,7 @@ public final class Geobuf {
                 return DEFAULT_INSTANCE.toBuilder();
             }
 
-            public static Builder newBuilder(
-                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection prototype) {
+            public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.FeatureCollection prototype) {
                 return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
             }
 
@@ -5272,14 +4954,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected Builder newBuilderForType(
-                    com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
                 Builder builder = new Builder(parent);
                 return builder;
             }
             /** Protobuf type {@code org.geotools.data.geobuf.Data.FeatureCollection} */
-            public static final class Builder
-                    extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+            public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
                     implements
                     // @@protoc_insertion_point(builder_implements:org.geotools.data.geobuf.Data.FeatureCollection)
                     org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder {
@@ -5289,14 +4969,12 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                        internalGetFieldAccessorTable() {
+                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                     return org.geotools.data.geobuf.Geobuf
                             .internal_static_org_geotools_data_geobuf_Data_FeatureCollection_fieldAccessorTable
                             .ensureFieldAccessorsInitialized(
                                     org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.class,
-                                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder
-                                            .class);
+                                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder.class);
                 }
 
                 // Construct using
@@ -5344,10 +5022,8 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                        getDefaultInstanceForType() {
-                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                            .getDefaultInstance();
+                public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getDefaultInstanceForType() {
+                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance();
                 }
 
                 @java.lang.Override
@@ -5397,9 +5073,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public Builder setField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.setField(field, value);
                 }
 
@@ -5415,35 +5089,29 @@ public final class Geobuf {
 
                 @java.lang.Override
                 public Builder setRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        int index,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
                     return super.setRepeatedField(field, index, value);
                 }
 
                 @java.lang.Override
                 public Builder addRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.addRepeatedField(field, value);
                 }
 
                 @java.lang.Override
                 public Builder mergeFrom(com.google.protobuf.Message other) {
                     if (other instanceof org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) {
-                        return mergeFrom(
-                                (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) other);
+                        return mergeFrom((org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) other);
                     } else {
                         super.mergeFrom(other);
                         return this;
                     }
                 }
 
-                public Builder mergeFrom(
-                        org.geotools.data.geobuf.Geobuf.Data.FeatureCollection other) {
-                    if (other
-                            == org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                                    .getDefaultInstance()) return this;
+                public Builder mergeFrom(org.geotools.data.geobuf.Geobuf.Data.FeatureCollection other) {
+                    if (other == org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance())
+                        return this;
                     if (featuresBuilder_ == null) {
                         if (!other.features_.isEmpty()) {
                             if (features_.isEmpty()) {
@@ -5462,11 +5130,9 @@ public final class Geobuf {
                                 featuresBuilder_ = null;
                                 features_ = other.features_;
                                 bitField0_ = (bitField0_ & ~0x00000001);
-                                featuresBuilder_ =
-                                        com.google.protobuf.GeneratedMessageV3
-                                                        .alwaysUseFieldBuilders
-                                                ? getFeaturesFieldBuilder()
-                                                : null;
+                                featuresBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders
+                                        ? getFeaturesFieldBuilder()
+                                        : null;
                             } else {
                                 featuresBuilder_.addAllMessages(other.features_);
                             }
@@ -5490,11 +5156,9 @@ public final class Geobuf {
                                 valuesBuilder_ = null;
                                 values_ = other.values_;
                                 bitField0_ = (bitField0_ & ~0x00000002);
-                                valuesBuilder_ =
-                                        com.google.protobuf.GeneratedMessageV3
-                                                        .alwaysUseFieldBuilders
-                                                ? getValuesFieldBuilder()
-                                                : null;
+                                valuesBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders
+                                        ? getValuesFieldBuilder()
+                                        : null;
                             } else {
                                 valuesBuilder_.addAllMessages(other.values_);
                             }
@@ -5535,8 +5199,7 @@ public final class Geobuf {
                         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
                     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                         parsedMessage =
-                                (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection)
-                                        e.getUnfinishedMessage();
+                                (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) e.getUnfinishedMessage();
                         throw e.unwrapIOException();
                     } finally {
                         if (parsedMessage != null) {
@@ -5553,9 +5216,7 @@ public final class Geobuf {
 
                 private void ensureFeaturesIsMutable() {
                     if (!((bitField0_ & 0x00000001) != 0)) {
-                        features_ =
-                                new java.util.ArrayList<
-                                        org.geotools.data.geobuf.Geobuf.Data.Feature>(features_);
+                        features_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Feature>(features_);
                         bitField0_ |= 0x00000001;
                     }
                 }
@@ -5567,8 +5228,7 @@ public final class Geobuf {
                         featuresBuilder_;
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature>
-                        getFeaturesList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature> getFeaturesList() {
                     if (featuresBuilder_ == null) {
                         return java.util.Collections.unmodifiableList(features_);
                     } else {
@@ -5592,8 +5252,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public Builder setFeatures(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Feature value) {
+                public Builder setFeatures(int index, org.geotools.data.geobuf.Geobuf.Data.Feature value) {
                     if (featuresBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -5608,8 +5267,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
                 public Builder setFeatures(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
                     if (featuresBuilder_ == null) {
                         ensureFeaturesIsMutable();
                         features_.set(index, builderForValue.build());
@@ -5634,8 +5292,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public Builder addFeatures(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Feature value) {
+                public Builder addFeatures(int index, org.geotools.data.geobuf.Geobuf.Data.Feature value) {
                     if (featuresBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -5649,8 +5306,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public Builder addFeatures(
-                        org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
+                public Builder addFeatures(org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
                     if (featuresBuilder_ == null) {
                         ensureFeaturesIsMutable();
                         features_.add(builderForValue.build());
@@ -5662,8 +5318,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
                 public Builder addFeatures(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
                     if (featuresBuilder_ == null) {
                         ensureFeaturesIsMutable();
                         features_.add(index, builderForValue.build());
@@ -5675,8 +5330,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
                 public Builder addAllFeatures(
-                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Feature>
-                                values) {
+                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Feature> values) {
                     if (featuresBuilder_ == null) {
                         ensureFeaturesIsMutable();
                         com.google.protobuf.AbstractMessageLite.Builder.addAll(values, features_);
@@ -5709,13 +5363,11 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Feature.Builder getFeaturesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Feature.Builder getFeaturesBuilder(int index) {
                     return getFeaturesFieldBuilder().getBuilder(index);
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder getFeaturesOrBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder getFeaturesOrBuilder(int index) {
                     if (featuresBuilder_ == null) {
                         return features_.get(index);
                     } else {
@@ -5723,8 +5375,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public java.util.List<
-                                ? extends org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>
+                public java.util.List<? extends org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>
                         getFeaturesOrBuilderList() {
                     if (featuresBuilder_ != null) {
                         return featuresBuilder_.getMessageOrBuilderList();
@@ -5735,22 +5386,15 @@ public final class Geobuf {
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
                 public org.geotools.data.geobuf.Geobuf.Data.Feature.Builder addFeaturesBuilder() {
                     return getFeaturesFieldBuilder()
-                            .addBuilder(
-                                    org.geotools.data.geobuf.Geobuf.Data.Feature
-                                            .getDefaultInstance());
+                            .addBuilder(org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Feature.Builder addFeaturesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Feature.Builder addFeaturesBuilder(int index) {
                     return getFeaturesFieldBuilder()
-                            .addBuilder(
-                                    index,
-                                    org.geotools.data.geobuf.Geobuf.Data.Feature
-                                            .getDefaultInstance());
+                            .addBuilder(index, org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature.Builder>
-                        getFeaturesBuilderList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature.Builder> getFeaturesBuilderList() {
                     return getFeaturesFieldBuilder().getBuilderList();
                 }
 
@@ -5760,15 +5404,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>
                         getFeaturesFieldBuilder() {
                     if (featuresBuilder_ == null) {
-                        featuresBuilder_ =
-                                new com.google.protobuf.RepeatedFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Feature,
-                                        org.geotools.data.geobuf.Geobuf.Data.Feature.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>(
-                                        features_,
-                                        ((bitField0_ & 0x00000001) != 0),
-                                        getParentForChildren(),
-                                        isClean());
+                        featuresBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Feature,
+                                org.geotools.data.geobuf.Geobuf.Data.Feature.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>(
+                                features_, ((bitField0_ & 0x00000001) != 0), getParentForChildren(), isClean());
                         features_ = null;
                     }
                     return featuresBuilder_;
@@ -5779,9 +5419,7 @@ public final class Geobuf {
 
                 private void ensureValuesIsMutable() {
                     if (!((bitField0_ & 0x00000002) != 0)) {
-                        values_ =
-                                new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(
-                                        values_);
+                        values_ = new java.util.ArrayList<org.geotools.data.geobuf.Geobuf.Data.Value>(values_);
                         bitField0_ |= 0x00000002;
                     }
                 }
@@ -5817,8 +5455,7 @@ public final class Geobuf {
                     }
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder setValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder setValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -5833,8 +5470,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder setValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.set(index, builderForValue.build());
@@ -5859,8 +5495,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder addValues(
-                        int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
+                public Builder addValues(int index, org.geotools.data.geobuf.Geobuf.Data.Value value) {
                     if (valuesBuilder_ == null) {
                         if (value == null) {
                             throw new NullPointerException();
@@ -5874,8 +5509,7 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public Builder addValues(
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                public Builder addValues(org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(builderForValue.build());
@@ -5887,8 +5521,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder addValues(
-                        int index,
-                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
+                        int index, org.geotools.data.geobuf.Geobuf.Data.Value.Builder builderForValue) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         values_.add(index, builderForValue.build());
@@ -5900,8 +5533,7 @@ public final class Geobuf {
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public Builder addAllValues(
-                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value>
-                                values) {
+                        java.lang.Iterable<? extends org.geotools.data.geobuf.Geobuf.Data.Value> values) {
                     if (valuesBuilder_ == null) {
                         ensureValuesIsMutable();
                         com.google.protobuf.AbstractMessageLite.Builder.addAll(values, values_);
@@ -5934,13 +5566,11 @@ public final class Geobuf {
                     return this;
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder getValuesBuilder(int index) {
                     return getValuesFieldBuilder().getBuilder(index);
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder getValuesOrBuilder(int index) {
                     if (valuesBuilder_ == null) {
                         return values_.get(index);
                     } else {
@@ -5959,22 +5589,15 @@ public final class Geobuf {
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
                 public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder() {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(
-                        int index) {
+                public org.geotools.data.geobuf.Geobuf.Data.Value.Builder addValuesBuilder(int index) {
                     return getValuesFieldBuilder()
-                            .addBuilder(
-                                    index,
-                                    org.geotools.data.geobuf.Geobuf.Data.Value
-                                            .getDefaultInstance());
+                            .addBuilder(index, org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
-                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder>
-                        getValuesBuilderList() {
+                public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value.Builder> getValuesBuilderList() {
                     return getValuesFieldBuilder().getBuilderList();
                 }
 
@@ -5984,15 +5607,11 @@ public final class Geobuf {
                                 org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>
                         getValuesFieldBuilder() {
                     if (valuesBuilder_ == null) {
-                        valuesBuilder_ =
-                                new com.google.protobuf.RepeatedFieldBuilderV3<
-                                        org.geotools.data.geobuf.Geobuf.Data.Value,
-                                        org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
-                                        org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
-                                        values_,
-                                        ((bitField0_ & 0x00000002) != 0),
-                                        getParentForChildren(),
-                                        isClean());
+                        valuesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                                org.geotools.data.geobuf.Geobuf.Data.Value,
+                                org.geotools.data.geobuf.Geobuf.Data.Value.Builder,
+                                org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder>(
+                                values_, ((bitField0_ & 0x00000002) != 0), getParentForChildren(), isClean());
                         values_ = null;
                     }
                     return valuesBuilder_;
@@ -6064,11 +5683,9 @@ public final class Geobuf {
                  * @param values The customProperties to add.
                  * @return This builder for chaining.
                  */
-                public Builder addAllCustomProperties(
-                        java.lang.Iterable<? extends java.lang.Integer> values) {
+                public Builder addAllCustomProperties(java.lang.Iterable<? extends java.lang.Integer> values) {
                     ensureCustomPropertiesIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(
-                            values, customProperties_);
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, customProperties_);
                     onChanged();
                     return this;
                 }
@@ -6085,14 +5702,12 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public final Builder setUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.setUnknownFields(unknownFields);
                 }
 
                 @java.lang.Override
-                public final Builder mergeUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.mergeUnknownFields(unknownFields);
                 }
 
@@ -6100,15 +5715,13 @@ public final class Geobuf {
             }
 
             // @@protoc_insertion_point(class_scope:org.geotools.data.geobuf.Data.FeatureCollection)
-            private static final org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                    DEFAULT_INSTANCE;
+            private static final org.geotools.data.geobuf.Geobuf.Data.FeatureCollection DEFAULT_INSTANCE;
 
             static {
                 DEFAULT_INSTANCE = new org.geotools.data.geobuf.Geobuf.Data.FeatureCollection();
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                    getDefaultInstance() {
+            public static org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getDefaultInstance() {
                 return DEFAULT_INSTANCE;
             }
 
@@ -6134,8 +5747,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                    getDefaultInstanceForType() {
+            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getDefaultInstanceForType() {
                 return DEFAULT_INSTANCE;
             }
         }
@@ -6280,59 +5892,50 @@ public final class Geobuf {
                             case 0:
                                 done = true;
                                 break;
-                            case 10:
-                                {
-                                    com.google.protobuf.ByteString bs = input.readBytes();
-                                    valueTypeCase_ = 1;
-                                    valueType_ = bs;
-                                    break;
+                            case 10: {
+                                com.google.protobuf.ByteString bs = input.readBytes();
+                                valueTypeCase_ = 1;
+                                valueType_ = bs;
+                                break;
+                            }
+                            case 17: {
+                                valueTypeCase_ = 2;
+                                valueType_ = input.readDouble();
+                                break;
+                            }
+                            case 24: {
+                                valueTypeCase_ = 3;
+                                valueType_ = input.readUInt64();
+                                break;
+                            }
+                            case 32: {
+                                valueTypeCase_ = 4;
+                                valueType_ = input.readUInt64();
+                                break;
+                            }
+                            case 40: {
+                                valueTypeCase_ = 5;
+                                valueType_ = input.readBool();
+                                break;
+                            }
+                            case 50: {
+                                com.google.protobuf.ByteString bs = input.readBytes();
+                                valueTypeCase_ = 6;
+                                valueType_ = bs;
+                                break;
+                            }
+                            default: {
+                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                    done = true;
                                 }
-                            case 17:
-                                {
-                                    valueTypeCase_ = 2;
-                                    valueType_ = input.readDouble();
-                                    break;
-                                }
-                            case 24:
-                                {
-                                    valueTypeCase_ = 3;
-                                    valueType_ = input.readUInt64();
-                                    break;
-                                }
-                            case 32:
-                                {
-                                    valueTypeCase_ = 4;
-                                    valueType_ = input.readUInt64();
-                                    break;
-                                }
-                            case 40:
-                                {
-                                    valueTypeCase_ = 5;
-                                    valueType_ = input.readBool();
-                                    break;
-                                }
-                            case 50:
-                                {
-                                    com.google.protobuf.ByteString bs = input.readBytes();
-                                    valueTypeCase_ = 6;
-                                    valueType_ = bs;
-                                    break;
-                                }
-                            default:
-                                {
-                                    if (!parseUnknownField(
-                                            input, unknownFields, extensionRegistry, tag)) {
-                                        done = true;
-                                    }
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
                 } catch (com.google.protobuf.InvalidProtocolBufferException e) {
                     throw e.setUnfinishedMessage(this);
                 } catch (java.io.IOException e) {
-                    throw new com.google.protobuf.InvalidProtocolBufferException(e)
-                            .setUnfinishedMessage(this);
+                    throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
                 } finally {
                     this.unknownFields = unknownFields.build();
                     makeExtensionsImmutable();
@@ -6340,13 +5943,11 @@ public final class Geobuf {
             }
 
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return org.geotools.data.geobuf.Geobuf
-                        .internal_static_org_geotools_data_geobuf_Data_Value_descriptor;
+                return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_Value_descriptor;
             }
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                    internalGetFieldAccessorTable() {
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                 return org.geotools.data.geobuf.Geobuf
                         .internal_static_org_geotools_data_geobuf_Data_Value_fieldAccessorTable
                         .ensureFieldAccessorsInitialized(
@@ -6623,8 +6224,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public void writeTo(com.google.protobuf.CodedOutputStream output)
-                    throws java.io.IOException {
+            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
                 if (valueTypeCase_ == 1) {
                     com.google.protobuf.GeneratedMessageV3.writeString(output, 1, valueType_);
                 }
@@ -6656,24 +6256,20 @@ public final class Geobuf {
                     size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, valueType_);
                 }
                 if (valueTypeCase_ == 2) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeDoubleSize(
-                                    2, (double) ((java.lang.Double) valueType_));
+                    size += com.google.protobuf.CodedOutputStream.computeDoubleSize(
+                            2, (double) ((java.lang.Double) valueType_));
                 }
                 if (valueTypeCase_ == 3) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeUInt64Size(
-                                    3, (long) ((java.lang.Long) valueType_));
+                    size += com.google.protobuf.CodedOutputStream.computeUInt64Size(
+                            3, (long) ((java.lang.Long) valueType_));
                 }
                 if (valueTypeCase_ == 4) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeUInt64Size(
-                                    4, (long) ((java.lang.Long) valueType_));
+                    size += com.google.protobuf.CodedOutputStream.computeUInt64Size(
+                            4, (long) ((java.lang.Long) valueType_));
                 }
                 if (valueTypeCase_ == 5) {
-                    size +=
-                            com.google.protobuf.CodedOutputStream.computeBoolSize(
-                                    5, (boolean) ((java.lang.Boolean) valueType_));
+                    size += com.google.protobuf.CodedOutputStream.computeBoolSize(
+                            5, (boolean) ((java.lang.Boolean) valueType_));
                 }
                 if (valueTypeCase_ == 6) {
                     size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, valueType_);
@@ -6691,8 +6287,7 @@ public final class Geobuf {
                 if (!(obj instanceof org.geotools.data.geobuf.Geobuf.Data.Value)) {
                     return super.equals(obj);
                 }
-                org.geotools.data.geobuf.Geobuf.Data.Value other =
-                        (org.geotools.data.geobuf.Geobuf.Data.Value) obj;
+                org.geotools.data.geobuf.Geobuf.Data.Value other = (org.geotools.data.geobuf.Geobuf.Data.Value) obj;
 
                 if (!getValueTypeCase().equals(other.getValueTypeCase())) return false;
                 switch (valueTypeCase_) {
@@ -6701,8 +6296,7 @@ public final class Geobuf {
                         break;
                     case 2:
                         if (java.lang.Double.doubleToLongBits(getDoubleValue())
-                                != java.lang.Double.doubleToLongBits(other.getDoubleValue()))
-                            return false;
+                                != java.lang.Double.doubleToLongBits(other.getDoubleValue())) return false;
                         break;
                     case 3:
                         if (getPosIntValue() != other.getPosIntValue()) return false;
@@ -6737,29 +6331,21 @@ public final class Geobuf {
                         break;
                     case 2:
                         hash = (37 * hash) + DOUBLE_VALUE_FIELD_NUMBER;
-                        hash =
-                                (53 * hash)
-                                        + com.google.protobuf.Internal.hashLong(
-                                                java.lang.Double.doubleToLongBits(
-                                                        getDoubleValue()));
+                        hash = (53 * hash)
+                                + com.google.protobuf.Internal.hashLong(
+                                        java.lang.Double.doubleToLongBits(getDoubleValue()));
                         break;
                     case 3:
                         hash = (37 * hash) + POS_INT_VALUE_FIELD_NUMBER;
-                        hash =
-                                (53 * hash)
-                                        + com.google.protobuf.Internal.hashLong(getPosIntValue());
+                        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getPosIntValue());
                         break;
                     case 4:
                         hash = (37 * hash) + NEG_INT_VALUE_FIELD_NUMBER;
-                        hash =
-                                (53 * hash)
-                                        + com.google.protobuf.Internal.hashLong(getNegIntValue());
+                        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getNegIntValue());
                         break;
                     case 5:
                         hash = (37 * hash) + BOOL_VALUE_FIELD_NUMBER;
-                        hash =
-                                (53 * hash)
-                                        + com.google.protobuf.Internal.hashBoolean(getBoolValue());
+                        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getBoolValue());
                         break;
                     case 6:
                         hash = (37 * hash) + JSON_VALUE_FIELD_NUMBER;
@@ -6773,28 +6359,24 @@ public final class Geobuf {
                 return hash;
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    java.nio.ByteBuffer data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(java.nio.ByteBuffer data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    java.nio.ByteBuffer data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    com.google.protobuf.ByteString data)
+            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(com.google.protobuf.ByteString data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    com.google.protobuf.ByteString data,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
@@ -6810,28 +6392,24 @@ public final class Geobuf {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    java.io.InputStream input) throws java.io.IOException {
+            public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(java.io.InputStream input)
+                    throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Value parseFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            public static org.geotools.data.geobuf.Geobuf.Data.Value parseDelimitedFrom(java.io.InputStream input)
+                    throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
             }
 
             public static org.geotools.data.geobuf.Geobuf.Data.Value parseDelimitedFrom(
-                    java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
-                        PARSER, input);
-            }
-
-            public static org.geotools.data.geobuf.Geobuf.Data.Value parseDelimitedFrom(
-                    java.io.InputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
                         PARSER, input, extensionRegistry);
@@ -6846,8 +6424,7 @@ public final class Geobuf {
                     com.google.protobuf.CodedInputStream input,
                     com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                     throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                        PARSER, input, extensionRegistry);
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
             }
 
             @java.lang.Override
@@ -6869,14 +6446,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            protected Builder newBuilderForType(
-                    com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
                 Builder builder = new Builder(parent);
                 return builder;
             }
             /** Protobuf type {@code org.geotools.data.geobuf.Data.Value} */
-            public static final class Builder
-                    extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+            public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
                     implements
                     // @@protoc_insertion_point(builder_implements:org.geotools.data.geobuf.Data.Value)
                     org.geotools.data.geobuf.Geobuf.Data.ValueOrBuilder {
@@ -6886,8 +6461,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                        internalGetFieldAccessorTable() {
+                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
                     return org.geotools.data.geobuf.Geobuf
                             .internal_static_org_geotools_data_geobuf_Data_Value_fieldAccessorTable
                             .ensureFieldAccessorsInitialized(
@@ -6973,9 +6547,7 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public Builder setField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.setField(field, value);
                 }
 
@@ -6991,16 +6563,13 @@ public final class Geobuf {
 
                 @java.lang.Override
                 public Builder setRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        int index,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
                     return super.setRepeatedField(field, index, value);
                 }
 
                 @java.lang.Override
                 public Builder addRepeatedField(
-                        com.google.protobuf.Descriptors.FieldDescriptor field,
-                        java.lang.Object value) {
+                        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                     return super.addRepeatedField(field, value);
                 }
 
@@ -7015,47 +6584,39 @@ public final class Geobuf {
                 }
 
                 public Builder mergeFrom(org.geotools.data.geobuf.Geobuf.Data.Value other) {
-                    if (other == org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance())
-                        return this;
+                    if (other == org.geotools.data.geobuf.Geobuf.Data.Value.getDefaultInstance()) return this;
                     switch (other.getValueTypeCase()) {
-                        case STRING_VALUE:
-                            {
-                                valueTypeCase_ = 1;
-                                valueType_ = other.valueType_;
-                                onChanged();
-                                break;
-                            }
-                        case DOUBLE_VALUE:
-                            {
-                                setDoubleValue(other.getDoubleValue());
-                                break;
-                            }
-                        case POS_INT_VALUE:
-                            {
-                                setPosIntValue(other.getPosIntValue());
-                                break;
-                            }
-                        case NEG_INT_VALUE:
-                            {
-                                setNegIntValue(other.getNegIntValue());
-                                break;
-                            }
-                        case BOOL_VALUE:
-                            {
-                                setBoolValue(other.getBoolValue());
-                                break;
-                            }
-                        case JSON_VALUE:
-                            {
-                                valueTypeCase_ = 6;
-                                valueType_ = other.valueType_;
-                                onChanged();
-                                break;
-                            }
-                        case VALUETYPE_NOT_SET:
-                            {
-                                break;
-                            }
+                        case STRING_VALUE: {
+                            valueTypeCase_ = 1;
+                            valueType_ = other.valueType_;
+                            onChanged();
+                            break;
+                        }
+                        case DOUBLE_VALUE: {
+                            setDoubleValue(other.getDoubleValue());
+                            break;
+                        }
+                        case POS_INT_VALUE: {
+                            setPosIntValue(other.getPosIntValue());
+                            break;
+                        }
+                        case NEG_INT_VALUE: {
+                            setNegIntValue(other.getNegIntValue());
+                            break;
+                        }
+                        case BOOL_VALUE: {
+                            setBoolValue(other.getBoolValue());
+                            break;
+                        }
+                        case JSON_VALUE: {
+                            valueTypeCase_ = 6;
+                            valueType_ = other.valueType_;
+                            onChanged();
+                            break;
+                        }
+                        case VALUETYPE_NOT_SET: {
+                            break;
+                        }
                     }
                     this.mergeUnknownFields(other.unknownFields);
                     onChanged();
@@ -7076,9 +6637,7 @@ public final class Geobuf {
                     try {
                         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
                     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                        parsedMessage =
-                                (org.geotools.data.geobuf.Geobuf.Data.Value)
-                                        e.getUnfinishedMessage();
+                        parsedMessage = (org.geotools.data.geobuf.Geobuf.Data.Value) e.getUnfinishedMessage();
                         throw e.unwrapIOException();
                     } finally {
                         if (parsedMessage != null) {
@@ -7483,14 +7042,12 @@ public final class Geobuf {
                 }
 
                 @java.lang.Override
-                public final Builder setUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.setUnknownFields(unknownFields);
                 }
 
                 @java.lang.Override
-                public final Builder mergeUnknownFields(
-                        final com.google.protobuf.UnknownFieldSet unknownFields) {
+                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                     return super.mergeUnknownFields(unknownFields);
                 }
 
@@ -7541,8 +7098,7 @@ public final class Geobuf {
 
         public enum DataTypeCase
                 implements
-                        com.google.protobuf.Internal.EnumLite,
-                        com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+                        com.google.protobuf.Internal.EnumLite, com.google.protobuf.AbstractMessage.InternalOneOfEnum {
             FEATURE_COLLECTION(4),
             FEATURE(5),
             GEOMETRY(6),
@@ -7737,8 +7293,7 @@ public final class Geobuf {
         }
         /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
         @java.lang.Override
-        public org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder
-                getFeatureCollectionOrBuilder() {
+        public org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder getFeatureCollectionOrBuilder() {
             if (dataTypeCase_ == 4) {
                 return (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_;
             }
@@ -7838,8 +7393,7 @@ public final class Geobuf {
         }
 
         @java.lang.Override
-        public void writeTo(com.google.protobuf.CodedOutputStream output)
-                throws java.io.IOException {
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             for (int i = 0; i < keys_.size(); i++) {
                 com.google.protobuf.GeneratedMessageV3.writeString(output, 1, keys_.getRaw(i));
             }
@@ -7850,8 +7404,7 @@ public final class Geobuf {
                 output.writeUInt32(3, precision_);
             }
             if (dataTypeCase_ == 4) {
-                output.writeMessage(
-                        4, (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_);
+                output.writeMessage(4, (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_);
             }
             if (dataTypeCase_ == 5) {
                 output.writeMessage(5, (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_);
@@ -7883,20 +7436,16 @@ public final class Geobuf {
                 size += com.google.protobuf.CodedOutputStream.computeUInt32Size(3, precision_);
             }
             if (dataTypeCase_ == 4) {
-                size +=
-                        com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                4,
-                                (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(
+                        4, (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_);
             }
             if (dataTypeCase_ == 5) {
-                size +=
-                        com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                5, (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(
+                        5, (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_);
             }
             if (dataTypeCase_ == 6) {
-                size +=
-                        com.google.protobuf.CodedOutputStream.computeMessageSize(
-                                6, (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(
+                        6, (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_);
             }
             size += unknownFields.getSerializedSize();
             memoizedSize = size;
@@ -7986,21 +7535,18 @@ public final class Geobuf {
         }
 
         public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                java.nio.ByteBuffer data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 
-        public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                com.google.protobuf.ByteString data)
+        public static org.geotools.data.geobuf.Geobuf.Data parseFrom(com.google.protobuf.ByteString data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data);
         }
 
         public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                com.google.protobuf.ByteString data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
@@ -8022,38 +7568,32 @@ public final class Geobuf {
         }
 
         public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                    PARSER, input, extensionRegistry);
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        public static org.geotools.data.geobuf.Geobuf.Data parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
         }
 
         public static org.geotools.data.geobuf.Geobuf.Data parseDelimitedFrom(
-                java.io.InputStream input) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
-                    PARSER, input);
-        }
-
-        public static org.geotools.data.geobuf.Geobuf.Data parseDelimitedFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
                     PARSER, input, extensionRegistry);
         }
 
-        public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        public static org.geotools.data.geobuf.Geobuf.Data parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
         }
 
         public static org.geotools.data.geobuf.Geobuf.Data parseFrom(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
-                    PARSER, input, extensionRegistry);
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
         }
 
         @java.lang.Override
@@ -8075,27 +7615,22 @@ public final class Geobuf {
         }
 
         @java.lang.Override
-        protected Builder newBuilderForType(
-                com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
             Builder builder = new Builder(parent);
             return builder;
         }
         /** Protobuf type {@code org.geotools.data.geobuf.Data} */
-        public static final class Builder
-                extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+        public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
                 implements
                 // @@protoc_insertion_point(builder_implements:org.geotools.data.geobuf.Data)
                 org.geotools.data.geobuf.Geobuf.DataOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return org.geotools.data.geobuf.Geobuf
-                        .internal_static_org_geotools_data_geobuf_Data_descriptor;
+                return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_descriptor;
             }
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-                    internalGetFieldAccessorTable() {
-                return org.geotools.data.geobuf.Geobuf
-                        .internal_static_org_geotools_data_geobuf_Data_fieldAccessorTable
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+                return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_fieldAccessorTable
                         .ensureFieldAccessorsInitialized(
                                 org.geotools.data.geobuf.Geobuf.Data.class,
                                 org.geotools.data.geobuf.Geobuf.Data.Builder.class);
@@ -8131,8 +7666,7 @@ public final class Geobuf {
 
             @java.lang.Override
             public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-                return org.geotools.data.geobuf.Geobuf
-                        .internal_static_org_geotools_data_geobuf_Data_descriptor;
+                return org.geotools.data.geobuf.Geobuf.internal_static_org_geotools_data_geobuf_Data_descriptor;
             }
 
             @java.lang.Override
@@ -8151,8 +7685,7 @@ public final class Geobuf {
 
             @java.lang.Override
             public org.geotools.data.geobuf.Geobuf.Data buildPartial() {
-                org.geotools.data.geobuf.Geobuf.Data result =
-                        new org.geotools.data.geobuf.Geobuf.Data(this);
+                org.geotools.data.geobuf.Geobuf.Data result = new org.geotools.data.geobuf.Geobuf.Data(this);
                 int from_bitField0_ = bitField0_;
                 int to_bitField0_ = 0;
                 if (((bitField0_ & 0x00000001) != 0)) {
@@ -8201,8 +7734,7 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public Builder setField(
-                    com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
                 return super.setField(field, value);
             }
 
@@ -8218,9 +7750,7 @@ public final class Geobuf {
 
             @java.lang.Override
             public Builder setRepeatedField(
-                    com.google.protobuf.Descriptors.FieldDescriptor field,
-                    int index,
-                    java.lang.Object value) {
+                    com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
                 return super.setRepeatedField(field, index, value);
             }
 
@@ -8259,25 +7789,21 @@ public final class Geobuf {
                     setPrecision(other.getPrecision());
                 }
                 switch (other.getDataTypeCase()) {
-                    case FEATURE_COLLECTION:
-                        {
-                            mergeFeatureCollection(other.getFeatureCollection());
-                            break;
-                        }
-                    case FEATURE:
-                        {
-                            mergeFeature(other.getFeature());
-                            break;
-                        }
-                    case GEOMETRY:
-                        {
-                            mergeGeometry(other.getGeometry());
-                            break;
-                        }
-                    case DATATYPE_NOT_SET:
-                        {
-                            break;
-                        }
+                    case FEATURE_COLLECTION: {
+                        mergeFeatureCollection(other.getFeatureCollection());
+                        break;
+                    }
+                    case FEATURE: {
+                        mergeFeature(other.getFeature());
+                        break;
+                    }
+                    case GEOMETRY: {
+                        mergeGeometry(other.getGeometry());
+                        break;
+                    }
+                    case DATATYPE_NOT_SET: {
+                        break;
+                    }
                 }
                 this.mergeUnknownFields(other.unknownFields);
                 onChanged();
@@ -8339,8 +7865,7 @@ public final class Geobuf {
 
             private int bitField0_;
 
-            private com.google.protobuf.LazyStringList keys_ =
-                    com.google.protobuf.LazyStringArrayList.EMPTY;
+            private com.google.protobuf.LazyStringList keys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
 
             private void ensureKeysIsMutable() {
                 if (!((bitField0_ & 0x00000001) != 0)) {
@@ -8665,21 +8190,16 @@ public final class Geobuf {
                     if (dataTypeCase_ == 4) {
                         return (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_;
                     }
-                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                            .getDefaultInstance();
+                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance();
                 } else {
                     if (dataTypeCase_ == 4) {
                         return featureCollectionBuilder_.getMessage();
                     }
-                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                            .getDefaultInstance();
+                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance();
                 }
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
-            public Builder setFeatureCollection(
-                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection value) {
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
+            public Builder setFeatureCollection(org.geotools.data.geobuf.Geobuf.Data.FeatureCollection value) {
                 if (featureCollectionBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -8692,12 +8212,9 @@ public final class Geobuf {
                 dataTypeCase_ = 4;
                 return this;
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
             public Builder setFeatureCollection(
-                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder
-                            builderForValue) {
+                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder builderForValue) {
                 if (featureCollectionBuilder_ == null) {
                     dataType_ = builderForValue.build();
                     onChanged();
@@ -8707,23 +8224,16 @@ public final class Geobuf {
                 dataTypeCase_ = 4;
                 return this;
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
-            public Builder mergeFeatureCollection(
-                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection value) {
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
+            public Builder mergeFeatureCollection(org.geotools.data.geobuf.Geobuf.Data.FeatureCollection value) {
                 if (featureCollectionBuilder_ == null) {
                     if (dataTypeCase_ == 4
                             && dataType_
-                                    != org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                                            .getDefaultInstance()) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.newBuilder(
-                                                (org.geotools.data.geobuf.Geobuf.Data
-                                                                .FeatureCollection)
-                                                        dataType_)
-                                        .mergeFrom(value)
-                                        .buildPartial();
+                                    != org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance()) {
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.newBuilder(
+                                        (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_)
+                                .mergeFrom(value)
+                                .buildPartial();
                     } else {
                         dataType_ = value;
                     }
@@ -8737,9 +8247,7 @@ public final class Geobuf {
                 dataTypeCase_ = 4;
                 return this;
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
             public Builder clearFeatureCollection() {
                 if (featureCollectionBuilder_ == null) {
                     if (dataTypeCase_ == 4) {
@@ -8756,32 +8264,23 @@ public final class Geobuf {
                 }
                 return this;
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
-            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder
-                    getFeatureCollectionBuilder() {
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
+            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder getFeatureCollectionBuilder() {
                 return getFeatureCollectionFieldBuilder().getBuilder();
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
             @java.lang.Override
-            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder
-                    getFeatureCollectionOrBuilder() {
+            public org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder getFeatureCollectionOrBuilder() {
                 if ((dataTypeCase_ == 4) && (featureCollectionBuilder_ != null)) {
                     return featureCollectionBuilder_.getMessageOrBuilder();
                 } else {
                     if (dataTypeCase_ == 4) {
                         return (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_;
                     }
-                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                            .getDefaultInstance();
+                    return org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance();
                 }
             }
-            /**
-             * <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code>
-             */
+            /** <code>.org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;</code> */
             private com.google.protobuf.SingleFieldBuilderV3<
                             org.geotools.data.geobuf.Geobuf.Data.FeatureCollection,
                             org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder,
@@ -8789,20 +8288,15 @@ public final class Geobuf {
                     getFeatureCollectionFieldBuilder() {
                 if (featureCollectionBuilder_ == null) {
                     if (!(dataTypeCase_ == 4)) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.FeatureCollection
-                                        .getDefaultInstance();
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.getDefaultInstance();
                     }
-                    featureCollectionBuilder_ =
-                            new com.google.protobuf.SingleFieldBuilderV3<
-                                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection,
-                                    org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder,
-                                    org.geotools.data.geobuf.Geobuf.Data
-                                            .FeatureCollectionOrBuilder>(
-                                    (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection)
-                                            dataType_,
-                                    getParentForChildren(),
-                                    isClean());
+                    featureCollectionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                            org.geotools.data.geobuf.Geobuf.Data.FeatureCollection,
+                            org.geotools.data.geobuf.Geobuf.Data.FeatureCollection.Builder,
+                            org.geotools.data.geobuf.Geobuf.Data.FeatureCollectionOrBuilder>(
+                            (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_,
+                            getParentForChildren(),
+                            isClean());
                     dataType_ = null;
                 }
                 dataTypeCase_ = 4;
@@ -8859,8 +8353,7 @@ public final class Geobuf {
                 return this;
             }
             /** <code>.org.geotools.data.geobuf.Data.Feature feature = 5;</code> */
-            public Builder setFeature(
-                    org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
+            public Builder setFeature(org.geotools.data.geobuf.Geobuf.Data.Feature.Builder builderForValue) {
                 if (featureBuilder_ == null) {
                     dataType_ = builderForValue.build();
                     onChanged();
@@ -8874,15 +8367,11 @@ public final class Geobuf {
             public Builder mergeFeature(org.geotools.data.geobuf.Geobuf.Data.Feature value) {
                 if (featureBuilder_ == null) {
                     if (dataTypeCase_ == 5
-                            && dataType_
-                                    != org.geotools.data.geobuf.Geobuf.Data.Feature
-                                            .getDefaultInstance()) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.Feature.newBuilder(
-                                                (org.geotools.data.geobuf.Geobuf.Data.Feature)
-                                                        dataType_)
-                                        .mergeFrom(value)
-                                        .buildPartial();
+                            && dataType_ != org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance()) {
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.Feature.newBuilder(
+                                        (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_)
+                                .mergeFrom(value)
+                                .buildPartial();
                     } else {
                         dataType_ = value;
                     }
@@ -8937,17 +8426,15 @@ public final class Geobuf {
                     getFeatureFieldBuilder() {
                 if (featureBuilder_ == null) {
                     if (!(dataTypeCase_ == 5)) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance();
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.Feature.getDefaultInstance();
                     }
-                    featureBuilder_ =
-                            new com.google.protobuf.SingleFieldBuilderV3<
-                                    org.geotools.data.geobuf.Geobuf.Data.Feature,
-                                    org.geotools.data.geobuf.Geobuf.Data.Feature.Builder,
-                                    org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>(
-                                    (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_,
-                                    getParentForChildren(),
-                                    isClean());
+                    featureBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                            org.geotools.data.geobuf.Geobuf.Data.Feature,
+                            org.geotools.data.geobuf.Geobuf.Data.Feature.Builder,
+                            org.geotools.data.geobuf.Geobuf.Data.FeatureOrBuilder>(
+                            (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_,
+                            getParentForChildren(),
+                            isClean());
                     dataType_ = null;
                 }
                 dataTypeCase_ = 5;
@@ -9004,8 +8491,7 @@ public final class Geobuf {
                 return this;
             }
             /** <code>.org.geotools.data.geobuf.Data.Geometry geometry = 6;</code> */
-            public Builder setGeometry(
-                    org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
+            public Builder setGeometry(org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder builderForValue) {
                 if (geometryBuilder_ == null) {
                     dataType_ = builderForValue.build();
                     onChanged();
@@ -9019,15 +8505,11 @@ public final class Geobuf {
             public Builder mergeGeometry(org.geotools.data.geobuf.Geobuf.Data.Geometry value) {
                 if (geometryBuilder_ == null) {
                     if (dataTypeCase_ == 6
-                            && dataType_
-                                    != org.geotools.data.geobuf.Geobuf.Data.Geometry
-                                            .getDefaultInstance()) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.Geometry.newBuilder(
-                                                (org.geotools.data.geobuf.Geobuf.Data.Geometry)
-                                                        dataType_)
-                                        .mergeFrom(value)
-                                        .buildPartial();
+                            && dataType_ != org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance()) {
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.Geometry.newBuilder(
+                                        (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_)
+                                .mergeFrom(value)
+                                .buildPartial();
                     } else {
                         dataType_ = value;
                     }
@@ -9082,17 +8564,15 @@ public final class Geobuf {
                     getGeometryFieldBuilder() {
                 if (geometryBuilder_ == null) {
                     if (!(dataTypeCase_ == 6)) {
-                        dataType_ =
-                                org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance();
+                        dataType_ = org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance();
                     }
-                    geometryBuilder_ =
-                            new com.google.protobuf.SingleFieldBuilderV3<
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry,
-                                    org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
-                                    org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
-                                    (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_,
-                                    getParentForChildren(),
-                                    isClean());
+                    geometryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                            org.geotools.data.geobuf.Geobuf.Data.Geometry,
+                            org.geotools.data.geobuf.Geobuf.Data.Geometry.Builder,
+                            org.geotools.data.geobuf.Geobuf.Data.GeometryOrBuilder>(
+                            (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_,
+                            getParentForChildren(),
+                            isClean());
                     dataType_ = null;
                 }
                 dataTypeCase_ = 6;
@@ -9102,14 +8582,12 @@ public final class Geobuf {
             }
 
             @java.lang.Override
-            public final Builder setUnknownFields(
-                    final com.google.protobuf.UnknownFieldSet unknownFields) {
+            public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                 return super.setUnknownFields(unknownFields);
             }
 
             @java.lang.Override
-            public final Builder mergeUnknownFields(
-                    final com.google.protobuf.UnknownFieldSet unknownFields) {
+            public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
                 return super.mergeUnknownFields(unknownFields);
             }
 
@@ -9128,16 +8606,15 @@ public final class Geobuf {
         }
 
         @java.lang.Deprecated
-        public static final com.google.protobuf.Parser<Data> PARSER =
-                new com.google.protobuf.AbstractParser<Data>() {
-                    @java.lang.Override
-                    public Data parsePartialFrom(
-                            com.google.protobuf.CodedInputStream input,
-                            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                            throws com.google.protobuf.InvalidProtocolBufferException {
-                        return new Data(input, extensionRegistry);
-                    }
-                };
+        public static final com.google.protobuf.Parser<Data> PARSER = new com.google.protobuf.AbstractParser<Data>() {
+            @java.lang.Override
+            public Data parsePartialFrom(
+                    com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                return new Data(input, extensionRegistry);
+            }
+        };
 
         public static com.google.protobuf.Parser<Data> parser() {
             return PARSER;
@@ -9216,47 +8693,37 @@ public final class Geobuf {
                     + "value\030\005 \001(\010H\000\022\024\n\njson_value\030\006 \001(\tH\000B\014\n\nv"
                     + "alue_typeB\013\n\tdata_typeB\002H\003"
         };
-        descriptor =
-                com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(
-                        descriptorData, new com.google.protobuf.Descriptors.FileDescriptor[] {});
+        descriptor = com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(
+                descriptorData, new com.google.protobuf.Descriptors.FileDescriptor[] {});
         internal_static_org_geotools_data_geobuf_Data_descriptor =
                 getDescriptor().getMessageTypes().get(0);
         internal_static_org_geotools_data_geobuf_Data_fieldAccessorTable =
                 new com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-                        internal_static_org_geotools_data_geobuf_Data_descriptor,
-                        new java.lang.String[] {
-                            "Keys",
-                            "Dimensions",
-                            "Precision",
-                            "FeatureCollection",
-                            "Feature",
-                            "Geometry",
-                            "DataType",
+                        internal_static_org_geotools_data_geobuf_Data_descriptor, new java.lang.String[] {
+                            "Keys", "Dimensions", "Precision", "FeatureCollection", "Feature", "Geometry", "DataType",
                         });
         internal_static_org_geotools_data_geobuf_Data_Feature_descriptor =
-                internal_static_org_geotools_data_geobuf_Data_descriptor.getNestedTypes().get(0);
+                internal_static_org_geotools_data_geobuf_Data_descriptor
+                        .getNestedTypes()
+                        .get(0);
         internal_static_org_geotools_data_geobuf_Data_Feature_fieldAccessorTable =
                 new com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-                        internal_static_org_geotools_data_geobuf_Data_Feature_descriptor,
-                        new java.lang.String[] {
-                            "Geometry",
-                            "Id",
-                            "IntId",
-                            "Values",
-                            "Properties",
-                            "CustomProperties",
-                            "IdType",
+                        internal_static_org_geotools_data_geobuf_Data_Feature_descriptor, new java.lang.String[] {
+                            "Geometry", "Id", "IntId", "Values", "Properties", "CustomProperties", "IdType",
                         });
         internal_static_org_geotools_data_geobuf_Data_Geometry_descriptor =
-                internal_static_org_geotools_data_geobuf_Data_descriptor.getNestedTypes().get(1);
+                internal_static_org_geotools_data_geobuf_Data_descriptor
+                        .getNestedTypes()
+                        .get(1);
         internal_static_org_geotools_data_geobuf_Data_Geometry_fieldAccessorTable =
                 new com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-                        internal_static_org_geotools_data_geobuf_Data_Geometry_descriptor,
-                        new java.lang.String[] {
+                        internal_static_org_geotools_data_geobuf_Data_Geometry_descriptor, new java.lang.String[] {
                             "Type", "Lengths", "Coords", "Geometries", "Values", "CustomProperties",
                         });
         internal_static_org_geotools_data_geobuf_Data_FeatureCollection_descriptor =
-                internal_static_org_geotools_data_geobuf_Data_descriptor.getNestedTypes().get(2);
+                internal_static_org_geotools_data_geobuf_Data_descriptor
+                        .getNestedTypes()
+                        .get(2);
         internal_static_org_geotools_data_geobuf_Data_FeatureCollection_fieldAccessorTable =
                 new com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
                         internal_static_org_geotools_data_geobuf_Data_FeatureCollection_descriptor,
@@ -9264,11 +8731,12 @@ public final class Geobuf {
                             "Features", "Values", "CustomProperties",
                         });
         internal_static_org_geotools_data_geobuf_Data_Value_descriptor =
-                internal_static_org_geotools_data_geobuf_Data_descriptor.getNestedTypes().get(3);
+                internal_static_org_geotools_data_geobuf_Data_descriptor
+                        .getNestedTypes()
+                        .get(3);
         internal_static_org_geotools_data_geobuf_Data_Value_fieldAccessorTable =
                 new com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-                        internal_static_org_geotools_data_geobuf_Data_Value_descriptor,
-                        new java.lang.String[] {
+                        internal_static_org_geotools_data_geobuf_Data_Value_descriptor, new java.lang.String[] {
                             "StringValue",
                             "DoubleValue",
                             "PosIntValue",

@@ -49,16 +49,16 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * An authority factory that caches all objects created by the delegate CRSAuthorityFactory. The
- * behaviour of the {@code createFoo(String)} methods first looks if a previously created object
- * exists for the given code. If such an object exists, it is returned directly. The testing of the
- * cache is synchronized and may block if the referencing object is under construction.
+ * An authority factory that caches all objects created by the delegate CRSAuthorityFactory. The behaviour of the
+ * {@code createFoo(String)} methods first looks if a previously created object exists for the given code. If such an
+ * object exists, it is returned directly. The testing of the cache is synchronized and may block if the referencing
+ * object is under construction.
  *
- * <p>If the object is not yet created, the definition is delegated to the appropriate the
- * {@linkplain an AuthorityFactory authority factory} and the result is cached for next time.
+ * <p>If the object is not yet created, the definition is delegated to the appropriate the {@linkplain an
+ * AuthorityFactory authority factory} and the result is cached for next time.
  *
- * <p>This object is responsible for owning a {{ReferencingObjectCache}}; there are several
- * implementations to choose from on construction.
+ * <p>This object is responsible for owning a {{ReferencingObjectCache}}; there are several implementations to choose
+ * from on construction.
  *
  * @since 2.4
  * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z jgarnett $
@@ -79,9 +79,8 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     /**
      * Constructs an instance wrapping the specified factory with a default cache.
      *
-     * <p>The provided authority factory must implement {@link DatumAuthorityFactory}, {@link
-     * CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
-     * CoordinateOperationAuthorityFactory} .
+     * <p>The provided authority factory must implement {@link DatumAuthorityFactory}, {@link CSAuthorityFactory},
+     * {@link CRSAuthorityFactory} and {@link CoordinateOperationAuthorityFactory} .
      *
      * @param factory The factory to cache. Can not be {@code null}.
      */
@@ -90,21 +89,18 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /**
-     * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences}
-     * argument specify the maximum number of objects to keep by strong reference. If a greater
-     * amount of objects are created, then the strong references for the oldest ones are replaced by
-     * weak references.
+     * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences} argument specify the
+     * maximum number of objects to keep by strong reference. If a greater amount of objects are created, then the
+     * strong references for the oldest ones are replaced by weak references.
      *
-     * <p>This constructor is protected because subclasses must declare which of the {@link
-     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} {@link
-     * SearchableAuthorityFactory} and {@link CoordinateOperationAuthorityFactory} interfaces they
-     * choose to implement.
+     * <p>This constructor is protected because subclasses must declare which of the {@link DatumAuthorityFactory},
+     * {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} {@link SearchableAuthorityFactory} and
+     * {@link CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The underlying cache
      */
-    protected CachedCRSAuthorityDecorator(
-            CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         crsAuthority = factory;
@@ -112,8 +108,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
-            throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -152,8 +147,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return crsAuthority.getAuthorityCodes(type);
     }
 
@@ -185,8 +179,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
         if (crs == null) {
@@ -373,30 +366,28 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /**
-     * Returns a finder which can be used for looking up unidentified objects. The default
-     * implementation delegates lookup to the underlying backing store and caches the result.
+     * Returns a finder which can be used for looking up unidentified objects. The default implementation delegates
+     * lookup to the underlying backing store and caches the result.
      *
      * @since 2.4
      */
     @Override
-    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
-        return new Finder(
-                delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
+    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
+        return new Finder(delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
     }
 
     /**
-     * An implementation of {@link IdentifiedObjectFinder} which delegates the work to the
-     * underlying backing store and caches the result.
+     * An implementation of {@link IdentifiedObjectFinder} which delegates the work to the underlying backing store and
+     * caches the result.
      *
-     * <p>A separate ObjectCache, findCache, is used to store the values created over the course of
-     * finding. The findCache is set up as a "chain" allowing it to use our cache to prevent
-     * duplication of effort. In the future this findCache may be shared between instances.
+     * <p>A separate ObjectCache, findCache, is used to store the values created over the course of finding. The
+     * findCache is set up as a "chain" allowing it to use our cache to prevent duplication of effort. In the future
+     * this findCache may be shared between instances.
      *
-     * <p><b>Implementation note:</b> we will create objects using directly the underlying backing
-     * store, not using the cache. This is because hundred of objects may be created during a scan
-     * while only one will be typically retained. We don't want to overload the cache with every
-     * false candidates that we encounter during the scan.
+     * <p><b>Implementation note:</b> we will create objects using directly the underlying backing store, not using the
+     * cache. This is because hundred of objects may be created during a scan while only one will be typically retained.
+     * We don't want to overload the cache with every false candidates that we encounter during the scan.
      */
     private final class Finder extends IdentifiedObjectFinder.Adapter {
         /** Cache used when finding */
@@ -409,9 +400,8 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
         }
 
         /**
-         * Looks up an object from this authority factory which is equals, ignoring metadata, to the
-         * specified object. The default implementation performs the same lookup than the backing
-         * store and caches the result.
+         * Looks up an object from this authority factory which is equals, ignoring metadata, to the specified object.
+         * The default implementation performs the same lookup than the backing store and caches the result.
          */
         @Override
         public IdentifiedObject find(final IdentifiedObject object) throws FactoryException {

@@ -25,15 +25,13 @@ import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.util.factory.Hints;
 
 /**
- * This class can read a ERDAS Imagine data source and create a {@link GridCoverage2D} from the
- * data.
+ * This class can read a ERDAS Imagine data source and create a {@link GridCoverage2D} from the data.
  *
  * @author Daniele Romagnoli, GeoSolutions.
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class ErdasImgReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class ErdasImgReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     private static final String worldFileExt = "";
 
     /**

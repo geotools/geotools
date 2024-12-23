@@ -25,8 +25,8 @@ import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
 /**
- * Handles parsing Ysld "graphic" properties (e.g., "graphic", "stroke-graphic", "fill-graphic")
- * into a {@link Graphic} object.
+ * Handles parsing Ysld "graphic" properties (e.g., "graphic", "stroke-graphic", "fill-graphic") into a {@link Graphic}
+ * object.
  */
 public class GraphicParser extends YsldParseHandler {
 
@@ -90,24 +90,18 @@ public class GraphicParser extends YsldParseHandler {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             YamlSeq seq = obj.seq();
             for (YamlObject o : seq) {
-                context.push(
-                        o,
-                        "mark",
-                        new MarkParser(factory) {
-                            @Override
-                            protected void mark(Mark mark) {
-                                g.graphicalSymbols().add(mark);
-                            }
-                        });
-                context.push(
-                        o,
-                        "external",
-                        new ExternalGraphicParser(factory) {
-                            @Override
-                            protected void externalGraphic(ExternalGraphic externalGraphic) {
-                                g.graphicalSymbols().add(externalGraphic);
-                            }
-                        });
+                context.push(o, "mark", new MarkParser(factory) {
+                    @Override
+                    protected void mark(Mark mark) {
+                        g.graphicalSymbols().add(mark);
+                    }
+                });
+                context.push(o, "external", new ExternalGraphicParser(factory) {
+                    @Override
+                    protected void externalGraphic(ExternalGraphic externalGraphic) {
+                        g.graphicalSymbols().add(externalGraphic);
+                    }
+                });
             }
         }
     }

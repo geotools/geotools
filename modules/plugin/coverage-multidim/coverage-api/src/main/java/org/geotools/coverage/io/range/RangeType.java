@@ -21,10 +21,9 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Defines the fields (categories, measures, or values) in the range records available for each
- * location in the coverage domain. Each such field may be a scalar (numeric or text) value, such as
- * population density, or a vector (compound or tensor) of many similar values, such as incomes by
- * race, or radiances by wavelength.
+ * Defines the fields (categories, measures, or values) in the range records available for each location in the coverage
+ * domain. Each such field may be a scalar (numeric or text) value, such as population density, or a vector (compound or
+ * tensor) of many similar values, such as incomes by race, or radiances by wavelength.
  *
  * @author Simone Giannecchini, GeoSolutions
  */
@@ -67,8 +66,8 @@ public interface RangeType {
     /**
      * Get the FieldType by name
      *
-     * @param name name of the FieldType in the form "nameSpace:localPart". In case of no nameSpace,
-     *     the simple "localPart" section need to be provided
+     * @param name name of the FieldType in the form "nameSpace:localPart". In case of no nameSpace, the simple
+     *     "localPart" section need to be provided
      * @return FieldType instance or null if not found
      */
     public FieldType getFieldType(String name);

@@ -25,21 +25,20 @@ import org.geotools.api.feature.simple.SimpleFeature;
  */
 public final class FeatureComparators {
     /** A utility comparator for comparison by id. */
-    public static final java.util.Comparator BY_ID =
-            (o1, o2) -> {
-                SimpleFeature f1 = (SimpleFeature) o1;
-                SimpleFeature f2 = (SimpleFeature) o2;
+    public static final java.util.Comparator BY_ID = (o1, o2) -> {
+        SimpleFeature f1 = (SimpleFeature) o1;
+        SimpleFeature f2 = (SimpleFeature) o2;
 
-                return f1.getID().compareTo(f2.getID());
-            };
+        return f1.getID().compareTo(f2.getID());
+    };
 
     /** Private constructor so default constructor is not available for this utility class. */
     private FeatureComparators() {}
 
     /**
-     * Create a Comparator which compares Features by the attribute at the given index. The
-     * attribute at the index MUST be Comparable. This will probably not work for heterogenous
-     * collections, UNLESS the classes at the given index are the same.
+     * Create a Comparator which compares Features by the attribute at the given index. The attribute at the index MUST
+     * be Comparable. This will probably not work for heterogenous collections, UNLESS the classes at the given index
+     * are the same.
      *
      * @param idx The index to look up attributes at.
      * @return A new Comparator.
@@ -49,9 +48,9 @@ public final class FeatureComparators {
     }
 
     /**
-     * Create a Comparator which compares Features by the attribute found at the given path. The
-     * attribute found MUST be Comparable. This will probably not work for heterogenous collections,
-     * UNLESS the attributes found are the same class.
+     * Create a Comparator which compares Features by the attribute found at the given path. The attribute found MUST be
+     * Comparable. This will probably not work for heterogenous collections, UNLESS the attributes found are the same
+     * class.
      *
      * @param name The xpath to use while comparing.
      * @return A new Comparator.

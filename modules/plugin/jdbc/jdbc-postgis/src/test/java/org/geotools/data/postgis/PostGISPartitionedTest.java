@@ -90,11 +90,9 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
         SimpleFeatureSource others = dataStore.getFeatureSource(tname("cust_others"));
         assertEquals(2, others.getCount(Query.ALL));
 
-        SimpleFeatureStore customers =
-                (SimpleFeatureStore) dataStore.getFeatureSource(tname("customers"));
+        SimpleFeatureStore customers = (SimpleFeatureStore) dataStore.getFeatureSource(tname("customers"));
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        customers.getSchema(), new Object[] {5, "NEWTYPE", 12345}, null);
+                SimpleFeatureBuilder.build(customers.getSchema(), new Object[] {5, "NEWTYPE", 12345}, null);
         List<FeatureId> ids = customers.addFeatures(DataUtilities.collection(feature));
         assertEquals(1, ids.size());
 

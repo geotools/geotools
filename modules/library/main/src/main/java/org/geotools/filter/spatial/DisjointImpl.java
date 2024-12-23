@@ -38,18 +38,15 @@ public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disj
         switch (literals) {
             case BOTH:
                 return cacheValue;
-            case RIGHT:
-                {
-                    return rightPreppedGeom.disjoint(left);
-                }
-            case LEFT:
-                {
-                    return leftPreppedGeom.disjoint(right);
-                }
-            default:
-                {
-                    return basicEvaluate(left, right);
-                }
+            case RIGHT: {
+                return rightPreppedGeom.disjoint(left);
+            }
+            case LEFT: {
+                return leftPreppedGeom.disjoint(right);
+            }
+            default: {
+                return basicEvaluate(left, right);
+            }
         }
     }
 

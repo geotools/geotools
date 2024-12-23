@@ -80,8 +80,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
- * This class encapsulates VPF files, serving as a factory for VPFColumns. Instances of this class
- * should be created by VPFFileFactory.
+ * This class encapsulates VPF files, serving as a factory for VPFColumns. Instances of this class should be created by
+ * VPFFileFactory.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$
@@ -104,26 +104,21 @@ public class VPFFile {
     /** The columns of the file. This list shall contain objects of type <code>VPFColumn</code> */
     private final List<VPFColumn> columns = new ArrayList<>();
 
-    /**
-     * Variable <code>description</code> keeps value of text description of the table's contents.
-     */
+    /** Variable <code>description</code> keeps value of text description of the table's contents. */
     private String description = null;
 
     /** The contained Feature Type */
     private final SimpleFeatureType featureType;
 
-    /**
-     * Keeps value of length of ASCII header string (i.e., the remaining information after this
-     * field)
-     */
+    /** Keeps value of length of ASCII header string (i.e., the remaining information after this field) */
     private int headerLength = -0;
 
     /** The associated stream */
     private RandomAccessFile inputStream = null;
 
     /**
-     * Variable <code>narrativeTable</code> keeps value of an optional narrative file which contains
-     * miscellaneous information about the table.
+     * Variable <code>narrativeTable</code> keeps value of an optional narrative file which contains miscellaneous
+     * information about the table.
      */
     private String narrativeTable = null;
 
@@ -181,8 +176,7 @@ public class VPFFile {
     }
 
     /**
-     * Gets the value of full length of ASCII header string including <code>headerLength</code>
-     * field.
+     * Gets the value of full length of ASCII header string including <code>headerLength</code> field.
      *
      * @return the value of headerLength
      */
@@ -217,8 +211,7 @@ public class VPFFile {
     }
 
     /**
-     * Gets the value of the description of table content. This is nice to have, but I don't know
-     * how to make use of it.
+     * Gets the value of the description of table content. This is nice to have, but I don't know how to make use of it.
      *
      * @return the value of description
      */
@@ -272,9 +265,8 @@ public class VPFFile {
     }
 
     /**
-     * Method <code><code>getRecordSize</code></code> is used to return size in bytes of records
-     * stored in this table. If table keeps variable length records <code>-1</code> should be
-     * returned.
+     * Method <code><code>getRecordSize</code></code> is used to return size in bytes of records stored in this table.
+     * If table keeps variable length records <code>-1</code> should be returned.
      *
      * @return an <code><code>int</code></code> value
      */
@@ -300,8 +292,7 @@ public class VPFFile {
      * @param idName The name of the column to look for, such as "id"
      * @param id An identifier for the requested row
      * @return The first row which matches the ID
-     * @throws IllegalAttributeException The feature can not be created due to illegal attributes in
-     *     the source file
+     * @throws IllegalAttributeException The feature can not be created due to illegal attributes in the source file
      */
     public SimpleFeature getRowFromId(String idName, int id) {
         SimpleFeature result = null;
@@ -361,16 +352,14 @@ public class VPFFile {
     }
 
     /**
-     * Returns a single matching row from the Iterator, ignoring rows that do not match a particular
-     * id
+     * Returns a single matching row from the Iterator, ignoring rows that do not match a particular id
      *
      * @param iter the iterator to examine
      * @param idName The name of the column to check
      * @param id The value of the column to check
      * @return a TableRow that matches the other parameters
      */
-    private synchronized SimpleFeature getRowFromIterator(
-            Iterator<SimpleFeature> iter, String idName, int id) {
+    private synchronized SimpleFeature getRowFromIterator(Iterator<SimpleFeature> iter, String idName, int id) {
         SimpleFeature result = null;
         SimpleFeature currentFeature;
         int value = -1;
@@ -403,8 +392,8 @@ public class VPFFile {
     }
 
     /**
-     * Determines if the stream contains storage for another object. Who knows how well this will
-     * work on variable length objects?
+     * Determines if the stream contains storage for another object. Who knows how well this will work on variable
+     * length objects?
      *
      * @return a <code>boolean</code>
      */
@@ -487,8 +476,7 @@ public class VPFFile {
      * @exception IOException if an error occurs
      * @exception NumberFormatException if an error occurs
      */
-    private synchronized VPFColumn readColumn()
-            throws VPFHeaderFormatException, IOException, NumberFormatException {
+    private synchronized VPFColumn readColumn() throws VPFHeaderFormatException, IOException, NumberFormatException {
         char ctrl = readChar();
 
         if (ctrl == VPF_RECORD_SEPARATOR) {
@@ -518,13 +506,11 @@ public class VPFFile {
         }
 
         String colDesc = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
-        String descTableName =
-                readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
+        String descTableName = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
         String indexFile = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
         String narrTable = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
 
-        return new VPFColumn(
-                name, type, elements, key, colDesc, descTableName, indexFile, narrTable);
+        return new VPFColumn(name, type, elements, key, colDesc, descTableName, indexFile, narrTable);
     }
     /**
      * Constructs an object which is an instance of Geometry by reading values from the file.
@@ -535,8 +521,8 @@ public class VPFFile {
      * @return the constructed object
      * @throws IOException on any file IO errors
      */
-    protected synchronized Object readGeometry(
-            int instancesCount, int dimensionality, boolean readDoubles) throws IOException {
+    protected synchronized Object readGeometry(int instancesCount, int dimensionality, boolean readDoubles)
+            throws IOException {
         Object result = null;
         Coordinate coordinate = null;
         CoordinateList coordinates = new CoordinateList();
@@ -545,19 +531,16 @@ public class VPFFile {
         for (int inx = 0; inx < instancesCount; inx++) {
             switch (dimensionality) {
                 case 2:
-                    coordinate =
-                            new Coordinate(
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat());
+                    coordinate = new Coordinate(
+                            readDoubles ? readDouble() : readFloat(), readDoubles ? readDouble() : readFloat());
 
                     break;
 
                 case 3:
-                    coordinate =
-                            new Coordinate(
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat());
+                    coordinate = new Coordinate(
+                            readDoubles ? readDouble() : readFloat(),
+                            readDoubles ? readDouble() : readFloat(),
+                            readDoubles ? readDouble() : readFloat());
 
                     break;
 
@@ -579,9 +562,7 @@ public class VPFFile {
         if (instancesCount == 1) {
             result = factory.createPoint(coordinate);
         } else {
-            result =
-                    factory.createLineString(
-                            new CoordinateArraySequence(coordinates.toCoordinateArray()));
+            result = factory.createLineString(new CoordinateArraySequence(coordinates.toCoordinateArray()));
         }
 
         return result;
@@ -621,14 +602,10 @@ public class VPFFile {
                 AttributeDescriptor descriptor = column.getDescriptor();
 
                 if (descriptor.getType().getRestrictions().isEmpty()
-                        || descriptor
-                                .getType()
-                                .getRestrictions()
-                                .contains(org.geotools.api.filter.Filter.INCLUDE)) {
+                        || descriptor.getType().getRestrictions().contains(org.geotools.api.filter.Filter.INCLUDE)) {
                     values[inx] = readVariableSizeData(column.getTypeChar());
                 } else {
-                    values[inx] =
-                            readFixedSizeData(column.getTypeChar(), column.getElementsNumber());
+                    values[inx] = readFixedSizeData(column.getTypeChar(), column.getElementsNumber());
                 }
             }
             if (textPrimitive) {
@@ -663,13 +640,11 @@ public class VPFFile {
      * Retrieves a fixed amount of data from the file
      *
      * @param dataType a <code>char</code> value indicating the data type
-     * @param instancesCount an <code>int</code> value indicating the number of instances to
-     *     retrieve.
+     * @param instancesCount an <code>int</code> value indicating the number of instances to retrieve.
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected synchronized Object readFixedSizeData(char dataType, int instancesCount)
-            throws IOException {
+    protected synchronized Object readFixedSizeData(char dataType, int instancesCount) throws IOException {
         Object result = null;
 
         switch (dataType) {
@@ -790,8 +765,7 @@ public class VPFFile {
             ctrl = readChar();
 
             if (ctrl != VPF_FIELD_SEPARATOR && ctrl != VPF_RECORD_SEPARATOR) {
-                throw new VPFHeaderFormatException(
-                        "Header format does not fit VPF file definition.");
+                throw new VPFHeaderFormatException("Header format does not fit VPF file definition.");
             }
 
             if (ctrl == VPF_RECORD_SEPARATOR) column = null;
@@ -799,8 +773,7 @@ public class VPFFile {
         }
 
         if (getRecordSize() < 0) {
-            variableIndex =
-                    new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
+            variableIndex = new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
         }
     }
 
@@ -923,8 +896,8 @@ public class VPFFile {
     }
 
     /**
-     * Retrieves variable sized data from the file by first reading an integer which indicates how
-     * many instances of the data type to retrieve
+     * Retrieves variable sized data from the file by first reading an integer which indicates how many instances of the
+     * data type to retrieve
      *
      * @param dataType a <code>char</code> value indicating the data type
      * @return an <code>Object</code> value
@@ -1006,10 +979,9 @@ public class VPFFile {
         if (fileName.equalsIgnoreCase(FEATURE_CLASS_SCHEMA_TABLE)) {
             result = getDirectoryName().concat(File.separator).concat("FCZ");
         } else {
-            result =
-                    getDirectoryName()
-                            .concat(File.separator)
-                            .concat(fileName.substring(0, fileName.length() - 1) + "X");
+            result = getDirectoryName()
+                    .concat(File.separator)
+                    .concat(fileName.substring(0, fileName.length() - 1) + "X");
         }
 
         return result;

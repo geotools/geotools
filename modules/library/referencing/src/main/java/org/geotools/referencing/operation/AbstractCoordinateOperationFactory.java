@@ -66,9 +66,8 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Base class for coordinate operation factories. This class provides helper methods for the
- * construction of building blocks. It doesn't figure out any operation path by itself. This more
- * "intelligent" job is left to subclasses.
+ * Base class for coordinate operation factories. This class provides helper methods for the construction of building
+ * blocks. It doesn't figure out any operation path by itself. This more "intelligent" job is left to subclasses.
  *
  * @since 2.1
  * @version $Id$
@@ -78,17 +77,11 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         implements CoordinateOperationFactory {
     /** The identifier for an identity operation. */
     protected static final ReferenceIdentifier IDENTITY =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.IDENTITY));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.IDENTITY));
 
-    /**
-     * The identifier for conversion using an affine transform for axis swapping and/or unit
-     * conversions.
-     */
+    /** The identifier for conversion using an affine transform for axis swapping and/or unit conversions. */
     protected static final ReferenceIdentifier AXIS_CHANGES =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.AXIS_CHANGES));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.AXIS_CHANGES));
 
     /**
      * The identifier for a transformation which is a datum shift.
@@ -96,34 +89,27 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @see PositionalAccuracyImpl#DATUM_SHIFT_APPLIED
      */
     protected static final ReferenceIdentifier DATUM_SHIFT =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.DATUM_SHIFT));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.DATUM_SHIFT));
 
     /**
-     * The identifier for a transformation which is a datum shift without {@linkplain
-     * org.geotools.referencing.datum.BursaWolfParameters Bursa Wolf parameters}. Only the changes
-     * in ellipsoid axis-length are taken in account. Such ellipsoid shifts are approximative and
-     * may have 1 kilometer error. This transformation is allowed only if the factory was created
-     * with {@link Hints#LENIENT_DATUM_SHIFT} set to {@link Boolean#TRUE}.
+     * The identifier for a transformation which is a datum shift without
+     * {@linkplain org.geotools.referencing.datum.BursaWolfParameters Bursa Wolf parameters}. Only the changes in
+     * ellipsoid axis-length are taken in account. Such ellipsoid shifts are approximative and may have 1 kilometer
+     * error. This transformation is allowed only if the factory was created with {@link Hints#LENIENT_DATUM_SHIFT} set
+     * to {@link Boolean#TRUE}.
      *
      * @see PositionalAccuracyImpl#DATUM_SHIFT_OMITTED
      */
     protected static final ReferenceIdentifier ELLIPSOID_SHIFT =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.ELLIPSOID_SHIFT));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.ELLIPSOID_SHIFT));
 
     /** The identifier for a geocentric conversion. */
-    protected static final ReferenceIdentifier GEOCENTRIC_CONVERSION =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.GEOCENTRIC_TRANSFORM));
+    protected static final ReferenceIdentifier GEOCENTRIC_CONVERSION = new NamedIdentifier(
+            Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.GEOCENTRIC_TRANSFORM));
 
     /** The identifier for an inverse operation. */
     protected static final ReferenceIdentifier INVERSE_OPERATION =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.INVERSE_OPERATION));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.INVERSE_OPERATION));
 
     /**
      * The set of helper methods on factories.
@@ -133,32 +119,29 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     private final ReferencingFactoryContainer factories;
 
     /**
-     * The underlying math transform factory. This factory is used for constructing {@link
-     * MathTransform} objects for all {@linkplain CoordinateOperation coordinate operations}.
+     * The underlying math transform factory. This factory is used for constructing {@link MathTransform} objects for
+     * all {@linkplain CoordinateOperation coordinate operations}.
      *
      * @see #getMathTransformFactory
      */
     private final MathTransformFactory mtFactory;
 
     /**
-     * A pool of coordinate operation. This pool is used in order to returns instance of existing
-     * operations when possible.
+     * A pool of coordinate operation. This pool is used in order to returns instance of existing operations when
+     * possible.
      */
-    private final CanonicalSet<CoordinateOperation> pool =
-            CanonicalSet.newInstance(CoordinateOperation.class);
+    private final CanonicalSet<CoordinateOperation> pool = CanonicalSet.newInstance(CoordinateOperation.class);
 
     /**
-     * Tells if {@link FactoryGroup#hints} has been invoked. It must be invoked exactly once, but
-     * can't be invoked in the constructor because it causes a {@link StackOverflowError} in some
-     * situations.
+     * Tells if {@link FactoryGroup#hints} has been invoked. It must be invoked exactly once, but can't be invoked in
+     * the constructor because it causes a {@link StackOverflowError} in some situations.
      */
     private boolean hintsInitialized;
 
     /**
-     * Constructs a coordinate operation factory using the specified hints. This constructor
-     * recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link
-     * Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code
-     * FACTORY} hints.
+     * Constructs a coordinate operation factory using the specified hints. This constructor recognizes the
+     * {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
+     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      *
      * @param userHints The hints, or {@code null} if none.
      */
@@ -167,14 +150,13 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Constructs a coordinate operation factory using the specified hints and priority. This
-     * constructor recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link
-     * Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code
-     * FACTORY} hints.
+     * Constructs a coordinate operation factory using the specified hints and priority. This constructor recognizes the
+     * {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
+     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      *
      * @param userHints The hints, or {@code null} if none.
-     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
-     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY MINIMUM_PRIORITY} and
+     *     {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      * @since 2.2
      */
     public AbstractCoordinateOperationFactory(final Hints userHints, final int priority) {
@@ -184,10 +166,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * If the specified factory is an instance of {@code AbstractCoordinateOperationFactory}, fetch
-     * the {@link FactoryGroup} from this instance instead of from the hints. This constructor is
-     * strictly reserved for factory subclasses that are wrapper around an other factory, like
-     * {@link BufferedCoordinateOperationFactory}.
+     * If the specified factory is an instance of {@code AbstractCoordinateOperationFactory}, fetch the
+     * {@link FactoryGroup} from this instance instead of from the hints. This constructor is strictly reserved for
+     * factory subclasses that are wrapper around an other factory, like {@link BufferedCoordinateOperationFactory}.
      */
     AbstractCoordinateOperationFactory(
             final CoordinateOperationFactory factory, final Hints hints, final int priority) {
@@ -201,10 +182,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns the implementation hints for this factory. The returned map contains values for
-     * {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM}
-     * and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints. Other values
-     * may be provided as well, at implementation choice.
+     * Returns the implementation hints for this factory. The returned map contains values for {@link Hints#CRS_FACTORY
+     * CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints. Other values may be provided as well, at implementation choice.
      */
     @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
@@ -218,8 +198,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Invoked when the {@link #hints} map should be initialized. This method may be overridden by
-     * subclasses like {@link BufferedCoordinateOperationFactory}.
+     * Invoked when the {@link #hints} map should be initialized. This method may be overridden by subclasses like
+     * {@link BufferedCoordinateOperationFactory}.
      */
     void initializeHints() {
         assert Thread.holdsLock(hints);
@@ -228,8 +208,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns the underlying math transform factory. This factory is used for constructing {@link
-     * MathTransform} objects for all {@linkplain CoordinateOperation coordinate operations}.
+     * Returns the underlying math transform factory. This factory is used for constructing {@link MathTransform}
+     * objects for all {@linkplain CoordinateOperation coordinate operations}.
      *
      * @return The underlying math transform factory.
      */
@@ -243,12 +223,11 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns an affine transform between two coordinate systems. Only units and axis order (e.g.
-     * transforming from (NORTH,WEST) to (EAST,NORTH)) are taken in account.
+     * Returns an affine transform between two coordinate systems. Only units and axis order (e.g. transforming from
+     * (NORTH,WEST) to (EAST,NORTH)) are taken in account.
      *
-     * <p>Example: If coordinates in {@code sourceCS} are (x,y) pairs in metres and coordinates in
-     * {@code targetCS} are (-y,x) pairs in centimetres, then the transformation can be performed as
-     * below:
+     * <p>Example: If coordinates in {@code sourceCS} are (x,y) pairs in metres and coordinates in {@code targetCS} are
+     * (-y,x) pairs in centimetres, then the transformation can be performed as below:
      *
      * <pre><blockquote>
      *          [-y(cm)]   [ 0  -100    0 ] [x(m)]
@@ -258,13 +237,12 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      *
      * @param sourceCS The source coordinate system.
      * @param targetCS The target coordinate system.
-     * @return The transformation from {@code sourceCS} to {@code targetCS} as an affine transform.
-     *     Only axis orientation and units are taken in account.
+     * @return The transformation from {@code sourceCS} to {@code targetCS} as an affine transform. Only axis
+     *     orientation and units are taken in account.
      * @throws OperationNotFoundException If the affine transform can't be constructed.
      * @see AbstractCS#swapAndScaleAxis
      */
-    protected Matrix swapAndScaleAxis(
-            final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
+    protected Matrix swapAndScaleAxis(final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
             throws OperationNotFoundException {
         try {
             return AbstractCS.swapAndScaleAxis(sourceCS, targetCS);
@@ -276,27 +254,24 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns the specified identifier in a map to be given to coordinate operation constructors.
-     * In the special case where the {@code name} identifier is {@link #DATUM_SHIFT} or {@link
-     * #ELLIPSOID_SHIFT}, the map will contains extra informations like positional accuracy.
+     * Returns the specified identifier in a map to be given to coordinate operation constructors. In the special case
+     * where the {@code name} identifier is {@link #DATUM_SHIFT} or {@link #ELLIPSOID_SHIFT}, the map will contains
+     * extra informations like positional accuracy.
      *
-     * @todo In the datum shift case, an operation version is mandatory but unknow at this time.
-     *     However, we noticed that the EPSG database do not always defines a version neither.
-     *     Consequently, the Geotools implementation relax the rule requirying an operation version
-     *     and we do not try to provide this information here for now.
+     * @todo In the datum shift case, an operation version is mandatory but unknow at this time. However, we noticed
+     *     that the EPSG database do not always defines a version neither. Consequently, the Geotools implementation
+     *     relax the rule requirying an operation version and we do not try to provide this information here for now.
      */
     private static Map<String, Object> getProperties(final ReferenceIdentifier name) {
         final Map<String, Object> properties;
         if (name == DATUM_SHIFT || name == ELLIPSOID_SHIFT) {
             properties = new HashMap<>(4);
             properties.put(NAME_KEY, name);
-            properties.put(
-                    CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY,
-                    new PositionalAccuracy[] {
-                        name == DATUM_SHIFT
-                                ? PositionalAccuracyImpl.DATUM_SHIFT_APPLIED
-                                : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
-                    });
+            properties.put(CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY, new PositionalAccuracy[] {
+                name == DATUM_SHIFT
+                        ? PositionalAccuracyImpl.DATUM_SHIFT_APPLIED
+                        : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
+            });
         } else {
             properties = Collections.singletonMap(NAME_KEY, name);
         }
@@ -304,11 +279,10 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Creates a coordinate operation from a matrix, which usually describes an affine tranform. A
-     * default {@link OperationMethod} object is given to this transform. In the special case where
-     * the {@code name} identifier is {@link #DATUM_SHIFT} or {@link #ELLIPSOID_SHIFT}, the
-     * operation will be an instance of {@link Transformation} instead of the usual {@link
-     * Conversion}.
+     * Creates a coordinate operation from a matrix, which usually describes an affine tranform. A default
+     * {@link OperationMethod} object is given to this transform. In the special case where the {@code name} identifier
+     * is {@link #DATUM_SHIFT} or {@link #ELLIPSOID_SHIFT}, the operation will be an instance of {@link Transformation}
+     * instead of the usual {@link Conversion}.
      *
      * @param name The identifier for the operation to be created.
      * @param sourceCRS The source coordinate reference system.
@@ -340,8 +314,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Creates a coordinate operation from a set of parameters. The {@linkplain OperationMethod
-     * operation method} is inferred automatically, if possible.
+     * Creates a coordinate operation from a set of parameters. The {@linkplain OperationMethod operation method} is
+     * inferred automatically, if possible.
      *
      * @param name The identifier for the operation to be created.
      * @param sourceCRS The source coordinate reference system.
@@ -359,8 +333,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final Map<String, ?> properties = getProperties(name);
         final MathTransform transform = mtFactory.createParameterizedTransform(parameters);
         final OperationMethod method = mtFactory.getLastMethodUsed();
-        return createFromMathTransform(
-                properties, sourceCRS, targetCRS, transform, method, Operation.class);
+        return createFromMathTransform(properties, sourceCRS, targetCRS, transform, method, Operation.class);
     }
 
     /**
@@ -389,9 +362,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Creates a coordinate operation from a math transform. If the specified math transform is
-     * already a coordinate operation, and if source and target CRS match, then {@code transform} is
-     * returned with no change. Otherwise, a new coordinate operation is created.
+     * Creates a coordinate operation from a math transform. If the specified math transform is already a coordinate
+     * operation, and if source and target CRS match, then {@code transform} is returned with no change. Otherwise, a
+     * new coordinate operation is created.
      *
      * @param properties The properties to give to the operation.
      * @param sourceCRS The source coordinate reference system.
@@ -425,8 +398,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                 }
             }
         }
-        operation =
-                DefaultOperation.create(properties, sourceCRS, targetCRS, transform, method, type);
+        operation = DefaultOperation.create(properties, sourceCRS, targetCRS, transform, method, type);
         operation = pool.unique(operation);
         return operation;
     }
@@ -444,9 +416,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     @Override
     public Conversion createDefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final ParameterValueGroup parameters)
+            final Map<String, ?> properties, final OperationMethod method, final ParameterValueGroup parameters)
             throws FactoryException {
         Conversion conversion = new DefiningConversion(properties, method, parameters);
         conversion = pool.unique(conversion);
@@ -463,8 +433,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     @Override
     public CoordinateOperation createConcatenatedOperation(
-            final Map<String, ?> properties, final CoordinateOperation[] operations)
-            throws FactoryException {
+            final Map<String, ?> properties, final CoordinateOperation[] operations) throws FactoryException {
         CoordinateOperation operation;
         operation = new DefaultConcatenatedOperation(properties, operations, mtFactory);
         operation = pool.unique(operation);
@@ -472,18 +441,16 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Concatenate two operation steps. If an operation is an {@link #AXIS_CHANGES}, it will be
-     * included as part of the second operation instead of creating an {@link
-     * ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
-     * generated name.
+     * Concatenate two operation steps. If an operation is an {@link #AXIS_CHANGES}, it will be included as part of the
+     * second operation instead of creating an {@link ConcatenatedOperation}. If a concatenated operation is created, it
+     * will get an automatically generated name.
      *
      * @param step1 The first step, or {@code null} for the identity operation.
      * @param step2 The second step, or {@code null} for the identity operation.
      * @return A concatenated operation, or {@code null} if all arguments was nul.
      * @throws FactoryException if the operation can't be constructed.
      */
-    protected CoordinateOperation concatenate(
-            final CoordinateOperation step1, final CoordinateOperation step2)
+    protected CoordinateOperation concatenate(final CoordinateOperation step1, final CoordinateOperation step2)
             throws FactoryException {
         if (step1 == null) return step2;
         if (step2 == null) return step1;
@@ -494,10 +461,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final CoordinateReferenceSystem sourceCRS = step1.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = step2.getTargetCRS();
         CoordinateOperation step = null;
-        if (step1.getName() == AXIS_CHANGES
-                && mt1.getSourceDimensions() == mt1.getTargetDimensions()) step = step2;
-        if (step2.getName() == AXIS_CHANGES
-                && mt2.getSourceDimensions() == mt2.getTargetDimensions()) step = step1;
+        if (step1.getName() == AXIS_CHANGES && mt1.getSourceDimensions() == mt1.getTargetDimensions()) step = step2;
+        if (step2.getName() == AXIS_CHANGES && mt2.getSourceDimensions() == mt2.getTargetDimensions()) step = step1;
         if (step instanceof Operation) {
             /*
              * Applies only on operation in order to avoid merging with PassThroughOperation.
@@ -517,10 +482,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Concatenate two operation steps. If an operation is an {@link #AXIS_CHANGES}, it will be
-     * included as part of the second operation instead of creating an {@link
-     * ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
-     * generated name.
+     * Concatenate two operation steps. If an operation is an {@link #AXIS_CHANGES}, it will be included as part of the
+     * second operation instead of creating an {@link ConcatenatedOperation}. If a concatenated operation is created, it
+     * will get an automatically generated name.
      *
      * @param candidatesStep1 The first step, or {@code null} for the identity operation.
      * @param candidatesStep2 The second step, or {@code null} for the identity operation.
@@ -528,8 +492,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @throws FactoryException if the operation can't be constructed.
      */
     protected Set<CoordinateOperation> concatenate(
-            final Set<CoordinateOperation> candidatesStep1,
-            final Set<CoordinateOperation> candidatesStep2)
+            final Set<CoordinateOperation> candidatesStep1, final Set<CoordinateOperation> candidatesStep2)
             throws FactoryException {
         HashSet<CoordinateOperation> result = new HashSet<>();
         for (CoordinateOperation step1 : candidatesStep1) {
@@ -541,13 +504,13 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Concatenate two sets of operation steps. The result is the concatenation of all the steps on
-     * the firt set with all the steps on the second set (cartesian product), which will be then
-     * concatenated with all the steps on the third step.
+     * Concatenate two sets of operation steps. The result is the concatenation of all the steps on the firt set with
+     * all the steps on the second set (cartesian product), which will be then concatenated with all the steps on the
+     * third step.
      *
-     * <p>If an operation is an {@link #AXIS_CHANGES}, it will be included as part of the second
-     * operation instead of creating an {@link ConcatenatedOperation}. If a concatenated operation
-     * is created, it will get an automatically generated name.
+     * <p>If an operation is an {@link #AXIS_CHANGES}, it will be included as part of the second operation instead of
+     * creating an {@link ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
+     * generated name.
      *
      * @param candidatesStep1 The first set of candidate steps
      * @param candidatesStep2 The second set of candidate steps
@@ -573,10 +536,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Concatenate three transformation steps. If the first and/or the last operation is an {@link
-     * #AXIS_CHANGES}, it will be included as part of the second operation instead of creating an
-     * {@link ConcatenatedOperation}. If a concatenated operation is created, it will get an
-     * automatically generated name.
+     * Concatenate three transformation steps. If the first and/or the last operation is an {@link #AXIS_CHANGES}, it
+     * will be included as part of the second operation instead of creating an {@link ConcatenatedOperation}. If a
+     * concatenated operation is created, it will get an automatically generated name.
      *
      * @param step1 The first step, or {@code null} for the identity operation.
      * @param step2 The second step, or {@code null} for the identity operation.
@@ -585,9 +547,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @throws FactoryException if the operation can't be constructed.
      */
     protected CoordinateOperation concatenate(
-            final CoordinateOperation step1,
-            final CoordinateOperation step2,
-            final CoordinateOperation step3)
+            final CoordinateOperation step1, final CoordinateOperation step2, final CoordinateOperation step3)
             throws FactoryException {
         if (step1 == null) return concatenate(step2, step3);
         if (step2 == null) return concatenate(step1, step3);
@@ -603,14 +563,13 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final CoordinateReferenceSystem sourceCRS = step1.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = step3.getTargetCRS();
         return createConcatenatedOperation(
-                getTemporaryName(sourceCRS, targetCRS),
-                new CoordinateOperation[] {step1, step2, step3});
+                getTemporaryName(sourceCRS, targetCRS), new CoordinateOperation[] {step1, step2, step3});
     }
 
     /**
-     * Returns {@code true} if the specified operation is an identity conversion. This method always
-     * returns {@code false} for transformations even if their associated math transform is an
-     * identity one, because such transformations are usually datum shift and must be visible.
+     * Returns {@code true} if the specified operation is an identity conversion. This method always returns
+     * {@code false} for transformations even if their associated math transform is an identity one, because such
+     * transformations are usually datum shift and must be visible.
      */
     private static boolean isIdentity(final CoordinateOperation operation) {
         return (operation instanceof Conversion) && operation.getMathTransform().isIdentity();
@@ -629,23 +588,18 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             throws NoninvertibleTransformException, FactoryException {
         final CoordinateReferenceSystem sourceCRS = operation.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = operation.getTargetCRS();
-        final Map<String, Object> properties =
-                AbstractIdentifiedObject.getProperties(operation, null);
+        final Map<String, Object> properties = AbstractIdentifiedObject.getProperties(operation, null);
         properties.putAll(getTemporaryName(targetCRS, sourceCRS));
         if (operation instanceof ConcatenatedOperation) {
             final LinkedList<CoordinateOperation> inverted = new LinkedList<>();
-            for (final CoordinateOperation op :
-                    ((ConcatenatedOperation) operation).getOperations()) {
+            for (final CoordinateOperation op : ((ConcatenatedOperation) operation).getOperations()) {
                 inverted.addFirst(inverse(op));
             }
-            return createConcatenatedOperation(
-                    properties, inverted.toArray(new CoordinateOperation[inverted.size()]));
+            return createConcatenatedOperation(properties, inverted.toArray(new CoordinateOperation[inverted.size()]));
         }
         final MathTransform transform = operation.getMathTransform().inverse();
-        final Class<? extends CoordinateOperation> type =
-                AbstractCoordinateOperation.getType(operation);
-        final OperationMethod method =
-                (operation instanceof Operation) ? ((Operation) operation).getMethod() : null;
+        final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
+        final OperationMethod method = (operation instanceof Operation) ? ((Operation) operation).getMethod() : null;
         return createFromMathTransform(properties, targetCRS, sourceCRS, transform, method, type);
     }
 
@@ -657,17 +611,14 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     /////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Returns the dimension of the specified coordinate system, or {@code 0} if the coordinate
-     * system is null.
-     */
+    /** Returns the dimension of the specified coordinate system, or {@code 0} if the coordinate system is null. */
     static int getDimension(final CoordinateReferenceSystem crs) {
         return (crs != null) ? crs.getCoordinateSystem().getDimension() : 0;
     }
 
     /**
-     * An identifier for temporary objects. This identifier manage a count of temporary identifier.
-     * The count is appended to the identifier name (e.g. "WGS84 (step 1)").
+     * An identifier for temporary objects. This identifier manage a count of temporary identifier. The count is
+     * appended to the identifier name (e.g. "WGS84 (step 1)").
      */
     private static final class TemporaryIdentifier extends NamedIdentifier {
         /** For cross-version compatibility. */
@@ -681,12 +632,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
 
         /** Constructs an identifier derived from the specified one. */
         public TemporaryIdentifier(final ReferenceIdentifier parent) {
-            this(
-                    parent,
-                    ((parent instanceof TemporaryIdentifier)
-                                    ? ((TemporaryIdentifier) parent).count
-                                    : 0)
-                            + 1);
+            this(parent, ((parent instanceof TemporaryIdentifier) ? ((TemporaryIdentifier) parent).count : 0) + 1);
         }
 
         /** Work around for RFE #4093999 in Sun's bug database */
@@ -706,8 +652,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns the name of the GeoAPI interface implemented by the specified object. In addition,
-     * the name may be added between brackets.
+     * Returns the name of the GeoAPI interface implemented by the specified object. In addition, the name may be added
+     * between brackets.
      */
     private static String getClassName(final IdentifiedObject object) {
         if (object != null) {
@@ -739,8 +685,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         properties.put(NAME_KEY, new TemporaryIdentifier(source.getName()));
         properties.put(
                 IdentifiedObject.REMARKS_KEY,
-                Vocabulary.formatInternational(
-                        VocabularyKeys.DERIVED_FROM_$1, getClassName(source)));
+                Vocabulary.formatInternational(VocabularyKeys.DERIVED_FROM_$1, getClassName(source)));
         return properties;
     }
 
@@ -756,15 +701,14 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
 
     /**
-     * Returns an error message for "No path found from sourceCRS to targetCRS". This is used for
-     * the construction of {@link OperationNotFoundException}.
+     * Returns an error message for "No path found from sourceCRS to targetCRS". This is used for the construction of
+     * {@link OperationNotFoundException}.
      *
      * @param source The source CRS.
      * @param target The target CRS.
      * @return A default error message.
      */
-    protected static String getErrorMessage(
-            final IdentifiedObject source, final IdentifiedObject target) {
+    protected static String getErrorMessage(final IdentifiedObject source, final IdentifiedObject target) {
         final Object arg0 = getClassName(source);
         final Object arg1 = getClassName(target);
         return MessageFormat.format(ErrorKeys.NO_TRANSFORMATION_PATH_$2, arg0, arg1);
@@ -777,11 +721,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    protected static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

@@ -21,8 +21,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
- * A simple wrapper that limits the number of features returned by a given {@link
- * SimpleFeatureIterator}
+ * A simple wrapper that limits the number of features returned by a given {@link SimpleFeatureIterator}
  *
  * @author Andrea Aime - GeoSolutions
  */

@@ -67,8 +67,7 @@ public class StyledShapePainterTest {
             painter.paint(g2, pointShape, (GraphicLegend) null, 1, false);
             Assert.fail();
         } catch (NullPointerException e) {
-            Assert.assertEquals(
-                    "ShapePainter has been asked to paint a null legend!!", e.getMessage());
+            Assert.assertEquals("ShapePainter has been asked to paint a null legend!!", e.getMessage());
         }
     }
 
@@ -87,8 +86,7 @@ public class StyledShapePainterTest {
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
-        final Point point =
-                new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
+        final Point point = new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
         final LiteShape2 shape = new LiteShape2(point, null, null, false);
 
         int imageType = testImage.getType();
@@ -140,8 +138,7 @@ public class StyledShapePainterTest {
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
-        final Point point =
-                new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
+        final Point point = new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
         final LiteShape2 shape = new LiteShape2(point, null, null, false);
 
         int imageType = testImage.getType();
@@ -231,8 +228,7 @@ public class StyledShapePainterTest {
     public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
-        GraphicImpl legend =
-                new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+        GraphicImpl legend = new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));

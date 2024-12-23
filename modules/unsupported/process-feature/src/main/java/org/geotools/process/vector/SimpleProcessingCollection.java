@@ -26,14 +26,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.collection.SortedSimpleFeatureCollection;
 
 /**
- * The simple feature version of {@link ProcessingCollection}. Please see the base class for further
- * information on how to implement a proper streaming processing collection on top of this base
- * class
+ * The simple feature version of {@link ProcessingCollection}. Please see the base class for further information on how
+ * to implement a proper streaming processing collection on top of this base class
  *
  * @author Andrea Aime - GeoSolutions
  */
-public abstract class SimpleProcessingCollection
-        extends ProcessingCollection<SimpleFeatureType, SimpleFeature>
+public abstract class SimpleProcessingCollection extends ProcessingCollection<SimpleFeatureType, SimpleFeature>
         implements SimpleFeatureCollection {
 
     @Override

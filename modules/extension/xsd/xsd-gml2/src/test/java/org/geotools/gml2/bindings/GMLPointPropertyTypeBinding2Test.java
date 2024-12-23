@@ -49,6 +49,8 @@ public class GMLPointPropertyTypeBinding2Test extends GMLTestSupport {
         Document doc = encode(GML2MockData.point(), GML.pointProperty);
 
         assertEquals(
-                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart())
+                        .getLength());
     }
 }

@@ -93,8 +93,8 @@ public class ProcessParameterPage extends JPage {
     }
 
     /**
-     * Run through the current values in the widgets and make a process param map out of them for
-     * running an actual process
+     * Run through the current values in the widgets and make a process param map out of them for running an actual
+     * process
      */
     private void createParamMap() {
         if (fields.isEmpty()) {

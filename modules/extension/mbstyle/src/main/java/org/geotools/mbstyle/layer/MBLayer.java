@@ -35,16 +35,16 @@ import org.json.simple.JSONObject;
 /**
  * MBLayer wrapper (around one of the MBStyle layers).
  *
- * <p>All methods act as accessors on provided JSON layer, no other state is maintained. This allows
- * modifications to be made cleanly with out chance of side-effect.
+ * <p>All methods act as accessors on provided JSON layer, no other state is maintained. This allows modifications to be
+ * made cleanly with out chance of side-effect.
  *
  * <ul>
  *   <li>get methods: access the json directly
  *   <li>query methods: provide logic / transforms to GeoTools classes as required.
  * </ul>
  *
- * <p>In the normal course of events MBLayer is constructed as a flyweight object by MBStyle to
- * provide easy access to its layers list.
+ * <p>In the normal course of events MBLayer is constructed as a flyweight object by MBStyle to provide easy access to
+ * its layers list.
  *
  * @author Torben Barsballe (Boundless)
  */
@@ -89,8 +89,7 @@ public abstract class MBLayer {
     //
 
     /**
-     * Factory method creating the appropriate MBStyle based on the "type" indicated in the layer
-     * JSON.
+     * Factory method creating the appropriate MBStyle based on the "type" indicated in the layer JSON.
      *
      * @param layer JSON Layer definition
      * @return Generated MBLayer subclass
@@ -114,11 +113,10 @@ public abstract class MBLayer {
                 case "fill-extrusion":
                     return new FillExtrusionMBLayer(layer);
                 default:
-                    throw new MBFormatException(
-                            ("\"type\" "
-                                    + type
-                                    + " is not a valid layer type. Must be one of: "
-                                    + "background, fill, line, symbol, raster, circle, fill-extrusion"));
+                    throw new MBFormatException(("\"type\" "
+                            + type
+                            + " is not a valid layer type. Must be one of: "
+                            + "background, fill, line, symbol, raster, circle, fill-extrusion"));
             }
         }
         // technically we may be able to do this via a ref
@@ -145,8 +143,8 @@ public abstract class MBLayer {
     public abstract String getType();
 
     /**
-     * Arbitrary properties useful to track with the layer, but do not influence rendering.
-     * Properties should be prefixed to avoid collisions, like 'mapbox:' and 'gt:`.
+     * Arbitrary properties useful to track with the layer, but do not influence rendering. Properties should be
+     * prefixed to avoid collisions, like 'mapbox:' and 'gt:`.
      *
      * @return Arbitrary properties useful to track with the layer.
      */
@@ -155,11 +153,11 @@ public abstract class MBLayer {
     }
 
     /**
-     * References another layer to copy type, source, source-layer, minzoom, maxzoom, filter, and
-     * layout properties from. This allows the layers to share processing and be more efficient.
+     * References another layer to copy type, source, source-layer, minzoom, maxzoom, filter, and layout properties
+     * from. This allows the layers to share processing and be more efficient.
      *
-     * @return References another layer to copy type, source, source-layer, minzoom, maxzoom,
-     *     filter, and layout properties from.
+     * @return References another layer to copy type, source, source-layer, minzoom, maxzoom, filter, and layout
+     *     properties from.
      */
     public String getRef() {
         // We should update getType(), getSource(), getSourceLayer(), getMinZoom(), getMaxZoom(),
@@ -185,8 +183,7 @@ public abstract class MBLayer {
      *
      * <p>While this value is optional, it may be obtained via {@link #getRef()} if needed.
      *
-     * @return name of source description to be used for this layer, or null if the style has no
-     *     source.
+     * @return name of source description to be used for this layer, or null if the style has no source.
      */
     public String getSource() {
         return parse.optional(String.class, json, "source", null);
@@ -224,9 +221,8 @@ public abstract class MBLayer {
     }
 
     /**
-     * A MBFilter wrapping optional json specifying conditions on source features. Only features
-     * that match the filter are displayed. This is available as a GeoTools {@link Filter} via
-     * {@link #filter()}.
+     * A MBFilter wrapping optional json specifying conditions on source features. Only features that match the filter
+     * are displayed. This is available as a GeoTools {@link Filter} via {@link #filter()}.
      *
      * @return MBFilter expression specifying conditions on source features.
      */
@@ -246,8 +242,7 @@ public abstract class MBLayer {
     abstract SemanticType defaultSemanticType();
 
     /**
-     * The "filter" as a GeoTools {@link Filter} suitable for feature selection, as defined by
-     * {@link #getFilter()}.
+     * The "filter" as a GeoTools {@link Filter} suitable for feature selection, as defined by {@link #getFilter()}.
      *
      * @return Filter, or Filter.INCLUDE if the style has no filter.
      */
@@ -262,14 +257,13 @@ public abstract class MBLayer {
     /**
      * Layout properties for the layer.
      *
-     * <p><em>Layout properties</em> appear in the layer's "layout" object. They are applied early
-     * in the rendering process and define how data for that layer is passed to the renderer. For
-     * efficiency, a layer can share layout properties with another layer via the "ref" layer
-     * property, and should do so where possible. This will decrease processing time and allow the
-     * two layers will share GPU memory and other resources associated with the layer.
+     * <p><em>Layout properties</em> appear in the layer's "layout" object. They are applied early in the rendering
+     * process and define how data for that layer is passed to the renderer. For efficiency, a layer can share layout
+     * properties with another layer via the "ref" layer property, and should do so where possible. This will decrease
+     * processing time and allow the two layers will share GPU memory and other resources associated with the layer.
      *
-     * @return Layout properties defined for layer, or an empty {@link JSONObject} if no layout
-     *     properties are defined for the style.
+     * @return Layout properties defined for layer, or an empty {@link JSONObject} if no layout properties are defined
+     *     for the style.
      */
     public JSONObject getLayout() {
         return parse.layout(json);
@@ -287,12 +281,11 @@ public abstract class MBLayer {
     /**
      * Default paint properties for this layer.
      *
-     * <p><em>Paint properties</em> are applied later in the rendering process. A layer that shares
-     * layout properties with another layer can have independent paint properties. Paint properties
-     * appear in the layer's "paint" object.
+     * <p><em>Paint properties</em> are applied later in the rendering process. A layer that shares layout properties
+     * with another layer can have independent paint properties. Paint properties appear in the layer's "paint" object.
      *
-     * @return Default paint properties for this layer, or an empty {@link JSONObject} if no paint
-     *     properties are defined for the style.
+     * @return Default paint properties for this layer, or an empty {@link JSONObject} if no paint properties are
+     *     defined for the style.
      */
     public JSONObject getPaint() {
         return parse.paint(json);
@@ -329,12 +322,11 @@ public abstract class MBLayer {
     /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
-     * @param styleContext The MBStyle to which this layer belongs, used to resolving sprite and
-     *     glyph names to full urls.
+     * @param styleContext The MBStyle to which this layer belongs, used to resolving sprite and glyph names to full
+     *     urls.
      * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
      * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
-     * @return A feature type style from the provided layer, or null if the visibility of that layer
-     *     is false.
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
     public List<FeatureTypeStyle> transform(
             MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
@@ -362,10 +354,9 @@ public abstract class MBLayer {
     /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
-     * @param styleContext The MBStyle to which this layer belongs, used as a context for things
-     *     like resolving sprite and glyph names to full urls.
-     * @return A feature type style from the provided layer, or null if the visibility of that layer
-     *     is false.
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite
+     *     and glyph names to full urls.
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
     public final List<FeatureTypeStyle> transform(MBStyle styleContext) {
         MBLayer layer = this;

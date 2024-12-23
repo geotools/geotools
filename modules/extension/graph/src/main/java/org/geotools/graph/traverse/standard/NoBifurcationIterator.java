@@ -25,9 +25,8 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.SourceGraphIterator;
 
 /**
- * Iterates over the nodes of a graph starting from a specified node, stopping at a bifurcation. A
- * <B>bifurcation</B> is defined as a node of degree > 2. The following figures illustrate examples
- * of the iterator.<br>
+ * Iterates over the nodes of a graph starting from a specified node, stopping at a bifurcation. A <B>bifurcation</B> is
+ * defined as a node of degree > 2. The following figures illustrate examples of the iterator.<br>
  * <br>
  * <IMG src="doc-files/nobif_0.gif"/><br>
  * <br>
@@ -63,16 +62,15 @@ public class NoBifurcationIterator extends SourceGraphIterator {
     public void setSource(Graphable source) {
         // check that source node if of degree <= 2
         if (((Node) source).getDegree() > 2) {
-            throw new IllegalStateException(
-                    "Cannot start a no bifurcation traversal  on a node that " + "bifurcates.");
+            throw new IllegalStateException("Cannot start a no bifurcation traversal  on a node that " + "bifurcates.");
         }
         super.setSource(source);
         m_next = (Node) getSource();
     }
 
     /**
-     * The next node in the iteration is the first node found adjacent to the current node that is
-     * non visited and of degree less than 2.
+     * The next node in the iteration is the first node found adjacent to the current node that is non visited and of
+     * degree less than 2.
      *
      * @see org.geotools.graph.traverse.GraphIterator#next()
      */
@@ -82,8 +80,8 @@ public class NoBifurcationIterator extends SourceGraphIterator {
     }
 
     /**
-     * Searches for the next node to be returned in the iteration. The next node is the first node
-     * (of two) related to the current node that is non visited and of degree <= 2.
+     * Searches for the next node to be returned in the iteration. The next node is the first node (of two) related to
+     * the current node that is non visited and of degree <= 2.
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
@@ -92,14 +90,13 @@ public class NoBifurcationIterator extends SourceGraphIterator {
         // find a related node that is non visited and degree <= 2
         Iterator<? extends Graphable> itr = current.getRelated();
         m_next = (Node) itr.next();
-        if (itr.hasNext() && (traversal.isVisited(m_next) || m_next.getDegree() > 2))
-            m_next = (Node) itr.next();
+        if (itr.hasNext() && (traversal.isVisited(m_next) || m_next.getDegree() > 2)) m_next = (Node) itr.next();
         if (traversal.isVisited(m_next) || m_next.getDegree() > 2) m_next = null;
     }
 
     /**
-     * Kills the current branch of the iteration by explicitly setting the next node to be returned
-     * to null. This call always ends the traversal.
+     * Kills the current branch of the iteration by explicitly setting the next node to be returned to null. This call
+     * always ends the traversal.
      *
      * @see org.geotools.graph.traverse.GraphIterator#killBranch(Graphable)
      */

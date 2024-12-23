@@ -99,8 +99,8 @@ public abstract class GML3TestSupport extends XMLTestSupport {
     }
 
     /**
-     * Checks that a posList exists, has a string as content, and the string encodes nOrdinates
-     * ordinates correctly (i.e. blank-separated).
+     * Checks that a posList exists, has a string as content, and the string encodes nOrdinates ordinates correctly
+     * (i.e. blank-separated).
      */
     private void checkOrdinates(Document doc, String ordTag, int expectedNumOrdinates) {
         NodeList nl = doc.getElementsByTagNameNS(GML.NAMESPACE, ordTag);

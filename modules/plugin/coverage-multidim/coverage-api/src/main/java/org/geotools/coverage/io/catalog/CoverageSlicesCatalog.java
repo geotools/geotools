@@ -72,14 +72,12 @@ import org.geotools.util.Utilities;
 public class CoverageSlicesCatalog {
 
     /**
-     * CoverageSlicesCatalog always used an hidden H2 DB to store granules index related to a
-     * specific file.
+     * CoverageSlicesCatalog always used an hidden H2 DB to store granules index related to a specific file.
      *
      * <p>Starting from 14.x it also can be setup on top of a shared PostGIS datastore.
      *
-     * <p>Using a PostGIS shared index, we need to add a LOCATION attribute to distinguish the
-     * different granules, as well as add a Filter setting the LOCATION value to each query from a
-     * reader (1 reader <-> 1 file <-> 1 location)
+     * <p>Using a PostGIS shared index, we need to add a LOCATION attribute to distinguish the different granules, as
+     * well as add a Filter setting the LOCATION value to each query from a reader (1 reader <-> 1 file <-> 1 location)
      */
     public static class WrappedCoverageSlicesCatalog extends CoverageSlicesCatalog {
 
@@ -88,15 +86,11 @@ public class CoverageSlicesCatalog {
         /** Internal query filter to be ANDED with the input query */
         private Filter queryFilter;
 
-        public WrappedCoverageSlicesCatalog(
-                DataStoreConfiguration config, File file, Repository repository)
+        public WrappedCoverageSlicesCatalog(DataStoreConfiguration config, File file, Repository repository)
                 throws IOException {
             super(config, repository);
             queryFilter =
-                    FF.equal(
-                            FF.property(CoverageSlice.Attributes.LOCATION),
-                            FF.literal(file.getCanonicalPath()),
-                            true);
+                    FF.equal(FF.property(CoverageSlice.Attributes.LOCATION), FF.literal(file.getCanonicalPath()), true);
         }
 
         @Override
@@ -110,8 +104,7 @@ public class CoverageSlicesCatalog {
         }
 
         @Override
-        public void removeGranules(String typeName, Filter filter, Transaction transaction)
-                throws IOException {
+        public void removeGranules(String typeName, Filter filter, Transaction transaction) throws IOException {
             super.removeGranules(typeName, refineFilter(filter), transaction);
         }
 
@@ -129,8 +122,7 @@ public class CoverageSlicesCatalog {
     }
 
     /** Logger. */
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(CoverageSlicesCatalog.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CoverageSlicesCatalog.class);
 
     /** The slices index store */
     private DataStore slicesIndexStore;
@@ -142,8 +134,7 @@ public class CoverageSlicesCatalog {
 
     private static final String HIDDEN_FOLDER = ".mapping";
 
-    private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache =
-            new SoftValueHashMap<>(0);
+    private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache = new SoftValueHashMap<>(0);
 
     private boolean repositoryStore;
 
@@ -151,12 +142,8 @@ public class CoverageSlicesCatalog {
         this(database, parentLocation, null);
     }
 
-    public CoverageSlicesCatalog(
-            final String database, final File parentLocation, Repository repository) {
-        this(
-                new DataStoreConfiguration(
-                        DataStoreConfiguration.getDefaultParams(database, parentLocation)),
-                repository);
+    public CoverageSlicesCatalog(final String database, final File parentLocation, Repository repository) {
+        this(new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentLocation)), repository);
     }
 
     public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig) {
@@ -193,8 +180,7 @@ public class CoverageSlicesCatalog {
             } else {
                 if (!(isH2 || isPostgis)) {
                     throw new IllegalArgumentException(
-                            "Low level index for multidim granules only supports"
-                                    + " H2 and PostGIS databases");
+                            "Low level index for multidim granules only supports" + " H2 and PostGIS databases");
                 }
                 Utilities.ensureNonNull("params", params);
 
@@ -206,9 +192,7 @@ public class CoverageSlicesCatalog {
                 wrapDatastore = (Boolean) params.get(Utils.Prop.WRAP_STORE);
             }
             if (isPostgis && wrapDatastore) {
-                slicesIndexStore =
-                        new PostgisDatastoreWrapper(
-                                slicesIndexStore, parentLocation, HIDDEN_FOLDER);
+                slicesIndexStore = new PostgisDatastoreWrapper(slicesIndexStore, parentLocation, HIDDEN_FOLDER);
             }
 
             String typeName = null;
@@ -235,7 +219,8 @@ public class CoverageSlicesCatalog {
                 for (String tn : typeNamesValues) {
                     this.typeNames.add(tn);
                 }
-                if (!this.typeNames.isEmpty()) extractBasicProperties(typeNames.iterator().next());
+                if (!this.typeNames.isEmpty())
+                    extractBasicProperties(typeNames.iterator().next());
             } else if (typeName != null) {
                 this.typeNames.add(typeName);
                 extractBasicProperties(typeName);
@@ -276,9 +261,8 @@ public class CoverageSlicesCatalog {
             final String[] typeNames = slicesIndexStore.getTypeNames();
             if (typeNames == null || typeNames.length <= 0) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
-                                    + " no typenames for the schema are defined");
+                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
+                            + " no typenames for the schema are defined");
                 }
                 return;
             }
@@ -286,28 +270,25 @@ public class CoverageSlicesCatalog {
                 typeName = typeNames[0];
                 addTypeName(typeName, false);
                 if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.warning(
-                            "BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
-                                    + typeName);
+                    LOGGER.warning("BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
+                            + typeName);
             }
 
             // loading all the features into memory to build an in-memory index.
             for (String type : typeNames) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            "BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
-                                    + typeName
-                                    + "\' in DataStore:getTypeNames(). Testing: \'"
-                                    + type
-                                    + "\'.");
+                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
+                            + typeName
+                            + "\' in DataStore:getTypeNames(). Testing: \'"
+                            + type
+                            + "\'.");
                 if (type.equalsIgnoreCase(typeName)) {
                     if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine(
-                                "BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
-                                        + typeName
-                                        + "\' is equalsIgnoreCase() to \'"
-                                        + type
-                                        + "\'.");
+                        LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
+                                + typeName
+                                + "\' is equalsIgnoreCase() to \'"
+                                + type
+                                + "\'.");
                     typeName = type;
                     addTypeName(typeName, false);
                     break;
@@ -343,8 +324,7 @@ public class CoverageSlicesCatalog {
             try {
                 if (slicesIndexStore != null && !repositoryStore) slicesIndexStore.dispose();
             } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             } finally {
                 slicesIndexStore = null;
             }
@@ -353,8 +333,7 @@ public class CoverageSlicesCatalog {
         }
     }
 
-    public void addGranule(
-            final String typeName, final SimpleFeature granule, final Transaction transaction)
+    public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction)
             throws IOException {
         Utilities.ensureNonNull("typeName", typeName);
         Utilities.ensureNonNull("granule", granule);
@@ -365,9 +344,7 @@ public class CoverageSlicesCatalog {
     }
 
     public void addGranules(
-            final String typeName,
-            final SimpleFeatureCollection granules,
-            final Transaction transaction)
+            final String typeName, final SimpleFeatureCollection granules, final Transaction transaction)
             throws IOException {
         Utilities.ensureNonNull("granuleMetadata", granules);
         final Lock lock = rwLock.writeLock();
@@ -376,8 +353,7 @@ public class CoverageSlicesCatalog {
             // check if the index has been cleared
             checkStore();
 
-            final SimpleFeatureStore store =
-                    (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
+            final SimpleFeatureStore store = (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
             store.setTransaction(transaction);
             store.addFeatures(granules);
 
@@ -418,23 +394,19 @@ public class CoverageSlicesCatalog {
                 boolean postRetypeRequired = requestedProperties != Query.ALL_NAMES;
                 SimpleFeatureType target = null;
                 if (postRetypeRequired) {
-                    List<String> propertiesList =
-                            new ArrayList<>(Arrays.asList(requestedProperties));
+                    List<String> propertiesList = new ArrayList<>(Arrays.asList(requestedProperties));
                     if (!propertiesList.contains(IMAGE_INDEX_ATTR)) {
                         // IMAGE_INDEX_ATTRIBUTE is mandatory for coverage slices descriptor
                         // caching.
                         // add that the property
                         String[] properties = new String[requestedProperties.length + 1];
-                        System.arraycopy(
-                                requestedProperties, 0, properties, 0, requestedProperties.length);
+                        System.arraycopy(requestedProperties, 0, properties, 0, requestedProperties.length);
                         properties[requestedProperties.length] = IMAGE_INDEX_ATTR;
                         q.setPropertyNames(properties);
                     }
 
                     // prepare target FeatureType
-                    target =
-                            SimpleFeatureTypeBuilder.retype(
-                                    featureSource.getSchema(), requestedProperties);
+                    target = SimpleFeatureTypeBuilder.retype(featureSource.getSchema(), requestedProperties);
                 }
 
                 final SimpleFeatureCollection features = featureSource.getFeatures(q);
@@ -477,11 +449,8 @@ public class CoverageSlicesCatalog {
                             } else {
                                 // create the granule coverageDescriptor (eventually retyping its
                                 // feature)
-                                slice =
-                                        new CoverageSlice(
-                                                postRetypeRequired
-                                                        ? SimpleFeatureBuilder.retype(sf, target)
-                                                        : sf);
+                                slice = new CoverageSlice(
+                                        postRetypeRequired ? SimpleFeatureBuilder.retype(sf, target) : sf);
                                 coverageSliceDescriptorsCache.put(granuleIndex, slice);
                             }
                         }
@@ -561,8 +530,7 @@ public class CoverageSlicesCatalog {
         }
     }
 
-    public void createType(String identification, String typeSpec)
-            throws SchemaException, IOException {
+    public void createType(String identification, String typeSpec) throws SchemaException, IOException {
         Utilities.ensureNonNull("typeSpec", typeSpec);
         Utilities.ensureNonNull("identification", identification);
         final SimpleFeatureType featureType = DataUtilities.createType(identification, typeSpec);
@@ -590,8 +558,7 @@ public class CoverageSlicesCatalog {
             checkStore();
             SimpleFeatureSource fs = slicesIndexStore.getFeatureSource(query.getTypeName());
 
-            if (fs instanceof ContentFeatureSource)
-                ((ContentFeatureSource) fs).accepts(query, function, null);
+            if (fs instanceof ContentFeatureSource) ((ContentFeatureSource) fs).accepts(query, function, null);
             else {
                 final SimpleFeatureCollection collection = fs.getFeatures(query);
                 collection.accepts(function, null);
@@ -609,8 +576,7 @@ public class CoverageSlicesCatalog {
 
             return slicesIndexStore.getFeatureSource(typeName).getQueryCapabilities();
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO, "Unable to collect QueryCapabilities", e);
+            if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, "Unable to collect QueryCapabilities", e);
             return null;
         } finally {
             lock.unlock();
@@ -625,17 +591,15 @@ public class CoverageSlicesCatalog {
         // warn people
         if (this.slicesIndexStore != null) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "This granule catalog was not properly dispose as it still points to:"
-                                + slicesIndexStore.getInfo().toString());
+                LOGGER.warning("This granule catalog was not properly dispose as it still points to:"
+                        + slicesIndexStore.getInfo().toString());
             }
             // try to dispose the underlying store if it has not been disposed yet
             this.dispose();
         }
     }
 
-    public void removeGranules(String typeName, Filter filter, Transaction transaction)
-            throws IOException {
+    public void removeGranules(String typeName, Filter filter, Transaction transaction) throws IOException {
         Utilities.ensureNonNull("typeName", typeName);
         Utilities.ensureNonNull("filter", filter);
         Utilities.ensureNonNull("transaction", transaction);
@@ -645,8 +609,7 @@ public class CoverageSlicesCatalog {
             // check if the index has been cleared
             checkStore();
 
-            final SimpleFeatureStore store =
-                    (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
+            final SimpleFeatureStore store = (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
             store.setTransaction(transaction);
             store.removeFeatures(filter);
 

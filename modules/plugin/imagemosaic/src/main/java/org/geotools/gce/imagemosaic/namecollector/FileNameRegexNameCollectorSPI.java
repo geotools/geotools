@@ -27,8 +27,8 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.Utils.SourceGetter;
 
 /**
- * A {@link CoverageNameCollectorSPI} implementation setting up the coverage name based on a regex
- * applied to the fileName.
+ * A {@link CoverageNameCollectorSPI} implementation setting up the coverage name based on a regex applied to the
+ * fileName.
  */
 public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
 
@@ -41,14 +41,10 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
             return new FileNameRegexBasedCoverageNameCollector(regex);
         }
         throw new IllegalArgumentException(
-                "FileNameRegexNameCollectorSPI should have "
-                        + "a defined REGEX property in the map");
+                "FileNameRegexNameCollectorSPI should have " + "a defined REGEX property in the map");
     }
 
-    /**
-     * A {@link CoverageNameCollector} implementation which setup the coverageName on top of a regex
-     * on the filename
-     */
+    /** A {@link CoverageNameCollector} implementation which setup the coverageName on top of a regex on the filename */
     static class FileNameRegexBasedCoverageNameCollector implements CoverageNameCollector {
 
         private Pattern pattern;

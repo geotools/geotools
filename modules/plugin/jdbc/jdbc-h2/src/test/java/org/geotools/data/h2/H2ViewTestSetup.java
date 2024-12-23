@@ -18,13 +18,11 @@ public class H2ViewTestSetup extends JDBCViewTestSetup {
 
     @Override
     protected void createLakesTable() throws Exception {
-        run(
-                "CREATE TABLE \"lakes\"(\"fid\" int primary key, \"id\" int, \"geom\" POLYGON, \"name\" varchar )");
+        run("CREATE TABLE \"lakes\"(\"fid\" int primary key, \"id\" int, \"geom\" POLYGON, \"name\" varchar )");
         run("CALL AddGeometryColumn(NULL, 'lakes', 'geom', 4326, 'POLYGON', 2)");
-        run(
-                "INSERT INTO \"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                        + "'muddy')");
+        run("INSERT INTO \"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy')");
     }
 
     @Override

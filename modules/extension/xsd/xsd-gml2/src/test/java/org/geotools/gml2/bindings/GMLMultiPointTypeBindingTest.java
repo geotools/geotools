@@ -53,24 +53,20 @@ public class GMLMultiPointTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void test() throws Exception {
-        Node node =
-                createNode(
-                        mp,
-                        new ElementInstance[] {point1, point2},
-                        new Object[] {
-                            new GeometryFactory().createPoint(new Coordinate(0, 0)),
-                            new GeometryFactory().createPoint(new Coordinate(1, 1))
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                mp,
+                new ElementInstance[] {point1, point2},
+                new Object[] {
+                    new GeometryFactory().createPoint(new Coordinate(0, 0)),
+                    new GeometryFactory().createPoint(new Coordinate(1, 1))
+                },
+                null,
+                null);
 
-        GMLGeometryCollectionTypeBinding s1 =
-                (GMLGeometryCollectionTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLGeometryCollectionTypeBinding.class);
+        GMLGeometryCollectionTypeBinding s1 = (GMLGeometryCollectionTypeBinding)
+                container.getComponentInstanceOfType(GMLGeometryCollectionTypeBinding.class);
         GMLMultiPointTypeBinding s2 =
-                (GMLMultiPointTypeBinding)
-                        container.getComponentInstanceOfType(GMLMultiPointTypeBinding.class);
+                (GMLMultiPointTypeBinding) container.getComponentInstanceOfType(GMLMultiPointTypeBinding.class);
 
         MultiPoint mpoint = (MultiPoint) s2.parse(mp, node, s1.parse(mp, node, null));
 

@@ -10,12 +10,10 @@
 package org.geotools.api.referencing.datum;
 
 /**
- * Defines the origin of an image coordinate reference system. An image datum is used in a local
- * context only. For an image datum, the anchor point is usually either the centre of the image or
- * the corner of the image.
+ * Defines the origin of an image coordinate reference system. An image datum is used in a local context only. For an
+ * image datum, the anchor point is usually either the centre of the image or the corner of the image.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

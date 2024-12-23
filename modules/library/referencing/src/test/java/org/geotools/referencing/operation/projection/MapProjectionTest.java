@@ -38,8 +38,8 @@ import org.junit.Test;
 public final class MapProjectionTest {
 
     /**
-     * Make a simple spherical Mercator (Google Mercator) CRS. We just use this as a simple example
-     * of a MapProjection since that class is abstract.
+     * Make a simple spherical Mercator (Google Mercator) CRS. We just use this as a simple example of a MapProjection
+     * since that class is abstract.
      */
     private static MapProjection createGoogleMercator() throws FactoryException {
         MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
@@ -101,13 +101,11 @@ public final class MapProjectionTest {
                 0.001);
         assertEquals(
                 111319.49079,
-                mt.orthodromicDistance(
-                        new Point2D.Double(0.0, 89.0), new Point2D.Double(0.0, 90.0)),
+                mt.orthodromicDistance(new Point2D.Double(0.0, 89.0), new Point2D.Double(0.0, 90.0)),
                 0.001);
         assertEquals(
                 1942.76834,
-                mt.orthodromicDistance(
-                        new Point2D.Double(0.0, 89.0), new Point2D.Double(1.0, 89.0)),
+                mt.orthodromicDistance(new Point2D.Double(0.0, 89.0), new Point2D.Double(1.0, 89.0)),
                 0.001);
         assertEquals(
                 10018754.17139,

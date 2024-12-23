@@ -242,8 +242,7 @@ public class WMSComplexTypes {
             }
 
             capabilities.setVersion(attrs.getValue("", "version")); // $NON-NLS-1$//$NON-NLS-2$
-            capabilities.setUpdateSequence(
-                    attrs.getValue("", "updateSequence")); // $NON-NLS-1$//$NON-NLS-2$
+            capabilities.setUpdateSequence(attrs.getValue("", "updateSequence")); // $NON-NLS-1$//$NON-NLS-2$
 
             capabilities.setService(service);
 
@@ -376,8 +375,7 @@ public class WMSComplexTypes {
             }
 
             capabilities.setVersion(attrs.getValue("", "version")); // $NON-NLS-1$//$NON-NLS-2$
-            capabilities.setUpdateSequence(
-                    attrs.getValue("", "updateSequence")); // $NON-NLS-1$//$NON-NLS-2$
+            capabilities.setUpdateSequence(attrs.getValue("", "updateSequence")); // $NON-NLS-1$//$NON-NLS-2$
 
             capabilities.setService(service);
 
@@ -457,8 +455,7 @@ public class WMSComplexTypes {
 
         // private static Sequence seq = new SequenceGT(elems);
         private static Sequence seq =
-                new SequenceGT(
-                        new ElementGrouping[] {new ChoiceGT(null, 0, Integer.MAX_VALUE, elems)});
+                new SequenceGT(new ElementGrouping[] {new ChoiceGT(null, 0, Integer.MAX_VALUE, elems)});
 
         // private static All seq = new AllGT(elems);
 
@@ -506,8 +503,7 @@ public class WMSComplexTypes {
 
             for (ElementValue elementValue : value) {
                 // System.out.println("Strings adding: "+value[i].getValue());
-                if (elementValue.getValue() != null
-                        && ((String) elementValue.getValue()).length() != 0) {
+                if (elementValue.getValue() != null && ((String) elementValue.getValue()).length() != 0) {
                     strings.add((String) elementValue.getValue());
                 }
             }
@@ -573,35 +569,28 @@ public class WMSComplexTypes {
             new WMSSchema.WMSElement("Abstract", XSISimpleTypes.String.getInstance(), 0, 1),
             new WMSSchema.WMSElement("KeywordList", _KeywordListType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance()),
-            new WMSSchema.WMSElement(
-                    "ContactInformation", _ContactInformationType.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("ContactInformation", _ContactInformationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("Fees", XSISimpleTypes.String.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "AccessConstraints", XSISimpleTypes.String.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "LayerLimit", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "MaxWidth", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "MaxHeight", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("AccessConstraints", XSISimpleTypes.String.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("LayerLimit", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("MaxWidth", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("MaxHeight", XSISimpleTypes.PositiveInteger.getInstance(), 0, 1),
             new WMSSchema.WMSElement("Keywords", _KeywordsType.getInstance(), 0, 1)
         };
 
-        private static Sequence seq =
-                new SequenceGT(
-                        new ElementGrouping[] {
-                            elems[0],
-                            elems[1],
-                            elems[2],
-                            new ChoiceGT(null, 0, 1, new Element[] {elems[3], elems[11]}),
-                            elems[4],
-                            elems[5],
-                            elems[6],
-                            elems[7],
-                            elems[8],
-                            elems[9],
-                            elems[10]
-                        });
+        private static Sequence seq = new SequenceGT(new ElementGrouping[] {
+            elems[0],
+            elems[1],
+            elems[2],
+            new ChoiceGT(null, 0, 1, new Element[] {elems[3], elems[11]}),
+            elems[4],
+            elems[5],
+            elems[6],
+            elems[7],
+            elems[8],
+            elems[9],
+            elems[10]
+        });
 
         public static WMSSchema.WMSComplexType getInstance() {
             return instance;
@@ -673,8 +662,7 @@ public class WMSComplexTypes {
                 }
 
                 if (sameName(elems[5], elementValue)) {
-                    ResponsiblePartyImpl contactInfo =
-                            (ResponsiblePartyImpl) elementValue.getValue();
+                    ResponsiblePartyImpl contactInfo = (ResponsiblePartyImpl) elementValue.getValue();
                     service.setContactInformation(contactInfo);
                 }
 
@@ -1062,16 +1050,12 @@ public class WMSComplexTypes {
         private static final WMSSchema.WMSComplexType instance = new _ContactInformationType();
 
         private static Element[] elems = {
-            new WMSSchema.WMSElement(
-                    "ContactPersonPrimary", _ContactPersonPrimaryType.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("ContactPersonPrimary", _ContactPersonPrimaryType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("ContactPosition", XSISimpleTypes.String.getInstance(), 0, 1),
             new WMSSchema.WMSElement("ContactAddress", _ContactAddressType.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "ContactVoiceTelephone", XSISimpleTypes.String.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "ContactFacsimileTelephone", XSISimpleTypes.String.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "ContactElectronicMailAddress", XSISimpleTypes.String.getInstance(), 0, 1)
+            new WMSSchema.WMSElement("ContactVoiceTelephone", XSISimpleTypes.String.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("ContactFacsimileTelephone", XSISimpleTypes.String.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("ContactElectronicMailAddress", XSISimpleTypes.String.getInstance(), 0, 1)
         };
 
         private static Sequence seq = new SequenceGT(elems);
@@ -1291,8 +1275,7 @@ public class WMSComplexTypes {
 
                 if (sameName(elems[1], elementValue)) {
                     String organization = (String) elementValue.getValue();
-                    responsibleParty.setOrganisationName(
-                            new SimpleInternationalString(organization));
+                    responsibleParty.setOrganisationName(new SimpleInternationalString(organization));
                 }
             }
 
@@ -1484,18 +1467,10 @@ public class WMSComplexTypes {
         private static Element[] elems = {
             new WMSSchema.WMSElement("Request", _RequestType.getInstance()),
             new WMSSchema.WMSElement("Exception", _ExceptionType.getInstance()),
+            new WMSSchema.WMSElement("VendorSpecificCapabilities", _VendorSpecificCapabilitiesType.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("UserDefinedSymbolization", _UserDefinedSymbolizationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement(
-                    "VendorSpecificCapabilities",
-                    _VendorSpecificCapabilitiesType.getInstance(),
-                    0,
-                    1),
-            new WMSSchema.WMSElement(
-                    "UserDefinedSymbolization", _UserDefinedSymbolizationType.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "_ExtendedCapabilities",
-                    __ExtendedCapabilitiesType.getInstance(),
-                    0,
-                    Integer.MAX_VALUE),
+                    "_ExtendedCapabilities", __ExtendedCapabilitiesType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("Layer", _LayerType.getInstance(), 0, 1)
         };
 
@@ -1719,11 +1694,7 @@ public class WMSComplexTypes {
         private static final WMSSchema.WMSComplexType instance = new __ExtendedCapabilitiesType();
 
         private static Element[] elems = {
-            new WMSSchema.WMSElement(
-                    "SupportedSLDVersion",
-                    XSISimpleTypes.String.getInstance(),
-                    0,
-                    Integer.MAX_VALUE)
+            new WMSSchema.WMSElement("SupportedSLDVersion", XSISimpleTypes.String.getInstance(), 0, Integer.MAX_VALUE)
         };
 
         private static Sequence seq = new SequenceGT(elems);
@@ -1978,28 +1949,24 @@ public class WMSComplexTypes {
             new WMSSchema.WMSElement("GetLegendGraphic", OperationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("GetStyles", OperationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("PutStyles", OperationType.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "_ExtendedOperation", OperationType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("_ExtendedOperation", OperationType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("Capabilities", OperationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("Map", OperationType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("FeatureInfo", OperationType.getInstance(), 0, 1)
         };
 
-        private static Sequence seq =
-                new SequenceGT(
-                        new ElementGrouping[] {
-                            new ChoiceGT(
-                                    new ElementGrouping[] {
-                                        new SequenceGT(new ElementGrouping[] {elems[9], elems[8]}),
-                                        new SequenceGT(new ElementGrouping[] {elems[0], elems[1]})
-                                    }),
-                            new ChoiceGT(null, 0, 1, new Element[] {elems[2], elems[10]}),
-                            elems[3],
-                            elems[4],
-                            elems[5],
-                            elems[6],
-                            elems[7]
-                        });
+        private static Sequence seq = new SequenceGT(new ElementGrouping[] {
+            new ChoiceGT(new ElementGrouping[] {
+                new SequenceGT(new ElementGrouping[] {elems[9], elems[8]}),
+                new SequenceGT(new ElementGrouping[] {elems[0], elems[1]})
+            }),
+            new ChoiceGT(null, 0, 1, new Element[] {elems[2], elems[10]}),
+            elems[3],
+            elems[4],
+            elems[5],
+            elems[6],
+            elems[7]
+        });
 
         public static WMSSchema.WMSComplexType getInstance() {
             return instance;
@@ -2053,38 +2020,31 @@ public class WMSComplexTypes {
                 // +value[i].getElement().getName());
 
                 if (sameName(elems[0], elementValue) || sameName(elems[8], elementValue)) {
-                    request.setGetCapabilities(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setGetCapabilities((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[1], elementValue) || sameName(elems[9], elementValue)) {
-                    request.setGetMap(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setGetMap((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[2], elementValue) || sameName(elems[10], elementValue)) {
-                    request.setGetFeatureInfo(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setGetFeatureInfo((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[3], elementValue)) {
-                    request.setDescribeLayer(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setDescribeLayer((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[4], elementValue)) {
-                    request.setGetLegendGraphic(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setGetLegendGraphic((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[5], elementValue)) {
-                    request.setGetStyles(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setGetStyles((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 if (sameName(elems[6], elementValue)) {
-                    request.setPutStyles(
-                            (org.geotools.data.ows.OperationType) elementValue.getValue());
+                    request.setPutStyles((org.geotools.data.ows.OperationType) elementValue.getValue());
                 }
 
                 // TODO extended operations here
@@ -2140,9 +2100,7 @@ public class WMSComplexTypes {
     protected static class _DCPTypeType extends WMSSchema.WMSComplexType {
         private static final WMSSchema.WMSComplexType instance = new _DCPTypeType();
 
-        private static Element[] elems = {
-            new WMSSchema.WMSElement("HTTP", _HTTPType.getInstance())
-        };
+        private static Element[] elems = {new WMSSchema.WMSElement("HTTP", _HTTPType.getInstance())};
 
         private static Sequence seq = new SequenceGT(elems);
 
@@ -2291,8 +2249,7 @@ public class WMSComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
-            org.geotools.data.ows.OperationType operationType =
-                    new org.geotools.data.ows.OperationType();
+            org.geotools.data.ows.OperationType operationType = new org.geotools.data.ows.OperationType();
 
             for (ElementValue elementValue : value) {
                 if (sameName(elems[0], elementValue)) {
@@ -2472,8 +2429,7 @@ public class WMSComplexTypes {
     protected static class _PostType extends WMSSchema.WMSComplexType {
         private static final WMSSchema.WMSComplexType instance = new _PostType();
 
-        private static Element[] elems = {
-            new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance())
+        private static Element[] elems = {new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance())
         };
 
         private static Attribute[] attributes = {
@@ -2705,69 +2661,49 @@ public class WMSComplexTypes {
             new WMSSchema.WMSElement("Title", XSISimpleTypes.String.getInstance()),
             new WMSSchema.WMSElement("Abstract", XSISimpleTypes.String.getInstance(), 0, 1),
             new WMSSchema.WMSElement("KeywordList", _KeywordListType.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("CRS", XSISimpleTypes.String.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement(
-                    "CRS", XSISimpleTypes.String.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "EX_GeographicBoundingBox",
-                    _EX_GeographicBoundingBoxType.getInstance(),
-                    0,
-                    1), // 5
-            new WMSSchema.WMSElement(
-                    "BoundingBox", _BoundingBoxType.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "Dimension", _DimensionType.getInstance(), 0, Integer.MAX_VALUE),
+                    "EX_GeographicBoundingBox", _EX_GeographicBoundingBoxType.getInstance(), 0, 1), // 5
+            new WMSSchema.WMSElement("BoundingBox", _BoundingBoxType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("Dimension", _DimensionType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("Extent", _ExtentType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("Attribution", _AttributionType.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "AuthorityURL", _AuthorityURLType.getInstance(), 0, Integer.MAX_VALUE), // 10
-            new WMSSchema.WMSElement(
-                    "Identifier", _IdentifierType.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "MetadataURL", _MetadataURLType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("AuthorityURL", _AuthorityURLType.getInstance(), 0, Integer.MAX_VALUE), // 10
+            new WMSSchema.WMSElement("Identifier", _IdentifierType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("MetadataURL", _MetadataURLType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("DataURL", _DataURLType.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "FeatureListURL", _FeatureListURLType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("FeatureListURL", _FeatureListURLType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("Style", _StyleType.getInstance(), 0, Integer.MAX_VALUE), // 15
-            new WMSSchema.WMSElement(
-                    "MinScaleDenominator", XSISimpleTypes.Double.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "MaxScaleDenominator", XSISimpleTypes.Double.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("MinScaleDenominator", XSISimpleTypes.Double.getInstance(), 0, 1),
+            new WMSSchema.WMSElement("MaxScaleDenominator", XSISimpleTypes.Double.getInstance(), 0, 1),
             new WMSSchema.WMSElement("Layer", _LayerType.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "SRS", XSISimpleTypes.String.getInstance(), 0, Integer.MAX_VALUE),
-            new WMSSchema.WMSElement(
-                    "LatLonBoundingBox", _LatLonBoundingBoxType.getInstance(), 0, 1), // 20
+            new WMSSchema.WMSElement("SRS", XSISimpleTypes.String.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("LatLonBoundingBox", _LatLonBoundingBoxType.getInstance(), 0, 1), // 20
             new WMSSchema.WMSElement("ScaleHint", _ScaleHintType.getInstance(), 0, 1)
         };
 
-        private static Sequence seq =
-                new SequenceGT(
-                        new ElementGrouping[] {
-                            elems[0],
-                            elems[1],
-                            elems[2],
-                            elems[3],
-                            new ChoiceGT(
-                                    null,
-                                    0,
-                                    Integer.MAX_VALUE,
-                                    new Element[] {elems[4], elems[19]}),
-                            new ChoiceGT(null, 0, 1, new Element[] {elems[5], elems[20]}),
-                            elems[6],
-                            elems[7],
-                            elems[8],
-                            elems[9],
-                            elems[10],
-                            elems[11],
-                            elems[12],
-                            elems[13],
-                            elems[14],
-                            elems[15],
-                            elems[16],
-                            elems[17],
-                            elems[18],
-                            elems[21]
-                        });
+        private static Sequence seq = new SequenceGT(new ElementGrouping[] {
+            elems[0],
+            elems[1],
+            elems[2],
+            elems[3],
+            new ChoiceGT(null, 0, Integer.MAX_VALUE, new Element[] {elems[4], elems[19]}),
+            new ChoiceGT(null, 0, 1, new Element[] {elems[5], elems[20]}),
+            elems[6],
+            elems[7],
+            elems[8],
+            elems[9],
+            elems[10],
+            elems[11],
+            elems[12],
+            elems[13],
+            elems[14],
+            elems[15],
+            elems[16],
+            elems[17],
+            elems[18],
+            elems[21]
+        });
 
         private static Attribute[] attributes = {
             new WMSSchema.WMSAttribute(
@@ -2798,10 +2734,8 @@ public class WMSComplexTypes {
                     "0",
                     null,
                     false),
-            new WMSSchema.WMSAttribute(
-                    "fixedWidth", XSISimpleTypes.NonNegativeInteger.getInstance()),
-            new WMSSchema.WMSAttribute(
-                    "fixedHeight", XSISimpleTypes.NonNegativeInteger.getInstance())
+            new WMSSchema.WMSAttribute("fixedWidth", XSISimpleTypes.NonNegativeInteger.getInstance()),
+            new WMSSchema.WMSAttribute("fixedHeight", XSISimpleTypes.NonNegativeInteger.getInstance())
         };
 
         public static WMSSchema.WMSComplexType getInstance() {
@@ -3015,8 +2949,7 @@ public class WMSComplexTypes {
     }
 
     protected static class _EX_GeographicBoundingBoxType extends WMSSchema.WMSComplexType {
-        private static final WMSSchema.WMSComplexType instance =
-                new _EX_GeographicBoundingBoxType();
+        private static final WMSSchema.WMSComplexType instance = new _EX_GeographicBoundingBoxType();
 
         private static Element[] elems = {
             new WMSSchema.WMSElement("westBoundLongitude", LongitudeType.getInstance()),
@@ -3539,8 +3472,7 @@ public class WMSComplexTypes {
          *      java.util.Map)
          */
         @Override
-        public Object getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
             String name = attrs.getValue("name");
             if (name == null || name.length() == 0) {
@@ -3986,8 +3918,7 @@ public class WMSComplexTypes {
                 }
                 if (sameName(elems[0], value[i])) {
                     Object[] formObj = (Object[]) value[0].getValue();
-                    format =
-                            (formObj == null || formObj.length == 0) ? null : (String) (formObj[0]);
+                    format = (formObj == null || formObj.length == 0) ? null : (String) (formObj[0]);
                 }
 
                 if (sameName(elems[1], value[i])) {
@@ -4172,8 +4103,7 @@ public class WMSComplexTypes {
     protected static class _AuthorityURLType extends WMSSchema.WMSComplexType {
         private static final WMSSchema.WMSComplexType instance = new _AuthorityURLType();
 
-        private static Element[] elems = {
-            new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance())
+        private static Element[] elems = {new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance())
         };
 
         private static Sequence seq = new SequenceGT(elems);
@@ -4625,8 +4555,7 @@ public class WMSComplexTypes {
             new WMSSchema.WMSElement("Name", XSISimpleTypes.String.getInstance()),
             new WMSSchema.WMSElement("Title", XSISimpleTypes.String.getInstance()),
             new WMSSchema.WMSElement("Abstract", XSISimpleTypes.String.getInstance(), 0, 1),
-            new WMSSchema.WMSElement(
-                    "LegendURL", _LegendURLType.getInstance(), 0, Integer.MAX_VALUE),
+            new WMSSchema.WMSElement("LegendURL", _LegendURLType.getInstance(), 0, Integer.MAX_VALUE),
             new WMSSchema.WMSElement("StyleSheetURL", _StyleSheetURLType.getInstance(), 0, 1),
             new WMSSchema.WMSElement("StyleURL", _StyleURLType.getInstance(), 0, 1)
         };
@@ -4817,7 +4746,8 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
-            String legendURL = value[1].getValue() == null ? null : value[1].getValue().toString();
+            String legendURL =
+                    value[1].getValue() == null ? null : value[1].getValue().toString();
             return legendURL;
             // throw new OperationNotSupportedException();
         }
@@ -5320,9 +5250,7 @@ public class WMSComplexTypes {
             return instance;
         }
 
-        private static Attribute[] attrs = {
-            new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
-        };
+        private static Attribute[] attrs = {new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())};
 
         @Override
         public Attribute[] getAttributes() {
@@ -5404,15 +5332,12 @@ public class WMSComplexTypes {
         }
 
         private static Element[] elems = {
-            new WMSSchema.WMSElement(
-                    "ServiceException", _ServiceException.getInstance(), 0, Integer.MAX_VALUE)
+            new WMSSchema.WMSElement("ServiceException", _ServiceException.getInstance(), 0, Integer.MAX_VALUE)
         };
 
         private static Sequence seq = new SequenceGT(elems);
 
-        private static Attribute[] attrs = {
-            new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
-        };
+        private static Attribute[] attrs = {new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())};
 
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
@@ -7301,8 +7226,7 @@ public class WMSComplexTypes {
     static class LongitudeType extends WMSSchema.WMSSimpleType {
         private static SimpleType instance = new LongitudeType();
 
-        private static Facet[] facets = {
-            new FacetGT(Facet.MININCLUSIVE, "-180"), new FacetGT(Facet.MAXINCLUSIVE, "180")
+        private static Facet[] facets = {new FacetGT(Facet.MININCLUSIVE, "-180"), new FacetGT(Facet.MAXINCLUSIVE, "180")
         };
 
         public static SimpleType getInstance() {
@@ -7355,9 +7279,7 @@ public class WMSComplexTypes {
     static class LatitudeType extends WMSSchema.WMSSimpleType {
         private static SimpleType instance = new LatitudeType();
 
-        private static Facet[] facets = {
-            new FacetGT(Facet.MININCLUSIVE, "-90"), new FacetGT(Facet.MAXINCLUSIVE, "90")
-        };
+        private static Facet[] facets = {new FacetGT(Facet.MININCLUSIVE, "-90"), new FacetGT(Facet.MAXINCLUSIVE, "90")};
 
         public static SimpleType getInstance() {
             return instance;

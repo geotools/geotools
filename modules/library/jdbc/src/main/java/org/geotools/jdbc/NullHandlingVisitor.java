@@ -41,8 +41,8 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
- * Amends the differences between our in-memory two-valued logic and the database own three-valued
- * logic making sure we treat null values just like in memory (avoiding the third "unknown" status)
+ * Amends the differences between our in-memory two-valued logic and the database own three-valued logic making sure we
+ * treat null values just like in memory (avoiding the third "unknown" status)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -50,10 +50,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
 
     private FeatureType schema;
 
-    /**
-     * When providing the schema, the attributes will have null checks added only if they are marked
-     * as nillable
-     */
+    /** When providing the schema, the attributes will have null checks added only if they are marked as nillable */
     public NullHandlingVisitor(FeatureType schema) {
         this.schema = schema;
     }
@@ -122,8 +119,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         int maxListSize = 0;
         for (Filter child : filter.getChildren()) {
             // not equal comparisons are simplified another way
-            if (child instanceof PropertyIsNotEqualTo
-                    || !(child instanceof BinaryComparisonOperator)) {
+            if (child instanceof PropertyIsNotEqualTo || !(child instanceof BinaryComparisonOperator)) {
                 grouped.put(child, child.accept(this, null));
             } else {
                 String name = getComparisonPropertyName((BinaryComparisonOperator) child);
@@ -171,23 +167,20 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Given a binary comparison, returns the property name in case the comparison is between a
-     * property and a literal
+     * Given a binary comparison, returns the property name in case the comparison is between a property and a literal
      */
     private String getComparisonPropertyName(BinaryComparisonOperator filter) {
-        if (filter.getExpression1() instanceof PropertyName
-                && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
             return ((PropertyName) filter.getExpression1()).getPropertyName();
-        } else if (filter.getExpression2() instanceof PropertyName
-                && filter.getExpression1() instanceof Literal) {
+        } else if (filter.getExpression2() instanceof PropertyName && filter.getExpression1() instanceof Literal) {
             return ((PropertyName) filter.getExpression2()).getPropertyName();
         }
         return null;
     }
 
     /**
-     * Guards the filter against potential null values in the target property name (if it is a
-     * property name, to start with)
+     * Guards the filter against potential null values in the target property name (if it is a property name, to start
+     * with)
      */
     private Filter guardAgainstNulls(Filter filter, Expression potentialPropertyName) {
         if (potentialPropertyName instanceof PropertyName) {
@@ -210,9 +203,8 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
     }
 
     /**
-     * Returns if a property can contain null values, or not. If we don't have the schema
-     * information, or we don't know the property, we are going to assume the property is nillable
-     * to stay on the safe side
+     * Returns if a property can contain null values, or not. If we don't have the schema information, or we don't know
+     * the property, we are going to assume the property is nillable to stay on the safe side
      */
     private boolean isNillable(String name) {
         if (schema == null) {

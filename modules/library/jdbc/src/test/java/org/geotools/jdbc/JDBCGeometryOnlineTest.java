@@ -39,9 +39,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Tests that geometry types can be properly created and retrieved back from the database. You might
- * need to override some of the tests method to fix the expectations for specific geometry class
- * types.
+ * Tests that geometry types can be properly created and retrieved back from the database. You might need to override
+ * some of the tests method to fix the expectations for specific geometry class types.
  */
 public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
 
@@ -105,8 +104,7 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
         sfb.set(aname("name"), "the name");
         sfb.set(aname("geom"), reader.read("MultiSurface (((1 0, 2 0, 2 1, 1 1, 1 0)))"));
 
-        ContentFeatureStore store =
-                (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
+        ContentFeatureStore store = (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
         store.addFeatures(DataUtilities.collection(sfb.buildFeature("1")));
     }
 

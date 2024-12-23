@@ -74,8 +74,7 @@ public class SearchDirectionTypeBinding extends AbstractSimpleBinding {
         // &lt;xsd:enumeration value="frontToBack"/&gt;
         // &lt;xsd:enumeration value="backToFront"/&gt;
         if (!"frontToBack".equalsIgnoreCase(val) && !"backToFront".equalsIgnoreCase(val)) {
-            throw new IllegalArgumentException(
-                    val + " not supported, must be one of 'frontToBack', 'backToFront'");
+            throw new IllegalArgumentException(val + " not supported, must be one of 'frontToBack', 'backToFront'");
         }
 
         return val;

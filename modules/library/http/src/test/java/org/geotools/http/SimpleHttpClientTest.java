@@ -53,17 +53,16 @@ public class SimpleHttpClientTest {
     public static WireMockClassRule classRule =
             new WireMockClassRule(WireMockConfiguration.options().dynamicPort().dynamicHttpsPort());
 
-    @Rule public WireMockClassRule service = classRule;
+    @Rule
+    public WireMockClassRule service = classRule;
 
     @Test
     public void testBasicHeader() throws IOException {
-        service.stubFor(
-                get(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        service.stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
 
         String longPassword = "0123456789".repeat(10);
         String userName = "user";
@@ -74,9 +73,8 @@ public class SimpleHttpClientTest {
 
         String encodedCredentials =
                 "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-        service.verify(
-                getRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+        service.verify(getRequestedFor(urlEqualTo("/test"))
+                .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
     }
 
     /**
@@ -89,11 +87,10 @@ public class SimpleHttpClientTest {
         String headerValue;
         URL url = new URL("http://localhost:" + service.port() + "/test");
         UrlPattern urlPattern = urlEqualTo("/test");
-        ResponseDefinitionBuilder response =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder response = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         SimpleHttpClient client = new SimpleHttpClient();
 
@@ -101,17 +98,13 @@ public class SimpleHttpClientTest {
         service.stubFor(get(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis();
         client.get(url, Map.of("Authorization", headerValue));
-        service.verify(
-                getRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo(headerValue)));
+        service.verify(getRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
 
         // POST
         service.stubFor(post(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis() + 1;
         client.post(url, postBody, "text/plain", Map.of("Authorization", headerValue));
-        service.verify(
-                postRequestedFor(urlEqualTo("/test"))
-                        .withHeader("Authorization", equalTo(headerValue)));
+        service.verify(postRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
     }
 
     /**
@@ -123,19 +116,16 @@ public class SimpleHttpClientTest {
     public void testRequestsWithExtraParams() throws IOException {
         SimpleHttpClient client = new SimpleHttpClient();
 
-        Map<String, String> testExtraParams =
-                Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
+        Map<String, String> testExtraParams = Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
 
-        URL urlWithoutExtraParams =
-                new URL("http://localhost:" + service.port() + "/test?key2=duplicate");
+        URL urlWithoutExtraParams = new URL("http://localhost:" + service.port() + "/test?key2=duplicate");
 
         // Mock the expected request and response
         UrlPattern urlPattern = urlMatching("/test[\\w?&=%]*"); // \w or any of ?&=%
-        ResponseDefinitionBuilder response =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder response = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         service.stubFor(get(urlPattern).willReturn(response));
         service.stubFor(post(urlPattern).willReturn(response));
 
@@ -143,25 +133,21 @@ public class SimpleHttpClientTest {
 
         // GET
         client.get(urlWithoutExtraParams);
-        service.verify(
-                getRequestedFor(urlMatching("/test[\\w?&=%]*"))
-                        .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2"))
-                        .withQueryParam("key2", equalTo("duplicate"))
-                        .withQueryParam(
-                                "key%3",
-                                equalTo("value/3"))); // % and / are URL-encoded and then decoded
+        service.verify(getRequestedFor(urlMatching("/test[\\w?&=%]*"))
+                .withQueryParam("key1", equalTo("123"))
+                .withQueryParam("key2", equalTo("value2"))
+                .withQueryParam("key2", equalTo("duplicate"))
+                .withQueryParam("key%3", equalTo("value/3"))); // % and / are URL-encoded and then decoded
         // again
 
         // POST
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         client.post(urlWithoutExtraParams, postBody, "text/plain");
-        service.verify(
-                postRequestedFor(urlMatching("/test[\\w?&=%]*"))
-                        .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2"))
-                        .withQueryParam("key2", equalTo("duplicate"))
-                        .withQueryParam("key%3", equalTo("value/3")));
+        service.verify(postRequestedFor(urlMatching("/test[\\w?&=%]*"))
+                .withQueryParam("key1", equalTo("123"))
+                .withQueryParam("key2", equalTo("value2"))
+                .withQueryParam("key2", equalTo("duplicate"))
+                .withQueryParam("key%3", equalTo("value/3")));
     }
 
     /**
@@ -175,24 +161,18 @@ public class SimpleHttpClientTest {
         String expectedContent = "<response>Redirected content</response>";
 
         String redirectURL = "https://localhost:" + service.httpsPort() + "/test-redirected";
-        service.stubFor(
-                get(urlEqualTo("/test-redirect"))
-                        .willReturn(
-                                aResponse().withStatus(301).withHeader("Location", redirectURL)));
-        service.stubFor(
-                get(urlEqualTo("/test-redirected"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody(expectedContent)));
+        service.stubFor(get(urlEqualTo("/test-redirect"))
+                .willReturn(aResponse().withStatus(301).withHeader("Location", redirectURL)));
+        service.stubFor(get(urlEqualTo("/test-redirected"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody(expectedContent)));
 
         SimpleHttpClient client = new SimpleHttpClient();
 
-        HTTPResponse response =
-                client.get(new URL("http://localhost:" + service.port() + "/test-redirect"));
-        String actualContent =
-                IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
+        HTTPResponse response = client.get(new URL("http://localhost:" + service.port() + "/test-redirect"));
+        String actualContent = IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
 
         Assert.assertEquals(actualContent, expectedContent);
         service.verify(getRequestedFor(urlEqualTo("/test-redirected")));
@@ -207,20 +187,11 @@ public class SimpleHttpClientTest {
     public void testMaxRedirectionLimit() throws IOException {
         trustSelfSignedCertificate();
         String httpRedirectURL = "http://localhost:" + service.port() + "/test-redirect-loop-http";
-        String httpsRedirectURL =
-                "https://localhost:" + service.httpsPort() + "/test-redirect-loop-https";
-        service.stubFor(
-                get(urlEqualTo("/test-redirect-loop-http"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(301)
-                                        .withHeader("Location", httpsRedirectURL)));
-        service.stubFor(
-                get(urlEqualTo("/test-redirect-loop-https"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(301)
-                                        .withHeader("Location", httpRedirectURL)));
+        String httpsRedirectURL = "https://localhost:" + service.httpsPort() + "/test-redirect-loop-https";
+        service.stubFor(get(urlEqualTo("/test-redirect-loop-http"))
+                .willReturn(aResponse().withStatus(301).withHeader("Location", httpsRedirectURL)));
+        service.stubFor(get(urlEqualTo("/test-redirect-loop-https"))
+                .willReturn(aResponse().withStatus(301).withHeader("Location", httpRedirectURL)));
 
         SimpleHttpClient client = new SimpleHttpClient();
         client.get(new URL(httpRedirectURL));
@@ -234,8 +205,7 @@ public class SimpleHttpClientTest {
         SSLContext ctx;
         try {
             SSLContextBuilder sslContextBuilder =
-                    SSLContextBuilder.create()
-                            .loadTrustMaterial(null, new TrustSelfSignedStrategy());
+                    SSLContextBuilder.create().loadTrustMaterial(null, new TrustSelfSignedStrategy());
             ctx = sslContextBuilder.build();
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new RuntimeException(e);

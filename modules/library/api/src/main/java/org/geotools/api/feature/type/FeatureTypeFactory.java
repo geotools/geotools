@@ -19,8 +19,8 @@ import org.geotools.api.util.InternationalString;
 /**
  * Factory for types and descriptors.
  *
- * <p>Implementations of this interface should not contain any "special logic" for creating types.
- * Method implementations should be straight through calls to a constructor.
+ * <p>Implementations of this interface should not contain any "special logic" for creating types. Method
+ * implementations should be straight through calls to a constructor.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Justin Deoliveira (The Open Planning Project)
@@ -56,12 +56,7 @@ public interface FeatureTypeFactory {
      * @param defaultValue The default value of the described attribute.
      */
     AttributeDescriptor createAttributeDescriptor(
-            AttributeType type,
-            Name name,
-            int minOccurs,
-            int maxOccurs,
-            boolean isNillable,
-            Object defaultValue);
+            AttributeType type, Name name, int minOccurs, int maxOccurs, boolean isNillable, Object defaultValue);
 
     /**
      * Creates a geometry descriptor.
@@ -74,12 +69,7 @@ public interface FeatureTypeFactory {
      * @param defaultValue The default value of the described attribute.
      */
     GeometryDescriptor createGeometryDescriptor(
-            GeometryType type,
-            Name name,
-            int minOccurs,
-            int maxOccurs,
-            boolean isNillable,
-            Object defaultValue);
+            GeometryType type, Name name, int minOccurs, int maxOccurs, boolean isNillable, Object defaultValue);
 
     /**
      * Creates an association type.

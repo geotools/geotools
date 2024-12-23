@@ -30,8 +30,7 @@ class HanaVersion implements Comparable<HanaVersion> {
     /**
      * Constructor.
      *
-     * @param versionString The version string in the format
-     *     "version.00.revision.patchlevel.buildid"..
+     * @param versionString The version string in the format "version.00.revision.patchlevel.buildid"..
      */
     public HanaVersion(String versionString) {
         String[] components = versionString.split("\\.");
@@ -85,8 +84,7 @@ class HanaVersion implements Comparable<HanaVersion> {
 
         if (this.version != that.version) return Integer.compare(this.version, that.version);
         if (this.revision != that.revision) return Integer.compare(this.revision, that.revision);
-        if (this.patchLevel != that.patchLevel)
-            return Integer.compare(this.patchLevel, that.patchLevel);
+        if (this.patchLevel != that.patchLevel) return Integer.compare(this.patchLevel, that.patchLevel);
 
         return 0;
     }

@@ -25,8 +25,8 @@ import java.util.Set;
 import org.geotools.util.Utilities;
 
 /**
- * A view of a metadata object as a map. Keys are property names and values are the value returned
- * by the {@code getFoo()} method using reflection.
+ * A view of a metadata object as a map. Keys are property names and values are the value returned by the
+ * {@code getFoo()} method using reflection.
  *
  * @since 2.4
  * @version $Id$
@@ -63,8 +63,8 @@ final class PropertyMap extends AbstractMap<String, Object> {
     }
 
     /**
-     * Returns the value to which the specified key is mapped, or {@code null} if this map contains
-     * no mapping for the key.
+     * Returns the value to which the specified key is mapped, or {@code null} if this map contains no mapping for the
+     * key.
      */
     @Override
     public Object get(final Object key) {
@@ -84,8 +84,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
      * @throws ClassCastException if the given value is not of the expected type.
      */
     @Override
-    public Object put(final String key, final Object value)
-            throws IllegalArgumentException, ClassCastException {
+    public Object put(final String key, final Object value) throws IllegalArgumentException, ClassCastException {
         return accessor.set(accessor.requiredIndexOf(key), metadata, value);
     }
 
@@ -149,13 +148,12 @@ final class PropertyMap extends AbstractMap<String, Object> {
 
         /** Compares the specified entry with this one for equality. */
         public boolean equals(final Map.Entry<?, ?> entry) {
-            return Utilities.equals(getKey(), entry.getKey())
-                    && Utilities.equals(getValue(), entry.getValue());
+            return Utilities.equals(getKey(), entry.getKey()) && Utilities.equals(getValue(), entry.getValue());
         }
 
         /**
-         * Compares the specified object with this entry for equality. Criterions are specified by
-         * the {@link Map.Entry} contract.
+         * Compares the specified object with this entry for equality. Criterions are specified by the {@link Map.Entry}
+         * contract.
          */
         @Override
         public boolean equals(final Object object) {
@@ -163,8 +161,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /**
-         * Returns the hash code value for this map entry. The formula is specified by the {@link
-         * Map.Entry} contract.
+         * Returns the hash code value for this map entry. The formula is specified by the {@link Map.Entry} contract.
          */
         @Override
         public int hashCode() {
@@ -192,10 +189,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
             move(0);
         }
 
-        /**
-         * Move {@link #next} to the first property with a valid value, starting at the specified
-         * index.
-         */
+        /** Move {@link #next} to the first property with a valid value, starting at the specified index. */
         private void move(int index) {
             final int count = accessor.count();
             while (index < count) {

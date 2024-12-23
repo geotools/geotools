@@ -39,15 +39,14 @@ public class MBLookup extends MBExpression {
             Expression at = parse.string(json, 1);
             return ff.function("at", e, at);
         }
-        throw new MBFormatException(
-                "The \"at\" expression requires an integer value at index 1, and a literal"
-                        + " array value at index 2");
+        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal"
+                + " array value at index 2");
     }
 
     /**
-     * Retrieves a property value from the current feature's properties, or from another object if a
-     * second argument is provided. Returns null if the requested property is missing. Example:
-     * ["get", string]: value ["get", string, object]: value
+     * Retrieves a property value from the current feature's properties, or from another object if a second argument is
+     * provided. Returns null if the requested property is missing. Example: ["get", string]: value ["get", string,
+     * object]: value
      *
      * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      *
@@ -75,9 +74,8 @@ public class MBLookup extends MBExpression {
     }
 
     /**
-     * Tests for the presence of an property value in the current feature's properties, or from
-     * another object if a second argument is provided. Example: ["has", string]: boolean ["has",
-     * string, object]: boolean
+     * Tests for the presence of an property value in the current feature's properties, or from another object if a
+     * second argument is provided. Example: ["has", string]: boolean ["has", string, object]: boolean
      *
      * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      *
@@ -93,13 +91,11 @@ public class MBLookup extends MBExpression {
             Expression object = parse.string(json, 2);
             return ff.function("has", value, object);
         }
-        throw new MBFormatException(
-                "Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
+        throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
     }
 
     /**
-     * Gets the length of an array or string. Example: ["length", string]: number ["length", array]:
-     * number
+     * Gets the length of an array or string. Example: ["length", string]: number ["length", array]: number
      *
      * @return length of array expression
      */

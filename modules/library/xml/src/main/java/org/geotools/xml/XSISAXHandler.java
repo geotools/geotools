@@ -32,9 +32,9 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * This is a schema handler. Code here has been modified from code written by Ian Schneider.
  *
- * <p>This class contains one stack used to store part of the parse tree. The ElementHandlers found
- * on the stack have direct next handlers placed on the stack. So here's the warning, be careful to
- * read how you may be affecting (or forgetting to affect) the stack.
+ * <p>This class contains one stack used to store part of the parse tree. The ElementHandlers found on the stack have
+ * direct next handlers placed on the stack. So here's the warning, be careful to read how you may be affecting (or
+ * forgetting to affect) the stack.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
@@ -43,8 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XSISAXHandler extends DefaultHandler {
     // the logger -- should be used for debugging (assuming there are bugs LOL)
-    protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
+    protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
 
     // the stack of handers representing a portion of the parse tree
     private Stack<XSIElementHandler> handlers = new Stack<>();
@@ -59,8 +58,8 @@ public class XSISAXHandler extends DefaultHandler {
     private Locator locator;
 
     /**
-     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the
-     * beggining of {@link #endElement(String, String, String)}
+     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the beggining of
+     * {@link #endElement(String, String, String)}
      */
     private StringBuffer characters = new StringBuffer();
 
@@ -141,12 +140,10 @@ public class XSISAXHandler extends DefaultHandler {
     /**
      * Implementation of endElement. push NS,Name
      *
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
-     *     java.lang.String)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         logger.fine("END: " + qName);
 
@@ -162,12 +159,11 @@ public class XSISAXHandler extends DefaultHandler {
     /**
      * Implementation of startElement.
      *
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
-     *     java.lang.String, org.xml.sax.Attributes)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
         logger.fine("START: " + qName);
 
@@ -199,8 +195,8 @@ public class XSISAXHandler extends DefaultHandler {
     /**
      * getSchema purpose.
      *
-     * <p>This method should be called only after the parse has been completed. This method will
-     * then return a compressed schema instance.
+     * <p>This method should be called only after the parse has been completed. This method will then return a
+     * compressed schema instance.
      *
      * @return schema
      */

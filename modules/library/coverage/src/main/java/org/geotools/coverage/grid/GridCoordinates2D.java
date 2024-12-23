@@ -22,9 +22,8 @@ import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Holds the set of two-dimensional grid coordinates that specifies the location of the {@linkplain
- * GridPoint grid point} within the {@linkplain Grid grid}. This class extends {@link Point} for
- * interoperability with Java2D.
+ * Holds the set of two-dimensional grid coordinates that specifies the location of the {@linkplain GridPoint grid
+ * point} within the {@linkplain Grid grid}. This class extends {@link Point} for interoperability with Java2D.
  *
  * @since 2.5
  * @version $Id$
@@ -66,8 +65,8 @@ public class GridCoordinates2D extends Point implements GridCoordinates {
     }
 
     /**
-     * Returns one integer value for each dimension of the grid. This method returns ({@linkplain #x
-     * x},{@linkplain #y y}) in an array of length 2.
+     * Returns one integer value for each dimension of the grid. This method returns ({@linkplain #x x},{@linkplain #y
+     * y}) in an array of length 2.
      */
     @Override
     public int[] getCoordinateValues() {
@@ -149,11 +148,9 @@ public class GridCoordinates2D extends Point implements GridCoordinates {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

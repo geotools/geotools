@@ -10,9 +10,9 @@
 package org.geotools.api.referencing.cs;
 
 /**
- * A one-dimensional coordinate system containing a single time axis, used to describe the temporal
- * position of a point in the specified time units from a specified time origin. A {@code TimeCS}
- * shall have one {@linkplain #getAxis axis association}.
+ * A one-dimensional coordinate system containing a single time axis, used to describe the temporal position of a point
+ * in the specified time units from a specified time origin. A {@code TimeCS} shall have one {@linkplain #getAxis axis
+ * association}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -20,8 +20,7 @@ package org.geotools.api.referencing.cs;
  *   {@link org.geotools.api.referencing.crs.TemporalCRS Temporal}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */

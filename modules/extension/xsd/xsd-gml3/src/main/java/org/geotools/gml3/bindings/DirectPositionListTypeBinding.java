@@ -164,8 +164,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
     /**
      * @param object a CoordinateSequence
-     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
-     *     org.w3c.dom.Element)
+     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element)
      */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {

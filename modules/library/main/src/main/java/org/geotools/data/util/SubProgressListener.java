@@ -54,8 +54,7 @@ public class SubProgressListener extends DelegateProgressListener {
      * @param start the starting offset for the progress
      * @param amount amount of progress represented
      */
-    public SubProgressListener(
-            org.geotools.api.util.ProgressListener progress, float start, float amount) {
+    public SubProgressListener(org.geotools.api.util.ProgressListener progress, float start, float amount) {
         super(progress);
         this.start = start;
         this.amount = (amount > 0.0f) ? amount : 0.0f;

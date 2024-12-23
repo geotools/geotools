@@ -52,8 +52,7 @@ public class VSIDataset {
     /**
      * Static method for creating a {@link VSIDataset} from a generic object type
      *
-     * @param input source {@link Object} which is a {@link String} representing the path to a VSI
-     *     Virtual File System
+     * @param input source {@link Object} which is a {@link String} representing the path to a VSI Virtual File System
      * @return {@link VSIDataset} representation of the input
      */
     public static VSIDataset fromObject(Object input) {
@@ -74,8 +73,7 @@ public class VSIDataset {
     }
 
     /**
-     * Generate a temporary VRT file based on the same name as the remote file. This file is deleted
-     * on exit of the JVM
+     * Generate a temporary VRT file based on the same name as the remote file. This file is deleted on exit of the JVM
      *
      * @return {@link File} representing the temporary VRT file
      */
@@ -90,8 +88,8 @@ public class VSIDataset {
     }
 
     /**
-     * Copy the source dataset to a temporary VRT file, applying any GDAL configuration options
-     * specified in vsi.properties before doing so
+     * Copy the source dataset to a temporary VRT file, applying any GDAL configuration options specified in
+     * vsi.properties before doing so
      *
      * @return generated VRT {@link File} object
      */

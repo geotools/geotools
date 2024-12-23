@@ -89,19 +89,13 @@ public class BrewerExamples {
         // explicitClassifierExample start
         Set[] zones = new Set[3];
         // urban commercial or residencial
-        zones[0] =
-                new HashSet(
-                        Arrays.asList(
-                                new String[] {
-                                    "Zone 1", "Zone 2",
-                                }));
+        zones[0] = new HashSet(Arrays.asList(new String[] {
+            "Zone 1", "Zone 2",
+        }));
         // municipal or crown parkland
-        zones[1] =
-                new HashSet(
-                        Arrays.asList(
-                                new String[] {
-                                    "Zone 4", "Crown 2",
-                                }));
+        zones[1] = new HashSet(Arrays.asList(new String[] {
+            "Zone 4", "Crown 2",
+        }));
         // industrial
         zones[2] = new HashSet(Arrays.asList(new String[] {"Zone 3"}));
 
@@ -143,16 +137,15 @@ public class BrewerExamples {
 
         // STEP 3 - ask StyleGenerator to make a set of rules for the Classifier
         // assigning features the correct color based on height
-        FeatureTypeStyle style =
-                StyleGenerator.createFeatureTypeStyle(
-                        groups,
-                        propteryExpression,
-                        colors,
-                        "Generated FeatureTypeStyle for GreeBlue",
-                        featureCollection.getSchema().getGeometryDescriptor(),
-                        StyleGenerator.ELSEMODE_IGNORE,
-                        0.95,
-                        null);
+        FeatureTypeStyle style = StyleGenerator.createFeatureTypeStyle(
+                groups,
+                propteryExpression,
+                colors,
+                "Generated FeatureTypeStyle for GreeBlue",
+                featureCollection.getSchema().getGeometryDescriptor(),
+                StyleGenerator.ELSEMODE_IGNORE,
+                0.95,
+                null);
         // colorBrewerExample end
     }
 }

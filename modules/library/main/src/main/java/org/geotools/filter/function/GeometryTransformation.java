@@ -20,8 +20,8 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * This interface can be implemented by geometry transformation functions that whish to be used in
- * the {@link } geometry property.
+ * This interface can be implemented by geometry transformation functions that whish to be used in the {@link } geometry
+ * property.
  *
  * <p>It gives the renderer a hint of what area should be queried given a certain rendering area
  *

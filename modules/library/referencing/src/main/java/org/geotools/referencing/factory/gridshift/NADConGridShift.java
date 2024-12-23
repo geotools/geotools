@@ -47,14 +47,7 @@ public class NADConGridShift extends LocalizationGrid implements Serializable {
     private double dy;
 
     public NADConGridShift(
-            double xmin,
-            double ymin,
-            double xmax,
-            double ymax,
-            double dx,
-            double dy,
-            int width,
-            int height) {
+            double xmin, double ymin, double xmax, double ymax, double dx, double dy, int width, int height) {
         super(width, height);
         this.minX = xmin;
         this.maxX = xmax;

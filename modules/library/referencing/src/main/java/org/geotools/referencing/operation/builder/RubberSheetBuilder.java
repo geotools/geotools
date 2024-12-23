@@ -32,9 +32,8 @@ import org.geotools.referencing.CRS;
 
 /**
  * Builds a RubberSheet transformation from a set of control points, defined as a List of
- * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition} objects,
- * and a quadrilateral delimiting the outer area of interest, defined as a List of four {@linkplain
- * Position DirectPosition} objects.
+ * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition} objects, and a quadrilateral
+ * delimiting the outer area of interest, defined as a List of four {@linkplain Position DirectPosition} objects.
  *
  * <p>An explanation of the RubberSheet transformation algorithm can be seen <a href
  * ="http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
@@ -53,16 +52,15 @@ public class RubberSheetBuilder extends MathTransformBuilder {
     private Map<TINTriangle, Object> trianglesToKeysMap;
 
     /**
-     * Creates the Builder from a List of control points and a List of four DirectPositions defining
-     * the vertexes of the area for interpolation.
+     * Creates the Builder from a List of control points and a List of four DirectPositions defining the vertexes of the
+     * area for interpolation.
      *
-     * @param vectors A List of {@linkplain
-     *     org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
+     * @param vectors A List of {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
      * @param vertices A List with four points defining the quadrilateral in the region of interest.
      */
     public RubberSheetBuilder(List<MappedPosition> vectors, List<Position> vertices)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException, TriangulationException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException,
+                    TriangulationException {
 
         // Validates the vectors parameter while setting it
         super.setMappedPositions(vectors);
@@ -90,8 +88,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
                 || CRS.equalsIgnoreMetadata(crs, ddpp[1].getCoordinateReferenceSystem())
                 || CRS.equalsIgnoreMetadata(crs, ddpp[2].getCoordinateReferenceSystem())
                 || CRS.equalsIgnoreMetadata(crs, ddpp[3].getCoordinateReferenceSystem()))) {
-            throw new MismatchedReferenceSystemException(
-                    "Region of interest defined by mismatched DirectPositions.");
+            throw new MismatchedReferenceSystemException("Region of interest defined by mismatched DirectPositions.");
         }
 
         // Check the vectors are inside the vertices.
@@ -108,8 +105,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         vtxextnt.add(ddpp[2]);
         vtxextnt.add(ddpp[3]);
         if (!vtxextnt.contains(srcextnt, true))
-            throw new IllegalArgumentException(
-                    "The region of interest must contain the control points");
+            throw new IllegalArgumentException("The region of interest must contain the control points");
 
         Quadrilateral quad = new Quadrilateral(ddpp[0], ddpp[1], ddpp[2], ddpp[3]);
 
@@ -152,17 +148,16 @@ public class RubberSheetBuilder extends MathTransformBuilder {
     /**
      * Calculates affine transformation parameters from the pair of triangles.
      *
-     * @return The HashMap where the keys are the original triangles and values are
-     *     AffineTransformation Objects.
+     * @return The HashMap where the keys are the original triangles and values are AffineTransformation Objects.
      */
     private HashMap<TINTriangle, Object> mapTrianglesToKey() {
         AffineTransformBuilder calculator;
 
         @SuppressWarnings("unchecked")
-        HashMap<TINTriangle, Object> trianglesToKeysMap =
-                (HashMap<TINTriangle, Object>) trianglesMap.clone();
+        HashMap<TINTriangle, Object> trianglesToKeysMap = (HashMap<TINTriangle, Object>) trianglesMap.clone();
 
-        Iterator<Map.Entry<TINTriangle, Object>> it = trianglesToKeysMap.entrySet().iterator();
+        Iterator<Map.Entry<TINTriangle, Object>> it =
+                trianglesToKeysMap.entrySet().iterator();
 
         while (it.hasNext()) {
 
@@ -170,10 +165,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
             List<MappedPosition> pts = new ArrayList<>();
 
             for (int i = 1; i <= 3; i++) {
-                pts.add(
-                        new MappedPosition(
-                                a.getKey().getPoints()[i],
-                                ((TINTriangle) a.getValue()).getPoints()[i]));
+                pts.add(new MappedPosition(a.getKey().getPoints()[i], ((TINTriangle) a.getValue()).getPoints()[i]));
             }
 
             try {

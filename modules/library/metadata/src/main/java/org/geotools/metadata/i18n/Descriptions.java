@@ -21,8 +21,8 @@ import java.util.MissingResourceException;
 import org.geotools.util.IndexedResourceBundle;
 
 /**
- * Base class for locale-dependent resources. Instances of this class should never been created
- * directly. Use the factory method {@link #getResources} or use static convenience methods instead.
+ * Base class for locale-dependent resources. Instances of this class should never been created directly. Use the
+ * factory method {@link #getResources} or use static convenience methods instead.
  *
  * @since 2.2
  * @version $Id$
@@ -58,8 +58,7 @@ public class Descriptions extends IndexedResourceBundle {
     }
 
     /**
-     * Gets a string for the given key are replace all occurence of "{0}" with values of {@code
-     * arg0}.
+     * Gets a string for the given key are replace all occurence of "{0}" with values of {@code arg0}.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute to "{0}".
@@ -71,8 +70,8 @@ public class Descriptions extends IndexedResourceBundle {
     }
 
     /**
-     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}.
+     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute to "{0}".
@@ -80,14 +79,13 @@ public class Descriptions extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(final int key, final Object arg0, final Object arg1)
-            throws MissingResourceException {
+    public static String format(final int key, final Object arg0, final Object arg1) throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1);
     }
 
     /**
-     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param key The key for the desired string.
      * @param arg0 Value to substitute to "{0}".
@@ -96,8 +94,7 @@ public class Descriptions extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(
-            final int key, final Object arg0, final Object arg1, final Object arg2)
+    public static String format(final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1, arg2);
     }

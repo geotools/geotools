@@ -22,10 +22,7 @@ import java.io.IOException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 
-/**
- * Class responsible for determining whether a given coverage should or should not be part of the
- * image mosaic.
- */
+/** Class responsible for determining whether a given coverage should or should not be part of the image mosaic. */
 public interface GranuleAcceptor {
     /**
      * @param coverage the coverage being added to the catalog

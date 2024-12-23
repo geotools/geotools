@@ -42,64 +42,60 @@ import org.geotools.util.factory.Hints;
  */
 public class URConverterFactory implements ConverterFactory {
 
-    public static final Converter StringToURL =
-            new Converter() {
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    String s = (String) source;
-                    try {
-                        return target.cast(new URL(s));
-                    } catch (MalformedURLException e1) {
-                        File f = new File(s);
-                        try {
-                            return target.cast(f.toURI().toURL());
-                        } catch (MalformedURLException e2) {
-                        }
-                    }
-
-                    return null;
+    public static final Converter StringToURL = new Converter() {
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            String s = (String) source;
+            try {
+                return target.cast(new URL(s));
+            } catch (MalformedURLException e1) {
+                File f = new File(s);
+                try {
+                    return target.cast(f.toURI().toURL());
+                } catch (MalformedURLException e2) {
                 }
-            };
+            }
 
-    public static final Converter StringToURI =
-            new Converter() {
+            return null;
+        }
+    };
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    String s = (String) source;
-                    try {
-                        return target.cast(new URI(s));
-                    } catch (URISyntaxException e1) {
-                        File f = new File(s);
-                        try {
-                            return target.cast(f.toURI());
-                        } catch (Exception e2) {
-                        }
-                    }
+    public static final Converter StringToURI = new Converter() {
 
-                    return null;
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            String s = (String) source;
+            try {
+                return target.cast(new URI(s));
+            } catch (URISyntaxException e1) {
+                File f = new File(s);
+                try {
+                    return target.cast(f.toURI());
+                } catch (Exception e2) {
                 }
-            };
+            }
 
-    public static final Converter URLToURI =
-            new Converter() {
+            return null;
+        }
+    };
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    URL url = (URL) source;
-                    return target.cast(url.toURI());
-                }
-            };
+    public static final Converter URLToURI = new Converter() {
 
-    public static final Converter URIToURL =
-            new Converter() {
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            URL url = (URL) source;
+            return target.cast(url.toURI());
+        }
+    };
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    URI uri = (URI) source;
-                    return target.cast(uri.toURL());
-                }
-            };
+    public static final Converter URIToURL = new Converter() {
+
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            URI uri = (URI) source;
+            return target.cast(uri.toURL());
+        }
+    };
 
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {

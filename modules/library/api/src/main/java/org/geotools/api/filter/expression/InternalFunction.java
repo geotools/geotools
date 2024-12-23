@@ -13,15 +13,15 @@ package org.geotools.api.filter.expression;
 import org.geotools.api.filter.FilterFactory;
 
 /**
- * Special {@link Function} type indicating that that the function is to be executed exclusively at
- * run-time, and does not participate in the SPI (Service Provider Interface) lookup mechanism (i.e.
- * cannot be created using a {@link FilterFactory}).
+ * Special {@link Function} type indicating that that the function is to be executed exclusively at run-time, and does
+ * not participate in the SPI (Service Provider Interface) lookup mechanism (i.e. cannot be created using a
+ * {@link FilterFactory}).
  *
- * <p>This is a (non OGC Filter compatible) extension point to the Filter API to allow for anonymous
- * inner classes to be used in filters.
+ * <p>This is a (non OGC Filter compatible) extension point to the Filter API to allow for anonymous inner classes to be
+ * used in filters.
  *
- * <p>The additional {@link #duplicate(Expression...)} method allows for implementations to return a
- * new instance of the function for the given set of arguments.
+ * <p>The additional {@link #duplicate(Expression...)} method allows for implementations to return a new instance of the
+ * function for the given set of arguments.
  *
  * <p>Usage example:
  *
@@ -53,16 +53,15 @@ public interface InternalFunction extends Function {
     /**
      * Factory method to return a new instance of its own kind that works on the given parameters.
      *
-     * <p>This is so because InternalFunctions do not participate on the standard SPI lookup
-     * mechanism and hence they can't be created by {@link FilterFactory}, yet on occasion a new
-     * copy might be needed, such as for duplicating filter visitors.
+     * <p>This is so because InternalFunctions do not participate on the standard SPI lookup mechanism and hence they
+     * can't be created by {@link FilterFactory}, yet on occasion a new copy might be needed, such as for duplicating
+     * filter visitors.
      *
-     * <p>Note however implementations are free to return {@code this} if the actual function
-     * instance does not work with {@link Expression} as parameters.
+     * <p>Note however implementations are free to return {@code this} if the actual function instance does not work
+     * with {@link Expression} as parameters.
      *
      * @param parameters the parameters the returned InternalFunction works on
-     * @return a new instance of the same kind of InternalFunction that works on the given
-     *     parameters
+     * @return a new instance of the same kind of InternalFunction that works on the given parameters
      */
     public InternalFunction duplicate(Expression... parameters);
 }

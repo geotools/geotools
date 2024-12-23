@@ -41,8 +41,8 @@ public class ContactImpl extends MetadataEntity implements Contact {
     private static final long serialVersionUID = 3283637180253117382L;
 
     /**
-     * Contact informations for the <A HREF="http://www.opengeospatial.org">Open Geospatial
-     * consortium</A>. "Open Geospatial consortium" is the new name for "OpenGIS consortium".
+     * Contact informations for the <A HREF="http://www.opengeospatial.org">Open Geospatial consortium</A>. "Open
+     * Geospatial consortium" is the new name for "OpenGIS consortium".
      *
      * @see OnLineResourceImpl#OGC
      */
@@ -54,8 +54,8 @@ public class ContactImpl extends MetadataEntity implements Contact {
         OGC = c;
     }
     /**
-     * Contact informations for the <A HREF="http://www.opengis.org">OpenGIS consortium</A>.
-     * "OpenGIS consortium" is the old name for "Open Geospatial consortium".
+     * Contact informations for the <A HREF="http://www.opengis.org">OpenGIS consortium</A>. "OpenGIS consortium" is the
+     * old name for "Open Geospatial consortium".
      *
      * @see OnLineResourceImpl#OPEN_GIS
      */
@@ -68,8 +68,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Contact informations for the <A HREF="http://www.epsg.org">European Petroleum Survey
-     * Group</A>.
+     * Contact informations for the <A HREF="http://www.epsg.org">European Petroleum Survey Group</A>.
      *
      * @see OnLineResourceImpl#EPSG
      */
@@ -82,8 +81,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Contact informations for the <A
-     * HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> group.
+     * Contact informations for the <A HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> group.
      *
      * @see OnLineResourceImpl#GEOTIFF
      */
@@ -178,10 +176,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     /** Supplemental instructions on how or when to contact the individual or organization. */
     private InternationalString contactInstructions;
 
-    /**
-     * Time period (including time zone) when individuals can contact the organization or
-     * individual.
-     */
+    /** Time period (including time zone) when individuals can contact the organization or individual. */
     private InternationalString hoursOfService;
 
     /** On-line information that can be used to contact the individual or organization. */
@@ -222,8 +217,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
             }
 
             if (contactInfo.getContactInstructions() != null) {
-                setContactInstructions(
-                        new SimpleInternationalString(contactInfo.getContactInstructions()));
+                setContactInstructions(new SimpleInternationalString(contactInfo.getContactInstructions()));
             }
 
             if (contactInfo.getHoursOfService() != null) {
@@ -241,25 +235,23 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Returns the physical and email address at which the organization or individual may be
-     * contacted. Returns {@code null} if none.
+     * Returns the physical and email address at which the organization or individual may be contacted. Returns
+     * {@code null} if none.
      */
     @Override
     public Address getAddress() {
         return address;
     }
 
-    /**
-     * Set the physical and email address at which the organization or individual may be contacted.
-     */
+    /** Set the physical and email address at which the organization or individual may be contacted. */
     public void setAddress(final Address newValue) {
         checkWritePermission();
         address = newValue;
     }
 
     /**
-     * Returns supplemental instructions on how or when to contact the individual or organization.
-     * Returns {@code null} if none.
+     * Returns supplemental instructions on how or when to contact the individual or organization. Returns {@code null}
+     * if none.
      */
     @Override
     public InternationalString getContactInstructions() {
@@ -273,8 +265,8 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Return on-line information that can be used to contact the individual or organization.
-     * Returns {@code null} if none.
+     * Return on-line information that can be used to contact the individual or organization. Returns {@code null} if
+     * none.
      */
     @Override
     public OnLineResource getOnLineResource() {
@@ -288,8 +280,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Returns telephone numbers at which the organization or individual may be contacted. Returns
-     * {@code null} if none.
+     * Returns telephone numbers at which the organization or individual may be contacted. Returns {@code null} if none.
      */
     @Override
     public Telephone getPhone() {
@@ -303,18 +294,15 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Returns time period (including time zone) when individuals can contact the organization or
-     * individual. Returns {@code null} if none.
+     * Returns time period (including time zone) when individuals can contact the organization or individual. Returns
+     * {@code null} if none.
      */
     @Override
     public InternationalString getHoursOfService() {
         return hoursOfService;
     }
 
-    /**
-     * Set time period (including time zone) when individuals can contact the organization or
-     * individual.
-     */
+    /** Set time period (including time zone) when individuals can contact the organization or individual. */
     public void setHoursOfService(final InternationalString newValue) {
         checkWritePermission();
         hoursOfService = newValue;

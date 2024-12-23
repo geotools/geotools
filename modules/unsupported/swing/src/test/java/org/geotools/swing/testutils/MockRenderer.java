@@ -142,20 +142,13 @@ public class MockRenderer implements GTRenderer {
     }
 
     @Override
-    public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            Envelope mapArea,
-            AffineTransform worldToScreen) {
+    public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea, AffineTransform worldToScreen) {
         pretendToPaint();
     }
 
     @Override
     public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            ReferencedEnvelope mapArea,
-            AffineTransform worldToScreen) {
+            Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea, AffineTransform worldToScreen) {
         pretendToPaint();
     }
 

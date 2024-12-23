@@ -40,8 +40,8 @@ public enum STACConformance {
     }
 
     /**
-     * Checks if this STAC conformance class is a match, ignoring details about the version such as
-     * beta/RC/minor version changes (as long as it's a 1.0.x)
+     * Checks if this STAC conformance class is a match, ignoring details about the version such as beta/RC/minor
+     * version changes (as long as it's a 1.0.x)
      *
      * @param conformance
      */

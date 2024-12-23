@@ -22,8 +22,8 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Given an original rendering envelope it visits an expression, finds all {@link
- * GeometryTransformation}, collects and merges all the returned query envelopes
+ * Given an original rendering envelope it visits an expression, finds all {@link GeometryTransformation}, collects and
+ * merges all the returned query envelopes
  */
 public class GeometryTransformationVisitor extends DefaultFilterVisitor {
 

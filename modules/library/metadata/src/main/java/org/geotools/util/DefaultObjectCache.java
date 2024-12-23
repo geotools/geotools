@@ -26,8 +26,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 // import java.util.concurrent.locks.ReentrantWriterPreferenceReadWriteLock;
 
 /**
- * Caching implementation for {@link ObjectCache}. This instance is used when actual caching is
- * desired.
+ * Caching implementation for {@link ObjectCache}. This instance is used when actual caching is desired.
  *
  * @since 2.5
  * @version $Id$
@@ -73,9 +72,8 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         /**
          * Value of this cache entry, managed by the {@linkplain #lock}.
          *
-         * @todo According {@link java.util.concurrent.locks.ReentrantReadWriteLock} documentation,
-         *     we don't need to declare this field as volatile. Revisit when we will be allowed to
-         *     compile for J2SE 1.5.
+         * @todo According {@link java.util.concurrent.locks.ReentrantReadWriteLock} documentation, we don't need to
+         *     declare this field as volatile. Revisit when we will be allowed to compile for J2SE 1.5.
          */
         private volatile V value;
 
@@ -92,8 +90,8 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         }
 
         /**
-         * Acquires a write lock, obtains the value, unlocks, and returns the value. If another
-         * thread already has the read or write lock, this method will block.
+         * Acquires a write lock, obtains the value, unlocks, and returns the value. If another thread already has the
+         * read or write lock, this method will block.
          *
          * <blockquote>
          *
@@ -123,8 +121,8 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         }
 
         /**
-         * Acquires a read lock, obtains the value, unlocks, and returns the value. If another
-         * thread already has the write lock, this method will block.
+         * Acquires a read lock, obtains the value, unlocks, and returns the value. If another thread already has the
+         * write lock, this method will block.
          *
          * @return cached value or null if empty
          */
@@ -143,8 +141,8 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         }
 
         /**
-         * Stores the value in the entry, using the write lock. It is common to use this method
-         * while already holding the writeLock (since writeLock is re-entrant).
+         * Stores the value in the entry, using the write lock. It is common to use this method while already holding
+         * the writeLock (since writeLock is re-entrant).
          */
         public void setValue(V value) {
             try {
@@ -159,9 +157,9 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         }
 
         /**
-         * Acquires a write lock. This will block other readers and writers (on this entry only),
-         * and other readers and writers will need to be cleared before the write lock can be
-         * acquired, unless it is the same thread attempting to read or write.
+         * Acquires a write lock. This will block other readers and writers (on this entry only), and other readers and
+         * writers will need to be cleared before the write lock can be acquired, unless it is the same thread
+         * attempting to read or write.
          */
         public boolean writeLock() {
             lock.writeLock().lock();
@@ -204,9 +202,8 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
     /**
      * Returns the object from the cache.
      *
-     * <p>Please note that a read lock is maintained on the cache contents; you may be stuck waiting
-     * for a writer to produce the result over the course of calling this method. The contents (of
-     * course) may be null.
+     * <p>Please note that a read lock is maintained on the cache contents; you may be stuck waiting for a writer to
+     * produce the result over the course of calling this method. The contents (of course) may be null.
      *
      * @param key The authority code.
      * @todo Consider logging a message here to the finer or finest level.

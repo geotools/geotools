@@ -62,35 +62,32 @@ public final class ParserTest {
          * First, rather simple Mercator projection.
          * Uses standard units and axis order.
          */
-        String wkt1 =
-                "PROJCS[\"Mercator test\",\n"
-                        + "  GEOGCS[\"WGS84\",\n"
-                        + "    DATUM[\"WGS84\",\n"
-                        + "      SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],\n"
-                        + "    PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "    UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "    AXIS[\"Longitude\", EAST],\n"
-                        + "    AXIS[\"Latitude\", NORTH]],\n"
-                        + "  PROJECTION[\"Mercator_1SP\"],\n"
-                        + "  PARAMETER[\"central_meridian\", -20.0],\n"
-                        + "  PARAMETER[\"scale_factor\", 1.0],\n"
-                        + "  PARAMETER[\"false_easting\", 500000.0],\n"
-                        + "  PARAMETER[\"false_northing\", 0.0],\n"
-                        + "  UNIT[\"m\", 1.0],\n"
-                        + "  AXIS[\"x\", EAST],\n"
-                        + "  AXIS[\"y\", NORTH]]\n";
+        String wkt1 = "PROJCS[\"Mercator test\",\n"
+                + "  GEOGCS[\"WGS84\",\n"
+                + "    DATUM[\"WGS84\",\n"
+                + "      SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],\n"
+                + "    PRIMEM[\"Greenwich\", 0.0],\n"
+                + "    UNIT[\"degree\", 0.017453292519943295],\n"
+                + "    AXIS[\"Longitude\", EAST],\n"
+                + "    AXIS[\"Latitude\", NORTH]],\n"
+                + "  PROJECTION[\"Mercator_1SP\"],\n"
+                + "  PARAMETER[\"central_meridian\", -20.0],\n"
+                + "  PARAMETER[\"scale_factor\", 1.0],\n"
+                + "  PARAMETER[\"false_easting\", 500000.0],\n"
+                + "  PARAMETER[\"false_northing\", 0.0],\n"
+                + "  UNIT[\"m\", 1.0],\n"
+                + "  AXIS[\"x\", EAST],\n"
+                + "  AXIS[\"y\", NORTH]]\n";
         assertTrue(Symbols.DEFAULT.containsAxis(wkt1));
         DefaultProjectedCRS crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
         String wkt2 = parser.format(crs1);
         DefaultProjectedCRS crs2 = (DefaultProjectedCRS) parser.parseObject(wkt2);
         ParameterValueGroup param = crs1.getConversionFromBase().getParameterValues();
         assertEquals(crs1, crs2);
-        assertEquals("Mercator_1SP", crs1.getConversionFromBase().getMethod().getName().getCode());
-        assertTrue(
-                crs1.getConversionFromBase()
-                        .getMathTransform()
-                        .toWKT()
-                        .startsWith("PARAM_MT[\"Mercator_1SP\""));
+        assertEquals(
+                "Mercator_1SP",
+                crs1.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(crs1.getConversionFromBase().getMathTransform().toWKT().startsWith("PARAM_MT[\"Mercator_1SP\""));
         assertFalse(wkt2.contains("semi_major"));
         assertFalse(wkt2.contains("semi_minor"));
         assertEquals("semi_major", 6378137.0, param.parameter("semi_major").doubleValue(), 1E-4);
@@ -98,42 +95,38 @@ public final class ParserTest {
         assertEquals(
                 "central_meridian", -20.0, param.parameter("central_meridian").doubleValue(), 1E-8);
         assertEquals("scale_factor", 1.0, param.parameter("scale_factor").doubleValue(), 1E-8);
-        assertEquals(
-                "false_easting", 500000.0, param.parameter("false_easting").doubleValue(), 1E-4);
+        assertEquals("false_easting", 500000.0, param.parameter("false_easting").doubleValue(), 1E-4);
         assertEquals("false_northing", 0.0, param.parameter("false_northing").doubleValue(), 1E-4);
         /*
          * Same Mercator projection as above, but
          * switch longitude and latitude axis.
          */
-        wkt1 =
-                "PROJCS[\"Mercator test\",\n"
-                        + "  GEOGCS[\"WGS84\",\n"
-                        + "    DATUM[\"WGS84\",\n"
-                        + "      SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],\n"
-                        + "    PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "    UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "    AXIS[\"Latitude\", NORTH],\n"
-                        + "    AXIS[\"Longitude\", EAST]],\n"
-                        + "  PROJECTION[\"Mercator_1SP\"],\n"
-                        + "  PARAMETER[\"central_meridian\", -20.0],\n"
-                        + "  PARAMETER[\"scale_factor\", 1.0],\n"
-                        + "  PARAMETER[\"false_easting\", 500000.0],\n"
-                        + "  PARAMETER[\"false_northing\", 0.0],\n"
-                        + "  UNIT[\"m\", 1.0],\n"
-                        + "  AXIS[\"x\", EAST],\n"
-                        + "  AXIS[\"y\", NORTH]]\n";
+        wkt1 = "PROJCS[\"Mercator test\",\n"
+                + "  GEOGCS[\"WGS84\",\n"
+                + "    DATUM[\"WGS84\",\n"
+                + "      SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],\n"
+                + "    PRIMEM[\"Greenwich\", 0.0],\n"
+                + "    UNIT[\"degree\", 0.017453292519943295],\n"
+                + "    AXIS[\"Latitude\", NORTH],\n"
+                + "    AXIS[\"Longitude\", EAST]],\n"
+                + "  PROJECTION[\"Mercator_1SP\"],\n"
+                + "  PARAMETER[\"central_meridian\", -20.0],\n"
+                + "  PARAMETER[\"scale_factor\", 1.0],\n"
+                + "  PARAMETER[\"false_easting\", 500000.0],\n"
+                + "  PARAMETER[\"false_northing\", 0.0],\n"
+                + "  UNIT[\"m\", 1.0],\n"
+                + "  AXIS[\"x\", EAST],\n"
+                + "  AXIS[\"y\", NORTH]]\n";
         assertTrue(Symbols.DEFAULT.containsAxis(wkt1));
         crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
         wkt2 = parser.format(crs1);
         crs2 = (DefaultProjectedCRS) parser.parseObject(wkt2);
         param = crs1.getConversionFromBase().getParameterValues();
         assertEquals(crs1, crs2);
-        assertEquals("Mercator_1SP", crs1.getConversionFromBase().getMethod().getName().getCode());
-        assertTrue(
-                crs1.getConversionFromBase()
-                        .getMathTransform()
-                        .toWKT()
-                        .startsWith("CONCAT_MT[PARAM_MT["));
+        assertEquals(
+                "Mercator_1SP",
+                crs1.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(crs1.getConversionFromBase().getMathTransform().toWKT().startsWith("CONCAT_MT[PARAM_MT["));
         assertFalse(wkt2.contains("semi_major"));
         assertFalse(wkt2.contains("semi_minor"));
         assertEquals("semi_major", 6378137.0, param.parameter("semi_major").doubleValue(), 1E-4);
@@ -141,32 +134,30 @@ public final class ParserTest {
         assertEquals(
                 "central_meridian", -20.0, param.parameter("central_meridian").doubleValue(), 1E-8);
         assertEquals("scale_factor", 1.0, param.parameter("scale_factor").doubleValue(), 1E-8);
-        assertEquals(
-                "false_easting", 500000.0, param.parameter("false_easting").doubleValue(), 1E-4);
+        assertEquals("false_easting", 500000.0, param.parameter("false_easting").doubleValue(), 1E-4);
         assertEquals("false_northing", 0.0, param.parameter("false_northing").doubleValue(), 1E-4);
         /*
          * Try an other projection (Transverse Mercator).
          */
-        wkt1 =
-                "PROJCS[\"OSGB 1936 / British National Grid\",\n"
-                        + "  GEOGCS[\"OSGB 1936\",\n"
-                        + "    DATUM[\"OSGB_1936\",\n"
-                        + "      SPHEROID[\"Airy 1830\", 6377563.396, 299.3249646, AUTHORITY[\"EPSG\",\"7001\"]],\n"
-                        + "      TOWGS84[375.0, -111.0, 431.0, 0.0, 0.0, 0.0, 0.0],\n"
-                        + "      AUTHORITY[\"EPSG\",\"6277\"]],\n"
-                        + "    PRIMEM[\"Greenwich\",0.0, AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                        + "    UNIT[\"DMSH\",0.0174532925199433, AUTHORITY[\"EPSG\",\"9108\"]],\n"
-                        + "    AXIS[\"Lat\",NORTH],AXIS[\"Long\",EAST], AUTHORITY[\"EPSG\",\"4277\"]],\n"
-                        + "  PROJECTION[\"Transverse_Mercator\"],\n"
-                        + "  PARAMETER[\"latitude_of_origin\", 49.0],\n"
-                        + "  PARAMETER[\"central_meridian\", -2.0],\n"
-                        + "  PARAMETER[\"scale_factor\", 0.999601272],\n"
-                        + "  PARAMETER[\"false_easting\", 400000.0],\n"
-                        + "  PARAMETER[\"false_northing\", -100000.0],\n"
-                        + "  UNIT[\"metre\", 1.0, AUTHORITY[\"EPSG\",\"9001\"]],\n"
-                        + "  AXIS[\"E\",EAST],\n"
-                        + "  AXIS[\"N\",NORTH],\n"
-                        + "  AUTHORITY[\"EPSG\",\"27700\"]]\n";
+        wkt1 = "PROJCS[\"OSGB 1936 / British National Grid\",\n"
+                + "  GEOGCS[\"OSGB 1936\",\n"
+                + "    DATUM[\"OSGB_1936\",\n"
+                + "      SPHEROID[\"Airy 1830\", 6377563.396, 299.3249646, AUTHORITY[\"EPSG\",\"7001\"]],\n"
+                + "      TOWGS84[375.0, -111.0, 431.0, 0.0, 0.0, 0.0, 0.0],\n"
+                + "      AUTHORITY[\"EPSG\",\"6277\"]],\n"
+                + "    PRIMEM[\"Greenwich\",0.0, AUTHORITY[\"EPSG\",\"8901\"]],\n"
+                + "    UNIT[\"DMSH\",0.0174532925199433, AUTHORITY[\"EPSG\",\"9108\"]],\n"
+                + "    AXIS[\"Lat\",NORTH],AXIS[\"Long\",EAST], AUTHORITY[\"EPSG\",\"4277\"]],\n"
+                + "  PROJECTION[\"Transverse_Mercator\"],\n"
+                + "  PARAMETER[\"latitude_of_origin\", 49.0],\n"
+                + "  PARAMETER[\"central_meridian\", -2.0],\n"
+                + "  PARAMETER[\"scale_factor\", 0.999601272],\n"
+                + "  PARAMETER[\"false_easting\", 400000.0],\n"
+                + "  PARAMETER[\"false_northing\", -100000.0],\n"
+                + "  UNIT[\"metre\", 1.0, AUTHORITY[\"EPSG\",\"9001\"]],\n"
+                + "  AXIS[\"E\",EAST],\n"
+                + "  AXIS[\"N\",NORTH],\n"
+                + "  AUTHORITY[\"EPSG\",\"27700\"]]\n";
         assertTrue(Symbols.DEFAULT.containsAxis(wkt1));
         crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
         wkt2 = parser.format(crs1);
@@ -188,33 +179,31 @@ public final class ParserTest {
         assertEquals(
                 "central_meridian", -2.0, param.parameter("central_meridian").doubleValue(), 1E-8);
         assertEquals("scale_factor", 0.9996, param.parameter("scale_factor").doubleValue(), 1E-5);
-        assertEquals(
-                "false_easting", 400000.0, param.parameter("false_easting").doubleValue(), 1E-4);
+        assertEquals("false_easting", 400000.0, param.parameter("false_easting").doubleValue(), 1E-4);
         assertEquals(
                 "false_northing", -100000.0, param.parameter("false_northing").doubleValue(), 1E-4);
         /*
          * Try a projection with feet units.
          */
-        wkt1 =
-                "PROJCS[\"TransverseMercator\",\n"
-                        + "  GEOGCS[\"Sphere\",\n"
-                        + "    DATUM[\"Sphere\",\n"
-                        + "      SPHEROID[\"Sphere\", 6370997.0, 0.0],\n"
-                        + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],\n"
-                        + "    PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "    UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "    AXIS[\"Longitude\", EAST],\n"
-                        + "    AXIS[\"Latitude\", NORTH]],\n"
-                        + "  PROJECTION[\"Transverse_Mercator\",\n"
-                        + "    AUTHORITY[\"OGC\",\"Transverse_Mercator\"]],\n"
-                        + "  PARAMETER[\"central_meridian\", 170.0],\n"
-                        + "  PARAMETER[\"latitude_of_origin\", 50.0],\n"
-                        + "  PARAMETER[\"scale_factor\", 0.95],\n"
-                        + "  PARAMETER[\"false_easting\", 0.0],\n"
-                        + "  PARAMETER[\"false_northing\", 0.0],\n"
-                        + "  UNIT[\"feet\", 0.304800609601219],\n"
-                        + "  AXIS[\"x\", EAST],\n"
-                        + "  AXIS[\"y\", NORTH]]\n";
+        wkt1 = "PROJCS[\"TransverseMercator\",\n"
+                + "  GEOGCS[\"Sphere\",\n"
+                + "    DATUM[\"Sphere\",\n"
+                + "      SPHEROID[\"Sphere\", 6370997.0, 0.0],\n"
+                + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],\n"
+                + "    PRIMEM[\"Greenwich\", 0.0],\n"
+                + "    UNIT[\"degree\", 0.017453292519943295],\n"
+                + "    AXIS[\"Longitude\", EAST],\n"
+                + "    AXIS[\"Latitude\", NORTH]],\n"
+                + "  PROJECTION[\"Transverse_Mercator\",\n"
+                + "    AUTHORITY[\"OGC\",\"Transverse_Mercator\"]],\n"
+                + "  PARAMETER[\"central_meridian\", 170.0],\n"
+                + "  PARAMETER[\"latitude_of_origin\", 50.0],\n"
+                + "  PARAMETER[\"scale_factor\", 0.95],\n"
+                + "  PARAMETER[\"false_easting\", 0.0],\n"
+                + "  PARAMETER[\"false_northing\", 0.0],\n"
+                + "  UNIT[\"feet\", 0.304800609601219],\n"
+                + "  AXIS[\"x\", EAST],\n"
+                + "  AXIS[\"y\", NORTH]]\n";
         assertTrue(Symbols.DEFAULT.containsAxis(wkt1));
         crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
         wkt2 = parser.format(crs1);
@@ -241,12 +230,11 @@ public final class ParserTest {
         /*
          * Try with a number using scientific notation.
          */
-        wkt1 =
-                "GEOGCS[\"NAD83 / NFIS Seconds\",DATUM[\"North_American_Datum_1983\",\n"
-                        + "  SPHEROID[\"GRS 1980\", 6378137, 298.257222101]],\n"
-                        + "  PRIMEM[\"Greenwich\", 0],\n"
-                        + "  UNIT[\"Decimal_Second\", 4.84813681109536e-06],\n"
-                        + "  AUTHORITY[\"EPSG\", \"100001\"]]";
+        wkt1 = "GEOGCS[\"NAD83 / NFIS Seconds\",DATUM[\"North_American_Datum_1983\",\n"
+                + "  SPHEROID[\"GRS 1980\", 6378137, 298.257222101]],\n"
+                + "  PRIMEM[\"Greenwich\", 0],\n"
+                + "  UNIT[\"Decimal_Second\", 4.84813681109536e-06],\n"
+                + "  AUTHORITY[\"EPSG\", \"100001\"]]";
         assertFalse(Symbols.DEFAULT.containsAxis(wkt1));
         wkt2 = parser.format(parser.parseObject(wkt1));
         assertFalse(wkt2.contains("semi_major"));
@@ -256,28 +244,27 @@ public final class ParserTest {
     /** Tests the Oracle variant of WKT. */
     @Test
     public void testOracleWKT() throws ParseException {
-        final String wkt =
-                "PROJCS[\"Datum 73 / Modified Portuguese Grid\","
-                        + " GEOGCS [ \"Datum 73\","
-                        + " DATUM[\"Datum 73 (EPSG ID 6274)\","
-                        + " SPHEROID [\"International 1924 (EPSG ID 7022)\", 6378388, 297],"
-                        + " -231, 102.6, 29.8, .6149999999999993660366746131394108039579,"
-                        + " -.1979999999999997958947342656936639661522,"
-                        + " .8809999999999990918346509498793836069706, .99999821],"
-                        + " PRIMEM [ \"Greenwich\", 0.000000 ],"
-                        + " UNIT [\"Decimal Degree\", 0.01745329251994328]],"
-                        + " PROJECTION[\"Transverse_Mercator\"],"
-                        +
-                        //               " PROJECTION[\"Modified Portuguese Grid (EPSG OP
-                        // 19974)\"]," +
-                        // TODO: The real projection is "Modified Portugues", but it is not yet
-                        // implemented in Geotools.
-                        " PARAMETER[\"Latitude_Of_Origin\", 39.66666666666666666666666666666666666667],"
-                        + " PARAMETER[\"Central_Meridian\", -8.13190611111111111111111111111111111111],"
-                        + " PARAMETER[\"Scale_Factor\", 1],"
-                        + " PARAMETER [\"False_Easting\", 180.598],"
-                        + " PARAMETER[\"False_Northing\", -86.99],"
-                        + " UNIT [\"Meter\", 1]]";
+        final String wkt = "PROJCS[\"Datum 73 / Modified Portuguese Grid\","
+                + " GEOGCS [ \"Datum 73\","
+                + " DATUM[\"Datum 73 (EPSG ID 6274)\","
+                + " SPHEROID [\"International 1924 (EPSG ID 7022)\", 6378388, 297],"
+                + " -231, 102.6, 29.8, .6149999999999993660366746131394108039579,"
+                + " -.1979999999999997958947342656936639661522,"
+                + " .8809999999999990918346509498793836069706, .99999821],"
+                + " PRIMEM [ \"Greenwich\", 0.000000 ],"
+                + " UNIT [\"Decimal Degree\", 0.01745329251994328]],"
+                + " PROJECTION[\"Transverse_Mercator\"],"
+                +
+                //               " PROJECTION[\"Modified Portuguese Grid (EPSG OP
+                // 19974)\"]," +
+                // TODO: The real projection is "Modified Portugues", but it is not yet
+                // implemented in Geotools.
+                " PARAMETER[\"Latitude_Of_Origin\", 39.66666666666666666666666666666666666667],"
+                + " PARAMETER[\"Central_Meridian\", -8.13190611111111111111111111111111111111],"
+                + " PARAMETER[\"Scale_Factor\", 1],"
+                + " PARAMETER [\"False_Easting\", 180.598],"
+                + " PARAMETER[\"False_Northing\", -86.99],"
+                + " UNIT [\"Meter\", 1]]";
         assertFalse(Symbols.DEFAULT.containsAxis(wkt));
         final Parser parser = new Parser();
         CoordinateReferenceSystem crs1 = parser.parseCoordinateReferenceSystem(wkt);
@@ -290,14 +277,13 @@ public final class ParserTest {
     }
 
     /**
-     * Tests parsing with custom axis length. At the difference of the previous test, the WKT
-     * formatting in this test should include the axis length as parameter values.
+     * Tests parsing with custom axis length. At the difference of the previous test, the WKT formatting in this test
+     * should include the axis length as parameter values.
      */
     @Test
     public void testCustomAxisLength() throws FactoryException, ParseException {
         DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
-        ParameterValueGroup parameters =
-                factory.getDefaultParameters("Lambert_Conformal_Conic_2SP");
+        ParameterValueGroup parameters = factory.getDefaultParameters("Lambert_Conformal_Conic_2SP");
 
         final double majorAxis = 6.3712e+6;
         final double minorAxis = 6.3712e+6;
@@ -325,13 +311,11 @@ public final class ParserTest {
 
     @Test
     public void testCylindricalEqualAreaStandardParallel() throws FactoryException {
-        CylindricalEqualArea.LambertCylindricalEqualAreaProvider
-                lambertCylindricalEqualAreaProvider =
-                        new CylindricalEqualArea.LambertCylindricalEqualAreaProvider();
+        CylindricalEqualArea.LambertCylindricalEqualAreaProvider lambertCylindricalEqualAreaProvider =
+                new CylindricalEqualArea.LambertCylindricalEqualAreaProvider();
         DefaultMathTransformFactory factory = new DefaultMathTransformFactory();
 
-        ParameterDescriptorGroup parameterDescriptorGroup =
-                lambertCylindricalEqualAreaProvider.getParameters();
+        ParameterDescriptorGroup parameterDescriptorGroup = lambertCylindricalEqualAreaProvider.getParameters();
         ParameterValueGroup parameters = parameterDescriptorGroup.createValue();
         final double majorAxis = 6.3712e+6;
         final double minorAxis = 6.3712e+6;
@@ -344,8 +328,7 @@ public final class ParserTest {
         GeographicCRS base = DefaultGeographicCRS.WGS84;
         MathTransform mt = factory.createParameterizedTransform(parameters);
         CartesianCS cs = DefaultCartesianCS.PROJECTED;
-        CoordinateReferenceSystem crs =
-                new DefaultProjectedCRS("Cylindrical_Equal_Area", base, mt, cs);
+        CoordinateReferenceSystem crs = new DefaultProjectedCRS("Cylindrical_Equal_Area", base, mt, cs);
 
         final String wkt = crs.toWKT();
         assertTrue(wkt.contains("standard_parallel_1"));
@@ -365,12 +348,10 @@ public final class ParserTest {
     }
 
     /**
-     * Parses all elements from the specified file. Parsing creates a set of geographic objects. No
-     * special processing are done with them; we just check if the parsing work without error and
-     * produces distincts objects.
+     * Parses all elements from the specified file. Parsing creates a set of geographic objects. No special processing
+     * are done with them; we just check if the parsing work without error and produces distincts objects.
      */
-    private void testParsing(final AbstractParser parser, final String filename)
-            throws IOException, ParseException {
+    private void testParsing(final AbstractParser parser, final String filename) throws IOException, ParseException {
         try (BufferedReader reader = TestData.openReader(ScriptRunner.class, filename)) {
             final Collection<Object> pool = new HashSet<>();
             String line;
@@ -396,10 +377,7 @@ public final class ParserTest {
                 }
                 assertNotNull("Parsing returns null.", parsed);
                 assertEquals("Inconsistent equals method", parsed, parsed);
-                assertSame(
-                        "Parsing twice returns different objects.",
-                        parsed,
-                        parser.parseObject(line));
+                assertSame("Parsing twice returns different objects.", parsed, parser.parseObject(line));
                 assertTrue("An identical object already exists.", pool.add(parsed));
                 assertTrue("Inconsistent hashCode or equals method.", pool.contains(parsed));
                 /*
@@ -436,15 +414,13 @@ public final class ParserTest {
     }
 
     @Test
-    public void test404000Parsing()
-            throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
-        final String wkt =
-                "LOCAL_CS[\"Wildcard 2D cartesian plane in metric unit\", \n"
-                        + "  LOCAL_DATUM[\"Unknown\", 0], \n"
-                        + "  UNIT[\"m\", 1.0], \n"
-                        + "  AXIS[\"x\", EAST], \n"
-                        + "  AXIS[\"y\", NORTH], \n"
-                        + "  AUTHORITY[\"EPSG\",\"404000\"]]";
+    public void test404000Parsing() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+        final String wkt = "LOCAL_CS[\"Wildcard 2D cartesian plane in metric unit\", \n"
+                + "  LOCAL_DATUM[\"Unknown\", 0], \n"
+                + "  UNIT[\"m\", 1.0], \n"
+                + "  AXIS[\"x\", EAST], \n"
+                + "  AXIS[\"y\", NORTH], \n"
+                + "  AUTHORITY[\"EPSG\",\"404000\"]]";
 
         final Parser parser = new Parser();
         CoordinateReferenceSystem observed = parser.parseCoordinateReferenceSystem(wkt);
@@ -452,8 +428,7 @@ public final class ParserTest {
         CoordinateReferenceSystem expected = CRS.decode("EPSG:404000");
         assertTrue(
                 "Internal CS",
-                CRS.equalsIgnoreMetadata(
-                        expected.getCoordinateSystem(), observed.getCoordinateSystem()));
+                CRS.equalsIgnoreMetadata(expected.getCoordinateSystem(), observed.getCoordinateSystem()));
 
         assertTrue(CRS.equalsIgnoreMetadata(expected, observed));
         assertEquals(expected, observed);

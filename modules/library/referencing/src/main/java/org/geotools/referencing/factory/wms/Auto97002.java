@@ -20,12 +20,12 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 
 /**
- * Auto Stereographic ({@code AUTO:97002}). In the notation below, "<code>${var}</code>" denotes a
- * reference to the value of a variable "{@code var}". The variables "{@code lat0}" and "{@code
- * lon0}" are the central point of the projection appearing in the CRS parameter of the map request.
+ * Auto Stereographic ({@code AUTO:97002}). In the notation below, "<code>${var}</code>" denotes a reference to the
+ * value of a variable "{@code var}". The variables "{@code lat0}" and "{@code lon0}" are the central point of the
+ * projection appearing in the CRS parameter of the map request.
  *
- * <p>Note this projection uses a sphere. It does this by setting the semi minor axis to the same
- * value as the semi major axis.
+ * <p>Note this projection uses a sphere. It does this by setting the semi minor axis to the same value as the semi
+ * major axis.
  *
  * <pre>
  * PROJCS["WGS 84 / Auto Stereographic",

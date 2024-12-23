@@ -56,8 +56,7 @@ import org.locationtech.jts.geom.LineString;
  */
 public class LineStringPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public LineStringPropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public LineStringPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 

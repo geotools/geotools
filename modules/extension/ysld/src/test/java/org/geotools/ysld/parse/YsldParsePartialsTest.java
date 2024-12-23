@@ -30,25 +30,19 @@ public class YsldParsePartialsTest {
 
     @Test
     public void testParseRules() throws Exception {
-        String ysld =
-                "rules:\n"
-                        + "- symbolizers:\n"
-                        + "  - point:\n"
-                        + "      symbols:\n"
-                        + "      - mark:\n"
-                        + "         shape: triangle";
+        String ysld = "rules:\n"
+                + "- symbolizers:\n"
+                + "  - point:\n"
+                + "      symbols:\n"
+                + "      - mark:\n"
+                + "         shape: triangle";
 
         assertSLD(Ysld.parse(ysld));
     }
 
     @Test
     public void testParseSymbolizers() throws Exception {
-        String ysld =
-                "symbolizers:\n"
-                        + "- point:\n"
-                        + "    symbols:\n"
-                        + "    - mark:\n"
-                        + "       shape: triangle";
+        String ysld = "symbolizers:\n" + "- point:\n" + "    symbols:\n" + "    - mark:\n" + "       shape: triangle";
 
         assertSLD(Ysld.parse(ysld));
     }

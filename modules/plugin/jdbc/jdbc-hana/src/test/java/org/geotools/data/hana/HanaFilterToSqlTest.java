@@ -35,9 +35,7 @@ public class HanaFilterToSqlTest {
         GeometryFactory gf = new GeometryFactory();
 
         Coordinate coordinate = new Coordinate();
-        DWithin dwithin =
-                ff.dwithin(
-                        ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
+        DWithin dwithin = ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
         String encoded = encoder.encodeToString(dwithin);
         assertEquals("WHERE GEOM.ST_WithinDistance(?, 10.0, '''FOO') = 1", encoded);
     }

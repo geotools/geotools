@@ -38,8 +38,8 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * A registry that stores data access instances per application. This allows feature sources from
- * different data accesses to be accessed globally.
+ * A registry that stores data access instances per application. This allows feature sources from different data
+ * accesses to be accessed globally.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University Of Technology)
@@ -79,8 +79,7 @@ public class DataAccessRegistry implements Repository {
      *
      * @return feature source
      */
-    public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name)
-            throws IOException {
+    public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
             if (dataAccess.getNames().contains(name)) {
                 if (dataAccess instanceof AppSchemaDataAccess) {
@@ -106,14 +105,12 @@ public class DataAccessRegistry implements Repository {
 
     @Override
     public DataStore dataStore(Name name) {
-        throw new UnsupportedOperationException(
-                "Simple feature DataStores not supported by app-schema registry.");
+        throw new UnsupportedOperationException("Simple feature DataStores not supported by app-schema registry.");
     }
 
     @Override
     public List<DataStore> getDataStores() {
-        throw new UnsupportedOperationException(
-                "Simple feature DataStores not supported by app-schema registry.");
+        throw new UnsupportedOperationException("Simple feature DataStores not supported by app-schema registry.");
     }
 
     /**
@@ -126,9 +123,8 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Unregister a data access. This is important especially at the end of test cases, so that the
-     * mappings contained in the data access do not conflict with mappings of the same type used in
-     * other tests.
+     * Unregister a data access. This is important especially at the end of test cases, so that the mappings contained
+     * in the data access do not conflict with mappings of the same type used in other tests.
      *
      * @param dataAccess Data access to be unregistered
      */
@@ -143,10 +139,7 @@ public class DataAccessRegistry implements Repository {
                 try {
                     disposeHiddenDataAccessInstances(asda.url);
                 } catch (IOException e) {
-                    LOGGER.log(
-                            Level.SEVERE,
-                            "Exception occurred disposing unused data access instances",
-                            e);
+                    LOGGER.log(Level.SEVERE, "Exception occurred disposing unused data access instances", e);
                 }
             }
         }
@@ -169,9 +162,8 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Dispose and unregister all data accesses in the registry. This is may be needed to prevent
-     * unit tests from conflicting with data accesses with the same type name registered for other
-     * tests.
+     * Dispose and unregister all data accesses in the registry. This is may be needed to prevent unit tests from
+     * conflicting with data accesses with the same type name registered for other tests.
      */
     public synchronized void disposeAndUnregisterAll() {
         List<DataAccess<FeatureType, Feature>> copyRegistry = new ArrayList<>(registry);
@@ -182,9 +174,8 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Return true if a type name is mapped in one of the registered data accesses. If the type
-     * mapping has mappingName, then it will be the key that is matched in the search. If it
-     * doesn't, then it will match the targetElementName.
+     * Return true if a type name is mapped in one of the registered data accesses. If the type mapping has mappingName,
+     * then it will be the key that is matched in the search. If it doesn't, then it will match the targetElementName.
      *
      * @param name Feature type name
      */
@@ -198,9 +189,9 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Return true if a type name is mapped in one of the registered app-schema data accesses. If
-     * the type mapping has mappingName, then it will be the key that is matched in the search. If
-     * it doesn't, then it will match the targetElementName.
+     * Return true if a type name is mapped in one of the registered app-schema data accesses. If the type mapping has
+     * mappingName, then it will be the key that is matched in the search. If it doesn't, then it will match the
+     * targetElementName.
      *
      * @param name Feature type name
      */
@@ -216,8 +207,8 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Get a feature type mapping from a registered app-schema data access. Please note that this is
-     * only possible for app-schema data access instances.
+     * Get a feature type mapping from a registered app-schema data access. Please note that this is only possible for
+     * app-schema data access instances.
      *
      * @return feature type mapping
      */
@@ -248,8 +239,8 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Return true if a type name is mapped in one of the registered app-schema data accesses as
-     * targetElementName, regardless whether or not mappingName exists.
+     * Return true if a type name is mapped in one of the registered app-schema data accesses as targetElementName,
+     * regardless whether or not mappingName exists.
      */
     public synchronized boolean hasAppSchemaTargetElement(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
@@ -288,13 +279,11 @@ public class DataAccessRegistry implements Repository {
      *
      * @return feature source
      */
-    public static FeatureSource<FeatureType, Feature> getFeatureSource(Name featureTypeName)
-            throws IOException {
+    public static FeatureSource<FeatureType, Feature> getFeatureSource(Name featureTypeName) throws IOException {
         return getInstance().featureSource(featureTypeName);
     }
 
-    public static DataAccess<FeatureType, Feature> getDataAccess(Name featureTypeName)
-            throws IOException {
+    public static DataAccess<FeatureType, Feature> getDataAccess(Name featureTypeName) throws IOException {
         return getInstance().featureSource(featureTypeName).getDataStore();
     }
 
@@ -308,10 +297,9 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Unregister a data access. This is important especially at the end of test cases, so that the
-     * mappings contained in the data access do not conflict with mappings of the same type used in
-     * other tests. * Does not dispose * This method should not be called directly, instead use
-     * dispose method from DataAccess
+     * Unregister a data access. This is important especially at the end of test cases, so that the mappings contained
+     * in the data access do not conflict with mappings of the same type used in other tests. * Does not dispose * This
+     * method should not be called directly, instead use dispose method from DataAccess
      *
      * @param dataAccess Data access to be unregistered
      */
@@ -320,18 +308,16 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Unregister * and dispose * all data accesses in the registry. This is may be needed to
-     * prevent unit tests from conflicting with data accesses with the same type name registered for
-     * other tests.
+     * Unregister * and dispose * all data accesses in the registry. This is may be needed to prevent unit tests from
+     * conflicting with data accesses with the same type name registered for other tests.
      */
     public static void unregisterAndDisposeAll() {
         getInstance().disposeAndUnregisterAll();
     }
 
     /**
-     * Return true if a type name is mapped in one of the registered data accesses. If the type
-     * mapping has mappingName, then it will be the key that is matched in the search. If it
-     * doesn't, then it will match the targetElementName.
+     * Return true if a type name is mapped in one of the registered data accesses. If the type mapping has mappingName,
+     * then it will be the key that is matched in the search. If it doesn't, then it will match the targetElementName.
      *
      * @param featureTypeName Feature type name
      */
@@ -353,13 +339,12 @@ public class DataAccessRegistry implements Repository {
         for (DataAccess<FeatureType, Feature> featureTypeFeatureDataAccess : registry) {
             typeNames.addAll(featureTypeFeatureDataAccess.getNames());
         }
-        throw new DataSourceException(
-                "Feature type "
-                        + featureTypeName
-                        + " not found."
-                        + " Has the data access been registered in DataAccessRegistry?"
-                        + " Available: "
-                        + typeNames.toString());
+        throw new DataSourceException("Feature type "
+                + featureTypeName
+                + " not found."
+                + " Has the data access been registered in DataAccessRegistry?"
+                + " Available: "
+                + typeNames.toString());
     }
 
     public Feature findFeature(FeatureId id, Hints hints) throws IOException {

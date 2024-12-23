@@ -82,9 +82,7 @@ public class StringTemplateFunction implements Function {
                     "We need at least 3 input values, the input string, the regular expression, and the template");
         } else if (parameters.size() > 4) {
             throw new IllegalArgumentException(
-                    "We need at least 3 or 4 input values, "
-                            + parameters.size()
-                            + " were given instead");
+                    "We need at least 3 or 4 input values, " + parameters.size() + " were given instead");
         }
     }
 
@@ -187,9 +185,7 @@ public class StringTemplateFunction implements Function {
         return fallback;
     }
 
-    /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     */
+    /** Creates a String representation of this Function with the function name and the arguments. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -198,8 +194,7 @@ public class StringTemplateFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);

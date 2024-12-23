@@ -48,9 +48,8 @@ public class H2LinkedTableTest {
         org.h2.Driver.load();
         try (Connection con = DriverManager.getConnection("jdbc:h2:geotools2", "sa", "sa")) {
             try (Statement stmt = con.createStatement()) {
-                stmt.execute(
-                        "DROP TABLE IF EXISTS \"test\"; "
-                                + "CREATE TABLE \"test\" as select * from SYSTEM_RANGE(1,2) as n;");
+                stmt.execute("DROP TABLE IF EXISTS \"test\"; "
+                        + "CREATE TABLE \"test\" as select * from SYSTEM_RANGE(1,2) as n;");
             }
         }
 
@@ -66,9 +65,8 @@ public class H2LinkedTableTest {
             assertTrue(ds.getDataSource() instanceof ManageableDataSource);
             try (Connection con = ds.getDataSource().getConnection()) {
                 try (Statement stmt = con.createStatement()) {
-                    String sql =
-                            "DROP TABLE IF EXISTS \"test_linked\"; CREATE LINKED TABLE \"test_linked\"(NULL, "
-                                    + "'jdbc:h2:geotools2', 'sa', 'sa', '\"test\"')";
+                    String sql = "DROP TABLE IF EXISTS \"test_linked\"; CREATE LINKED TABLE \"test_linked\"(NULL, "
+                            + "'jdbc:h2:geotools2', 'sa', 'sa', '\"test\"')";
                     stmt.execute(sql);
                 }
             }

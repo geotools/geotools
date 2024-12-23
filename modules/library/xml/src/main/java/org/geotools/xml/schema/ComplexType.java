@@ -20,44 +20,42 @@ import java.util.Map;
 import org.xml.sax.Attributes;
 
 /**
- * This interface is intended to represent an XML Schema complexType. This interface extends the
- * generic XML schema type interface to represent datum within nested elements.
+ * This interface is intended to represent an XML Schema complexType. This interface extends the generic XML schema type
+ * interface to represent datum within nested elements.
  *
  * @author dzwiers www.refractions.net
  */
 public interface ComplexType extends Type {
     /**
-     * This is used to represent the heirarchy represented within an xml schema document(s). This is
-     * particularily useful, as the parent will have the first attempt to create a real (non
-     * Object[]) value of the element. For more information see getValue.
+     * This is used to represent the heirarchy represented within an xml schema document(s). This is particularily
+     * useful, as the parent will have the first attempt to create a real (non Object[]) value of the element. For more
+     * information see getValue.
      *
      * @see Type#getValue(Element, ElementValue[], Attributes)
      */
     public Type getParent();
 
     /**
-     * Returns true when the complexType should be considered abstract, as defined by the XML schema
-     * of which this complex type definition is a part.
+     * Returns true when the complexType should be considered abstract, as defined by the XML schema of which this
+     * complex type definition is a part.
      */
     public boolean isAbstract();
 
     /**
-     * This methos represents the potential 'anyAttribute' declaration's namespace attribute which
-     * may occur within a complex type definition.
+     * This methos represents the potential 'anyAttribute' declaration's namespace attribute which may occur within a
+     * complex type definition.
      */
     public String getAnyAttributeNameSpace();
 
     /**
-     * The set of attributes required by this complex type declaration. As per the xml schema
-     * definition, there is not an implied order to the attributes. For performance reasons an
-     * implementor may wich to order the attributes from most common to least commonly used
-     * attributes.
+     * The set of attributes required by this complex type declaration. As per the xml schema definition, there is not
+     * an implied order to the attributes. For performance reasons an implementor may wich to order the attributes from
+     * most common to least commonly used attributes.
      */
     public Attribute[] getAttributes();
 
     /**
-     * Specifies a mask which denotes which substitution mechanisms may be used for this complex
-     * type definition.
+     * Specifies a mask which denotes which substitution mechanisms may be used for this complex type definition.
      *
      * @see Schema#EXTENSION
      * @see Schema#RESTRICTION
@@ -66,8 +64,7 @@ public interface ComplexType extends Type {
     public int getBlock();
 
     /**
-     * Returns the child element representing the structure of nested child nodes (if any are
-     * allowed).
+     * Returns the child element representing the structure of nested child nodes (if any are allowed).
      *
      * @see ElementGrouping
      */
@@ -76,8 +73,8 @@ public interface ComplexType extends Type {
     public Element[] getChildElements();
 
     /**
-     * Specifies a mask which denotes which substitution mechanisms prohibited for use by child
-     * definitions of this complex type.
+     * Specifies a mask which denotes which substitution mechanisms prohibited for use by child definitions of this
+     * complex type.
      *
      * @see Schema#EXTENSION
      * @see Schema#RESTRICTION
@@ -88,21 +85,18 @@ public interface ComplexType extends Type {
     /** Returns the xml schema id of this complexType if one exists, null otherwise. */
     public String getId();
 
-    /**
-     * Returns true if this complexType allows mixed content (Child elements and a String value).
-     */
+    /** Returns true if this complexType allows mixed content (Child elements and a String value). */
     public boolean isMixed();
 
     /**
-     * This method is used to publish whether this complexType is at the root of an inheritance
-     * tree, or a leaf within an inheritance tree. This method should return true when the
-     * complexType is not a root of an inheritance tree.
+     * This method is used to publish whether this complexType is at the root of an inheritance tree, or a leaf within
+     * an inheritance tree. This method should return true when the complexType is not a root of an inheritance tree.
      */
     public boolean isDerived();
 
     /**
-     * This method is a directive to the parser whether to keep the data around in memory for post
-     * processing. Generally this should return True, except when streaming.
+     * This method is a directive to the parser whether to keep the data around in memory for post processing. Generally
+     * this should return True, except when streaming.
      *
      * @return True, except when streaming the element.
      */

@@ -26,14 +26,13 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
 /**
- * Optimized implementation of Node. The following optimizations reduce space and improve
- * performance.<br>
+ * Optimized implementation of Node. The following optimizations reduce space and improve performance.<br>
  *
  * <UL>
  *   <LI>Edge adjacency list stored as array of predetermined size.
  *   <LI>Removing support for removing edges from the nodes ajdacency list.
- *   <LI>The related component iterator iterates over the underlying edge array of the node instread
- *       of a newly created collection.
+ *   <LI>The related component iterator iterates over the underlying edge array of the node instread of a newly created
+ *       collection.
  * </UL>
  *
  * Using an optimized node requires that the degree of the node be known before the node is built.
@@ -46,10 +45,7 @@ public class OptNode extends OptGraphable implements Node {
     /** edge adjacency list * */
     private Edge[] m_edges;
 
-    /**
-     * Constructs a new OptimizedNode. This constructor does not build the adjacency array for the
-     * node.
-     */
+    /** Constructs a new OptimizedNode. This constructor does not build the adjacency array for the node. */
     public OptNode() {
         this(0);
     }
@@ -90,8 +86,7 @@ public class OptNode extends OptGraphable implements Node {
     public Edge getEdge(Node other) {
         for (Edge m_edge : m_edges) {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
-                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other))
-                return m_edge;
+                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) return m_edge;
         }
         return (null);
     }
@@ -102,8 +97,7 @@ public class OptNode extends OptGraphable implements Node {
         ArrayList<Edge> edges = new ArrayList<>();
         for (Edge m_edge : m_edges) {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
-                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other))
-                edges.add(m_edge);
+                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) edges.add(m_edge);
         }
         return (edges);
     }
@@ -155,8 +149,8 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /**
-     * Overrides the default deserialization operation. Since edge adjacency lists of Nodes are not
-     * written out upon serialization, they must be recreated upon deserialization.
+     * Overrides the default deserialization operation. Since edge adjacency lists of Nodes are not written out upon
+     * serialization, they must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized objects.
      */
@@ -169,10 +163,10 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /**
-     * Overrides the default serialization operation. Since edge adjacency lists of Nodes are not
-     * written out upon serialization, all the information needed to recreate them must be written
-     * to the object stream as well. Since the edge list is not written out, and the node does not
-     * store its degree explicitly, it must be written to the output stream.
+     * Overrides the default serialization operation. Since edge adjacency lists of Nodes are not written out upon
+     * serialization, all the information needed to recreate them must be written to the object stream as well. Since
+     * the edge list is not written out, and the node does not store its degree explicitly, it must be written to the
+     * output stream.
      *
      * @param out Object output stream containing serialized objects.
      */

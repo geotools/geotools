@@ -27,9 +27,8 @@ public interface Builder<T> {
     /**
      * Configure the Builder to produce <code>null</code>.
      *
-     * <p>This method allows a Builder to be used as a placeholder; in its unset state the build()
-     * method will produce <code>null</code>. If any of the builder methods are used the builder
-     * will produce a result.
+     * <p>This method allows a Builder to be used as a placeholder; in its unset state the build() method will produce
+     * <code>null</code>. If any of the builder methods are used the builder will produce a result.
      *
      * @return Builder configured to build <code>null</code>
      */

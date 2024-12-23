@@ -35,16 +35,16 @@ import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
- * Searches for properties files in a resource directory within the gt-swing module and records the
- * {@code Locales} supported by each file. This is a helper for {@linkplain LocaleUtils}.
+ * Searches for properties files in a resource directory within the gt-swing module and records the {@code Locales}
+ * supported by each file. This is a helper for {@linkplain LocaleUtils}.
  *
- * <p>Normally, the {@linkplain #scan(String)} method will be responding to a call from outside this
- * class's jar, either directly or indirectly. An example of an indirect outside call is when an
- * application calls a LocaleUtils method which in turn calls the {@code scan} method. In this case,
- * the resource directory is searched by scanning the relevant entries in the gt-swing jar.
+ * <p>Normally, the {@linkplain #scan(String)} method will be responding to a call from outside this class's jar, either
+ * directly or indirectly. An example of an indirect outside call is when an application calls a LocaleUtils method
+ * which in turn calls the {@code scan} method. In this case, the resource directory is searched by scanning the
+ * relevant entries in the gt-swing jar.
  *
- * <p>For completeness, and to aid unit testing, calls from within the swing module are also
- * supported. In this case the resource directory is accessed as a local {@linkplain File} object.
+ * <p>For completeness, and to aid unit testing, calls from within the swing module are also supported. In this case the
+ * resource directory is accessed as a local {@linkplain File} object.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -53,8 +53,8 @@ import org.geotools.util.logging.Logging;
 public class PropertiesFileFinder {
     static final Logger LOGGER = Logging.getLogger(PropertiesFileFinder.class);
     /**
-     * Searches for properties files in the specified resource directory and returns information
-     * about each file and the {@code Locales} that it supports.
+     * Searches for properties files in the specified resource directory and returns information about each file and the
+     * {@code Locales} that it supports.
      */
     public List<PropertiesFileInfo> scan(String resourceDir) throws IOException {
         List<SingleFileInfo> infoList = new ArrayList<>();
@@ -89,8 +89,7 @@ public class PropertiesFileFinder {
             } catch (NoSuchMethodException | SecurityException ex) {
                 LOGGER.log(Level.FINE, "", ex);
                 throw new IllegalArgumentException(
-                        "did not find method toFileUTL in class the org.eclipse.core.runtime.FileLocator",
-                        ex);
+                        "did not find method toFileUTL in class the org.eclipse.core.runtime.FileLocator", ex);
             }
             // convert to a directory we can list
             URL url = new URL(path);
@@ -99,16 +98,11 @@ public class PropertiesFileFinder {
             try {
                 urlFile = (URL) toFileURLMethod.invoke(null, url);
                 // try to load
-                if (urlFile == null)
-                    throw new RuntimeException(
-                            "error while converting the url " + url + " to a file");
+                if (urlFile == null) throw new RuntimeException("error while converting the url " + url + " to a file");
                 mydirectory = new File(urlFile.getFile());
-            } catch (IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException e) {
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 LOGGER.log(Level.FINE, "", e);
-                throw new RuntimeException(
-                        "error while converting the url " + url + " to a file", e);
+                throw new RuntimeException("error while converting the url " + url + " to a file", e);
             }
 
             // list files
@@ -143,8 +137,8 @@ public class PropertiesFileFinder {
     }
 
     /**
-     * Gets the path to this class file. This will be a jar file path if called from outside this
-     * module, or a local path if called from within.
+     * Gets the path to this class file. This will be a jar file path if called from outside this module, or a local
+     * path if called from within.
      *
      * @return path to this class
      */
@@ -204,8 +198,7 @@ public class PropertiesFileFinder {
     }
 
     /**
-     * Parses an entry (either a jar file entry or local file name) and extracts the base name and
-     * locale.
+     * Parses an entry (either a jar file entry or local file name) and extracts the base name and locale.
      *
      * @param prefixLength length of entry prefix to discard
      * @param entry the entry
@@ -240,8 +233,8 @@ public class PropertiesFileFinder {
     }
 
     /**
-     * Converts a list of single file information (base name plus locale) into a list of {@linkplain
-     * PropertiesFileInfo} objects.
+     * Converts a list of single file information (base name plus locale) into a list of {@linkplain PropertiesFileInfo}
+     * objects.
      *
      * @param infoList list of single file information
      * @return a new list of {@code PropertiesFileInfo} objects

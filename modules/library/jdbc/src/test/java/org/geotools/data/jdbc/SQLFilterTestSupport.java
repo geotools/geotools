@@ -35,8 +35,7 @@ import org.locationtech.jts.geom.LineString;
  */
 public abstract class SQLFilterTestSupport {
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SQLFilterTestSupport.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SQLFilterTestSupport.class);
 
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;

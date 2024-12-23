@@ -21,8 +21,8 @@ import java.sql.PreparedStatement;
 import org.geotools.util.factory.Hints;
 
 /**
- * This factory uses the MS-Access dialect of SQL. Because the primary distribution format for the
- * EPSG database is MS-Access there is very little work to do in our {@link #adaptSQL} method.
+ * This factory uses the MS-Access dialect of SQL. Because the primary distribution format for the EPSG database is
+ * MS-Access there is very little work to do in our {@link #adaptSQL} method.
  *
  * @since 2.4
  * @version $Id$
@@ -42,8 +42,8 @@ public class AccessDialectEpsgFactory extends AbstractEpsgFactory {
     /**
      * Invoked when a new {@link PreparedStatement} is about to be created from a SQL string.
      *
-     * <p>Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access
-     * format, and this is the target of our super class, we have no work to do here.
+     * <p>Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access format, and this is
+     * the target of our super class, we have no work to do here.
      *
      * @param statement The statement in MS-Access syntax.
      * @return The SQL statement to use. This implementation returns the string unchanged.

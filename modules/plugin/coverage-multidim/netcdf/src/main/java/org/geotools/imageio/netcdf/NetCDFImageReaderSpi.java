@@ -99,11 +99,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
         List<String> mimeTypesList = new ArrayList<>();
         Collections.addAll(
-                mimeTypesList,
-                NetCDFUtilities.NETCDF3_MIMETYPE,
-                "image/netcdf",
-                "image/x-netcdf",
-                "image/x-nc");
+                mimeTypesList, NetCDFUtilities.NETCDF3_MIMETYPE, "image/netcdf", "image/x-netcdf", "image/x-nc");
 
         if (NetCDFUtilities.isGribAvailable()) {
             Collections.addAll(suffixesList, "grib", "grib2", "grb", "grb2");
@@ -154,7 +150,9 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
     /** @see javax.imageio.spi.IIOServiceProvider#getDescription(java.util.Locale) */
     @Override
     public String getDescription(Locale locale) {
-        return new StringBuffer("NetCDF-CF Image Reader, version ").append(version).toString();
+        return new StringBuffer("NetCDF-CF Image Reader, version ")
+                .append(version)
+                .toString();
     }
 
     @Override

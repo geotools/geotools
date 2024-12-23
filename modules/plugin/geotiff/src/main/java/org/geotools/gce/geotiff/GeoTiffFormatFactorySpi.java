@@ -43,13 +43,13 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
- * The <CODE>GeoTiffFormatFactorySpi</CODE> should never be instantiated directly by user code. It
- * is discovered by the <CODE>GridFormatFinder</CODE> for automatic discovery. Use the standard
- * Geotools method of discovering a factory in order to create a format.
+ * The <CODE>GeoTiffFormatFactorySpi</CODE> should never be instantiated directly by user code. It is discovered by the
+ * <CODE>GridFormatFinder</CODE> for automatic discovery. Use the standard Geotools method of discovering a factory in
+ * order to create a format.
  *
- * <p>This format will only report itself to be &quot;available&quot; if the JAI and JAI ImageI/O
- * libraries are available. Otherwise it will be unavailable. If a user attempts to create a new
- * instance of the format when the required libraries are unavailable, an <CODE>
+ * <p>This format will only report itself to be &quot;available&quot; if the JAI and JAI ImageI/O libraries are
+ * available. Otherwise it will be unavailable. If a user attempts to create a new instance of the format when the
+ * required libraries are unavailable, an <CODE>
  * UnsupportedOperationException</CODE> will be thrown.
  *
  * @author Bryce Nordgren / USDA Forest Service
@@ -60,8 +60,8 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
     public GeoTiffFormatFactorySpi() {}
 
     /**
-     * Creates and returns a new instance of the <CODE>GeoTiffFormat</CODE> class if the required
-     * libraries are present. If JAI and JAI Image I/O are not present, will throw an <CODE>
+     * Creates and returns a new instance of the <CODE>GeoTiffFormat</CODE> class if the required libraries are present.
+     * If JAI and JAI Image I/O are not present, will throw an <CODE>
      * UnsupportedOperationException</CODE>.
      *
      * @return <CODE>GeoTiffFormat</CODE> object.
@@ -70,8 +70,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
     @Override
     public AbstractGridFormat createFormat() {
         if (!isAvailable()) {
-            throw new UnsupportedOperationException(
-                    "The GeoTiff plugin requires the JAI and JAI ImageI/O libraries!");
+            throw new UnsupportedOperationException("The GeoTiff plugin requires the JAI and JAI ImageI/O libraries!");
         }
 
         return new GeoTiffFormat();

@@ -71,11 +71,7 @@ public class TransactionRequest extends WFSRequest {
         return new Insert(typeName);
     }
 
-    public Update createUpdate(
-            QName typeName,
-            List<QName> propertyNames,
-            List<Object> newValues,
-            Filter updateFilter) {
+    public Update createUpdate(QName typeName, List<QName> propertyNames, List<Object> newValues, Filter updateFilter) {
         return new Update(typeName, propertyNames, newValues, updateFilter);
     }
 
@@ -118,10 +114,7 @@ public class TransactionRequest extends WFSRequest {
 
             if (!new NameImpl(typeName).equals(name)) {
                 throw new IllegalArgumentException(
-                        "Type name does not match. Expected "
-                                + new NameImpl(typeName)
-                                + ", but got "
-                                + name);
+                        "Type name does not match. Expected " + new NameImpl(typeName) + ", but got " + name);
             }
 
             WFSStrategy strategy = getStrategy();
@@ -131,14 +124,12 @@ public class TransactionRequest extends WFSRequest {
                 if (!(property instanceof GeometryAttribute)) {
                     continue;
                 }
-                CoordinateReferenceSystem attCrs =
-                        ((GeometryType) property.getType()).getCoordinateReferenceSystem();
+                CoordinateReferenceSystem attCrs = ((GeometryType) property.getType()).getCoordinateReferenceSystem();
                 if (!CRS.equalsIgnoreMetadata(crs, attCrs)) {
-                    throw new IllegalArgumentException(
-                            "Added Features shall match the native CRS: "
-                                    + typeInfo.getDefaultSRS()
-                                    + ". Got "
-                                    + attCrs);
+                    throw new IllegalArgumentException("Added Features shall match the native CRS: "
+                            + typeInfo.getDefaultSRS()
+                            + ". Got "
+                            + attCrs);
                 }
             }
 
@@ -164,11 +155,7 @@ public class TransactionRequest extends WFSRequest {
 
         private final Filter filter;
 
-        Update(
-                QName typeName,
-                List<QName> propertyNames,
-                List<Object> newValues,
-                Filter updateFilter) {
+        Update(QName typeName, List<QName> propertyNames, List<Object> newValues, Filter updateFilter) {
             super(typeName);
             this.propertyNames = Collections.unmodifiableList(new ArrayList<>(propertyNames));
             this.newValues = Collections.unmodifiableList(new ArrayList<>(newValues));

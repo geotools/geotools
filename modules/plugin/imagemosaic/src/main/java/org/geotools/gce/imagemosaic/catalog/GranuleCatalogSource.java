@@ -48,10 +48,7 @@ public class GranuleCatalogSource implements GranuleSource {
     protected RasterManager manager;
 
     public GranuleCatalogSource(
-            RasterManager manager,
-            GranuleCatalog catalog,
-            final String typeName,
-            final Hints hints) {
+            RasterManager manager, GranuleCatalog catalog, final String typeName, final Hints hints) {
 
         // TODO: once we allow to create different catalogs (based on different featureTypes)
         // we can stop filtering by name
@@ -80,11 +77,10 @@ public class GranuleCatalogSource implements GranuleSource {
             return baseQuery;
         } else {
             if (q.getTypeName() != null && !Objects.equals(this.typeName, q.getTypeName())) {
-                throw new IllegalArgumentException(
-                        "Invalid type name in query "
-                                + q.getTypeName()
-                                + ", this granule source only returns "
-                                + this.typeName);
+                throw new IllegalArgumentException("Invalid type name in query "
+                        + q.getTypeName()
+                        + ", this granule source only returns "
+                        + this.typeName);
             }
             if (hints != null) {
                 q.getHints().putAll(hints);

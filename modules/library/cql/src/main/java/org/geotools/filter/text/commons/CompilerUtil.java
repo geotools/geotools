@@ -28,8 +28,8 @@ import org.geotools.filter.text.cql2.CQLException;
  *
  * <p>This is an internal utility class with convenient methods for compiler actions.
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -41,16 +41,14 @@ public final class CompilerUtil {
     }
 
     /**
-     * Returns the filter resultant of the parsing process of predicate expression. Makes
-     * Expressions for the predicate
+     * Returns the filter resultant of the parsing process of predicate expression. Makes Expressions for the predicate
      *
      * @param language the dialect of language
      * @param predicate a valid search predicate for the language
      * @param filterFactory a filter factory used to make the expression
      * @return an {@link Filter}
      */
-    public static final Filter parseFilter(
-            final Language language, final String predicate, FilterFactory filterFactory)
+    public static final Filter parseFilter(final Language language, final String predicate, FilterFactory filterFactory)
             throws CQLException {
 
         assert language != null : "language cannot be null";
@@ -70,8 +68,7 @@ public final class CompilerUtil {
      * @param predicate a valid search predicate for the language
      * @return a {@link Filter}
      */
-    public static final Filter parseFilter(final Language language, final String predicate)
-            throws CQLException {
+    public static final Filter parseFilter(final Language language, final String predicate) throws CQLException {
 
         assert language != null : "language cannot be null";
         assert predicate != null : "predicate cannot be null";
@@ -90,8 +87,7 @@ public final class CompilerUtil {
      * @return an {@link Expression}
      */
     public static final Expression parseExpression(
-            final Language language, final String predicate, FilterFactory filterFactory)
-            throws CQLException {
+            final Language language, final String predicate, FilterFactory filterFactory) throws CQLException {
 
         assert language != null : "language cannot be null";
         assert predicate != null : "predicate cannot be null";
@@ -126,8 +122,7 @@ public final class CompilerUtil {
      * @param filterFactory a filter factory used to make the each filter
      * @return a {@link List} of filters
      */
-    public static List<Filter> parseFilterList(
-            final Language language, String predicate, FilterFactory filterFactory)
+    public static List<Filter> parseFilterList(final Language language, String predicate, FilterFactory filterFactory)
             throws CQLException {
 
         assert language != null : "language cannot be null";
@@ -147,8 +142,7 @@ public final class CompilerUtil {
      * @param predicate a valid expression for the language
      * @return a {@link List} of filters
      */
-    public static List<Filter> parseFilterList(final Language language, String predicate)
-            throws CQLException {
+    public static List<Filter> parseFilterList(final Language language, String predicate) throws CQLException {
 
         List<Filter> results = parseFilterList(language, predicate, null);
 
@@ -163,9 +157,7 @@ public final class CompilerUtil {
      * @return an {@link Expression}
      */
     public static Expression parseExpression(
-            final String source,
-            final AbstractCompilerFactory compilerFactory,
-            FilterFactory filterFactory)
+            final String source, final AbstractCompilerFactory compilerFactory, FilterFactory filterFactory)
             throws CQLException {
 
         ICompiler compiler = compilerFactory.makeCompiler(source, filterFactory);
@@ -184,9 +176,7 @@ public final class CompilerUtil {
      * @return a {@link Filter}
      */
     public static Filter parseFilter(
-            final String source,
-            final AbstractCompilerFactory compilerFactory,
-            final FilterFactory filterFactory)
+            final String source, final AbstractCompilerFactory compilerFactory, final FilterFactory filterFactory)
             throws CQLException {
 
         ICompiler compiler = compilerFactory.makeCompiler(source, filterFactory);

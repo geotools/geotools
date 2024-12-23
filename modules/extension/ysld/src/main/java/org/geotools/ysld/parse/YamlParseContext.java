@@ -26,8 +26,8 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * Holds the context of a call to {@link YamlParser#parse(YamlParseHandler, Map)} during its descent
- * into the {@link YamlObject} being parsed.
+ * Holds the context of a call to {@link YamlParser#parse(YamlParseHandler, Map)} during its descent into the
+ * {@link YamlObject} being parsed.
  */
 public class YamlParseContext {
     /*
@@ -107,9 +107,8 @@ public class YamlParseContext {
     }
 
     /**
-     * Pop a {@link YamlParseHandler} from the handler stack and execute its {@link
-     * YamlParseHandler#handle(YamlObject, YamlParseContext)} method on the {@link YamlObject} with
-     * which it was pushed.
+     * Pop a {@link YamlParseHandler} from the handler stack and execute its {@link YamlParseHandler#handle(YamlObject,
+     * YamlParseContext)} method on the {@link YamlObject} with which it was pushed.
      *
      * @return True if more handlers remain on handler stack; false if the handler stack is empty.
      */
@@ -132,9 +131,9 @@ public class YamlParseContext {
     }
 
     /**
-     * Container object for a {@link YamlParseHandler} and the {@link YamlObject} it should handle.
-     * Instances of this class are added to the stack in the {@link YamlParseContext} by a {@link
-     * YamlParseHandler} as it descends into the {@link YamlObject} it is parsing.
+     * Container object for a {@link YamlParseHandler} and the {@link YamlObject} it should handle. Instances of this
+     * class are added to the stack in the {@link YamlParseContext} by a {@link YamlParseHandler} as it descends into
+     * the {@link YamlObject} it is parsing.
      */
     static class Entry {
         YamlObject obj;

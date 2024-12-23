@@ -27,8 +27,7 @@ import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
 
 public class CenterLineProcess extends StaticMethodsProcessFactory<CenterLineProcess> {
-    private static final Logger LOG =
-            Logger.getLogger("org.geotools.process.geometry.CenterLineProcess");
+    private static final Logger LOG = Logger.getLogger("org.geotools.process.geometry.CenterLineProcess");
 
     public CenterLineProcess() {
 
@@ -36,9 +35,7 @@ public class CenterLineProcess extends StaticMethodsProcessFactory<CenterLinePro
     }
 
     @DescribeProcess(title = "Center Line", description = "Extract Center Line of a Polygon")
-    @DescribeResult(
-            description =
-                    "A geometry that is the longest center line (skeleton) of the input polygon")
+    @DescribeResult(description = "A geometry that is the longest center line (skeleton) of the input polygon")
     public static Geometry centerLine(
             @DescribeParameter(
                             name = "geometry",

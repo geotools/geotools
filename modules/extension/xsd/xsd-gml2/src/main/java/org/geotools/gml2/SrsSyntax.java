@@ -114,8 +114,8 @@ public enum SrsSyntax {
     }
 
     /**
-     * Prefix used by this syntax. Please use getSRS instead, in order to build a full URI, the
-     * prefix assumes a fixed EPSG authority.
+     * Prefix used by this syntax. Please use getSRS instead, in order to build a full URI, the prefix assumes a fixed
+     * EPSG authority.
      */
     public String getPrefix() {
         return prefix;
@@ -124,8 +124,8 @@ public enum SrsSyntax {
     public abstract String getSRS(String authority, String code);
 
     /**
-     * Expects either an identifier in the form of "authority:code", or just a code. If just a code
-     * then the "EPSG" authority is assumed.
+     * Expects either an identifier in the form of "authority:code", or just a code. If just a code then the "EPSG"
+     * authority is assumed.
      *
      * @param identifier
      * @return

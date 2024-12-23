@@ -56,59 +56,50 @@ import org.geotools.referencing.NamedIdentifier;
 import si.uom.NonSI;
 
 /**
- * Oblique Mercator Projection. A conformal, oblique, cylindrical projection with the cylinder
- * touching the ellipsoid (or sphere) along a great circle path (the central line). The {@linkplain
- * Mercator} and {@linkplain TransverseMercator Transverse Mercator} projections can be thought of
- * as special cases of the oblique mercator, where the central line is along the equator or a
- * meridian, respectively. The Oblique Mercator projection has been used in Switzerland, Hungary,
- * Madagascar, Malaysia, Borneo and the panhandle of Alaska.
+ * Oblique Mercator Projection. A conformal, oblique, cylindrical projection with the cylinder touching the ellipsoid
+ * (or sphere) along a great circle path (the central line). The {@linkplain Mercator} and
+ * {@linkplain TransverseMercator Transverse Mercator} projections can be thought of as special cases of the oblique
+ * mercator, where the central line is along the equator or a meridian, respectively. The Oblique Mercator projection
+ * has been used in Switzerland, Hungary, Madagascar, Malaysia, Borneo and the panhandle of Alaska.
  *
- * <p>The Oblique Mercator projection uses a (<var>U</var>,<var>V</var>) coordinate system, with the
- * <var>U</var> axis along the central line. During the forward projection, coordinates from the
- * ellipsoid are projected conformally to a sphere of constant total curvature, called the
- * "aposphere", before being projected onto the plane. The projection coordinates are further
- * convented to a (<var>X</var>,<var>Y</var>) coordinate system by rotating the calculated
- * (<var>u</var>,<var>v</var>) coordinates to give output (<var>x</var>,<var>y</var>) coordinates.
- * The rotation value is usually the same as the projection azimuth (the angle, east of north, of
- * the central line), but some cases allow a separate rotation parameter.
+ * <p>The Oblique Mercator projection uses a (<var>U</var>,<var>V</var>) coordinate system, with the <var>U</var> axis
+ * along the central line. During the forward projection, coordinates from the ellipsoid are projected conformally to a
+ * sphere of constant total curvature, called the "aposphere", before being projected onto the plane. The projection
+ * coordinates are further convented to a (<var>X</var>,<var>Y</var>) coordinate system by rotating the calculated
+ * (<var>u</var>,<var>v</var>) coordinates to give output (<var>x</var>,<var>y</var>) coordinates. The rotation value is
+ * usually the same as the projection azimuth (the angle, east of north, of the central line), but some cases allow a
+ * separate rotation parameter.
  *
- * <p>There are two forms of the oblique mercator, differing in the origin of their grid
- * coordinates. The {@linkplain HotineObliqueMercator Hotine Oblique Mercator} (EPSG code 9812) has
- * grid coordinates start at the intersection of the central line and the equator of the aposphere.
- * The {@linkplain ObliqueMercator Oblique Mercator} (EPSG code 9815) is the same, except the grid
- * coordinates begin at the central point (where the latitude of center and central line intersect).
- * ESRI separates these two case by appending {@code "Natural_Origin"} (for the {@code
- * "Hotine_Oblique_Mercator"}) and {@code "Center"} (for the {@code "Oblique_Mercator"}) to the
- * projection names.
+ * <p>There are two forms of the oblique mercator, differing in the origin of their grid coordinates. The
+ * {@linkplain HotineObliqueMercator Hotine Oblique Mercator} (EPSG code 9812) has grid coordinates start at the
+ * intersection of the central line and the equator of the aposphere. The {@linkplain ObliqueMercator Oblique Mercator}
+ * (EPSG code 9815) is the same, except the grid coordinates begin at the central point (where the latitude of center
+ * and central line intersect). ESRI separates these two case by appending {@code "Natural_Origin"} (for the
+ * {@code "Hotine_Oblique_Mercator"}) and {@code "Center"} (for the {@code "Oblique_Mercator"}) to the projection names.
  *
- * <p>Two different methods are used to specify the central line for the oblique mercator: 1) a
- * central point and an azimuth, east of north, describing the central line and 2) two points on the
- * central line. The EPSG does not use the two point method, while ESRI separates the two cases by
- * putting {@code "Azimuth"} and {@code "Two_Point"} in their projection names. Both cases use the
- * point where the {@code "latitude_of_center"} parameter crosses the central line as the
- * projection's central point. The {@linkplain #centralMeridian central meridian} is not a
- * projection parameter, and is instead calculated as the intersection between the central line and
- * the equator of the aposphere.
+ * <p>Two different methods are used to specify the central line for the oblique mercator: 1) a central point and an
+ * azimuth, east of north, describing the central line and 2) two points on the central line. The EPSG does not use the
+ * two point method, while ESRI separates the two cases by putting {@code "Azimuth"} and {@code "Two_Point"} in their
+ * projection names. Both cases use the point where the {@code "latitude_of_center"} parameter crosses the central line
+ * as the projection's central point. The {@linkplain #centralMeridian central meridian} is not a projection parameter,
+ * and is instead calculated as the intersection between the central line and the equator of the aposphere.
  *
- * <p>For the azimuth method, the central latitude cannot be &plusmn;90.0 degrees and the central
- * line cannot be at a maximum or minimum latitude at the central point. In the two point method,
- * the latitude of the first and second points cannot be equal. Also, the latitude of the first
- * point and central point cannot be &plusmn;90.0 degrees. Furthermore, the latitude of the first
- * point cannot be 0.0 and the latitude of the second point cannot be -90.0 degrees. A change of
- * 10<sup>-7</sup> radians can allow calculation at these special cases. Snyder's restriction of the
- * central latitude being 0.0 has been removed, since the equations appear to work correctly in this
- * case.
+ * <p>For the azimuth method, the central latitude cannot be &plusmn;90.0 degrees and the central line cannot be at a
+ * maximum or minimum latitude at the central point. In the two point method, the latitude of the first and second
+ * points cannot be equal. Also, the latitude of the first point and central point cannot be &plusmn;90.0 degrees.
+ * Furthermore, the latitude of the first point cannot be 0.0 and the latitude of the second point cannot be -90.0
+ * degrees. A change of 10<sup>-7</sup> radians can allow calculation at these special cases. Snyder's restriction of
+ * the central latitude being 0.0 has been removed, since the equations appear to work correctly in this case.
  *
- * <p>Azimuth values of 0.0 and &plusmn;90.0 degrees are allowed (and used in Hungary and
- * Switzerland), though these cases would usually use a Mercator or Transverse Mercator projection
- * instead. Azimuth values > 90 degrees cause errors in the equations.
+ * <p>Azimuth values of 0.0 and &plusmn;90.0 degrees are allowed (and used in Hungary and Switzerland), though these
+ * cases would usually use a Mercator or Transverse Mercator projection instead. Azimuth values > 90 degrees cause
+ * errors in the equations.
  *
- * <p>The oblique mercator is also called the "Rectified Skew Orthomorphic" (RSO). It appears is
- * that the only difference from the oblique mercator is that the RSO allows the rotation from the
- * (<var>U</var>,<var>V</var>) to (<var>X</var>,<var>Y</var>) coordinate system to be different from
- * the azimuth. This separate parameter is called {@code "rectified_grid_angle"} (or {@code
- * "XY_Plane_Rotation"} by ESRI) and is also included in the EPSG's parameters for the Oblique
- * Mercator and Hotine Oblique Mercator. The rotation parameter is optional in all the non-two point
+ * <p>The oblique mercator is also called the "Rectified Skew Orthomorphic" (RSO). It appears is that the only
+ * difference from the oblique mercator is that the RSO allows the rotation from the (<var>U</var>,<var>V</var>) to
+ * (<var>X</var>,<var>Y</var>) coordinate system to be different from the azimuth. This separate parameter is called
+ * {@code "rectified_grid_angle"} (or {@code "XY_Plane_Rotation"} by ESRI) and is also included in the EPSG's parameters
+ * for the Oblique Mercator and Hotine Oblique Mercator. The rotation parameter is optional in all the non-two point
  * projections and will be set to the azimuth if not specified.
  *
  * <p>Projection cases and aliases implemented by the {@link ObliqueMercator} are:
@@ -137,26 +128,22 @@ import si.uom.NonSI;
  * <p><b>References:</b>
  *
  * <ul>
- *   <li>{@code libproj4} is available at <A
- *       HREF="http://members.bellatlantic.net/~vze2hc4d/proj4/">libproj4 Miscellanea</A><br>
- *       Relevent files are: {@code PJ_omerc.c}, {@code pj_tsfn.c}, {@code pj_fwd.c}, {@code
- *       pj_inv.c} and {@code lib_proj.h}
- *   <li>John P. Snyder (Map Projections - A Working Manual, U.S. Geological Survey Professional
- *       Paper 1395, 1987)
- *   <li>"Coordinate Conversions and Transformations including Formulas", EPSG Guidence Note Number
- *       7 part 2, Version 24.
- *   <li>Gerald Evenden, 2004, <a href="http://members.verizon.net/~vze2hc4d/proj4/omerc.pdf">
- *       Documentation of revised Oblique Mercator</a>
+ *   <li>{@code libproj4} is available at <A HREF="http://members.bellatlantic.net/~vze2hc4d/proj4/">libproj4
+ *       Miscellanea</A><br>
+ *       Relevent files are: {@code PJ_omerc.c}, {@code pj_tsfn.c}, {@code pj_fwd.c}, {@code pj_inv.c} and
+ *       {@code lib_proj.h}
+ *   <li>John P. Snyder (Map Projections - A Working Manual, U.S. Geological Survey Professional Paper 1395, 1987)
+ *   <li>"Coordinate Conversions and Transformations including Formulas", EPSG Guidence Note Number 7 part 2, Version
+ *       24.
+ *   <li>Gerald Evenden, 2004, <a href="http://members.verizon.net/~vze2hc4d/proj4/omerc.pdf">Documentation of revised
+ *       Oblique Mercator</a>
  * </ul>
  *
- * @see <A HREF="http://mathworld.wolfram.com/MercatorProjection.html">Oblique Mercator projection
- *     on MathWorld</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/hotine_oblique_mercator.html">"hotine_oblique_mercator"
+ * @see <A HREF="http://mathworld.wolfram.com/MercatorProjection.html">Oblique Mercator projection on MathWorld</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/hotine_oblique_mercator.html">"hotine_oblique_mercator"
  *     on RemoteSensing.org</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/oblique_mercator.html">"oblique_mercator"
- *     on RemoteSensing.org</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/oblique_mercator.html">"oblique_mercator" on
+ *     RemoteSensing.org</A>
  * @since 2.1
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)
@@ -180,30 +167,26 @@ public class ObliqueMercator extends MapProjection {
     //////
 
     /**
-     * Latitude of the projection centre. This is similar to the {@link #latitudeOfOrigin}, but the
-     * latitude of origin is the Earth equator on aposphere for the oblique mercator.
+     * Latitude of the projection centre. This is similar to the {@link #latitudeOfOrigin}, but the latitude of origin
+     * is the Earth equator on aposphere for the oblique mercator.
      */
     protected final double latitudeOfCentre;
 
     /**
-     * Longitude of the projection centre. This is <strong>NOT</strong> equal to the {@link
-     * #centralMeridian}, which is the meridian where the central line intersects the Earth equator
-     * on aposphere.
+     * Longitude of the projection centre. This is <strong>NOT</strong> equal to the {@link #centralMeridian}, which is
+     * the meridian where the central line intersects the Earth equator on aposphere.
      *
-     * <p>This parameter applies to the "azimuth" case only. It is set to {@link Double#NaN NaN} for
-     * the "two points" case.
+     * <p>This parameter applies to the "azimuth" case only. It is set to {@link Double#NaN NaN} for the "two points"
+     * case.
      */
     protected final double longitudeOfCentre;
 
-    /**
-     * The azimuth of the central line passing throught the centre of the projection, in radians.
-     */
+    /** The azimuth of the central line passing throught the centre of the projection, in radians. */
     protected final double azimuth;
 
     /**
-     * The rectified bearing of the central line, in radians. This is equals to the {@linkplain
-     * #azimuth} if the {@link Provider#RECTIFIED_GRID_ANGLE "rectified_grid_angle"} parameter value
-     * is not set.
+     * The rectified bearing of the central line, in radians. This is equals to the {@linkplain #azimuth} if the
+     * {@link Provider#RECTIFIED_GRID_ANGLE "rectified_grid_angle"} parameter value is not set.
      */
     protected final double rectifiedGridAngle;
 
@@ -212,32 +195,32 @@ public class ObliqueMercator extends MapProjection {
     /**
      * The latitude of the 1st point used to specify the central line, in radians.
      *
-     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN}
-     * for the "azimuth" case.
+     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN} for the "azimuth"
+     * case.
      */
     private final double p1Lat;
 
     /**
      * The longitude of the 1st point used to specify the central line, in radians.
      *
-     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN}
-     * for the "azimuth" case.
+     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN} for the "azimuth"
+     * case.
      */
     private final double p1Lon;
 
     /**
      * The latitude of the 2nd point used to specify the central line, in radians.
      *
-     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN}
-     * for the "azimuth" case.
+     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN} for the "azimuth"
+     * case.
      */
     private final double p2Lat;
 
     /**
      * The longitude of the 2nd point used to specify the central line, in radians.
      *
-     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN}
-     * for the "azimuth" case.
+     * <p>This parameter applies to the "two points" case only. It is set to {@link Double#NaN NaN} for the "azimuth"
+     * case.
      */
     private final double p2Lon;
 
@@ -250,8 +233,7 @@ public class ObliqueMercator extends MapProjection {
     private final double B, A, E;
 
     /**
-     * Convenience values equal to {@link #A} / {@link #B}, {@link #A}&times;{@link #B}, and {@link
-     * #B} / {@link #A}.
+     * Convenience values equal to {@link #A} / {@link #B}, {@link #A}&times;{@link #B}, and {@link #B} / {@link #A}.
      */
     private final double ArB, AB, BrA;
 
@@ -259,8 +241,8 @@ public class ObliqueMercator extends MapProjection {
     private final double v_pole_n, v_pole_s;
 
     /**
-     * Sine and Cosine values for gamma0 (the angle between the meridian and central line at the
-     * intersection between the central line and the Earth equator on aposphere).
+     * Sine and Cosine values for gamma0 (the angle between the meridian and central line at the intersection between
+     * the central line and the Earth equator on aposphere).
      */
     private final double singamma0, cosgamma0;
 
@@ -268,8 +250,8 @@ public class ObliqueMercator extends MapProjection {
     private final double sinrot, cosrot;
 
     /**
-     * <var>u</var> value (in (U,V) coordinate system) of the central point. Used in the oblique
-     * mercator case. The <var>v</var> value of the central point is 0.0.
+     * <var>u</var> value (in (U,V) coordinate system) of the central point. Used in the oblique mercator case. The
+     * <var>v</var> value of the central point is 0.0.
      */
     private final double u_c;
 
@@ -282,11 +264,10 @@ public class ObliqueMercator extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      * @since 2.4
-     * @todo Current implementation assumes a "azimuth" case. We may try to detect the "two points"
-     *     case in a future version if needed.
+     * @todo Current implementation assumes a "azimuth" case. We may try to detect the "two points" case in a future
+     *     version if needed.
      */
-    protected ObliqueMercator(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected ObliqueMercator(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Provider.PARAMETERS.descriptors(), false, false);
     }
 
@@ -295,8 +276,8 @@ public class ObliqueMercator extends MapProjection {
      *
      * @param parameters The parameter values in standard units.
      * @param expected The expected parameter descriptors.
-     * @param twoPoint {@code true} for the "two points" case, or {@code false} for the "azimuth"
-     *     case. The former is used by ESRI but not EPSG.
+     * @param twoPoint {@code true} for the "two points" case, or {@code false} for the "azimuth" case. The former is
+     *     used by ESRI but not EPSG.
      * @param hotine {@code true} only if invoked by the {@link HotineObliqueMercator} constructor.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
@@ -364,8 +345,7 @@ public class ObliqueMercator extends MapProjection {
             p2Lat = doubleValue(expected, Provider_TwoPoint.LAT_OF_2ND_POINT, parameters);
             ensureLatitudeInRange(Provider_TwoPoint.LAT_OF_2ND_POINT, p2Lat, true);
             // Will be assigned to the field later.
-            double longitudeOf2ndPoint =
-                    doubleValue(expected, Provider_TwoPoint.LONG_OF_2ND_POINT, parameters);
+            double longitudeOf2ndPoint = doubleValue(expected, Provider_TwoPoint.LONG_OF_2ND_POINT, parameters);
             ensureLongitudeInRange(Provider_TwoPoint.LONG_OF_2ND_POINT, longitudeOf2ndPoint, true);
             /*
              * Ensures that (phi1 != phi2), (phi1 != 0°) and (phi2 != -90°),
@@ -391,9 +371,7 @@ public class ObliqueMercator extends MapProjection {
             if (desc != null) {
                 final String name = desc.getName().getCode();
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
-                        name,
-                        value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
             }
             /*
              * The coefficients for the "two points" case.
@@ -411,11 +389,8 @@ public class ObliqueMercator extends MapProjection {
                 longitudeOf2ndPoint += 2.0 * PI;
             }
             this.p2Lon = longitudeOf2ndPoint;
-            centralMeridian =
-                    rollLongitude(
-                            0.5 * (p1Lon + longitudeOf2ndPoint)
-                                    - atan(J * tan(0.5 * B * (p1Lon - longitudeOf2ndPoint)) / P)
-                                            / B);
+            centralMeridian = rollLongitude(0.5 * (p1Lon + longitudeOf2ndPoint)
+                    - atan(J * tan(0.5 * B * (p1Lon - longitudeOf2ndPoint)) / P) / B);
             gamma0 = atan(2.0 * sin(B * rollLongitude(p1Lon - centralMeridian)) / (Fp - 1.0 / Fp));
             azimuth = asin(D * sin(gamma0));
             rectifiedGridAngle = azimuth;
@@ -433,14 +408,11 @@ public class ObliqueMercator extends MapProjection {
             ensureLongitudeInRange(Provider.LONGITUDE_OF_CENTRE, longitudeOfCentre, true);
             azimuth = doubleValue(expected, Provider.AZIMUTH, parameters);
             // Already checked for +-360 deg. above.
-            if ((azimuth > -1.5 * PI && azimuth < -0.5 * PI)
-                    || (azimuth > 0.5 * PI && azimuth < 1.5 * PI)) {
+            if ((azimuth > -1.5 * PI && azimuth < -0.5 * PI) || (azimuth > 0.5 * PI && azimuth < 1.5 * PI)) {
                 final String name = Provider.AZIMUTH.getName().getCode();
                 final Angle value = new Angle(toDegrees(azimuth));
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
-                        name,
-                        value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
             }
             temp = doubleValue(expected, Provider.RECTIFIED_GRID_ANGLE, parameters);
             if (Double.isNaN(temp)) {
@@ -518,8 +490,7 @@ public class ObliqueMercator extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double u, v;
         if (abs(abs(y) - PI / 2.0) > EPSILON) {
             double Q = E / pow(tsfn(y, sin(y)), B);
@@ -554,8 +525,7 @@ public class ObliqueMercator extends MapProjection {
 
     /** {@inheritDoc} */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double v = x * cosrot - y * sinrot;
         double u = y * cosrot + x * sinrot + u_c;
         double Qp = exp(-BrA * v);
@@ -621,9 +591,7 @@ public class ObliqueMercator extends MapProjection {
                     &&
                     // normalizing angles here
                     equals(rollLongitude(this.azimuth), rollLongitude(that.azimuth))
-                    && equals(
-                            rollLongitude(this.rectifiedGridAngle),
-                            rollLongitude(that.rectifiedGridAngle))
+                    && equals(rollLongitude(this.rectifiedGridAngle), rollLongitude(that.rectifiedGridAngle))
                     && equals(this.p1Lat, that.p1Lat)
                     && equals(this.p1Lon, that.p1Lon)
                     && equals(this.p2Lat, that.p2Lat)
@@ -645,8 +613,8 @@ public class ObliqueMercator extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for an {@linkplain ObliqueMercator Oblique Mercator} projection (EPSG code 9815).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for an
+     * {@linkplain ObliqueMercator Oblique Mercator} projection (EPSG code 9815).
      *
      * @since 2.1
      * @version $Id$
@@ -658,106 +626,96 @@ public class ObliqueMercator extends MapProjection {
         private static final long serialVersionUID = 201776686002266891L;
 
         /**
-         * The operation parameter descriptor for the {@link #latitudeOfCentre latitudeOfCentre}
-         * parameter value. Valid values range is from -90 to 90°. Default value is 0.
+         * The operation parameter descriptor for the {@link #latitudeOfCentre latitudeOfCentre} parameter value. Valid
+         * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LATITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "latitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LATITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
+                    new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
+                },
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@link #longitudeOfCentre longitudeOfCentre}
-         * parameter value. Valid values range is from -180 to 180°. Default value is 0.
+         * The operation parameter descriptor for the {@link #longitudeOfCentre longitudeOfCentre} parameter value.
+         * Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONGITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "longitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONGITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
+                    new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
+                },
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@link #azimuth azimuth} parameter value.
-         * Valid values range is from -360 to -270, -90 to 90, and 270 to 360 degrees. Default value
-         * is 0.
+         * The operation parameter descriptor for the {@link #azimuth azimuth} parameter value. Valid values range is
+         * from -360 to -270, -90 to 90, and 270 to 360 degrees. Default value is 0.
          */
-        public static final ParameterDescriptor AZIMUTH =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "azimuth"),
-                            new NamedIdentifier(Citations.ESRI, "Azimuth"),
-                            new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
-                            new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle")
-                        },
-                        0,
-                        -360,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor AZIMUTH = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "azimuth"),
+                    new NamedIdentifier(Citations.ESRI, "Azimuth"),
+                    new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
+                    new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle")
+                },
+                0,
+                -360,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@link #rectifiedGridAngle rectifiedGridAngle}
-         * parameter value. It is an optional parameter with valid values ranging from -360 to 360°.
-         * Default value is {@link #azimuth azimuth}.
+         * The operation parameter descriptor for the {@link #rectifiedGridAngle rectifiedGridAngle} parameter value. It
+         * is an optional parameter with valid values ranging from -360 to 360°. Default value is {@link #azimuth
+         * azimuth}.
          */
-        public static final ParameterDescriptor RECTIFIED_GRID_ANGLE =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "rectified_grid_angle"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Angle from Rectified to Skew Grid"),
-                            new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
-                            new NamedIdentifier(Citations.GEOTIFF, "RectifiedGridAngle")
-                        },
-                        -360,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor RECTIFIED_GRID_ANGLE = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "rectified_grid_angle"),
+                    new NamedIdentifier(Citations.EPSG, "Angle from Rectified to Skew Grid"),
+                    new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
+                    new NamedIdentifier(Citations.GEOTIFF, "RectifiedGridAngle")
+                },
+                -360,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /** The localized name for "Oblique Mercator". */
         static final InternationalString NAME =
                 Vocabulary.formatInternational(VocabularyKeys.OBLIQUE_MERCATOR_PROJECTION);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Oblique_Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "Oblique Mercator"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Hotine Oblique Mercator (variant B)"),
-                            new NamedIdentifier(Citations.EPSG, "9815"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Hotine_Oblique_Mercator_Azimuth_Center"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Rectified_Skew_Orthomorphic_Center"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LONGITUDE_OF_CENTRE,
-                            LATITUDE_OF_CENTRE,
-                            AZIMUTH,
-                            RECTIFIED_GRID_ANGLE,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Oblique_Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Oblique Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator (variant B)"),
+                    new NamedIdentifier(Citations.EPSG, "9815"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator"),
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Azimuth_Center"),
+                    new NamedIdentifier(Citations.ESRI, "Rectified_Skew_Orthomorphic_Center"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LONGITUDE_OF_CENTRE,
+                    LATITUDE_OF_CENTRE,
+                    AZIMUTH,
+                    RECTIFIED_GRID_ANGLE,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -795,9 +753,9 @@ public class ObliqueMercator extends MapProjection {
     }
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for a {@linkplain ObliqueMercator Oblique Mercator} projection, specified with two
-     * points on the central line (instead of a central point and azimuth).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for a
+     * {@linkplain ObliqueMercator Oblique Mercator} projection, specified with two points on the central line (instead
+     * of a central point and azimuth).
      *
      * @since 2.1
      * @version $Id$
@@ -809,76 +767,62 @@ public class ObliqueMercator extends MapProjection {
         private static final long serialVersionUID = 7124258885016543889L;
 
         /**
-         * The operation parameter descriptor for the {@code latitudeOf1stPoint} parameter value.
-         * Valid values range is from -90 to 90°. Default value is 0.
+         * The operation parameter descriptor for the {@code latitudeOf1stPoint} parameter value. Valid values range is
+         * from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LAT_OF_1ST_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_1st_Point")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LAT_OF_1ST_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Latitude_Of_1st_Point")},
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@code longitudeOf1stPoint} parameter value.
-         * Valid values range is from -180 to 180°. Default value is 0.
+         * The operation parameter descriptor for the {@code longitudeOf1stPoint} parameter value. Valid values range is
+         * from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONG_OF_1ST_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_1st_Point")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONG_OF_1ST_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Longitude_Of_1st_Point")},
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@code latitudeOf2ndPoint} parameter value.
-         * Valid values range is from -90 to 90°. Default value is 0.
+         * The operation parameter descriptor for the {@code latitudeOf2ndPoint} parameter value. Valid values range is
+         * from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LAT_OF_2ND_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_2nd_Point")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LAT_OF_2ND_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Latitude_Of_2nd_Point")},
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
-         * The operation parameter descriptor for the {@code longitudeOf2ndPoint} parameter value.
-         * Valid values range is from -180 to 180°. Default value is 0.
+         * The operation parameter descriptor for the {@code longitudeOf2ndPoint} parameter value. Valid values range is
+         * from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONG_OF_2ND_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_2nd_Point")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONG_OF_2ND_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Longitude_Of_2nd_Point")},
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Hotine_Oblique_Mercator_Two_Point_Center"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
-                            LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
-                            LATITUDE_OF_CENTRE, SCALE_FACTOR,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Two_Point_Center"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
+                    LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
+                    LATITUDE_OF_CENTRE, SCALE_FACTOR,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider_TwoPoint() {

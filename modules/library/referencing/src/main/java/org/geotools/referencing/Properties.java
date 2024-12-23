@@ -31,8 +31,8 @@ import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.util.MapEntry;
 
 /**
- * An immutable map fetching all properties from the specified identified object. Calls to {@code
- * get} methods are forwarded to the appropriate {@link IdentifiedObject} method.
+ * An immutable map fetching all properties from the specified identified object. Calls to {@code get} methods are
+ * forwarded to the appropriate {@link IdentifiedObject} method.
  *
  * @since 2.1
  * @version $Id$
@@ -58,8 +58,8 @@ final class Properties extends AbstractMap<String, Object> {
     }
 
     /**
-     * Returns the value to which this map maps the specified key. Returns null if the map contains
-     * no mapping for this key.
+     * Returns the value to which this map maps the specified key. Returns null if the map contains no mapping for this
+     * key.
      */
     @Override
     public Object get(final Object key) {
@@ -75,65 +75,60 @@ final class Properties extends AbstractMap<String, Object> {
     }
 
     /**
-     * Returns the value to which this map maps the specified index. Returns null if the map
-     * contains no mapping for this index.
+     * Returns the value to which this map maps the specified index. Returns null if the map contains no mapping for
+     * this index.
      */
     private Object get(final int key) {
         switch (key) {
             case 0:
                 return info.getName();
             case 1:
-                return info.getIdentifiers()
-                        .toArray(AbstractIdentifiedObject.EMPTY_IDENTIFIER_ARRAY);
+                return info.getIdentifiers().toArray(AbstractIdentifiedObject.EMPTY_IDENTIFIER_ARRAY);
             case 2:
                 return info.getAlias().toArray(AbstractIdentifiedObject.EMPTY_ALIAS_ARRAY);
             case 3:
                 return info.getRemarks();
-            case 4:
-                {
-                    if (info instanceof ReferenceSystem) {
-                        return ((ReferenceSystem) info).getScope();
-                    } else if (info instanceof Datum) {
-                        return ((Datum) info).getScope();
-                    } else if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getScope();
-                    }
-                    break;
+            case 4: {
+                if (info instanceof ReferenceSystem) {
+                    return ((ReferenceSystem) info).getScope();
+                } else if (info instanceof Datum) {
+                    return ((Datum) info).getScope();
+                } else if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getScope();
                 }
-            case 5:
-                {
-                    if (info instanceof ReferenceSystem) {
-                        return ((ReferenceSystem) info).getDomainOfValidity();
-                    } else if (info instanceof Datum) {
-                        return ((Datum) info).getDomainOfValidity();
-                    } else if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getDomainOfValidity();
-                    }
-                    break;
+                break;
+            }
+            case 5: {
+                if (info instanceof ReferenceSystem) {
+                    return ((ReferenceSystem) info).getDomainOfValidity();
+                } else if (info instanceof Datum) {
+                    return ((Datum) info).getDomainOfValidity();
+                } else if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getDomainOfValidity();
                 }
-            case 6:
-                {
-                    if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getOperationVersion();
-                    }
-                    break;
+                break;
+            }
+            case 6: {
+                if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getOperationVersion();
                 }
-            case 7:
-                {
-                    if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info)
-                                .getCoordinateOperationAccuracy()
-                                .toArray(AbstractCoordinateOperation.EMPTY_ACCURACY_ARRAY);
-                    }
-                    break;
+                break;
+            }
+            case 7: {
+                if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info)
+                            .getCoordinateOperationAccuracy()
+                            .toArray(AbstractCoordinateOperation.EMPTY_ACCURACY_ARRAY);
                 }
+                break;
+            }
         }
         return null;
     }
 
     /**
-     * The keys to search for. <STRONG>The index of each element in this array must matches the
-     * index searched by {@link #get(int)}.</STRONG>
+     * The keys to search for. <STRONG>The index of each element in this array must matches the index searched by
+     * {@link #get(int)}.</STRONG>
      *
      * @todo Add properties for {@link IdentifiedObject} sub-interfaces.
      */

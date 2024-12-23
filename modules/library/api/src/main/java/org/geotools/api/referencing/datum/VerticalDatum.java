@@ -10,15 +10,13 @@
 package org.geotools.api.referencing.datum;
 
 /**
- * A textual description and/or a set of parameters identifying a particular reference level surface
- * used as a zero-height surface. The description includes its position with respect to the Earth
- * for any of the height types recognized by this standard. There are several types of Vertical
- * Datums, and each may place constraints on the {@linkplain
- * org.geotools.api.referencing.cs.CoordinateSystemAxis Coordinate Axis} with which it is combined
- * to create a {@linkplain org.geotools.api.referencing.crs.VerticalCRS Vertical CRS}.
+ * A textual description and/or a set of parameters identifying a particular reference level surface used as a
+ * zero-height surface. The description includes its position with respect to the Earth for any of the height types
+ * recognized by this standard. There are several types of Vertical Datums, and each may place constraints on the
+ * {@linkplain org.geotools.api.referencing.cs.CoordinateSystemAxis Coordinate Axis} with which it is combined to create
+ * a {@linkplain org.geotools.api.referencing.crs.VerticalCRS Vertical CRS}.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

@@ -36,8 +36,7 @@ public abstract class MongoTestSetup {
 
     public MongoDataStore createDataStore(Properties fixture) throws IOException {
         MongoDataStore dataStore =
-                new MongoDataStoreFactory()
-                        .createDataStore(DataUtilities.toConnectionParameters(fixture));
+                new MongoDataStoreFactory().createDataStore(DataUtilities.toConnectionParameters(fixture));
         setUpDataStore(dataStore);
         return dataStore;
     }

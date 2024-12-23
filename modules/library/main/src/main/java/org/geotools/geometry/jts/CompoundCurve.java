@@ -152,8 +152,8 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     /**
-     * Returns the components of this compound curve, which will be a list of straight LineString
-     * objects and CircularString/CircularRing
+     * Returns the components of this compound curve, which will be a list of straight LineString objects and
+     * CircularString/CircularRing
      */
     @Override
     public List<LineString> getComponents() {

@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * A collection of AttributeType.
  *
- * <p>A schema is organized as a map of {@link Name} to {@link AttributeType}. In each name,type
- * tuple, the name matches the name of the type.
+ * <p>A schema is organized as a map of {@link Name} to {@link AttributeType}. In each name,type tuple, the name matches
+ * the name of the type.
  *
  * <pre>
  *   //create some attribute types
@@ -36,8 +36,8 @@ import java.util.Set;
  *   schema.add( polygonType );
  * </pre>
  *
- * <p>The intention of a schema is to provide a resuable set of attribute types. These types are
- * used when building attribute instances.
+ * <p>The intention of a schema is to provide a resuable set of attribute types. These types are used when building
+ * attribute instances.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
@@ -67,8 +67,8 @@ public interface Schema extends Map<Name, AttributeType> {
      *
      * <p>A profile of a schema is a subset of the schema, and it also a schema itself.
      *
-     * <p>Used to select a subset of types for a specific application. Profiles often are used to
-     * express limitiations of a source of data.
+     * <p>Used to select a subset of types for a specific application. Profiles often are used to express limitiations
+     * of a source of data.
      *
      * @param profile The set of names which corresond to entries that will make up the profile.
      * @return The profile of the original schema.

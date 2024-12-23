@@ -52,15 +52,14 @@ final class DataExamples extends ECQLExamples {
             return CITY;
         }
 
-        final SimpleFeatureType type =
-                DataUtilities.createType(
-                        "Location",
-                        "geometry:Point:srid=4326,"
-                                + "cityName:String,"
-                                + "over65YearsOld:Double,"
-                                + "under18YearsOld:Double,"
-                                + "population:Integer,"
-                                + "lastEarthQuake:Date");
+        final SimpleFeatureType type = DataUtilities.createType(
+                "Location",
+                "geometry:Point:srid=4326,"
+                        + "cityName:String,"
+                        + "over65YearsOld:Double,"
+                        + "under18YearsOld:Double,"
+                        + "population:Integer,"
+                        + "lastEarthQuake:Date");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
@@ -86,13 +85,12 @@ final class DataExamples extends ECQLExamples {
         if (COUNTRY != null) {
             return COUNTRY;
         }
-        final SimpleFeatureType type =
-                DataUtilities.createType(
-                        "Location",
-                        "geometry:Polygon:srid=4326,"
-                                + "countryName:String,"
-                                + "population:Integer,"
-                                + "principalMineralResource:String");
+        final SimpleFeatureType type = DataUtilities.createType(
+                "Location",
+                "geometry:Polygon:srid=4326,"
+                        + "countryName:String,"
+                        + "population:Integer,"
+                        + "principalMineralResource:String");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 
         WKTReader reader = new WKTReader();

@@ -29,9 +29,9 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.factory.Hints;
 
 /**
- * This function redirects an attribute to be encoded as xlink:href, instead of being encoded as a
- * full attribute. This is useful in polymorphism, where static client property cannot be used when
- * the encoding is conditional. This function expects:
+ * This function redirects an attribute to be encoded as xlink:href, instead of being encoded as a full attribute. This
+ * is useful in polymorphism, where static client property cannot be used when the encoding is conditional. This
+ * function expects:
  *
  * <ol>
  *   <li>Expression: REFERENCE_VALUE (could be another function or literal)
@@ -90,8 +90,6 @@ public class ToXlinkHrefFunction implements Function {
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         return (T)
-                new Hints(
-                        ComplexFeatureConstants.STRING_KEY,
-                        parameters.get(0).evaluate(object, String.class));
+                new Hints(ComplexFeatureConstants.STRING_KEY, parameters.get(0).evaluate(object, String.class));
     }
 }

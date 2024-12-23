@@ -21,11 +21,10 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if two expressions are
- * equivalent, {@link java.lang.Boolean#FALSE} otherwise. It is slightly different from the GeoTools
- * "equalTo" function as it treats NULLs as equal (instead of not equal), and it does not compare
- * Object.toString() values, which would result in false equivalences for things like Boolean.TRUE
- * compared to the literal string "true".
+ * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if two expressions are equivalent,
+ * {@link java.lang.Boolean#FALSE} otherwise. It is slightly different from the GeoTools "equalTo" function as it treats
+ * NULLs as equal (instead of not equal), and it does not compare Object.toString() values, which would result in false
+ * equivalences for things like Boolean.TRUE compared to the literal string "true".
  *
  * <p>Format:
  *

@@ -26,8 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Implements the Transferable interface to carry list item data during drag and drop actions. This
- * class is used by DnDList. Client code will not normally need to refer to it.
+ * Implements the Transferable interface to carry list item data during drag and drop actions. This class is used by
+ * DnDList. Client code will not normally need to refer to it.
  *
  * @see DnDList
  * @author Michael Bedward
@@ -51,9 +51,8 @@ public class DnDListItemsTransferable<T> implements Transferable {
 
     /**
      * Description copies from interface:<br>
-     * Returns an array of DataFlavor objects indicating the flavors the data can be provided in.
-     * The array should be ordered according to preference for providing the data (from most richly
-     * descriptive to least descriptive).
+     * Returns an array of DataFlavor objects indicating the flavors the data can be provided in. The array should be
+     * ordered according to preference for providing the data (from most richly descriptive to least descriptive).
      */
     @Override
     public DataFlavor[] getTransferDataFlavors() {
@@ -79,8 +78,7 @@ public class DnDListItemsTransferable<T> implements Transferable {
      * @throws UnsupportedFlavorException if the requested data flavor is not supported.
      */
     @Override
-    public List<T> getTransferData(DataFlavor flavor)
-            throws UnsupportedFlavorException, IOException {
+    public List<T> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         return items;
     }
 }

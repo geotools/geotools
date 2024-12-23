@@ -33,8 +33,8 @@ import org.geotools.process.factory.DescribeResult;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * A process providing a feature collection containing the features of the first input collection
- * which are included in the second feature collection
+ * A process providing a feature collection containing the features of the first input collection which are included in
+ * the second feature collection
  *
  * @author Gianni Barrotta - Sinergis
  * @author Andrea Di Nora - Sinergis
@@ -59,16 +59,14 @@ public class InclusionFeatureCollection implements VectorProcess {
 
         SimpleFeatureCollection features;
 
-        public IncludedFeatureCollection(
-                SimpleFeatureCollection delegate, SimpleFeatureCollection features) {
+        public IncludedFeatureCollection(SimpleFeatureCollection delegate, SimpleFeatureCollection features) {
             super(delegate);
             this.features = features;
         }
 
         @Override
         public SimpleFeatureIterator features() {
-            return new IncludedFeatureIterator(
-                    delegate.features(), delegate, features, getSchema());
+            return new IncludedFeatureIterator(delegate.features(), delegate, features, getSchema());
         }
     }
 
@@ -113,8 +111,7 @@ public class InclusionFeatureCollection implements VectorProcess {
                 for (Object attribute : f.getAttributes()) {
                     if (attribute instanceof Geometry) {
                         Geometry geom = (Geometry) attribute;
-                        Filter overFilter =
-                                ff.contains(ff.property(dataGeomName), ff.literal(geom));
+                        Filter overFilter = ff.contains(ff.property(dataGeomName), ff.literal(geom));
                         SimpleFeatureCollection subFeatureCollectionInclusion =
                                 this.secondFeatures.subCollection(overFilter);
                         if (subFeatureCollectionInclusion.size() > 0) {

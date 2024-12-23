@@ -27,11 +27,8 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.LineString;
 
 public class FilterFunction_startAngle extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "startAngle",
-                    parameter("degrees", Double.class),
-                    parameter("linestring", LineString.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "startAngle", parameter("degrees", Double.class), parameter("linestring", LineString.class));
 
     public FilterFunction_startAngle() {
         super(NAME);

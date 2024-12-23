@@ -22,8 +22,8 @@ import org.xml.sax.ContentHandler;
 /**
  * LEVEL4 saxGML4j GML handler: Gets features.
  *
- * <p>This handler must be implemented by the parent of a GMLFilterFeature filter in order to handle
- * the features passed to it from the child.
+ * <p>This handler must be implemented by the parent of a GMLFilterFeature filter in order to handle the features passed
+ * to it from the child.
  *
  * @author Rob Hranac, Vision for New York
  * @version $Id$

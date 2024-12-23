@@ -112,10 +112,7 @@ public abstract class CoordinateVariable<T> {
         }
     }
 
-    /**
-     * To use in case that (1) coordinate axis is not one-dimensional (2) coordinate axis is not
-     * numerical
-     */
+    /** To use in case that (1) coordinate axis is not one-dimensional (2) coordinate axis is not numerical */
     protected class CoordinateAxisGeneralHelper implements AxisHelper<T> {
         private List<T> convertedData = new ArrayList<>();
         private SortedSet<T> orderedSet = new TreeSet<>();
@@ -162,10 +159,9 @@ public abstract class CoordinateVariable<T> {
         @SuppressWarnings("deprecation") // no Alternative for Dimension.getFullName
         public synchronized T get(Map<String, Integer> indexMap) {
             int i = indexMap.get(coordinateAxis.getFullName());
-            int j =
-                    coordinateAxis instanceof CoordinateAxis2D
-                            ? indexMap.get(coordinateAxis.getDimension(0).getFullName())
-                            : 0;
+            int j = coordinateAxis instanceof CoordinateAxis2D
+                    ? indexMap.get(coordinateAxis.getDimension(0).getFullName())
+                    : 0;
             // j will be zero for 1D axis
             return convertedData.get(
                     i + (j != 0 ? (j * coordinateAxis.getDimension(1).getLength()) : 0));
@@ -264,17 +260,15 @@ public abstract class CoordinateVariable<T> {
                 case Lon:
                 case Pressure:
                 case Spectral:
-                    return new NumericCoordinateVariable(
-                            suggestBinding(coordinateAxis), coordinateAxis);
+                    return new NumericCoordinateVariable(suggestBinding(coordinateAxis), coordinateAxis);
                 case RunTime:
                 case Time:
                     return new TimeCoordinateVariable(coordinateAxis);
                 default:
-                    throw new IllegalArgumentException(
-                            "Unsupported axis type: "
-                                    + axisType
-                                    + " for coordinate variable: "
-                                    + coordinateAxis.toStringDebug());
+                    throw new IllegalArgumentException("Unsupported axis type: "
+                            + axisType
+                            + " for coordinate variable: "
+                            + coordinateAxis.toStringDebug());
             }
         }
         if (NetCDFUtilities.isCheckCoordinatePlugins()) {
@@ -323,8 +317,7 @@ public abstract class CoordinateVariable<T> {
     protected void init() {
         if (!coordinateAxis.isNumeric()
                 || !(coordinateAxis instanceof CoordinateAxis1D)
-                || (coordinateAxis.hasMissing()
-                        && !AxisType.Time.equals(coordinateAxis.getAxisType()))) {
+                || (coordinateAxis.hasMissing() && !AxisType.Time.equals(coordinateAxis.getAxisType()))) {
             // Not sure time variable can have actual NoData values in the array.
             // Let's exclude it from GeneralHelper case.
             // We may revisit it if we find some data with FillValues in the array.
@@ -367,8 +360,7 @@ public abstract class CoordinateVariable<T> {
     }
 
     public boolean isRegular() {
-        return coordinateAxis instanceof CoordinateAxis1D
-                && ((CoordinateAxis1D) coordinateAxis).isRegular();
+        return coordinateAxis instanceof CoordinateAxis1D && ((CoordinateAxis1D) coordinateAxis).isRegular();
     }
 
     public double getIncrement() {

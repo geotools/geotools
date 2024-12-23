@@ -27,8 +27,8 @@ import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 
 /**
- * Provides a representation of a LineSymbolizer in an SLD Document. A LineSymbolizer defines how a
- * line geometry should be rendered.
+ * Provides a representation of a LineSymbolizer in an SLD Document. A LineSymbolizer defines how a line geometry should
+ * be rendered.
  *
  * @author James Macgill
  * @author Johann Sorel (Geomatys)
@@ -46,12 +46,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
     }
 
     protected LineSymbolizerImpl(
-            Stroke stroke,
-            Expression offset,
-            Unit<Length> uom,
-            String geom,
-            String name,
-            Description desc) {
+            Stroke stroke, Expression offset, Unit<Length> uom, String geom, String name, Description desc) {
         super(name, desc, geom, uom);
     }
 
@@ -170,8 +165,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         if (symbolizer instanceof LineSymbolizerImpl) {
             return (LineSymbolizerImpl) symbolizer;
         } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
-            org.geotools.api.style.LineSymbolizer lineSymbolizer =
-                    (org.geotools.api.style.LineSymbolizer) symbolizer;
+            org.geotools.api.style.LineSymbolizer lineSymbolizer = (org.geotools.api.style.LineSymbolizer) symbolizer;
             LineSymbolizerImpl copy = new LineSymbolizerImpl();
             copy.setDescription(lineSymbolizer.getDescription());
             copy.setGeometryPropertyName(lineSymbolizer.getGeometryPropertyName());

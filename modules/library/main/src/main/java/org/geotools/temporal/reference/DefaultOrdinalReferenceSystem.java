@@ -24,16 +24,13 @@ import org.geotools.api.temporal.OrdinalReferenceSystem;
 import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
-public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSystem
-        implements OrdinalReferenceSystem {
+public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSystem implements OrdinalReferenceSystem {
 
     /** An ordinal temporal reference system consists of a set of ordinal eras. */
     private Collection<OrdinalEra> ordinalEraSequence;
 
     public DefaultOrdinalReferenceSystem(
-            ReferenceIdentifier name,
-            Extent domainOfValidity,
-            Collection<OrdinalEra> ordinalEraSequence) {
+            ReferenceIdentifier name, Extent domainOfValidity, Collection<OrdinalEra> ordinalEraSequence) {
         super(name, domainOfValidity);
         this.ordinalEraSequence = ordinalEraSequence;
     }
@@ -64,11 +61,7 @@ public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSyste
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        hash =
-                37 * hash
-                        + (this.ordinalEraSequence != null
-                                ? this.ordinalEraSequence.hashCode()
-                                : 0);
+        hash = 37 * hash + (this.ordinalEraSequence != null ? this.ordinalEraSequence.hashCode() : 0);
         return hash;
     }
 

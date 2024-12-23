@@ -155,7 +155,8 @@ public class FidQueryTest extends FIDTestCase {
 
         assertEquals(fids.size(), featureStore.getCount(Query.ALL));
 
-        try (SimpleFeatureIterator features = featureStore.getFeatures(fidFilter).features()) {
+        try (SimpleFeatureIterator features =
+                featureStore.getFeatures(fidFilter).features()) {
             assertFalse(features.hasNext());
         }
 
@@ -163,8 +164,8 @@ public class FidQueryTest extends FIDTestCase {
     }
 
     /**
-     * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives
-     * a duplicate FID and the subsequent attempt to delete fails due to corrupt FIX
+     * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives a duplicate FID and
+     * the subsequent attempt to delete fails due to corrupt FIX
      */
     @Test
     public void testDeleteCloseAndRerequestFID() throws Exception {
@@ -223,7 +224,8 @@ public class FidQueryTest extends FIDTestCase {
             FeatureId id = fac.featureId(fid);
             Filter filter = fac.id(Collections.singleton(id));
             query.setFilter(filter);
-            try (SimpleFeatureIterator features = featureStore.getFeatures(query).features()) {
+            try (SimpleFeatureIterator features =
+                    featureStore.getFeatures(query).features()) {
                 assertTrue("Missing feature for fid " + fid, features.hasNext());
                 SimpleFeature feature = features.next();
                 assertFalse("More than one feature with fid " + fid, features.hasNext());

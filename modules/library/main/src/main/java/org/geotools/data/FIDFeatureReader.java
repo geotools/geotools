@@ -29,19 +29,16 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 
 /**
- * Experimental FeatureReader<SimpleFeatureType, SimpleFeature> that always takes the first column
- * of the attributeReader as the FeatureID. I want to get this working with postgis, but then will
- * consider other options, for those who want featureIDs created automatically. Perhaps a
- * constructor param or a method to say that you would just like to have the
- * FeatureReader<SimpleFeatureType, SimpleFeature> increment one for each feature, prepending the
- * typeName. I'm also don't really like the one argument constructor defaulting to the xxx typename.
- * I feel that it should perhaps take a typename. If people deliberately set to null then we could
- * use xxx or something. ch
+ * Experimental FeatureReader<SimpleFeatureType, SimpleFeature> that always takes the first column of the
+ * attributeReader as the FeatureID. I want to get this working with postgis, but then will consider other options, for
+ * those who want featureIDs created automatically. Perhaps a constructor param or a method to say that you would just
+ * like to have the FeatureReader<SimpleFeatureType, SimpleFeature> increment one for each feature, prepending the
+ * typeName. I'm also don't really like the one argument constructor defaulting to the xxx typename. I feel that it
+ * should perhaps take a typename. If people deliberately set to null then we could use xxx or something. ch
  *
- * <p>This now feels sorta hacky, I'm not sure that I like it, but I'm going to commit as I need to
- * go now and revisit it in a bit. I think the idea of passing in an FIDAttributeReader might be
- * cleaner, and if none is provided then do an auto-increment one. This might then work as the
- * DefaultFeatureReader.
+ * <p>This now feels sorta hacky, I'm not sure that I like it, but I'm going to commit as I need to go now and revisit
+ * it in a bit. I think the idea of passing in an FIDAttributeReader might be cleaner, and if none is provided then do
+ * an auto-increment one. This might then work as the DefaultFeatureReader.
  *
  * @author Ian Schneider
  * @author Chris Holmes, TOPP
@@ -63,8 +60,7 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param schema FeatureType to use, may be <code>null</code>
      * @throws SchemaException if we could not determine the correct FeatureType
      */
-    public FIDFeatureReader(
-            AttributeReader attributeReader, FIDReader fidReader, SimpleFeatureType schema)
+    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader, SimpleFeatureType schema)
             throws SchemaException {
         this.attributeReader = attributeReader;
         this.fidReader = fidReader;
@@ -78,14 +74,12 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this.builder = new SimpleFeatureBuilder(schema);
     }
 
-    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader)
-            throws SchemaException {
+    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader) throws SchemaException {
         this(attributeReader, fidReader, null);
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
             hasNextFlag = null;
             attributeReader.next();
@@ -107,8 +101,7 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         return b.buildFeatureType();
     }
 
-    protected SimpleFeature readFeature(AttributeReader atts)
-            throws IllegalAttributeException, IOException {
+    protected SimpleFeature readFeature(AttributeReader atts) throws IllegalAttributeException, IOException {
 
         // Seems like doing it here could be a bit expensive.
         // The other option from this is to have this constructed with two

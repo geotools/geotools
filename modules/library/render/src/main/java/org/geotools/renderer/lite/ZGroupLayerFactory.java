@@ -34,8 +34,7 @@ import org.geotools.map.MapContent;
 import org.geotools.renderer.style.SLDStyleFactory;
 
 /**
- * Builds {@link ZGroupLayer} instances from a MapContent using {@link
- * FeatureTypeStyle#SORT_BY_GROUP} options
+ * Builds {@link ZGroupLayer} instances from a MapContent using {@link FeatureTypeStyle#SORT_BY_GROUP} options
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -44,8 +43,8 @@ class ZGroupLayerFactory {
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
     /**
-     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the
-     * same {@link FeatureTypeStyle#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
+     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the same
+     * {@link FeatureTypeStyle#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
      */
     public static MapContent filter(MapContent mapContent) {
         // Quick check, do we have any z-group to care for? For the common
@@ -60,8 +59,7 @@ class ZGroupLayerFactory {
         // build a new map content where the z-groups are munched toghether into ZGroupLayer
         MapContent result = new MapContent();
         result.getViewport()
-                .setCoordinateReferenceSystem(
-                        mapContent.getViewport().getCoordinateReferenceSystem());
+                .setCoordinateReferenceSystem(mapContent.getViewport().getCoordinateReferenceSystem());
         result.getViewport().setBounds(mapContent.getViewport().getBounds());
         ZGroupLayer currentGroup = null;
         for (Layer layer : mapContent.layers()) {
@@ -110,14 +108,11 @@ class ZGroupLayerFactory {
         String currentGroupId = previousGroup != null ? previousGroup.getGroupId() : null;
         List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
-            String groupName =
-                    fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
-            if (!(groupName == currentGroupId
-                            || (groupName != null && groupName.equals(currentGroupId)))
+            String groupName = fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
+            if (!(groupName == currentGroupId || (groupName != null && groupName.equals(currentGroupId)))
                     && !featureTypeStyles.isEmpty()) {
                 // the group name changed, dump the current feature type styles
-                addToSplitLayers(
-                        layer, previousGroup, splitLayers, currentGroupId, featureTypeStyles);
+                addToSplitLayers(layer, previousGroup, splitLayers, currentGroupId, featureTypeStyles);
             }
             featureTypeStyles.add(fts);
             currentGroupId = groupName;
@@ -152,7 +147,8 @@ class ZGroupLayerFactory {
 
     private static FeatureLayer buildNewFeatureLayer(Layer layer, Style style) {
         FeatureLayer singleGroupLayer = new FeatureLayer(layer.getFeatureSource(), style);
-        SortBy[] sortBy = SLDStyleFactory.getSortBy(style.featureTypeStyles().get(0).getOptions());
+        SortBy[] sortBy =
+                SLDStyleFactory.getSortBy(style.featureTypeStyles().get(0).getOptions());
         Query nativeQuery = layer.getQuery();
         Query query = ensureSortProperties(nativeQuery, sortBy);
         singleGroupLayer.setQuery(query);
@@ -160,10 +156,7 @@ class ZGroupLayerFactory {
         return singleGroupLayer;
     }
 
-    /**
-     * Makes sure the properties needed for in-memory sorting are available by adding them into the
-     * query
-     */
+    /** Makes sure the properties needed for in-memory sorting are available by adding them into the query */
     private static Query ensureSortProperties(Query nativeQuery, SortBy[] sortBy) {
         LinkedHashSet<PropertyName> sortProperties = new LinkedHashSet<>();
         for (SortBy sb : sortBy) {
@@ -204,38 +197,33 @@ class ZGroupLayerFactory {
         if (layer.getStyle() != null) {
             for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
                 Map<String, String> options = fts.getOptions();
-                String groupName =
-                        options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
+                String groupName = options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
                 if (groupName != null && !groupName.trim().isEmpty()) {
                     hasGroup = true;
                     if (checkValid) {
                         if (fts.getTransformation() != null) {
-                            throw new IllegalArgumentException(
-                                    "Invalid "
-                                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
-                                            + " usage in layer "
-                                            + layer.getTitle()
-                                            + ": cannot be mixed with rendering transformations");
-                        } else if (options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY)
-                                == null) {
-                            throw new IllegalArgumentException(
-                                    "Invalid "
-                                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
-                                            + " usage in layer "
-                                            + layer.getTitle()
-                                            + ": the corresponding sortBy vendor option is missing");
+                            throw new IllegalArgumentException("Invalid "
+                                    + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
+                                    + " usage in layer "
+                                    + layer.getTitle()
+                                    + ": cannot be mixed with rendering transformations");
+                        } else if (options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY) == null) {
+                            throw new IllegalArgumentException("Invalid "
+                                    + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
+                                    + " usage in layer "
+                                    + layer.getTitle()
+                                    + ": the corresponding sortBy vendor option is missing");
                         }
                     }
                 }
             }
         }
         if (hasGroup && !(layer instanceof FeatureLayer)) {
-            throw new IllegalArgumentException(
-                    "Invalid "
-                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
-                            + " usage in layer "
-                            + layer.getTitle()
-                            + ": can only be applied to vector layers");
+            throw new IllegalArgumentException("Invalid "
+                    + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
+                    + " usage in layer "
+                    + layer.getTitle()
+                    + ": can only be applied to vector layers");
         }
         return hasGroup;
     }

@@ -54,15 +54,10 @@ public class DefaultViewTest {
         fs = DataUtilities.source(collection);
     }
 
-    private SimpleFeature createFeatures(SimpleFeatureType ft, int i)
-            throws IllegalAttributeException {
+    private SimpleFeature createFeatures(SimpleFeatureType ft, int i) throws IllegalAttributeException {
         GeometryFactory fac = new GeometryFactory();
         return SimpleFeatureBuilder.build(
-                ft,
-                new Object[] {
-                    fac.createPoint(new Coordinate(i, i)), "name" + i, Integer.valueOf(i)
-                },
-                null);
+                ft, new Object[] {fac.createPoint(new Coordinate(i, i)), "name" + i, Integer.valueOf(i)}, null);
     }
 
     @Test
@@ -132,8 +127,7 @@ public class DefaultViewTest {
         return f;
     }
 
-    private SimpleFeatureSource getView()
-            throws IllegalFilterException, IOException, SchemaException {
+    private SimpleFeatureSource getView() throws IllegalFilterException, IOException, SchemaException {
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
         Filter f = fac.less(fac.property("id"), fac.literal(3));
 

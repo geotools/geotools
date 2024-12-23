@@ -67,9 +67,7 @@ public class ClientPropertiesTest extends AppSchemaTestSupport {
 
         /** Load mapped feature data access */
         Map<String, Serializable> dsParams = new HashMap<>();
-        URL url =
-                PropSelectionTest.class.getResource(
-                        schemaBase + "MappedFeatureClientProperties.xml");
+        URL url = PropSelectionTest.class.getResource(schemaBase + "MappedFeatureClientProperties.xml");
         assertNotNull(url);
 
         dsParams.put("dbtype", "app-schema");
@@ -108,9 +106,7 @@ public class ClientPropertiesTest extends AppSchemaTestSupport {
             while (iterator.hasNext()) {
                 Feature feature = iterator.next();
                 String name = namePn.evaluate(feature, String.class);
-                assertEquals(
-                        "urn:x-test:classifierScheme:TestAuthority:" + name,
-                        clientProp1.evaluate(feature));
+                assertEquals("urn:x-test:classifierScheme:TestAuthority:" + name, clientProp1.evaluate(feature));
                 assertEquals("static_property", clientProp2.evaluate(feature));
                 featureCount++;
             }

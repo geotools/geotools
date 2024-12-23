@@ -75,15 +75,12 @@ public class FilterMockData {
     static FilterFactory f = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     public static Id id() {
-        return f.id(
-                new LinkedHashSet<Identifier>(
-                        Arrays.asList(
-                                f.featureId("foo.1"), f.featureId("foo.2"), f.featureId("foo.3"))));
+        return f.id(new LinkedHashSet<Identifier>(
+                Arrays.asList(f.featureId("foo.1"), f.featureId("foo.2"), f.featureId("foo.3"))));
     }
 
     public static Id resourceId() {
-        ResourceIdImpl resourceId =
-                new ResourceIdImpl("foo.4", "", new Version(Version.Action.NEXT));
+        ResourceIdImpl resourceId = new ResourceIdImpl("foo.4", "", new Version(Version.Action.NEXT));
 
         resourceId.setPreviousRid("previousRid");
         resourceId.setStartTime(new Date(1000));
@@ -91,13 +88,11 @@ public class FilterMockData {
 
         Integer testInt = Integer.valueOf(1234567890);
 
-        return f.id(
-                new LinkedHashSet<Identifier>(
-                        Arrays.asList(
-                                f.featureId("foo.1", "v1"),
-                                f.resourceId("foo.2", "", new Version(new Date(1000))), //
-                                f.resourceId("foo.3", "", new Version(testInt)), //
-                                resourceId)));
+        return f.id(new LinkedHashSet<Identifier>(Arrays.asList(
+                f.featureId("foo.1", "v1"),
+                f.resourceId("foo.2", "", new Version(new Date(1000))), //
+                f.resourceId("foo.3", "", new Version(testInt)), //
+                resourceId)));
     }
 
     public static Element propertyName(Document document, Node parent) {

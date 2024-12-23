@@ -88,8 +88,8 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Tests if the schema-to-FM parsing code developed for complex data store configuration loading
-     * can parse the GeoSciML types
+     * Tests if the schema-to-FM parsing code developed for complex data store configuration loading can parse the
+     * GeoSciML types
      */
     @Test
     public void testParseSchema() throws Exception {
@@ -129,8 +129,8 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Tests that a {@link FeatureSource} can be obtained for all names returned by {@link
-     * AppSchemaDataAccess#getNames()}.
+     * Tests that a {@link FeatureSource} can be obtained for all names returned by
+     * {@link AppSchemaDataAccess#getNames()}.
      */
     @Test
     public void testGetNamesAndFeatureSources() throws Exception {
@@ -182,13 +182,11 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
         FeatureCollection guFeatures = guSource.getFeatures();
         assertEquals(3, size(guFeatures));
 
-        FeatureSource cpSource =
-                DataAccessRegistry.getFeatureSource(FeatureChainingTest.COMPOSITION_PART);
+        FeatureSource cpSource = DataAccessRegistry.getFeatureSource(FeatureChainingTest.COMPOSITION_PART);
         FeatureCollection cpFeatures = cpSource.getFeatures();
         assertEquals(4, size(cpFeatures));
 
-        FeatureSource cgiSource =
-                DataAccessRegistry.getFeatureSource(FeatureChainingTest.CGI_TERM_VALUE);
+        FeatureSource cgiSource = DataAccessRegistry.getFeatureSource(FeatureChainingTest.CGI_TERM_VALUE);
         FeatureCollection cgiFeatures = cgiSource.getFeatures();
         assertEquals(6, size(cgiFeatures));
     }

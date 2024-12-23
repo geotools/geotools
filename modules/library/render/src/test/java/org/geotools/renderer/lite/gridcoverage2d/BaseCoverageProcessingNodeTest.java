@@ -38,25 +38,17 @@ public class BaseCoverageProcessingNodeTest {
     public void setUp() throws Exception {
         this.testedObject =
                 new BaseCoverageProcessingNode(
-                        1,
-                        SimpleInternationalString.wrap("fake node"),
-                        SimpleInternationalString.wrap("fake node")) {
+                        1, SimpleInternationalString.wrap("fake node"), SimpleInternationalString.wrap("fake node")) {
                     @Override
                     protected GridCoverage2D execute() {
                         return CoverageFactoryFinder.getGridCoverageFactory(null)
                                 .create(
                                         "name",
-                                        PlanarImage.wrapRenderedImage(
-                                                RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                        new GeneralBounds(
-                                                new double[] {-90, -180}, new double[] {90, 180}),
+                                        PlanarImage.wrapRenderedImage(RasterSymbolizerTest.getSynthetic(Double.NaN)),
+                                        new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {
                                             new GridSampleDimension(
-                                                    "sd",
-                                                    new Category[] {
-                                                        new Category("", Color.BLACK, 0)
-                                                    },
-                                                    null)
+                                                    "sd", new Category[] {new Category("", Color.BLACK, 0)}, null)
                                         },
                                         null,
                                         null);
@@ -64,26 +56,18 @@ public class BaseCoverageProcessingNodeTest {
                 };
         this.testedObject2 =
                 new BaseCoverageProcessingNode(
-                        1,
-                        SimpleInternationalString.wrap("fake node"),
-                        SimpleInternationalString.wrap("fake node")) {
+                        1, SimpleInternationalString.wrap("fake node"), SimpleInternationalString.wrap("fake node")) {
 
                     @Override
                     protected GridCoverage2D execute() {
                         return CoverageFactoryFinder.getGridCoverageFactory(null)
                                 .create(
                                         "name",
-                                        PlanarImage.wrapRenderedImage(
-                                                RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                        new GeneralBounds(
-                                                new double[] {-90, -180}, new double[] {90, 180}),
+                                        PlanarImage.wrapRenderedImage(RasterSymbolizerTest.getSynthetic(Double.NaN)),
+                                        new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {
                                             new GridSampleDimension(
-                                                    "sd",
-                                                    new Category[] {
-                                                        new Category("", Color.BLACK, 0)
-                                                    },
-                                                    null)
+                                                    "sd", new Category[] {new Category("", Color.BLACK, 0)}, null)
                                         },
                                         null,
                                         null);

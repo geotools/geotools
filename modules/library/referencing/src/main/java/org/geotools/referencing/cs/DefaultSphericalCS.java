@@ -26,10 +26,9 @@ import org.geotools.api.referencing.cs.SphericalCS;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
 /**
- * A three-dimensional coordinate system with one distance measured from the origin and two angular
- * coordinates. Not to be confused with an {@linkplain DefaultEllipsoidalCS ellipsoidal coordinate
- * system} based on an ellipsoid "degenerated" into a sphere. A {@code SphericalCS} shall have three
- * {@linkplain #getAxis axis}.
+ * A three-dimensional coordinate system with one distance measured from the origin and two angular coordinates. Not to
+ * be confused with an {@linkplain DefaultEllipsoidalCS ellipsoidal coordinate system} based on an ellipsoid
+ * "degenerated" into a sphere. A {@code SphericalCS} shall have three {@linkplain #getAxis axis}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -47,19 +46,17 @@ public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
     private static final long serialVersionUID = 196295996465774477L;
 
     /**
-     * A three-dimensional spherical CS with <var>{@linkplain
-     * DefaultCoordinateSystemAxis#SPHERICAL_LONGITUDE longitude}</var>, <var>{@linkplain
-     * DefaultCoordinateSystemAxis#SPHERICAL_LATITUDE latitude}</var>, <var>{@linkplain
-     * DefaultCoordinateSystemAxis#GEOCENTRIC_RADIUS radius}</var> axis.
+     * A three-dimensional spherical CS with <var>{@linkplain DefaultCoordinateSystemAxis#SPHERICAL_LONGITUDE
+     * longitude}</var>, <var>{@linkplain DefaultCoordinateSystemAxis#SPHERICAL_LATITUDE latitude}</var>,
+     * <var>{@linkplain DefaultCoordinateSystemAxis#GEOCENTRIC_RADIUS radius}</var> axis.
      *
      * @see DefaultCartesianCS#GEOCENTRIC
      */
-    public static DefaultSphericalCS GEOCENTRIC =
-            new DefaultSphericalCS(
-                    name(VocabularyKeys.GEOCENTRIC),
-                    DefaultCoordinateSystemAxis.SPHERICAL_LONGITUDE,
-                    DefaultCoordinateSystemAxis.SPHERICAL_LATITUDE,
-                    DefaultCoordinateSystemAxis.GEOCENTRIC_RADIUS);
+    public static DefaultSphericalCS GEOCENTRIC = new DefaultSphericalCS(
+            name(VocabularyKeys.GEOCENTRIC),
+            DefaultCoordinateSystemAxis.SPHERICAL_LONGITUDE,
+            DefaultCoordinateSystemAxis.SPHERICAL_LATITUDE,
+            DefaultCoordinateSystemAxis.GEOCENTRIC_RADIUS);
 
     /**
      * Constructs a three-dimensional coordinate system from a name.
@@ -78,10 +75,10 @@ public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
     }
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy constructor provides a
+     * way to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in
+     * order to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties
+     * are not cloned.
      *
      * @since 2.2
      */
@@ -90,9 +87,8 @@ public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
     }
 
     /**
-     * Constructs a three-dimensional coordinate system from a set of properties. The properties map
-     * is given unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[])
-     * super-class constructor}.
+     * Constructs a three-dimensional coordinate system from a set of properties. The properties map is given unchanged
+     * to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
@@ -108,9 +104,9 @@ public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
     }
 
     /**
-     * Returns {@code true} if the specified axis direction is allowed for this coordinate system.
-     * The default implementation accepts all directions except temporal ones (i.e. {@link
-     * AxisDirection#FUTURE FUTURE} and {@link AxisDirection#PAST PAST}).
+     * Returns {@code true} if the specified axis direction is allowed for this coordinate system. The default
+     * implementation accepts all directions except temporal ones (i.e. {@link AxisDirection#FUTURE FUTURE} and
+     * {@link AxisDirection#PAST PAST}).
      */
     @Override
     protected boolean isCompatibleDirection(final AxisDirection direction) {

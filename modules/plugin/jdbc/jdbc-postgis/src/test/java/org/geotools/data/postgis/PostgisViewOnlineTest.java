@@ -24,8 +24,7 @@ public class PostgisViewOnlineTest extends JDBCViewOnlineTest {
     @Test
     public void testViewSrid() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema("lakes_null_view");
-        CoordinateReferenceSystem crs =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         assertNotNull(crs);
         assertTrue(CRS.equalsIgnoreMetadata(decodeEPSG(4326), crs));
     }

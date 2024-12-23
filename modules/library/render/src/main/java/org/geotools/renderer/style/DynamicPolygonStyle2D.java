@@ -25,8 +25,7 @@ import org.geotools.api.style.Fill;
 import org.geotools.api.style.PolygonSymbolizer;
 
 /**
- * A dynamic polygon style, that will compute its parameters each time they are requested instead of
- * caching them
+ * A dynamic polygon style, that will compute its parameters each time they are requested instead of caching them
  *
  * @author jamesm
  */

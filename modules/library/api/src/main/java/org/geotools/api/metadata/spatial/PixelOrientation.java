@@ -20,9 +20,8 @@ import org.geotools.api.util.CodeList;
 /**
  * Point in a pixel corresponding to the Earth location of the pixel.
  *
- * <p>This code list is restricted to the two-dimensional case. A similar code list, {@link
- * org.geotools.api.referencing.datum.PixelInCell}, can be used for <var>n</var>-dimensional grid
- * cell.
+ * <p>This code list is restricted to the two-dimensional case. A similar code list,
+ * {@link org.geotools.api.referencing.datum.PixelInCell}, can be used for <var>n</var>-dimensional grid cell.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
@@ -45,13 +44,12 @@ public final class PixelOrientation extends CodeList<PixelOrientation> {
     public static final PixelOrientation CENTER = new PixelOrientation("CENTER");
 
     /**
-     * The corner in the pixel closest to the origin of the SRS; if two are at the same distance
-     * from the origin, the one with the smallest x-value.
+     * The corner in the pixel closest to the origin of the SRS; if two are at the same distance from the origin, the
+     * one with the smallest x-value.
      *
-     * @todo The sentence "<cite>closest to the origin of the SRS</cite> probably applies to
-     *     positive coordinates only. For the general case including both positive and negative
-     *     coordinates, we should probably read "in the direction of negative infinity". This
-     *     interpretation should be clarified with ISO.
+     * @todo The sentence "<cite>closest to the origin of the SRS</cite> probably applies to positive coordinates only.
+     *     For the general case including both positive and negative coordinates, we should probably read "in the
+     *     direction of negative infinity". This interpretation should be clarified with ISO.
      * @see org.geotools.api.referencing.datum.PixelInCell#CELL_CORNER
      */
     @UML(identifier = "lowerLeft", obligation = CONDITIONAL, specification = ISO_19115)
@@ -70,8 +68,8 @@ public final class PixelOrientation extends CodeList<PixelOrientation> {
     public static final PixelOrientation UPPER_LEFT = new PixelOrientation("UPPER_LEFT");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -97,8 +95,7 @@ public final class PixelOrientation extends CodeList<PixelOrientation> {
     }
 
     /**
-     * Returns the pixel orientation that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the pixel orientation that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

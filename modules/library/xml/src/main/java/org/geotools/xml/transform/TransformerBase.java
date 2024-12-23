@@ -48,11 +48,10 @@ import org.xml.sax.helpers.NamespaceSupport;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * TransformerBase provides support for writing Object->XML encoders. The basic pattern for usage is
- * to extend TransformerBase and implement the createTranslator(ContentHandler) method. This is
- * easiest done by extending the inner class TranslatorSupport. A Translator uses a ContentHandler
- * to issue SAX events to a javax.xml.transform.Transformer. If possible, make the translator public
- * so it can be used by others as well.
+ * TransformerBase provides support for writing Object->XML encoders. The basic pattern for usage is to extend
+ * TransformerBase and implement the createTranslator(ContentHandler) method. This is easiest done by extending the
+ * inner class TranslatorSupport. A Translator uses a ContentHandler to issue SAX events to a
+ * javax.xml.transform.Transformer. If possible, make the translator public so it can be used by others as well.
  *
  * @author Ian Schneider
  */
@@ -82,8 +81,7 @@ public abstract class TransformerBase {
 
         if (indentation > -1) {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(
-                    "{http://xml.apache.org/xslt}indent-amount", Integer.toString(indentation));
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", Integer.toString(indentation));
         } else {
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
         }
@@ -99,18 +97,12 @@ public abstract class TransformerBase {
         return transformer;
     }
 
-    /**
-     * Perform the XML encoding on the given object to the given OutputStream. Calls
-     * transform(Object,StreamResult);
-     */
+    /** Perform the XML encoding on the given object to the given OutputStream. Calls transform(Object,StreamResult); */
     public void transform(Object object, java.io.OutputStream out) throws TransformerException {
         transform(object, new StreamResult(out));
     }
 
-    /**
-     * Perform the XML encoding on the given object to the given Writer. Calls
-     * transform(Object,StreamResult);
-     */
+    /** Perform the XML encoding on the given object to the given Writer. Calls transform(Object,StreamResult); */
     public void transform(Object object, java.io.Writer out) throws TransformerException {
         transform(object, new StreamResult(out));
     }
@@ -133,19 +125,18 @@ public abstract class TransformerBase {
     }
 
     /**
-     * Create a Transformation task. This is a Runnable task which supports aborting any processing.
-     * It will not start until the run method is called.
+     * Create a Transformation task. This is a Runnable task which supports aborting any processing. It will not start
+     * until the run method is called.
      */
-    public Task createTransformTask(Object object, StreamResult result)
-            throws TransformerException {
+    public Task createTransformTask(Object object, StreamResult result) throws TransformerException {
 
         return new Task(object, result);
     }
 
     /**
-     * Perform the XML encoding of the given object into an internal buffer and return the resulting
-     * String. Calls transform(Object,Writer). <em>It should be noted the most efficient mechanism
-     * of encoding is using the OutputStream or Writer methods</em>
+     * Perform the XML encoding of the given object into an internal buffer and return the resulting String. Calls
+     * transform(Object,Writer). <em>It should be noted the most efficient mechanism of encoding is using the
+     * OutputStream or Writer methods</em>
      */
     public String transform(Object object) throws TransformerException {
         StringWriter sw = new StringWriter();
@@ -213,8 +204,7 @@ public abstract class TransformerBase {
     }
 
     /**
-     * Should this transformer declare namespace prefixes in the first element it outputs? Defaults
-     * to true.
+     * Should this transformer declare namespace prefixes in the first element it outputs? Defaults to true.
      *
      * @return true if namespaces will be declared, false otherwise
      */
@@ -232,9 +222,8 @@ public abstract class TransformerBase {
     }
 
     /**
-     * A wrapper for a Transformation Task. Support aborting any translation activity. Because the
-     * Task is Runnable, exceptions must be checked asynchronously by using the checkError and
-     * getError methods.
+     * A wrapper for a Transformation Task. Support aborting any translation activity. Because the Task is Runnable,
+     * exceptions must be checked asynchronously by using the checkError and getError methods.
      */
     public class Task implements Runnable {
 
@@ -273,8 +262,8 @@ public abstract class TransformerBase {
         }
 
         /**
-         * Calls to the underlying translator to abort any calls to translation. Should return
-         * silently regardless of outcome.
+         * Calls to the underlying translator to abort any calls to translation. Should return silently regardless of
+         * outcome.
          */
         public void abort() {
             Translator t = reader.getTranslator();
@@ -282,8 +271,8 @@ public abstract class TransformerBase {
         }
 
         /**
-         * Perform the translation. Exceptions are captured and can be obtained through the
-         * checkError and getError methods.
+         * Perform the translation. Exceptions are captured and can be obtained through the checkError and getError
+         * methods.
          */
         @Override
         public void run() {
@@ -295,9 +284,7 @@ public abstract class TransformerBase {
         }
     }
 
-    /**
-     * Filter output from a ContentHandler and insert Namespace declarations in the first element.
-     */
+    /** Filter output from a ContentHandler and insert Namespace declarations in the first element. */
     private static class ContentHandlerFilter implements ContentHandler, LexicalHandler {
         private final ContentHandler original;
         private AttributesImpl namespaceDecls;
@@ -363,8 +350,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void endElement(String namespaceURI, String localName, String qName)
-                throws SAXException {
+        public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
             original.endElement(namespaceURI, localName, qName);
             level--;
 
@@ -424,8 +410,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void startElement(
-                String namespaceURI, String localName, String qName, Attributes atts)
+        public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
                 throws SAXException {
             if (namespaceDecls != null) {
 
@@ -440,8 +425,7 @@ public abstract class TransformerBase {
                 }
 
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
-                    namespaceDecls.addAttribute(
-                            null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
+                    namespaceDecls.addAttribute(null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
                 }
 
                 atts = namespaceDecls;
@@ -513,15 +497,10 @@ public abstract class TransformerBase {
         protected NamespaceSupport nsSupport = new NamespaceSupport();
         protected SchemaLocationSupport schemaLocation;
 
-        /**
-         * The queue of write operations pending for this translator. This should be empty if no
-         * mark is set.
-         */
+        /** The queue of write operations pending for this translator. This should be empty if no mark is set. */
         private List<Action> pending = new ArrayList<>();
 
-        /**
-         * An Action records a call to one of the SAX-event-generating methods on this translator.
-         */
+        /** An Action records a call to one of the SAX-event-generating methods on this translator. */
         private interface Action {
             void commit();
         }
@@ -547,10 +526,7 @@ public abstract class TransformerBase {
             }
         }
 
-        /**
-         * The Chars class implements an Action corresponding to writing a text block in the XML
-         * output
-         */
+        /** The Chars class implements an Action corresponding to writing a text block in the XML output */
         private class Chars implements Action {
             private final String text;
 
@@ -569,10 +545,7 @@ public abstract class TransformerBase {
             }
         }
 
-        /**
-         * The CData class implements an Action corresponding to writing a CDATA block in the XML
-         * output
-         */
+        /** The CData class implements an Action corresponding to writing a CDATA block in the XML output */
         private class CData implements Action {
             private final String text;
 
@@ -591,10 +564,7 @@ public abstract class TransformerBase {
             }
         }
 
-        /**
-         * The Comment class implements an Action corresponding to writing a comment block in the
-         * XML output
-         */
+        /** The Comment class implements an Action corresponding to writing a comment block in the XML output */
         private class Comment implements Action {
             private final String text;
 
@@ -645,10 +615,7 @@ public abstract class TransformerBase {
             public void end(String element);
         }
 
-        /**
-         * The BufferedBackend queues up write operations in memory, to be committed at a later
-         * time.
-         */
+        /** The BufferedBackend queues up write operations in memory, to be committed at a later time. */
         private class BufferedBackend implements Backend {
             @Override
             public void start(String element, Attributes attributes) {
@@ -656,8 +623,7 @@ public abstract class TransformerBase {
                     throw new NullPointerException("Attempted to start XML tag with null element");
                 }
                 if (attributes == null) {
-                    throw new NullPointerException(
-                            "Attempted to start XML tag with null attributes");
+                    throw new NullPointerException("Attempted to start XML tag with null attributes");
                 }
                 pending.add(new Start(element, attributes));
             }
@@ -729,15 +695,11 @@ public abstract class TransformerBase {
         /** A singleton instance of the BufferedBackend for this TranslatorSupport instance */
         private final Backend bufferedBackend = new BufferedBackend();
 
-        /**
-         * The backend currently in use. This should only be modified in the mark/reset/commit
-         * methods!
-         */
+        /** The backend currently in use. This should only be modified in the mark/reset/commit methods! */
         private Backend backend = directBackend;
 
         /**
-         * Subclasses should check this flag in case an abort message was sent and stop any internal
-         * iteration if false.
+         * Subclasses should check this flag in case an abort message was sent and stop any internal iteration if false.
          */
         protected volatile boolean running = true;
 
@@ -749,10 +711,7 @@ public abstract class TransformerBase {
         }
 
         public TranslatorSupport(
-                ContentHandler contentHandler,
-                String prefix,
-                String nsURI,
-                SchemaLocationSupport schemaLocation) {
+                ContentHandler contentHandler, String prefix, String nsURI, SchemaLocationSupport schemaLocation) {
             this(contentHandler, prefix, nsURI);
             this.schemaLocation = schemaLocation;
         }
@@ -763,9 +722,9 @@ public abstract class TransformerBase {
         }
 
         /**
-         * Set a mark() to which we can later "roll back" writes. After a call to mark(), the
-         * Translator stores pending write operations in memory until commit() is called. The
-         * pending writes can be discarded with the reset() method.
+         * Set a mark() to which we can later "roll back" writes. After a call to mark(), the Translator stores pending
+         * write operations in memory until commit() is called. The pending writes can be discarded with the reset()
+         * method.
          *
          * <p>Typically, one would use marks in conjunction with an exception handler:
          *
@@ -793,8 +752,8 @@ public abstract class TransformerBase {
         /**
          * Discard pending write operations after a mark() has been set.
          *
-         * <p>This method is safe to call even if no mark is set - so it returns to a "known good"
-         * state as far as marks are concerned.
+         * <p>This method is safe to call even if no mark is set - so it returns to a "known good" state as far as marks
+         * are concerned.
          *
          * @see #mark()
          */
@@ -804,21 +763,18 @@ public abstract class TransformerBase {
         }
 
         /**
-         * Commit pending write operations. After setting a mark, this method will commit the
-         * pending writes.
+         * Commit pending write operations. After setting a mark, this method will commit the pending writes.
          *
          * @see #mark()
          * @throws IllegalStateException if no mark is set
          */
         protected void commit() {
-            if (backend != bufferedBackend)
-                throw new IllegalStateException("Can't commit without a mark");
+            if (backend != bufferedBackend) throw new IllegalStateException("Can't commit without a mark");
             for (Action a : pending) {
                 try {
                     a.commit();
                 } catch (Exception e) {
-                    String message =
-                            "Error while committing XML elements; specific element was: " + a;
+                    String message = "Error while committing XML elements; specific element was: " + a;
                     throw new RuntimeException(message, e);
                 }
             }
@@ -826,10 +782,7 @@ public abstract class TransformerBase {
             backend = directBackend;
         }
 
-        /**
-         * Utility method to copy namespace declarations from "sub" translators into this ns
-         * support...
-         */
+        /** Utility method to copy namespace declarations from "sub" translators into this ns support... */
         protected void addNamespaceDeclarations(TranslatorSupport trans) {
             NamespaceSupport additional = trans.getNamespaceSupport();
             java.util.Enumeration declared = additional.getDeclaredPrefixes();
@@ -1020,9 +973,9 @@ public abstract class TransformerBase {
     /**
      * Adds support for schemaLocations.
      *
-     * @task REVISIT: consider combining this with NamespaceSupport, as it would make sense to just
-     *     add a location to your nsURI. Or at least tie them more closely, so that you can only add
-     *     a SchemaLocation if the namespace actually exists.
+     * @task REVISIT: consider combining this with NamespaceSupport, as it would make sense to just add a location to
+     *     your nsURI. Or at least tie them more closely, so that you can only add a SchemaLocation if the namespace
+     *     actually exists.
      */
     public static class SchemaLocationSupport {
         private Map<String, String> locations = new HashMap<>();
@@ -1075,8 +1028,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void setFeature(String name, boolean value)
-                throws SAXNotRecognizedException, SAXNotSupportedException {
+        public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
             // no-op. The base XMLFilterImpl will throw an exception, so we must override this as
             // Transformer implementations such as Saxonica's Saxon expect to at least switch on
             // http://xml.org/sax/features/namespaces
@@ -1093,12 +1045,7 @@ public abstract class TransformerBase {
 
                 if (translator.getDefaultNamespace() != null) {
                     // declare the default mapping
-                    atts.addAttribute(
-                            XMLNS_NAMESPACE,
-                            null,
-                            "xmlns",
-                            "CDATA",
-                            translator.getDefaultNamespace());
+                    atts.addAttribute(XMLNS_NAMESPACE, null, "xmlns", "CDATA", translator.getDefaultNamespace());
 
                     // if prefix non-null, declare the mapping
                     if (translator.getDefaultPrefix() != null) {
@@ -1145,17 +1092,8 @@ public abstract class TransformerBase {
 
                 if ((schemaLocSup != null) && !schemaLocSup.getSchemaLocation().equals("")) {
                     atts.addAttribute(
-                            XMLNS_NAMESPACE,
-                            null,
-                            "xmlns:xsi",
-                            "CDATA",
-                            "http://www.w3.org/2001/XMLSchema-instance");
-                    atts.addAttribute(
-                            null,
-                            null,
-                            "xsi:schemaLocation",
-                            null,
-                            schemaLocSup.getSchemaLocation());
+                            XMLNS_NAMESPACE, null, "xmlns:xsi", "CDATA", "http://www.w3.org/2001/XMLSchema-instance");
+                    atts.addAttribute(null, null, "xsi:schemaLocation", null, schemaLocSup.getSchemaLocation());
                 }
             } else {
                 translator = base.createTranslator(handler);

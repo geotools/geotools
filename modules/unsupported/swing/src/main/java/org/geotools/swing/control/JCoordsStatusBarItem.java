@@ -42,8 +42,7 @@ import org.geotools.swing.locale.LocaleUtils;
  * @version $Id$
  */
 public class JCoordsStatusBarItem extends StatusBarItem {
-    private static final String COMPONENT_NAME =
-            LocaleUtils.getValue("StatusBar", "CoordsItemName");
+    private static final String COMPONENT_NAME = LocaleUtils.getValue("StatusBar", "CoordsItemName");
 
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "CoordsTooltip");
     private static final int DEFAULT_NUM_INTEGER_DIGITS = 3;
@@ -78,31 +77,29 @@ public class JCoordsStatusBarItem extends StatusBarItem {
 
         setFormat(mapPane.getDisplayArea());
 
-        mapPane.addMouseListener(
-                new MapMouseAdapter() {
-                    @Override
-                    public void onMouseEntered(MapMouseEvent ev) {
-                        displayCoords(ev.getWorldPos());
-                    }
+        mapPane.addMouseListener(new MapMouseAdapter() {
+            @Override
+            public void onMouseEntered(MapMouseEvent ev) {
+                displayCoords(ev.getWorldPos());
+            }
 
-                    @Override
-                    public void onMouseExited(MapMouseEvent ev) {
-                        displayNoCursor();
-                    }
+            @Override
+            public void onMouseExited(MapMouseEvent ev) {
+                displayNoCursor();
+            }
 
-                    @Override
-                    public void onMouseMoved(MapMouseEvent ev) {
-                        displayCoords(ev.getWorldPos());
-                    }
-                });
+            @Override
+            public void onMouseMoved(MapMouseEvent ev) {
+                displayCoords(ev.getWorldPos());
+            }
+        });
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onDisplayAreaChanged(MapPaneEvent ev) {
-                        setFormat(((ReferencedEnvelope) ev.getData()));
-                    }
-                });
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onDisplayAreaChanged(MapPaneEvent ev) {
+                setFormat(((ReferencedEnvelope) ev.getData()));
+            }
+        });
 
         displayNoCursor();
     }
@@ -134,8 +131,8 @@ public class JCoordsStatusBarItem extends StatusBarItem {
     }
 
     /**
-     * Sets the minimum width of the coordinate display label and the format string used to print
-     * values. The map extent is used to estimate the number of digits required.
+     * Sets the minimum width of the coordinate display label and the format string used to print values. The map extent
+     * is used to estimate the number of digits required.
      *
      * @param env map extent
      */
@@ -148,10 +145,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
         setLabelSizeAndFormat();
     }
 
-    /**
-     * Sets the minimum width of the coordinate display label and the format string used to print
-     * values.
-     */
+    /** Sets the minimum width of the coordinate display label and the format string used to print values. */
     private void setLabelSizeAndFormat() {
         int minLabelWidth = getStringWidth();
         Dimension labelSize = label.getSize();
@@ -167,8 +161,8 @@ public class JCoordsStatusBarItem extends StatusBarItem {
     }
 
     /**
-     * Estimates the maximum display width of the coordinate string based on current integer and
-     * fractional part lengths.
+     * Estimates the maximum display width of the coordinate string based on current integer and fractional part
+     * lengths.
      *
      * @return maximum display width
      */
@@ -182,10 +176,9 @@ public class JCoordsStatusBarItem extends StatusBarItem {
     }
 
     /**
-     * Examines the map extent and tries to determine the number of digits that will be needed in
-     * the display. If a coordinate reference system with valid extent defined, it is used to
-     * determine coordinate limits; otherwise the extent of the envelope is used directly. If all
-     * else fails, a default number of digits is set.
+     * Examines the map extent and tries to determine the number of digits that will be needed in the display. If a
+     * coordinate reference system with valid extent defined, it is used to determine coordinate limits; otherwise the
+     * extent of the envelope is used directly. If all else fails, a default number of digits is set.
      *
      * @param env the map extent (may be {@code null})
      */
@@ -242,8 +235,8 @@ public class JCoordsStatusBarItem extends StatusBarItem {
     }
 
     /**
-     * Checks the current label width against its minimum width and, if the current width is larger,
-     * adjusts the minimum to prevent the label growing and shrinking as the cursor is moved.
+     * Checks the current label width against its minimum width and, if the current width is larger, adjusts the minimum
+     * to prevent the label growing and shrinking as the cursor is moved.
      */
     private void ensureMinLabelWidth() {
         Dimension minDim = label.getMinimumSize();

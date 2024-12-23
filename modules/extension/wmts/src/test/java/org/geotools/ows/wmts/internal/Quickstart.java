@@ -23,20 +23,16 @@ import org.geotools.swing.JMapFrame;
 public class Quickstart {
 
     /**
-     * GeoTools Quickstart demo application. Prompts the user for a shapefile and displays its
-     * contents on the screen in a map frame
+     * GeoTools Quickstart demo application. Prompts the user for a shapefile and displays its contents on the screen in
+     * a map frame
      */
     public static void main(String[] args) throws Exception {
         MapContent map = new MapContent();
 
         map.setTitle("Quickstart");
 
-        URL serverURL =
-                new URL(
-                        "http://astun-desktop:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities");
-        serverURL =
-                new URL(
-                        "http://spectrum.mapinfoservices.com/rest/Spatial/WMTS/1.0.0/WMTSCapabilities.xml");
+        URL serverURL = new URL("http://astun-desktop:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities");
+        serverURL = new URL("http://spectrum.mapinfoservices.com/rest/Spatial/WMTS/1.0.0/WMTSCapabilities.xml");
         WebMapTileServer server = new WebMapTileServer(serverURL);
         String name = "USA_WMTS_Layer_ID1";
         WMTSLayer wlayer = server.getCapabilities().getLayer(name);

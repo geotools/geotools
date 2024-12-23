@@ -19,8 +19,8 @@ package org.geotools.gce.imagemosaic;
 import java.io.IOException;
 
 /**
- * An interface used to consume imageMosaic elements (i.e. File, URL) provided by an
- * ImageMosaicWalker during its walk. A check can be performed on the element before being handled.
+ * An interface used to consume imageMosaic elements (i.e. File, URL) provided by an ImageMosaicWalker during its walk.
+ * A check can be performed on the element before being handled.
  */
 interface ImageMosaicElementConsumer<T> {
 

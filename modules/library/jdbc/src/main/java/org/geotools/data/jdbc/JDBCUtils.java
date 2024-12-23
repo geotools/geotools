@@ -28,8 +28,7 @@ import org.geotools.api.data.Transaction;
 /**
  * Utility class helping developers to safely clean up after connections.
  *
- * <p>Although this class is not used directly by the org.geotools.jdbc classes it is used
- * downstream in GeoServer.
+ * <p>Although this class is not used directly by the org.geotools.jdbc classes it is used downstream in GeoServer.
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author $Author: seangeo $
@@ -37,8 +36,7 @@ import org.geotools.api.data.Transaction;
  */
 public class JDBCUtils {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
 
     /** Non Constructable. */
     private JDBCUtils() {
@@ -46,11 +44,10 @@ public class JDBCUtils {
     }
 
     /**
-     * A utility method for closing a Statement. Wraps and logs any exceptions thrown by the close
-     * method.
+     * A utility method for closing a Statement. Wraps and logs any exceptions thrown by the close method.
      *
-     * @param statement The statement to close. This can be null since it makes it easy to close
-     *     statements in a finally block.
+     * @param statement The statement to close. This can be null since it makes it easy to close statements in a finally
+     *     block.
      */
     public static void close(Statement statement) {
         if (statement != null) {
@@ -64,11 +61,10 @@ public class JDBCUtils {
     }
 
     /**
-     * A utility method for closing a ResultSet. Wraps and logs any exceptions thrown by the close
-     * method.
+     * A utility method for closing a ResultSet. Wraps and logs any exceptions thrown by the close method.
      *
-     * @param rs The ResultSet to close. This can be null since it makes it easy to close result
-     *     sets in a finally block.
+     * @param rs The ResultSet to close. This can be null since it makes it easy to close result sets in a finally
+     *     block.
      */
     public static void close(ResultSet rs) {
         if (rs != null) {
@@ -84,23 +80,19 @@ public class JDBCUtils {
     }
 
     /**
-     * A utility method for closing a Connection. Wraps and logs any exceptions thrown by the close
-     * method.
+     * A utility method for closing a Connection. Wraps and logs any exceptions thrown by the close method.
      *
-     * <p>Connections are maintained by a Transaction and we will need to manage them with respect
-     * to their Transaction.
+     * <p>Connections are maintained by a Transaction and we will need to manage them with respect to their Transaction.
      *
-     * <p>Jody here - I am forcing this to be explicit, by requiring you give the Transaction
-     * context when you close a connection seems to be the only way to hunt all the cases down.
-     * AttributeReaders based on QueryData rely on
+     * <p>Jody here - I am forcing this to be explicit, by requiring you give the Transaction context when you close a
+     * connection seems to be the only way to hunt all the cases down. AttributeReaders based on QueryData rely on
      *
-     * <p>I considered accepting an error flag to control Transaction rollback, but I really only
-     * want to capture SQLException that force transaction rollback.
+     * <p>I considered accepting an error flag to control Transaction rollback, but I really only want to capture
+     * SQLException that force transaction rollback.
      *
-     * @param conn The Connection to close. This can be null since it makes it easy to close
-     *     connections in a finally block.
-     * @param transaction Context for the connection, we will only close the connection for
-     *     Transaction.AUTO_COMMIT
+     * @param conn The Connection to close. This can be null since it makes it easy to close connections in a finally
+     *     block.
+     * @param transaction Context for the connection, we will only close the connection for Transaction.AUTO_COMMIT
      * @param sqlException Error status, <code>null</code> for no error
      */
     public static void close(Connection conn, Transaction transaction, SQLException sqlException) {
@@ -119,9 +111,8 @@ public class JDBCUtils {
                 try {
                     transaction.rollback();
                 } catch (IOException e) {
-                    String msg =
-                            "Error rolling back transaction in response"
-                                    + "to connection error. We are in an inconsistent state";
+                    String msg = "Error rolling back transaction in response"
+                            + "to connection error. We are in an inconsistent state";
                     LOGGER.log(Level.SEVERE, msg, e);
 
                     // TODO: this is a bad place to be should we completely gut the transaction

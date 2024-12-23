@@ -80,8 +80,8 @@ import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.util.factory.Hints;
 
 /**
- * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature
- * features conforming to an application schema.
+ * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature features conforming
+ * to an application schema.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -91,16 +91,15 @@ import org.geotools.util.factory.Hints;
  */
 public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<>();
 
     private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
 
     /**
-     * Flag to mark non-accessible data accesses, which should be automatically disposed of when no
-     * longer needed by any accessible data access.
+     * Flag to mark non-accessible data accesses, which should be automatically disposed of when no longer needed by any
+     * accessible data access.
      */
     boolean hidden = false;
 
@@ -108,16 +107,15 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     URL url;
 
     /**
-     * URL of data access that included this data access (for hidden data accesses). Should be null
-     * if hidden is false.
+     * URL of data access that included this data access (for hidden data accesses). Should be null if hidden is false.
      */
     URL parentUrl;
 
     /**
      * Constructor.
      *
-     * @param mappings a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this
-     *     DataAccess is going to produce.
+     * @param mappings a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this DataAccess is going
+     *     to produce.
      */
     public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings) throws IOException {
         this(mappings, false);
@@ -126,13 +124,11 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Two args constructor.
      *
-     * @param mappings a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this
-     *     DataAccess is going to produce.
-     * @param hidden marks this data access as non-accessible, which makes it a candidate for
-     *     automatic disposal
+     * @param mappings a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this DataAccess is going
+     *     to produce.
+     * @param hidden marks this data access as non-accessible, which makes it a candidate for automatic disposal
      */
-    public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings, boolean hidden)
-            throws IOException {
+    public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings, boolean hidden) throws IOException {
         this.hidden = hidden;
         try {
             for (FeatureTypeMapping mapping : mappings) {
@@ -179,14 +175,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * If the provided feature type mapping does not result from an include directive, we return
-     * false immediately. We then check if a previous mapping has already been registered for the
-     * provided feature type name. If that's the case, we verify if the new provided mapping is
-     * deeply equal to the already registered one. If this comparison holds true, we return true.
+     * If the provided feature type mapping does not result from an include directive, we return false immediately. We
+     * then check if a previous mapping has already been registered for the provided feature type name. If that's the
+     * case, we verify if the new provided mapping is deeply equal to the already registered one. If this comparison
+     * holds true, we return true.
      *
-     * <p>The objective here is to ensure that if a feature type mapping has already included this
-     * specific feature type mapping, it is indeed the same mapping definition. The intention is to
-     * prevent different mappings for the same feature type from coexisting.
+     * <p>The objective here is to ensure that if a feature type mapping has already included this specific feature type
+     * mapping, it is indeed the same mapping definition. The intention is to prevent different mappings for the same
+     * feature type from coexisting.
      *
      * @param mapping the mapping to check
      * @return true if the mapping is an include and is identical to the previous one
@@ -220,9 +216,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     }
                 } catch (IOException | ClassCastException e) {
                     LOGGER.fine(
-                            "Could not get mapping from registry for "
-                                    + name
-                                    + " while trying to test for duplicates");
+                            "Could not get mapping from registry for " + name + " while trying to test for duplicates");
                     return false;
                 }
             }
@@ -237,9 +231,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Returns the set of target type names this DataAccess holds, where the term 'target type name'
-     * refers to the name of one of the types this DataAccess produces by mapping another ones
-     * through the definitions stored in its {@linkplain FeatureTypeMapping}s
+     * Returns the set of target type names this DataAccess holds, where the term 'target type name' refers to the name
+     * of one of the types this DataAccess produces by mapping another ones through the definitions stored in its
+     * {@linkplain FeatureTypeMapping}s
      */
     public Name[] getTypeNames() throws IOException {
         Name[] typeNames = new Name[mappings.size()];
@@ -252,12 +246,13 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Finds the target FeatureType named <code>typeName</code> in this ComplexDatastore's internal
-     * list of FeatureType mappings and returns it.
+     * Finds the target FeatureType named <code>typeName</code> in this ComplexDatastore's internal list of FeatureType
+     * mappings and returns it.
      */
     @Override
     public FeatureType getSchema(Name typeName) throws IOException {
-        return (FeatureType) getMappingByNameOrElement(typeName).getTargetFeature().getType();
+        return (FeatureType)
+                getMappingByNameOrElement(typeName).getTargetFeature().getType();
     }
 
     /**
@@ -275,8 +270,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Returns the mapping suite for the given target type name. This name would be the mappingName
-     * in the TypeMapping if it exists, otherwise it's the target element name.
+     * Returns the mapping suite for the given target type name. This name would be the mappingName in the TypeMapping
+     * if it exists, otherwise it's the target element name.
      *
      * <p>Note this method is public just for unit testing purposes
      */
@@ -323,11 +318,11 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Computes the bounds of the features for the specified feature type that satisfy the query
-     * provided that there is a fast way to get that result.
+     * Computes the bounds of the features for the specified feature type that satisfy the query provided that there is
+     * a fast way to get that result.
      *
-     * <p>Will return null if there is not fast way to compute the bounds. Since it's based on some
-     * kind of header/cached information, it's not guaranteed to be real bound of the features
+     * <p>Will return null if there is not fast way to compute the bounds. Since it's based on some kind of
+     * header/cached information, it's not guaranteed to be real bound of the features
      *
      * @return the bounds, or null if too expensive
      */
@@ -338,15 +333,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Gets the number of the features that would be returned by this query for the specified
-     * feature type.
+     * Gets the number of the features that would be returned by this query for the specified feature type.
      *
      * <p>If getBounds(Query) returns <code>-1</code> due to expense consider using <code>
      * getFeatures(Query).getCount()</code> as a an alternative.
      *
      * @param targetQuery Contains the Filter and MaxFeatures to find the bounds for.
-     * @return The number of Features provided by the Query or <code>-1</code> if count is too
-     *     expensive to calculate or any errors or occur.
+     * @return The number of Features provided by the Query or <code>-1</code> if count is too expensive to calculate or
+     *     any errors or occur.
      * @throws IOException if there are errors getting the count
      */
     protected int getCount(Query targetQuery) throws IOException {
@@ -382,14 +376,12 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         return count;
     }
 
-    private boolean canCount(
-            Query query, FeatureSource mappedSource, FeatureTypeMapping rootMapping) {
+    private boolean canCount(Query query, FeatureSource mappedSource, FeatureTypeMapping rootMapping) {
         boolean canCount = false;
         if (query.getFilter().equals(Filter.INCLUDE)) canCount = true;
         FilterCapabilities capabilities = null;
         if (mappedSource instanceof JDBCFeatureSource) {
-            capabilities =
-                    ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
+            capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
         } else if (mappedSource instanceof JDBCFeatureStore) {
             capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
         }
@@ -423,8 +415,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Returns <code>Filter.INCLUDE</code>, as the whole filter is unrolled and passed back to the
-     * underlying DataStore to be treated.
+     * Returns <code>Filter.INCLUDE</code>, as the whole filter is unrolled and passed back to the underlying DataStore
+     * to be treated.
      *
      * @return <code>Filter.INLCUDE</code>
      */
@@ -433,9 +425,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate
-     * DataStore, by unrolling the <code>org.geotools.filter.Filter</code> contained in the passed
-     * <code>query
+     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate DataStore, by unrolling the
+     * <code>org.geotools.filter.Filter</code> contained in the passed <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
      */
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {
@@ -447,12 +438,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             Filter unrolledFilter = AppSchemaDataAccess.unrollFilter(complexFilter, mapping);
 
             Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
-            List<PropertyName> propNames =
-                    getSurrogatePropertyNames(
-                            query.getProperties(),
-                            mapping,
-                            includeProps instanceof Boolean
-                                    && ((Boolean) includeProps).booleanValue());
+            List<PropertyName> propNames = getSurrogatePropertyNames(
+                    query.getProperties(),
+                    mapping,
+                    includeProps instanceof Boolean && ((Boolean) includeProps).booleanValue());
 
             Query newQuery = new Query();
             String name = source.getName().getLocalPart();
@@ -468,17 +457,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             List<SortBy> sort = new ArrayList<>();
             if (query.getSortBy() != null) {
                 for (SortBy sortBy : query.getSortBy()) {
-                    List<Expression> expressions =
-                            unrollProperty(sortBy.getPropertyName(), mapping);
+                    List<Expression> expressions = unrollProperty(sortBy.getPropertyName(), mapping);
                     for (Expression expr : expressions) {
                         if (expr != null) {
                             FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                             expr.accept(extractor, null);
 
                             for (String att : extractor.getAttributeNameSet()) {
-                                sort.add(
-                                        new SortByImpl(
-                                                filterFac.property(att), sortBy.getSortOrder()));
+                                sort.add(new SortByImpl(filterFac.property(att), sortBy.getSortOrder()));
                             }
                         }
                     }
@@ -493,19 +479,17 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                         && extractor.getAttributeNameSet().isEmpty()) {
                     // GEOS-5618: getID() and functions in idExpression aren't supported with
                     // joining
-                    String ns =
-                            mapping.namespaces.getPrefix(
-                                    mapping.getTargetFeature().getName().getNamespaceURI());
+                    String ns = mapping.namespaces.getPrefix(
+                            mapping.getTargetFeature().getName().getNamespaceURI());
                     String separator = mapping.getTargetFeature().getName().getSeparator();
                     String typeName = mapping.getTargetFeature().getLocalName();
-                    throw new UnsupportedOperationException(
-                            String.format(
-                                    "idExpression '%s' for targetElement '%s%s%s' cannot be translated into SQL, "
-                                            + "therefore is not supported with joining!"
-                                            + "\nPlease make sure idExpression is mapped into existing database fields, "
-                                            + "and only use functions that are supported by your database."
-                                            + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
-                                    mapping.getFeatureIdExpression(), ns, separator, typeName));
+                    throw new UnsupportedOperationException(String.format(
+                            "idExpression '%s' for targetElement '%s%s%s' cannot be translated into SQL, "
+                                    + "therefore is not supported with joining!"
+                                    + "\nPlease make sure idExpression is mapped into existing database fields, "
+                                    + "and only use functions that are supported by your database."
+                                    + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
+                            mapping.getFeatureIdExpression(), ns, separator, typeName));
                 }
 
                 JoiningQuery jQuery = new JoiningQuery(newQuery);
@@ -543,8 +527,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         if (source instanceof JDBCFeatureSource) {
             JDBCFeatureSource jdbcSource = (JDBCFeatureSource) source;
             store = jdbcSource.getDataStore();
-        } else if (source instanceof JDBCFeatureStore)
-            store = ((JDBCFeatureStore) source).getDataStore();
+        } else if (source instanceof JDBCFeatureStore) store = ((JDBCFeatureStore) source).getDataStore();
         if (store != null) {
             try {
                 PrimaryKey primaryKey = store.getPrimaryKey((SimpleFeatureType) source.getSchema());
@@ -552,8 +535,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     for (PrimaryKeyColumn column : primaryKey.getColumns()) {
                         PropertyName pn = filterFac.property(column.getName());
                         // check the that the attribute exists in mappings/featureType
-                        if (pn.evaluate(featureType) != null)
-                            sorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
+                        if (pn.evaluate(featureType) != null) sorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
                     }
                 }
             } catch (IOException e) {
@@ -563,8 +545,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Helper method for getSurrogatePropertyNames to match a requested x-path property with a
-     * target x-path
+     * Helper method for getSurrogatePropertyNames to match a requested x-path property with a target x-path
      *
      * @param requestedProperty requested property x-path
      * @param target target x-path steps
@@ -590,8 +571,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Helper method for getSurrogatePropertyNames to match a requested single step property with a
-     * target x-path, ignoring namespaces
+     * Helper method for getSurrogatePropertyNames to match a requested single step property with a target x-path,
+     * ignoring namespaces
      *
      * @param requestedProperty requested property x-path
      * @param target target x-path steps
@@ -603,14 +584,12 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * @return <code>null</code> if all surrogate attributes shall be queried, else the list of
-     *     needed surrogate attributes to satisfy the mapping of prorperties in <code>
+     * @return <code>null</code> if all surrogate attributes shall be queried, else the list of needed surrogate
+     *     attributes to satisfy the mapping of prorperties in <code>
      *     mappingProperties</code>
      */
     private List<PropertyName> getSurrogatePropertyNames(
-            List<PropertyName> requestedProperties,
-            FeatureTypeMapping mapping,
-            boolean includeMandatory) {
+            List<PropertyName> requestedProperties, FeatureTypeMapping mapping, boolean includeMandatory) {
         List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
         if (requestedProperties != null && !requestedProperties.isEmpty()) {
@@ -630,7 +609,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             // target schema attributes
             List<AttributeMapping> attMappings = mapping.getAttributeMappings();
             // NC - add feature to list, to include its ID expression
-            requestedProperties.add(filterFac.property(mapping.getTargetFeature().getName()));
+            requestedProperties.add(
+                    filterFac.property(mapping.getTargetFeature().getName()));
 
             // get source type
             AttributeType mappedType;
@@ -647,8 +627,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 boolean addThis = false;
 
                 if (includeMandatory) {
-                    PropertyName targetProp =
-                            filterFac.property(targetSteps.toString(), mapping.getNamespaces());
+                    PropertyName targetProp = filterFac.property(targetSteps.toString(), mapping.getNamespaces());
                     Object descr = targetProp.evaluate(targetDescriptor.getType());
                     if (descr instanceof PropertyDescriptor) {
                         if (((PropertyDescriptor) descr).getMinOccurs() >= 1) {
@@ -660,26 +639,20 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 if (!addThis) {
                     for (PropertyName requestedProperty : requestedProperties) {
                         // replace the artificial DEFAULT_GEOMETRY property with the actual one
-                        if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(
-                                requestedProperty.getPropertyName())) {
+                        if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(requestedProperty.getPropertyName())) {
                             String defGeomPath = mapping.getDefaultGeometryXPath();
-                            requestedProperty =
-                                    filterFac.property(defGeomPath, mapping.getNamespaces());
+                            requestedProperty = filterFac.property(defGeomPath, mapping.getNamespaces());
                         }
 
                         StepList requestedPropertySteps;
                         if (requestedProperty.getNamespaceContext() == null) {
-                            requestedPropertySteps =
-                                    XPath.steps(
-                                            targetDescriptor,
-                                            requestedProperty.getPropertyName(),
-                                            mapping.getNamespaces());
+                            requestedPropertySteps = XPath.steps(
+                                    targetDescriptor, requestedProperty.getPropertyName(), mapping.getNamespaces());
                         } else {
-                            requestedPropertySteps =
-                                    XPath.steps(
-                                            targetDescriptor,
-                                            requestedProperty.getPropertyName(),
-                                            requestedProperty.getNamespaceContext());
+                            requestedPropertySteps = XPath.steps(
+                                    targetDescriptor,
+                                    requestedProperty.getPropertyName(),
+                                    requestedProperty.getNamespaceContext());
                         }
 
                         if (requestedPropertySteps == null
@@ -704,8 +677,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
                     // RA - include function parameters in linkField
                     if (entry instanceof NestedAttributeMapping) {
-                        final Expression linkFieldExpression =
-                                ((NestedAttributeMapping) entry).nestedFeatureType;
+                        final Expression linkFieldExpression = ((NestedAttributeMapping) entry).nestedFeatureType;
                         linkFieldExpression.accept(extractor, null);
                     }
 
@@ -728,8 +700,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                                 if (mappedAttribute != null) {
                                     requestedSurrogateProperties.add(filterFac.property(mappedAtt));
                                 } else {
-                                    LOGGER.info(
-                                            "mapped type does not contains property " + mappedAtt);
+                                    LOGGER.info("mapped type does not contains property " + mappedAtt);
                                 }
                             }
                         }
@@ -744,19 +715,17 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         return propNames.isEmpty() ? null : propNames;
     }
 
-    private List<Expression> unrollProperty(
-            PropertyName property, final FeatureTypeMapping mapping) {
+    private List<Expression> unrollProperty(PropertyName property, final FeatureTypeMapping mapping) {
 
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
-        StepList propertySteps =
-                XPath.steps(targetDescriptor, property.getPropertyName(), mapping.getNamespaces());
+        StepList propertySteps = XPath.steps(targetDescriptor, property.getPropertyName(), mapping.getNamespaces());
 
         return mapping.findMappingsFor(propertySteps, true);
     }
 
     /**
-     * Takes a filter that operates against a {@linkplain FeatureTypeMapping}'s target FeatureType,
-     * and unrolls it creating a new Filter that operates against the mapping's source FeatureType.
+     * Takes a filter that operates against a {@linkplain FeatureTypeMapping}'s target FeatureType, and unrolls it
+     * creating a new Filter that operates against the mapping's source FeatureType.
      *
      * @return TODO: implement filter unrolling
      */
@@ -821,8 +790,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name,
-     *     org.geotools.api.feature.type.FeatureType)
+     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name, org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
@@ -840,15 +808,13 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Return a feature source that can be used to obtain features of a particular name. This name
-     * would be the mappingName in the TypeMapping if it exists, otherwise it's the target element
-     * name.
+     * Return a feature source that can be used to obtain features of a particular name. This name would be the
+     * mappingName in the TypeMapping if it exists, otherwise it's the target element name.
      *
      * @param typeName mappingName or targetElement
      * @return Mapping feature source
      */
-    public FeatureSource<FeatureType, Feature> getFeatureSourceByName(Name typeName)
-            throws IOException {
+    public FeatureSource<FeatureType, Feature> getFeatureSourceByName(Name typeName) throws IOException {
         return new MappingFeatureSource(this, getMappingByName(typeName));
     }
 

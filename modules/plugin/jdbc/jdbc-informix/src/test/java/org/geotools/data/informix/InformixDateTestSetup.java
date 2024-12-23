@@ -29,23 +29,11 @@ public class InformixDateTestSetup extends JDBCDateTestSetup {
         run(
                 "CREATE TABLE dates (id SERIAL PRIMARY KEY, d DATE, dt DATETIME YEAR TO SECOND, t DATETIME HOUR TO SECOND)");
 
-        run(
-                "INSERT INTO dates (d, dt, t) VALUES ("
-                        + "'2009-06-28', "
-                        + "'2009-06-28 15:12:41',"
-                        + "'15:12:41')");
+        run("INSERT INTO dates (d, dt, t) VALUES (" + "'2009-06-28', " + "'2009-06-28 15:12:41'," + "'15:12:41')");
 
-        run(
-                "INSERT INTO dates (d, dt, t) VALUES ("
-                        + "'2009-01-15', "
-                        + "'2009-01-15 13:10:12',"
-                        + "'13:10:12' )");
+        run("INSERT INTO dates (d, dt, t) VALUES (" + "'2009-01-15', " + "'2009-01-15 13:10:12'," + "'13:10:12' )");
 
-        run(
-                "INSERT INTO dates (d, dt, t) VALUES ("
-                        + "'2009-09-29', "
-                        + "'2009-09-29 17:54:23',"
-                        + "'17:54:23')");
+        run("INSERT INTO dates (d, dt, t) VALUES (" + "'2009-09-29', " + "'2009-09-29 17:54:23'," + "'17:54:23')");
     }
 
     @Override

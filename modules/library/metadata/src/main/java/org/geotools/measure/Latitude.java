@@ -17,8 +17,8 @@
 package org.geotools.measure;
 
 /**
- * A latitude angle. Positive latitudes are North, while negative latitudes are South. This class
- * has no direct OpenGIS equivalent.
+ * A latitude angle. Positive latitudes are North, while negative latitudes are South. This class has no direct OpenGIS
+ * equivalent.
  *
  * @since 2.0
  * @version $Id$
@@ -46,10 +46,9 @@ public final class Latitude extends Angle {
     }
 
     /**
-     * Constructs a newly allocated {@code Latitude} object that represents the latitude value
-     * represented by the string. The string should represents an angle in either fractional degrees
-     * (e.g. 45.5°) or degrees with minutes and seconds (e.g. 45°30'). The hemisphere (N or S) is
-     * optional (default to North).
+     * Constructs a newly allocated {@code Latitude} object that represents the latitude value represented by the
+     * string. The string should represents an angle in either fractional degrees (e.g. 45.5°) or degrees with minutes
+     * and seconds (e.g. 45°30'). The hemisphere (N or S) is optional (default to North).
      *
      * @param theta A string to be converted to a {@code Latitude}.
      * @throws NumberFormatException if the string does not contain a parsable latitude.

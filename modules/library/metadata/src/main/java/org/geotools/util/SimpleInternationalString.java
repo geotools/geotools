@@ -23,9 +23,8 @@ import java.io.Serializable;
 import java.util.Locale;
 
 /**
- * A simple international string consisting of a single string for all locales. For such a
- * particular case, this implementation is the more effective than other implementations provided in
- * this package.
+ * A simple international string consisting of a single string for all locales. For such a particular case, this
+ * implementation is the more effective than other implementations provided in this package.
  *
  * @since 2.1
  * @version $Id$
@@ -46,9 +45,8 @@ public class SimpleInternationalString extends AbstractInternationalString imple
     }
 
     /**
-     * If the specified string is null or an instance of {@link AbstractInternationalString},
-     * returns it unchanged. Otherwise, wraps the string value in a {@code
-     * SimpleInternationalString}.
+     * If the specified string is null or an instance of {@link AbstractInternationalString}, returns it unchanged.
+     * Otherwise, wraps the string value in a {@code SimpleInternationalString}.
      *
      * @param string The string to wrap.
      * @return The given string as an international string.

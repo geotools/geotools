@@ -47,19 +47,16 @@ public class AttributeRoundtripTest {
         return result;
     }
 
-    String getResource(String name)
-            throws URISyntaxException, UnsupportedEncodingException, IOException {
+    String getResource(String name) throws URISyntaxException, UnsupportedEncodingException, IOException {
         URL url = TestData.url(FlatGeobufDataStore.class, name);
         File file = URLs.urlToFile(url);
-        String resource =
-                new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8.name());
+        String resource = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8.name());
         return GeoJSONWriter.toGeoJSON(GeoJSONReader.parseFeatureCollection(resource));
     }
 
     String removeId(String json) {
         JSONObject jsonObject = new JSONObject(json);
-        for (Object feature : jsonObject.getJSONArray("features"))
-            ((JSONObject) feature).remove("id");
+        for (Object feature : jsonObject.getJSONArray("features")) ((JSONObject) feature).remove("id");
         return jsonObject.toString(1);
     }
 
@@ -110,8 +107,7 @@ public class AttributeRoundtripTest {
         byte[] bytes = os.toByteArray();
         ByteBuffer bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.LITTLE_ENDIAN);
-        SimpleFeatureCollection actual =
-                FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
+        SimpleFeatureCollection actual = FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         SimpleFeature expectedFeature = (SimpleFeature) expected.toArray()[0];
         SimpleFeature actualFeature = (SimpleFeature) actual.toArray()[0];
         var e = expectedFeature.getAttributes();

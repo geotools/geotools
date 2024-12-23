@@ -54,14 +54,9 @@ class Mosaic {
         this.factory = factory;
 
         // calculate image size
-        rescale =
-                new Point.Double(
-                        read.raster.scale.x / read.resolution.x,
-                        read.raster.scale.y / read.resolution.y);
-        this.size =
-                new Dimension(
-                        (int) Math.round(read.region.width / rescale.x),
-                        (int) Math.round(read.region.height / rescale.y));
+        rescale = new Point.Double(read.raster.scale.x / read.resolution.x, read.raster.scale.y / read.resolution.y);
+        this.size = new Dimension(
+                (int) Math.round(read.region.width / rescale.x), (int) Math.round(read.region.height / rescale.y));
 
         bounds = new Envelope();
         bounds.setToNull();
@@ -94,8 +89,7 @@ class Mosaic {
         }
 
         SampleModel sm =
-                from.getSampleModel()
-                        .createCompatibleSampleModel((int) size.getWidth(), (int) size.getHeight());
+                from.getSampleModel().createCompatibleSampleModel((int) size.getWidth(), (int) size.getHeight());
         WritableRaster raster = Raster.createWritableRaster(sm, null);
 
         ColorModel colorModel = from.getColorModel();
@@ -131,17 +125,9 @@ class Mosaic {
         // in backound transparency, etc...
         if (mapBounds.covers(bounds)) {
             // crop
-            int x =
-                    (int)
-                            (finalImage.getWidth()
-                                    * (bounds.getMinX() - mapBounds.getMinX())
-                                    / mapBounds.getWidth());
-            int y =
-                    finalImage.getHeight()
-                            - (int)
-                                    (finalImage.getHeight()
-                                            * (bounds.getMaxY() - mapBounds.getMinY())
-                                            / mapBounds.getHeight());
+            int x = (int) (finalImage.getWidth() * (bounds.getMinX() - mapBounds.getMinX()) / mapBounds.getWidth());
+            int y = finalImage.getHeight()
+                    - (int) (finalImage.getHeight() * (bounds.getMaxY() - mapBounds.getMinY()) / mapBounds.getHeight());
             int h = (int) (finalImage.getHeight() * bounds.getHeight() / mapBounds.getHeight());
             int w = (int) (finalImage.getWidth() * bounds.getWidth() / mapBounds.getWidth());
             finalImage = crop(finalImage, x, y, w, h);

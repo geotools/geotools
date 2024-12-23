@@ -53,10 +53,8 @@ public final class VSIUtils {
         "hdfs",
         "webhdfs"
     };
-    private static final String VSI_PATTERN =
-            String.format(
-                    "^(/vsi(%s)/)+[\\w\\d_\\-\\.]+/[\\w\\d_\\-\\./]+$",
-                    String.join("|", Arrays.asList(VSI_TYPES)));
+    private static final String VSI_PATTERN = String.format(
+            "^(/vsi(%s)/)+[\\w\\d_\\-\\.]+/[\\w\\d_\\-\\./]+$", String.join("|", Arrays.asList(VSI_TYPES)));
 
     /**
      * Determine if an input {@link String} is a valid VSI-prefixed Virtual File System location
@@ -82,8 +80,7 @@ public final class VSIUtils {
     }
 
     /**
-     * Open a {@link String} input as a GDAL {@link Dataset}, handling a null response as an {@link
-     * IOException}
+     * Open a {@link String} input as a GDAL {@link Dataset}, handling a null response as an {@link IOException}
      *
      * @param input {@link String} representation of a virtual location
      * @return {@link Dataset} object containing the layer data
@@ -110,20 +107,18 @@ public final class VSIUtils {
         final Band alpha = dataset.GetRasterBand(dataset.getRasterCount());
         alpha.SetColorInterpretation(gdalconstConstants.GCI_AlphaBand);
 
-        final String sourceData =
-                (String) dataset.GetRasterBand(1).GetMetadata_Dict("vrt_sources").get("source_0");
+        final String sourceData = (String)
+                dataset.GetRasterBand(1).GetMetadata_Dict("vrt_sources").get("source_0");
 
         alpha.SetMetadataItem(
-                "source_0",
-                sourceData.replaceAll("<SourceBand>[0-9]+", "<SourceBand>mask"),
-                "new_vrt_sources");
+                "source_0", sourceData.replaceAll("<SourceBand>[0-9]+", "<SourceBand>mask"), "new_vrt_sources");
 
         dataset.FlushCache();
     }
 
     /**
-     * Generate and create a VRT file that links any given GDAL {@link Dataset}, handling a null
-     * response as a {@link IOException}
+     * Generate and create a VRT file that links any given GDAL {@link Dataset}, handling a null response as a
+     * {@link IOException}
      *
      * @param source input GDAL {@link Dataset}
      * @param destination output VRT {@link File} object

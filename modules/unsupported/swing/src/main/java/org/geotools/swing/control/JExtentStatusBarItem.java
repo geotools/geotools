@@ -33,8 +33,7 @@ import org.geotools.swing.locale.LocaleUtils;
  * @version $Id$
  */
 public class JExtentStatusBarItem extends StatusBarItem {
-    private static final String COMPONENT_NAME =
-            LocaleUtils.getValue("StatusBar", "ExtentItemName");
+    private static final String COMPONENT_NAME = LocaleUtils.getValue("StatusBar", "ExtentItemName");
 
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "ExtentTooltip");
     private static final ReferencedEnvelope EMPTY_ENV = new ReferencedEnvelope();
@@ -68,13 +67,12 @@ public class JExtentStatusBarItem extends StatusBarItem {
         label.setFont(JMapStatusBar.DEFAULT_FONT);
         add(label);
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onDisplayAreaChanged(MapPaneEvent ev) {
-                        displayExtent(ev.getSource().getDisplayArea(), true);
-                    }
-                });
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onDisplayAreaChanged(MapPaneEvent ev) {
+                displayExtent(ev.getSource().getDisplayArea(), true);
+            }
+        });
     }
 
     /**
@@ -90,12 +88,7 @@ public class JExtentStatusBarItem extends StatusBarItem {
 
         } else {
             label.setText(
-                    String.format(
-                            numFormat,
-                            extent.getMinX(),
-                            extent.getMaxX(),
-                            extent.getMinY(),
-                            extent.getMaxY()));
+                    String.format(numFormat, extent.getMinX(), extent.getMaxX(), extent.getMinY(), extent.getMaxY()));
 
             if (cache) {
                 lastExtent = new ReferencedEnvelope(extent);
@@ -115,10 +108,7 @@ public class JExtentStatusBarItem extends StatusBarItem {
         displayExtent(lastExtent, false);
     }
 
-    /**
-     * Private helper for {@linkplain #setPrecision(int)} that can be called safely from the
-     * constructor.
-     */
+    /** Private helper for {@linkplain #setPrecision(int)} that can be called safely from the constructor. */
     private void setLabelFormat() {
         StringBuilder sb = new StringBuilder();
         sb.append("x=[%.").append(decLen).append("f, ");

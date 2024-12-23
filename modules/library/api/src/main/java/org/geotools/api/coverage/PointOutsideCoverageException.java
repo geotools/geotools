@@ -12,8 +12,8 @@ package org.geotools.api.coverage;
 import org.geotools.api.geometry.Position;
 
 /**
- * Thrown when a {@link Coverage#evaluate(Position, java.util.Set) evaluate} method is invoked for a
- * location outside the domain of the coverage.
+ * Thrown when a {@link Coverage#evaluate(Position, java.util.Set) evaluate} method is invoked for a location outside
+ * the domain of the coverage.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
@@ -37,16 +37,16 @@ public class PointOutsideCoverageException extends CannotEvaluateException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public PointOutsideCoverageException(String message) {
         super(message);
     }
 
     /**
-     * Returns the {@linkplain Position direct position} which is outside the domain of the
-     * {@linkplain #getCoverage coverage}.
+     * Returns the {@linkplain Position direct position} which is outside the domain of the {@linkplain #getCoverage
+     * coverage}.
      *
      * @return The position outside the coverage, or {@code null} if unknown.
      * @since GeoAPI 2.2
@@ -56,8 +56,8 @@ public class PointOutsideCoverageException extends CannotEvaluateException {
     }
 
     /**
-     * Sets the {@linkplain Position direct position} which is outside the domain of the {@linkplain
-     * #getCoverage coverage}.
+     * Sets the {@linkplain Position direct position} which is outside the domain of the {@linkplain #getCoverage
+     * coverage}.
      *
      * @param location The position outside the coverage, or {@code null} if unknown.
      * @since GeoAPI 2.2

@@ -299,10 +299,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
 
         // break into single steps
         StepList exprSteps =
-                XPath.steps(
-                        mappings.getTargetFeature(),
-                        expression.getPropertyName(),
-                        this.mappings.getNamespaces());
+                XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), this.mappings.getNamespaces());
 
         if (exprSteps.containsPredicate()) {
             postStack.push(expression);
@@ -313,31 +310,25 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
 
         if (AppSchemaDataAccessConfigurator.shouldEncodeNestedFilters()) {
             // check nested mappings
-            FeatureChainedAttributeVisitor nestedAttrExtractor =
-                    new FeatureChainedAttributeVisitor(mappings);
+            FeatureChainedAttributeVisitor nestedAttrExtractor = new FeatureChainedAttributeVisitor(mappings);
             nestedAttrExtractor.visit(expression, null);
             // check expression exists
             FeatureChainedAttributeVisitor existsAttrExtractor = existsExtractorVisitor();
             existsAttrExtractor.visit(expression, null);
 
-            List<FeatureChainedAttributeDescriptor> fcAttrs =
-                    nestedAttrExtractor.getFeatureChainedAttributes();
+            List<FeatureChainedAttributeDescriptor> fcAttrs = nestedAttrExtractor.getFeatureChainedAttributes();
             // error on attribute check
-            checkAttributeFound(
-                    expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
+            checkAttributeFound(expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
-            if (fcAttrs.size() == 1
-                    || (!fcAttrs.isEmpty() && validateNoClientProperties(fcAttrs))) {
+            if (fcAttrs.size() == 1 || (!fcAttrs.isEmpty() && validateNoClientProperties(fcAttrs))) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
-                    FeatureTypeMapping featureMapping =
-                            nestedAttrDescr.getFeatureTypeOwningAttribute();
+                    FeatureTypeMapping featureMapping = nestedAttrDescr.getFeatureTypeOwningAttribute();
                     nestedAttributes.add(nestedAttrDescr);
 
                     // add source expressions for target attribute
                     List<Expression> nestedMappings =
-                            featureMapping.findMappingsFor(
-                                    nestedAttrDescr.getAttributePath(), false);
+                            featureMapping.findMappingsFor(nestedAttrDescr.getAttributePath(), false);
                     Iterator<Expression> it = matchingMappings.iterator();
                     while (it.hasNext()) {
                         if (it.next() == null) {
@@ -355,16 +346,14 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                         if (mappingStep.hasNestedFeature()) {
                             FeatureChainLink parentStep = nestedAttrDescr.getLink(i);
 
-                            NestedAttributeMapping nestedAttr =
-                                    parentStep.getNestedFeatureAttribute();
+                            NestedAttributeMapping nestedAttr = parentStep.getNestedFeatureAttribute();
                             FeatureTypeMapping nestedFeature = null;
                             try {
                                 nestedFeature = nestedAttr.getFeatureTypeMapping(null);
                             } catch (IOException e) {
-                                LOGGER.warning(
-                                        "Exception occurred processing nested filter, encoding"
-                                                + "will be disabled: "
-                                                + e.getMessage());
+                                LOGGER.warning("Exception occurred processing nested filter, encoding"
+                                        + "will be disabled: "
+                                        + e.getMessage());
                                 postStack.push(expression);
                                 return null;
                             }
@@ -385,9 +374,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         if (matchingMappings.isEmpty()) {
             // handle multi value
             AttributeMapping candidate = mappings.getAttributeMapping(exprSteps);
-            if (candidate != null
-                    && candidate.isMultiValued()
-                    && candidate.getMultipleValue() != null) {
+            if (candidate != null && candidate.isMultiValued() && candidate.getMultipleValue() != null) {
                 return super.visit(expression, notUsed);
             }
             postStack.push(expression);
@@ -419,8 +406,9 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             for (FeatureChainLink clink : ad.getFeatureChain()) {
                 if (clink.getNestedFeatureAttribute() == null) continue;
                 if (clink.getNestedFeatureAttribute().getClientProperties() != null
-                        && !clink.getNestedFeatureAttribute().getClientProperties().isEmpty())
-                    return false;
+                        && !clink.getNestedFeatureAttribute()
+                                .getClientProperties()
+                                .isEmpty()) return false;
             }
         }
         return true;
@@ -438,10 +426,9 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                 && !isXlinkHRef(exprSteps)
                 && !existsAttrExtractor.isUnboundedNestedElementFound()
                 && existsAttrExtractor.getFeatureChainedAttributes().isEmpty()) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Attribute \"%s\" not found in type \"%s\"",
-                            expression, mappings.getTargetFeature().getName().toString()));
+            throw new IllegalArgumentException(String.format(
+                    "Attribute \"%s\" not found in type \"%s\"",
+                    expression, mappings.getTargetFeature().getName().toString()));
         }
     }
 
@@ -484,9 +471,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                     // should
                     // be tested against the container type, i.e. the previous link in the chain
                     String ownerTypeName =
-                            Types.toPrefixedName(
-                                    ownerType.getTargetFeature().getName(),
-                                    ownerType.getNamespaces());
+                            Types.toPrefixedName(ownerType.getTargetFeature().getName(), ownerType.getNamespaces());
                     boolean chainingSimpleType =
                             ownerTypeName.equals(descr.getAttributePath().toString());
                     FeatureChainLink lastLink = descr.getLastLink();
@@ -500,11 +485,10 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                             xpathSteps.add(attrPath.get(0));
                         }
                     } else {
-                        LOGGER.warning(
-                                String.format(
-                                        "Cound not run sanity check for nested attribute \"%s\" of type \"%s\"",
-                                        descr.getAttributePath(),
-                                        ownerType.getTargetFeature().getName()));
+                        LOGGER.warning(String.format(
+                                "Cound not run sanity check for nested attribute \"%s\" of type \"%s\"",
+                                descr.getAttributePath(),
+                                ownerType.getTargetFeature().getName()));
                     }
                 }
                 xpathSteps = removeIndexesAndPredicates(xpathSteps);
@@ -547,14 +531,12 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         return expectedType;
     }
 
-    private void checkPropetyExistenceAndType(
-            FeatureTypeMapping mapping, String xpath, Class<?> expectedType) {
+    private void checkPropetyExistenceAndType(FeatureTypeMapping mapping, String xpath, Class<?> expectedType) {
         FeatureType featureType = (FeatureType) mapping.getTargetFeature().getType();
         FeaturePropertyAccessorFactory accessorFactory = new FeaturePropertyAccessorFactory();
         Hints hints = new Hints(PropertyAccessorFactory.NAMESPACE_CONTEXT, mapping.getNamespaces());
         PropertyAccessor accessor =
-                accessorFactory.createPropertyAccessor(
-                        featureType.getClass(), xpath, Object.class, hints);
+                accessorFactory.createPropertyAccessor(featureType.getClass(), xpath, Object.class, hints);
         if (accessor != null) {
             Object descr = null;
             try {
@@ -567,10 +549,9 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                         e);
             }
             if (!(expectedType.isAssignableFrom(descr.getClass()))) {
-                throw new IllegalArgumentException(
-                        String.format(
-                                "Attribute descriptor for \"%s\" if of type \"%s\", but it should be of type \"%s\"",
-                                xpath, descr.getClass().getName(), expectedType.getName()));
+                throw new IllegalArgumentException(String.format(
+                        "Attribute descriptor for \"%s\" if of type \"%s\", but it should be of type \"%s\"",
+                        xpath, descr.getClass().getName(), expectedType.getName()));
             }
         }
     }

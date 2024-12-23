@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class to build a power set from a set of object, filtering it during construction to avoid
- * trying sub-trees that lead to no results
+ * Base class to build a power set from a set of object, filtering it during construction to avoid trying sub-trees that
+ * lead to no results
  *
  * @author Andrea Aime - GeoSolutions
  * @param <T> The type of the domain elements
@@ -32,10 +32,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     /** The original list of values from which we'll build the power set */
     private List<T> domain;
 
-    /**
-     * Signatures that have been rejected, that we already know won't generate an entry in the
-     * result
-     */
+    /** Signatures that have been rejected, that we already know won't generate an entry in the result */
     private List<List<Signature>> rejects = new ArrayList<>();
 
     /** Initializes the power set builds with the initial domain values */
@@ -82,8 +79,8 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Recursively builds all possible signatures in the domain (will stop immediately if a
-     * signature is not accepted, or builds on top of a already rejected signature)
+     * Recursively builds all possible signatures in the domain (will stop immediately if a signature is not accepted,
+     * or builds on top of a already rejected signature)
      */
     void fill(Signature s, int k, int n, List<R> result) {
         List<T> objects = listFromSignature(s);
@@ -139,16 +136,15 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Builds a result from a combination of input objects. The method can return null to identify a
-     * combination that does not generate anything useful, but whose set of object could still
-     * generate a valid combination when grown with more objects (thus, not a candidate for
-     * returning false in {@link #accept(List)})
+     * Builds a result from a combination of input objects. The method can return null to identify a combination that
+     * does not generate anything useful, but whose set of object could still generate a valid combination when grown
+     * with more objects (thus, not a candidate for returning false in {@link #accept(List)})
      */
     protected abstract List<R> buildResult(List<T> objects);
 
     /**
-     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will
-     * be built from this set, and any superset of these objects will also be rejected
+     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will be built from this
+     * set, and any superset of these objects will also be rejected
      */
     protected abstract boolean accept(List<T> set);
 

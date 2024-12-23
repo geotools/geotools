@@ -89,9 +89,8 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
 
     @Test
     /**
-     * This test is going to access a file that won't fit entirely in the memory mapped buffer and
-     * that will involve some seek back and forth. (File is 122Kb whilst configured buffer limit is
-     * 32k)
+     * This test is going to access a file that won't fit entirely in the memory mapped buffer and that will involve
+     * some seek back and forth. (File is 122Kb whilst configured buffer limit is 32k)
      */
     public void testMemoryMappingPartialBuffering() throws IOException, ParseException {
         final File testURL = TestData.file(this, "O3-NO2.nc");
@@ -117,10 +116,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             GridCoverage2D grid = reader.read("NO2", values);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            float[] value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
-                            new float[1]);
+            float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
             assertEquals(6.15991f, value[0], 0.00001);
 
             time.setValue(List.of(formatD.parse(t2)));
@@ -128,10 +124,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             grid = reader.read("O3", values);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
-                            new float[1]);
+            value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
             assertEquals(56.946774f, value[0], 0.00001);
 
         } finally {
@@ -146,10 +139,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
     }
 
     @Test
-    /**
-     * This tests memoryMapping for a file that can be fully mapped, also making sure that the file
-     * get cached
-     */
+    /** This tests memoryMapping for a file that can be fully mapped, also making sure that the file get cached */
     public void testMemoryMapping() throws IOException {
         final File file = TestData.file(this, "sst.nc");
 
@@ -169,10 +159,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             GridCoverage2D grid = reader.read(names[0], null);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            float[] value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, -84, 26),
-                            new float[1]);
+            float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, -84, 26), new float[1]);
             assertEquals(24.0f, value[0], 0.00001);
             FileCacheIF fileCache = NetCDFUtilities.getRafFileCache();
             List<String> cached = fileCache.showCache();

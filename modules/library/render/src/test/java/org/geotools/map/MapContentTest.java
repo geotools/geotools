@@ -84,10 +84,7 @@ public class MapContentTest {
         assertTrue(maxBounds.isEmpty());
     }
 
-    /**
-     * Calling {@link MapContent#getViewport()} initially creates a new viewport instance with
-     * default settings.
-     */
+    /** Calling {@link MapContent#getViewport()} initially creates a new viewport instance with default settings. */
     @Test
     public void getDefaultViewport() throws Exception {
         mapContent.addLayer(new MockLayer(WORLD));
@@ -159,8 +156,7 @@ public class MapContentTest {
 
         Layer layerWithCRS = new MockLayer(WORLD);
         mapContent.addLayer(layerWithCRS);
-        assertEquals(
-                WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
+        assertEquals(WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
     }
 
     @Test
@@ -188,8 +184,7 @@ public class MapContentTest {
 
         assertTrue(viewport.isEditable());
         assertEquals(crs, mapContent.getCoordinateReferenceSystem());
-        assertNotEquals(
-                WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
+        assertNotEquals(WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
     }
 
     @Test

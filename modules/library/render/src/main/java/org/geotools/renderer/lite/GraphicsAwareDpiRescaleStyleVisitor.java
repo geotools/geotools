@@ -30,20 +30,18 @@ import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.util.Range;
 
 /**
- * This class extends {@link DpiRescaleStyleVisitor} to add support for rescaling external graphics
- * and marks whose size has not been explicitly set.
+ * This class extends {@link DpiRescaleStyleVisitor} to add support for rescaling external graphics and marks whose size
+ * has not been explicitly set.
  *
- * <p>Works properly as long as the expression in an eventual dynamic symbolizer are not setting the
- * size of the symbol, as we don't have the feature here, and there is no way to know which bit of
- * the url will setup the size
+ * <p>Works properly as long as the expression in an eventual dynamic symbolizer are not setting the size of the symbol,
+ * as we don't have the feature here, and there is no way to know which bit of the url will setup the size
  *
  * @author Andrea Aime - GeoSolutions
  */
 public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor {
 
     static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-    static final Range<Double> INFINITE_RANGE =
-            new Range<>(Double.class, 0d, Double.POSITIVE_INFINITY);
+    static final Range<Double> INFINITE_RANGE = new Range<>(Double.class, 0d, Double.POSITIVE_INFINITY);
     SLDStyleFactory ssf = new SLDStyleFactory();
 
     public GraphicsAwareDpiRescaleStyleVisitor(double scale) {

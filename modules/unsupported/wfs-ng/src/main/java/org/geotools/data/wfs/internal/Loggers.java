@@ -20,9 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
-/**
- * Internal utility class providing static constants for Loggers used during WFSDataStore operation.
- */
+/** Internal utility class providing static constants for Loggers used during WFSDataStore operation. */
 public final class Loggers {
 
     private Loggers() {

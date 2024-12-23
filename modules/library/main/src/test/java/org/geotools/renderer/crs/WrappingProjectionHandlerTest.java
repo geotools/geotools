@@ -41,8 +41,8 @@ public class WrappingProjectionHandlerTest {
     final WKTReader wktReader = new WKTReader();
 
     /**
-     * Tests the accumulate function using a Geometry collection with different geometry types,
-     * checking that it should returns a {@link Geometry} class.
+     * Tests the accumulate function using a Geometry collection with different geometry types, checking that it should
+     * returns a {@link Geometry} class.
      */
     @Test
     public void testAccumulateWithDifferentGeometryTypes() throws Exception {
@@ -51,8 +51,7 @@ public class WrappingProjectionHandlerTest {
         Geometry line = wktReader.read("LINESTRING(1 1, 1 2, 2 2)");
         GeometryCollection collection = new GeometryCollection(new Geometry[] {point, line}, gf);
         ReferencedEnvelope envelope = new ReferencedEnvelope(0, 5, 0, 5, CRS.decode("EPSG:4326"));
-        Class resultClass =
-                WrappingProjectionHandler.accumulate(resultGeoms, collection, null, envelope);
+        Class resultClass = WrappingProjectionHandler.accumulate(resultGeoms, collection, null, envelope);
         assertEquals(Geometry.class, resultClass);
     }
 
@@ -68,17 +67,15 @@ public class WrappingProjectionHandlerTest {
         CoordinateReferenceSystem MERCATOR = CRS.decode("EPSG:3395", true);
         ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR, true);
         mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
-        Geometry polygon =
-                wktReader.read(
-                        "MultiPolygon (((179.62477969 52.46819975, 179.51039918 52.20137203, 179.94028987 52.14290407, -179.9428079 52.40938205, 179.62477969 52.46819975)))");
+        Geometry polygon = wktReader.read(
+                "MultiPolygon (((179.62477969 52.46819975, 179.51039918 52.20137203, 179.94028987 52.14290407, -179.9428079 52.40938205, 179.62477969 52.46819975)))");
         Map<String, Object> params = new HashMap<>();
         params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, true);
 
         MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
         Geometry reprojected = JTS.transform(polygon, mt);
 
-        ProjectionHandler handler =
-                ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
         Geometry preProcessed = handler.preProcess(polygon);
         assertEquals(WrappingProjectionHandler.PREFLIPPED_OBJECT, preProcessed.getUserData());
         reprojected.setUserData(WrappingProjectionHandler.PREFLIPPED_OBJECT);

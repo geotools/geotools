@@ -30,11 +30,9 @@ import org.geotools.coverageio.BaseGridFormatFactorySPI;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
-        implements GridFormatFactorySpi {
+public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ErdasImgFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ErdasImgFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Erdas imagine is available or not.
@@ -56,8 +54,7 @@ public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
                 else LOGGER.fine("ErdasImgFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("ErdasImgFormatFactory is not available.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ErdasImgFormatFactory is not available.");
 
             available = false;
         }

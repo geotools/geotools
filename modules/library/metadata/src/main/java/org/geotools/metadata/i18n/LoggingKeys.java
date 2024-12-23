@@ -20,10 +20,9 @@
 package org.geotools.metadata.i18n;
 
 /**
- * Resource keys. This class is used when compiling sources, but no dependencies to {@code
- * ResourceKeys} should appear in any resulting class files. Since Java compiler inlines final
- * integer values, using long identifiers will not bloat constant pools of classes compiled against
- * the interface, provided that no class implements this interface.
+ * Resource keys. This class is used when compiling sources, but no dependencies to {@code ResourceKeys} should appear
+ * in any resulting class files. Since Java compiler inlines final integer values, using long identifiers will not bloat
+ * constant pools of classes compiled against the interface, provided that no class implements this interface.
  *
  * @see org.geotools.util.IndexedResourceBundle
  * @see org.geotools.util.IndexedResourceCompiler
@@ -34,25 +33,20 @@ public final class LoggingKeys {
     /** Grid geometry has been adjusted for coverage "{0}". */
     public static final int ADJUSTED_GRID_GEOMETRY_$1 = 0;
 
-    /**
-     * Ambiguity between inverse flattening and semi minor axis length. Using inverse flattening.
-     */
+    /** Ambiguity between inverse flattening and semi minor axis length. Using inverse flattening. */
     public static final int AMBIGUOUS_ELLIPSOID = 1;
 
     /** {3,choice,0#Apply|Reuse} operation "{1}" on coverage "{0}" with interpolation "{2}". */
     public static final int APPLIED_OPERATION_$4 = 2;
 
     /**
-     * Resampled coverage "{0}" from coordinate system "{1}" (for an image of size {2}×{3}) to
-     * coordinate system "{4}" (image size {5}×{6}). JAI operation is "{7}" with "{9}" interpolation
-     * on {8,choice,0#packed|1#geophysics} pixels values. Background value is ({10}).
+     * Resampled coverage "{0}" from coordinate system "{1}" (for an image of size {2}×{3}) to coordinate system "{4}"
+     * (image size {5}×{6}). JAI operation is "{7}" with "{9}" interpolation on {8,choice,0#packed|1#geophysics} pixels
+     * values. Background value is ({10}).
      */
     public static final int APPLIED_RESAMPLE_$11 = 3;
 
-    /**
-     * Converted "{0}" from "{1}" to "{2}" units. We assume that this is the expected units for
-     * computation purpose.
-     */
+    /** Converted "{0}" from "{1}" to "{2}" units. We assume that this is the expected units for computation purpose. */
     public static final int APPLIED_UNIT_CONVERSION_$3 = 4;
 
     /** Failed to bind a "{0}" entry. */
@@ -110,8 +104,8 @@ public final class LoggingKeys {
     public static final int FALLBACK_FACTORY_$1 = 22;
 
     /**
-     * Found {0} reference systems in {1} elements. The most frequent appears {2} time and the less
-     * frequent appears {3} times.
+     * Found {0} reference systems in {1} elements. The most frequent appears {2} time and the less frequent appears {3}
+     * times.
      */
     public static final int FOUND_MISMATCHED_CRS_$4 = 23;
 
@@ -146,8 +140,8 @@ public final class LoggingKeys {
     public static final int PAINTING_LAYER_$2 = 33;
 
     /**
-     * Polygons drawn with {0,number,percent} of available points, reusing {1,number,percent} from
-     * the cache (resolution: {2} {3}).
+     * Polygons drawn with {0,number,percent} of available points, reusing {1,number,percent} from the cache
+     * (resolution: {2} {3}).
      */
     public static final int POLYGON_CACHE_USE_$4 = 34;
 
@@ -163,10 +157,7 @@ public final class LoggingKeys {
     /** Select an image of "{0}" decimated to level {1} of {2}. */
     public static final int RESSAMPLING_RENDERED_IMAGE_$3 = 38;
 
-    /**
-     * Creates a {1,choice,0#packed|1#geophysics|2#photographic} view of grid coverage "{0}" using
-     * operation "{2}".
-     */
+    /** Creates a {1,choice,0#packed|1#geophysics|2#photographic} view of grid coverage "{0}" using operation "{2}". */
     public static final int SAMPLE_TRANSCODE_$3 = 39;
 
     /** Layer "{0}" send a repaint event for the whole widget area. */
@@ -187,10 +178,7 @@ public final class LoggingKeys {
     /** Ignoring unknow parameter: "{0}" = {1} {2}. */
     public static final int UNKNOW_PARAMETER_$3 = 45;
 
-    /**
-     * Can't handle style of class {0}. Consequently, geometry "{1}" will ignore its style
-     * information.
-     */
+    /** Can't handle style of class {0}. Consequently, geometry "{1}" will ignore its style information. */
     public static final int UNKNOW_STYLE_$2 = 46;
 
     /** Unrecognized scale type: "{0}". Default to linear. */

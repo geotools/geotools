@@ -74,8 +74,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
     @Override
     public void setGranuleInput(Object input) throws IOException {
         if (input == null || !(input instanceof URL)) {
-            throw new IllegalArgumentException(
-                    "Only URL type is supported by this provider: " + input);
+            throw new IllegalArgumentException("Only URL type is supported by this provider: " + input);
         }
         this.input = input;
         this.inputURL = (URL) input;
@@ -106,12 +105,10 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             AbstractGridCoverage2DReader reader = getGridCoverageReader();
             DatasetLayout layout = reader.getDatasetLayout();
             spiHelper = new SpiHelper(inputURL, imageReaderSpi, imageInputStreamSpi);
-            ovrProvider =
-                    new MaskOverviewProvider(layout, inputURL, spiHelper, skipExternalOverviews);
+            ovrProvider = new MaskOverviewProvider(layout, inputURL, spiHelper, skipExternalOverviews);
         }
         if (ovrProvider == null) {
-            throw new IOException(
-                    "Unable to find a MaskOverviewProvider for the specified input: " + inputURL);
+            throw new IOException("Unable to find a MaskOverviewProvider for the specified input: " + inputURL);
         }
         return ovrProvider;
     }
@@ -141,8 +138,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
     public ImageInputStream getImageInputStream() throws IOException {
         ImageInputStreamSpi streamSpi = getInputStreamSpi();
         ImageInputStream inStream =
-                streamSpi.createInputStreamInstance(
-                        inputURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                streamSpi.createInputStreamInstance(inputURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
         if (inStream == null) {
             final File file = URLs.urlToFile(inputURL);
             if (file != null) {
@@ -160,8 +156,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
     public ImageReader getImageReader() throws IOException {
         ImageReaderSpi imageReaderSpi = getImageReaderSpi();
         if (imageReaderSpi == null) {
-            throw new IllegalArgumentException(
-                    "No ReaderSPI has been found for input: " + inputURL.toString());
+            throw new IllegalArgumentException("No ReaderSPI has been found for input: " + inputURL.toString());
         }
         ImageReader imageReader = imageReaderSpi.createReaderInstance();
         if (imageReader == null)
@@ -180,8 +175,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
                 if (spiInstance instanceof ImageReaderSpi) spi = (ImageReaderSpi) spiInstance;
                 else spi = null;
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                 spi = null;
             }
         }
@@ -194,12 +188,10 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             try {
                 final Class<?> clazz = Class.forName(spiClass);
                 Object spiInstance = clazz.getDeclaredConstructor().newInstance();
-                if (spiInstance instanceof ImageInputStreamSpi)
-                    spi = (ImageInputStreamSpi) spiInstance;
+                if (spiInstance instanceof ImageInputStreamSpi) spi = (ImageInputStreamSpi) spiInstance;
                 else spi = null;
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                 spi = null;
             }
         }
@@ -212,12 +204,10 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             try {
                 final Class<?> clazz = Class.forName(formatClass);
                 Object formatInstance = clazz.getDeclaredConstructor().newInstance();
-                if (formatInstance instanceof AbstractGridFormat)
-                    format = (AbstractGridFormat) formatInstance;
+                if (formatInstance instanceof AbstractGridFormat) format = (AbstractGridFormat) formatInstance;
                 else format = null;
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                 format = null;
             }
         }

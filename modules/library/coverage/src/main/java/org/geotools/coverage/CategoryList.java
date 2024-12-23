@@ -39,10 +39,9 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 
 /**
- * An immutable list of categories. Categories are sorted by their sample values. Overlapping ranges
- * of sample values are not allowed. A {@code CategoryList} can contains a mix of qualitative and
- * quantitative categories. The {@link #getCategory} method is responsible for finding the right
- * category for an arbitrary sample value.
+ * An immutable list of categories. Categories are sorted by their sample values. Overlapping ranges of sample values
+ * are not allowed. A {@code CategoryList} can contains a mix of qualitative and quantitative categories. The
+ * {@link #getCategory} method is responsible for finding the right category for an arbitrary sample value.
  *
  * <p>Instances of {@link CategoryList} are immutable and thread-safe.
  *
@@ -55,71 +54,67 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     private static final long serialVersionUID = 2647846361059903365L;
 
     /**
-     * Compares {@link Category} objects according their {@link Category#minimum} value. This is
-     * used for sorting the {@link #categories} array at construction time.
+     * Compares {@link Category} objects according their {@link Category#minimum} value. This is used for sorting the
+     * {@link #categories} array at construction time.
      */
-    static Comparator<Category> COMPARATOR =
-            new Comparator<Category>() {
+    static Comparator<Category> COMPARATOR = new Comparator<Category>() {
 
-                @Override
-                public int compare(Category c1, Category c2) {
-                    return CategoryList.compare(c1.minimum, c2.minimum);
-                }
-            };
+        @Override
+        public int compare(Category c1, Category c2) {
+            return CategoryList.compare(c1.minimum, c2.minimum);
+        }
+    };
 
     /**
-     * The range of values in this category list. This is the union of the range of values of every
-     * categories, excluding {@code NaN} values. This field will be computed only when first
-     * requested.
+     * The range of values in this category list. This is the union of the range of values of every categories,
+     * excluding {@code NaN} values. This field will be computed only when first requested.
      */
     private transient NumberRange<?> range;
 
     /**
      * List of {@link Category#minimum} values for each category in {@link #categories}. This array
-     * <strong>must</strong> be in increasing order. Actually, this is the need to sort this array
-     * that determines the element order in {@link #categories}.
+     * <strong>must</strong> be in increasing order. Actually, this is the need to sort this array that determines the
+     * element order in {@link #categories}.
      */
     private final double[] minimums;
 
     /**
-     * The list of categories to use for decoding samples. This list most be sorted in increasing
-     * order of {@link Category#minimum}. This {@link CategoryList} object may be used as a {@link
-     * Comparator} for that. Qualitative categories (with NaN values) are last.
+     * The list of categories to use for decoding samples. This list most be sorted in increasing order of
+     * {@link Category#minimum}. This {@link CategoryList} object may be used as a {@link Comparator} for that.
+     * Qualitative categories (with NaN values) are last.
      */
     private final Category[] categories;
 
     /**
-     * The "main" category, or {@code null} if there is none. The main category is the quantitative
-     * category with the widest range of sample values.
+     * The "main" category, or {@code null} if there is none. The main category is the quantitative category with the
+     * widest range of sample values.
      */
     private final Category main;
 
     /**
-     * The "nodata" category (never {@code null}). The "nodata" category is a category mapping the
-     * {@link Double#NaN} value. If none has been found, a default "nodata" category is used.
+     * The "nodata" category (never {@code null}). The "nodata" category is a category mapping the {@link Double#NaN}
+     * value. If none has been found, a default "nodata" category is used.
      */
     final Category nodata;
 
     /**
-     * The category to use if {@link #getCategory(double)} is invoked with a sample value greater
-     * than all sample ranges in this category list. This is usually a reference to the last
-     * category to have a range of real values. A {@code null} value means that no fallback should
-     * be used. By extension, a {@code null} value also means that {@link #getCategory} should not
-     * try to find any fallback at all if the requested sample value do not falls in a category
-     * range.
+     * The category to use if {@link #getCategory(double)} is invoked with a sample value greater than all sample ranges
+     * in this category list. This is usually a reference to the last category to have a range of real values. A
+     * {@code null} value means that no fallback should be used. By extension, a {@code null} value also means that
+     * {@link #getCategory} should not try to find any fallback at all if the requested sample value do not falls in a
+     * category range.
      */
     private final Category overflowFallback;
 
     /**
-     * The last used category. We assume that this category is the most likely to be requested in
-     * the next {@code transform(...)} invocation.
+     * The last used category. We assume that this category is the most likely to be requested in the next
+     * {@code transform(...)} invocation.
      */
     private transient Category last;
 
     /**
-     * {@code true} if there is gaps between categories, or {@code false} otherwise. A gap is found
-     * if for example the range of value is [-9999 .. -9999] for the first category and [0 .. 1000]
-     * for the second one.
+     * {@code true} if there is gaps between categories, or {@code false} otherwise. A gap is found if for example the
+     * range of value is [-9999 .. -9999] for the first category and [0 .. 1000] for the second one.
      */
     private final boolean hasGaps;
 
@@ -131,10 +126,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      */
     private transient InternationalString name;
 
-    /**
-     * The unit information for all quantitative categories. It may be {@code null} if no category
-     * has units.
-     */
+    /** The unit information for all quantitative categories. It may be {@code null} if no category has units. */
     private Unit<?> unit;
 
     /**
@@ -142,11 +134,9 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      *
      * @param categories The list of categories.
      * @param units The geophysics unit, or {@code null} if none.
-     * @throws IllegalArgumentException if two or more categories have overlapping sample value
-     *     range.
+     * @throws IllegalArgumentException if two or more categories have overlapping sample value range.
      */
-    public CategoryList(final Category[] categories, final Unit<?> units)
-            throws IllegalArgumentException {
+    public CategoryList(final Category[] categories, final Unit<?> units) throws IllegalArgumentException {
         this(categories, units, false);
     }
 
@@ -157,14 +147,12 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      *
      * @param categories The list of categories.
      * @param units The geophysics unit, or {@code null} if none.
-     * @param searchNearest The policy when {@link #getCategory} doesn't find an exact match for a
-     *     sample value. {@code true} means that it should search for the nearest category, while
-     *     {@code false} means that it should returns {@code null}.
-     * @throws IllegalArgumentException if two or more categories have overlapping sample value
-     *     range.
+     * @param searchNearest The policy when {@link #getCategory} doesn't find an exact match for a sample value.
+     *     {@code true} means that it should search for the nearest category, while {@code false} means that it should
+     *     returns {@code null}.
+     * @throws IllegalArgumentException if two or more categories have overlapping sample value range.
      */
-    CategoryList(Category[] categories, Unit<?> units, boolean searchNearest)
-            throws IllegalArgumentException {
+    CategoryList(Category[] categories, Unit<?> units, boolean searchNearest) throws IllegalArgumentException {
         this.categories = categories = categories.clone();
         Arrays.sort(categories, COMPARATOR);
         assert isSorted(categories);
@@ -197,8 +185,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                             }
                         }
                     }
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
+                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {
@@ -266,8 +253,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Compares two {@code double} values. This method is similar to {@link
-     * Double#compare(double,double)} except that it also order NaN values.
+     * Compares two {@code double} values. This method is similar to {@link Double#compare(double,double)} except that
+     * it also order NaN values.
      */
     private static int compare(final double v1, final double v2) {
         if (Double.isNaN(v1) && Double.isNaN(v2)) {
@@ -280,8 +267,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns {@code true} if the specified categories are sorted. This method ignores {@code NaN}
-     * values. This method is used for assertions only.
+     * Returns {@code true} if the specified categories are sorted. This method ignores {@code NaN} values. This method
+     * is used for assertions only.
      */
     static boolean isSorted(final Category[] categories) {
         for (int i = 1; i < categories.length; i++) {
@@ -297,8 +284,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
 
     /**
      * Effectue une recherche bi-linéaire de la valeur spécifiée. Cette méthode est semblable à
-     * {@code Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
-     * valeurs de NaN.
+     * {@code Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes valeurs de NaN.
      *
      * <p>Note: This method is not private in order to allow testing by {@link CategoryTest}.
      */
@@ -356,10 +342,9 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns the name of this object. This method returns the name of what seems to be the "main"
-     * category (i.e. the quantitative category with the widest range of sample values) concatenated
-     * with the geophysics value range. This is given to {@link GridSampleDimension} only if the
-     * user did not specified explicitly a description.
+     * Returns the name of this object. This method returns the name of what seems to be the "main" category (i.e. the
+     * quantitative category with the widest range of sample values) concatenated with the geophysics value range. This
+     * is given to {@link GridSampleDimension} only if the user did not specified explicitly a description.
      */
     public final InternationalString getName() {
         if (name == null) {
@@ -393,23 +378,20 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns the unit information for quantitative categories in this list. May returns {@code
-     * null} if there is no quantitative categories in this list, or if there is no unit
-     * information.
+     * Returns the unit information for quantitative categories in this list. May returns {@code null} if there is no
+     * quantitative categories in this list, or if there is no unit information.
      */
     public Unit<?> getUnits() {
         return unit;
     }
 
     /**
-     * Returns the range of values in this category list. This is the union of the range of values
-     * of every categories, excluding {@code NaN} values. A {@link NumberRange} object give more
-     * informations than {@link org.geotools.api.CV_SampleDimension#getMinimum} and {@link
-     * org.geotools.api.CV_SampleDimension#getMaximum} since it contains also the type (integer,
-     * float, etc.) and inclusion/exclusion informations.
+     * Returns the range of values in this category list. This is the union of the range of values of every categories,
+     * excluding {@code NaN} values. A {@link NumberRange} object give more informations than
+     * {@link org.geotools.api.CV_SampleDimension#getMinimum} and {@link org.geotools.api.CV_SampleDimension#getMaximum}
+     * since it contains also the type (integer, float, etc.) and inclusion/exclusion informations.
      *
-     * @return The range of values. May be {@code null} if this category list has no quantitative
-     *     category.
+     * @return The range of values. May be {@code null} if this category list has no quantitative category.
      * @see Category#getRange
      */
     public final NumberRange<?> getRange() {
@@ -458,32 +440,26 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * Format the specified value using the specified locale convention.
      *
      * @param value The value to format.
-     * @param writeUnits {@code true} if unit symbol should be formatted after the number. Ignored
-     *     if this category list has no unit.
+     * @param writeUnits {@code true} if unit symbol should be formatted after the number. Ignored if this category list
+     *     has no unit.
      * @param locale The locale, or {@code null} for a default one.
      * @param buffer The buffer where to format.
      * @return The buffer {@code buffer} for convenience.
      */
-    StringBuffer format(
-            final double value,
-            final boolean writeUnits,
-            final Locale locale,
-            StringBuffer buffer) {
+    StringBuffer format(final double value, final boolean writeUnits, final Locale locale, StringBuffer buffer) {
         return buffer.append(value);
     }
 
     /**
-     * Returns a color model for this category list. This method builds up the color model from each
-     * category's colors (as returned by {@link Category#getColors}).
+     * Returns a color model for this category list. This method builds up the color model from each category's colors
+     * (as returned by {@link Category#getColors}).
      *
-     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be
-     *     ignored.
-     * @param numBands The number of bands for the color model (usually 1). The returned color model
-     *     will renderer only the {@code visibleBand} and ignore the others, but the existence of
-     *     all {@code numBands} will be at least tolerated. Supplemental bands, even invisible, are
-     *     useful for processing with Java Advanced Imaging.
-     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
-     *     with values in the <code>{@linkplain #getRange}</code> range.
+     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be ignored.
+     * @param numBands The number of bands for the color model (usually 1). The returned color model will renderer only
+     *     the {@code visibleBand} and ignore the others, but the existence of all {@code numBands} will be at least
+     *     tolerated. Supplemental bands, even invisible, are useful for processing with Java Advanced Imaging.
+     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects with values in the
+     *     <code>{@linkplain #getRange}</code> range.
      */
     public final ColorModel getColorModel(final int visibleBand, final int numBands) {
         int type = DataBuffer.TYPE_FLOAT;
@@ -510,27 +486,23 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns a color model for this category list. This method builds up the color model from each
-     * category's colors (as returned by {@link Category#getColors}).
+     * Returns a color model for this category list. This method builds up the color model from each category's colors
+     * (as returned by {@link Category#getColors}).
      *
-     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be
-     *     ignored.
-     * @param numBands The number of bands for the color model (usually 1). The returned color model
-     *     will renderer only the {@code visibleBand} and ignore the others, but the existence of
-     *     all {@code numBands} will be at least tolerated. Supplemental bands, even invisible, are
-     *     useful for processing with Java Advanced Imaging.
+     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be ignored.
+     * @param numBands The number of bands for the color model (usually 1). The returned color model will renderer only
+     *     the {@code visibleBand} and ignore the others, but the existence of all {@code numBands} will be at least
+     *     tolerated. Supplemental bands, even invisible, are useful for processing with Java Advanced Imaging.
      * @param type The transfer type used in the sample model.
-     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
-     *     with values in the <code>{@link #getRange}</code> range.
+     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects with values in the
+     *     <code>{@link #getRange}</code> range.
      */
-    public final ColorModel getColorModel(
-            final int visibleBand, final int numBands, final int type) {
+    public final ColorModel getColorModel(final int visibleBand, final int numBands, final int type) {
         return ColorModelFactory.getColorModel(categories, type, visibleBand, numBands);
     }
 
     /**
-     * Returns the category of the specified sample value. If no category fits, then this method
-     * returns {@code null}.
+     * Returns the category of the specified sample value. If no category fits, then this method returns {@code null}.
      *
      * @param sample The value.
      * @return The category of the supplied value, or {@code null}.
@@ -591,9 +563,9 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Formats a sample value. If {@code value} is a real number, then the value may be formatted
-     * with the appropriate number of digits and the units symbol. Otherwise, if {@code value} is
-     * {@code NaN}, then the category name is returned.
+     * Formats a sample value. If {@code value} is a real number, then the value may be formatted with the appropriate
+     * number of digits and the units symbol. Otherwise, if {@code value} is {@code NaN}, then the category name is
+     * returned.
      *
      * @param value The sample value (may be {@code NaN}).
      * @param locale Locale to use for formatting, or {@code null} for the default locale.
@@ -603,8 +575,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
         if (Double.isNaN(value)) {
             Category category = last;
             if (!(value >= category.minimum && value <= category.maximum)
-                    && Double.doubleToRawLongBits(value)
-                            != Double.doubleToRawLongBits(category.minimum)) {
+                    && Double.doubleToRawLongBits(value) != Double.doubleToRawLongBits(category.minimum)) {
                 category = getCategory(value);
                 if (category == null) {
                     return Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
@@ -640,8 +611,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns a string representation of this category list. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this category list. The returned string is implementation dependent. It is
+     * usually provided for debugging purposes only.
      */
     @Override
     public final String toString() {
@@ -649,8 +620,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns a string representation of this category list. The {@code owner} argument allow for a
-     * different class name to be formatted.
+     * Returns a string representation of this category list. The {@code owner} argument allow for a different class
+     * name to be formatted.
      */
     final String toString(final Object owner, final InternationalString description) {
         final String lineSeparator = System.getProperty("line.separator", "\n");
@@ -679,9 +650,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Compares the specified object with this category list for equality. If the two objects are
-     * instances of {@link CategoryList}, then the test is a little bit stricter than the default
-     * {@link AbstractList#equals}.
+     * Compares the specified object with this category list for equality. If the two objects are instances of
+     * {@link CategoryList}, then the test is a little bit stricter than the default {@link AbstractList#equals}.
      */
     @Override
     public boolean equals(final Object object) {
@@ -698,17 +668,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
 
     @Override
     public int hashCode() {
-        int result =
-                Objects.hash(
-                        super.hashCode(),
-                        range,
-                        main,
-                        nodata,
-                        overflowFallback,
-                        last,
-                        hasGaps,
-                        name,
-                        unit);
+        int result = Objects.hash(super.hashCode(), range, main, nodata, overflowFallback, last, hasGaps, name, unit);
         result = 31 * result + Arrays.hashCode(minimums);
         result = 31 * result + Arrays.hashCode(categories);
         return result;
@@ -741,8 +701,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     }
 
     /**
-     * Returns a Well Known Text</cite> (WKT) for this object. This operation may fails if an object
-     * is too complex for the WKT format capability.
+     * Returns a Well Known Text</cite> (WKT) for this object. This operation may fails if an object is too complex for
+     * the WKT format capability.
      *
      * @return The Well Know Text for this object.
      * @throws UnsupportedOperationException If this object can't be formatted as WKT.

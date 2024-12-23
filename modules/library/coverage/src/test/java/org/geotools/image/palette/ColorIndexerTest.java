@@ -88,24 +88,15 @@ public class ColorIndexerTest {
         RenderedImage indexed = quantize(image);
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
     }
 
     @Test
     public void testTranslatedImage() throws Exception {
         BufferedImage bi = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
-        TiledImage image =
-                new TiledImage(
-                        0,
-                        0,
-                        256,
-                        256,
-                        1,
-                        1,
-                        bi.getSampleModel().createCompatibleSampleModel(256, 256),
-                        bi.getColorModel());
+        TiledImage image = new TiledImage(
+                0, 0, 256, 256, 1, 1, bi.getSampleModel().createCompatibleSampleModel(256, 256), bi.getColorModel());
         Graphics g = image.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 20, 20);
@@ -117,8 +108,7 @@ public class ColorIndexerTest {
         RenderedImage indexed = quantize(image);
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
     }
 
@@ -160,23 +150,21 @@ public class ColorIndexerTest {
         g.fillRect(216, 236, 20, 20);
         g.dispose();
 
-        TiledImage image =
-                new TiledImage(
-                        0,
-                        0,
-                        256,
-                        256,
-                        128,
-                        128,
-                        image_.getColorModel().createCompatibleSampleModel(256, 256),
-                        image_.getColorModel());
+        TiledImage image = new TiledImage(
+                0,
+                0,
+                256,
+                256,
+                128,
+                128,
+                image_.getColorModel().createCompatibleSampleModel(256, 256),
+                image_.getColorModel());
         image.set(image_);
 
         RenderedImage indexed = quantize(image);
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
 
         // check image not black

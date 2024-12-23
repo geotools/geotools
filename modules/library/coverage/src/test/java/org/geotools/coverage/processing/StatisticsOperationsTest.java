@@ -48,15 +48,13 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public final class StatisticsOperationsTest extends GridProcessingTestBase {
     /**
-     * Creates a raster of the given type. Because we use only one tile with one band, the code
-     * below is pretty similar to the code we would have if we were just setting the values in a
-     * matrix.
+     * Creates a raster of the given type. Because we use only one tile with one band, the code below is pretty similar
+     * to the code we would have if we were just setting the values in a matrix.
      */
     private static GridCoverage2D createRaster(final int type) {
         final int width = 500;
         final int height = 500;
-        final WritableRaster raster =
-                RasterFactory.createBandedRaster(type, width, height, 1, null);
+        final WritableRaster raster = RasterFactory.createBandedRaster(type, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 // We exploit the clamping capabilities of the sample model.
@@ -69,8 +67,8 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Extrema" operation with a raster of floating point values. This test compare the
-     * operation results with the expected ones using different subsampling values.
+     * Tests the "Extrema" operation with a raster of floating point values. This test compare the operation results
+     * with the expected ones using different subsampling values.
      */
     @Test
     public void testExtrema() {
@@ -135,8 +133,8 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Histogram" operation with a raster of byte values. This test compare the operation
-     * results with the expected ones using different subsampling values.
+     * Tests the "Histogram" operation with a raster of byte values. This test compare the operation results with the
+     * expected ones using different subsampling values.
      */
     @Test
     public void testHistogram() {
@@ -181,8 +179,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
 
         GridCoverage2D coverage = (GridCoverage2D) op.doOperation(params, null);
         javax.media.jai.Histogram histogram =
-                (javax.media.jai.Histogram)
-                        coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+                (javax.media.jai.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(1, histogram.getBinSize(0, 60));
         /*
@@ -193,9 +190,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         params.parameter("xPeriod").setValue(7 * XAffineTransform.getScaleX0(gridToCRS));
         params.parameter("yPeriod").setValue(7 * XAffineTransform.getScaleY0(gridToCRS));
         coverage = (GridCoverage2D) op.doOperation(params, null);
-        histogram =
-                (javax.media.jai.Histogram)
-                        coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+        histogram = (javax.media.jai.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(0, histogram.getBinSize(0, 60));
         assertEquals(1, histogram.getBinSize(0, 56));

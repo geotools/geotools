@@ -36,8 +36,8 @@ public final class Locales {
      * Returns available languages.
      *
      * @return Available languages.
-     * @todo Current implementation returns a hard-coded list. Future implementations may perform a
-     *     more intelligent work.
+     * @todo Current implementation returns a hard-coded list. Future implementations may perform a more intelligent
+     *     work.
      */
     public static Locale[] getAvailableLanguages() {
         return new Locale[] {Locale.ENGLISH, Locale.FRENCH, Locale.GERMAN
@@ -64,8 +64,7 @@ public final class Locales {
     }
 
     /**
-     * Returns {@code true} if the specified array of locales contains at least one element with the
-     * specified language.
+     * Returns {@code true} if the specified array of locales contains at least one element with the specified language.
      */
     private static boolean containsLanguage(final Locale[] locales, final Locale language) {
         final String code = language.getLanguage();

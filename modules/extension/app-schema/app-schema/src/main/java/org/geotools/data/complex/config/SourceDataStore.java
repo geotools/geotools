@@ -36,9 +36,8 @@ public class SourceDataStore implements Serializable {
     private Map<String, Serializable> params = Collections.emptyMap();
 
     /**
-     * True if we have the data store connection params but we want to connect to a data access
-     * that's connected to the data store. This requires the data access to be registered in
-     * DataAccessRegistry upon creation.
+     * True if we have the data store connection params but we want to connect to a data access that's connected to the
+     * data store. This requires the data access to be registered in DataAccessRegistry upon creation.
      */
     private boolean isDataAccess;
 

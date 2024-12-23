@@ -19,9 +19,8 @@ package org.geotools.api.data;
 /**
  * Thrown when there is an error in a datasource.
  *
- * <p>This class was used back in Java 1.3 before the initCause() method was available for
- * IOException. Since this class is used to pass on problems from external services, providing the
- * root cause is important.
+ * <p>This class was used back in Java 1.3 before the initCause() method was available for IOException. Since this class
+ * is used to pass on problems from external services, providing the root cause is important.
  */
 public class DataSourceException extends java.io.IOException {
     private static final long serialVersionUID = -602847953059978370L;

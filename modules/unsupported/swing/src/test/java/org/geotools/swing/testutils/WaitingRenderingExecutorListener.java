@@ -21,8 +21,7 @@ import org.geotools.swing.RenderingExecutorEvent;
 import org.geotools.swing.RenderingExecutorListener;
 
 /**
- * A RenderingExecutorListener that can be set to expect specified events and test if they are
- * received.
+ * A RenderingExecutorListener that can be set to expect specified events and test if they are received.
  *
  * @author Michael Bedward
  * @since 8.0

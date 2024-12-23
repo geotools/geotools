@@ -38,15 +38,10 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
 
-public class FilterFunction_isometric extends FunctionExpressionImpl
-        implements GeometryTransformation {
+public class FilterFunction_isometric extends FunctionExpressionImpl implements GeometryTransformation {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "isometric",
-                    Geometry.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("extrusion", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "isometric", Geometry.class, parameter("geometry", Geometry.class), parameter("extrusion", Double.class));
 
     public FilterFunction_isometric() {
         super(NAME);
@@ -91,9 +86,8 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
     }
 
     /**
-     * Returns an translated rendering envelope if the offsets are not using feature attributes. If
-     * the offsets are feature dependent the user will have to expand the rendering area via the
-     * renderer buffer parameter
+     * Returns an translated rendering envelope if the offsets are not using feature attributes. If the offsets are
+     * feature dependent the user will have to expand the rendering area via the renderer buffer parameter
      */
     @Override
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {

@@ -20,13 +20,12 @@ import java.util.Date;
  *    ff.featureId("CITY.123"),
  *    ff.resourceId("CITY.123",Version.Action.PREVIOUS) );</pre>
  *
- * In cases where a plain FetureId is used for lookup it is understood to refer to
- * Version.Action.LAST.
+ * In cases where a plain FetureId is used for lookup it is understood to refer to Version.Action.LAST.
  *
- * <p>If an implementation that references this International Standard does not support versioning,
- * any value specified for the attributes {@link #getPreviousRid() previousRid}, {@link
- * #getVersion() version}, {@link #getStartTime() startTime}, and {@link #getEndTime() endTime}
- * shall be ignored and the predicate shall always select the single version that is available.
+ * <p>If an implementation that references this International Standard does not support versioning, any value specified
+ * for the attributes {@link #getPreviousRid() previousRid}, {@link #getVersion() version}, {@link #getStartTime()
+ * startTime}, and {@link #getEndTime() endTime} shall be ignored and the predicate shall always select the single
+ * version that is available.
  */
 public interface ResourceId extends FeatureId {
 
@@ -35,26 +34,26 @@ public interface ResourceId extends FeatureId {
      *
      * <p>
      *
-     * @return Version based resource query; non {@code null} but possibly {@link Version#isEmpty()
-     *     empty} if used a date range query or asked for a specific feature id + version id
+     * @return Version based resource query; non {@code null} but possibly {@link Version#isEmpty() empty} if used a
+     *     date range query or asked for a specific feature id + version id
      */
     Version getVersion();
 
     /**
      * Used to select versions of a resource between start and end time.
      *
-     * @return start time for a time based query; or {@code null} if using version or an end time
-     *     was provided but the start time is unconstrained TODO: consider using an
-     *     org.geotools.util.Range<Date> instead of both start and end time?
+     * @return start time for a time based query; or {@code null} if using version or an end time was provided but the
+     *     start time is unconstrained TODO: consider using an org.geotools.util.Range<Date> instead of both start and
+     *     end time?
      */
     Date getStartTime();
 
     /**
      * Used to select versions of a resource between start and end time.
      *
-     * @return end time for a time based query; or {@code null} if using version or an start time
-     *     was provided but the end time is unconstrained TODO: consider using an
-     *     org.geotools.util.Range<Date> instead of both start and end time?
+     * @return end time for a time based query; or {@code null} if using version or an start time was provided but the
+     *     end time is unconstrained TODO: consider using an org.geotools.util.Range<Date> instead of both start and end
+     *     time?
      */
     Date getEndTime();
 }

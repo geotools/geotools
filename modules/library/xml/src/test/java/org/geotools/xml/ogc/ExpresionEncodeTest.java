@@ -37,8 +37,7 @@ import org.junit.Test;
  */
 public class ExpresionEncodeTest {
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ExpresionEncodeTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpresionEncodeTest.class);
     /** Constructor with test name. */
     String dataFolder = "";
 
@@ -57,8 +56,7 @@ public class ExpresionEncodeTest {
     }
 
     @Test
-    public void testPropBetweenFilter()
-            throws IllegalFilterException, OperationNotSupportedException, IOException {
+    public void testPropBetweenFilter() throws IllegalFilterException, OperationNotSupportedException, IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter bf = ff.between(ff.property("testDouble"), ff.literal(60000), ff.literal(200000));
 
@@ -69,8 +67,7 @@ public class ExpresionEncodeTest {
     }
 
     @Test
-    public void testLikeFilter()
-            throws IllegalFilterException, OperationNotSupportedException, IOException {
+    public void testLikeFilter() throws IllegalFilterException, OperationNotSupportedException, IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         PropertyIsLike lf = ff.like(ff.property("testString"), "test*", "*", ".", "!");
@@ -85,12 +82,7 @@ public class ExpresionEncodeTest {
     public void testFidFilter() throws OperationNotSupportedException, IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Id fif =
-                ff.id(
-                        ff.featureId("f1"),
-                        ff.featureId("f2"),
-                        ff.featureId("f3"),
-                        ff.featureId("f4"));
+        Id fif = ff.id(ff.featureId("f1"), ff.featureId("f2"), ff.featureId("f3"), ff.featureId("f4"));
 
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(fif, FilterSchema.getInstance(), output, null);

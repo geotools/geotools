@@ -49,8 +49,7 @@ public class DomainFilterBuilder {
     }
 
     /**
-     * This method is responsible for creating {@link Filter} that match the provided {@link List}
-     * of values
+     * This method is responsible for creating {@link Filter} that match the provided {@link List} of values
      *
      * @param values the {@link List} of values to use for building the containment {@link Filter}.
      * @return a {@link Filter} that matches the provided value {@link List}
@@ -75,13 +74,9 @@ public class DomainFilterBuilder {
                 if (value instanceof Range) {
                     // RANGE
                     final Range range = (Range) value;
-                    filters.add(
-                            ff.and(
-                                    ff.lessOrEqual(
-                                            ff.property(property), ff.literal(range.getMaxValue())),
-                                    ff.greaterOrEqual(
-                                            ff.property(property),
-                                            ff.literal(range.getMinValue()))));
+                    filters.add(ff.and(
+                            ff.lessOrEqual(ff.property(property), ff.literal(range.getMaxValue())),
+                            ff.greaterOrEqual(ff.property(property), ff.literal(range.getMinValue()))));
                 } else {
                     // SINGLE value
                     filters.add(ff.equal(ff.property(property), ff.literal(value), true));
@@ -97,10 +92,8 @@ public class DomainFilterBuilder {
                     if (maxValue.compareTo(minValue) != 0) {
                         // logic comes from Range.intersectsNC(Range)
                         // in summary, requestedMax > min && requestedMin < max
-                        Filter maxCondition =
-                                ff.greaterOrEqual(ff.literal(maxValue), ff.property(property));
-                        Filter minCondition =
-                                ff.lessOrEqual(ff.literal(minValue), ff.property(endProperty));
+                        Filter maxCondition = ff.greaterOrEqual(ff.literal(maxValue), ff.property(property));
+                        Filter minCondition = ff.lessOrEqual(ff.literal(minValue), ff.property(endProperty));
 
                         filters.add(ff.and(Arrays.asList(maxCondition, minCondition)));
                         continue;
@@ -108,10 +101,9 @@ public class DomainFilterBuilder {
                         value = maxValue;
                     }
                 }
-                filters.add(
-                        ff.and(
-                                ff.lessOrEqual(ff.property(property), ff.literal(value)),
-                                ff.greaterOrEqual(ff.property(endProperty), ff.literal(value))));
+                filters.add(ff.and(
+                        ff.lessOrEqual(ff.property(property), ff.literal(value)),
+                        ff.greaterOrEqual(ff.property(endProperty), ff.literal(value))));
             }
         }
         if (filters.size() == 1) return filters.get(0);

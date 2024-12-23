@@ -45,8 +45,8 @@ public class RepeatedLabelTest {
 
     @Before
     public void setUp() throws Exception {
-        File property_line =
-                new File(TestData.getResource(this, "partialLineLabel.properties").toURI());
+        File property_line = new File(
+                TestData.getResource(this, "partialLineLabel.properties").toURI());
         PropertyDataStore ds_line = new PropertyDataStore(property_line.getParentFile());
         fs_line = ds_line.getFeatureSource("partialLineLabel");
         square = ds_line.getFeatureSource("square");
@@ -85,11 +85,7 @@ public class RepeatedLabelTest {
         renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
-        File expected =
-                new File(
-                        "src/test/resources/org/geotools/renderer/lite/test-data/"
-                                + styleName
-                                + ".png");
+        File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png");
         int tolerance = 2000;
         ImageAssert.assertEquals(expected, image, tolerance);
     }
@@ -101,22 +97,19 @@ public class RepeatedLabelTest {
 
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
-        checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 2200);
+        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 2200);
     }
 
     @Test
     public void testLabelSquareBordersPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(10);
-        checkRepeatedLabelsPolygonBorder(
-                square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1700);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1700);
     }
 
     @Test
     public void testLabelSquareBordersNegativeOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-10);
-        checkRepeatedLabelsPolygonBorder(
-                square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1500);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1500);
     }
 
     @Test
@@ -130,11 +123,7 @@ public class RepeatedLabelTest {
     public void testLabelSquareBordersHoleNegativeOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-5);
         checkRepeatedLabelsPolygonBorder(
-                squareHoles,
-                "repeatedLabelsAlongLine",
-                "poly-hole-perp-negative-offset",
-                visitor,
-                2200);
+                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-negative-offset", visitor, 2200);
     }
 
     private void checkRepeatedLabelsPolygonBorder(
@@ -162,13 +151,11 @@ public class RepeatedLabelTest {
         renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
-        File expected =
-                new File(
-                        "src/test/resources/org/geotools/renderer/lite/test-data/"
-                                + styleName
-                                + "-"
-                                + testImageSuffix
-                                + ".png");
+        File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/"
+                + styleName
+                + "-"
+                + testImageSuffix
+                + ".png");
         ImageAssert.assertEquals(expected, image, tolerance);
     }
 }

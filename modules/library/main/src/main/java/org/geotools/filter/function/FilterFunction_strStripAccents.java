@@ -26,11 +26,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strStripAccents extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strStripAccents",
-                    parameter("string", String.class),
-                    parameter("string", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strStripAccents", parameter("string", String.class), parameter("string", String.class));
 
     public FilterFunction_strStripAccents() {
         super(NAME);

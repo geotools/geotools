@@ -35,15 +35,13 @@ import org.geotools.util.logging.Logging;
  *
  * <p>Format of the color file, which is located in <b>location/mapset/colr/mapname</b>:
  *
- * <p>The first line is a % character and two numbers indicating the minimum and maximum data values
- * which have colors. <b>Note that in JGrass after the range values we add a third value for alpha
- * support.</b>
+ * <p>The first line is a % character and two numbers indicating the minimum and maximum data values which have colors.
+ * <b>Note that in JGrass after the range values we add a third value for alpha support.</b>
  *
  * <p>After the first line, the list of color rules appears, that can be of the following formats:
  *
  * <ul>
- *   <li><code>value1:r:g:b value2:r:g:b</code> interpolation of colors between the two values with
- *       the two colors
+ *   <li><code>value1:r:g:b value2:r:g:b</code> interpolation of colors between the two values with the two colors
  *   <li><code>value1:grey value2:grey
  *       </code interpolation of grayscale between
  * the two values with the two grey values>
@@ -85,8 +83,7 @@ public class JGrassColorTable {
      * @param readerGrassEnv the grass environment used to identify paths.
      * @param dataRange the datarange to be used if the native one is missing.
      */
-    public JGrassColorTable(JGrassMapEnvironment readerGrassEnv, double[] dataRange)
-            throws IOException {
+    public JGrassColorTable(JGrassMapEnvironment readerGrassEnv, double[] dataRange) throws IOException {
 
         File colrFile = readerGrassEnv.getCOLR();
         if (!colrFile.exists()) {
@@ -95,8 +92,7 @@ public class JGrassColorTable {
             }
             return;
         } else {
-            try (BufferedReader rdr =
-                    new BufferedReader(new InputStreamReader(new FileInputStream(colrFile)))) {
+            try (BufferedReader rdr = new BufferedReader(new InputStreamReader(new FileInputStream(colrFile)))) {
                 String line = rdr.readLine();
                 if (line == null) {
                     if (colrFile.delete()) {
@@ -145,14 +141,7 @@ public class JGrassColorTable {
             rule.append((dataRange[0] + (i * rinc)) + ":");
             rule.append(rainbow[i][0] + ":" + rainbow[i][1] + ":" + rainbow[i][2] + " ");
             rule.append((dataRange[0] + ((i + 1) * rinc)) + ":");
-            rule.append(
-                    rainbow[i + 1][0]
-                            + ":"
-                            + rainbow[i + 1][1]
-                            + ":"
-                            + rainbow[i + 1][2]
-                            + " "
-                            + alpha);
+            rule.append(rainbow[i + 1][0] + ":" + rainbow[i + 1][1] + ":" + rainbow[i + 1][2] + " " + alpha);
             rules.add(rule.toString());
         }
         return rules;
@@ -179,11 +168,9 @@ public class JGrassColorTable {
     /**
      * parses a color rule.
      *
-     * <p>Arrays of doubles and colors have to be passed, that will be filled with the values of the
-     * color rule.
+     * <p>Arrays of doubles and colors have to be passed, that will be filled with the values of the color rule.
      *
-     * @param rule the color rule as taken from the list returned by {@link
-     *     JGrassColorTable#getColorRules()}
+     * @param rule the color rule as taken from the list returned by {@link JGrassColorTable#getColorRules()}
      * @param values the array of doubles to be filled with the values.
      * @param colors the array of {@link Color} to be filled with the colors (can be null).
      */
@@ -205,21 +192,19 @@ public class JGrassColorTable {
             if (part1Split.length == 2) {
                 // gray scale
                 values[0] = Double.parseDouble(part1Split[0]);
-                colors[0] =
-                        new Color(
-                                Integer.parseInt(part1Split[1]),
-                                Integer.parseInt(part1Split[1]),
-                                Integer.parseInt(part1Split[1]),
-                                alpha);
+                colors[0] = new Color(
+                        Integer.parseInt(part1Split[1]),
+                        Integer.parseInt(part1Split[1]),
+                        Integer.parseInt(part1Split[1]),
+                        alpha);
             } else if (part1Split.length == 4) {
                 // rgb
                 values[0] = Double.parseDouble(part1Split[0]);
-                colors[0] =
-                        new Color(
-                                Integer.parseInt(part1Split[1]),
-                                Integer.parseInt(part1Split[2]),
-                                Integer.parseInt(part1Split[3]),
-                                alpha);
+                colors[0] = new Color(
+                        Integer.parseInt(part1Split[1]),
+                        Integer.parseInt(part1Split[2]),
+                        Integer.parseInt(part1Split[3]),
+                        alpha);
             } else {
                 values[0] = Double.NaN;
                 colors[0] = new Color(0, 0, 0);
@@ -228,21 +213,19 @@ public class JGrassColorTable {
             if (part2Split.length == 2) {
                 // gray scale
                 values[1] = Double.parseDouble(part2Split[0]);
-                colors[1] =
-                        new Color(
-                                Integer.parseInt(part2Split[1]),
-                                Integer.parseInt(part2Split[1]),
-                                Integer.parseInt(part2Split[1]),
-                                alpha);
+                colors[1] = new Color(
+                        Integer.parseInt(part2Split[1]),
+                        Integer.parseInt(part2Split[1]),
+                        Integer.parseInt(part2Split[1]),
+                        alpha);
             } else if (part2Split.length == 4) {
                 // rgb
                 values[1] = Double.parseDouble(part2Split[0]);
-                colors[1] =
-                        new Color(
-                                Integer.parseInt(part2Split[1]),
-                                Integer.parseInt(part2Split[2]),
-                                Integer.parseInt(part2Split[3]),
-                                alpha);
+                colors[1] = new Color(
+                        Integer.parseInt(part2Split[1]),
+                        Integer.parseInt(part2Split[2]),
+                        Integer.parseInt(part2Split[3]),
+                        alpha);
             } else {
                 values[1] = Double.NaN;
                 colors[1] = new Color(255, 255, 255);
@@ -256,21 +239,19 @@ public class JGrassColorTable {
             if (partSplit.length == 2) {
                 // gray scale
                 values[0] = Double.parseDouble(partSplit[0]);
-                colors[0] =
-                        new Color(
-                                Integer.parseInt(partSplit[1]),
-                                Integer.parseInt(partSplit[1]),
-                                Integer.parseInt(partSplit[1]),
-                                alpha);
+                colors[0] = new Color(
+                        Integer.parseInt(partSplit[1]),
+                        Integer.parseInt(partSplit[1]),
+                        Integer.parseInt(partSplit[1]),
+                        alpha);
             } else if (partSplit.length == 4) {
                 // rgb
                 values[0] = Double.parseDouble(partSplit[0]);
-                colors[0] =
-                        new Color(
-                                Integer.parseInt(partSplit[1]),
-                                Integer.parseInt(partSplit[2]),
-                                Integer.parseInt(partSplit[3]),
-                                alpha);
+                colors[0] = new Color(
+                        Integer.parseInt(partSplit[1]),
+                        Integer.parseInt(partSplit[2]),
+                        Integer.parseInt(partSplit[3]),
+                        alpha);
             } else {
                 values[0] = Double.NaN;
                 colors[0] = new Color(0, 0, 0);

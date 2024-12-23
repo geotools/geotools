@@ -27,9 +27,8 @@ import org.geotools.graph.traverse.standard.DijkstraIterator.EdgeWeighter;
 import org.geotools.graph.traverse.standard.DijkstraIterator.NodeWeighter;
 
 /**
- * Calculates node paths in a graph using Dijkstra's Shortest Path Algorithm. Dijsktras algorithm
- * calculates a shortest path from a specefied node (the source node of the underlying dijkstra
- * iteration) to every other node in the graph.
+ * Calculates node paths in a graph using Dijkstra's Shortest Path Algorithm. Dijsktras algorithm calculates a shortest
+ * path from a specefied node (the source node of the underlying dijkstra iteration) to every other node in the graph.
  *
  * @see DijsktraIterator
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
@@ -72,16 +71,15 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      * @param weighter Associates weights with edges in the graph.
      * @param nweighter Associates weights with nodes in the graph.
      */
-    public DijkstraShortestPathFinder(
-            Graph graph, Graphable source, EdgeWeighter weighter, NodeWeighter nweighter) {
+    public DijkstraShortestPathFinder(Graph graph, Graphable source, EdgeWeighter weighter, NodeWeighter nweighter) {
         m_iterator = new DijkstraIterator(weighter, nweighter);
         m_iterator.setSource(source);
         m_traversal = new BasicGraphTraversal(graph, this, m_iterator);
     }
 
     /**
-     * Performs the graph traversal and calculates the shortest path from the source node to every
-     * other node in the graph.
+     * Performs the graph traversal and calculates the shortest path from the source node to every other node in the
+     * graph.
      */
     public void calculate() {
         m_traversal.init();
@@ -89,8 +87,8 @@ public class DijkstraShortestPathFinder implements GraphWalker {
     }
 
     /**
-     * Returns a path <B>from</B> g <B>to</B> the source. If the desired path is the opposite (from
-     * the source to g) can be used.
+     * Returns a path <B>from</B> g <B>to</B> the source. If the desired path is the opposite (from the source to g) can
+     * be used.
      *
      * @param g The start node of the path to be calculated.
      * @see Path#riterator()

@@ -28,10 +28,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_area extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "area2",
-                    parameter("area", Double.class),
-                    parameter("geometry", Geometry.class));
+            new FunctionNameImpl("area2", parameter("area", Double.class), parameter("geometry", Geometry.class));
 
     public FilterFunction_area() {
         super(NAME);

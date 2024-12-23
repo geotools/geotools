@@ -117,12 +117,11 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public String[] getTypeNames() throws IOException {
         List<Name> names = delegate.getNames();
-        String[] typeNames =
-                names.stream()
-                        .map(name -> name.getLocalPart())
-                        .distinct()
-                        .sorted()
-                        .toArray(String[]::new);
+        String[] typeNames = names.stream()
+                .map(name -> name.getLocalPart())
+                .distinct()
+                .sorted()
+                .toArray(String[]::new);
         return typeNames;
     }
 
@@ -153,8 +152,7 @@ class DataAccessStoreWrapper implements DataStore {
         if (result == null) {
             Stream<Name> stream = delegate.getNames().stream();
             Set<Name> names =
-                    stream.filter(name -> typeName.equals(name.getLocalPart()))
-                            .collect(Collectors.toSet());
+                    stream.filter(name -> typeName.equals(name.getLocalPart())).collect(Collectors.toSet());
             if (names.isEmpty()) {
                 throw new IOException("Could not find a type name '" + typeName + "'");
             } else if (names.size() > 1) {
@@ -169,14 +167,11 @@ class DataAccessStoreWrapper implements DataStore {
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
         SimpleFeatureSource fs = getFeatureSource(query.getTypeName());
         if (fs == null) {
-            throw new IOException(
-                    "Could not find feature type mentioned in query: '"
-                            + query.getTypeName()
-                            + "'");
+            throw new IOException("Could not find feature type mentioned in query: '" + query.getTypeName() + "'");
         }
         if (fs instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) fs).setTransaction(transaction);
@@ -191,8 +186,8 @@ class DataAccessStoreWrapper implements DataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
         throw new UnsupportedOperationException();
     }
 

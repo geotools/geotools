@@ -74,8 +74,7 @@ public class SVGGraphicFactoryTest {
     @Test
     public void testInvalidPaths() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
-        Assert.assertNull(
-                svg.getIcon(null, ff.literal("http://www.nowhere.com"), "image/svg+not!", 20));
+        Assert.assertNull(svg.getIcon(null, ff.literal("http://www.nowhere.com"), "image/svg+not!", 20));
         try {
             svg.getIcon(null, ff.literal("ThisIsNotAUrl"), "image/svg", 20);
             Assert.fail("Should have throw an exception, invalid url");
@@ -163,8 +162,8 @@ public class SVGGraphicFactoryTest {
     }
 
     /**
-     * Tests that a fetched graphic is added to the cache, and that the {@link
-     * GraphicCache#clearCache()} method correctly clears the cache.
+     * Tests that a fetched graphic is added to the cache, and that the {@link GraphicCache#clearCache()} method
+     * correctly clears the cache.
      */
     @Test
     public void testClearCache() throws Exception {
@@ -197,29 +196,25 @@ public class SVGGraphicFactoryTest {
         for (int i = 0; i < 50; i++) {
             // check that we are going to load the same path just once
             AtomicInteger counter = new AtomicInteger();
-            SVGGraphicFactory svg =
-                    new SVGGraphicFactory() {
-                        @Override
-                        protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl)
-                                throws SAXException, IOException {
-                            int value = counter.incrementAndGet();
-                            Assert.assertEquals(1, value);
-                            return super.toRenderableSVG(svgfile, svgUrl);
-                        }
-                    };
+            SVGGraphicFactory svg = new SVGGraphicFactory() {
+                @Override
+                protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl) throws SAXException, IOException {
+                    int value = counter.incrementAndGet();
+                    Assert.assertEquals(1, value);
+                    return super.toRenderableSVG(svgfile, svgUrl);
+                }
+            };
 
             // if all goes well, only one thread will actually load the SVG
             List<Future<Void>> futures = new ArrayList<>();
             for (int j = 0; j < THREADS * 4; j++) {
-                executorService.submit(
-                        () -> {
-                            Icon icon = svg.getIcon(null, expression, "image/svg", 20);
-                            Assert.assertNotNull(icon);
-                            Assert.assertEquals(20, icon.getIconHeight());
-                            Assert.assertTrue(
-                                    RenderableSVGCache.glyphCache.containsKey(url.toString()));
-                            return null;
-                        });
+                executorService.submit(() -> {
+                    Icon icon = svg.getIcon(null, expression, "image/svg", 20);
+                    Assert.assertNotNull(icon);
+                    Assert.assertEquals(20, icon.getIconHeight());
+                    Assert.assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
+                    return null;
+                });
             }
             // get all
             for (Future<Void> future : futures) {
@@ -245,8 +240,6 @@ public class SVGGraphicFactoryTest {
 
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient-pixels.svg");
-        assertThrows(
-                URLCheckerException.class,
-                () -> svg.getIcon(null, ff.literal(url), "image/svg", -1));
+        assertThrows(URLCheckerException.class, () -> svg.getIcon(null, ff.literal(url), "image/svg", -1));
     }
 }

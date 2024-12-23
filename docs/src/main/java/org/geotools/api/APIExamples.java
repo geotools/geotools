@@ -146,8 +146,7 @@ public class APIExamples {
     //
     private void recommendedReferencedEnvelope() throws Exception {
         // recommendedReferencedEnvelope start
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
 
         double xMin = envelope.getMinX();
         double yMin = envelope.getMinY();
@@ -184,8 +183,7 @@ public class APIExamples {
     //
     private void exampleReferencedEnvelope() throws Exception {
         // exampleReferencedEnvelope start
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
 
         double xMin = envelope.getMinX();
         double yMin = envelope.getMinY();
@@ -222,8 +220,7 @@ public class APIExamples {
     //
     private void exampleReferencedEnvelope3D() throws Exception {
         // exampleReferencedEnvelope3D start
-        ReferencedEnvelope3D envelope =
-                new ReferencedEnvelope3D(0, 10, 0, 20, 0, 30, DefaultGeographicCRS.WGS84_3D);
+        ReferencedEnvelope3D envelope = new ReferencedEnvelope3D(0, 10, 0, 20, 0, 30, DefaultGeographicCRS.WGS84_3D);
 
         double xMin = envelope.getMinX();
         double yMin = envelope.getMinY();

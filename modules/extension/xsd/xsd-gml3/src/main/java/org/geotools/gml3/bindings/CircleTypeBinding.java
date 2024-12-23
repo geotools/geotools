@@ -35,9 +35,7 @@ public class CircleTypeBinding extends AbstractComplexBinding {
     ArcParameters arcParameters;
 
     public CircleTypeBinding(
-            GeometryFactory gFactory,
-            CoordinateSequenceFactory csFactory,
-            ArcParameters arcParameters) {
+            GeometryFactory gFactory, CoordinateSequenceFactory csFactory, ArcParameters arcParameters) {
         this.gFactory = gFactory;
         this.csFactory = csFactory;
         this.arcParameters = arcParameters;

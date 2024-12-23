@@ -49,26 +49,25 @@ public interface MapPane {
     void setMapContent(MapContent content);
 
     /**
-     * Gets the current mouse event dispatcher which is responsible for converting each input Java
-     * AWT mouse event into a {@linkplain org.geotools.swing.event.MapMouseEvent} and forwarding it
-     * to each {@linkplain MapMouseListener}.
+     * Gets the current mouse event dispatcher which is responsible for converting each input Java AWT mouse event into
+     * a {@linkplain org.geotools.swing.event.MapMouseEvent} and forwarding it to each {@linkplain MapMouseListener}.
      *
      * @return the current mouse event dispatcher (may be {@code null})
      */
     MapMouseEventDispatcher getMouseEventDispatcher();
 
     /**
-     * Replaces the current mouse event dispatcher. All current listeners will be removed. It is the
-     * responsibility of the client to add them to the new dispatcher if this is desired.
+     * Replaces the current mouse event dispatcher. All current listeners will be removed. It is the responsibility of
+     * the client to add them to the new dispatcher if this is desired.
      *
      * @param dispatcher the new dispatcher (may be {@code null})
      */
     void setMouseEventDispatcher(MapMouseEventDispatcher dispatcher);
 
     /**
-     * Gets the current display area in world coordinates. This is a short-cut for {@code
-     * mapPane.getMapContent().getViewport().getBounds()}. If a MapContent object has not yet been
-     * associated with the map pane, an empty {@code ReferencedEnvelope} is returned.
+     * Gets the current display area in world coordinates. This is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getBounds()}. If a MapContent object has not yet been associated
+     * with the map pane, an empty {@code ReferencedEnvelope} is returned.
      *
      * @return the display area in world coordinates
      */
@@ -86,16 +85,16 @@ public interface MapPane {
     void reset();
 
     /**
-     * Gets the screen to world coordinate transform. This is a short-cut for {@code
-     * mapPane.getMapContent().getViewport().getScreenToWorld()}.
+     * Gets the screen to world coordinate transform. This is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getScreenToWorld()}.
      *
      * @return the screen to world coordinate transform
      */
     AffineTransform getScreenToWorldTransform();
 
     /**
-     * Gets the world to screen coordinate transform. This is a short-cut for {@code
-     * mapPane.getMapContent().getViewport().getWorldToScreen()}.
+     * Gets the world to screen coordinate transform. This is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getWorldToScreen()}.
      *
      * <p>The returned {@code AffineTransform} can be used to determine the current drawing scale...
      *
@@ -123,8 +122,8 @@ public interface MapPane {
     void removeMapPaneListener(MapPaneListener listener);
 
     /**
-     * Registers an object that wishes to receive {@code MapMouseEvent}s such as a {@linkplain
-     * org.geotools.swing.control.JMapStatusBar}.
+     * Registers an object that wishes to receive {@code MapMouseEvent}s such as a
+     * {@linkplain org.geotools.swing.control.JMapStatusBar}.
      *
      * @param listener the listener to add
      * @throws IllegalArgumentException if listener is null
@@ -154,9 +153,9 @@ public interface MapPane {
     void setCursorTool(CursorTool tool);
 
     /**
-     * Moves the image(s) displayed by the map pane from the current origin (x,y) (device pixels) to
-     * (x+dx, y+dy). If this method is called when the map pane is not visible, or when the pane's
-     * visible rectangle is empty, it is ignored.
+     * Moves the image(s) displayed by the map pane from the current origin (x,y) (device pixels) to (x+dx, y+dy). If
+     * this method is called when the map pane is not visible, or when the pane's visible rectangle is empty, it is
+     * ignored.
      *
      * @param dx the x offset in pixels
      * @param dy the y offset in pixels.

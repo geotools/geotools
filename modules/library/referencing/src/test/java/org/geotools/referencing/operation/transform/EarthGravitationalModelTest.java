@@ -59,8 +59,7 @@ public class EarthGravitationalModelTest {
     /** Tests the creation of the math transform from the factory. */
     @Test
     public void testMathTransform() throws FactoryException, TransformException {
-        final MathTransformFactory mtFactory =
-                ReferencingFactoryFinder.getMathTransformFactory(null);
+        final MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
         final ParameterValueGroup p = mtFactory.getDefaultParameters("Earth gravitational model");
         final MathTransform mt = mtFactory.createParameterizedTransform(p);
         Position pos = new GeneralPosition(new double[] {45, 45, 1000});

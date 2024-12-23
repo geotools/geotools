@@ -29,16 +29,15 @@ import org.geotools.api.util.NameSpace;
 
 /**
  * Fully qualified identifier for an object. A {@code ScopedName} contains a {@link LocalName} as
- * {@linkplain #asLocalName head} and a {@linkplain GenericName}, which may be a {@link LocalName}
- * or an other {@link org.geotools.api.util.ScopedName}.
+ * {@linkplain #asLocalName head} and a {@linkplain GenericName}, which may be a {@link LocalName} or an other
+ * {@link org.geotools.api.util.ScopedName}.
  *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory
  */
-public class ScopedName extends org.geotools.util.GenericName
-        implements org.geotools.api.util.ScopedName {
+public class ScopedName extends org.geotools.util.GenericName implements org.geotools.api.util.ScopedName {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7664125655784137729L;
 
@@ -57,8 +56,8 @@ public class ScopedName extends org.geotools.util.GenericName
     /**
      * Constructs a scoped name from the specified international string. If the specified name is an
      * {@link InternationalString}, then the <code>
-     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used
-     * in order to fetch an unlocalized name. Otherwise, the <code>
+     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used in order to fetch an
+     * unlocalized name. Otherwise, the <code>
      * {@linkplain CharSequence#toString toString}()</code> method will be used.
      *
      * @param scope The scope (or "tail") of the variable.
@@ -71,8 +70,8 @@ public class ScopedName extends org.geotools.util.GenericName
     /**
      * Constructs a scoped name from the specified international string. If the specified name is an
      * {@link InternationalString}, then the <code>
-     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used
-     * in order to fetch an unlocalized name. Otherwise, the <code>
+     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used in order to fetch an
+     * unlocalized name. Otherwise, the <code>
      * {@linkplain CharSequence#toString toString}()</code> method will be used.
      *
      * @param scope The scope (or "tail") of the variable.
@@ -88,10 +87,9 @@ public class ScopedName extends org.geotools.util.GenericName
     }
 
     /**
-     * Returns the head of this scoped name. This is the first elements in the sequence of
-     * {@linkplain #getParsedNames parsed names}. The head element must exists in the same
-     * {@linkplain NameSpace name space} than this scoped name. In other words, the following
-     * relationship must holds:
+     * Returns the head of this scoped name. This is the first elements in the sequence of {@linkplain #getParsedNames
+     * parsed names}. The head element must exists in the same {@linkplain NameSpace name space} than this scoped name.
+     * In other words, the following relationship must holds:
      *
      * <p>
      *
@@ -109,8 +107,8 @@ public class ScopedName extends org.geotools.util.GenericName
 
     /**
      * Returns the tail of this scoped name. The returned name contains every elements of the
-     * {@linkplain #getParsedNames parsed names list} except for the first one, which is the
-     * {@linkplain #head head}. In other words, the following relationship must holds:
+     * {@linkplain #getParsedNames parsed names list} except for the first one, which is the {@linkplain #head head}. In
+     * other words, the following relationship must holds:
      *
      * <p>
      *
@@ -120,8 +118,8 @@ public class ScopedName extends org.geotools.util.GenericName
      *       </code>
      * </ul>
      *
-     * <p><strong>Note:</strong> This condition can be understood in terms of the Java {@link
-     * java.util.List#equals equals} method instead of the Java identity comparator {@code ==}.
+     * <p><strong>Note:</strong> This condition can be understood in terms of the Java {@link java.util.List#equals
+     * equals} method instead of the Java identity comparator {@code ==}.
      *
      * @since 2.3
      * @todo Not yet implemented.
@@ -132,8 +130,8 @@ public class ScopedName extends org.geotools.util.GenericName
     }
 
     /**
-     * Returns a name which contains every element of the {@linkplain #getParsedNames parsed names
-     * list} except for the last element.
+     * Returns a name which contains every element of the {@linkplain #getParsedNames parsed names list} except for the
+     * last element.
      *
      * @see java.io.File#getPath
      * @since 2.3
@@ -152,9 +150,9 @@ public class ScopedName extends org.geotools.util.GenericName
 
     /**
      * Returns a view of this object as a local name. This is the last element in the sequence of
-     * {@linkplain #getParsedNames parsed names}. The local name returned by this method will still
-     * have the same {@linkplain LocalName#getScope scope} than this scoped name. Note however that
-     * the string returned by {@link LocalName#toString} will differs.
+     * {@linkplain #getParsedNames parsed names}. The local name returned by this method will still have the same
+     * {@linkplain LocalName#getScope scope} than this scoped name. Note however that the string returned by
+     * {@link LocalName#toString} will differs.
      */
     @Override
     public LocalName tip() {
@@ -181,9 +179,8 @@ public class ScopedName extends org.geotools.util.GenericName
     }
 
     /**
-     * Returns a view of this name as a fully-qualified name. The {@linkplain #scope scope} of a
-     * fully qualified name must be {@linkplain NameSpace#isGlobal global}. This method never
-     * returns {@code null}.
+     * Returns a view of this name as a fully-qualified name. The {@linkplain #scope scope} of a fully qualified name
+     * must be {@linkplain NameSpace#isGlobal global}. This method never returns {@code null}.
      *
      * @since 2.3
      */
@@ -193,9 +190,8 @@ public class ScopedName extends org.geotools.util.GenericName
     }
 
     /**
-     * Returns this name expanded with the specified scope. One may represent this operation as a
-     * concatenation of the specified {@code name} with {@code this}. In pseudo-code, the following
-     * relationships must hold:
+     * Returns this name expanded with the specified scope. One may represent this operation as a concatenation of the
+     * specified {@code name} with {@code this}. In pseudo-code, the following relationships must hold:
      *
      * <p>
      *
@@ -208,8 +204,8 @@ public class ScopedName extends org.geotools.util.GenericName
      *       </code>
      * </ul>
      *
-     * <p><strong>Note:</strong> Those conditions can be understood in terms of the Java {@link
-     * Object#equals equals} method instead of the Java identity comparator {@code ==}.
+     * <p><strong>Note:</strong> Those conditions can be understood in terms of the Java {@link Object#equals equals}
+     * method instead of the Java identity comparator {@code ==}.
      *
      * @since 2.3
      * @todo Not yet implemented.

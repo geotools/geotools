@@ -45,24 +45,20 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * This is a set of utility methods used when <b>implementing</b> types.
  *
- * <p>This set of classes captures the all important how does it work questions, particularly with
- * respect to super types. FIXME: These methods need a Q&A check to confirm correct use of Super
- * TODO: Cannot tell the difference in intent from FeatureTypes
+ * <p>This set of classes captures the all important how does it work questions, particularly with respect to super
+ * types. FIXME: These methods need a Q&A check to confirm correct use of Super TODO: Cannot tell the difference in
+ * intent from FeatureTypes
  *
  * @author Jody Garnett, LISAsoft
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class Types {
 
-    /**
-     * Key for AppSchema declared namespaces on FeatureType user data Map. Value is a {@code
-     * Map<String, String>}
-     */
+    /** Key for AppSchema declared namespaces on FeatureType user data Map. Value is a {@code Map<String, String>} */
     public static final String DECLARED_NAMESPACES_MAP = "declaredNamespacesMap";
 
     /**
-     * Ensures an attribute value is withing the restrictions of the AttributeDescriptor and
-     * AttributeType.
+     * Ensures an attribute value is withing the restrictions of the AttributeDescriptor and AttributeType.
      *
      * @return true if the attribute value is valid.
      */
@@ -83,11 +79,9 @@ public class Types {
      *
      * @param attribute The attribute.
      * @param attributeContent Content of attribute (often attribute.getValue()
-     * @throws IllegalAttributeException In the event that content violates any restrictions
-     *     specified by the attribute.
+     * @throws IllegalAttributeException In the event that content violates any restrictions specified by the attribute.
      */
-    public static void validate(Attribute attribute, Object attributeContent)
-            throws IllegalAttributeException {
+    public static void validate(Attribute attribute, Object attributeContent) throws IllegalAttributeException {
         validate(attribute.getType(), attribute, attributeContent, false);
     }
 
@@ -112,8 +106,7 @@ public class Types {
      * @param attributeContent Content of the attribute (often attribute.getValue() )
      * @param isSuper True if super type is being checked
      */
-    protected static void validate(
-            AttributeType type, Attribute attribute, Object attributeContent, boolean isSuper)
+    protected static void validate(AttributeType type, Attribute attribute, Object attributeContent, boolean isSuper)
             throws IllegalAttributeException {
 
         if (type == null) {
@@ -140,12 +133,11 @@ public class Types {
             Class<?> clazz = attributeContent.getClass();
             Class<?> binding = type.getBinding();
             if (binding != null && binding != clazz && !binding.isAssignableFrom(clazz)) {
-                throw new IllegalAttributeException(
-                        clazz.getName()
-                                + " is not an acceptable class for "
-                                + type.getName()
-                                + " as it is not assignable from "
-                                + binding);
+                throw new IllegalAttributeException(clazz.getName()
+                        + " is not an acceptable class for "
+                        + type.getName()
+                        + " as it is not assignable from "
+                        + binding);
             }
         }
 
@@ -166,11 +158,7 @@ public class Types {
             for (Filter f : type.getRestrictions()) {
                 if (!f.evaluate(attribute)) {
                     throw new IllegalAttributeException(
-                            "Attribute instance ("
-                                    + attribute.getIdentifier()
-                                    + ")"
-                                    + "fails to pass filter: "
-                                    + f);
+                            "Attribute instance (" + attribute.getIdentifier() + ")" + "fails to pass filter: " + f);
                 }
             }
         }
@@ -182,8 +170,7 @@ public class Types {
     }
 
     /** Ensure that attributeContent is a good value for descriptor. */
-    public static void validate(AttributeDescriptor descriptor, Object value)
-            throws IllegalAttributeException {
+    public static void validate(AttributeDescriptor descriptor, Object value) throws IllegalAttributeException {
 
         if (descriptor == null) {
             throw new NullPointerException("Attribute descriptor required for validation");
@@ -191,8 +178,7 @@ public class Types {
 
         if (value == null) {
             if (!descriptor.isNillable()) {
-                throw new IllegalArgumentException(
-                        descriptor.getName() + " requires a non null value");
+                throw new IllegalArgumentException(descriptor.getName() + " requires a non null value");
             }
         } else {
             validate(descriptor.getType(), value, false);
@@ -202,17 +188,15 @@ public class Types {
     /**
      * Do our best to make the provided value line up with the needs of descriptor.
      *
-     * <p>This helper method uses the Coverters api to convert the provided value into the required
-     * class. If the value is null (and the attribute is not nillable) a default value will be
-     * returned.
+     * <p>This helper method uses the Coverters api to convert the provided value into the required class. If the value
+     * is null (and the attribute is not nillable) a default value will be returned.
      *
      * @param descriptor Attribute descriptor we need to supply a value for.
      * @param value The provided value
      * @return Our best attempt to make a valid value
      * @throws IllegalArgumentException if we really could not do it.
      */
-    public static Object parse(AttributeDescriptor descriptor, Object value)
-            throws IllegalArgumentException {
+    public static Object parse(AttributeDescriptor descriptor, Object value) throws IllegalArgumentException {
         if (value == null) {
             if (descriptor.isNillable()) {
                 return descriptor.getDefaultValue();
@@ -246,12 +230,11 @@ public class Types {
             Class<?> clazz = value.getClass();
             Class<?> binding = type.getBinding();
             if (binding != null && !binding.isAssignableFrom(clazz)) {
-                throw new IllegalAttributeException(
-                        clazz.getName()
-                                + " is not an acceptable class for "
-                                + type.getName()
-                                + " as it is not assignable from "
-                                + binding);
+                throw new IllegalAttributeException(clazz.getName()
+                        + " is not an acceptable class for "
+                        + type.getName()
+                        + " as it is not assignable from "
+                        + binding);
             }
         }
 
@@ -271,17 +254,17 @@ public class Types {
     }
 
     /**
-     * FeatureType comparison indicating if the description provided by two FeatureTypes is similar
-     * to the point data can be exchanged. This comparison is really very focused on the name /
-     * value contract and is willing to overlook details like length restrictions.
+     * FeatureType comparison indicating if the description provided by two FeatureTypes is similar to the point data
+     * can be exchanged. This comparison is really very focused on the name / value contract and is willing to overlook
+     * details like length restrictions.
      *
-     * <p>When creating compatible FeatureTypes you will find some systems have different abilities
-     * which is reflected in how well they support a given FeatureType.
+     * <p>When creating compatible FeatureTypes you will find some systems have different abilities which is reflected
+     * in how well they support a given FeatureType.
      *
-     * <p>As an example databases traditionally support variable length strings with a limit of 32
-     * k; while a shapefile is limited to 256 characters. When working with data from both these
-     * data sources you will need to make adjustments based on these abilities. If true is returned
-     * data conforming to the expected FeatureType can be used with the actual FeatureType.
+     * <p>As an example databases traditionally support variable length strings with a limit of 32 k; while a shapefile
+     * is limited to 256 characters. When working with data from both these data sources you will need to make
+     * adjustments based on these abilities. If true is returned data conforming to the expected FeatureType can be used
+     * with the actual FeatureType.
      *
      * <p>After assertOrderCovered returns without error the following code will work:
      *
@@ -294,8 +277,7 @@ public class Types {
      * }
      * </code></pre>
      *
-     * Specifically this says that between the two feature types data is assignable on a name by
-     * name basis.
+     * Specifically this says that between the two feature types data is assignable on a name by name basis.
      *
      * @param expected Expected FeatureType being used to compare against
      * @param actual Actual FeatureType
@@ -318,19 +300,17 @@ public class Types {
             if (names.contains(expectedName)) {
                 names.remove(expectedName); // only use once!
             } else {
-                throw new IllegalAttributeException(
-                        "Expected to find a match for '"
-                                + expectedName
-                                + "' but was not available remaining names: "
-                                + names);
+                throw new IllegalAttributeException("Expected to find a match for '"
+                        + expectedName
+                        + "' but was not available remaining names: "
+                        + names);
             }
         }
         if (!names.isEmpty()) {
-            throw new IllegalAttributeException(
-                    "Expected to find attributes '"
-                            + expectedName
-                            + "' but was not available remaining names: "
-                            + names);
+            throw new IllegalAttributeException("Expected to find attributes '"
+                    + expectedName
+                    + "' but was not available remaining names: "
+                    + names);
         }
 
         // check attribute bindings
@@ -341,21 +321,20 @@ public class Types {
             Class<?> expectedBinding = expectedDescriptor.getType().getBinding();
             Class<?> actualBinding = actualDescriptor.getType().getBinding();
             if (!actualBinding.isAssignableFrom(expectedBinding)) {
-                throw new IllegalArgumentException(
-                        "Expected "
-                                + expectedBinding.getSimpleName()
-                                + " for "
-                                + expectedName
-                                + " but was "
-                                + actualBinding.getSimpleName());
+                throw new IllegalArgumentException("Expected "
+                        + expectedBinding.getSimpleName()
+                        + " for "
+                        + expectedName
+                        + " but was "
+                        + actualBinding.getSimpleName());
             }
         }
     }
 
     /**
-     * SimpleFeatureType comparison indicating that data from one FeatureType can be exchanged with
-     * another - specifically ensuring that the order / value is a reasonable match with the
-     * expected number of attributes on each side and the values correctly assignable.
+     * SimpleFeatureType comparison indicating that data from one FeatureType can be exchanged with another -
+     * specifically ensuring that the order / value is a reasonable match with the expected number of attributes on each
+     * side and the values correctly assignable.
      *
      * <p>After assertOrderCovered returns without error the following code will work:
      *
@@ -374,24 +353,22 @@ public class Types {
         }
         // check attributes names
         if (expected.getAttributeCount() != actual.getAttributeCount()) {
-            throw new IllegalAttributeException(
-                    "Expected "
-                            + expected.getAttributeCount()
-                            + " attributes, but was supplied "
-                            + actual.getAttributeCount());
+            throw new IllegalAttributeException("Expected "
+                    + expected.getAttributeCount()
+                    + " attributes, but was supplied "
+                    + actual.getAttributeCount());
         }
         for (int i = 0; i < expected.getAttributeCount(); i++) {
             Class<?> expectedBinding = expected.getDescriptor(i).getType().getBinding();
             Class<?> actualBinding = actual.getDescriptor(i).getType().getBinding();
             if (!actualBinding.isAssignableFrom(expectedBinding)) {
                 String name = expected.getDescriptor(i).getLocalName();
-                throw new IllegalArgumentException(
-                        "Expected "
-                                + expectedBinding.getSimpleName()
-                                + " for "
-                                + name
-                                + " but was "
-                                + actualBinding.getSimpleName());
+                throw new IllegalArgumentException("Expected "
+                        + expectedBinding.getSimpleName()
+                        + " for "
+                        + name
+                        + " but was "
+                        + actualBinding.getSimpleName());
             }
         }
     }
@@ -414,8 +391,7 @@ public class Types {
      * Creates a type name from a single non-qualified string.
      *
      * @param name The name, may be null
-     * @return The name in which getLocalPart() == name and getNamespaceURI() == null. Or null if
-     *     name == null.
+     * @return The name in which getLocalPart() == name and getNamespaceURI() == null. Or null if name == null.
      */
     public static Name typeName(String name) {
         if (name == null) {
@@ -485,10 +461,7 @@ public class Types {
         return typeNames;
     }
 
-    /**
-     * Convenience method for turning an array of qualified names into a list of non qualified
-     * names.
-     */
+    /** Convenience method for turning an array of qualified names into a list of non qualified names. */
     public static String[] fromNames(Name... attributeNames) {
         if (attributeNames == null) {
             return null;
@@ -502,10 +475,7 @@ public class Types {
         return names;
     }
 
-    /**
-     * Convenience method for turning an array of qualified names into a list of non qualified
-     * names.
-     */
+    /** Convenience method for turning an array of qualified names into a list of non qualified names. */
     public static String[] fromTypeNames(Name... typeNames) {
         if (typeNames == null) return null;
 
@@ -535,8 +505,7 @@ public class Types {
                 return name.getLocalPart().equals(qName.getLocalPart());
             }
         }
-        if (null == name.getNamespaceURI()
-                && !XMLConstants.NULL_NS_URI.equals(qName.getNamespaceURI())) {
+        if (null == name.getNamespaceURI() && !XMLConstants.NULL_NS_URI.equals(qName.getNamespaceURI())) {
             return false;
         }
 
@@ -545,15 +514,14 @@ public class Types {
     }
 
     /**
-     * Takes a prefixed attribute name and returns an {@link Name} by looking which namespace
-     * belongs the prefix to in {@link AppSchemaDataAccessDTO#getNamespaces()}.
+     * Takes a prefixed attribute name and returns an {@link Name} by looking which namespace belongs the prefix to in
+     * {@link AppSchemaDataAccessDTO#getNamespaces()}.
      *
      * @param prefixedName , namespaces
-     * @throws IllegalArgumentException if <code>prefixedName</code> has no declared namespace in
-     *     app-schema config file.
+     * @throws IllegalArgumentException if <code>prefixedName</code> has no declared namespace in app-schema config
+     *     file.
      */
-    public static Name degloseName(String prefixedName, NamespaceSupport namespaces)
-            throws IllegalArgumentException {
+    public static Name degloseName(String prefixedName, NamespaceSupport namespaces) throws IllegalArgumentException {
 
         if (prefixedName == null) {
             return null;
@@ -572,13 +540,12 @@ public class Types {
 
         // handles undeclared namespaces in the app-schema mapping file
         if (nsUri == null) {
-            throw new IllegalArgumentException(
-                    "No namespace set: The namespace has not"
-                            + " been declared in the app-schema mapping file for name: "
-                            + nsPrefix
-                            + ":"
-                            + localName
-                            + " [Check the Namespaces section in the config file] ");
+            throw new IllegalArgumentException("No namespace set: The namespace has not"
+                    + " been declared in the app-schema mapping file for name: "
+                    + nsPrefix
+                    + ":"
+                    + localName
+                    + " [Check the Namespaces section in the config file] ");
         }
 
         Name name = Types.typeName(nsUri, localName);
@@ -613,9 +580,9 @@ public class Types {
     }
 
     /**
-     * Converts a {@link Name} to a prefixed name (i.e. p:Foo), by looking up the right prefix in
-     * the provided {@link NamespaceSupport}. If no prefix is found, the return value will be the
-     * same as that of {@link Name#getLocalPart()}.
+     * Converts a {@link Name} to a prefixed name (i.e. p:Foo), by looking up the right prefix in the provided
+     * {@link NamespaceSupport}. If no prefix is found, the return value will be the same as that of
+     * {@link Name#getLocalPart()}.
      *
      * @param name the name to translate in prefixed form
      * @param ns namespace context, relates namespaces to prefixes
@@ -641,8 +608,7 @@ public class Types {
     }
 
     /**
-     * Converts content into a format which is used to store it internally within an attribute of a
-     * specific type.
+     * Converts content into a format which is used to store it internally within an attribute of a specific type.
      *
      * @param content the object to attempt parsing of.
      * @throws IllegalArgumentException if parsing is attempted and is unsuccessful.
@@ -668,8 +634,7 @@ public class Types {
      * <p>Same result as calling: {@code validate(attribute, attribute.getValue())}
      *
      * @param attribute The attribute.
-     * @throws IllegalAttributeException In the event that content violates any restrictions
-     *     specified by the attribute.
+     * @throws IllegalAttributeException In the event that content violates any restrictions specified by the attribute.
      */
     public static void validate(Attribute attribute) throws IllegalAttributeException {
         validate(attribute, attribute.getValue());
@@ -708,8 +673,7 @@ public class Types {
      * @param content
      * @throws IllegalAttributeException
      */
-    protected static void validate(
-            ComplexType type, ComplexAttribute attribute, Collection<Attribute> content)
+    protected static void validate(ComplexType type, ComplexAttribute attribute, Collection<Attribute> content)
             throws IllegalAttributeException {
 
         // do normal validation
@@ -726,11 +690,10 @@ public class Types {
         for (Attribute att : content) {
             // att shall not be null
             if (att == null) {
-                throw new NullPointerException(
-                        "Attribute at index "
-                                + index
-                                + " is null. Attributes "
-                                + "can't be null. Do you mean Attribute.get() == null?");
+                throw new NullPointerException("Attribute at index "
+                        + index
+                        + " is null. Attributes "
+                        + "can't be null. Do you mean Attribute.get() == null?");
             }
 
             // and has to be of one of the allowed types
@@ -745,12 +708,11 @@ public class Types {
             }
 
             if (!contains) {
-                throw new IllegalArgumentException(
-                        "Attribute of type "
-                                + attType.getName()
-                                + " found at index "
-                                + index
-                                + " but this type is not allowed by this descriptor");
+                throw new IllegalArgumentException("Attribute of type "
+                        + attType.getName()
+                        + " found at index "
+                        + index
+                        + " but this type is not allowed by this descriptor");
             }
 
             index++;
@@ -760,8 +722,7 @@ public class Types {
         if (type.getDescriptors().isEmpty()) {
             if (!content.isEmpty()) {
                 throw new IllegalAttributeException(
-                        attribute.getDescriptor(),
-                        "Type indicates empty attribute collection, content does not");
+                        attribute.getDescriptor(), "Type indicates empty attribute collection, content does not");
             }
 
             // we are done
@@ -776,16 +737,14 @@ public class Types {
     }
 
     /**
-     * Validate attribute content values, and check also that attributes follow min / max occurs
-     * restrictions.
+     * Validate attribute content values, and check also that attributes follow min / max occurs restrictions.
      *
      * @param type ComplexType being validated, may be a super type or abstract
      * @param att ComplexAttribute
      * @param content Attributes in order provided for validation
      * @throws IllegalAttributeException
      */
-    private static void validateAll(
-            ComplexType type, ComplexAttribute att, Collection<Attribute> content)
+    private static void validateAll(ComplexType type, ComplexAttribute att, Collection<Attribute> content)
             throws IllegalAttributeException {
 
         // JG: validate each attribute individually
@@ -805,8 +764,7 @@ public class Types {
      * @param content attribute content in supplied in order
      * @throws IllegalAttributeException
      */
-    private static void processAll(
-            Collection<PropertyDescriptor> all, Collection<Attribute> content)
+    private static void processAll(Collection<PropertyDescriptor> all, Collection<Attribute> content)
             throws IllegalAttributeException {
 
         // TODO: JD: this can be definitely be optimized, as written its O(n^2)
@@ -844,8 +802,7 @@ public class Types {
         if (!remaining.isEmpty()) {
             Attribute next = remaining.iterator().next();
             throw new IllegalAttributeException(
-                    next.getDescriptor(),
-                    "Extra content found beyond that specified in the schema: " + remaining);
+                    next.getDescriptor(), "Extra content found beyond that specified in the schema: " + remaining);
         }
     }
 
@@ -960,8 +917,7 @@ public class Types {
         if (match.isEmpty()) {
             AttributeType superType = type.getSuper();
             if (superType instanceof ComplexType) {
-                List<PropertyDescriptor> superDescriptors =
-                        descriptors((ComplexType) superType, name);
+                List<PropertyDescriptor> superDescriptors = descriptors((ComplexType) superType, name);
                 match.addAll(superDescriptors);
             }
         }
@@ -980,10 +936,7 @@ public class Types {
         ComplexType loopType = type;
         while (loopType != null) {
             children.addAll(loopType.getDescriptors());
-            loopType =
-                    loopType.getSuper() instanceof ComplexType
-                            ? (ComplexType) loopType.getSuper()
-                            : null;
+            loopType = loopType.getSuper() instanceof ComplexType ? (ComplexType) loopType.getSuper() : null;
         }
         return children;
     }

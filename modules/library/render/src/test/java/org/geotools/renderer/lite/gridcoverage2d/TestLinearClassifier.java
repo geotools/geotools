@@ -90,50 +90,34 @@ public class TestLinearClassifier extends Assert {
             // Build the categories
             //
             // /////////////////////////////////////////////////////////////////////
-            final LinearColorMapElement c0 =
-                    LinearColorMapElement.create(
-                            "c0",
-                            Color.BLACK,
-                            RangeFactory.create(Double.NEGATIVE_INFINITY, false, 10, true),
-                            0);
+            final LinearColorMapElement c0 = LinearColorMapElement.create(
+                    "c0", Color.BLACK, RangeFactory.create(Double.NEGATIVE_INFINITY, false, 10, true), 0);
 
             final LinearColorMapElement c1 =
-                    LinearColorMapElement.create(
-                            "c2", Color.blue, RangeFactory.create(10.0, false, 100.0, true), 1);
+                    LinearColorMapElement.create("c2", Color.blue, RangeFactory.create(10.0, false, 100.0, true), 1);
 
             final LinearColorMapElement c3 =
-                    LinearColorMapElement.create(
-                            "c3", Color.green, RangeFactory.create(100.0, false, 300.0, true), 2);
+                    LinearColorMapElement.create("c3", Color.green, RangeFactory.create(100.0, false, 300.0, true), 2);
 
-            final LinearColorMapElement c4 =
-                    LinearColorMapElement.create(
-                            "c4",
-                            new Color[] {Color.green, Color.red},
-                            RangeFactory.create(300.0, false, 400, true),
-                            RangeFactory.create(3, 1000));
+            final LinearColorMapElement c4 = LinearColorMapElement.create(
+                    "c4",
+                    new Color[] {Color.green, Color.red},
+                    RangeFactory.create(300.0, false, 400, true),
+                    RangeFactory.create(3, 1000));
 
-            final LinearColorMapElement c5 =
-                    LinearColorMapElement.create(
-                            "c5",
-                            new Color[] {Color.red, Color.white},
-                            RangeFactory.create(400.0, false, 1000, true),
-                            RangeFactory.create(1001, 2000));
+            final LinearColorMapElement c5 = LinearColorMapElement.create(
+                    "c5",
+                    new Color[] {Color.red, Color.white},
+                    RangeFactory.create(400.0, false, 1000, true),
+                    RangeFactory.create(1001, 2000));
 
-            final LinearColorMapElement c6 =
-                    LinearColorMapElement.create("c6", Color.red, 1001.0, 2001);
+            final LinearColorMapElement c6 = LinearColorMapElement.create("c6", Color.red, 1001.0, 2001);
 
-            final LinearColorMapElement c7 =
-                    LinearColorMapElement.create(
-                            "nodata",
-                            new Color(0, 0, 0, 0),
-                            RangeFactory.create(Double.NaN, Double.NaN),
-                            2201);
+            final LinearColorMapElement c7 = LinearColorMapElement.create(
+                    "nodata", new Color(0, 0, 0, 0), RangeFactory.create(Double.NaN, Double.NaN), 2201);
 
-            final LinearColorMap list =
-                    new LinearColorMap(
-                            "",
-                            new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6},
-                            new LinearColorMapElement[] {c7});
+            final LinearColorMap list = new LinearColorMap(
+                    "", new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6}, new LinearColorMapElement[] {c7});
 
             ImageWorker w = new ImageWorker(image);
             // final ParameterBlockJAI pbj = new ParameterBlockJAI(
@@ -158,20 +142,14 @@ public class TestLinearClassifier extends Assert {
     private BufferedImage getSynthetic_Double() {
         final int width = 500;
         final int height = 500;
-        final WritableRaster raster =
-                RasterFactory.createBandedRaster(DataBuffer.TYPE_DOUBLE, width, height, 1, null);
+        final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_DOUBLE, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 raster.setSample(x, y, 0, (x + y));
             }
         }
-        final ColorModel cm =
-                new ComponentColorModelJAI(
-                        ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                        false,
-                        false,
-                        Transparency.OPAQUE,
-                        DataBuffer.TYPE_DOUBLE);
+        final ColorModel cm = new ComponentColorModelJAI(
+                ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
     }
@@ -208,50 +186,34 @@ public class TestLinearClassifier extends Assert {
             // Build the categories
             //
             // /////////////////////////////////////////////////////////////////////
-            final LinearColorMapElement c0 =
-                    LinearColorMapElement.create(
-                            "c0",
-                            Color.BLACK,
-                            RangeFactory.create(Double.NEGATIVE_INFINITY, false, 10, true),
-                            0);
+            final LinearColorMapElement c0 = LinearColorMapElement.create(
+                    "c0", Color.BLACK, RangeFactory.create(Double.NEGATIVE_INFINITY, false, 10, true), 0);
 
             final LinearColorMapElement c1 =
-                    LinearColorMapElement.create(
-                            "c2", Color.blue, RangeFactory.create(10.0f, false, 100.0f, true), 1);
+                    LinearColorMapElement.create("c2", Color.blue, RangeFactory.create(10.0f, false, 100.0f, true), 1);
 
-            final LinearColorMapElement c3 =
-                    LinearColorMapElement.create(
-                            "c3", Color.green, RangeFactory.create(100.0f, false, 300.0f, true), 2);
+            final LinearColorMapElement c3 = LinearColorMapElement.create(
+                    "c3", Color.green, RangeFactory.create(100.0f, false, 300.0f, true), 2);
 
-            final LinearColorMapElement c4 =
-                    LinearColorMapElement.create(
-                            "c4",
-                            new Color[] {Color.green, Color.red},
-                            RangeFactory.create(300.0f, false, 400.0f, true),
-                            RangeFactory.create(3, 1000));
+            final LinearColorMapElement c4 = LinearColorMapElement.create(
+                    "c4",
+                    new Color[] {Color.green, Color.red},
+                    RangeFactory.create(300.0f, false, 400.0f, true),
+                    RangeFactory.create(3, 1000));
 
-            final LinearColorMapElement c5 =
-                    LinearColorMapElement.create(
-                            "c5",
-                            new Color[] {Color.red, Color.white},
-                            RangeFactory.create(400.0f, false, 1000.0f, true),
-                            RangeFactory.create(1001, 2000));
+            final LinearColorMapElement c5 = LinearColorMapElement.create(
+                    "c5",
+                    new Color[] {Color.red, Color.white},
+                    RangeFactory.create(400.0f, false, 1000.0f, true),
+                    RangeFactory.create(1001, 2000));
 
-            final LinearColorMapElement c6 =
-                    LinearColorMapElement.create("c6", Color.red, 1001.0f, 2001);
+            final LinearColorMapElement c6 = LinearColorMapElement.create("c6", Color.red, 1001.0f, 2001);
 
-            final LinearColorMapElement c7 =
-                    LinearColorMapElement.create(
-                            "nodata",
-                            new Color(0, 0, 0, 0),
-                            RangeFactory.create(Double.NaN, Double.NaN),
-                            2201);
+            final LinearColorMapElement c7 = LinearColorMapElement.create(
+                    "nodata", new Color(0, 0, 0, 0), RangeFactory.create(Double.NaN, Double.NaN), 2201);
 
-            final LinearColorMap list =
-                    new LinearColorMap(
-                            "",
-                            new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6},
-                            new LinearColorMapElement[] {c7});
+            final LinearColorMap list = new LinearColorMap(
+                    "", new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6}, new LinearColorMapElement[] {c7});
 
             ImageWorker w = new ImageWorker(image);
             final RenderedOp finalimage = w.classify(list, null).getRenderedOperation();
@@ -270,20 +232,14 @@ public class TestLinearClassifier extends Assert {
     private BufferedImage getSynthetic_Float() {
         final int width = 500;
         final int height = 500;
-        final WritableRaster raster =
-                RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
+        final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 raster.setSample(x, y, 0, (x + y));
             }
         }
-        final ColorModel cm =
-                new ComponentColorModelJAI(
-                        ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                        false,
-                        false,
-                        Transparency.OPAQUE,
-                        DataBuffer.TYPE_FLOAT);
+        final ColorModel cm = new ComponentColorModelJAI(
+                ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_FLOAT);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
     }
@@ -305,44 +261,26 @@ public class TestLinearClassifier extends Assert {
         final RenderedImage image = getSpearfhisDemo();
 
         for (int i = 0; i < TEST_NUM; i++) {
-            final LinearColorMapElement c0 =
-                    LinearColorMapElement.create(
-                            "c0",
-                            Color.yellow,
-                            RangeFactory.create(Double.NEGATIVE_INFINITY, false, 1100, true),
-                            5);
+            final LinearColorMapElement c0 = LinearColorMapElement.create(
+                    "c0", Color.yellow, RangeFactory.create(Double.NEGATIVE_INFINITY, false, 1100, true), 5);
 
             final LinearColorMapElement c1 =
-                    LinearColorMapElement.create(
-                            "c2", Color.blue, RangeFactory.create(1100.0, false, 1200.0, true), 1);
+                    LinearColorMapElement.create("c2", Color.blue, RangeFactory.create(1100.0, false, 1200.0, true), 1);
 
-            final LinearColorMapElement c3 =
-                    LinearColorMapElement.create(
-                            "c3", Color.green, RangeFactory.create(1200.0, false, 1400.0, true), 7);
+            final LinearColorMapElement c3 = LinearColorMapElement.create(
+                    "c3", Color.green, RangeFactory.create(1200.0, false, 1400.0, true), 7);
 
             final LinearColorMapElement c4 =
-                    LinearColorMapElement.create(
-                            "c4", Color.blue, RangeFactory.create(1400.0, false, 1600, true), 1);
+                    LinearColorMapElement.create("c4", Color.blue, RangeFactory.create(1400.0, false, 1600, true), 1);
 
-            final LinearColorMapElement c5 =
-                    LinearColorMapElement.create(
-                            "c4",
-                            Color.CYAN,
-                            RangeFactory.create(1600.0, false, Double.POSITIVE_INFINITY, true),
-                            11);
+            final LinearColorMapElement c5 = LinearColorMapElement.create(
+                    "c4", Color.CYAN, RangeFactory.create(1600.0, false, Double.POSITIVE_INFINITY, true), 11);
 
-            final LinearColorMapElement c6 =
-                    LinearColorMapElement.create(
-                            "nodata",
-                            new Color(0, 0, 0, 0),
-                            RangeFactory.create(Double.NaN, Double.NaN),
-                            0);
+            final LinearColorMapElement c6 = LinearColorMapElement.create(
+                    "nodata", new Color(0, 0, 0, 0), RangeFactory.create(Double.NaN, Double.NaN), 0);
 
-            final LinearColorMap list =
-                    new LinearColorMap(
-                            "",
-                            new LinearColorMapElement[] {c0, c1, c3, c4, c5},
-                            new LinearColorMapElement[] {c6});
+            final LinearColorMap list = new LinearColorMap(
+                    "", new LinearColorMapElement[] {c0, c1, c3, c4, c5}, new LinearColorMapElement[] {c6});
 
             ImageWorker w = new ImageWorker(image);
             final RenderedOp finalimage = w.classify(list, null).getRenderedOperation();
@@ -392,47 +330,33 @@ public class TestLinearClassifier extends Assert {
         final RenderedImage image = getSWAN();
 
         for (int i = 0; i < TEST_NUM; i++) {
-            final LinearColorMapElement c0 =
-                    LinearColorMapElement.create(
-                            "c0",
-                            Color.green,
-                            RangeFactory.create(Double.NEGATIVE_INFINITY, 0.3),
-                            51);
+            final LinearColorMapElement c0 = LinearColorMapElement.create(
+                    "c0", Color.green, RangeFactory.create(Double.NEGATIVE_INFINITY, 0.3), 51);
 
             final LinearColorMapElement c1 =
-                    LinearColorMapElement.create(
-                            "c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
+                    LinearColorMapElement.create("c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
 
             final LinearColorMapElement c1b =
-                    LinearColorMapElement.create(
-                            "c2", Color.BLACK, RangeFactory.create(0.3, false, 0.6, true), 1);
+                    LinearColorMapElement.create("c2", Color.BLACK, RangeFactory.create(0.3, false, 0.6, true), 1);
             final LinearColorMapElement c1c =
-                    LinearColorMapElement.create(
-                            "c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
+                    LinearColorMapElement.create("c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
             assertNotEquals(c1, c1b);
             assertEquals(c1, c1c);
 
             final LinearColorMapElement c3 =
-                    LinearColorMapElement.create(
-                            "c3", Color.red, RangeFactory.create(0.60, false, 0.90, true), 2);
+                    LinearColorMapElement.create("c3", Color.red, RangeFactory.create(0.60, false, 0.90, true), 2);
 
-            final LinearColorMapElement c4 =
-                    LinearColorMapElement.create(
-                            "c4",
-                            Color.BLUE,
-                            RangeFactory.create(0.9, false, Double.POSITIVE_INFINITY, true),
-                            3);
+            final LinearColorMapElement c4 = LinearColorMapElement.create(
+                    "c4", Color.BLUE, RangeFactory.create(0.9, false, Double.POSITIVE_INFINITY, true), 3);
 
             final LinearColorMapElement nodata =
-                    LinearColorMapElement.create(
-                            "nodata", new Color(0, 0, 0, 0), RangeFactory.create(-9.0, -9.0), 4);
+                    LinearColorMapElement.create("nodata", new Color(0, 0, 0, 0), RangeFactory.create(-9.0, -9.0), 4);
 
-            final LinearColorMap list =
-                    new LinearColorMap(
-                            "testSWAN",
-                            new LinearColorMapElement[] {c0, c1, c3, c4},
-                            new LinearColorMapElement[] {nodata},
-                            new Color(0, 0, 0));
+            final LinearColorMap list = new LinearColorMap(
+                    "testSWAN",
+                    new LinearColorMapElement[] {c0, c1, c3, c4},
+                    new LinearColorMapElement[] {nodata},
+                    new Color(0, 0, 0));
 
             assertEquals(list.getSourceDimensions(), 1);
             assertEquals(list.getTargetDimensions(), 1);
@@ -458,8 +382,7 @@ public class TestLinearClassifier extends Assert {
             assertTrue(exceptionThrown);
 
             // pbj.setParameter("bandIndex", Integer.valueOf(0));
-            final RenderedOp finalImage =
-                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
+            final RenderedOp finalImage = w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             // JAI.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWAN1");
@@ -495,38 +418,26 @@ public class TestLinearClassifier extends Assert {
         final RenderedImage image = getSWAN();
 
         for (int i = 0; i < TEST_NUM; i++) {
-            final LinearColorMapElement c0 =
-                    LinearColorMapElement.create(
-                            "c0",
-                            Color.green,
-                            RangeFactory.create(Double.NEGATIVE_INFINITY, 0.3),
-                            51);
+            final LinearColorMapElement c0 = LinearColorMapElement.create(
+                    "c0", Color.green, RangeFactory.create(Double.NEGATIVE_INFINITY, 0.3), 51);
 
             final LinearColorMapElement c1 =
-                    LinearColorMapElement.create(
-                            "c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
+                    LinearColorMapElement.create("c2", Color.yellow, RangeFactory.create(0.3, false, 0.6, true), 1);
 
             final LinearColorMapElement c3 =
-                    LinearColorMapElement.create(
-                            "c3", Color.red, RangeFactory.create(0.70, false, 0.90, true), 2);
+                    LinearColorMapElement.create("c3", Color.red, RangeFactory.create(0.70, false, 0.90, true), 2);
 
-            final LinearColorMapElement c4 =
-                    LinearColorMapElement.create(
-                            "c4",
-                            Color.BLUE,
-                            RangeFactory.create(0.9, false, Double.POSITIVE_INFINITY, true),
-                            3);
+            final LinearColorMapElement c4 = LinearColorMapElement.create(
+                    "c4", Color.BLUE, RangeFactory.create(0.9, false, Double.POSITIVE_INFINITY, true), 3);
 
             final LinearColorMapElement nodata =
-                    LinearColorMapElement.create(
-                            "nodata", Color.red, RangeFactory.create(-9.0, -9.0), 4);
+                    LinearColorMapElement.create("nodata", Color.red, RangeFactory.create(-9.0, -9.0), 4);
 
-            final LinearColorMap list =
-                    new LinearColorMap(
-                            "testSWAN",
-                            new LinearColorMapElement[] {c0, c1, c3, c4},
-                            new LinearColorMapElement[] {nodata},
-                            new Color(0, 0, 0, 0));
+            final LinearColorMap list = new LinearColorMap(
+                    "testSWAN",
+                    new LinearColorMapElement[] {c0, c1, c3, c4},
+                    new LinearColorMapElement[] {nodata},
+                    new Color(0, 0, 0, 0));
 
             ImageWorker w = new ImageWorker(image);
             boolean exceptionThrown = false;
@@ -546,8 +457,7 @@ public class TestLinearClassifier extends Assert {
             }
             assertTrue(exceptionThrown);
 
-            final RenderedOp finalImage =
-                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
+            final RenderedOp finalImage = w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             final IndexColorModel icm = (IndexColorModel) finalImage.getColorModel();
             assertEquals(icm.getRed(4), 255);
             assertEquals(icm.getRed(2), 255);
@@ -565,9 +475,7 @@ public class TestLinearClassifier extends Assert {
     private RenderedImage getSWAN() throws IOException, FileNotFoundException {
         final AsciiGridsImageReader reader =
                 (AsciiGridsImageReader) new AsciiGridsImageReaderSpi().createReaderInstance();
-        reader.setInput(
-                new FileImageInputStream(
-                        TestData.file(this, "arcgrid/SWAN_NURC_LigurianSeaL07_HSIGN.asc")));
+        reader.setInput(new FileImageInputStream(TestData.file(this, "arcgrid/SWAN_NURC_LigurianSeaL07_HSIGN.asc")));
         final RenderedImage image = reader.readAsRenderedImage(0, null);
         return image;
     }
@@ -591,12 +499,8 @@ public class TestLinearClassifier extends Assert {
 
         for (int i = 0; i < TEST_NUM; i++) {
 
-            final LinearColorMapElement n0 =
-                    LinearColorMapElement.create(
-                            "nodata",
-                            new Color(0, 0, 0, 0),
-                            RangeFactory.create(Double.NaN, Double.NaN),
-                            9999);
+            final LinearColorMapElement n0 = LinearColorMapElement.create(
+                    "nodata", new Color(0, 0, 0, 0), RangeFactory.create(Double.NaN, Double.NaN), 9999);
 
             final LinearColorMap list = new LinearColorMap("", new LinearColorMapElement[] {n0});
 

@@ -38,10 +38,8 @@ public class FeatureTypesTest {
         builder.add("geom", Point.class);
         SimpleFeatureType ft = builder.buildFeatureType();
 
-        assertEquals(
-                FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("name")));
-        assertEquals(
-                FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("geom")));
+        assertEquals(FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("name")));
+        assertEquals(FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("geom")));
     }
 
     @Test
@@ -55,8 +53,7 @@ public class FeatureTypesTest {
         SimpleFeatureType ft = builder.buildFeatureType();
 
         assertEquals(20, FeatureTypes.getFieldLength(ft.getDescriptor("name")));
-        assertEquals(
-                FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("geom")));
+        assertEquals(FeatureTypes.ANY_LENGTH, FeatureTypes.getFieldLength(ft.getDescriptor("geom")));
     }
 
     @Test
@@ -126,9 +123,7 @@ public class FeatureTypesTest {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyName thisProperty = ff.property(".");
         Filter expected =
-                ff.or(
-                        ff.equal(thisProperty, ff.literal("a"), true),
-                        ff.equal(thisProperty, ff.literal("b"), true));
+                ff.or(ff.equal(thisProperty, ff.literal("a"), true), ff.equal(thisProperty, ff.literal("b"), true));
         assertEquals(expected, restriction);
     }
 
@@ -146,9 +141,7 @@ public class FeatureTypesTest {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyName thisProperty = ff.property(".");
         Filter restriction =
-                ff.or(
-                        ff.equal(thisProperty, ff.literal("a"), true),
-                        ff.equal(thisProperty, ff.literal("b"), true));
+                ff.or(ff.equal(thisProperty, ff.literal("a"), true), ff.equal(thisProperty, ff.literal("b"), true));
         AttributeDescriptor descriptor = buildDescriptorWithRestriction(restriction);
         assertEquals(Arrays.asList("a", "b"), FeatureTypes.getFieldOptions(descriptor));
     }
@@ -157,10 +150,8 @@ public class FeatureTypesTest {
     public void testGetFieldOptionsInvalid() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyName thisProperty = ff.property(".");
-        Filter restriction =
-                ff.or(
-                        ff.equal(thisProperty, ff.literal("a"), true),
-                        ff.greaterOrEqual(thisProperty, ff.literal(10), true));
+        Filter restriction = ff.or(
+                ff.equal(thisProperty, ff.literal("a"), true), ff.greaterOrEqual(thisProperty, ff.literal(10), true));
         AttributeDescriptor descriptor = buildDescriptorWithRestriction(restriction);
         assertNull(FeatureTypes.getFieldOptions(descriptor));
     }
@@ -178,10 +169,8 @@ public class FeatureTypesTest {
     public void testGetFieldOptionsFromSuper() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyName thisProperty = ff.property(".");
-        Filter restriction =
-                ff.or(
-                        ff.equal(thisProperty, ff.literal("a"), true),
-                        ff.greaterOrEqual(thisProperty, ff.literal(10), true));
+        Filter restriction = ff.or(
+                ff.equal(thisProperty, ff.literal("a"), true), ff.greaterOrEqual(thisProperty, ff.literal(10), true));
         AttributeDescriptor superDescriptor = buildDescriptorWithRestriction(restriction);
         AttributeTypeBuilder at = new AttributeTypeBuilder();
         at.name("test").binding(String.class).superType(superDescriptor.getType());
@@ -199,10 +188,9 @@ public class FeatureTypesTest {
     @Test
     public void testShouldNotReproject() throws FactoryException {
         CoordinateReferenceSystem wgs84FromConstant = DefaultGeographicCRS.WGS84;
-        String crsDefinition =
-                "GEOGCS[\"WGS84(DD)\",DATUM[\"WGS84\",SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
-                        + "PRIMEM[\"Greenwich\", 0.0],UNIT[\"degree\", 0.017453292519943295],AXIS[\"Geodetic longitude\", "
-                        + "EAST],AXIS[\"Geodetic latitude\",NORTH],AUTHORITY[\"EPSG\",\"4326\"]]";
+        String crsDefinition = "GEOGCS[\"WGS84(DD)\",DATUM[\"WGS84\",SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
+                + "PRIMEM[\"Greenwich\", 0.0],UNIT[\"degree\", 0.017453292519943295],AXIS[\"Geodetic longitude\", "
+                + "EAST],AXIS[\"Geodetic latitude\",NORTH],AUTHORITY[\"EPSG\",\"4326\"]]";
         CoordinateReferenceSystem fromWKT =
                 ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(crsDefinition);
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();

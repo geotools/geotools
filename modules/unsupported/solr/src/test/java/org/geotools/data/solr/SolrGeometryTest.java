@@ -61,11 +61,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls =
-                gf.createPolygon(
-                        sf.create(
-                                new double[] {-185, -98, 185, -98, 185, 98, -185, 98, -185, -98},
-                                2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {-185, -98, 185, -98, 185, 98, -185, 98, -185, -98}, 2));
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(11, features.size());
@@ -74,8 +70,7 @@ public class SolrGeometryTest extends SolrTestSupport {
     public void testClipToWorldFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property =
-                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -190, -190, 190, 190, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -134,18 +129,13 @@ public class SolrGeometryTest extends SolrTestSupport {
         try (final Stream<SimpleFeature> featureStream = FeatureStreams.toFeatureStream(features)) {
             final List<SimpleFeature> featuresList = featureStream.collect(Collectors.toList());
             assertEquals(11, featuresList.size());
+            assertTrue("not-active.11 ID not found", featuresList.stream().anyMatch(x -> "not-active.11"
+                    .equals(x.getID())));
+            assertTrue("not-active.12 ID not found", featuresList.stream().anyMatch(x -> "not-active.12"
+                    .equals(x.getID())));
             assertTrue(
-                    "not-active.11 ID not found",
-                    featuresList.stream().anyMatch(x -> "not-active.11".equals(x.getID())));
-            assertTrue(
-                    "not-active.12 ID not found",
-                    featuresList.stream().anyMatch(x -> "not-active.12".equals(x.getID())));
-            assertTrue(
-                    "not-active.10 ID found",
-                    featuresList.stream().noneMatch(x -> "not-active.10".equals(x.getID())));
-            assertTrue(
-                    "not-active.1 ID found",
-                    featuresList.stream().noneMatch(x -> "not-active.1".equals(x.getID())));
+                    "not-active.10 ID found", featuresList.stream().noneMatch(x -> "not-active.10".equals(x.getID())));
+            assertTrue("not-active.1 ID found", featuresList.stream().noneMatch(x -> "not-active.1".equals(x.getID())));
         }
     }
 
@@ -184,8 +174,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls =
-                gf.createPolygon(sf.create(new double[] {5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6}, 2));
         Overlaps f = ff.overlaps(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -236,12 +225,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         try (final Stream<SimpleFeature> featureStream = FeatureStreams.toFeatureStream(features)) {
             final List<SimpleFeature> featuresList = featureStream.collect(Collectors.toList());
             assertEquals(5, featuresList.size());
-            assertTrue(
-                    "not-active.12 ID not found",
-                    featuresList.stream().anyMatch(x -> "not-active.12".equals(x.getID())));
-            assertTrue(
-                    "not-active.13 ID not found",
-                    featuresList.stream().anyMatch(x -> "not-active.13".equals(x.getID())));
+            assertTrue("not-active.12 ID not found", featuresList.stream().anyMatch(x -> "not-active.12"
+                    .equals(x.getID())));
+            assertTrue("not-active.13 ID not found", featuresList.stream().anyMatch(x -> "not-active.13"
+                    .equals(x.getID())));
         }
     }
 
@@ -256,12 +243,10 @@ public class SolrGeometryTest extends SolrTestSupport {
         try (final Stream<SimpleFeature> featureStream = FeatureStreams.toFeatureStream(features)) {
             final List<SimpleFeature> featuresList = featureStream.collect(Collectors.toList());
             assertEquals(12, featuresList.size());
+            assertTrue("not-active.13 ID not found", featuresList.stream().anyMatch(x -> "not-active.13"
+                    .equals(x.getID())));
             assertTrue(
-                    "not-active.13 ID not found",
-                    featuresList.stream().anyMatch(x -> "not-active.13".equals(x.getID())));
-            assertTrue(
-                    "not-active.12 ID found",
-                    featuresList.stream().noneMatch(x -> "not-active.12".equals(x.getID())));
+                    "not-active.12 ID found", featuresList.stream().noneMatch(x -> "not-active.12".equals(x.getID())));
         }
     }
 

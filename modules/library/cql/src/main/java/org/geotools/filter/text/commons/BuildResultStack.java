@@ -34,8 +34,8 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * Holds the results of the building process in a stack
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering

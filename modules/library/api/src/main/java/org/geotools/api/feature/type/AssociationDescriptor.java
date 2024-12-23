@@ -18,8 +18,7 @@ package org.geotools.api.feature.type;
 public interface AssociationDescriptor extends PropertyDescriptor {
 
     /**
-     * Override of {@link PropertyDescriptor#getType()} which type narrows to {@link
-     * AssociationType}.
+     * Override of {@link PropertyDescriptor#getType()} which type narrows to {@link AssociationType}.
      *
      * @see PropertyDescriptor#getType()
      */

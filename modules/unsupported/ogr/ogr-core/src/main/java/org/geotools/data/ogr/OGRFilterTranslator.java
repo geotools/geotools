@@ -107,9 +107,7 @@ class OGRFilterTranslator {
         this.filter = (Filter) filter.accept(simplifier, null);
     }
 
-    /**
-     * Returns true if this filter can be fully encoded without requiring further post processing
-     */
+    /** Returns true if this filter can be fully encoded without requiring further post processing */
     public boolean isFilterFullySupported() {
         if (filter == Filter.INCLUDE || filter == Filter.EXCLUDE) {
             return true;
@@ -117,8 +115,7 @@ class OGRFilterTranslator {
 
         // we can encode fully an attribute filter plus a bbox spatial filter
         PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(
-                        ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
+                new PostPreProcessFilterSplittingVisitor(ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter postFilter = visitor.getFilterPost();
         return postFilter == Filter.INCLUDE || postFilter instanceof BBOX;
@@ -129,47 +126,39 @@ class OGRFilterTranslator {
         // see if the query has a single bbox filter (that's how much we're sure to be able to
         // encode)
         PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(
-                        STRICT_GEOMETRY_FILTER_CAPABILITIES, schema, null);
+                new PostPreProcessFilterSplittingVisitor(STRICT_GEOMETRY_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
 
         if (preFilter == null || preFilter instanceof BBOX) {
             // ok, then we can extract using the extended caps
-            visitor =
-                    new PostPreProcessFilterSplittingVisitor(
-                            EXTENDED_FILTER_CAPABILITIES, schema, null);
+            visitor = new PostPreProcessFilterSplittingVisitor(EXTENDED_FILTER_CAPABILITIES, schema, null);
             filter.accept(visitor, null);
             return visitor.getFilterPost();
         } else {
             // though luck, there is more than a single bbox filter
-            visitor =
-                    new PostPreProcessFilterSplittingVisitor(
-                            ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
+            visitor = new PostPreProcessFilterSplittingVisitor(ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
             filter.accept(visitor, null);
             return visitor.getFilterPost();
         }
     }
 
     /**
-     * Parses the Geotools filter and tries to extract an intersecting geometry that can be used as
-     * the OGR spatial filter
+     * Parses the Geotools filter and tries to extract an intersecting geometry that can be used as the OGR spatial
+     * filter
      */
     public Geometry getSpatialFilter() {
         // TODO: switch to the non deprecated splitter (that no one seems to be using)
         PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(
-                        GEOMETRY_FILTER_CAPABILITIES, schema, null);
+                new PostPreProcessFilterSplittingVisitor(GEOMETRY_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
         if (preFilter instanceof BinarySpatialOperator) {
             BinarySpatialOperator bso = ((BinarySpatialOperator) preFilter);
             Expression geomExpression = null;
-            if (bso.getExpression1() instanceof PropertyName
-                    && bso.getExpression2() instanceof Literal) {
+            if (bso.getExpression1() instanceof PropertyName && bso.getExpression2() instanceof Literal) {
                 geomExpression = bso.getExpression2();
-            } else if (bso.getExpression1() instanceof Literal
-                    && bso.getExpression2() instanceof PropertyName) {
+            } else if (bso.getExpression1() instanceof Literal && bso.getExpression2() instanceof PropertyName) {
                 geomExpression = bso.getExpression1();
             }
             if (geomExpression != null) {
@@ -181,14 +170,12 @@ class OGRFilterTranslator {
     }
 
     /**
-     * Parses the GeoTools filter and tries to extract an SQL expression that can be used as the OGR
-     * attribute filter
+     * Parses the GeoTools filter and tries to extract an SQL expression that can be used as the OGR attribute filter
      */
     public String getAttributeFilter() {
         // TODO: switch to the non deprecated splitter (that no one seems to be using)
         PostPreProcessFilterSplittingVisitor visitor =
-                new PostPreProcessFilterSplittingVisitor(
-                        ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
+                new PostPreProcessFilterSplittingVisitor(ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
         if (preFilter != Filter.EXCLUDE && preFilter != Filter.INCLUDE) {

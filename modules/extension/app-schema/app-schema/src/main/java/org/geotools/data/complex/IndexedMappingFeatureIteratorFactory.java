@@ -51,8 +51,8 @@ public class IndexedMappingFeatureIteratorFactory {
     }
 
     /**
-     * Build IndexedMappingFeatureIterator instance for partial or total index query coverage.
-     * return null if no index coverage detected for the query
+     * Build IndexedMappingFeatureIterator instance for partial or total index query coverage. return null if no index
+     * coverage detected for the query
      *
      * @return IndexedMappingFeatureIterator instance
      */

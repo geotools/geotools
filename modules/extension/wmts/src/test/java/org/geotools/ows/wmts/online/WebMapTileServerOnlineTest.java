@@ -98,14 +98,12 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
     }
 
     @Test
-    public void testIssueGetTileRequestKVP()
-            throws ServiceException, IOException, FactoryException {
+    public void testIssueGetTileRequestKVP() throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(serverURL);
         issueGetTileRequest(wmts);
     }
 
-    public void issueGetTileRequest(WebMapTileServer wmts)
-            throws ServiceException, FactoryException {
+    public void issueGetTileRequest(WebMapTileServer wmts) throws ServiceException, FactoryException {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
@@ -156,16 +154,12 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
     private WMTSTileService createKVPService() throws Exception {
         try {
-            URL capaResource =
-                    getClass()
-                            .getClassLoader()
-                            .getResource("test-data/geosolutions_getcapa_kvp.xml");
+            URL capaResource = getClass().getClassLoader().getResource("test-data/geosolutions_getcapa_kvp.xml");
             assertNotNull("Can't find KVP getCapa file", capaResource);
             File capaFile = new File(capaResource.toURI());
             WMTSCapabilities capa = WMTSTileFactory4326Test.createCapabilities(capaFile);
 
-            String baseURL =
-                    "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
+            String baseURL = "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
 
             WMTSLayer layer = capa.getLayer("unesco:Unesco_point");
             TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:900913");
@@ -198,15 +192,13 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
     @Test
     public void testCRS() throws NoSuchAuthorityCodeException, FactoryException {
         CoordinateReferenceSystem crs = service.getProjectedTileCrs();
-        assertEquals(
-                "Mismatching CRS in " + service.getName(), expectedCrs.getName(), crs.getName());
+        assertEquals("Mismatching CRS in " + service.getName(), expectedCrs.getName(), crs.getName());
     }
 
     @Test
     public void testWebMercatorBounds() {
         ReferencedEnvelope expected =
-                new ReferencedEnvelope(
-                        7.4667, 18.0339, 36.6749, 46.6564, DefaultGeographicCRS.WGS84);
+                new ReferencedEnvelope(7.4667, 18.0339, 36.6749, 46.6564, DefaultGeographicCRS.WGS84);
 
         double delta = 0.001;
 
@@ -220,8 +212,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
     @Test
     public void testFindTilesInExtent() {
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
         int million = (int) 1e6;
         int[] scales = {100 * million, 25 * million, 10 * million, million, 500000};
 

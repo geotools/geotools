@@ -60,7 +60,8 @@ public class ShpFilesLockingTest implements FileWriter {
 
         File file = shpFiles.acquireReadFile(SHP, this);
         // under windows the two paths can be just different in terms of case..
-        assertEquals(new File(path).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
+        assertEquals(
+                new File(path).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
         assertEquals(1, shpFiles.numberOfLocks());
 
         shpFiles.unlockRead(file, this);
@@ -83,7 +84,8 @@ public class ShpFilesLockingTest implements FileWriter {
 
         File file = shpFiles.acquireWriteFile(SHP, this);
         // under windows the two paths can be just different in terms of case..
-        assertEquals(new File(path).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
+        assertEquals(
+                new File(path).getCanonicalPath().toLowerCase(), file.getPath().toLowerCase());
         assertEquals(1, shpFiles.numberOfLocks());
 
         shpFiles.unlockWrite(file, this);

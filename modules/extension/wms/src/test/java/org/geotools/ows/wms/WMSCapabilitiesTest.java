@@ -41,27 +41,23 @@ public class WMSCapabilitiesTest {
         WMSCapabilities wmsCapabilities = new WMSCapabilities();
         wmsCapabilities.setLayer(root);
 
-        Callable<List<Layer>> task =
-                () -> {
-                    List<Layer> list = wmsCapabilities.getLayerList();
-                    // this will cause a ConcurrentModificationException as of GEOT-7669
-                    assertEquals(7, Iterators.size(list.iterator()));
-                    return list;
-                };
+        Callable<List<Layer>> task = () -> {
+            List<Layer> list = wmsCapabilities.getLayerList();
+            // this will cause a ConcurrentModificationException as of GEOT-7669
+            assertEquals(7, Iterators.size(list.iterator()));
+            return list;
+        };
 
-        List<Future<List<Layer>>> futures =
-                ForkJoinPool.commonPool().invokeAll(Collections.nCopies(100, task));
-        List<List<Layer>> values =
-                futures.stream()
-                        .map(
-                                f -> {
-                                    try {
-                                        return f.get();
-                                    } catch (Exception e) {
-                                        throw new IllegalStateException(e);
-                                    }
-                                })
-                        .collect(Collectors.toList());
+        List<Future<List<Layer>>> futures = ForkJoinPool.commonPool().invokeAll(Collections.nCopies(100, task));
+        List<List<Layer>> values = futures.stream()
+                .map(f -> {
+                    try {
+                        return f.get();
+                    } catch (Exception e) {
+                        throw new IllegalStateException(e);
+                    }
+                })
+                .collect(Collectors.toList());
 
         List<Layer> expected = buildExpected(root);
 

@@ -36,8 +36,8 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
 /**
  * A {@link Map} decorator which implements the {@link MutablePicoContainer} interface.
  *
- * <p>This class is used internally to help transition from pico container to a map based system for
- * registering bindings.
+ * <p>This class is used internally to help transition from pico container to a map based system for registering
+ * bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
@@ -140,8 +140,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
         Object key = componentAdapter.getComponentKey();
         if (componentAdapter instanceof InstanceComponentAdapter) {
-            Object instance =
-                    ((InstanceComponentAdapter) componentAdapter).getComponentInstance(null);
+            Object instance = ((InstanceComponentAdapter) componentAdapter).getComponentInstance(null);
             put(key, instance);
         } else {
             Class implementation = componentAdapter.getComponentImplementation();
@@ -158,8 +157,7 @@ public class PicoMap implements Map, MutablePicoContainer {
     }
 
     @Override
-    public ComponentAdapter registerComponentImplementation(
-            Object componentKey, Class componentImplementation) {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) {
         put(componentKey, componentImplementation);
         return null;
     }
@@ -178,8 +176,7 @@ public class PicoMap implements Map, MutablePicoContainer {
     }
 
     @Override
-    public ComponentAdapter registerComponentInstance(
-            Object componentKey, Object componentInstance) {
+    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) {
         put(componentKey, componentInstance);
         return null;
     }

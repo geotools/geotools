@@ -21,8 +21,7 @@ import javax.media.jai.operator.MaxFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**
- * For each position of the mask, replaces the center pixel by the maximum of the pixel values
- * covered by the mask.
+ * For each position of the mask, replaces the center pixel by the maximum of the pixel values covered by the mask.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MaxFilter"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MaxFilterDescriptor MaxFilter}"</CODE><br>

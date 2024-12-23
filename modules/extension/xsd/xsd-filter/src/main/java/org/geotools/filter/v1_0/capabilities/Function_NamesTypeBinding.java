@@ -76,8 +76,7 @@ public class Function_NamesTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (name.getLocalPart().equals("Function_Name")
-                || name.getLocalPart().equals("FunctionName") /* 1.1 */) {
+        if (name.getLocalPart().equals("Function_Name") || name.getLocalPart().equals("FunctionName") /* 1.1 */) {
             return object;
         }
 

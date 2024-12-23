@@ -28,8 +28,8 @@ import javax.imageio.spi.ServiceRegistry;
 import javax.imageio.stream.ImageInputStream;
 
 /**
- * Implementation of an {@link ImageInputStreamSpi} for instantiating an {@link ImageInputStream}
- * capable of connecting to a {@link S3File}
+ * Implementation of an {@link ImageInputStreamSpi} for instantiating an {@link ImageInputStream} capable of connecting
+ * to a {@link S3File}
  *
  * @see ImageInputStream
  * @see ImageInputStreamSpi
@@ -39,8 +39,7 @@ import javax.imageio.stream.ImageInputStream;
 public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            Logger.getLogger("it.geosolutions.imageio.stream.input.s3");
+    private static final Logger LOGGER = Logger.getLogger("it.geosolutions.imageio.stream.input.s3");
 
     private static final String vendorName = "GeoSolutions";
 
@@ -49,9 +48,8 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     private static final Class<String> inputClass = String.class;
 
     /**
-     * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize
-     * instance variables and/or override method implementations in order to provide working
-     * versions of all methods.
+     * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize instance variables and/or
+     * override method implementations in order to provide working versions of all methods.
      */
     public S3ImageInputStreamImplSpi() {
         super(vendorName, version, inputClass);
@@ -68,8 +66,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
         Class<ImageInputStreamSpi> targetClass = ImageInputStreamSpi.class;
-        for (Iterator<? extends ImageInputStreamSpi> i =
-                        registry.getServiceProviders(targetClass, true);
+        for (Iterator<? extends ImageInputStreamSpi> i = registry.getServiceProviders(targetClass, true);
                 i.hasNext(); ) {
             ImageInputStreamSpi other = i.next();
 
@@ -77,25 +74,18 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
         }
     }
     /**
-     * Returns an instance of the ImageInputStream implementation associated with this service
-     * provider.
+     * Returns an instance of the ImageInputStream implementation associated with this service provider.
      *
      * @param input an object of the class type returned by getInputClass.
-     * @param useCache a boolean indicating whether a cache eraf should be used, in cases where it
-     *     is optional.
-     * @param cacheDir a File indicating where the cache eraf should be created, or null to use the
-     *     system directory.
+     * @param useCache a boolean indicating whether a cache eraf should be used, in cases where it is optional.
+     * @param cacheDir a File indicating where the cache eraf should be created, or null to use the system directory.
      * @return an ImageInputStream instance.
      * @throws IllegalArgumentException if input is not an instance of the correct class or is null.
      */
     @Override
-    public ImageInputStream createInputStreamInstance(
-            Object input, boolean useCache, File cacheDir) {
+    public ImageInputStream createInputStreamInstance(Object input, boolean useCache, File cacheDir) {
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "S3ImageInputStreamImplSpi.createInputStreamInstance("
-                            + input.getClass()
-                            + ")");
+            LOGGER.fine("S3ImageInputStreamImplSpi.createInputStreamInstance(" + input.getClass() + ")");
         }
         if (input instanceof S3ImageInputStreamImpl) {
             try {

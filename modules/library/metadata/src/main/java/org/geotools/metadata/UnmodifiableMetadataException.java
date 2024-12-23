@@ -17,8 +17,8 @@
 package org.geotools.metadata;
 
 /**
- * Thrown when a setter method is invoked on a {@linkplain org.geotools.metadata.iso.MetadataEntity
- * metadata entity}, but this entity was declared unmodifiable.
+ * Thrown when a setter method is invoked on a {@linkplain org.geotools.metadata.iso.MetadataEntity metadata entity},
+ * but this entity was declared unmodifiable.
  *
  * @since 2.4
  * @version $Id$

@@ -18,8 +18,7 @@ package org.geotools.data.postgis.ps;
 
 import org.geotools.data.postgis.PostgisPreserveTopologyTestSetup;
 
-public class PostgisPreserveTopologyOnlineTest
-        extends org.geotools.data.postgis.PostgisPreserveTopologyOnlineTest {
+public class PostgisPreserveTopologyOnlineTest extends org.geotools.data.postgis.PostgisPreserveTopologyOnlineTest {
     @Override
     protected PostgisPreserveTopologyTestSetup createTestSetup() {
         return new PostgisPreserveTopologyTestSetup(new PostGISPSTestSetup());

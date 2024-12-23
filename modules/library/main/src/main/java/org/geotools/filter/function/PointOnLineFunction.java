@@ -29,21 +29,19 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.linearref.LengthIndexedLine;
 
 /**
- * Returns a point on the provided line. The point is at the specified percentage of the line's
- * length. If no percentage is provided, the mid point will be returned. If the line is a collection
- * of lines, the first line is used.
+ * Returns a point on the provided line. The point is at the specified percentage of the line's length. If no percentage
+ * is provided, the mid point will be returned. If the line is a collection of lines, the first line is used.
  *
- * <p>No attempt is made to perform linear referencing based on a measure, althought this could be
- * implemented in the future.
+ * <p>No attempt is made to perform linear referencing based on a measure, althought this could be implemented in the
+ * future.
  */
 public class PointOnLineFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "pointOnLine",
-                    Point.class,
-                    parameter("linestring", Geometry.class),
-                    parameter("percentage", Double.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "pointOnLine",
+            Point.class,
+            parameter("linestring", Geometry.class),
+            parameter("percentage", Double.class, 0, 1));
 
     public PointOnLineFunction() {
         super(NAME);
@@ -59,16 +57,14 @@ public class PointOnLineFunction extends FunctionExpressionImpl {
             GeometryCollection collection = (GeometryCollection) geometry;
             if (collection.getNumGeometries() == 0) return null;
             if (collection.getNumGeometries() > 1)
-                throw new IllegalArgumentException(
-                        "Expected a single geometry, got a collection of "
-                                + collection.getNumGeometries()
-                                + " geometries");
+                throw new IllegalArgumentException("Expected a single geometry, got a collection of "
+                        + collection.getNumGeometries()
+                        + " geometries");
             geometry = collection.getGeometryN(0);
         }
 
         if (!(geometry instanceof LineString)) {
-            throw new IllegalArgumentException(
-                    "Expected a LineString, got a " + geometry.getGeometryType());
+            throw new IllegalArgumentException("Expected a LineString, got a " + geometry.getGeometryType());
         }
 
         LineString line = (LineString) geometry;
@@ -79,8 +75,7 @@ public class PointOnLineFunction extends FunctionExpressionImpl {
         }
 
         if (percentage < 0 || percentage > 1) {
-            throw new IllegalArgumentException(
-                    "Expected a percentage between 0 and 1, got " + percentage);
+            throw new IllegalArgumentException("Expected a percentage between 0 and 1, got " + percentage);
         }
 
         LengthIndexedLine index = new LengthIndexedLine(line);

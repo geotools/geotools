@@ -42,15 +42,15 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * This is a schema content handler. Code here has been modified from code written by Ian Schneider.
  *
- * <p>This class contains one stack used to store part of the parse tree. The ElementHandlers found
- * on the stack have direct next handlers placed on the stack. So here's the warning, be careful to
- * read how you may be affecting (or forgetting to affect) the stack.
+ * <p>This class contains one stack used to store part of the parse tree. The ElementHandlers found on the stack have
+ * direct next handlers placed on the stack. So here's the warning, be careful to read how you may be affecting (or
+ * forgetting to affect) the stack.
  *
- * <p>If a FlowHandler implementation is available in the hints, the handler will periodically check
- * it to see if it should stop parsing. See the FlowHandler interface.
+ * <p>If a FlowHandler implementation is available in the hints, the handler will periodically check it to see if it
+ * should stop parsing. See the FlowHandler interface.
  *
- * <p>This is an XML Schema driven parser and {@link #resolveEntity(String, String)} will ignore all
- * dtd references. If an {@link EntityResolver} is provided it will be used.
+ * <p>This is an XML Schema driven parser and {@link #resolveEntity(String, String)} will ignore all dtd references. If
+ * an {@link EntityResolver} is provided it will be used.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @version $Id$
@@ -58,8 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLSAXHandler extends DefaultHandler {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
-    protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
+    protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
 
     protected static Level level = Level.FINE;
 
@@ -67,8 +66,8 @@ public class XMLSAXHandler extends DefaultHandler {
     private Stack<XMLElementHandler> handlers = new Stack<>();
 
     /**
-     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the
-     * beggining of {@link #endElement(String, String, String)}
+     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the beggining of
+     * {@link #endElement(String, String, String)}
      */
     private StringBuffer characters = new StringBuffer();
 
@@ -97,8 +96,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * @exception org.xml.sax.SAXException Any SAX exception, possibly wrapping another exception.
      */
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         // avoid dtd files
         if (systemId != null && systemId.endsWith("dtd")) {
             return new InputSource(new StringReader(""));
@@ -128,9 +126,8 @@ public class XMLSAXHandler extends DefaultHandler {
     private URI instanceDocument;
 
     /**
-     * This contructor is intended to create an XMLSAXHandler to be used when parsing an XML
-     * instance document. The instance document's uri is also be provided, as this will allow the
-     * parser to resolve relative uri's.
+     * This contructor is intended to create an XMLSAXHandler to be used when parsing an XML instance document. The
+     * instance document's uri is also be provided, as this will allow the parser to resolve relative uri's.
      */
     public XMLSAXHandler(URI intendedDocument, Map<String, Object> hints) {
         instanceDocument = intendedDocument;
@@ -231,12 +228,10 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of endElement.
      *
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
-     *     java.lang.String)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         logger.fine("END: " + qName);
         XMLElementHandler handler = null;
@@ -251,16 +246,15 @@ public class XMLSAXHandler extends DefaultHandler {
             logger.warning(e.getMessage());
             logger.warning("Line " + locator.getLineNumber() + " Col " + locator.getColumnNumber());
 
-            SAXException exception =
-                    new SAXException(
-                            e.getMessage()
-                                    + " at Line "
-                                    + locator.getLineNumber()
-                                    + " Col "
-                                    + locator.getColumnNumber()
-                                    + " tag is: \n"
-                                    + qName,
-                            e);
+            SAXException exception = new SAXException(
+                    e.getMessage()
+                            + " at Line "
+                            + locator.getLineNumber()
+                            + " Col "
+                            + locator.getColumnNumber()
+                            + " tag is: \n"
+                            + qName,
+                    e);
             exception.initCause(e);
             throw exception;
         } finally {
@@ -271,8 +265,7 @@ public class XMLSAXHandler extends DefaultHandler {
                     ComplexElementHandler complexParent = (ComplexElementHandler) parent;
                     String typename = complexParent.getType().getClass().getName();
                     // TODO: HACK The required Type is not in this Module
-                    if (typename.equals(
-                            "org.geotools.xml.wfs.WFSBasicComplexTypes$FeatureCollectionType")) {
+                    if (typename.equals("org.geotools.xml.wfs.WFSBasicComplexTypes$FeatureCollectionType")) {
                         complexParent.removeElement(handler);
                     }
                 }
@@ -296,12 +289,11 @@ public class XMLSAXHandler extends DefaultHandler {
     /**
      * Implementation of startElement.
      *
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
-     *     java.lang.String, org.xml.sax.Attributes)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
 
         checkStatus();
@@ -321,8 +313,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                 if (targ2uri != null) {
                     if (targ2uri.length != 0 && targ2uri.length % 2 != 0)
-                        throw new SAXException(
-                                "Bad Schema location attribute: you must have an even number of terms");
+                        throw new SAXException("Bad Schema location attribute: you must have an even number of terms");
 
                     for (int i = 0; i < (targ2uri.length / 2); i++) {
                         String uri = targ2uri[(i * 2) + 1];
@@ -344,10 +335,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                         if (!set) {
                             try {
-                                targUri =
-                                        (instanceDocument == null)
-                                                ? new URI(uri)
-                                                : instanceDocument.resolve(uri);
+                                targUri = (instanceDocument == null) ? new URI(uri) : instanceDocument.resolve(uri);
                             } catch (URISyntaxException e1) {
                                 logger.warning(e1.toString());
                             }
@@ -375,12 +363,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
         try {
             XMLElementHandler parent = handlers.peek();
-            logger.finest(
-                    "Parent Node = "
-                            + parent.getClass().getName()
-                            + "  '"
-                            + parent.getName()
-                            + "'");
+            logger.finest("Parent Node = " + parent.getClass().getName() + "  '" + parent.getName() + "'");
 
             //            logger.finest("Parent Node = "+parent.getClass().getName()+"
             // '"+parent.getName()+"' "+
@@ -410,16 +393,15 @@ public class XMLSAXHandler extends DefaultHandler {
             logger.warning(e.toString());
             logger.warning("Line " + locator.getLineNumber() + " Col " + locator.getColumnNumber());
 
-            SAXException exception =
-                    new SAXException(
-                            e.getMessage()
-                                    + " at Line "
-                                    + locator.getLineNumber()
-                                    + " Col "
-                                    + locator.getColumnNumber()
-                                    + " tag is: \n"
-                                    + qName,
-                            e);
+            SAXException exception = new SAXException(
+                    e.getMessage()
+                            + " at Line "
+                            + locator.getLineNumber()
+                            + " Col "
+                            + locator.getColumnNumber()
+                            + " tag is: \n"
+                            + qName,
+                    e);
             exception.initCause(e);
             throw exception;
         }

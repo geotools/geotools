@@ -36,9 +36,7 @@ public class DiffTransactionState implements Transaction.State {
     /** The transaction (ie session) associated with this state */
     protected Transaction transaction;
 
-    /**
-     * ContentState for this transaction used to hold information for FeatureReader implementations
-     */
+    /** ContentState for this transaction used to hold information for FeatureReader implementations */
     protected ContentState state;
 
     /**
@@ -73,8 +71,8 @@ public class DiffTransactionState implements Transaction.State {
     @Override
 
     /**
-     * We are already holding onto our transaction from ContentState; however this method does check
-     * that the transaction is correct.
+     * We are already holding onto our transaction from ContentState; however this method does check that the
+     * transaction is correct.
      */
     public synchronized void setTransaction(Transaction transaction) {
         if (this.transaction != null && transaction == null) {
@@ -89,8 +87,8 @@ public class DiffTransactionState implements Transaction.State {
     /**
      * Will apply differences to store.
      *
-     * <p>The provided diff will be modified as the differences are applied, If the operations are
-     * all successful diff will be empty at the end of this process.
+     * <p>The provided diff will be modified as the differences are applied, If the operations are all successful diff
+     * will be empty at the end of this process.
      *
      * <p>diff can be used to represent the following operations:
      *
@@ -118,8 +116,7 @@ public class DiffTransactionState implements Transaction.State {
         SimpleFeature update;
 
         Throwable cause = null;
-        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                getWriter(name, dataStore, source)) {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter(name, dataStore, source)) {
             while (writer.hasNext()) {
                 feature = writer.next();
                 String fid = feature.getID();
@@ -164,9 +161,7 @@ public class DiffTransactionState implements Transaction.State {
                                         (String) addedFeature.getUserData().get(Hints.PROVIDED_FID);
                                 nextFeature.getUserData().put(Hints.PROVIDED_FID, providedFid);
                             } else {
-                                nextFeature
-                                        .getUserData()
-                                        .put(Hints.PROVIDED_FID, addedFeature.getID());
+                                nextFeature.getUserData().put(Hints.PROVIDED_FID, addedFeature.getID());
                             }
                             // }
                             writer.write();
@@ -229,8 +224,7 @@ public class DiffTransactionState implements Transaction.State {
      * @return FeatureWriter with diff support
      */
     public FeatureWriter<SimpleFeatureType, SimpleFeature> diffWriter(
-            ContentFeatureStore contentFeatureStore,
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+            ContentFeatureStore contentFeatureStore, FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
 
         return new DiffContentFeatureWriter(contentFeatureStore, diff, reader);
     }

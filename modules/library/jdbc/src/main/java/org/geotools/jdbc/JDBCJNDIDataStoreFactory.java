@@ -29,8 +29,8 @@ import org.geotools.util.factory.GeoTools;
 /**
  * Abstract implementation of DataStoreFactory for jdbc datastores which obtain a JNDI connection.
  *
- * <p>Subclasses should not need to override any methods, only just call the parent constructor
- * passing in the non JNDI datastore factory to delegate to.
+ * <p>Subclasses should not need to override any methods, only just call the parent constructor passing in the non JNDI
+ * datastore factory to delegate to.
  *
  * @author Christian Mueller
  */
@@ -39,12 +39,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     public static final String J2EERootContext = "java:comp/env/";
     /** JNDI data source name */
     public static final Param JNDI_REFNAME =
-            new Param(
-                    "jndiReferenceName",
-                    String.class,
-                    "JNDI data source",
-                    true,
-                    J2EERootContext + "jdbc/mydatabase");
+            new Param("jndiReferenceName", String.class, "JNDI data source", true, J2EERootContext + "jdbc/mydatabase");
 
     /** regular datastore factory to delegate to. */
     protected JDBCDataStoreFactory delegate;
@@ -53,18 +48,15 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         this.delegate = delegate;
     }
 
-    /**
-     * Override which explicitly returns null because with a JNDI connection the driver is not known
-     * ahead of time.
-     */
+    /** Override which explicitly returns null because with a JNDI connection the driver is not known ahead of time. */
     @Override
     protected String getDriverClassName() {
         return null;
     }
 
     /**
-     * Override which explicitly returns null, validation queries are not supported, my be part of
-     * the external data source configuration
+     * Override which explicitly returns null, validation queries are not supported, my be part of the external data
+     * source configuration
      */
     @Override
     protected String getValidationQuery() {
@@ -72,8 +64,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /**
-     * Override which explicitly returns null since there is no jdbc url, the connection is
-     * identified by the JNDI name.
+     * Override which explicitly returns null since there is no jdbc url, the connection is identified by the JNDI name.
      */
     @Override
     protected String getJDBCUrl(Map<String, ?> params) throws IOException {
@@ -82,8 +73,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
 
     /** Override to create the datasource from the external JNDI conection. */
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         String jndiName = (String) JNDI_REFNAME.lookUp(params);
         if (jndiName == null) throw new IOException("Missing " + JNDI_REFNAME.description);
 
@@ -120,8 +110,8 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * Determines if the datastore is available.
      *
-     * <p>Check in an Initial Context is available, that is all what can be done Checking for the
-     * right jdbc jars in the classpath is not possible here
+     * <p>Check in an Initial Context is available, that is all what can be done Checking for the right jdbc jars in the
+     * classpath is not possible here
      */
     @Override
     public boolean isAvailable() {
@@ -132,13 +122,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected void setupParameters(Map<String, Object> parameters) {
         parameters.put(
-                DBTYPE.key,
-                new Param(
-                        DBTYPE.key,
-                        DBTYPE.type,
-                        DBTYPE.description,
-                        DBTYPE.required,
-                        getDatabaseID()));
+                DBTYPE.key, new Param(DBTYPE.key, DBTYPE.type, DBTYPE.description, DBTYPE.required, getDatabaseID()));
         parameters.put(JNDI_REFNAME.key, JNDI_REFNAME);
         parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(NAMESPACE.key, NAMESPACE);
@@ -167,8 +151,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         return delegate.createDataStoreInternal(dataStore, params);
     }
 

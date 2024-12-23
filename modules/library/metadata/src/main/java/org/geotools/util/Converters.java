@@ -44,19 +44,13 @@ public final class Converters {
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(Converters.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        ConverterFactory.class,
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                ConverterFactory.class,
+            }));
         }
         return registry;
     }
@@ -76,13 +70,12 @@ public final class Converters {
      */
     public static synchronized Set<ConverterFactory> getConverterFactories(Hints hints) {
         hints = GeoTools.addDefaultHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
     }
 
     /**
-     * Returns a set of all available {@link ConverterFactory}'s which can handle convert from the
-     * source to destination class.
+     * Returns a set of all available {@link ConverterFactory}'s which can handle convert from the source to destination
+     * class.
      *
      * <p>This method essentially returns all factories in which the following returns non null.
      *
@@ -109,8 +102,7 @@ public final class Converters {
      *
      * @param source The object to convert.
      * @param target The type of the converted value.
-     * @return The converted value as an instance of target, or <code>null</code> if a converter
-     *     could not be found
+     * @return The converted value as an instance of target, or <code>null</code> if a converter could not be found
      * @since 2.4
      */
     public static <T> T convert(Object source, Class<T> target) {
@@ -120,15 +112,14 @@ public final class Converters {
     /**
      * Converts an object of a particular type into an object of a different type.
      *
-     * <p>This method uses the {@link ConverterFactory} extension point to find a converter capable
-     * of performing the conversion. The first converter found is the one used. Using this class
-     * there is no way to guarantee which converter will be used.
+     * <p>This method uses the {@link ConverterFactory} extension point to find a converter capable of performing the
+     * conversion. The first converter found is the one used. Using this class there is no way to guarantee which
+     * converter will be used.
      *
      * @param source The object to convert.
      * @param target The type of the converted value.
      * @param hints Any hints for the converter factory.
-     * @return The converted value as an instance of target, or <code>null</code> if a converter
-     *     could not be found.
+     * @return The converted value as an instance of target, or <code>null</code> if a converter could not be found.
      * @since 2.4
      */
     public static <T> T convert(Object source, Class<T> target, Hints hints) {
@@ -137,9 +128,7 @@ public final class Converters {
 
         // handle case of source being an instance of target up front
         final Class<?> sourceClass = source.getClass();
-        if (sourceClass == target
-                || sourceClass.equals(target)
-                || target.isAssignableFrom(sourceClass)) {
+        if (sourceClass == target || sourceClass.equals(target) || target.isAssignableFrom(sourceClass)) {
             return target.cast(source);
         }
 
@@ -182,8 +171,7 @@ public final class Converters {
      */
     static ConverterFactory[] factories() {
         if (factories == null) {
-            Collection<ConverterFactory> factoryCollection =
-                    getConverterFactories(GeoTools.getDefaultHints());
+            Collection<ConverterFactory> factoryCollection = getConverterFactories(GeoTools.getDefaultHints());
             factories = factoryCollection.toArray(new ConverterFactory[factoryCollection.size()]);
         }
         return factories;

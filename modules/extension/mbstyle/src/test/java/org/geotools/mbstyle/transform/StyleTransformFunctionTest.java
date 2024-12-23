@@ -26,9 +26,8 @@ import org.junit.Test;
 public class StyleTransformFunctionTest {
 
     /**
-     * Right now these tests exist basically to ensure that these styles with functions are parsed
-     * without exception. Lower level unit tests exist to test the results of parsing individual
-     * elements
+     * Right now these tests exist basically to ensure that these styles with functions are parsed without exception.
+     * Lower level unit tests exist to test the results of parsing individual elements
      */
     @Test
     public void testLineLayerWithFunctions() throws IOException, ParseException {
@@ -68,8 +67,7 @@ public class StyleTransformFunctionTest {
 
     @Test
     public void testFillLayerWithFunctionsZoomAndProperty() throws IOException, ParseException {
-        JSONObject styleJson =
-                MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);

@@ -88,38 +88,26 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
             final int hour = 0;
             final int minute = 0;
             final int second = 0;
-            final String refTime =
-                    year
-                            + "-"
-                            + (month < 10 ? ("0" + month) : month)
-                            + "-"
-                            + (day < 10 ? ("0" + day) : day)
-                            + " "
-                            + (hour < 10 ? ("0" + hour) : hour)
-                            + ":"
-                            + (minute < 10 ? ("0" + minute) : minute)
-                            + ":"
-                            + (second < 10 ? ("0" + second) : second);
+            final String refTime = year
+                    + "-"
+                    + (month < 10 ? ("0" + month) : month)
+                    + "-"
+                    + (day < 10 ? ("0" + day) : day)
+                    + " "
+                    + (hour < 10 ? ("0" + hour) : hour)
+                    + ":"
+                    + (minute < 10 ? ("0" + minute) : minute)
+                    + ":"
+                    + (second < 10 ? ("0" + second) : second);
             // //
             // Plural form units check
             // //
-            checkTimes(
-                    dataset,
-                    coordinateAxis,
-                    refTime,
-                    year,
-                    month,
-                    day,
-                    hour,
-                    minute,
-                    second,
-                    false);
+            checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, false);
 
             // //
             // Singular form units check
             // //
-            checkTimes(
-                    dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, true);
+            checkTimes(dataset, coordinateAxis, refTime, year, month, day, hour, minute, second, true);
         }
     }
 
@@ -136,16 +124,14 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
             boolean singularForm)
             throws IOException {
 
-        String unitsOriginSuffix =
-                (singularForm ? "" : "s") // day vs days, hour vs hours, and so on
-                        + " since "
-                        + refTime;
+        String unitsOriginSuffix = (singularForm ? "" : "s") // day vs days, hour vs hours, and so on
+                + " since "
+                + refTime;
 
         // MONTHS
         String units = "month" + unitsOriginSuffix;
         CoordinateVariable<?> cv = getCoordinateVariable(dataset, coordinateAxis, units);
-        GregorianCalendar cal =
-                getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MONTH);
+        GregorianCalendar cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MONTH);
         assertEquals(cal.getTime(), cv.getMaximum());
 
         // DAYS
@@ -173,8 +159,7 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
         assertEquals(cal.getTime(), cv.getMaximum());
     }
 
-    private GregorianCalendar getCalendar(
-            int year, int month, int day, int hour, int minute, int second, int unit) {
+    private GregorianCalendar getCalendar(int year, int month, int day, int hour, int minute, int second, int unit) {
         GregorianCalendar cal = new GregorianCalendar(NetCDFTimeUtilities.UTC_TIMEZONE);
 
         // Months are zero based
@@ -295,9 +280,8 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
 
         // acquire dataset
         try (final NetcdfDataset dataset =
-                NetcdfDatasets.openDataset(
-                        TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc")
-                                .toExternalForm())) {
+                NetcdfDatasets.openDataset(TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc")
+                        .toExternalForm())) {
             assertNotNull(dataset);
             final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
             assertNotNull(cvs);
@@ -414,23 +398,20 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
             assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
         }
 
-        FileUtils.copyFile(
-                TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
+        FileUtils.copyFile(TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
         TestData.unzipFile(this, "climatologicalaxis/climatological.zip");
         String url = TestData.url(this, "climatologicalaxis/climatological.nc").toExternalForm();
         URI uri = new URI(url);
         try (NetcdfDataset dataset = NetCDFUtilities.acquireDataset(uri)) {
             Dimension dim = dataset.findDimension("time");
-            CoordinateAxis1D coordinateAxis =
-                    (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
+            CoordinateAxis1D coordinateAxis = (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
 
             CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
             assertNotNull(handler);
             assertTrue(handler instanceof ClimatologicalTimeHandler);
             ClimatologicalTimeHandler timeHandler = (ClimatologicalTimeHandler) handler;
 
-            CoordinateVariable<Date> coordinateVariable =
-                    timeHandler.createCoordinateVariable(coordinateAxis);
+            CoordinateVariable<Date> coordinateVariable = timeHandler.createCoordinateVariable(coordinateAxis);
             assertNotNull(coordinateVariable);
             assertTrue(coordinateVariable instanceof ClimatologicalTimeCoordinateVariable);
 

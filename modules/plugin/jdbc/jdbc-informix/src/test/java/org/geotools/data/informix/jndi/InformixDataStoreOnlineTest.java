@@ -20,8 +20,7 @@ import org.geotools.data.informix.InformixTestSetup;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-public class InformixDataStoreOnlineTest
-        extends org.geotools.data.informix.InformixDataStoreOnlineTest {
+public class InformixDataStoreOnlineTest extends org.geotools.data.informix.InformixDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {

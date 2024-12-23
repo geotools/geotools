@@ -29,11 +29,8 @@ public class MultiPolygonTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeMultiPolygon() throws Exception {
         MultiPolygonEncoder encoder = new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        MultiPolygon geometry =
-                (MultiPolygon)
-                        new WKTReader2()
-                                .read(
-                                        "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
+        MultiPolygon geometry = (MultiPolygon) new WKTReader2()
+                .read("MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
         Document doc = encode(encoder, geometry, "mpoly");
         // quick geom test
         assertThat(
@@ -43,34 +40,18 @@ public class MultiPolygonTest extends GeometryEncoderTestSupport {
                         equalTo("1 1 5 1 5 5 1 5 1 1")));
         // ids
         assertThat(doc, hasXPath("/gml:MultiSurface/@gml:id", equalTo("mpoly")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "/gml:MultiSurface/gml:surfaceMember[1]/gml:Polygon/@gml:id",
-                        equalTo("mpoly.1")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "/gml:MultiSurface/gml:surfaceMember[2]/gml:Polygon/@gml:id",
-                        equalTo("mpoly.2")));
+        assertThat(doc, hasXPath("/gml:MultiSurface/gml:surfaceMember[1]/gml:Polygon/@gml:id", equalTo("mpoly.1")));
+        assertThat(doc, hasXPath("/gml:MultiSurface/gml:surfaceMember[2]/gml:Polygon/@gml:id", equalTo("mpoly.2")));
     }
 
     /** No encode gml:id test */
     @Test
     public void testEncodeMultiPolygonNoGmlId() throws Exception {
-        MultiPolygonEncoder encoder =
-                new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
-        MultiPolygon geometry =
-                (MultiPolygon)
-                        new WKTReader2()
-                                .read(
-                                        "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
+        MultiPolygonEncoder encoder = new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
+        MultiPolygon geometry = (MultiPolygon) new WKTReader2()
+                .read("MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
         Document doc = encode(encoder, geometry, "mpoly");
 
-        assertThat(
-                doc,
-                hasXPath(
-                        "count(/gml:MultiSurface/gml:surfaceMember/gml:Polygon/@gml:id)",
-                        equalTo("0")));
+        assertThat(doc, hasXPath("count(/gml:MultiSurface/gml:surfaceMember/gml:Polygon/@gml:id)", equalTo("0")));
     }
 }

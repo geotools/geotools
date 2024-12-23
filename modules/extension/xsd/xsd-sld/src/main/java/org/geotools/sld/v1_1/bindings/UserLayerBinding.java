@@ -81,8 +81,7 @@ public class UserLayerBinding extends SLDUserLayerBinding {
         // TODO: description
 
         if (node.hasChild("InlineFeature")) {
-            SimpleFeatureCollection features =
-                    (SimpleFeatureCollection) node.getChildValue("InlineFeature");
+            SimpleFeatureCollection features = (SimpleFeatureCollection) node.getChildValue("InlineFeature");
             SimpleFeatureType type = features.getSchema();
 
             layer.setInlineFeatureType(type);

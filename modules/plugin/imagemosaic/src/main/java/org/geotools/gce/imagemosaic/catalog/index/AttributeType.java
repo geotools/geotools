@@ -49,7 +49,8 @@ public class AttributeType {
     @XmlElement(required = true)
     protected String attribute;
 
-    @XmlAttribute protected String collectorRef;
+    @XmlAttribute
+    protected String collectorRef;
 
     /**
      * Gets the value of the attribute property.

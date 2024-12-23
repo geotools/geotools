@@ -72,128 +72,92 @@ public class MBObjectParserTest {
 
     @Test
     public void testNumberFromFunction() throws ParseException {
-        String jsonStr =
-                "{'expr': {'type':'exponential', 'base': 1.9, 'property':'temperature', "
-                        + "'stops':[[0,12],[30,24],[70,48]]}}";
+        String jsonStr = "{'expr': {'type':'exponential', 'base': 1.9, 'property':'temperature', "
+                + "'stops':[[0,12],[30,24],[70,48]]}}";
         JSONObject object = MapboxTestUtils.object(jsonStr);
         Expression numericExpression = parser.number(object, "expr");
         // only care that a function was returned. other unit tests should be responsible for
         // checking
         // the actual parse results
-        assertTrue(
-                "Parse result must be a function",
-                Function.class.isAssignableFrom(numericExpression.getClass()));
+        assertTrue("Parse result must be a function", Function.class.isAssignableFrom(numericExpression.getClass()));
     }
 
     @Test
     public void testPercentageFromFunction() throws ParseException {
-        String jsonStr =
-                "{'expr': {'type':'exponential', 'base': 1.9, 'property':'temperature', "
-                        + "'stops':[[0,12],[30,24],[70,48]]}}";
+        String jsonStr = "{'expr': {'type':'exponential', 'base': 1.9, 'property':'temperature', "
+                + "'stops':[[0,12],[30,24],[70,48]]}}";
         JSONObject object = MapboxTestUtils.object(jsonStr);
         Expression numericExpression = parser.percentage(object, "expr");
         // only care that a function was returned. other unit tests should be responsible for
         // checking
         // the actual parse results
-        assertTrue(
-                "Parse result must be a function",
-                Function.class.isAssignableFrom(numericExpression.getClass()));
+        assertTrue("Parse result must be a function", Function.class.isAssignableFrom(numericExpression.getClass()));
     }
 
     @Test
     public void testColorFromFunction() throws ParseException {
-        JSONObject object =
-                MapboxTestUtils.object("{'expr': {'property':'color','type':'identity'}}");
+        JSONObject object = MapboxTestUtils.object("{'expr': {'property':'color','type':'identity'}}");
         Expression expression = parser.color(object, "expr", Color.black);
-        assertTrue(
-                "Parse result must be a function",
-                Function.class.isAssignableFrom(expression.getClass()));
+        assertTrue("Parse result must be a function", Function.class.isAssignableFrom(expression.getClass()));
     }
 
     @Test
     public void testStringFromFunction() throws ParseException {
-        JSONObject object =
-                MapboxTestUtils.object("{'expr': {'base': 1, 'stops': [[0, '{name-en}']]}}");
+        JSONObject object = MapboxTestUtils.object("{'expr': {'base': 1, 'stops': [[0, '{name-en}']]}}");
         Expression expression = parser.string(object, "expr", "name");
-        assertTrue(
-                "Parse result must be a function",
-                Function.class.isAssignableFrom(expression.getClass()));
+        assertTrue("Parse result must be a function", Function.class.isAssignableFrom(expression.getClass()));
     }
 
     @Test
     public void testBoolFromFunction() throws ParseException {
         JSONObject object =
-                MapboxTestUtils.object(
-                        "{'expr': { 'base': 1, 'stops': [ [ 0, true ], [ 10, true ], [ 22, true ] ] }}");
+                MapboxTestUtils.object("{'expr': { 'base': 1, 'stops': [ [ 0, true ], [ 10, true ], [ 22, true ] ] }}");
         Expression expression = parser.bool(object, "expr", true);
-        assertTrue(
-                "Parse result must be a function",
-                Function.class.isAssignableFrom(expression.getClass()));
+        assertTrue("Parse result must be a function", Function.class.isAssignableFrom(expression.getClass()));
     }
 
     /** Test parsing from a Mapbox enumeration property to a GeoTools expression. */
     @Test
     public void testEnumToExpression() throws ParseException {
         // Test for text-pitch-alignment
-        JSONObject object =
-                MapboxTestUtils.object("{'text-pitch-alignment': 'map'}"); // viewport, auto
-        Expression expression =
-                parser.enumToExpression(
-                        object,
-                        "text-pitch-alignment",
-                        SymbolMBLayer.Alignment.class,
-                        SymbolMBLayer.Alignment.AUTO);
+        JSONObject object = MapboxTestUtils.object("{'text-pitch-alignment': 'map'}"); // viewport, auto
+        Expression expression = parser.enumToExpression(
+                object, "text-pitch-alignment", SymbolMBLayer.Alignment.class, SymbolMBLayer.Alignment.AUTO);
         assertEquals("Enum correctly parsed", "map", expression.evaluate(null, String.class));
 
         // Test for line-cap
         object = MapboxTestUtils.object("{'line-cap': 'round'}");
-        expression =
-                parser.enumToExpression(
-                        object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
+        expression = parser.enumToExpression(object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
         assertEquals("round", expression.evaluate(null, String.class));
 
         // Test for line-join
         object = MapboxTestUtils.object("{'line-join': 'bevel'}");
         expression =
-                parser.enumToExpression(
-                        object,
-                        "line-join",
-                        LineMBLayer.LineJoin.class,
-                        LineMBLayer.LineJoin.MITER);
+                parser.enumToExpression(object, "line-join", LineMBLayer.LineJoin.class, LineMBLayer.LineJoin.MITER);
         assertEquals("bevel", expression.evaluate(null, String.class));
     }
 
     /**
-     * Test parsing from a Mapbox enumeration property to a GeoTools expression, when the JSON
-     * property value is invalid for the enumeration (should fallback to default).
+     * Test parsing from a Mapbox enumeration property to a GeoTools expression, when the JSON property value is invalid
+     * for the enumeration (should fallback to default).
      */
     @Test
     public void testInvalidEnumProperty() throws ParseException {
         // Test for text-pitch-alignment
         JSONObject object = MapboxTestUtils.object("{'text-pitch-alignment': 'bad_value'}");
-        Expression expression =
-                parser.enumToExpression(
-                        object,
-                        "text-pitch-alignment",
-                        SymbolMBLayer.Alignment.class,
-                        SymbolMBLayer.Alignment.AUTO);
+        Expression expression = parser.enumToExpression(
+                object, "text-pitch-alignment", SymbolMBLayer.Alignment.class, SymbolMBLayer.Alignment.AUTO);
         assertEquals("auto", expression.evaluate(null, String.class));
 
         // Test for line-cap
         object = MapboxTestUtils.object("{'line-cap': 'bad_value'}");
-        expression =
-                parser.enumToExpression(
-                        object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
+        expression = parser.enumToExpression(object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
         assertEquals("butt", expression.evaluate(null, String.class));
 
         // Test for line-join
         object = MapboxTestUtils.object("{'line-join': 'bad_value'}");
         expression =
-                parser.enumToExpression(
-                        object,
-                        "line-join",
-                        LineMBLayer.LineJoin.class,
-                        LineMBLayer.LineJoin.MITER);
+                parser.enumToExpression(object, "line-join", LineMBLayer.LineJoin.class, LineMBLayer.LineJoin.MITER);
         assertEquals("mitre", expression.evaluate(null, String.class));
     }
 }

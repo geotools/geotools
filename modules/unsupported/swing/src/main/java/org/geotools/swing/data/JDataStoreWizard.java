@@ -30,9 +30,8 @@ import org.geotools.util.URLs;
 /**
  * Wizard prompting the user to enter or review connection parameters.
  *
- * <p>GeoTools DataStores that work with files are asked to provide a FileDataStoreFactorySpi
- * documenting what file extensions they support; and any additional parameters that may be
- * interesting etc.
+ * <p>GeoTools DataStores that work with files are asked to provide a FileDataStoreFactorySpi documenting what file
+ * extensions they support; and any additional parameters that may be interesting etc.
  */
 public class JDataStoreWizard extends JWizard {
     private static final long serialVersionUID = -3788708439279424698L;
@@ -56,8 +55,7 @@ public class JDataStoreWizard extends JWizard {
         this(null, new HashMap<String, Object>());
     }
     /**
-     * Quick transition from JFileDataStoreChooser; allowing applications to migrate to connection
-     * parameters.
+     * Quick transition from JFileDataStoreChooser; allowing applications to migrate to connection parameters.
      *
      * @param extension Extension used to look up FileDataStoreFactory
      */

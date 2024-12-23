@@ -62,8 +62,7 @@ public class MouseDragBox extends MouseInputAdapter {
     }
 
     /**
-     * If the box is enabled, records the start position for subsequent drawing as the mouse is
-     * dragged.
+     * If the box is enabled, records the start position for subsequent drawing as the mouse is dragged.
      *
      * @param ev input mouse event
      */
@@ -73,8 +72,8 @@ public class MouseDragBox extends MouseInputAdapter {
     }
 
     /**
-     * If the box is enabled, draws the box with the diagonal running from the start position to the
-     * current mouse position.
+     * If the box is enabled, draws the box with the diagonal running from the start position to the current mouse
+     * position.
      *
      * @param ev input mouse event
      */

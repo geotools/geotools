@@ -104,9 +104,7 @@ public class Skeletonize {
         }
         merger.add(edges);
 
-        Geometry geom =
-                GF.createMultiLineString(
-                        GeometryFactory.toLineStringArray(merger.getMergedLineStrings()));
+        Geometry geom = GF.createMultiLineString(GeometryFactory.toLineStringArray(merger.getMergedLineStrings()));
         geom = geom.union();
 
         LOG.fine(geom.toText());

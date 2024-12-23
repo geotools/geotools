@@ -42,8 +42,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 
 /**
- * Nested list of zero or more map Layers offered by this server. It contains only fields for
- * information that we currently find interesting. Feel free to add your own.
+ * Nested list of zero or more map Layers offered by this server. It contains only fields for information that we
+ * currently find interesting. Feel free to add your own.
  *
  * @author rgould
  */
@@ -57,9 +57,7 @@ public class Layer implements Comparable<Layer> {
     /** Parent Layer may be null if this is the root Layer for a WMS Service */
     private Layer parent;
 
-    /**
-     * Child Layers (Note we should clear the children cache if any of setter methods are called)
-     */
+    /** Child Layers (Note we should clear the children cache if any of setter methods are called) */
     private List<Layer> children = new ArrayList<>();
 
     /** The title is for informative display to a human. */
@@ -70,22 +68,20 @@ public class Layer implements Comparable<Layer> {
     private String[] keywords;
 
     /**
-     * A set of Strings representing SRSs. These are the SRSs contributed by this layer. For the
-     * complete list you need to consider these values and those defined by its parent.
+     * A set of Strings representing SRSs. These are the SRSs contributed by this layer. For the complete list you need
+     * to consider these values and those defined by its parent.
      */
     protected Set<String> srs = new LinkedHashSet<>();
 
     /**
-     * The bounding boxes on each layer; usually this matches the actual data coordinate reference
-     * system (compare with latLonBoundingBox) near as I can tell multiple boundingBoxes are here to
-     * account for either data that moves over time; or compound layers that combine several data
-     * sets.
+     * The bounding boxes on each layer; usually this matches the actual data coordinate reference system (compare with
+     * latLonBoundingBox) near as I can tell multiple boundingBoxes are here to account for either data that moves over
+     * time; or compound layers that combine several data sets.
      */
     private List<CRSEnvelope> boundingBoxes = new ArrayList<>();
 
     /**
-     * A BoundingBox containing the minimum rectangle of the map data in CRS:84 (Prior to WMS 1.3.3
-     * this was EPSG:4326)
+     * A BoundingBox containing the minimum rectangle of the map data in CRS:84 (Prior to WMS 1.3.3 this was EPSG:4326)
      */
     private CRSEnvelope latLonBoundingBox = null;
 
@@ -96,9 +92,9 @@ public class Layer implements Comparable<Layer> {
     private Boolean queryable = null;
 
     /**
-     * If a WMS cascades the content of another WMS, then it shall increment by 1 the value of the
-     * cascaded attribute for the affected layers. If that attribute is missing from the originating
-     * server’s service metadata, then the Cascading WMS shall insert the attribute and set it to 1.
+     * If a WMS cascades the content of another WMS, then it shall increment by 1 the value of the cascaded attribute
+     * for the affected layers. If that attribute is missing from the originating server’s service metadata, then the
+     * Cascading WMS shall insert the attribute and set it to 1.
      */
     private int cascaded;
 
@@ -118,8 +114,8 @@ public class Layer implements Comparable<Layer> {
     // clearCache() reset's these caches to null
     //
     /**
-     * The union of the layers's SRSs and the parent's SRSs. This cache is used to check if the SRS
-     * is known to work for this layer
+     * The union of the layers's SRSs and the parent's SRSs. This cache is used to check if the SRS is known to work for
+     * this layer
      */
     private Set<String> allSRSCache = null;
 
@@ -127,25 +123,22 @@ public class Layer implements Comparable<Layer> {
     private Map<String, CRSEnvelope> allBoundingBoxesCache = null;
 
     /**
-     * A HashMap recording the dimensions on each layer. The Key is the name of the dimension (case
-     * insensitive). The Value is the Dimension object itself. Chances are you need to check the
-     * parent Dimensions as well.
+     * A HashMap recording the dimensions on each layer. The Key is the name of the dimension (case insensitive). The
+     * Value is the Dimension object itself. Chances are you need to check the parent Dimensions as well.
      */
     private HashMap<String, Dimension> allDimensionsCache = null;
 
     /**
-     * A HashMap recoding the extents on each layer. An Extent is not valid unless there is a
-     * Dimension with the same name. The Key is the name of the dimension (case insensitive). The
-     * Value is the Extent object itself.
+     * A HashMap recoding the extents on each layer. An Extent is not valid unless there is a Dimension with the same
+     * name. The Key is the name of the dimension (case insensitive). The Value is the Extent object itself.
      */
     private HashMap<String, Extent> allExtentsCache = null;
 
     /**
-     * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
-     * ReferencedEnvelope with a real CoordinateReferenceSystem.
+     * This is where we try and go from our rather lame CRSEnvelope data structure to an actual ReferencedEnvelope with
+     * a real CoordinateReferenceSystem.
      */
-    private Map<CoordinateReferenceSystem, Bounds> envelopeCache =
-            Collections.synchronizedMap(new WeakHashMap<>());
+    private Map<CoordinateReferenceSystem, Bounds> envelopeCache = Collections.synchronizedMap(new WeakHashMap<>());
 
     private List<MetadataURL> metadataURL;
 
@@ -167,8 +160,8 @@ public class Layer implements Comparable<Layer> {
     /**
      * Crate a layer with no human readable title.
      *
-     * <p>These layers are simply for organization and storage of common settings (like SRS or style
-     * settings). These settings will be valid for all children.
+     * <p>These layers are simply for organization and storage of common settings (like SRS or style settings). These
+     * settings will be valid for all children.
      */
     public Layer() {
         this(null);
@@ -182,21 +175,19 @@ public class Layer implements Comparable<Layer> {
     /**
      * Get the BoundingBoxes associated with this layer.
      *
-     * <p>If you modify the contents of this List please call clearCache() so that the
-     * getBoundingBoxes() method can return the correct combination of this list and the parent
-     * bounding boxes.
+     * <p>If you modify the contents of this List please call clearCache() so that the getBoundingBoxes() method can
+     * return the correct combination of this list and the parent bounding boxes.
      */
     public List<CRSEnvelope> getLayerBoundingBoxes() {
         return boundingBoxes;
     }
 
     /**
-     * Returns every BoundingBox associated with this layer. The <code>HashMap</code> returned has
-     * each bounding box's SRS Name (usually an EPSG code) value as the key, and the value is the
-     * <code>BoundingBox</code> object itself.
+     * Returns every BoundingBox associated with this layer. The <code>HashMap</code> returned has each bounding box's
+     * SRS Name (usually an EPSG code) value as the key, and the value is the <code>BoundingBox</code> object itself.
      *
-     * <p>Implements inheritance: if this layer's bounding box is null, query ancestors until the
-     * first bounding box is found or no more ancestors
+     * <p>Implements inheritance: if this layer's bounding box is null, query ancestors until the first bounding box is
+     * found or no more ancestors
      *
      * @return a HashMap of all of this layer's bounding boxes or null if no bounding boxes found
      */
@@ -228,8 +219,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Sets this layer's bounding boxes. The HashMap must have each BoundingBox's CRS/SRS value as
-     * its key, and the <code>BoundingBox</code> object as its value.
+     * Sets this layer's bounding boxes. The HashMap must have each BoundingBox's CRS/SRS value as its key, and the
+     * <code>BoundingBox</code> object as its value.
      *
      * @param boundingBoxes a HashMap containing bounding boxes
      */
@@ -250,9 +241,9 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Direct access to the dimensions contributed by this Layer. For the complete list of
-     * Dimensions applicable to the layer this value must be combined with any Dimensions supplied
-     * by the parent - this work is done for you using the getDimensions() method.
+     * Direct access to the dimensions contributed by this Layer. For the complete list of Dimensions applicable to the
+     * layer this value must be combined with any Dimensions supplied by the parent - this work is done for you using
+     * the getDimensions() method.
      *
      * @see getDimensions()
      * @return List of Dimensions contributed by this Layer definition
@@ -262,8 +253,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * The dimensions valid for this layer. Includes both getLauerDimensions() and all Dimensions
-     * contributed by parent layers. The result is an unmodifiable map indexed by Dimension name.
+     * The dimensions valid for this layer. Includes both getLauerDimensions() and all Dimensions contributed by parent
+     * layers. The result is an unmodifiable map indexed by Dimension name.
      *
      * @return Map of valid dimensions for this layer indexed by Dimension name.
      */
@@ -312,9 +303,8 @@ public class Layer implements Comparable<Layer> {
     /**
      * The Extents contributed by this Layer.
      *
-     * <p>Please note that for the complete list of Extents valid for this layer you should use the
-     * getExtents() method which will consider extents defined as part of a Dimension and all those
-     * contributed by Parent layers.
+     * <p>Please note that for the complete list of Extents valid for this layer you should use the getExtents() method
+     * which will consider extents defined as part of a Dimension and all those contributed by Parent layers.
      *
      * <p>This is an accessor; if you modify the provided list please call clearCache().
      *
@@ -324,11 +314,10 @@ public class Layer implements Comparable<Layer> {
         return extents;
     }
     /**
-     * The Extents valid for this layer; this includes both extents defined by this layer and all
-     * extents contributed by parent layers.
+     * The Extents valid for this layer; this includes both extents defined by this layer and all extents contributed by
+     * parent layers.
      *
-     * <p>In keeping with the WMS 1.3.0 specification some extents may be defined as part of a
-     * Dimension definition.
+     * <p>In keeping with the WMS 1.3.0 specification some extents may be defined as part of a Dimension definition.
      *
      * @return All extents valid for this layer.
      */
@@ -387,9 +376,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Gets the name of the <code>Layer</code>. It is designed to be machine readable, and if it is
-     * present, this layer is determined to be drawable and is a valid candidate for use in a GetMap
-     * or GetFeatureInfo request.
+     * Gets the name of the <code>Layer</code>. It is designed to be machine readable, and if it is present, this layer
+     * is determined to be drawable and is a valid candidate for use in a GetMap or GetFeatureInfo request.
      *
      * @return the machine-readable name of the layer
      */
@@ -398,8 +386,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Sets the name of this layer. Giving the layer name indicates that it can be drawn during a
-     * GetMap or GetFeatureInfo request.
+     * Sets the name of this layer. Giving the layer name indicates that it can be drawn during a GetMap or
+     * GetFeatureInfo request.
      *
      * @param name the layer's new name
      */
@@ -408,8 +396,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Accumulates all of the srs/crs specified for this layer and all srs/crs inherited from its
-     * ancestors. No duplicates are returned.
+     * Accumulates all of the srs/crs specified for this layer and all srs/crs inherited from its ancestors. No
+     * duplicates are returned.
      *
      * @return Set of all srs/crs for this layer and its ancestors
      */
@@ -438,11 +426,11 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Accumulates all of the styles specified for this layer and all styles inherited from its
-     * ancestors. No duplicates are returned.
+     * Accumulates all of the styles specified for this layer and all styles inherited from its ancestors. No duplicates
+     * are returned.
      *
-     * <p>The List that is returned is of type List<org.geotools.api.layer.Style>. Before 2.2-RC0 it
-     * was of type List<java.lang.String>.
+     * <p>The List that is returned is of type List<org.geotools.api.layer.Style>. Before 2.2-RC0 it was of type
+     * List<java.lang.String>.
      *
      * @return List of all styles for this layer and its ancestors
      */
@@ -484,10 +472,9 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Determines if this layer is queryable. Implements inheritance: if this layer's Queryable
-     * attribute is null, check ancestors until the first Queryable attribute is found or no more
-     * ancestors. If a Queryable attribute is not found for this layer, it will return the default
-     * value of false.
+     * Determines if this layer is queryable. Implements inheritance: if this layer's Queryable attribute is null, check
+     * ancestors until the first Queryable attribute is found or no more ancestors. If a Queryable attribute is not
+     * found for this layer, it will return the default value of false.
      *
      * @return true is this layer is Queryable
      */
@@ -545,9 +532,8 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Returns the LatLonBoundingBox for this layer. Implements inheritance: if this layer's
-     * bounding box is null, query ancestors until the first bounding box is found or no more
-     * ancestors.
+     * Returns the LatLonBoundingBox for this layer. Implements inheritance: if this layer's bounding box is null, query
+     * ancestors until the first bounding box is found or no more ancestors.
      *
      * @return the LatLonBoundingBox for this layer or null if no lat/lon bounding box is found
      */
@@ -573,8 +559,7 @@ public class Layer implements Comparable<Layer> {
         if (latLonBoundingBox.getSRSName() != null) {
             String srsName = latLonBoundingBox.getSRSName();
             if (!srsName.equals("CRS:84")) {
-                throw new IllegalStateException(
-                        "Layer LatLonBoundingBox srsName required to be null or CRS:84");
+                throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
             }
         } else {
             latLonBoundingBox.setSRSName("CRS:84", false);
@@ -675,8 +660,8 @@ public class Layer implements Comparable<Layer> {
     /**
      * Max scale denominator for which it is appropriate to draw this layer.
      *
-     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
-     * request (ie not a scale based on real world size of the entire layer).
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a request (ie not a scale
+     * based on real world size of the entire layer).
      *
      * @param scaleDenominatorMax scale denominator for which it is approprirate to draw this layer
      */
@@ -687,11 +672,10 @@ public class Layer implements Comparable<Layer> {
     /**
      * Max scale denominator for which it is appropriate to draw this layer.
      *
-     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
-     * request (ie not a scale based on real world size of the entire layer).
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a request (ie not a scale
+     * based on real world size of the entire layer).
      *
-     * <p>Some web map servers will refuse to render images at a scale greater than the value
-     * provided here.
+     * <p>Some web map servers will refuse to render images at a scale greater than the value provided here.
      *
      * <p>return Max scale denominator for which it is appropriate to draw this layer.
      */
@@ -702,8 +686,8 @@ public class Layer implements Comparable<Layer> {
     /**
      * Min scale denominator for which it is appropriate to draw this layer.
      *
-     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
-     * request (ie not a scale based on real world size of the entire layer).
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a request (ie not a scale
+     * based on real world size of the entire layer).
      *
      * @param scaleDenominatorMin scale denominator for which it is appropriate to draw this layer
      */
@@ -714,11 +698,10 @@ public class Layer implements Comparable<Layer> {
     /**
      * Min scale denominator for which it is appropriate to draw this layer.
      *
-     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
-     * request (ie not a scale based on real world size of the entire layer).
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a request (ie not a scale
+     * based on real world size of the entire layer).
      *
-     * <p>Some web map servers will refuse to render images at a scale less than the value provided
-     * here.
+     * <p>Some web map servers will refuse to render images at a scale less than the value provided here.
      *
      * <p>return Min scale denominator for which it is appropriate to draw this layer
      */
@@ -729,10 +712,9 @@ public class Layer implements Comparable<Layer> {
     /**
      * Look up an envelope for the provided CoordinateReferenceSystem.
      *
-     * <p>Please note that the lookup is performed based on the SRS Name of the provided CRS which
-     * is assumed to be one of its identifiers. This method returns the first envelope found; this
-     * may not be valid for sparse data sets that indicate data location using multiple envelopes
-     * for a provided CRS.
+     * <p>Please note that the lookup is performed based on the SRS Name of the provided CRS which is assumed to be one
+     * of its identifiers. This method returns the first envelope found; this may not be valid for sparse data sets that
+     * indicate data location using multiple envelopes for a provided CRS.
      *
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
@@ -757,8 +739,7 @@ public class Layer implements Comparable<Layer> {
                 break;
             }
             // Otherwise, locate a LatLon bounding box ... if applicable
-            if ("CRS:84".equals(srsName.toUpperCase())
-                    || "EPSG:4326".equals(srsName.toUpperCase())) {
+            if ("CRS:84".equals(srsName.toUpperCase()) || "EPSG:4326".equals(srsName.toUpperCase())) {
                 tempBBox = getLatLonBoundingBox(); // checks parents
                 break;
             }
@@ -770,7 +751,9 @@ public class Layer implements Comparable<Layer> {
         // TODO Attempt to figure out the valid area of the CRS and use that.
 
         // last attempt grab the first thing (and we will transform it)
-        if (tempBBox == null && getBoundingBoxes() != null && !getBoundingBoxes().isEmpty()) {
+        if (tempBBox == null
+                && getBoundingBoxes() != null
+                && !getBoundingBoxes().isEmpty()) {
             tempBBox = getBoundingBoxes().values().iterator().next();
         }
 
@@ -780,10 +763,9 @@ public class Layer implements Comparable<Layer> {
                 Bounds fixed = CRS.transform(tempBBox, crs);
                 env = new GeneralBounds(fixed);
             } catch (TransformException e) {
-                env =
-                        new GeneralBounds(
-                                new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
-                                new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
+                env = new GeneralBounds(
+                        new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
+                        new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
                 env.setCoordinateReferenceSystem(crs);
                 LOGGER.warning("Forcing bbox as " + env);
             }
@@ -818,17 +800,13 @@ public class Layer implements Comparable<Layer> {
         return identifiers;
     }
 
-    /**
-     * @return {@code 0} if the layer is not cascaded, the number of times it has been cascaded
-     *     otherwise.
-     */
+    /** @return {@code 0} if the layer is not cascaded, the number of times it has been cascaded otherwise. */
     public int getCascaded() {
         return cascaded;
     }
 
     /**
-     * @param cascadedValue {@code 0} if the layer is not cascaded, the number of times it has been
-     *     cascaded otherwise.
+     * @param cascadedValue {@code 0} if the layer is not cascaded, the number of times it has been cascaded otherwise.
      */
     public void setCascaded(int cascadedValue) {
         this.cascaded = cascadedValue;

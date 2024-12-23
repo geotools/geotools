@@ -19,12 +19,12 @@ package org.geotools.util.factory;
 import java.util.Iterator;
 
 /**
- * Provides iterators over factories of specified categories. Users shall {@linkplain
- * Factories#addFactoryIteratorProvider register} an implementation of this interface when the
- * default lookup mechanism (namely scanning the content of the <code>META-INF/services/</code>
- * <var>category</var> file in every JARs found on the classpath) can not work. Such need may appear
- * in the context of {@linkplain ClassLoader class loaders} restricting access to non-package
- * directories as {@code META-INF}. This constraint occurs on the Eclipse platform for instance.
+ * Provides iterators over factories of specified categories. Users shall
+ * {@linkplain Factories#addFactoryIteratorProvider register} an implementation of this interface when the default
+ * lookup mechanism (namely scanning the content of the <code>META-INF/services/</code> <var>category</var> file in
+ * every JARs found on the classpath) can not work. Such need may appear in the context of {@linkplain ClassLoader class
+ * loaders} restricting access to non-package directories as {@code META-INF}. This constraint occurs on the Eclipse
+ * platform for instance.
  *
  * @since 2.4
  * @version $Id$
@@ -34,9 +34,8 @@ import java.util.Iterator;
  */
 public interface FactoryIteratorProvider {
     /**
-     * Returns an iterator over all {@linkplain Factory factories} of the specified category. The
-     * {@code category} argument should be the interface class to be implemented, not the actual
-     * implementation.
+     * Returns an iterator over all {@linkplain Factory factories} of the specified category. The {@code category}
+     * argument should be the interface class to be implemented, not the actual implementation.
      *
      * @param category The category for the factories to be returned.
      * @return Factories that implement the specified category.

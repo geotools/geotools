@@ -14,10 +14,10 @@ import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.Projection;
 
 /**
- * A 2D coordinate reference system used to approximate the shape of the earth on a planar surface.
- * It is done in such a way that the distortion that is inherent to the approximation is carefully
- * controlled and known. Distortion correction is commonly applied to calculated bearings and
- * distances to produce values that are a close match to actual field values.
+ * A 2D coordinate reference system used to approximate the shape of the earth on a planar surface. It is done in such a
+ * way that the distortion that is inherent to the approximation is carefully controlled and known. Distortion
+ * correction is commonly applied to calculated bearings and distances to produce values that are a close match to
+ * actual field values.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
@@ -25,8 +25,7 @@ import org.geotools.api.referencing.operation.Projection;
  *   {@link org.geotools.api.referencing.cs.CartesianCS Cartesian}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

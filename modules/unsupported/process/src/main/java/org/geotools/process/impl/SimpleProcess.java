@@ -23,8 +23,8 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.process.ProcessFactory;
 
 /**
- * Provide an implementation for a simple process (ie so quick and easy it is not going to need to
- * report progress as it goes).
+ * Provide an implementation for a simple process (ie so quick and easy it is not going to need to report progress as it
+ * goes).
  *
  * @author gdavis
  */

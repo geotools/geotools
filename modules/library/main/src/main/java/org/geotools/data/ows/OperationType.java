@@ -31,8 +31,8 @@ public class OperationType {
     protected URL post;
 
     /**
-     * Each format is usually a MIME type string that can be used to indicate what format the
-     * server's response should be in.
+     * Each format is usually a MIME type string that can be used to indicate what format the server's response should
+     * be in.
      *
      * @return a List of Strings, each of which usually represent a mime type
      */

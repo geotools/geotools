@@ -28,8 +28,7 @@ import java.awt.geom.AffineTransform;
 import org.junit.Test;
 
 /**
- * Test functionality GeneralMatrix Tests {@link
- * org.geotools.referencing.operation.matrix.GeneralMatrix}.
+ * Test functionality GeneralMatrix Tests {@link org.geotools.referencing.operation.matrix.GeneralMatrix}.
  *
  * @version $Id$
  * @author James Hughes
@@ -82,8 +81,7 @@ public class GeneralMatrixTest {
 
     private static double[] array1flatten = {1.2, -3.4, -5.6, 7.8, 9.0, -1.0};
 
-    private static AffineTransform affineTransform =
-            new AffineTransform(1.2, 3.4, 5.6, 7.8, 9.0, 1.0);
+    private static AffineTransform affineTransform = new AffineTransform(1.2, 3.4, 5.6, 7.8, 9.0, 1.0);
 
     private static double[][] affineMatrix = {
         {1.2, 5.6, 9.0},
@@ -224,32 +222,26 @@ public class GeneralMatrixTest {
         // OrderedAxisAuthorityFactoryTest relies on DefaultCoordinateOperationFactory checking
         // inverse
         // accuracy to 1E-9, previously vecmath accomplished 1E-10
-        GeneralMatrix matrix =
-                new GeneralMatrix(
-                        new double[][] {
-                            {1.0000000000000002, 0.0, -1.1641532182693481E-10},
-                            {0.0, 1.0000000000000002, 0.0},
-                            {0.0, 0.0, 1.0}
-                        });
+        GeneralMatrix matrix = new GeneralMatrix(new double[][] {
+            {1.0000000000000002, 0.0, -1.1641532182693481E-10},
+            {0.0, 1.0000000000000002, 0.0},
+            {0.0, 0.0, 1.0}
+        });
 
         GeneralMatrix inverse = matrix.clone();
         inverse.invert();
         matrix.mul(inverse);
 
-        GeneralMatrix sourceScale =
-                new GeneralMatrix(
-                        new double[][] {
-                            {0.9996, 0.0, 500000.0},
-                            {0.0, 0.9996, 0.0},
-                            {0.0, 0.0, 1.0}
-                        });
-        GeneralMatrix targetScale =
-                new GeneralMatrix(
-                        new double[][] {
-                            {0.9996, 0.0, 500000.0},
-                            {0.0, 0.9996, 0.0},
-                            {0.0, 0.0, 1.0}
-                        });
+        GeneralMatrix sourceScale = new GeneralMatrix(new double[][] {
+            {0.9996, 0.0, 500000.0},
+            {0.0, 0.9996, 0.0},
+            {0.0, 0.0, 1.0}
+        });
+        GeneralMatrix targetScale = new GeneralMatrix(new double[][] {
+            {0.9996, 0.0, 500000.0},
+            {0.0, 0.9996, 0.0},
+            {0.0, 0.0, 1.0}
+        });
         sourceScale.invert();
         targetScale.multiply(sourceScale);
 

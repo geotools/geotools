@@ -26,8 +26,8 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 
 /**
- * Information about the outcome of evaluating the obtained value (or set of values) against a
- * specified acceptable conformance quality level.
+ * Information about the outcome of evaluating the obtained value (or set of values) against a specified acceptable
+ * conformance quality level.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -39,9 +39,7 @@ public class ConformanceResultImpl extends MetadataEntity implements Conformance
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = 6429932577869033286L;
 
-    /**
-     * Citation of product specification or user requirement against which data is being evaluated.
-     */
+    /** Citation of product specification or user requirement against which data is being evaluated. */
     private Citation specification;
 
     /** Explanation of the meaning of conformance for this result. */
@@ -64,26 +62,19 @@ public class ConformanceResultImpl extends MetadataEntity implements Conformance
 
     /** Creates a conformance result initialized to the given values. */
     public ConformanceResultImpl(
-            final Citation specification,
-            final InternationalString explanation,
-            final boolean pass) {
+            final Citation specification, final InternationalString explanation, final boolean pass) {
         setSpecification(specification);
         setExplanation(explanation);
         setPass(pass);
     }
 
-    /**
-     * Citation of product specification or user requirement against which data is being evaluated.
-     */
+    /** Citation of product specification or user requirement against which data is being evaluated. */
     @Override
     public Citation getSpecification() {
         return specification;
     }
 
-    /**
-     * Set the citation of product specification or user requirement against which data is being
-     * evaluated.
-     */
+    /** Set the citation of product specification or user requirement against which data is being evaluated. */
     public void setSpecification(final Citation newValue) {
         checkWritePermission();
         specification = newValue;

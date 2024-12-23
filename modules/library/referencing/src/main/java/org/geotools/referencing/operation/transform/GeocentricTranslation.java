@@ -39,11 +39,10 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * An affine transform applied on {@linkplain org.geotools.api.referencing.crs.GeocentricCRS
- * geocentric} coordinates. While "geocentric translation" is a little bit more restrictive name, it
- * describes the part which is common to all instances of this class. A rotation may also be
- * performed in addition of the translation, but the rotation sign is operation-dependent (EPSG 9606
- * and 9607 have opposite sign). This transform is used for the following operations:
+ * An affine transform applied on {@linkplain org.geotools.api.referencing.crs.GeocentricCRS geocentric} coordinates.
+ * While "geocentric translation" is a little bit more restrictive name, it describes the part which is common to all
+ * instances of this class. A rotation may also be performed in addition of the translation, but the rotation sign is
+ * operation-dependent (EPSG 9606 and 9607 have opposite sign). This transform is used for the following operations:
  *
  * <p>
  *
@@ -54,9 +53,9 @@ import si.uom.SI;
  *   <tr><td>Coordinate Frame rotation</td>               <td>9607</td></tr>
  * </table>
  *
- * <p>The conversion between geographic and geocentric coordinates is usually <strong>not</strong>
- * part of this transform. However, the Geotools implementation of the {@linkplain
- * GeocentricTranslation.Provider provider} accepts the following extensions:
+ * <p>The conversion between geographic and geocentric coordinates is usually <strong>not</strong> part of this
+ * transform. However, the Geotools implementation of the {@linkplain GeocentricTranslation.Provider provider} accepts
+ * the following extensions:
  *
  * <p>
  *
@@ -79,21 +78,18 @@ public class GeocentricTranslation extends ProjectiveTransform {
     private final ParameterDescriptorGroup descriptor;
 
     /**
-     * Creates a new geocentric affine transform. If the parameters don't contain rotation terms,
-     * then this transform will be of kind "<cite>Geocentric translations</cite>". Otherwise, it
-     * will be of kind "<cite>Position Vector 7-param. transformation</cite>".
+     * Creates a new geocentric affine transform. If the parameters don't contain rotation terms, then this transform
+     * will be of kind "<cite>Geocentric translations</cite>". Otherwise, it will be of kind "<cite>Position Vector
+     * 7-param. transformation</cite>".
      *
      * @param parameters The Bursa-Wolf parameters to use for initializing the transformation.
      */
     public GeocentricTranslation(final BursaWolfParameters parameters) {
-        this(
-                parameters,
-                parameters.isTranslation() ? Provider.PARAMETERS : ProviderSevenParam.PARAMETERS);
+        this(parameters, parameters.isTranslation() ? Provider.PARAMETERS : ProviderSevenParam.PARAMETERS);
     }
 
     /** Creates a new geocentric affine transform using the specified parameter descriptor. */
-    GeocentricTranslation(
-            final BursaWolfParameters parameters, final ParameterDescriptorGroup descriptor) {
+    GeocentricTranslation(final BursaWolfParameters parameters, final ParameterDescriptorGroup descriptor) {
         super(parameters.getAffineTransform());
         this.descriptor = descriptor;
     }
@@ -141,8 +137,8 @@ public class GeocentricTranslation extends ProjectiveTransform {
     }
 
     /**
-     * Returns a hash value for this transform. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this transform. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -160,10 +156,10 @@ public class GeocentricTranslation extends ProjectiveTransform {
     }
 
     /**
-     * Base class for {@linkplain GeocentricTranslation geocentric affine transform} providers. This
-     * base class is the provider for the "<cite>Geocentric translations</cite>" operation (EPSG
-     * code 9603). The translation terms are the same for the 2 derived operations, "<cite>Position
-     * Vector 7-param. transformation</cite>" and "<cite>Coordinate Frame rotation</cite>".
+     * Base class for {@linkplain GeocentricTranslation geocentric affine transform} providers. This base class is the
+     * provider for the "<cite>Geocentric translations</cite>" operation (EPSG code 9603). The translation terms are the
+     * same for the 2 derived operations, "<cite>Position Vector 7-param. transformation</cite>" and "<cite>Coordinate
+     * Frame rotation</cite>".
      *
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
@@ -174,164 +170,127 @@ public class GeocentricTranslation extends ProjectiveTransform {
         private static final long serialVersionUID = -7160250630666911608L;
 
         /**
-         * The default value for geographic source and target dimensions, which is 2. NOTE: If this
-         * default value is modified, then the handling of the 3D cases in {@link
-         * MolodenskiTransform} must be adjusted.
+         * The default value for geographic source and target dimensions, which is 2. NOTE: If this default value is
+         * modified, then the handling of the 3D cases in {@link MolodenskiTransform} must be adjusted.
          */
         static final int DEFAULT_DIMENSION = 2;
 
         /**
-         * The number of source geographic dimension (2 or 3). This is a Geotools-specific argument.
-         * If presents, an {@code "Ellipsoid_To_Geocentric"} transform will be concatenated before
-         * the geocentric translation.
+         * The number of source geographic dimension (2 or 3). This is a Geotools-specific argument. If presents, an
+         * {@code "Ellipsoid_To_Geocentric"} transform will be concatenated before the geocentric translation.
          */
-        public static final ParameterDescriptor<Integer> SRC_DIM =
-                DefaultParameterDescriptor.create(
-                        Collections.singletonMap(
-                                NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "src_dim")),
-                        DEFAULT_DIMENSION,
-                        2,
-                        3,
-                        false);
+        public static final ParameterDescriptor<Integer> SRC_DIM = DefaultParameterDescriptor.create(
+                Collections.singletonMap(NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "src_dim")),
+                DEFAULT_DIMENSION,
+                2,
+                3,
+                false);
 
         /**
-         * The number of target geographic dimension (2 or 3). This is a Geotools-specific argument.
-         * If presents, a {@code "Geocentric_To_Ellipsoid"} transform will be concatenated after the
-         * geocentric translation.
+         * The number of target geographic dimension (2 or 3). This is a Geotools-specific argument. If presents, a
+         * {@code "Geocentric_To_Ellipsoid"} transform will be concatenated after the geocentric translation.
          */
-        public static final ParameterDescriptor<Integer> TGT_DIM =
-                DefaultParameterDescriptor.create(
-                        Collections.singletonMap(
-                                NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "tgt_dim")),
-                        DEFAULT_DIMENSION,
-                        2,
-                        3,
-                        false);
+        public static final ParameterDescriptor<Integer> TGT_DIM = DefaultParameterDescriptor.create(
+                Collections.singletonMap(NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "tgt_dim")),
+                DEFAULT_DIMENSION,
+                2,
+                3,
+                false);
 
         /**
-         * The operation parameter descriptor for the "src_semi_major" optional parameter value.
-         * This is a Geotools-specific argument. If presents, an {@code "Ellipsoid_To_Geocentric"}
-         * transform will be concatenated before the geocentric translation. Valid values range from
-         * 0 to infinity.
+         * The operation parameter descriptor for the "src_semi_major" optional parameter value. This is a
+         * Geotools-specific argument. If presents, an {@code "Ellipsoid_To_Geocentric"} transform will be concatenated
+         * before the geocentric translation. Valid values range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> SRC_SEMI_MAJOR =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "src_semi_major")
-                        },
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SRC_SEMI_MAJOR = createOptionalDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.OGC, "src_semi_major")},
+                0.0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the "src_semi_minor" optional parameter value.
-         * This is a Geotools-specific argument. If presents, an {@code "Ellipsoid_To_Geocentric"}
-         * transform will be concatenated before the geocentric translation. Valid values range from
-         * 0 to infinity.
+         * The operation parameter descriptor for the "src_semi_minor" optional parameter value. This is a
+         * Geotools-specific argument. If presents, an {@code "Ellipsoid_To_Geocentric"} transform will be concatenated
+         * before the geocentric translation. Valid values range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> SRC_SEMI_MINOR =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "src_semi_minor"),
-                        },
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SRC_SEMI_MINOR = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "src_semi_minor"),
+                },
+                0.0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the "tgt_semi_major" optional parameter value.
-         * This is a Geotools-specific argument. If presents, a {@code "Geocentric_To_Ellipsoid"}
-         * transform will be concatenated after the geocentric translation. Valid values range from
-         * 0 to infinity.
+         * The operation parameter descriptor for the "tgt_semi_major" optional parameter value. This is a
+         * Geotools-specific argument. If presents, a {@code "Geocentric_To_Ellipsoid"} transform will be concatenated
+         * after the geocentric translation. Valid values range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> TGT_SEMI_MAJOR =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "tgt_semi_major")
-                        },
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> TGT_SEMI_MAJOR = createOptionalDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.OGC, "tgt_semi_major")},
+                0.0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the "tgt_semi_minor" optional parameter value.
-         * This is a Geotools-specific argument. If presents, a {@code "Geocentric_To_Ellipsoid"}
-         * transform will be concatenated after the geocentric translation. Valid values range from
-         * 0 to infinity.
+         * The operation parameter descriptor for the "tgt_semi_minor" optional parameter value. This is a
+         * Geotools-specific argument. If presents, a {@code "Geocentric_To_Ellipsoid"} transform will be concatenated
+         * after the geocentric translation. Valid values range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> TGT_SEMI_MINOR =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "tgt_semi_minor")
-                        },
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> TGT_SEMI_MINOR = createOptionalDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.OGC, "tgt_semi_minor")},
+                0.0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the <cite>X-axis translation</cite> ("dx")
-         * parameter value. Valid values range from -infinity to infinity. Units are meters.
+         * The operation parameter descriptor for the <cite>X-axis translation</cite> ("dx") parameter value. Valid
+         * values range from -infinity to infinity. Units are meters.
          */
-        public static final ParameterDescriptor<Double> DX =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "dx"),
-                            new NamedIdentifier(Citations.EPSG, "X-axis translation")
-                        },
-                        0.0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> DX = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "dx"), new NamedIdentifier(Citations.EPSG, "X-axis translation")
+                },
+                0.0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the <cite>Y-axis translation</cite> ("dy")
-         * parameter value. Valid values range from -infinity to infinity. Units are meters.
+         * The operation parameter descriptor for the <cite>Y-axis translation</cite> ("dy") parameter value. Valid
+         * values range from -infinity to infinity. Units are meters.
          */
-        public static final ParameterDescriptor<Double> DY =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "dy"),
-                            new NamedIdentifier(Citations.EPSG, "Y-axis translation")
-                        },
-                        0.0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> DY = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "dy"), new NamedIdentifier(Citations.EPSG, "Y-axis translation")
+                },
+                0.0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
-         * The operation parameter descriptor for the <cite>Z-axis translation</cite> ("dz")
-         * parameter value. Valid values range from -infinity to infinity. Units are meters.
+         * The operation parameter descriptor for the <cite>Z-axis translation</cite> ("dz") parameter value. Valid
+         * values range from -infinity to infinity. Units are meters.
          */
-        public static final ParameterDescriptor<Double> DZ =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "dz"),
-                            new NamedIdentifier(Citations.EPSG, "Z-axis translation")
-                        },
-                        0.0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> DZ = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "dz"), new NamedIdentifier(Citations.EPSG, "Z-axis translation")
+                },
+                0.0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Geocentric translations (geog2D domain)"),
-                            new NamedIdentifier(Citations.EPSG, "9603")
-                        },
-                        new ParameterDescriptor[] {
-                            DX,
-                            DY,
-                            DZ,
-                            SRC_SEMI_MAJOR,
-                            SRC_SEMI_MINOR,
-                            TGT_SEMI_MAJOR,
-                            TGT_SEMI_MINOR,
-                            SRC_DIM,
-                            TGT_DIM
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "Geocentric translations (geog2D domain)"),
+                    new NamedIdentifier(Citations.EPSG, "9603")
+                },
+                new ParameterDescriptor[] {
+                    DX, DY, DZ, SRC_SEMI_MAJOR, SRC_SEMI_MINOR, TGT_SEMI_MAJOR, TGT_SEMI_MINOR, SRC_DIM, TGT_DIM
+                });
 
         /** Constructs a default provider. */
         public Provider() {
@@ -375,22 +334,21 @@ public class GeocentricTranslation extends ProjectiveTransform {
         }
 
         /**
-         * Fill the specified Bursa-Wolf parameters according the specified values. This method is
-         * invoked automatically by {@link #createMathTransform}.
+         * Fill the specified Bursa-Wolf parameters according the specified values. This method is invoked automatically
+         * by {@link #createMathTransform}.
          *
          * @param parameters The Bursa-Wold parameters to set.
          * @param values The parameter values to read. Those parameters will not be modified.
          */
-        protected void fill(
-                final BursaWolfParameters parameters, final ParameterValueGroup values) {
+        protected void fill(final BursaWolfParameters parameters, final ParameterValueGroup values) {
             parameters.dx = doubleValue(DX, values);
             parameters.dy = doubleValue(DY, values);
             parameters.dz = doubleValue(DZ, values);
         }
 
         /**
-         * Concatenates the supplied transform with an "ellipsoid to geocentric" or a "geocentric to
-         * ellipsod" step, if needed.
+         * Concatenates the supplied transform with an "ellipsoid to geocentric" or a "geocentric to ellipsod" step, if
+         * needed.
          */
         @SuppressWarnings("fallthrough")
         private static MathTransform concatenate(
@@ -415,8 +373,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
             }
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
-            final GeocentricTransform step =
-                    new GeocentricTransform(semiMajor, semiMinor, SI.METRE, dimension == 3);
+            final GeocentricTransform step = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, dimension == 3);
             // Note: dimension may be 0 if not user-provided, which is treated as 2.
             if (dim == SRC_DIM) {
                 return ConcatenatedTransform.create(step, transform);
@@ -429,16 +386,14 @@ public class GeocentricTranslation extends ProjectiveTransform {
         private static void ensureValid(final ParameterDescriptor param, double value) {
             if (!(value > 0)) {
                 final Object arg0 = param.getName().getCode();
-                throw new IllegalStateException(
-                        MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, arg0));
+                throw new IllegalStateException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, arg0));
             }
         }
     }
 
     /**
-     * Base class for {@linkplain GeocentricTranslation geocentric affine transform} providers with
-     * rotation terms. This base class is the provider for the "<cite>Position Vector 7-param.
-     * transformation</cite>".
+     * Base class for {@linkplain GeocentricTranslation geocentric affine transform} providers with rotation terms. This
+     * base class is the provider for the "<cite>Position Vector 7-param. transformation</cite>".
      *
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
@@ -452,77 +407,66 @@ public class GeocentricTranslation extends ProjectiveTransform {
         private static final double MAX_ROTATION = 180 * 60 * 60;
 
         /**
-         * The operation parameter descriptor for the <cite>X-axis rotation</cite> ("ex") parameter
-         * value. Units are arc-seconds.
+         * The operation parameter descriptor for the <cite>X-axis rotation</cite> ("ex") parameter value. Units are
+         * arc-seconds.
          */
-        public static final ParameterDescriptor<Double> EX =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "ex"),
-                            new NamedIdentifier(Citations.EPSG, "X-axis rotation")
-                        },
-                        0.0,
-                        -MAX_ROTATION,
-                        MAX_ROTATION,
-                        NonSI.SECOND_ANGLE);
+        public static final ParameterDescriptor<Double> EX = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "ex"), new NamedIdentifier(Citations.EPSG, "X-axis rotation")
+                },
+                0.0,
+                -MAX_ROTATION,
+                MAX_ROTATION,
+                NonSI.SECOND_ANGLE);
 
         /**
-         * The operation parameter descriptor for the <cite>Y-axis rotation</cite> ("ey") parameter
-         * value. Units are arc-seconds.
+         * The operation parameter descriptor for the <cite>Y-axis rotation</cite> ("ey") parameter value. Units are
+         * arc-seconds.
          */
-        public static final ParameterDescriptor<Double> EY =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "ey"),
-                            new NamedIdentifier(Citations.EPSG, "Y-axis rotation")
-                        },
-                        0.0,
-                        -MAX_ROTATION,
-                        MAX_ROTATION,
-                        NonSI.SECOND_ANGLE);
+        public static final ParameterDescriptor<Double> EY = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "ey"), new NamedIdentifier(Citations.EPSG, "Y-axis rotation")
+                },
+                0.0,
+                -MAX_ROTATION,
+                MAX_ROTATION,
+                NonSI.SECOND_ANGLE);
 
         /**
-         * The operation parameter descriptor for the <cite>Z-axis rotation</cite> ("ez") parameter
-         * value. Units are arc-seconds.
+         * The operation parameter descriptor for the <cite>Z-axis rotation</cite> ("ez") parameter value. Units are
+         * arc-seconds.
          */
-        public static final ParameterDescriptor<Double> EZ =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "ez"),
-                            new NamedIdentifier(Citations.EPSG, "Z-axis rotation")
-                        },
-                        0.0,
-                        -MAX_ROTATION,
-                        MAX_ROTATION,
-                        NonSI.SECOND_ANGLE);
+        public static final ParameterDescriptor<Double> EZ = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "ez"), new NamedIdentifier(Citations.EPSG, "Z-axis rotation")
+                },
+                0.0,
+                -MAX_ROTATION,
+                MAX_ROTATION,
+                NonSI.SECOND_ANGLE);
 
         /**
-         * The operation parameter descriptor for the <cite>Scale difference</cite> ("ppm")
-         * parameter value. Valid values range from -infinity to infinity. Units are parts per
-         * million.
+         * The operation parameter descriptor for the <cite>Scale difference</cite> ("ppm") parameter value. Valid
+         * values range from -infinity to infinity. Units are parts per million.
          */
-        public static final ParameterDescriptor<Double> PPM =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "ppm"),
-                            new NamedIdentifier(Citations.EPSG, "Scale difference")
-                        },
-                        0.0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        Units.PPM);
+        public static final ParameterDescriptor<Double> PPM = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "ppm"), new NamedIdentifier(Citations.EPSG, "Scale difference")
+                },
+                0.0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Units.PPM);
 
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup("Position Vector transformation (geog2D domain)", "9606");
 
         /** Creates a parameters group. */
-        static ParameterDescriptorGroup createDescriptorGroup(
-                final String name, final String code) {
+        static ParameterDescriptorGroup createDescriptorGroup(final String name, final String code) {
             return createDescriptorGroup(
                     new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.EPSG, name),
-                        new NamedIdentifier(Citations.EPSG, code)
+                        new NamedIdentifier(Citations.EPSG, name), new NamedIdentifier(Citations.EPSG, code)
                     },
                     new ParameterDescriptor[] {
                         DX,
@@ -553,8 +497,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
 
         /** Fills the specified Bursa-Wolf parameters according the specified values. */
         @Override
-        protected void fill(
-                final BursaWolfParameters parameters, final ParameterValueGroup values) {
+        protected void fill(final BursaWolfParameters parameters, final ParameterValueGroup values) {
             super.fill(parameters, values);
             parameters.ppm = doubleValue(PPM, values);
             parameters.ex = doubleValue(EX, values);
@@ -564,8 +507,8 @@ public class GeocentricTranslation extends ProjectiveTransform {
     }
 
     /**
-     * {@linkplain GeocentricTranslation Geocentric affine transform} provider for "<cite>Coordinate
-     * Frame rotation</cite>".
+     * {@linkplain GeocentricTranslation Geocentric affine transform} provider for "<cite>Coordinate Frame
+     * rotation</cite>".
      *
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
@@ -586,8 +529,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
 
         /** Fills the specified Bursa-Wolf parameters according the specified values. */
         @Override
-        protected void fill(
-                final BursaWolfParameters parameters, final ParameterValueGroup values) {
+        protected void fill(final BursaWolfParameters parameters, final ParameterValueGroup values) {
             super.fill(parameters, values);
             parameters.ex = -parameters.ex;
             parameters.ey = -parameters.ey;

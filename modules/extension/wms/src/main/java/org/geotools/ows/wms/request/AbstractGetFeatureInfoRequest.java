@@ -26,14 +26,13 @@ import java.util.TreeSet;
 import org.geotools.ows.wms.Layer;
 
 /** A base class for GetFeatureInfoRequests that provides some functionality. */
-public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
-        implements GetFeatureInfoRequest {
+public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest implements GetFeatureInfoRequest {
     /** A set of type Layer, each of which is to be queried in the request */
     private Set<Layer> queryLayers;
 
     /**
-     * Constructs a GetFeatureInfoRequest. It will set the REQUEST and VERSION parameters,
-     * over-writing and values set there previously.
+     * Constructs a GetFeatureInfoRequest. It will set the REQUEST and VERSION parameters, over-writing and values set
+     * there previously.
      *
      * @param onlineResource the URL pointing to the place to execute a GetFeatureInfo request
      * @param request a previously configured GetMapRequest that the query will be executed on
@@ -45,8 +44,8 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
     }
 
     /**
-     * GetMap request fills in the LAYERS and STYLES properties only when getFinalURL() is called,
-     * so we force it to fill them in before copying the properties
+     * GetMap request fills in the LAYERS and STYLES properties only when getFinalURL() is called, so we force it to
+     * fill them in before copying the properties
      */
     static Properties getMapProperties(GetMapRequest request) {
         request.getFinalURL();
@@ -58,22 +57,16 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
     public URL getFinalURL() {
         Iterator<Layer> iter = queryLayers.iterator();
         String initialQueryLayerString =
-                properties.getProperty(QUERY_LAYERS) == null
-                        ? ""
-                        : properties.getProperty(QUERY_LAYERS); // $NON-NLS-1$
+                properties.getProperty(QUERY_LAYERS) == null ? "" : properties.getProperty(QUERY_LAYERS); // $NON-NLS-1$
         String queryLayerString =
-                properties.getProperty(QUERY_LAYERS) == null
-                        ? ""
-                        : properties.getProperty(QUERY_LAYERS); // $NON-NLS-1$
+                properties.getProperty(QUERY_LAYERS) == null ? "" : properties.getProperty(QUERY_LAYERS); // $NON-NLS-1$
 
         while (iter.hasNext()) {
             Layer layer = iter.next();
             try {
                 // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
-                queryLayerString =
-                        queryLayerString
-                                + URLEncoder.encode(layer.getName(), "UTF-8")
-                                        .replaceAll("\\+", "%20");
+                queryLayerString = queryLayerString
+                        + URLEncoder.encode(layer.getName(), "UTF-8").replaceAll("\\+", "%20");
             } catch (UnsupportedEncodingException | NullPointerException e) {
                 queryLayerString = queryLayerString + layer.getName();
             }
@@ -129,8 +122,7 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
     }
 
     /**
-     * Created because the 1.3.0 spec changes this parameter name. The 1.3.0 spec should over-ride
-     * this method.
+     * Created because the 1.3.0 spec changes this parameter name. The 1.3.0 spec should over-ride this method.
      *
      * @return a String representing the x-axis query point
      */
@@ -139,8 +131,7 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
     }
 
     /**
-     * Created because the 1.3.0 spec changes this parameter name. The 1.3.0 spec should over-ride
-     * this method.
+     * Created because the 1.3.0 spec changes this parameter name. The 1.3.0 spec should over-ride this method.
      *
      * @return a String representing the y-axis query point
      */

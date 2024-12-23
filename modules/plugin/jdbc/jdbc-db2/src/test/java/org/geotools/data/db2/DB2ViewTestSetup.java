@@ -20,21 +20,19 @@ public class DB2ViewTestSetup extends JDBCViewTestSetup {
     @Override
     protected void createLakesTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
-            String statement =
-                    "create table "
-                            + DB2TestUtil.SCHEMA_QUOTED
-                            + ".\"lakes\""
-                            + "(\"fid\" int not null , \"id\" int, \"geom\" db2gse.st_polygon, \"name\" varchar(32), primary key (\"fid\") )";
+            String statement = "create table "
+                    + DB2TestUtil.SCHEMA_QUOTED
+                    + ".\"lakes\""
+                    + "(\"fid\" int not null , \"id\" int, \"geom\" db2gse.st_polygon, \"name\" varchar(32), primary key (\"fid\") )";
             con.prepareStatement(statement).execute();
 
-            statement =
-                    "INSERT INTO "
-                            + DB2TestUtil.SCHEMA_QUOTED
-                            + ".\"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
-                            + "db2gse.st_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
-                            + DB2TestUtil.SRID
-                            + "),"
-                            + "'muddy')";
+            statement = "INSERT INTO "
+                    + DB2TestUtil.SCHEMA_QUOTED
+                    + ".\"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
+                    + "db2gse.st_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                    + DB2TestUtil.SRID
+                    + "),"
+                    + "'muddy')";
             con.prepareStatement(statement).execute();
 
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, "lakes", "geom", DB2TestUtil.SRSNAME, con);
@@ -53,16 +51,14 @@ public class DB2ViewTestSetup extends JDBCViewTestSetup {
     protected void createLakesView() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
 
-            con.prepareStatement(
-                            "create view "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"lakesview\" "
-                                    + " as select * from "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"lakes\" ")
+            con.prepareStatement("create view "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"lakesview\" "
+                            + " as select * from "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"lakes\" ")
                     .execute();
-            DB2Util.executeRegister(
-                    DB2TestUtil.SCHEMA, "lakesview", "geom", DB2TestUtil.SRSNAME, con);
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "lakesview", "geom", DB2TestUtil.SRSNAME, con);
         }
     }
 

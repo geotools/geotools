@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strEqualsIgnoreCase extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strEqualsIgnoreCase",
-                    parameter("equals", Boolean.class),
-                    parameter("string", String.class),
-                    parameter("lookup", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strEqualsIgnoreCase",
+            parameter("equals", Boolean.class),
+            parameter("string", String.class),
+            parameter("lookup", String.class));
 
     public FilterFunction_strEqualsIgnoreCase() {
         super(NAME);

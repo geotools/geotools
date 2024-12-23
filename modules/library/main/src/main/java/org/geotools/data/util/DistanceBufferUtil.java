@@ -36,27 +36,24 @@ import si.uom.SI;
 public class DistanceBufferUtil {
 
     /** Standard java logger */
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DistanceBufferUtil.class);
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DistanceBufferUtil.class);
 
-    private static final Map<String, Double> UNITS_MAP =
-            Map.ofEntries(
-                    entry("kilometers", 1000.0),
-                    entry("kilometer", 1000.0),
-                    entry("km", 1000.0),
-                    entry("m", 1.0),
-                    entry("meter", 1.0),
-                    entry("mm", 0.001),
-                    entry("millimeter", 0.001),
-                    entry("mi", 1609.344),
-                    entry("miles", 1609.344),
-                    entry("nm", 1852d),
-                    entry("feet", 0.3048),
-                    entry("ft", 0.3048),
-                    entry("in", 0.0254));
+    private static final Map<String, Double> UNITS_MAP = Map.ofEntries(
+            entry("kilometers", 1000.0),
+            entry("kilometer", 1000.0),
+            entry("km", 1000.0),
+            entry("m", 1.0),
+            entry("meter", 1.0),
+            entry("mm", 0.001),
+            entry("millimeter", 0.001),
+            entry("mi", 1609.344),
+            entry("miles", 1609.344),
+            entry("nm", 1852d),
+            entry("feet", 0.3048),
+            entry("ft", 0.3048),
+            entry("in", 0.0254));
 
-    public static double getDistanceInNativeUnits(
-            DistanceBufferOperator operator, Integer currentSRID) {
+    public static double getDistanceInNativeUnits(DistanceBufferOperator operator, Integer currentSRID) {
         if (currentSRID == null) {
             return operator.getDistance();
         }
@@ -75,7 +72,8 @@ public class DistanceBufferUtil {
                 return distanceMeters / sizeDegree;
             } else {
                 @SuppressWarnings("unchecked")
-                Unit<Length> unit = (Unit<Length>) crs.getCoordinateSystem().getAxis(0).getUnit();
+                Unit<Length> unit =
+                        (Unit<Length>) crs.getCoordinateSystem().getAxis(0).getUnit();
                 if (unit == null) {
                     return distanceMeters;
                 } else {
@@ -106,10 +104,7 @@ public class DistanceBufferUtil {
         return geom.getCentroid().getCoordinate();
     }
 
-    /**
-     * Converts the distance of the operator in meters, or returns the current value if there is no
-     * units distance
-     */
+    /** Converts the distance of the operator in meters, or returns the current value if there is no units distance */
     public static double getDistanceInMeters(DistanceBufferOperator operator) {
         double distance = operator.getDistance();
         String units = operator.getDistanceUnits();

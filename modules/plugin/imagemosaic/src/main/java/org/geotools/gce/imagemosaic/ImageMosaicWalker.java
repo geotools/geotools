@@ -25,8 +25,8 @@ import org.geotools.util.Utilities;
 /**
  * This class is responsible for walking through the elements of a mosaic.
  *
- * <p>Its role is basically to simplify the construction of the mosaic by implementing a visitor
- * pattern for the mosaic elements that we have to use for the index.
+ * <p>Its role is basically to simplify the construction of the mosaic by implementing a visitor pattern for the mosaic
+ * elements that we have to use for the index.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
@@ -35,14 +35,13 @@ import org.geotools.util.Utilities;
 abstract class ImageMosaicWalker<T> implements Runnable {
 
     /** Default Logger * */
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
 
     protected DefaultTransaction transaction;
 
     /**
-     * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable
-     * that can be checked in order to notify a terminating condition.
+     * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable that can be checked in
+     * order to notify a terminating condition.
      */
     protected volatile boolean stop = false;
 
@@ -69,8 +68,7 @@ abstract class ImageMosaicWalker<T> implements Runnable {
     }
 
     /** @param configHandler configuration handler being used */
-    public ImageMosaicWalker(
-            ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
+    public ImageMosaicWalker(ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
         this.configHandler = configHandler;

@@ -27,8 +27,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  * @author Christian Mueller
  *     <p>Implementation of {@link FeatureReader} for {@link PreGeneralizedSimpleFeature}
  */
-public class PreGeneralizedFeatureReader
-        implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+public class PreGeneralizedFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     protected SimpleFeatureType featureTyp;
 
     protected SimpleFeatureType returnedFeatureType;
@@ -71,16 +70,10 @@ public class PreGeneralizedFeatureReader
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature next = backendReader.next();
         if (next == null) return null;
         return new PreGeneralizedSimpleFeature(
-                featureTyp,
-                returnedFeatureType,
-                indexMapping,
-                next,
-                geomPropertyName,
-                backendGeomPropertyName);
+                featureTyp, returnedFeatureType, indexMapping, next, geomPropertyName, backendGeomPropertyName);
     }
 }

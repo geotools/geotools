@@ -54,10 +54,7 @@ public class DottedNamesTest {
         assertNotNull(gpkg);
     }
 
-    /**
-     * Test for GEOT-5852 - SQL exception when querying Geopackage table containing a dot in the
-     * name
-     */
+    /** Test for GEOT-5852 - SQL exception when querying Geopackage table containing a dot in the name */
     @Test
     public void testGetContents() throws IOException, CQLException {
         String[] typeNamesArr = gpkg.getTypeNames();
@@ -68,8 +65,7 @@ public class DottedNamesTest {
         SimpleFeatureSource fs = gpkg.getFeatureSource(name);
         assertNotNull(fs);
 
-        SimpleFeatureCollection features =
-                fs.getFeatures(ECQL.toFilter("BBOX(geom,100000,500000,200000,600000)"));
+        SimpleFeatureCollection features = fs.getFeatures(ECQL.toFilter("BBOX(geom,100000,500000,200000,600000)"));
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature f = itr.next();

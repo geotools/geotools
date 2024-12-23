@@ -25,14 +25,12 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
 /**
- * Stores a list of binding classes and provides ways to load or get a specific {@link Binding}
- * object based on {@link QName}. It can handle storage of classes that support the {@link
- * ComponentAdapter} interface or other classes but will attempt to instantiate and return a {@link
- * Binding} object.
+ * Stores a list of binding classes and provides ways to load or get a specific {@link Binding} object based on
+ * {@link QName}. It can handle storage of classes that support the {@link ComponentAdapter} interface or other classes
+ * but will attempt to instantiate and return a {@link Binding} object.
  *
- * <p>It uses a Context (otherwise known as PicoContainer) to instantiate the relevant object and
- * understand the dependencies that should also be loaded. The Context is required to be passed in
- * by the caller
+ * <p>It uses a Context (otherwise known as PicoContainer) to instantiate the relevant object and understand the
+ * dependencies that should also be loaded. The Context is required to be passed in by the caller
  */
 public class BindingLoader {
 
@@ -47,8 +45,7 @@ public class BindingLoader {
      *
      * @param qName The qualified name of the type of the binding object.
      * @param context The context which is to contain the binding.
-     * @return The binding object of the associated type, otherwise null if no such binding could be
-     *     created.
+     * @return The binding object of the associated type, otherwise null if no such binding could be created.
      */
     public Binding loadBinding(QName qName, PicoContainer context) {
         Object o = bindings.get(qName);
@@ -71,8 +68,7 @@ public class BindingLoader {
      *
      * @param bindingClass The class of the binding.
      * @param context The context which is to contain the binding.
-     * @return The binding object of the associated type, otherwise null if no such binding could be
-     *     created.
+     * @return The binding object of the associated type, otherwise null if no such binding could be created.
      */
     public Binding loadBinding(QName qName, Class bindingClass, PicoContainer context) {
         // instantiate within the given context

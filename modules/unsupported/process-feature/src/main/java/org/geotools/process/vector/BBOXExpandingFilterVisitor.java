@@ -23,8 +23,7 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * A {@link DuplicatingFilterVisitor} which expands the {@link BBOX} of the filter by given
- * distances for each box edge.
+ * A {@link DuplicatingFilterVisitor} which expands the {@link BBOX} of the filter by given distances for each box edge.
  *
  * @author Martin Davis - OpenGeo
  */
@@ -45,8 +44,7 @@ public class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
      * @param expandMinY the distance to expand the box Y dimension downwards
      * @param expandMaxY the distance to expand the box Y dimension upwards
      */
-    public BBOXExpandingFilterVisitor(
-            double expandMinX, double expandMaxX, double expandMinY, double expandMaxY) {
+    public BBOXExpandingFilterVisitor(double expandMinX, double expandMaxX, double expandMinY, double expandMaxY) {
         this.expandMinX = expandMinX;
         this.expandMaxX = expandMaxX;
         this.expandMinY = expandMinY;
@@ -60,13 +58,12 @@ public class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
         Expression propertyName = filter.getExpression1();
 
         ReferencedEnvelope envelope = ReferencedEnvelope.reference(filter.getBounds());
-        ReferencedEnvelope expanded =
-                new ReferencedEnvelope(
-                        envelope.getMinX() - expandMinX,
-                        envelope.getMaxX() + expandMinY,
-                        envelope.getMinY() - expandMaxX,
-                        envelope.getMaxY() + expandMaxY,
-                        envelope.getCoordinateReferenceSystem());
+        ReferencedEnvelope expanded = new ReferencedEnvelope(
+                envelope.getMinX() - expandMinX,
+                envelope.getMaxX() + expandMinY,
+                envelope.getMinY() - expandMaxX,
+                envelope.getMaxY() + expandMaxY,
+                envelope.getCoordinateReferenceSystem());
 
         return getFactory(extraData).bbox(propertyName, ff.literal(expanded));
     }

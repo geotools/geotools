@@ -28,12 +28,11 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * Factory finder for getting instances of HTTPClientFactory. All implementations should be
- * registered as a file with name org.geotools.http.HTTPClientFactory in META_INF/services of their
- * respective jar.
+ * Factory finder for getting instances of HTTPClientFactory. All implementations should be registered as a file with
+ * name org.geotools.http.HTTPClientFactory in META_INF/services of their respective jar.
  *
- * <p>To pick a particular implementation the hint HTTP_CLIENT_FACTORY could be set to the full
- * class name, either in the function call, or by Java property.
+ * <p>To pick a particular implementation the hint HTTP_CLIENT_FACTORY could be set to the full class name, either in
+ * the function call, or by Java property.
  *
  * @author Roar Brænden
  */
@@ -103,10 +102,7 @@ public class HTTPClientFinder extends FactoryFinder {
                 .filter((fact) -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
                 .filter((fact) -> matchDefault(fact, hints, behaviors))
                 .findFirst()
-                .orElseThrow(
-                        () ->
-                                new HTTPFactoryException(
-                                        "Couldn't create HTTP client.", hints, behaviors))
+                .orElseThrow(() -> new HTTPFactoryException("Couldn't create HTTP client.", hints, behaviors))
                 .createClient(hints, behaviors);
     }
 

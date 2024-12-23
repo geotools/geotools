@@ -33,10 +33,10 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
 
 /**
- * Parameters for a geographic transformation between two datum. The Bursa Wolf parameters should be
- * applied to geocentric coordinates, where the <var>X</var> axis points towards the Greenwich Prime
- * Meridian, the <var>Y</var> axis points East, and the <var>Z</var> axis points North. The
- * "Bursa-Wolf" formula is expressed in matrix form with 7 parameters:
+ * Parameters for a geographic transformation between two datum. The Bursa Wolf parameters should be applied to
+ * geocentric coordinates, where the <var>X</var> axis points towards the Greenwich Prime Meridian, the <var>Y</var>
+ * axis points East, and the <var>Z</var> axis points North. The "Bursa-Wolf" formula is expressed in matrix form with 7
+ * parameters:
  *
  * <p align="center"><img src="../doc-files/BursaWolf.png">
  *
@@ -82,8 +82,8 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
     }
 
     /**
-     * Returns {@code true} if this Bursa Wolf parameters performs no operation. This is true when
-     * all parameters are set to zero.
+     * Returns {@code true} if this Bursa Wolf parameters performs no operation. This is true when all parameters are
+     * set to zero.
      *
      * @return {@code true} if the parameters describe no operation.
      */
@@ -101,8 +101,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
     }
 
     /**
-     * Returns an affine transform that can be used to define this Bursa Wolf transformation. The
-     * formula is as follows:
+     * Returns an affine transform that can be used to define this Bursa Wolf transformation. The formula is as follows:
      *
      * <blockquote>
      *
@@ -129,24 +128,19 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
          */
         final double S = 1 + ppm / 1E+6;
         final double RS = (Math.PI / (180 * 3600)) * S;
-        return new Matrix4(
-                S, -ez * RS, +ey * RS, dx, +ez * RS, S, -ex * RS, dy, -ey * RS, +ex * RS, S, dz, 0,
-                0, 0, 1);
+        return new Matrix4(S, -ez * RS, +ey * RS, dx, +ez * RS, S, -ex * RS, dy, -ey * RS, +ex * RS, S, dz, 0, 0, 0, 1);
     }
 
     /**
-     * Sets transformation info from the specified matrix, which must be affine. In addition, the
-     * matrix minus the last row and last column must be <A
-     * HREF="http://mathworld.wolfram.com/AntisymmetricMatrix.html">antisymmetric</a>.
+     * Sets transformation info from the specified matrix, which must be affine. In addition, the matrix minus the last
+     * row and last column must be <A HREF="http://mathworld.wolfram.com/AntisymmetricMatrix.html">antisymmetric</a>.
      *
      * @param matrix The matrix to fit as a Bursa-Wolf construct.
-     * @param eps The tolerance error for the antisymmetric matrix test. Should be a small number
-     *     like {@code 1E-4}.
+     * @param eps The tolerance error for the antisymmetric matrix test. Should be a small number like {@code 1E-4}.
      * @throws IllegalArgumentException if the specified matrix doesn't meet the conditions.
      * @since 2.2
      */
-    public void setAffineTransform(final Matrix matrix, final double eps)
-            throws IllegalArgumentException {
+    public void setAffineTransform(final Matrix matrix, final double eps) throws IllegalArgumentException {
         if (matrix.getNumCol() != 4 || matrix.getNumRow() != 4) {
             // TODO: localize. Same message than Matrix4
             throw new IllegalArgumentException("Illegal matrix size.");
@@ -160,8 +154,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
         dx = matrix.getElement(0, 3);
         dy = matrix.getElement(1, 3);
         dz = matrix.getElement(2, 3);
-        final double S =
-                (matrix.getElement(0, 0) + matrix.getElement(1, 1) + matrix.getElement(2, 2)) / 3;
+        final double S = (matrix.getElement(0, 0) + matrix.getElement(1, 1) + matrix.getElement(2, 2)) / 3;
         final double RS = (Math.PI / (180 * 3600)) * S;
         ppm = (S - 1) * 1E+6;
         for (int j = 0; j < 2; j++) {
@@ -198,8 +191,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
     /**
      * Returns a hash value for this object.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     public int hashCode() {
@@ -253,9 +245,9 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element. The WKT contains the parameters in <i>translation</i>,
-     * <i>rotation</i>, <i>scale</i> order, as in <code>
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element. The WKT contains the parameters in <i>translation</i>, <i>rotation</i>,
+     * <i>scale</i> order, as in <code>
      * TOWGS84[{@linkplain #dx}, {@linkplain #dy}, {@linkplain #dz},
      * {@linkplain #ex}, {@linkplain #ey}, {@linkplain #ez}, {@linkplain #ppm}]</code>.
      *

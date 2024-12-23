@@ -38,15 +38,14 @@ import org.geotools.api.filter.temporal.TOverlaps;
 /**
  * Visitor with {@code visit} methods to be called by {@link Filter#accept Filter.accept(...)}.
  *
- * <p>Consider: It is unclear if this visitor should be applied directly to Filter, or should be
- * walked accross the data structure by hand. The standard complient structure is well defined, and
- * this should negate the need for a formal visitor (we don't have internal structure we are
- * hiding).
+ * <p>Consider: It is unclear if this visitor should be applied directly to Filter, or should be walked accross the data
+ * structure by hand. The standard complient structure is well defined, and this should negate the need for a formal
+ * visitor (we don't have internal structure we are hiding).
  *
- * <p>There is still a very valid use for FilterVisitor, a instance may implement both FilterVisitor
- * and ExpressionVisitor and ExpressionVisitory in one direction, and a FilterVisitor and a
- * StyleVisitor in the other. The ability to directly focus on transforming data within a larger
- * structure is something a normal data walk can not accomplish in a scalable manner.
+ * <p>There is still a very valid use for FilterVisitor, a instance may implement both FilterVisitor and
+ * ExpressionVisitor and ExpressionVisitory in one direction, and a FilterVisitor and a StyleVisitor in the other. The
+ * ability to directly focus on transforming data within a larger structure is something a normal data walk can not
+ * accomplish in a scalable manner.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
@@ -57,8 +56,8 @@ public interface FilterVisitor {
      * Used to account for a <code>null</code> filter value.
      *
      * <p>This is particularly used during data structure transofrmations, however the use of <code>
-     * null</code> is not recommended. Please make use of Filter.NONE and Filter.ALL as placeholder
-     * objects that communicate intent.
+     * null</code> is not recommended. Please make use of Filter.NONE and Filter.ALL as placeholder objects that
+     * communicate intent.
      *
      * @param extraData Value object provided to visitor
      * @return subclass defined
@@ -162,9 +161,8 @@ public interface FilterVisitor {
     Object visit(TOverlaps contains, Object extraData);
 
     default Object visit(NativeFilter nativeFilter, Object extraData) {
-        throw new UnsupportedOperationException(
-                String.format(
-                        "Native filters are not supported by visitor '%s'.",
-                        this.getClass().getName()));
+        throw new UnsupportedOperationException(String.format(
+                "Native filters are not supported by visitor '%s'.",
+                this.getClass().getName()));
     }
 }

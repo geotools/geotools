@@ -28,24 +28,20 @@ import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.FilterFactoryImpl;
 
-/**
- * If only {@link AbstractFeatureFactoryImpl}'s filter factory were setteable this class wouldn't be
- * needed....
- */
+/** If only {@link AbstractFeatureFactoryImpl}'s filter factory were setteable this class wouldn't be needed.... */
 class MutableIdentifierFeatureFactory extends AbstractFeatureFactoryImpl {
 
-    private static FilterFactory MUTABLE_FIDS_FILTER_FACTORY =
-            new FilterFactoryImpl() {
-                @Override
-                public MutableFeatureId featureId(String id) {
-                    return new MutableFeatureId(id);
-                }
+    private static FilterFactory MUTABLE_FIDS_FILTER_FACTORY = new FilterFactoryImpl() {
+        @Override
+        public MutableFeatureId featureId(String id) {
+            return new MutableFeatureId(id);
+        }
 
-                @Override
-                public MutableFeatureId featureId(String fid, String featureVersion) {
-                    return new MutableFeatureId(fid, featureVersion);
-                }
-            };
+        @Override
+        public MutableFeatureId featureId(String fid, String featureVersion) {
+            return new MutableFeatureId(fid, featureVersion);
+        }
+    };
 
     @Override
     @SuppressWarnings("unchecked")

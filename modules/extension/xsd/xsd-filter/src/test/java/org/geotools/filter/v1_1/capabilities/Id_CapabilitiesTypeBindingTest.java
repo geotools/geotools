@@ -69,11 +69,8 @@ public class Id_CapabilitiesTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.idCapabilities(),
-                        new QName(OGC.NAMESPACE, "IdCapabilities"),
-                        OGC.Id_CapabilitiesType);
+        Document dom = encode(
+                FilterMockData.idCapabilities(), new QName(OGC.NAMESPACE, "IdCapabilities"), OGC.Id_CapabilitiesType);
 
         assertNotNull(getElementsByQName(dom, OGC.FID));
         assertNotNull(getElementsByQName(dom, OGC.EID));

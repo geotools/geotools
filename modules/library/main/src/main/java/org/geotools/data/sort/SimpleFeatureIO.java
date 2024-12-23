@@ -279,8 +279,7 @@ public class SimpleFeatureIO {
         if ("false".equalsIgnoreCase(this.enableDeserialization)) {
             throw new IllegalStateException("Object deserialization is not allowed");
         } else if (!this.initialFileEmpty && !"true".equalsIgnoreCase(this.enableDeserialization)) {
-            throw new IllegalStateException(
-                    "Object deserialization is only allowed when created with an empty file");
+            throw new IllegalStateException("Object deserialization is only allowed when created with an empty file");
         }
         int length = raf.readInt();
         byte[] buffer = new byte[length];
@@ -341,8 +340,7 @@ public class SimpleFeatureIO {
     }
 
     /**
-     * Straight OutStream implementation on top of a byte[], can reuse the one given, or allocate a
-     * larger one if needed
+     * Straight OutStream implementation on top of a byte[], can reuse the one given, or allocate a larger one if needed
      */
     private class ByteArrayOutStream implements OutStream {
 

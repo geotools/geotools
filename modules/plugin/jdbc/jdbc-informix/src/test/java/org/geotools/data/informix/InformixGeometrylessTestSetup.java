@@ -26,9 +26,7 @@ public class InformixGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     @Override
     protected void createPersonTable() throws Exception {
-        run(
-                "CREATE TABLE person(fid serial PRIMARY KEY, id integer, "
-                        + "name varchar(255), age integer)");
+        run("CREATE TABLE person(fid serial PRIMARY KEY, id integer, " + "name varchar(255), age integer)");
         run("INSERT INTO person (id,name,age) VALUES (0,'Paul',32)");
         run("INSERT INTO person (id,name,age) VALUES (0,'Anne',40)");
     }

@@ -111,8 +111,8 @@ public enum CQL2Conformance {
     }
 
     /**
-     * Checks if this STAC conformance class is a match, ignoring details about the version such as
-     * beta/RC/minor version changes (as long as it's a 1.0.x)
+     * Checks if this STAC conformance class is a match, ignoring details about the version such as beta/RC/minor
+     * version changes (as long as it's a 1.0.x)
      *
      * @param conformance
      */
@@ -120,10 +120,7 @@ public enum CQL2Conformance {
         return conformance.stream().anyMatch(c -> pattern.matcher(c).matches());
     }
 
-    /**
-     * Returns the capabilities linked to this conformance class, or an empty capabilities set,
-     * otherwise
-     */
+    /** Returns the capabilities linked to this conformance class, or an empty capabilities set, otherwise */
     public FilterCapabilities getCapabilities() {
         return capabilities;
     }

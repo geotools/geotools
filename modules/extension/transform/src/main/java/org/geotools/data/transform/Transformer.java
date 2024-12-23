@@ -46,8 +46,8 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.logging.Logging;
 
 /**
- * The central class that perform transformations on filters, queries and feature types. Can invert
- * itself and return a {@link Transformer} that goes the other direction.
+ * The central class that perform transformations on filters, queries and feature types. Can invert itself and return a
+ * {@link Transformer} that goes the other direction.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -68,10 +68,7 @@ class Transformer {
     SimpleFeatureType schema;
 
     public Transformer(
-            SimpleFeatureSource source,
-            Name name,
-            List<Definition> definitions,
-            SimpleFeatureType targetSchema)
+            SimpleFeatureSource source, Name name, List<Definition> definitions, SimpleFeatureType targetSchema)
             throws IOException {
         this.source = source;
         this.name = name;
@@ -102,13 +99,11 @@ class Transformer {
     }
 
     /**
-     * Computes the target schema, first trying a static analysis, and if that one does not work,
-     * evaluating the expressions against a sample feature
+     * Computes the target schema, first trying a static analysis, and if that one does not work, evaluating the
+     * expressions against a sample feature
      */
-    private SimpleFeatureType computeTargetSchema(Name typeName, List<Definition> definitions)
-            throws IOException {
-        SimpleFeatureType target =
-                computeTargetSchemaStatically(source.getSchema(), typeName, definitions);
+    private SimpleFeatureType computeTargetSchema(Name typeName, List<Definition> definitions) throws IOException {
+        SimpleFeatureType target = computeTargetSchemaStatically(source.getSchema(), typeName, definitions);
         if (target != null) {
             return target;
         }
@@ -124,11 +119,10 @@ class Transformer {
         }
 
         if (sample == null) {
-            throw new IllegalStateException(
-                    "Cannot compute the target feature type from the "
-                            + "definitions by static analysis, and the source does not have any "
-                            + "feature "
-                            + "that we can use as a sample to compute the target type dynamically");
+            throw new IllegalStateException("Cannot compute the target feature type from the "
+                    + "definitions by static analysis, and the source does not have any "
+                    + "feature "
+                    + "that we can use as a sample to compute the target type dynamically");
         }
 
         // build the output feature type
@@ -161,8 +155,7 @@ class Transformer {
     /**
      * Utility method to transform feature ids based on the convention &lt;type name&gt;.&lt;id&gt;.
      *
-     * <p>Should be invoked by classes using this Transformer instance to build transformed
-     * features.
+     * <p>Should be invoked by classes using this Transformer instance to build transformed features.
      *
      * @param sourceFeature the source feature
      * @return the transformed feature identifier
@@ -195,8 +188,8 @@ class Transformer {
     }
 
     /**
-     * Returns the list of original names for the specified properties. If a property does not have
-     * an equivalent original name (it is not a simple rename) it won't be returned
+     * Returns the list of original names for the specified properties. If a property does not have an equivalent
+     * original name (it is not a simple rename) it won't be returned
      */
     public List<String> getOriginalNames(List<String> names) {
 
@@ -221,31 +214,25 @@ class Transformer {
         return originalNames;
     }
 
-    /**
-     * Injects the transformed attribute expressions into the filter to make it runnable against the
-     * original data
-     */
+    /** Injects the transformed attribute expressions into the filter to make it runnable against the original data */
     Filter transformFilter(Filter filter) {
         TransformFilterVisitor transformer =
-                new TransformFilterVisitor(
-                        source.getSchema().getTypeName(), name.getLocalPart(), expressions);
+                new TransformFilterVisitor(source.getSchema().getTypeName(), name.getLocalPart(), expressions);
         return (Filter) filter.accept(transformer, null);
     }
 
     /**
-     * Injects the transformed attribute expressions into the expression to make it runnable against
-     * the original data
+     * Injects the transformed attribute expressions into the expression to make it runnable against the original data
      */
     Expression transformExpression(Expression expression) {
         TransformFilterVisitor transformer =
-                new TransformFilterVisitor(
-                        source.getSchema().getTypeName(), name.getLocalPart(), expressions);
+                new TransformFilterVisitor(source.getSchema().getTypeName(), name.getLocalPart(), expressions);
         return (Expression) expression.accept(transformer, null);
     }
 
     /**
-     * Transforms a query so that it can be run against the original feature source and provides all
-     * the necessary attributes to evaluate the requested expressions
+     * Transforms a query so that it can be run against the original feature source and provides all the necessary
+     * attributes to evaluate the requested expressions
      */
     Query transformQuery(Query query) {
         Filter txFilter = transformFilter(query.getFilter());
@@ -297,8 +284,7 @@ class Transformer {
             PropertyName pname = sort.getPropertyName();
             Expression ex = expressions.get(pname.getPropertyName());
             if (ex == null) {
-                throw new IllegalArgumentException(
-                        "Attribute " + pname + " is not part of the output schema");
+                throw new IllegalArgumentException("Attribute " + pname + " is not part of the output schema");
             } else if (ex instanceof PropertyName) {
                 PropertyName pn = (PropertyName) ex;
                 transformed.add(FF.sort(pn.getPropertyName(), sort.getSortOrder()));

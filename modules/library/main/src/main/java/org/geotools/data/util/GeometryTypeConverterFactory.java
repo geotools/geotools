@@ -51,10 +51,9 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Converter factory performing conversions among JTS geometries of different types.
  *
- * <p>- single type geometries (Point, LineString, Polygon) are converted to multi types
- * (MultiPoint, LineString, MultiPolygon) containing 1 geometry element. - GeometryCollection(s) are
- * converted to multi types, converting each element to the permitted type (Point, LineString or
- * Polygon).
+ * <p>- single type geometries (Point, LineString, Polygon) are converted to multi types (MultiPoint, LineString,
+ * MultiPolygon) containing 1 geometry element. - GeometryCollection(s) are converted to multi types, converting each
+ * element to the permitted type (Point, LineString or Polygon).
  *
  * @author m.bartolomeoli
  */
@@ -68,11 +67,9 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // special case for curved geometries
-        if (Geometry.class.isAssignableFrom(source)
-                && CurvedGeometry.class.isAssignableFrom(target)) {
+        if (Geometry.class.isAssignableFrom(source) && CurvedGeometry.class.isAssignableFrom(target)) {
             return new CurvedGeometryConverter();
-        } else if (Geometry.class.isAssignableFrom(source)
-                && Geometry.class.isAssignableFrom(target)) {
+        } else if (Geometry.class.isAssignableFrom(source) && Geometry.class.isAssignableFrom(target)) {
             // we can convert geometric types
             return new GeometryToGeometryConverter();
         }
@@ -141,21 +138,18 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     if (sourceGeometry.isEmpty()) points = new Point[0];
                     else if (source instanceof Point) points = new Point[] {(Point) source};
                     else if (source instanceof GeometryCollection)
-                        points =
-                                this.convertAll((GeometryCollection) source, Point.class)
-                                        .toArray(new Point[] {});
+                        points = this.convertAll((GeometryCollection) source, Point.class)
+                                .toArray(new Point[] {});
                     else points = new Point[] {this.convert(source, Point.class)};
                     destGeometry = gFac.createMultiPoint(points);
                 } else if (MultiLineString.class.isAssignableFrom(target)) {
                     LineString[] lineStrings;
                     // NC - Empty Geometry Support
                     if (sourceGeometry.isEmpty()) lineStrings = new LineString[0];
-                    else if (source instanceof LineString)
-                        lineStrings = new LineString[] {(LineString) source};
+                    else if (source instanceof LineString) lineStrings = new LineString[] {(LineString) source};
                     else if (source instanceof GeometryCollection)
-                        lineStrings =
-                                this.convertAll((GeometryCollection) source, LineString.class)
-                                        .toArray(new LineString[] {});
+                        lineStrings = this.convertAll((GeometryCollection) source, LineString.class)
+                                .toArray(new LineString[] {});
                     else lineStrings = new LineString[] {this.convert(source, LineString.class)};
                     destGeometry = gFac.createMultiLineString(lineStrings);
                 } else if (MultiPolygon.class.isAssignableFrom(target)) {
@@ -172,9 +166,8 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                         }
                         polygons = new Polygon[] {gFac.createPolygon(exterior, interiors)};
                     } else if (source instanceof GeometryCollection)
-                        polygons =
-                                this.convertAll((GeometryCollection) source, Polygon.class)
-                                        .toArray(new Polygon[] {});
+                        polygons = this.convertAll((GeometryCollection) source, Polygon.class)
+                                .toArray(new Polygon[] {});
                     else polygons = new Polygon[] {this.convert(source, Polygon.class)};
                     destGeometry = gFac.createMultiPolygon(polygons);
                 }
@@ -183,26 +176,19 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 // a new geometrycollection
                 else if (GeometryCollection.class.isAssignableFrom(target)) {
                     // NC - Empty Geometry Support
-                    if (sourceGeometry.isEmpty())
-                        destGeometry = gFac.createGeometryCollection(new Geometry[0]);
-                    else
-                        destGeometry =
-                                gFac.createGeometryCollection(new Geometry[] {(Geometry) source});
+                    if (sourceGeometry.isEmpty()) destGeometry = gFac.createGeometryCollection(new Geometry[0]);
+                    else destGeometry = gFac.createGeometryCollection(new Geometry[] {(Geometry) source});
                 }
 
                 // target is a point: we return the centroid of any complex geometry
                 else if (Point.class.isAssignableFrom(target)) {
                     // NC - Empty Geometry Support
-                    if (sourceGeometry.isEmpty())
-                        destGeometry = gFac.createPoint((Coordinate) null);
+                    if (sourceGeometry.isEmpty()) destGeometry = gFac.createPoint((Coordinate) null);
                     else if (source instanceof MultiPoint && sourceGeometry.getNumGeometries() == 1)
                         destGeometry = ((MultiPoint) source).getGeometryN(0).copy();
                     else {
                         if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine(
-                                    "Converting Geometry "
-                                            + source.toString()
-                                            + " to Point. This could be unsafe");
+                            LOGGER.fine("Converting Geometry " + source.toString() + " to Point. This could be unsafe");
                         destGeometry = ((Geometry) source).getCentroid();
                     }
                 }
@@ -211,43 +197,32 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 // geometry coordinates
                 else if (LineString.class.isAssignableFrom(target)) {
                     // NC - Empty Geometry Support
-                    if (sourceGeometry.isEmpty())
-                        destGeometry = gFac.createLineString(new Coordinate[0]);
-                    else if (source instanceof MultiLineString
-                            && sourceGeometry.getNumGeometries() == 1)
-                        destGeometry = ((MultiLineString) source).getGeometryN(0).copy();
+                    if (sourceGeometry.isEmpty()) destGeometry = gFac.createLineString(new Coordinate[0]);
+                    else if (source instanceof MultiLineString && sourceGeometry.getNumGeometries() == 1)
+                        destGeometry =
+                                ((MultiLineString) source).getGeometryN(0).copy();
                     else {
                         if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine(
-                                    "Converting Geometry "
-                                            + source.toString()
-                                            + " to LineString. This could be unsafe");
+                            LOGGER.fine("Converting Geometry "
+                                    + source.toString()
+                                    + " to LineString. This could be unsafe");
                         destGeometry =
-                                gFac.createLineString(
-                                        getLineStringCoordinates(
-                                                ((Geometry) source).getCoordinates()));
+                                gFac.createLineString(getLineStringCoordinates(((Geometry) source).getCoordinates()));
                     }
                 }
                 // target is a polygon: we return a polygon connecting all the coordinates
                 // of the given geometry
                 else if (Polygon.class.isAssignableFrom(target)) {
                     // NC - Empty Geometry Support
-                    if (sourceGeometry.isEmpty())
-                        destGeometry = gFac.createLineString(new Coordinate[0]);
-                    else if (source instanceof MultiPolygon
-                            && sourceGeometry.getNumGeometries() == 1)
+                    if (sourceGeometry.isEmpty()) destGeometry = gFac.createLineString(new Coordinate[0]);
+                    else if (source instanceof MultiPolygon && sourceGeometry.getNumGeometries() == 1)
                         destGeometry = ((MultiPolygon) source).getGeometryN(0).copy();
                     else {
                         if (LOGGER.isLoggable(Level.FINE))
                             LOGGER.fine(
-                                    "Converting Geometry "
-                                            + source.toString()
-                                            + " to Polygon. This could be unsafe");
-                        Coordinate[] coords =
-                                getPolygonCoordinates(((Geometry) source).getCoordinates());
-                        destGeometry =
-                                gFac.createPolygon(
-                                        gFac.createLinearRing(coords), new LinearRing[] {});
+                                    "Converting Geometry " + source.toString() + " to Polygon. This could be unsafe");
+                        Coordinate[] coords = getPolygonCoordinates(((Geometry) source).getCoordinates());
+                        destGeometry = gFac.createPolygon(gFac.createLinearRing(coords), new LinearRing[] {});
                     }
                 }
 
@@ -270,14 +245,13 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
         private <T> T[] arrayCopy(T[] original, int length) {
             Class<?> arrayType = original.getClass().getComponentType();
             T[] copy = (T[]) java.lang.reflect.Array.newInstance(arrayType, length);
-            System.arraycopy(
-                    original, 0, copy, 0, original.length < length ? original.length : length);
+            System.arraycopy(original, 0, copy, 0, original.length < length ? original.length : length);
             return copy;
         }
 
         /**
-         * Add dummy coordinates to the given array to reach numpoints points. If the array is
-         * already made of numpoints or more coordinates, it will be returned untouched.
+         * Add dummy coordinates to the given array to reach numpoints points. If the array is already made of numpoints
+         * or more coordinates, it will be returned untouched.
          */
         private Coordinate[] growCoordinatesNum(Coordinate[] input, int numpoints) {
             if (input.length < numpoints) {
@@ -296,10 +270,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
             return coordinates;
         }
 
-        /**
-         * Gets a set of coordinates valid to create a polygon: - at least 4 coordinates - closed
-         * path
-         */
+        /** Gets a set of coordinates valid to create a polygon: - at least 4 coordinates - closed path */
         private Coordinate[] getPolygonCoordinates(Coordinate... coordinates) {
             // at least 4 points
             coordinates = growCoordinatesNum(coordinates, 4);
@@ -351,8 +322,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     double tolerance = getTolerance(components);
                     result = new MultiSurface(components, factory, tolerance);
                 } else {
-                    MultiLineString multiLineString =
-                            Converters.convert(source, MultiLineString.class);
+                    MultiLineString multiLineString = Converters.convert(source, MultiLineString.class);
                     if (multiLineString == null) {
                         return null;
                     } else {
@@ -361,14 +331,10 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                         result = new MultiCurve(components, factory, tolerance);
                     }
                 }
-            } else if (source instanceof CircularRing
-                    && CircularString.class.isAssignableFrom(target)) {
+            } else if (source instanceof CircularRing && CircularString.class.isAssignableFrom(target)) {
                 CircularRing cr = (CircularRing) source;
-                result =
-                        new CircularString(
-                                cr.getControlPoints(), cr.getFactory(), cr.getTolerance());
-            } else if (source instanceof CompoundRing
-                    && CompoundCurve.class.isAssignableFrom(target)) {
+                result = new CircularString(cr.getControlPoints(), cr.getFactory(), cr.getTolerance());
+            } else if (source instanceof CompoundRing && CompoundCurve.class.isAssignableFrom(target)) {
                 CompoundRing cr = (CompoundRing) source;
                 result = new CompoundCurve(cr.getComponents(), cr.getFactory(), cr.getTolerance());
             } else {
@@ -377,17 +343,10 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     List<LineString> components = new ArrayList<>();
                     result = new CompoundRing(components, converted.getFactory(), Double.MAX_VALUE);
                 } else if (converted instanceof LinearRing) {
-                    result =
-                            new CompoundRing(
-                                    Arrays.asList(converted),
-                                    ((LineString) source).getFactory(),
-                                    Double.MAX_VALUE);
+                    result = new CompoundRing(
+                            Arrays.asList(converted), ((LineString) source).getFactory(), Double.MAX_VALUE);
                 } else {
-                    result =
-                            new CompoundCurve(
-                                    Arrays.asList(converted),
-                                    converted.getFactory(),
-                                    Double.MAX_VALUE);
+                    result = new CompoundCurve(Arrays.asList(converted), converted.getFactory(), Double.MAX_VALUE);
                 }
             }
             if (result != null) {

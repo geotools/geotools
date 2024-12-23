@@ -103,17 +103,15 @@ import org.geotools.xsd.Configuration;
 /** */
 public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
-    private static final List<String> PREFERRED_FORMATS =
-            Collections.unmodifiableList(
-                    Arrays.asList(
-                            "application/gml+xml; version=3.2", // As per Table 12 in 09-25r1 OGC
-                            // Web Feature Service WFS 2.0
-                            "text/xml; subtype=gml/3.2",
-                            "gml32",
-                            "text/xml; subtype=gml/3.1.1",
-                            "gml3",
-                            "text/xml; subtype=gml/2.1.2",
-                            "GML2"));
+    private static final List<String> PREFERRED_FORMATS = Collections.unmodifiableList(Arrays.asList(
+            "application/gml+xml; version=3.2", // As per Table 12 in 09-25r1 OGC
+            // Web Feature Service WFS 2.0
+            "text/xml; subtype=gml/3.2",
+            "gml32",
+            "text/xml; subtype=gml/3.1.1",
+            "gml3",
+            "text/xml; subtype=gml/2.1.2",
+            "GML2"));
 
     private net.opengis.wfs20.WFSCapabilitiesType capabilities;
 
@@ -151,8 +149,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public void setCapabilities(WFSGetCapabilities capabilities) {
-        net.opengis.wfs20.WFSCapabilitiesType caps =
-                (WFSCapabilitiesType) capabilities.getParsedCapabilities();
+        net.opengis.wfs20.WFSCapabilitiesType caps = (WFSCapabilitiesType) capabilities.getParsedCapabilities();
         this.capabilities = caps;
 
         typeInfos.clear();
@@ -169,8 +166,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     @Override
     public WFSServiceInfo getServiceInfo() {
         URL getCapsUrl = getOperationURL(WFSOperationType.GET_CAPABILITIES, GET);
-        return new Capabilities200ServiceInfo(
-                "http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, capabilities);
+        return new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, capabilities);
     }
 
     @Override
@@ -195,9 +191,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return new HashSet<>(typeInfos.keySet());
     }
 
-    /**
-     * @see org.geotools.data.wfs.internal.WFSStrategy#getFeatureTypeInfo(javax.xml.namespace.QName)
-     */
+    /** @see org.geotools.data.wfs.internal.WFSStrategy#getFeatureTypeInfo(javax.xml.namespace.QName) */
     @Override
     public FeatureTypeInfo getFeatureTypeInfo(QName typeName) {
         FeatureTypeType eType = typeInfos.get(typeName);
@@ -217,8 +211,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest query) {
         Map<String, String> kvp = null;
         if (query.isStoredQuery()) {
-            FeatureTypeInfoImpl featureTypeInfo =
-                    (FeatureTypeInfoImpl) getFeatureTypeInfo(query.getTypeName());
+            FeatureTypeInfoImpl featureTypeInfo = (FeatureTypeInfoImpl) getFeatureTypeInfo(query.getTypeName());
             StoredQueryDescriptionType desc = query.getStoredQueryDescriptionType();
 
             StoredQueryConfiguration config = null;
@@ -245,9 +238,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
-            List<ParameterType> params =
-                    new ParameterTypeFactory(config, desc, featureTypeInfo)
-                            .buildStoredQueryParameters(viewParams, originalFilter);
+            List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
+                    .buildStoredQueryParameters(viewParams, originalFilter);
 
             for (ParameterType p : params) {
                 kvp.put(p.getName(), p.getValue());
@@ -270,8 +262,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
-    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(
-            Map<String, String> kvp, QName typeName) {
+    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(Map<String, String> kvp, QName typeName) {
         String prefixedTypeName = getPrefixedTypeName(typeName);
 
         kvp.put("TYPENAMES", prefixedTypeName);
@@ -309,8 +300,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     @SuppressWarnings("CollectionIncompatibleType")
     protected EObject createGetFeatureRequestPost(GetFeatureRequest query) {
         final QName typeName = query.getTypeName();
-        final FeatureTypeInfoImpl featureTypeInfo =
-                (FeatureTypeInfoImpl) getFeatureTypeInfo(typeName);
+        final FeatureTypeInfoImpl featureTypeInfo = (FeatureTypeInfoImpl) getFeatureTypeInfo(typeName);
 
         final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 
@@ -333,8 +323,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         }
 
         ResultType resultType = query.getResultType();
-        getFeature.setResultType(
-                ResultType.RESULTS == resultType ? ResultTypeType.RESULTS : ResultTypeType.HITS);
+        getFeature.setResultType(ResultType.RESULTS == resultType ? ResultTypeType.RESULTS : ResultTypeType.HITS);
 
         AbstractQueryExpressionType abstractQuery;
 
@@ -360,9 +349,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
-            List<ParameterType> params =
-                    new ParameterTypeFactory(config, desc, featureTypeInfo)
-                            .buildStoredQueryParameters(viewParams, query.getFilter());
+            List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
+                    .buildStoredQueryParameters(viewParams, query.getFilter());
 
             storedQuery.getParameter().addAll(params);
 
@@ -406,8 +394,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 for (String propName : propertyNames) {
                     // These get encoded into <fes:AbstractProjectionClause/> elements. Something's
                     // missing
-                    propertyName.add(
-                            new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
+                    propertyName.add(new QName(featureTypeInfo.getQName().getNamespaceURI(), propName));
                 }
             }
 
@@ -428,8 +415,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
-    protected EObject createListStoredQueriesRequestPost(ListStoredQueriesRequest request)
-            throws IOException {
+    protected EObject createListStoredQueriesRequestPost(ListStoredQueriesRequest request) throws IOException {
         final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 
         ListStoredQueriesType ret = factory.createListStoredQueriesType();
@@ -438,8 +424,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
-    protected EObject createDescribeStoredQueriesRequestPost(DescribeStoredQueriesRequest request)
-            throws IOException {
+    protected EObject createDescribeStoredQueriesRequestPost(DescribeStoredQueriesRequest request) throws IOException {
         final Wfs20Factory factory = Wfs20Factory.eINSTANCE;
 
         DescribeStoredQueriesType ret = factory.createDescribeStoredQueriesType();
@@ -581,8 +566,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public List<String> getClientSupportedOutputFormats(WFSOperationType operation) {
-        List<WFSResponseFactory> operationResponseFactories =
-                WFSExtensions.findResponseFactories(operation);
+        List<WFSResponseFactory> operationResponseFactories = WFSExtensions.findResponseFactories(operation);
 
         List<String> outputFormats = new LinkedList<>();
         for (WFSResponseFactory factory : operationResponseFactories) {
@@ -633,9 +617,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             }
         }
         throw new NoSuchElementException(
-                "Operation metadata not found for "
-                        + expectedOperationName
-                        + " in the capabilities document");
+                "Operation metadata not found for " + expectedOperationName + " in the capabilities document");
     }
 
     @Override
@@ -669,7 +651,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         for (DomainType parameter : parameters) {
             if (parameterName.equals(parameter.getName())) {
                 Set<String> foundValues = new HashSet<>();
-                for (ValueType value : (List<ValueType>) parameter.getAllowedValues().getValue()) {
+                for (ValueType value :
+                        (List<ValueType>) parameter.getAllowedValues().getValue()) {
                     foundValues.add(value.getValue());
                 }
                 return foundValues;
@@ -679,8 +662,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @SuppressWarnings("unchecked")
-    protected Set<String> findParameters(
-            final OperationType operationMetadata, final String parameterName) {
+    protected Set<String> findParameters(final OperationType operationMetadata, final String parameterName) {
 
         List<DomainType> parameters = operationMetadata.getParameter();
         for (DomainType param : parameters) {
@@ -690,7 +672,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             if (parameterName.equals(paramName)) {
                 Set<String> foundValues = new HashSet<>();
 
-                for (ValueType value : (List<ValueType>) param.getAllowedValues().getValue()) {
+                for (ValueType value :
+                        (List<ValueType>) param.getAllowedValues().getValue()) {
                     foundValues.add(value.getValue());
                 }
                 return foundValues;
@@ -699,8 +682,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return Collections.emptySet();
     }
 
-    protected AbstractTransactionActionType createInsert(Wfs20Factory factory, Insert elem)
-            throws Exception {
+    protected AbstractTransactionActionType createInsert(Wfs20Factory factory, Insert elem) throws Exception {
         InsertType insert = factory.createInsertType();
 
         String srsName = getFeatureTypeInfo(elem.getTypeName()).getDefaultSRS();
@@ -713,18 +695,13 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return insert;
     }
 
-    protected AbstractTransactionActionType createUpdate(Wfs20Factory factory, Update elem)
-            throws Exception {
+    protected AbstractTransactionActionType createUpdate(Wfs20Factory factory, Update elem) throws Exception {
 
         List<QName> propertyNames = elem.getPropertyNames();
         List<Object> newValues = elem.getNewValues();
         if (propertyNames.size() != newValues.size()) {
             throw new IllegalArgumentException(
-                    "Got "
-                            + propertyNames.size()
-                            + " property names and "
-                            + newValues.size()
-                            + " values");
+                    "Got " + propertyNames.size() + " property names and " + newValues.size() + " values");
         }
 
         UpdateType update = factory.createUpdateType();
@@ -754,8 +731,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return update;
     }
 
-    protected AbstractTransactionActionType createDelete(Wfs20Factory factory, Delete elem)
-            throws Exception {
+    protected AbstractTransactionActionType createDelete(Wfs20Factory factory, Delete elem) throws Exception {
         DeleteType delete = factory.createDeleteType();
 
         QName typeName = elem.getTypeName();

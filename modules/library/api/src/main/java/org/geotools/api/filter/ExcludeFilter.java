@@ -13,8 +13,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Indicating "filter all", evaluates to {@code false}. This is a placeholder filter intended to be
- * used in data structuring definition.
+ * Indicating "filter all", evaluates to {@code false}. This is a placeholder filter intended to be used in data
+ * structuring definition.
  *
  * <p>
  *

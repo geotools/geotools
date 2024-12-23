@@ -60,8 +60,7 @@ public class SpatialIndexInputStream extends VPFInputStream {
      */
     @Override
     public VPFHeader readHeader() throws IOException {
-        return new SpatialIndexHeader(
-                readInteger(), readFloat(), readFloat(), readFloat(), readFloat(), readInteger());
+        return new SpatialIndexHeader(readInteger(), readFloat(), readFloat(), readFloat(), readFloat(), readInteger());
     }
 
     /**

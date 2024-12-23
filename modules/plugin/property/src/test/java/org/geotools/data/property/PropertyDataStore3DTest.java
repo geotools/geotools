@@ -97,14 +97,11 @@ public class PropertyDataStore3DTest {
         assertEquals(1, names.length);
         assertEquals("full3d", names[0]);
         SimpleFeature poly = getOneFeature("full3d.poly");
-        assertEquals(
-                3, CoordinateSequences.coordinateDimension((Geometry) poly.getDefaultGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension((Geometry) poly.getDefaultGeometry()));
         SimpleFeature point = getOneFeature("full3d.point");
-        assertEquals(
-                3, CoordinateSequences.coordinateDimension((Geometry) point.getDefaultGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension((Geometry) point.getDefaultGeometry()));
         SimpleFeature line = getOneFeature("full3d.ls");
-        assertEquals(
-                3, CoordinateSequences.coordinateDimension((Geometry) line.getDefaultGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension((Geometry) line.getDefaultGeometry()));
     }
 
     @Test
@@ -112,11 +109,8 @@ public class PropertyDataStore3DTest {
         // write out new feature
         SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource("full3d");
         final String featureId = "full3d.newPoint";
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        fs.getSchema(),
-                        new Object[] {"New Point", new WKTReader().read("POINT(1 2 3)")},
-                        featureId);
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                fs.getSchema(), new Object[] {"New Point", new WKTReader().read("POINT(1 2 3)")}, featureId);
         List<FeatureId> ids = fs.addFeatures(DataUtilities.collection(feature));
         assertEquals(1, ids.size());
 
@@ -131,8 +125,7 @@ public class PropertyDataStore3DTest {
     public void testUpdate3DPoint() throws Exception {
         // write out new feature
         SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource("full3d");
-        fs.modifyFeatures(
-                "geom", new WKTReader().read("POINT(1 2 3)"), newIdFilter("full3d.point"));
+        fs.modifyFeatures("geom", new WKTReader().read("POINT(1 2 3)"), newIdFilter("full3d.point"));
 
         // read back and check
         SimpleFeature point = getOneFeature("full3d.point");
@@ -158,16 +151,15 @@ public class PropertyDataStore3DTest {
         // write out new feature
         SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource("full3d");
         final String featureId = "full3d.newPolygon";
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        fs.getSchema(),
-                        new Object[] {
-                            "New Polygon",
-                            new WKTReader()
-                                    .read(
-                                            "POLYGON((94000 471000 16, 94001 471000 16, 94001 471001 16, 94000 471001 16, 94000 471000 16))")
-                        },
-                        featureId);
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                fs.getSchema(),
+                new Object[] {
+                    "New Polygon",
+                    new WKTReader()
+                            .read(
+                                    "POLYGON((94000 471000 16, 94001 471000 16, 94001 471001 16, 94000 471001 16, 94000 471000 16))")
+                },
+                featureId);
         List<FeatureId> ids = fs.addFeatures(DataUtilities.collection(feature));
         assertEquals(1, ids.size());
 
@@ -213,14 +205,10 @@ public class PropertyDataStore3DTest {
         // write out new feature
         SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource("full3d");
         final String featureId = "full3d.newLine";
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        fs.getSchema(),
-                        new Object[] {
-                            "New Polygon",
-                            new WKTReader().read("LINESTRING(94330 471816 30, 194319 471814 30)")
-                        },
-                        featureId);
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                fs.getSchema(),
+                new Object[] {"New Polygon", new WKTReader().read("LINESTRING(94330 471816 30, 194319 471814 30)")},
+                featureId);
         List<FeatureId> ids = fs.addFeatures(DataUtilities.collection(feature));
         assertEquals(1, ids.size());
 
@@ -284,8 +272,7 @@ public class PropertyDataStore3DTest {
     }
 
     private SimpleFeature getOneFeature(String featureId) throws IOException {
-        ContentFeatureCollection fc =
-                store.getFeatureSource("full3d").getFeatures(newIdFilter(featureId));
+        ContentFeatureCollection fc = store.getFeatureSource("full3d").getFeatures(newIdFilter(featureId));
         try (SimpleFeatureIterator fi = fc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature result = fi.next();

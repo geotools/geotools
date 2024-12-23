@@ -86,22 +86,19 @@ public final class InternationalStringTest {
         basicTests(name);
         assertEquals("toString:", "codespace:subspace:name", name.toString());
         assertEquals("toString:", "codespace:subspace", name.scope().name().toString());
-        assertEquals("toString:", "codespace", name.scope().name().scope().name().toString());
+        assertEquals(
+                "toString:", "codespace", name.scope().name().scope().name().toString());
         assertSame("asScopedName", name, name.toFullyQualifiedName());
         assertSame("asLocalName", name, name.tip().toFullyQualifiedName());
     }
 
     /** Performs basic test on the given object. */
     @SuppressWarnings({"unchecked", "SelfComparison", "BanSerializableRead"})
-    private <T extends Comparable> void basicTests(final T toTest)
-            throws IOException, ClassNotFoundException {
+    private <T extends Comparable> void basicTests(final T toTest) throws IOException, ClassNotFoundException {
         assertEquals("CompareTo: ", 0, toTest.compareTo(toTest));
         assertEquals("Equals:", toTest, toTest);
         if (toTest instanceof CharSequence) {
-            assertEquals(
-                    "CharSequence:",
-                    toTest.toString(),
-                    new StringBuilder((CharSequence) toTest).toString());
+            assertEquals("CharSequence:", toTest.toString(), new StringBuilder((CharSequence) toTest).toString());
         }
         /*
          * Tests serialization

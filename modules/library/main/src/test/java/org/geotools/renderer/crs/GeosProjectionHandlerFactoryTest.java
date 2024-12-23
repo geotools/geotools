@@ -34,8 +34,7 @@ public class GeosProjectionHandlerFactoryTest {
         CoordinateReferenceSystem geos = CRS.decode("AUTO:97004,9001,0,0");
         ReferencedEnvelope re = new ReferencedEnvelope(-6000000, 6000000, -6000000, 6000000, geos);
 
-        ProjectionHandler handler =
-                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
         Geometry validArea = handler.getValidArea();
         assertThat(validArea, Matchers.instanceOf(Polygon.class));
         Polygon validPolygon = (Polygon) validArea;
@@ -52,8 +51,7 @@ public class GeosProjectionHandlerFactoryTest {
         CoordinateReferenceSystem geos = CRS.decode("AUTO:97004,9001,-135,0");
         ReferencedEnvelope re = new ReferencedEnvelope(-6000000, 6000000, -6000000, 6000000, geos);
 
-        ProjectionHandler handler =
-                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
         Geometry validArea = handler.getValidArea();
         assertThat(validArea, Matchers.instanceOf(MultiPolygon.class));
         assertEquals(2, validArea.getNumGeometries());
@@ -77,8 +75,7 @@ public class GeosProjectionHandlerFactoryTest {
         CoordinateReferenceSystem geos = CRS.decode("AUTO:97004,9001,135,0");
         ReferencedEnvelope re = new ReferencedEnvelope(-6000000, 6000000, -6000000, 6000000, geos);
 
-        ProjectionHandler handler =
-                ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(re, DefaultGeographicCRS.WGS84, false);
         Geometry validArea = handler.getValidArea();
         assertThat(validArea, Matchers.instanceOf(MultiPolygon.class));
         assertEquals(2, validArea.getNumGeometries());

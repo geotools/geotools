@@ -62,9 +62,9 @@ public class MultiLineStringTypeBindingTest extends GML3TestSupport {
         Document dom = encode(geometry, GML.MultiLineString);
         // print(dom);
         assertEquals("geometry", getID(dom.getDocumentElement()));
-        assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "lineStringMember").getLength());
-        NodeList children =
-                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
+        assertEquals(
+                2, dom.getElementsByTagNameNS(GML.NAMESPACE, "lineStringMember").getLength());
+        NodeList children = dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));

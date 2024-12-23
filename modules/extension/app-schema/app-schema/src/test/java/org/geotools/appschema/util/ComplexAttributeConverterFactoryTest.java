@@ -62,17 +62,10 @@ public class ComplexAttributeConverterFactoryTest {
     @Test
     public void testLeafComplexAttribute() {
         Collection<Property> attributes = new ArrayList<>();
-        AttributeDescriptor descriptor =
-                new AttributeDescriptorImpl(
-                        XSSchema.STRING_TYPE,
-                        ComplexFeatureConstants.SIMPLE_CONTENT,
-                        1,
-                        1,
-                        true,
-                        null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(
+                XSSchema.STRING_TYPE, ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, null);
         attributes.add(new AttributeImpl("rini", descriptor, null));
-        ComplexAttribute gmlName =
-                new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
+        ComplexAttribute gmlName = new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
         String nameString = Converters.convert(gmlName, String.class);
         Assert.assertEquals("rini", nameString);
     }
@@ -81,23 +74,15 @@ public class ComplexAttributeConverterFactoryTest {
     @Test
     public void testParentComplexAttribute() {
         Collection<Property> attributes = new ArrayList<>();
-        AttributeDescriptor descriptor =
-                new AttributeDescriptorImpl(
-                        XSSchema.STRING_TYPE,
-                        ComplexFeatureConstants.SIMPLE_CONTENT,
-                        1,
-                        1,
-                        true,
-                        null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(
+                XSSchema.STRING_TYPE, ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, null);
         attributes.add(new AttributeImpl("rini", descriptor, null));
-        ComplexAttribute gmlName =
-                new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
+        ComplexAttribute gmlName = new ComplexAttributeImpl(attributes, GMLSchema.CODETYPE_TYPE, null);
 
         Collection<Property> parentAttributes = new ArrayList<>();
         parentAttributes.add(gmlName);
         ComplexAttribute parentAtt =
-                new ComplexAttributeImpl(
-                        parentAttributes, GMLSchema.ABSTRACTFEATURETYPE_TYPE, null);
+                new ComplexAttributeImpl(parentAttributes, GMLSchema.ABSTRACTFEATURETYPE_TYPE, null);
         String nameString = Converters.convert(parentAtt, String.class);
 
         Assert.assertEquals(parentAtt.toString(), nameString);
@@ -115,28 +100,18 @@ public class ComplexAttributeConverterFactoryTest {
     /** Test extracting geometry from geometryattribute should be successful. */
     @Test
     public void testGeometry() {
-        Geometry geometry =
-                new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING))
-                        .createGeometryCollection();
-        GeometryAttribute geoatt =
-                new GeometryAttributeImpl(
-                        geometry,
-                        new GeometryDescriptorImpl(
-                                new GeometryTypeImpl(
-                                        new NameImpl(""),
-                                        GeometryCollection.class,
-                                        null,
-                                        false,
-                                        false,
-                                        null,
-                                        null,
-                                        null),
-                                new NameImpl(""),
-                                0,
-                                0,
-                                false,
-                                null),
-                        null);
+        Geometry geometry = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING)).createGeometryCollection();
+        GeometryAttribute geoatt = new GeometryAttributeImpl(
+                geometry,
+                new GeometryDescriptorImpl(
+                        new GeometryTypeImpl(
+                                new NameImpl(""), GeometryCollection.class, null, false, false, null, null, null),
+                        new NameImpl(""),
+                        0,
+                        0,
+                        false,
+                        null),
+                null);
         Geometry geometry2 = Converters.convert(geoatt, Geometry.class);
         Assert.assertSame(geometry, geometry2);
     }
@@ -145,14 +120,8 @@ public class ComplexAttributeConverterFactoryTest {
     @Test
     public void testAttributeConversion() {
         // create an attribute containing a double
-        AttributeDescriptor descriptor =
-                new AttributeDescriptorImpl(
-                        XSSchema.DOUBLE_TYPE,
-                        ComplexFeatureConstants.SIMPLE_CONTENT,
-                        1,
-                        1,
-                        true,
-                        null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(
+                XSSchema.DOUBLE_TYPE, ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, null);
         AttributeImpl attribute = new AttributeImpl(35.0, descriptor, null);
         // convert the attribute to a number
         Object result = Converters.convert(attribute, Double.class);
@@ -165,20 +134,14 @@ public class ComplexAttributeConverterFactoryTest {
     }
 
     /**
-     * Checks that a list of attributes is correctly convert to a concatenated string and that only
-     * string conversion is supported.
+     * Checks that a list of attributes is correctly convert to a concatenated string and that only string conversion is
+     * supported.
      */
     @Test
     public void testAttributeListConversion() {
         // create two attributes containing an itneger
-        AttributeDescriptor descriptor =
-                new AttributeDescriptorImpl(
-                        XSSchema.INTEGER_TYPE,
-                        ComplexFeatureConstants.SIMPLE_CONTENT,
-                        1,
-                        1,
-                        true,
-                        null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(
+                XSSchema.INTEGER_TYPE, ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, null);
         AttributeImpl attribute1 = new AttributeImpl(35, descriptor, null);
         AttributeImpl attribute2 = new AttributeImpl(40, descriptor, null);
         // create a list of attributes

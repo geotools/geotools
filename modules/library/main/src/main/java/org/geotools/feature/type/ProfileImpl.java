@@ -33,11 +33,11 @@ import org.geotools.api.feature.type.Schema;
  * <p>This class uses a custom key set to subset a parent Schema, and is used as the return type of
  * {@link SchemaImpl.profile}.
  *
- * <p>This Schema is <b>not</b> mutable, serving only as a view, you may however define a more
- * specific subset if needed.
+ * <p>This Schema is <b>not</b> mutable, serving only as a view, you may however define a more specific subset if
+ * needed.
  *
- * <p>Schema is often used to place limitation on expressed content (as in the case of the GML Level
- * 0 Profile), or used to define a non conflicting set of "bindings" for the TypeBuilder(s).
+ * <p>Schema is often used to place limitation on expressed content (as in the case of the GML Level 0 Profile), or used
+ * to define a non conflicting set of "bindings" for the TypeBuilder(s).
  *
  * @author Jody Garnett, Refractions Research Inc.
  */

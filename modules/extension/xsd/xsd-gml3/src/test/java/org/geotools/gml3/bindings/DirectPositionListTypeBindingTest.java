@@ -95,8 +95,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D();
         CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
-        checkPosListOrdinates(
-                doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
+        checkPosListOrdinates(doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
     }
 
     @Test
@@ -104,7 +103,6 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite3D();
         CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
-        checkPosListOrdinates(
-                doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
+        checkPosListOrdinates(doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
     }
 }

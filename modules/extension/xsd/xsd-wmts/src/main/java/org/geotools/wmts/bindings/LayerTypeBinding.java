@@ -144,8 +144,7 @@ public class LayerTypeBinding extends AbstractComplexEMFBinding {
             layer.getWGS84BoundingBox().add(c.getValue());
         }
 
-        layer.getDatasetDescriptionSummary()
-                .addAll(node.getChildren(DatasetDescriptionSummaryBaseType.class));
+        layer.getDatasetDescriptionSummary().addAll(node.getChildren(DatasetDescriptionSummaryBaseType.class));
 
         layer.getDimension().addAll(node.getChildValues(DimensionType.class));
 

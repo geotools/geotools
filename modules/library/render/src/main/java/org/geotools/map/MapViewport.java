@@ -33,22 +33,19 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 
 /**
- * Represents the area of a map to be displayed, expressed in world coordinates and (optionally)
- * screen (window, image) coordinates. A viewport is used to stage information for map rendering.
- * While the viewport provides support for bounds and coordinate reference system out of the box it
- * is expected that the user data support in {@code MapContent} will be used to record additional
- * information such as elevation and time as required for rendering.
+ * Represents the area of a map to be displayed, expressed in world coordinates and (optionally) screen (window, image)
+ * coordinates. A viewport is used to stage information for map rendering. While the viewport provides support for
+ * bounds and coordinate reference system out of the box it is expected that the user data support in {@code MapContent}
+ * will be used to record additional information such as elevation and time as required for rendering.
  *
- * <p>When both world and screen bounds are defined, the viewport calculates {@code
- * AffineTransforms} to convert the coordinates of one bounds to those of the other. It can also
- * optionally adjust the world bounds to maintain an identical aspect ratio with the screen bounds.
- * Note however that aspect ratio adjustment should not be enabled when the viewport is used with a
- * service such as WMS which mandates that specified screen and world bounds must be honoured
- * exactly, regardless of the resulting aspect ratio differences.
+ * <p>When both world and screen bounds are defined, the viewport calculates {@code AffineTransforms} to convert the
+ * coordinates of one bounds to those of the other. It can also optionally adjust the world bounds to maintain an
+ * identical aspect ratio with the screen bounds. Note however that aspect ratio adjustment should not be enabled when
+ * the viewport is used with a service such as WMS which mandates that specified screen and world bounds must be
+ * honoured exactly, regardless of the resulting aspect ratio differences.
  *
- * <p>The {@code AffineTransforms} can be retrieved with the methods {@linkplain
- * #getScreenToWorld()} and {@linkplain #getWorldToScreen()}. The following rules apply to the
- * return values of these methods:
+ * <p>The {@code AffineTransforms} can be retrieved with the methods {@linkplain #getScreenToWorld()} and
+ * {@linkplain #getWorldToScreen()}. The following rules apply to the return values of these methods:
  *
  * <ul>
  *   <li>If screen area is not defined, {@code null} is returned.
@@ -96,17 +93,13 @@ public class MapViewport {
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
-    /**
-     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
-     * resized.
-     */
+    /** Determine if the map retains its scale (false) or its bounds (true) when the MapPane is resized. */
     private boolean fixedBoundsOnResize = false;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
-     * Creates a new view port. Screen area and world bounds will be empty, and aspect ratio
-     * matching will be disabled.
+     * Creates a new view port. Screen area and world bounds will be empty, and aspect ratio matching will be disabled.
      */
     public MapViewport() {
         this(false);
@@ -122,8 +115,8 @@ public class MapViewport {
     }
 
     /**
-     * Creates a new view port with the specified display area in world coordinates. The input
-     * envelope is copied so subsequent changes to it will not affect the viewport.
+     * Creates a new view port with the specified display area in world coordinates. The input envelope is copied so
+     * subsequent changes to it will not affect the viewport.
      *
      * <p>The initial screen area will be empty and aspect ratio matching will be disabled.
      *
@@ -134,8 +127,8 @@ public class MapViewport {
     }
 
     /**
-     * Creates a new viewport with the specified world bounds. The input envelope is copied so
-     * subsequent changes to it will not affect the viewport.
+     * Creates a new viewport with the specified world bounds. The input envelope is copied so subsequent changes to it
+     * will not affect the viewport.
      *
      * <p>The initial screen area will be empty.
      *
@@ -152,11 +145,10 @@ public class MapViewport {
     }
 
     /**
-     * Creates a new viewport based on an existing instance. The world bounds, screen area and
-     * aspect ratio matching setting of {@code sourceViewport} are copied.
+     * Creates a new viewport based on an existing instance. The world bounds, screen area and aspect ratio matching
+     * setting of {@code sourceViewport} are copied.
      *
-     * <p><strong>Note:</strong> The new viewport will be editable even if {@code sourceViewport} is
-     * not editable.
+     * <p><strong>Note:</strong> The new viewport will be editable even if {@code sourceViewport} is not editable.
      *
      * @param sourceViewport the viewport to copy
      * @throws IllegalArgumentException if {@code viewport} is {@code null}
@@ -170,9 +162,9 @@ public class MapViewport {
     }
 
     /**
-     * Tests whether this viewport's attributes can be changed. Viewports are editable by default. A
-     * non-editable viewport will not allow the value of any of its attributes to be changed and
-     * will issue a log message (fine level) on any attempt to do so.
+     * Tests whether this viewport's attributes can be changed. Viewports are editable by default. A non-editable
+     * viewport will not allow the value of any of its attributes to be changed and will issue a log message (fine
+     * level) on any attempt to do so.
      *
      * @return {@code true} if this viewport is editable
      */
@@ -181,8 +173,7 @@ public class MapViewport {
     }
 
     /**
-     * Sets whether the value of this viewport's attributes can be changed. Viewports are editable
-     * by default.
+     * Sets whether the value of this viewport's attributes can be changed. Viewports are editable by default.
      *
      * @param editable {@code true} to allow changes
      */
@@ -210,8 +201,7 @@ public class MapViewport {
     }
 
     /**
-     * Queries whether input worlds bounds will be adjusted to match the aspect ratio of the screen
-     * area.
+     * Queries whether input worlds bounds will be adjusted to match the aspect ratio of the screen area.
      *
      * @return {@code true} if enabled
      */
@@ -246,8 +236,8 @@ public class MapViewport {
     }
 
     /**
-     * Checks if the view port bounds are empty (undefined). This will be {@code true} if either or
-     * both of the world bounds and screen bounds are empty.
+     * Checks if the view port bounds are empty (undefined). This will be {@code true} if either or both of the world
+     * bounds and screen bounds are empty.
      *
      * @return {@code true} if empty
      */
@@ -263,8 +253,8 @@ public class MapViewport {
     /**
      * Gets the display area in world coordinates.
      *
-     * <p>Note Well: this only covers spatial extent; you may wish to use the user data map to
-     * record the current viewport time or elevation.
+     * <p>Note Well: this only covers spatial extent; you may wish to use the user data map to record the current
+     * viewport time or elevation.
      *
      * @return a copy of the current bounds
      */
@@ -280,17 +270,15 @@ public class MapViewport {
     /**
      * Sets the display area in world coordinates.
      *
-     * <p>If {@code bounds} is {@code null} or empty, default identity coordinate transforms will be
-     * set.
+     * <p>If {@code bounds} is {@code null} or empty, default identity coordinate transforms will be set.
      *
-     * <p>If {@code bounds} is not empty, and aspect ratio matching is enabled, the coordinate
-     * transforms will be calculated to centre the requested bounds in the current screen area (if
-     * defined), after which the world bounds will be adjusted (enlarged) as required to match the
-     * screen area's aspect ratio.
+     * <p>If {@code bounds} is not empty, and aspect ratio matching is enabled, the coordinate transforms will be
+     * calculated to centre the requested bounds in the current screen area (if defined), after which the world bounds
+     * will be adjusted (enlarged) as required to match the screen area's aspect ratio.
      *
-     * <p>A {@code MapBoundsEvent} will be fired to inform listeners of the change from old to new
-     * bounds. Note that when aspect ratio matching is enabled, the new bounds carried by the event
-     * will be the viewport's adjusted bounds, not the originally requested bounds.
+     * <p>A {@code MapBoundsEvent} will be fired to inform listeners of the change from old to new bounds. Note that
+     * when aspect ratio matching is enabled, the new bounds carried by the event will be the viewport's adjusted
+     * bounds, not the originally requested bounds.
      *
      * @param requestedBounds the requested bounds (may be {@code null})
      */
@@ -360,12 +348,11 @@ public class MapViewport {
     }
 
     /**
-     * The coordinate reference system used for rendering the map. If not yet set, {@code null} is
-     * returned.
+     * The coordinate reference system used for rendering the map. If not yet set, {@code null} is returned.
      *
-     * <p>The coordinate reference system used for rendering is often considered to be the "world"
-     * coordinate reference system; this is distinct from the coordinate reference system used for
-     * each layer (which is often data dependent).
+     * <p>The coordinate reference system used for rendering is often considered to be the "world" coordinate reference
+     * system; this is distinct from the coordinate reference system used for each layer (which is often data
+     * dependent).
      *
      * @return coordinate reference system used for rendering the map (may be {@code null}).
      */
@@ -379,8 +366,8 @@ public class MapViewport {
     }
 
     /**
-     * Set the {@code CoordinateReferenceSystem} for the viewport. If {@code crs} is null, the
-     * existing reference system will be discarded.
+     * Set the {@code CoordinateReferenceSystem} for the viewport. If {@code crs} is null, the existing reference system
+     * will be discarded.
      *
      * @param crs the new coordinate reference system, or {@code null} for no reference system
      */
@@ -401,8 +388,7 @@ public class MapViewport {
                             bounds = bounds.transform(crs, true);
                             setTransforms(true);
 
-                            fireMapBoundsListenerMapBoundsChanged(
-                                    MapBoundsEvent.Type.CRS, old, bounds);
+                            fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
 
                         } catch (Exception e) {
                             LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
@@ -446,8 +432,7 @@ public class MapViewport {
     /**
      * Gets the current screen to world coordinate transform.
      *
-     * @return a copy of the current screen to world transform or {@code null} if the transform is
-     *     not set
+     * @return a copy of the current screen to world transform or {@code null} if the transform is not set
      */
     public AffineTransform getScreenToWorld() {
         lock.readLock().lock();
@@ -461,8 +446,7 @@ public class MapViewport {
     /**
      * Gets the current world to screen coordinate transform.
      *
-     * @return a copy of the current world to screen transform or {@code null} if the transform is
-     *     not set
+     * @return a copy of the current world to screen transform or {@code null} if the transform is not set
      */
     public AffineTransform getWorldToScreen() {
         lock.readLock().lock();
@@ -480,11 +464,10 @@ public class MapViewport {
      *
      * <p>If screen area is defined but not world bounds, the transforms are set to identity.
      *
-     * <p>When both screen area and world bounds are defined, the transforms are set as follows. If
-     * aspect ratio matching is enabled, the transforms transforms are calculated to centre the
-     * world bounds in the screen area, after which the bounds will be adjusted if necessary to have
-     * the same aspect ratio as the screen area. If aspect ratio matching is not enabled, basic
-     * transforms are calculated without centering or bounds adjustment.
+     * <p>When both screen area and world bounds are defined, the transforms are set as follows. If aspect ratio
+     * matching is enabled, the transforms transforms are calculated to centre the world bounds in the screen area,
+     * after which the bounds will be adjusted if necessary to have the same aspect ratio as the screen area. If aspect
+     * ratio matching is not enabled, basic transforms are calculated without centering or bounds adjustment.
      *
      * @param newBounds indicates whether world bounds have just been changed
      */
@@ -511,8 +494,7 @@ public class MapViewport {
     }
 
     /**
-     * Calculates transforms suitable for aspect ratio matching. The world bounds will be centred in
-     * the screen area.
+     * Calculates transforms suitable for aspect ratio matching. The world bounds will be centred in the screen area.
      */
     private void calculateCenteringTransforms() {
         double xscale = screenArea.getWidth() / bounds.getWidth();
@@ -534,16 +516,12 @@ public class MapViewport {
         hasCenteringTransforms = true;
     }
 
-    /**
-     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
-     * resized.
-     */
+    /** Determine if the map retains its scale (false) or its bounds (true) when the MapPane is resized. */
     public boolean isFixedBoundsOnResize() {
         return fixedBoundsOnResize;
     }
     /**
-     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
-     * resized.
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is resized.
      *
      * @param fixedBoundsOnResize - if true retain bounds on resize otherwise retain scale.
      */
@@ -560,14 +538,8 @@ public class MapViewport {
         double xscale = screenArea.getWidth() / requestedBounds.getWidth();
         double yscale = screenArea.getHeight() / requestedBounds.getHeight();
 
-        worldToScreen =
-                new AffineTransform(
-                        xscale,
-                        0,
-                        0,
-                        -yscale,
-                        -xscale * requestedBounds.getMinX(),
-                        yscale * requestedBounds.getMaxY());
+        worldToScreen = new AffineTransform(
+                xscale, 0, 0, -yscale, -xscale * requestedBounds.getMinX(), yscale * requestedBounds.getMaxY());
         try {
             screenToWorld = worldToScreen.createInverse();
 
@@ -591,18 +563,12 @@ public class MapViewport {
                 bounds.getCoordinateReferenceSystem());
     }
 
-    /**
-     * Helper for setter methods which checks that this viewport is editable and issues a log
-     * message if not.
-     */
+    /** Helper for setter methods which checks that this viewport is editable and issues a log message if not. */
     private boolean checkEditable(String methodName) {
         final boolean state = editable.get();
         if (!state) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                        Level.FINE,
-                        "Ignored call to {0} because viewport is not editable",
-                        methodName);
+                LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable", methodName);
             }
         }
 

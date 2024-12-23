@@ -21,27 +21,25 @@
  *
  * <p>In this package the I/O drivers for reading and writing GRASS raster maps are placed.
  *
- * <p>To better understand the code a good overview should be taken on the GRASS
- * database-Location-Mapset structure, of which a short introduction is given below.
+ * <p>To better understand the code a good overview should be taken on the GRASS database-Location-Mapset structure, of
+ * which a short introduction is given below.
  *
  * <h2>File structure of GRASS Location</h2>
  *
- * A GRASS raster map consists of several files in several subdirectories in a mapset, organized as
- * follows:
+ * A GRASS raster map consists of several files in several subdirectories in a mapset, organized as follows:
  *
  * <ul>
- *   <li><b>cellhd/</b>: map header including projection code, coordinates representing the spatial
- *       extent of the raster map, number of rows and columns, resolution, and information about map
- *       compression;
- *   <li><b>cell/, fcell/ or grid3/</b>: generic matrix of values in a compressed, portable format
- *       which depends on the raster data type (integer, floating point or 3D grid);
- *   <li><b>hist/</b>: history file which contains metadata such as the data source, the command
- *       that was used to generate the raster map, or other information provided by the user;
- *   <li><b>cats/</b>: optional category file which contains text or numeric labels assigned to the
- *       raster map categories;
+ *   <li><b>cellhd/</b>: map header including projection code, coordinates representing the spatial extent of the raster
+ *       map, number of rows and columns, resolution, and information about map compression;
+ *   <li><b>cell/, fcell/ or grid3/</b>: generic matrix of values in a compressed, portable format which depends on the
+ *       raster data type (integer, floating point or 3D grid);
+ *   <li><b>hist/</b>: history file which contains metadata such as the data source, the command that was used to
+ *       generate the raster map, or other information provided by the user;
+ *   <li><b>cats/</b>: optional category file which contains text or numeric labels assigned to the raster map
+ *       categories;
  *   <li><b>colr/</b>: optional color table;
- *   <li><b>cell_misc/</b>: optional timestamp, range of values, quantization rules (for floating
- *       point maps) and null (no-data) files;
+ *   <li><b>cell_misc/</b>: optional timestamp, range of values, quantization rules (for floating point maps) and null
+ *       (no-data) files;
  * </ul>
  *
  * Most important files and folders for now:
@@ -52,8 +50,7 @@
  *   <li>PROJ_UNITS - contains the information about projection units used
  *   <li>cell, fcell - contain the raster files
  *   <li>vector - contain the vector data since GRASS 6
- *   <li>sites_list - contain the sites type data, deprecated from GRASS 6 on, but maintained in
- *       JGrass
+ *   <li>sites_list - contain the sites type data, deprecated from GRASS 6 on, but maintained in JGrass
  * </ul>
  *
  * <h2>The cell header file</h2>
@@ -77,8 +74,8 @@
  *
  * <h3>Reclassified files</h3>
  *
- * If the first line reports 'reclass' then this file is a reclassified file and the original data
- * file is given by the following two lines: <br>
+ * If the first line reports 'reclass' then this file is a reclassified file and the original data file is given by the
+ * following two lines: <br>
  * <code>
  * reclass <br>
  * name: soils <br>
@@ -90,18 +87,15 @@
  *
  * <p>Colortables for GRASS 5 and greater are supported.
  *
- * <p>The format of the color file, which is located in <b>location/mapset/colr/mapname</b> is the
- * following:
+ * <p>The format of the color file, which is located in <b>location/mapset/colr/mapname</b> is the following:
  *
- * <p>The first line is a % character and two numbers indicating the minimum and maximum data values
- * which have colors. <b>Note that in JGrass after the range values we add a third value for alpha
- * support.</b>
+ * <p>The first line is a % character and two numbers indicating the minimum and maximum data values which have colors.
+ * <b>Note that in JGrass after the range values we add a third value for alpha support.</b>
  *
  * <p>After the first line, the list of color rules appears, that can be of the following formats:
  *
  * <ul>
- *   <li><code>value1:r:g:b value2:r:g:b</code> interpolation of colors between the two values with
- *       the two colors
+ *   <li><code>value1:r:g:b value2:r:g:b</code> interpolation of colors between the two values with the two colors
  *   <li><code>value1:grey value2:grey
  *       </code interpolation of grayscale between
  * the two values with the two grey values>

@@ -28,8 +28,8 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * A default implementaiton of a {@link ResourceInfo} based solely on the information that can be
- * obtained from {@link FeatureSource} (schema and bounds)
+ * A default implementaiton of a {@link ResourceInfo} based solely on the information that can be obtained from
+ * {@link FeatureSource} (schema and bounds)
  *
  * @author Andrea Aime - GeoSolutions
  */

@@ -21,13 +21,13 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Utilities;
 
 /**
- * This class is a holder for a GeoKey record containing four short values as specified in the
- * GeoTiff spec. The values are a GeoKey ID, the TIFFTag number of the location of this data, the
- * count of values for this GeoKey, and the offset (or value if the location is 0).
+ * This class is a holder for a GeoKey record containing four short values as specified in the GeoTiff spec. The values
+ * are a GeoKey ID, the TIFFTag number of the location of this data, the count of values for this GeoKey, and the offset
+ * (or value if the location is 0).
  *
- * <p>If the Tiff Tag location is 0, then the value is a Short and is contained in the offset.
- * Otherwise, there is one or more value in the specified external Tiff tag. The number is specified
- * by the count field, and the offset into the record is the offset field.
+ * <p>If the Tiff Tag location is 0, then the value is a Short and is contained in the offset. Otherwise, there is one
+ * or more value in the specified external Tiff tag. The number is specified by the count field, and the offset into the
+ * record is the offset field.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @author Mike Nidel
@@ -67,16 +67,15 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
     }
 
     /**
-     * "KeyID" gives the key-ID value of the Key (identical in function to TIFF tag ID, but
-     * completely independent of TIFF tag-space)
+     * "KeyID" gives the key-ID value of the Key (identical in function to TIFF tag ID, but completely independent of
+     * TIFF tag-space)
      */
     private int keyID;
 
     /**
-     * "TIFFTagLocation" indicates which TIFF tag contains the value(s) of the Key: if
-     * TIFFTagLocation is 0, then the value is SHORT, and is contained in the "Value_Offset" entry.
-     * Otherwise, the type (format) of the value is implied by the TIFF-Type of the tag containing
-     * the value.
+     * "TIFFTagLocation" indicates which TIFF tag contains the value(s) of the Key: if TIFFTagLocation is 0, then the
+     * value is SHORT, and is contained in the "Value_Offset" entry. Otherwise, the type (format) of the value is
+     * implied by the TIFF-Type of the tag containing the value.
      */
     private int tiffTagLocation;
 
@@ -84,10 +83,10 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
     private int count;
 
     /**
-     * "Value_Offset" Value_Offset indicates the index- offset *into* the TagArray indicated by
-     * TIFFTagLocation, if it is nonzero. If TIFFTagLocation=0, then Value_Offset contains the
-     * actual (SHORT) value of the Key, and Count=1 is implied. Note that the offset is not a
-     * byte-offset, but rather an index based on the natural data type of the specified tag array.
+     * "Value_Offset" Value_Offset indicates the index- offset *into* the TagArray indicated by TIFFTagLocation, if it
+     * is nonzero. If TIFFTagLocation=0, then Value_Offset contains the actual (SHORT) value of the Key, and Count=1 is
+     * implied. Note that the offset is not a byte-offset, but rather an index based on the natural data type of the
+     * specified tag array.
      */
     private int valueOffset;
 
@@ -106,8 +105,7 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
 
     private static void ensureNotNegative(final String argument, final int value) {
         if (value < 0)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, argument, value));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, argument, value));
     }
 
     public int getKeyID() {
@@ -153,9 +151,8 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
     /**
      * According to GeoTIff spec:
      *
-     * <p>In the TIFF spec it is required that TIFF tags be written out to the file in tag-ID sorted
-     * order. This is done to avoid forcing software to perform N-squared sort operations when
-     * reading and writing tags.
+     * <p>In the TIFF spec it is required that TIFF tags be written out to the file in tag-ID sorted order. This is done
+     * to avoid forcing software to perform N-squared sort operations when reading and writing tags.
      */
     @Override
     public int compareTo(GeoKeyEntry o) {

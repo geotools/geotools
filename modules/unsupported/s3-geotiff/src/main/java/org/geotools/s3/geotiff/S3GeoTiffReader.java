@@ -23,8 +23,8 @@ import org.geotools.s3.S3ImageInputStreamImplSpi;
 import org.geotools.util.factory.Hints;
 
 /**
- * Very simple wrapper around GeoTIff reader in order to support S3 geotiff. The goal is to have
- * this go away eventually and to be able to support S3 with just the original GeoTiff reader
+ * Very simple wrapper around GeoTIff reader in order to support S3 geotiff. The goal is to have this go away eventually
+ * and to be able to support S3 with just the original GeoTiff reader
  */
 public class S3GeoTiffReader extends GeoTiffReader {
     public S3GeoTiffReader(Object input) throws DataSourceException {

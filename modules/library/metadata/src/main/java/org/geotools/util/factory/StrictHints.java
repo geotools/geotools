@@ -20,8 +20,7 @@ import java.awt.RenderingHints;
 import java.util.Map;
 
 /**
- * Hints which should not be merged with global hints, usually because the global hints have already
- * been merged.
+ * Hints which should not be merged with global hints, usually because the global hints have already been merged.
  *
  * @since 2.4
  * @version $Id$

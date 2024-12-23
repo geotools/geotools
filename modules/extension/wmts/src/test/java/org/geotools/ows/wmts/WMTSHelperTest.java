@@ -26,40 +26,30 @@ public class WMTSHelperTest {
 
     @Test
     public void testReplaceToken() throws Exception {
-        String resultWithout =
-                WMTSHelper.replaceToken("http://dummy.net/without/token", "token", "value");
-        Assert.assertEquals(
-                "baseUrl should be unaltered.", "http://dummy.net/without/token", resultWithout);
+        String resultWithout = WMTSHelper.replaceToken("http://dummy.net/without/token", "token", "value");
+        Assert.assertEquals("baseUrl should be unaltered.", "http://dummy.net/without/token", resultWithout);
 
-        String resultWith =
-                WMTSHelper.replaceToken("http://dummy.net/with/{token}", "token", "value");
-        Assert.assertEquals(
-                "token should be replaced with value", "http://dummy.net/with/value", resultWith);
+        String resultWith = WMTSHelper.replaceToken("http://dummy.net/with/{token}", "token", "value");
+        Assert.assertEquals("token should be replaced with value", "http://dummy.net/with/value", resultWith);
 
-        String resultWithNullValue =
-                WMTSHelper.replaceToken("http://dummy.net/with/{token}", "token", null);
+        String resultWithNullValue = WMTSHelper.replaceToken("http://dummy.net/with/{token}", "token", null);
         Assert.assertEquals(
-                "token should be replaced with empty string",
-                "http://dummy.net/with/",
-                resultWithNullValue);
+                "token should be replaced with empty string", "http://dummy.net/with/", resultWithNullValue);
     }
 
     @Test
     public void testAppendQueryString() throws Exception {
 
-        String resultPlain =
-                WMTSHelper.appendQueryString(
-                        "http://dummy.net/something/without/querstion",
-                        Collections.singletonMap("request", "yes"));
+        String resultPlain = WMTSHelper.appendQueryString(
+                "http://dummy.net/something/without/querstion", Collections.singletonMap("request", "yes"));
         Assert.assertEquals(
                 "A question mark should be added.",
                 "http://dummy.net/something/without/querstion?request=yes",
                 resultPlain);
 
-        String resultExisting =
-                WMTSHelper.appendQueryString(
-                        "http://dummy.net/something/parameter/exists?request=original",
-                        Collections.singletonMap("request", "new"));
+        String resultExisting = WMTSHelper.appendQueryString(
+                "http://dummy.net/something/parameter/exists?request=original",
+                Collections.singletonMap("request", "new"));
         Assert.assertEquals(
                 "An existing parameter should be kept.",
                 "http://dummy.net/something/parameter/exists?request=original",
@@ -69,26 +59,20 @@ public class WMTSHelperTest {
         params.put("param2", "2");
         params.put("param3", "<3");
         String resultTwoWithEncoding =
-                WMTSHelper.appendQueryString(
-                        "http://dummy.net/something/with/parameters?request=one", params);
+                WMTSHelper.appendQueryString("http://dummy.net/something/with/parameters?request=one", params);
         Assert.assertTrue("param2 is missing", resultTwoWithEncoding.contains("&param2=2"));
-        Assert.assertTrue(
-                "param3 is missing or not encoded.",
-                resultTwoWithEncoding.contains("&param3=%3C3"));
+        Assert.assertTrue("param3 is missing or not encoded.", resultTwoWithEncoding.contains("&param3=%3C3"));
 
         params.put("param3", "{TileCol}");
         String resultPlaceholderKept =
-                WMTSHelper.appendQueryString(
-                        "http://dummy.net/something/with/parameters?request=one", params);
+                WMTSHelper.appendQueryString("http://dummy.net/something/with/parameters?request=one", params);
         Assert.assertTrue(
-                "Values with { } should be kept un-encoded.",
-                resultPlaceholderKept.contains("&param3={TileCol}"));
+                "Values with { } should be kept un-encoded.", resultPlaceholderKept.contains("&param3={TileCol}"));
     }
 
     @Test
     public void testSpacesInUrl() throws Exception {
         String result = WMTSHelper.encodeParameter("name with space");
-        Assert.assertEquals(
-                "Spaces should be replaced with %20 instead of +", "name%20with%20space", result);
+        Assert.assertEquals("Spaces should be replaced with %20 instead of +", "name%20with%20space", result);
     }
 }

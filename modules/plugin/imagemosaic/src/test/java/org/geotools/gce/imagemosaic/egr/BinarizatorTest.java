@@ -63,8 +63,8 @@ public class BinarizatorTest {
     }
 
     /**
-     * This test used to work with antialias off and drawing performed with draw + fill. Its seems
-     * that antialias on and fill() only will draw a square of 44x44 px, not 45x45. TO BE CHECKED.
+     * This test used to work with antialias off and drawing performed with draw + fill. Its seems that antialias on and
+     * fill() only will draw a square of 44x44 px, not 45x45. TO BE CHECKED.
      */
     @Test
     @Ignore

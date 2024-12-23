@@ -37,8 +37,7 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
         GridCoverage2D scaled = GridCoverageUtil.scale(coverage, 4, 4);
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(4, renderedImage.getWidth());
@@ -58,8 +57,7 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
         GridCoverage2D scaled = GridCoverageUtil.scale(coverage, 2, 2);
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(2, renderedImage.getWidth());
@@ -79,8 +77,7 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
         GridCoverage2D scaled = GridCoverageUtil.scale(coverage, 3, 7);
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(7, renderedImage.getWidth());
@@ -93,8 +90,7 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
         GridCoverage2D scaled = GridCoverageUtil.scale(coverage, 1501, 1499);
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(1499, renderedImage.getWidth());
@@ -107,8 +103,7 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 1, 0, 1, null));
         GridCoverage2D scaled = GridCoverageUtil.scale(coverage, 1501, 1499);
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(1499, renderedImage.getWidth());
@@ -121,14 +116,12 @@ public class GridCoverageUtilTest {
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
-                coverageFactory.create(
-                        "geohashGridAgg", grid, new ReferencedEnvelope(0, 20, 0, 20, null));
+                coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0, 20, 0, 20, null));
         final ReferencedEnvelope envelope = new ReferencedEnvelope(10, 20, 10, 20, null);
         final GridCoverage2D croppedCoverage = GridCoverageUtil.crop(coverage, envelope);
         final RenderedImage renderedImage = croppedCoverage.getRenderedImage();
         assertEquals(1, renderedImage.getWidth());
         assertEquals(1, renderedImage.getHeight());
-        assertEquals(
-                4, croppedCoverage.evaluate(new Point2D.Double(15, 15), new float[1])[0], 1e-10);
+        assertEquals(4, croppedCoverage.evaluate(new Point2D.Double(15, 15), new float[1])[0], 1e-10);
     }
 }

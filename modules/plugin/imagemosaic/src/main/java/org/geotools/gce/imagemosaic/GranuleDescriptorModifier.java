@@ -19,8 +19,8 @@ package org.geotools.gce.imagemosaic;
 import org.geotools.util.factory.Hints;
 
 /**
- * Simple interface to update a GranuleDescriptor. Implementations may use provided hints to update
- * editable fields of a GranuleDescriptor, accordingly
+ * Simple interface to update a GranuleDescriptor. Implementations may use provided hints to update editable fields of a
+ * GranuleDescriptor, accordingly
  */
 public interface GranuleDescriptorModifier {
 

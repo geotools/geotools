@@ -46,9 +46,7 @@ public class GeohashUtil {
     }
 
     private static int computePrecision(Envelope envelope, long size, double threshold, int n) {
-        return computeSize(envelope, n) / size >= threshold
-                ? n
-                : computePrecision(envelope, size, threshold, n + 1);
+        return computeSize(envelope, n) / size >= threshold ? n : computePrecision(envelope, size, threshold, n + 1);
     }
 
     private static double computeSize(Envelope envelope, int n) {
@@ -57,8 +55,8 @@ public class GeohashUtil {
     }
 
     /**
-     * Updates the precision in the aggregation to the given value, but only if it's missing or if
-     * it's higher than the provided value (for safety)
+     * Updates the precision in the aggregation to the given value, but only if it's missing or if it's higher than the
+     * provided value (for safety)
      */
     public static void updateGridAggregationPrecision(
             Map<String, Map<String, Map<String, Object>>> aggregations, int precision) {
@@ -67,21 +65,16 @@ public class GeohashUtil {
                 .forEach(a -> updateAggregatePrecision(precision, a));
     }
 
-    private static void updateAggregatePrecision(
-            int precision, Map<String, Map<String, Object>> a) {
+    private static void updateAggregatePrecision(int precision, Map<String, Map<String, Object>> a) {
         Map<String, Object> grid = a.get("geohash_grid");
         Object foundPrecision = grid.get("precision");
-        if (!(foundPrecision instanceof Number)
-                || ((Number) foundPrecision).intValue() > precision) {
-            LOGGER.log(
-                    Level.FINE,
-                    "Updating aggregation precision from " + foundPrecision + " to " + precision);
+        if (!(foundPrecision instanceof Number) || ((Number) foundPrecision).intValue() > precision) {
+            LOGGER.log(Level.FINE, "Updating aggregation precision from " + foundPrecision + " to " + precision);
             grid.put("precision", precision);
         }
     }
 
-    public static Map<String, Map<String, Map<String, Object>>> parseAggregation(
-            String definition) {
+    public static Map<String, Map<String, Map<String, Object>>> parseAggregation(String definition) {
 
         final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
                 new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
@@ -111,8 +104,7 @@ public class GeohashUtil {
         }
         // stick with a lower precision, number of cells goes up by a factor of 32 for
         // each precision level (unless the match is pretty close, within 10%)
-        if (precision > 1 && Math.abs(targetScaleDenominator - sd) > (targetScaleDenominator * 0.1))
-            precision--;
+        if (precision > 1 && Math.abs(targetScaleDenominator - sd) > (targetScaleDenominator * 0.1)) precision--;
 
         return precision;
     }
@@ -130,8 +122,7 @@ public class GeohashUtil {
     /** Borrowed from gt-renderer RendererUtilities to avoid adding a dependency */
     private static double toMeters(double size, CoordinateReferenceSystem crs) {
         if (crs == null) {
-            LOGGER.finer(
-                    "toMeters: assuming the original size is in meters already, as crs is null");
+            LOGGER.finer("toMeters: assuming the original size is in meters already, as crs is null");
             return size;
         }
         if (crs instanceof GeographicCRS) {
@@ -162,8 +153,7 @@ public class GeohashUtil {
         final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
                 new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
         try {
-            Map<String, Map<String, Map<String, Object>>> map =
-                    mapper.readValue(aggregationDefinition, type);
+            Map<String, Map<String, Map<String, Object>>> map = mapper.readValue(aggregationDefinition, type);
             Map<String, Map<String, Object>> aggMap = map.get("agg");
             if (aggMap != null) {
                 Map<String, Object> geohashMap = aggMap.get("geohash_grid");
@@ -178,8 +168,7 @@ public class GeohashUtil {
         } catch (JsonProcessingException e) {
             LOGGER.log(
                     Level.WARNING,
-                    "Failure when trying to read precision from aggregation definition: "
-                            + aggregationDefinition,
+                    "Failure when trying to read precision from aggregation definition: " + aggregationDefinition,
                     e);
         }
         return precision;

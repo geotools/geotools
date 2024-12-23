@@ -31,8 +31,8 @@ import org.xml.sax.SAXException;
 /**
  * XML parser capable of streaming.
  *
- * <p>Performs the same task as {@link Parser}, with the addition that objects are streamed back to
- * the client. Streaming can occur in a number of different modes.
+ * <p>Performs the same task as {@link Parser}, with the addition that objects are streamed back to the client.
+ * Streaming can occur in a number of different modes.
  *
  * <p>As an example consider the following gml document:
  *
@@ -103,8 +103,7 @@ import org.xml.sax.SAXException;
  *
  * <h3>3. Xpath Expression</h3>
  *
- * Objects are streamed back when an element has been parsed which matches a particular xpath
- * expression.
+ * Objects are streamed back when an element has been parsed which matches a particular xpath expression.
  *
  * <pre>
  *    Configuration configuration = new GMLConfiguration();
@@ -117,9 +116,8 @@ import org.xml.sax.SAXException;
  *    }
  *  </pre>
  *
- * {@link PullParser} offers similar functionality out of a pull parser instead of a SAX parser,
- * it's supposed to be better, but won't (yet) cover the entire functionality offered by {@link
- * StreamingParser}
+ * {@link PullParser} offers similar functionality out of a pull parser instead of a SAX parser, it's supposed to be
+ * better, but won't (yet) cover the entire functionality offered by {@link StreamingParser}
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -157,10 +155,7 @@ public class StreamingParser {
      */
     public StreamingParser(Configuration configuration, InputStream input, QName elementName)
             throws ParserConfigurationException, SAXException {
-        this(
-                configuration,
-                input,
-                new ElementNameStreamingParserHandler(configuration, elementName));
+        this(configuration, input, new ElementNameStreamingParserHandler(configuration, elementName));
     }
 
     /**
@@ -168,8 +163,7 @@ public class StreamingParser {
      *
      * @param configuration Object representing the configuration of the parser.
      * @param input The input stream representing the instance document to be parsed.
-     * @param xpath An xpath expression which dictates how the parser streams objects back to the
-     *     client.
+     * @param xpath An xpath expression which dictates how the parser streams objects back to the client.
      */
     public StreamingParser(Configuration configuration, InputStream input, String xpath)
             throws ParserConfigurationException, SAXException {
@@ -181,8 +175,8 @@ public class StreamingParser {
      *
      * <p>We do this to allow the jxpath component to be removed... and avoid its dependencies.
      */
-    static StreamingParserHandler createJXpathStreamingParserHandler(
-            Configuration configuration, String xpath) throws ParserConfigurationException {
+    static StreamingParserHandler createJXpathStreamingParserHandler(Configuration configuration, String xpath)
+            throws ParserConfigurationException {
 
         Class<?> clazz;
         try {
@@ -204,8 +198,7 @@ public class StreamingParser {
     }
 
     /** Internal constructor. */
-    protected StreamingParser(
-            Configuration configuration, InputStream input, StreamingParserHandler handler)
+    protected StreamingParser(Configuration configuration, InputStream input, StreamingParserHandler handler)
             throws ParserConfigurationException, SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -220,24 +213,22 @@ public class StreamingParser {
     }
 
     /**
-     * Streams the parser to the next element in the instance document which matches the xpath query
-     * specified in the contstructor. This method returns null when there are no more objects to
-     * stream.
+     * Streams the parser to the next element in the instance document which matches the xpath query specified in the
+     * contstructor. This method returns null when there are no more objects to stream.
      *
      * @return The next object in the stream, or null if no such object is available.
      */
     public Object parse() {
         if (thread == null) {
-            Runnable runnable =
-                    () -> {
-                        try {
-                            parser.parse(input, handler);
-                        } catch (Exception e) {
-                            // close the buffer
-                            handler.getBuffer().close();
-                            throw new RuntimeException(e);
-                        }
-                    };
+            Runnable runnable = () -> {
+                try {
+                    parser.parse(input, handler);
+                } catch (Exception e) {
+                    // close the buffer
+                    handler.getBuffer().close();
+                    throw new RuntimeException(e);
+                }
+            };
 
             thread = new Thread(runnable);
             thread.start();

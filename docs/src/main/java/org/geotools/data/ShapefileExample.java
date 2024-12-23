@@ -47,8 +47,7 @@ public class ShapefileExample {
         DataStore dataStore = DataStoreFinder.getDataStore(map);
         String typeName = dataStore.getTypeNames()[0];
 
-        FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                dataStore.getFeatureSource(typeName);
+        FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
         Filter filter = Filter.INCLUDE; // ECQL.toFilter("BBOX(THE_GEOM, 10,20,30,40)")
 
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(filter);
@@ -72,8 +71,7 @@ public class ShapefileExample {
 
         DataStore myData = factory.createNewDataStore(map);
         SimpleFeatureType featureType =
-                DataUtilities.createType(
-                        "my", "geom:Point,name:String,age:Integer,description:String");
+                DataUtilities.createType("my", "geom:Point,name:String,age:Integer,description:String");
         myData.createSchema(featureType);
         // end create
     }
@@ -118,8 +116,7 @@ public class ShapefileExample {
 
     private SimpleFeatureCollection getFeatureCollection() throws SchemaException {
         SimpleFeatureType featureType =
-                DataUtilities.createType(
-                        "my", "geom:Point,name:String,age:Integer,description:String");
+                DataUtilities.createType("my", "geom:Point,name:String,age:Integer,description:String");
         return new ListFeatureCollection(featureType);
     }
 }

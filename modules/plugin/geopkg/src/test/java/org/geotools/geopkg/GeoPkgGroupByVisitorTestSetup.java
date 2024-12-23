@@ -27,29 +27,26 @@ public class GeoPkgGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
 
     @Override
     protected void createBuildingsTable() throws Exception {
-        run(
-                "CREATE TABLE buildings_group_by_tests (id int4 PRIMARY KEY, building_id text, "
-                        + "building_type text, energy_type text, fuel_consumption DOUBLE, energy_consumption DOUBLE, "
-                        + "last_update datetime, last_update_date date)");
+        run("CREATE TABLE buildings_group_by_tests (id int4 PRIMARY KEY, building_id text, "
+                + "building_type text, energy_type text, fuel_consumption DOUBLE, energy_consumption DOUBLE, "
+                + "last_update datetime, last_update_date date)");
 
-        run(
-                "INSERT INTO buildings_group_by_tests VALUES "
-                        + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03T12:00:00Z', '2016-06-03'),"
-                        + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03T16:00:00Z', '2016-06-03'),"
-                        + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03T20:00:00Z', '2016-06-03'),"
-                        + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05T12:00:00Z', '2016-06-05'),"
-                        + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06T12:00:00Z', '2016-06-06'),"
-                        + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06T14:00:00Z', '2016-06-06'),"
-                        + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07T12:00:00Z', '2016-06-07'),"
-                        + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07T18:00:00Z', '2016-06-07'),"
-                        + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07T20:00:00Z', '2016-06-07'),"
-                        + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15T12:00:00Z', '2016-06-15'),"
-                        + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15T19:00:00Z', '2016-06-15'),"
-                        + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15T20:00:00Z', '2016-06-15')");
+        run("INSERT INTO buildings_group_by_tests VALUES "
+                + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03T12:00:00Z', '2016-06-03'),"
+                + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03T16:00:00Z', '2016-06-03'),"
+                + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03T20:00:00Z', '2016-06-03'),"
+                + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05T12:00:00Z', '2016-06-05'),"
+                + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06T12:00:00Z', '2016-06-06'),"
+                + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06T14:00:00Z', '2016-06-06'),"
+                + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07T12:00:00Z', '2016-06-07'),"
+                + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07T18:00:00Z', '2016-06-07'),"
+                + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07T20:00:00Z', '2016-06-07'),"
+                + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15T12:00:00Z', '2016-06-15'),"
+                + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15T19:00:00Z', '2016-06-15'),"
+                + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15T20:00:00Z', '2016-06-15')");
 
-        run(
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) "
-                        + "VALUES ('buildings_group_by_tests', 'features', 'buildings_group_by_tests', 4326)");
+        run("INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) "
+                + "VALUES ('buildings_group_by_tests', 'features', 'buildings_group_by_tests', 4326)");
     }
 
     @Override
@@ -76,11 +73,9 @@ public class GeoPkgGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
         run("INSERT INTO ft1_group_by VALUES(7, X'" + p2 + "', 21, 21.0, 'bc')");
         run("INSERT INTO ft1_group_by VALUES(8, X'" + p2 + "', 22, 22.0, 'cc')");
 
-        run(
-                "INSERT INTO gpkg_geometry_columns VALUES ('ft1_group_by', 'geometry', 'POINT', 4326, 0, 0)");
-        run(
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) "
-                        + "VALUES ('ft1_group_by', 'features', 'ft1_group_by', 4326)");
+        run("INSERT INTO gpkg_geometry_columns VALUES ('ft1_group_by', 'geometry', 'POINT', 4326, 0, 0)");
+        run("INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) "
+                + "VALUES ('ft1_group_by', 'features', 'ft1_group_by', 4326)");
     }
 
     @Override

@@ -55,8 +55,7 @@ public class ElasticAggregationReaderTest {
 
     @Before
     public void setup() throws SchemaException {
-        SimpleFeatureType featureType =
-                DataUtilities.createType("test", "name:String,_aggregation:java.util.HashMap");
+        SimpleFeatureType featureType = DataUtilities.createType("test", "name:String,_aggregation:java.util.HashMap");
         state = new ContentState(null);
         state.setFeatureType(featureType);
         hits = new ArrayList<>();
@@ -76,9 +75,7 @@ public class ElasticAggregationReaderTest {
         aggregations.put("test", aggregation);
         assertFalse((new ElasticFeatureReader(state, hits, aggregations, 0)).hasNext());
 
-        aggregation.setBuckets(
-                ImmutableList.of(
-                        ImmutableMap.of("key1", "value1"), ImmutableMap.of("key2", "value2")));
+        aggregation.setBuckets(ImmutableList.of(ImmutableMap.of("key1", "value1"), ImmutableMap.of("key2", "value2")));
         reader = new ElasticFeatureReader(state, hits, aggregations, 0);
         assertTrue(reader.hasNext());
         feature = reader.next();

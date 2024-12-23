@@ -74,9 +74,9 @@ import ucar.unidata.util.StringUtil2;
 @SuppressWarnings("unchecked")
 @ThreadSafe
 /**
- * {@link FileCacheIF} implementation based on {@link ucar.nc2.util.cache.FileCache} from Unidata,
- * using MemoryMappedRandomAccessFile instead of standard RandomAccessFile. FileCache cannot be
- * subclassed since some fields are private and are needed by implementation.
+ * {@link FileCacheIF} implementation based on {@link ucar.nc2.util.cache.FileCache} from Unidata, using
+ * MemoryMappedRandomAccessFile instead of standard RandomAccessFile. FileCache cannot be subclassed since some fields
+ * are private and are needed by implementation.
  */
 public class MemoryMappedFileCache implements FileCacheIF {
     protected static final Logger log = LoggerFactory.getLogger(MemoryMappedFileCache.class);
@@ -133,13 +133,11 @@ public class MemoryMappedFileCache implements FileCacheIF {
         this("", minElementsInMemory, maxElementsInMemory, -1, period);
     }
 
-    public MemoryMappedFileCache(
-            int minElementsInMemory, int softLimit, int hardLimit, int period) {
+    public MemoryMappedFileCache(int minElementsInMemory, int softLimit, int hardLimit, int period) {
         this("", minElementsInMemory, softLimit, hardLimit, period);
     }
 
-    public MemoryMappedFileCache(
-            String name, int minElementsInMemory, int softLimit, int hardLimit, int period) {
+    public MemoryMappedFileCache(String name, int minElementsInMemory, int softLimit, int hardLimit, int period) {
         this.disabled = new AtomicBoolean(false);
         this.hasScheduled = new AtomicBoolean(false);
         this.cleanups = new AtomicInteger();
@@ -156,8 +154,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
         if (wantsCleanup) {
             scheduleAtFixedRate(new MemoryMappedFileCache.CleanupTask(), this.period, this.period);
             if (cacheLog.isDebugEnabled()) {
-                cacheLog.debug(
-                        "MemoryMappedFileCache " + name + " cleanup every " + period + " secs");
+                cacheLog.debug("MemoryMappedFileCache " + name + " cleanup every " + period + " secs");
             }
         }
 
@@ -167,8 +164,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
     }
 
     protected void addRaf(String uriString, MemoryMappedRandomAccessFile mmraf) {
-        MemoryMappedFileCache.CacheElement elem =
-                cache.putIfAbsent(uriString, new CacheElement(mmraf, uriString));
+        MemoryMappedFileCache.CacheElement elem = cache.putIfAbsent(uriString, new CacheElement(mmraf, uriString));
 
         if (elem != null) {
             synchronized (elem) {
@@ -239,12 +235,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 ncfile = new MemoryMappedRandomAccessFile(uriString, "r");
                 if (cacheLog.isDebugEnabled()) {
                     cacheLog.debug(
-                            "MemoryMappedFileCache "
-                                    + this.name
-                                    + " acquire "
-                                    + hashKey
-                                    + " "
-                                    + ncfile.getLocation());
+                            "MemoryMappedFileCache " + this.name + " acquire " + hashKey + " " + ncfile.getLocation());
                 }
 
                 if (cancelTask != null && cancelTask.isCancel()) {
@@ -317,14 +308,13 @@ public class MemoryMappedFileCache implements FileCacheIF {
                         long lastModified = want.ncfile.getLastModified();
                         boolean changed = lastModified != want.lastModified;
                         if (cacheLog.isDebugEnabled() && changed) {
-                            cacheLog.debug(
-                                    "MemoryMappedFileCache "
-                                            + this.name
-                                            + ": acquire from cache "
-                                            + hashKey
-                                            + " "
-                                            + want.ncfile.getLocation()
-                                            + " was changed; discard");
+                            cacheLog.debug("MemoryMappedFileCache "
+                                    + this.name
+                                    + ": acquire from cache "
+                                    + hashKey
+                                    + " "
+                                    + want.ncfile.getLocation()
+                                    + " was changed; discard");
                         }
 
                         if (changed) {
@@ -337,15 +327,14 @@ public class MemoryMappedFileCache implements FileCacheIF {
                             want.ncfile.reacquire();
                         } catch (IOException ioe) {
                             if (cacheLog.isDebugEnabled()) {
-                                cacheLog.debug(
-                                        "MemoryMappedFileCache "
-                                                + this.name
-                                                + " acquire from cache "
-                                                + hashKey
-                                                + " "
-                                                + want.ncfile.getLocation()
-                                                + " failed: "
-                                                + ioe.getMessage());
+                                cacheLog.debug("MemoryMappedFileCache "
+                                        + this.name
+                                        + " acquire from cache "
+                                        + hashKey
+                                        + " "
+                                        + want.ncfile.getLocation()
+                                        + " failed: "
+                                        + ioe.getMessage());
                             }
 
                             this.remove(want);
@@ -416,13 +405,12 @@ public class MemoryMappedFileCache implements FileCacheIF {
             CacheElement.CacheFile file = this.files.get(ncfile);
             if (file != null) {
                 if (!file.isLocked.get()) {
-                    cacheLog.warn(
-                            "MemoryMappedFileCache "
-                                    + this.name
-                                    + " release "
-                                    + ncfile.getLocation()
-                                    + " not locked; hash= "
-                                    + ncfile.hashCode());
+                    cacheLog.warn("MemoryMappedFileCache "
+                            + this.name
+                            + " release "
+                            + ncfile.getLocation()
+                            + " not locked; hash= "
+                            + ncfile.hashCode());
                 }
 
                 file.lastAccessed = System.currentTimeMillis();
@@ -439,13 +427,12 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 }
 
                 if (cacheLog.isDebugEnabled()) {
-                    cacheLog.debug(
-                            "MemoryMappedFileCache "
-                                    + this.name
-                                    + " release "
-                                    + ncfile.getLocation()
-                                    + "; hash= "
-                                    + ncfile.hashCode());
+                    cacheLog.debug("MemoryMappedFileCache "
+                            + this.name
+                            + " release "
+                            + ncfile.getLocation()
+                            + "; hash= "
+                            + ncfile.hashCode());
                 }
 
                 return true;
@@ -492,8 +479,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
         while (iter.hasNext()) {
             file = (CacheElement.CacheFile) iter.next();
             if (force && file.isLocked.get()) {
-                cacheLog.warn(
-                        "MemoryMappedFileCache " + this.name + " force close locked file= " + file);
+                cacheLog.warn("MemoryMappedFileCache " + this.name + " force close locked file= " + file);
             }
 
             try {
@@ -501,10 +487,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                     file.ncfile.setFileCache(null);
                     file.ncfile.close();
                 } else {
-                    log.error(
-                            String.format(
-                                    "MemoryMappedFileCache %s: null file or null ncfile",
-                                    this.name));
+                    log.error(String.format("MemoryMappedFileCache %s: null file or null ncfile", this.name));
                 }
 
                 if (file != null) {
@@ -516,15 +499,14 @@ public class MemoryMappedFileCache implements FileCacheIF {
         }
 
         if (cacheLog.isDebugEnabled()) {
-            cacheLog.debug(
-                    "*MemoryMappedFileCache "
-                            + this.name
-                            + " clearCache force= "
-                            + force
-                            + " deleted= "
-                            + deleteList.size()
-                            + " left="
-                            + this.files.size());
+            cacheLog.debug("*MemoryMappedFileCache "
+                    + this.name
+                    + " clearCache force= "
+                    + force
+                    + " deleted= "
+                    + deleteList.size()
+                    + " left="
+                    + this.files.size());
         }
     }
 
@@ -589,7 +571,10 @@ public class MemoryMappedFileCache implements FileCacheIF {
     public void showStats(Formatter format) {
         format.format(
                 "  hits= %d miss= %d nfiles= %d elems= %d%n",
-                this.hits.get(), this.miss.get(), this.files.size(), this.cache.values().size());
+                this.hits.get(),
+                this.miss.get(),
+                this.files.size(),
+                this.cache.values().size());
     }
 
     @Override
@@ -616,8 +601,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
             }
 
             float r = countAll == 0 ? 0.0F : (float) countHits / (float) countAll;
-            format.format(
-                    "  total=%7d : %6d %6d hit ratio=%f%n", countAll, countHits, countMiss, r);
+            format.format("  total=%7d : %6d %6d hit ratio=%f%n", countAll, countHits, countMiss, r);
         }
     }
 
@@ -665,13 +649,12 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 }
 
                 if (count < minDelete) {
-                    cacheLog.warn(
-                            "MemoryMappedFileCache "
-                                    + this.name
-                                    + " cleanup couldnt remove enough to keep under the maximum= "
-                                    + maxElements
-                                    + " due to locked files; currently at = "
-                                    + (size - count));
+                    cacheLog.warn("MemoryMappedFileCache "
+                            + this.name
+                            + " cleanup couldnt remove enough to keep under the maximum= "
+                            + maxElements
+                            + " due to locked files; currently at = "
+                            + (size - count));
                 }
 
                 Iterator<CacheElement> iterator = this.cache.values().iterator();
@@ -699,11 +682,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                         file.ncfile.close();
                         file.ncfile = null;
                     } catch (IOException ioe) {
-                        log.error(
-                                "MemoryMappedFileCache "
-                                        + this.name
-                                        + " close failed on "
-                                        + file.getCacheName());
+                        log.error("MemoryMappedFileCache " + this.name + " close failed on " + file.getCacheName());
                     }
                 }
 
@@ -758,8 +737,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
             this.list.add(file);
             MemoryMappedFileCache.this.files.put(ncfile, file);
             if (cacheLog.isDebugEnabled()) {
-                cacheLog.debug(
-                        "CacheElement add to cache " + key + " " + MemoryMappedFileCache.this.name);
+                cacheLog.debug("CacheElement add to cache " + key + " " + MemoryMappedFileCache.this.name);
             }
         }
 
@@ -790,11 +768,10 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 this.lastAccessed = System.currentTimeMillis();
                 ncfile.setFileCache(MemoryMappedFileCache.this);
                 if (cacheLog.isDebugEnabled()) {
-                    cacheLog.debug(
-                            "MemoryMappedFileCache "
-                                    + MemoryMappedFileCache.this.name
-                                    + " add to cache "
-                                    + CacheElement.this.key);
+                    cacheLog.debug("MemoryMappedFileCache "
+                            + MemoryMappedFileCache.this.name
+                            + " add to cache "
+                            + CacheElement.this.key);
                 }
             }
 
@@ -804,19 +781,17 @@ public class MemoryMappedFileCache implements FileCacheIF {
 
             void remove() {
                 if (!CacheElement.this.list.remove(this)) {
-                    cacheLog.warn(
-                            "MemoryMappedFileCache "
-                                    + MemoryMappedFileCache.this.name
-                                    + " could not remove "
-                                    + this.ncfile.getLocation());
+                    cacheLog.warn("MemoryMappedFileCache "
+                            + MemoryMappedFileCache.this.name
+                            + " could not remove "
+                            + this.ncfile.getLocation());
                 }
 
                 if (cacheLog.isDebugEnabled()) {
-                    cacheLog.debug(
-                            "MemoryMappedFileCache "
-                                    + MemoryMappedFileCache.this.name
-                                    + " remove "
-                                    + this.ncfile.getLocation());
+                    cacheLog.debug("MemoryMappedFileCache "
+                            + MemoryMappedFileCache.this.name
+                            + " remove "
+                            + this.ncfile.getLocation());
                 }
             }
 

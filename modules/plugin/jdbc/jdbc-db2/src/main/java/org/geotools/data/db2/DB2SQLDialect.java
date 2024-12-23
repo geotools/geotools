@@ -86,12 +86,10 @@ public class DB2SQLDialect extends SQLDialect {
                     + "TABLE_NAME = ? and COLUMN_NAME = ?";
 
     private static String SELECT_SRSID_WITHOUT_SCHEMA =
-            "select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where  "
-                    + "TABLE_NAME = ? and COLUMN_NAME = ?";
-    private static String SELECT_CRS_WKT =
-            "select definition,organization,organization_coordsys_id "
-                    + "from db2gse.st_coordinate_systems "
-                    + "where coordsys_name = (select coordsys_name from db2gse.st_spatial_reference_systems where srs_id=?)";
+            "select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where  " + "TABLE_NAME = ? and COLUMN_NAME = ?";
+    private static String SELECT_CRS_WKT = "select definition,organization,organization_coordsys_id "
+            + "from db2gse.st_coordinate_systems "
+            + "where coordsys_name = (select coordsys_name from db2gse.st_spatial_reference_systems where srs_id=?)";
     private static String SELECT_SRS_NAME_FROM_ID =
             "select srs_name from db2gse.st_spatial_reference_systems where srs_id = ?";
     private String SELECT_SRS_NAME_FROM_ORG =
@@ -118,12 +116,11 @@ public class DB2SQLDialect extends SQLDialect {
     //    private  static String OLAPROWNUM_MESSAGE=
     //            "Using ROW_NUMBER () OVER () for paging support";
 
-    private String NOPAGESUPPORT_MESSAGE =
-            "DB2 handles paged select statements inefficiently\n"
-                    + "Try to set MySql or Oracle compatibility mode\n"
-                    + "dbstop\n"
-                    + "db2set DB2_COMPATIBILITY_VECTOR=MYS\n"
-                    + "db2start\n";
+    private String NOPAGESUPPORT_MESSAGE = "DB2 handles paged select statements inefficiently\n"
+            + "Try to set MySql or Oracle compatibility mode\n"
+            + "dbstop\n"
+            + "db2set DB2_COMPATIBILITY_VECTOR=MYS\n"
+            + "db2start\n";
 
     private DB2DialectInfo db2DialectInfo;
     private boolean functionEncodingEnabled;
@@ -165,19 +162,12 @@ public class DB2SQLDialect extends SQLDialect {
         }
         if (orgid != 0 && org != null) {
             try {
-                CoordinateReferenceSystem crs =
-                        CRS.decode(org + ":" + orgid, true); // Force longitude first
+                CoordinateReferenceSystem crs = CRS.decode(org + ":" + orgid, true); // Force longitude first
                 return crs;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(
-                            Level.WARNING,
-                            "Could not decode "
-                                    + org
-                                    + ":"
-                                    + orgid
-                                    + " using the geotools database",
-                            e);
+                            Level.WARNING, "Could not decode " + org + ":" + orgid + " using the geotools database", e);
             }
         }
 
@@ -215,8 +205,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public Integer getGeometrySRID(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
 
         Integer srid = null;
@@ -248,8 +237,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
         encodeGeometryColumn(gatt, prefix, sql);
     }
 
@@ -287,31 +275,27 @@ public class DB2SQLDialect extends SQLDialect {
     /**
      * Controls whether keys are looked up post or pre insert.
      *
-     * <p>TODO TODO TODO Due to DB2 implementation problems, ps.addBatch(), ps.executeBatch()
-     * doesn't work for auto-generated identity key columns. This function should return 'true' to
-     * make the overall logic work with auto-generated columns but this breaks the logic for
-     * sequence generated key columns so for now, return 'false'.
+     * <p>TODO TODO TODO Due to DB2 implementation problems, ps.addBatch(), ps.executeBatch() doesn't work for
+     * auto-generated identity key columns. This function should return 'true' to make the overall logic work with
+     * auto-generated columns but this breaks the logic for sequence generated key columns so for now, return 'false'.
      *
-     * <p>Part of the reason for the breakage is that if 'true', KeysFetcher will add to the INSERT
-     * statement NEXT VALUE FOR seq_name but doesn't include the schema so an error occurs since the
-     * test setup specifies the sequence schema name as 'geotools' which is different from the
-     * default which is the connection id. It isn't clear why the 'geotools' schema isn't being
-     * specified. Even if this was corrected, the current DB2 JDBC support wouldn't correctly get
-     * the inserted key values later.
+     * <p>Part of the reason for the breakage is that if 'true', KeysFetcher will add to the INSERT statement NEXT VALUE
+     * FOR seq_name but doesn't include the schema so an error occurs since the test setup specifies the sequence schema
+     * name as 'geotools' which is different from the default which is the connection id. It isn't clear why the
+     * 'geotools' schema isn't being specified. Even if this was corrected, the current DB2 JDBC support wouldn't
+     * correctly get the inserted key values later.
      *
-     * <p>Another problem is that if 'true', JDBCDataStore::insertPS executes: ps =
-     * cx.prepareStatement(sql, keysFetcher.getColumnNames()); which causes a failure with
-     * ps.addBatch() because it defaults to uppercase for the key column while the table was defined
-     * with a lowercase key column - this is a DB2 JDBC defect which is not likely to be fixed.
+     * <p>Another problem is that if 'true', JDBCDataStore::insertPS executes: ps = cx.prepareStatement(sql,
+     * keysFetcher.getColumnNames()); which causes a failure with ps.addBatch() because it defaults to uppercase for the
+     * key column while the table was defined with a lowercase key column - this is a DB2 JDBC defect which is not
+     * likely to be fixed.
      *
-     * <p>It isn't really clear why this method is being called for sequence key columns. Fixing
-     * this probably requires significant changes to the core JDBC logic which I'm not prepared to
-     * do. -- David Adler 04/18/2017
+     * <p>It isn't really clear why this method is being called for sequence key columns. Fixing this probably requires
+     * significant changes to the core JDBC logic which I'm not prepared to do. -- David Adler 04/18/2017
      *
-     * <p>When a row is inserted into a table, and a key is automatically generated DB2 allows the
-     * generated key to be retrieved after the insert. The DB2 dialect returns <code>true</code> to
-     * cause the lookup to occur after the insert via {@link #getLastAutoGeneratedValue(String,
-     * String, String, Connection)}.
+     * <p>When a row is inserted into a table, and a key is automatically generated DB2 allows the generated key to be
+     * retrieved after the insert. The DB2 dialect returns <code>true</code> to cause the lookup to occur after the
+     * insert via {@link #getLastAutoGeneratedValue(String, String, String, Connection)}.
      *
      * <p>DB2 implements:
      *
@@ -329,12 +313,11 @@ public class DB2SQLDialect extends SQLDialect {
      *
      * <p>Look in the system view "db2gse.st_geometry_columns" and check for min_x,min_y,max_x,max_y
      *
-     * <p>If ALL geometry attributes have precalculated extents, return the list of the envelopes.
-     * If only one of them has no precalculated extent, return null
+     * <p>If ALL geometry attributes have precalculated extents, return the list of the envelopes. If only one of them
+     * has no precalculated extent, return null
      */
     @Override
-    public List<ReferencedEnvelope> getOptimizedBounds(
-            String schema, SimpleFeatureType featureType, Connection cx)
+    public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
 
         if (getDb2DialectInfo().isSupportingPrecalculatedExtents() == false) return null;
@@ -356,16 +339,12 @@ public class DB2SQLDialect extends SQLDialect {
                 if (att instanceof GeometryDescriptor) {
 
                     StringBuffer sql = new StringBuffer();
-                    sql.append(
-                            "select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
+                    sql.append("select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
                     sql.append(schema).append("' AND TABLE_NAME='");
                     sql.append(tableName).append("' AND COLUMN_NAME='");
                     sql.append(att.getName().getLocalPart()).append("'");
 
-                    LOGGER.log(
-                            Level.FINE,
-                            "Getting the full extent of the table using optimized search: {0}",
-                            sql);
+                    LOGGER.log(Level.FINE, "Getting the full extent of the table using optimized search: {0}", sql);
                     rs = st.executeQuery(sql.toString());
 
                     if (rs.next()) {
@@ -378,23 +357,18 @@ public class DB2SQLDialect extends SQLDialect {
                         Double max_y = rs.getDouble(4);
                         if (rs.wasNull()) return null;
 
-                        Geometry geometry =
-                                new GeometryFactory()
-                                        .createPolygon(
-                                                new Coordinate[] {
-                                                    new Coordinate(min_x, min_y),
-                                                    new Coordinate(min_x, max_y),
-                                                    new Coordinate(max_x, max_y),
-                                                    new Coordinate(max_x, min_y),
-                                                    new Coordinate(min_x, min_y)
-                                                });
+                        Geometry geometry = new GeometryFactory().createPolygon(new Coordinate[] {
+                            new Coordinate(min_x, min_y),
+                            new Coordinate(min_x, max_y),
+                            new Coordinate(max_x, max_y),
+                            new Coordinate(max_x, min_y),
+                            new Coordinate(min_x, min_y)
+                        });
 
                         // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated
                         // here
                         ReferencedEnvelope env =
-                                JTS.bounds(
-                                        geometry,
-                                        ((GeometryDescriptor) att).getCoordinateReferenceSystem());
+                                JTS.bounds(geometry, ((GeometryDescriptor) att).getCoordinateReferenceSystem());
 
                         // reproject and merge
                         if (env != null && !env.isNull()) result.add(env);
@@ -415,8 +389,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
-            throws SQLException, IOException {
+    public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx) throws SQLException, IOException {
         //        byte[] wkb = rs.getBytes(column);
         //
         //        try {
@@ -464,8 +437,7 @@ public class DB2SQLDialect extends SQLDialect {
         return decodeGeometryValueFromBytes(factory, bytes);
     }
 
-    private Geometry decodeGeometryValueFromBytes(GeometryFactory factory, byte[] bytes)
-            throws IOException {
+    private Geometry decodeGeometryValueFromBytes(GeometryFactory factory, byte[] bytes) throws IOException {
         if (bytes == null) return null;
 
         try {
@@ -520,8 +492,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {
+    public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {
 
         if (featureType.getGeometryDescriptor() == null) // table without geometry
         return;
@@ -545,8 +516,7 @@ public class DB2SQLDialect extends SQLDialect {
                 if (srsName == null && gDescr.getCoordinateReferenceSystem() != null) {
                     for (ReferenceIdentifier ident :
                             gDescr.getCoordinateReferenceSystem().getIdentifiers()) {
-                        try (PreparedStatement ps1 =
-                                cx.prepareStatement(SELECT_SRS_NAME_FROM_ORG)) {
+                        try (PreparedStatement ps1 = cx.prepareStatement(SELECT_SRS_NAME_FROM_ORG)) {
                             ps1.setString(1, ident.getCodeSpace());
                             ps1.setInt(2, Integer.valueOf(ident.getCode()));
                             try (ResultSet rs = ps1.executeQuery()) {
@@ -570,8 +540,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public String getSequenceForColumn(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public String getSequenceForColumn(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
 
         // TODO, hard stuff
@@ -605,8 +574,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx)
-            throws SQLException {
+    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx) throws SQLException {
 
         StringBuilder sql = new StringBuilder("SELECT ");
         sql.append(encodeNextSequenceValue(schemaName, sequenceName));
@@ -639,8 +607,7 @@ public class DB2SQLDialect extends SQLDialect {
     }
 
     @Override
-    public boolean includeTable(String schemaName, String tableName, Connection cx)
-            throws SQLException {
+    public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
 
         return true;
 
@@ -665,8 +632,7 @@ public class DB2SQLDialect extends SQLDialect {
     public boolean isLimitOffsetSupported() {
 
         boolean firstCall =
-                isLimitOffsetSupported == null
-                        && isRowNumberSupported == null; // && isOLAPRowNumSupported ==null;
+                isLimitOffsetSupported == null && isRowNumberSupported == null; // && isOLAPRowNumSupported ==null;
 
         if (isLimitOffsetSupported == null) setIsLimitOffsetSupported();
         if (isLimitOffsetSupported) {
@@ -804,12 +770,10 @@ public class DB2SQLDialect extends SQLDialect {
     private boolean isGeomGeneralizationSupported() {
         DB2DialectInfo info = getDb2DialectInfo();
 
-        if (info.getProductVersion().startsWith("DSN"))
-            return false; // I have no idea about the version on z/OS
+        if (info.getProductVersion().startsWith("DSN")) return false; // I have no idea about the version on z/OS
         if (info.getProductName().startsWith("Informix")) return false;
 
-        if (info.getProductVersion().startsWith("SQL") == false)
-            return false; // insist on DB2 on windows and linux
+        if (info.getProductVersion().startsWith("SQL") == false) return false; // insist on DB2 on windows and linux
 
         if (info.getMajorVersion() > 9) return true;
         if (info.getMajorVersion() < 9) return false;

@@ -27,8 +27,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * A zoom level consists of 1 or more bundles A bundle is physically always 128 columns by 128 rows
- * but may be "logically" smaller (ie it doesn't necessarily have data for each row/column)
+ * A zoom level consists of 1 or more bundles A bundle is physically always 128 columns by 128 rows but may be
+ * "logically" smaller (ie it doesn't necessarily have data for each row/column)
  */
 public class TPKBundle {
 
@@ -89,8 +89,7 @@ public class TPKBundle {
     }
 
     /**
-     * Predicate function to determine if the column,row coordinates are contained in the "coverage"
-     * of this bundle
+     * Predicate function to determine if the column,row coordinates are contained in the "coverage" of this bundle
      *
      * @param column -- column number
      * @param row -- row number
@@ -101,11 +100,10 @@ public class TPKBundle {
     }
 
     /**
-     * This object is used to manage the bundle data file and the bundle index file. We are using
-     * the InputStream object returned by ZipFile.getInputStream(ZipEntry) to read data from these
-     * files. The idea is to read in a forward direction (skipping bytes appropriately) whenever
-     * possible. If the request is for an offset that is "behind" our current position the object
-     * will close the current InputStream, get a "new" one and satisfy the read request.
+     * This object is used to manage the bundle data file and the bundle index file. We are using the InputStream object
+     * returned by ZipFile.getInputStream(ZipEntry) to read data from these files. The idea is to read in a forward
+     * direction (skipping bytes appropriately) whenever possible. If the request is for an offset that is "behind" our
+     * current position the object will close the current InputStream, get a "new" one and satisfy the read request.
      */
     public class SequentialInputFile {
         private String name; // path/name from the zipEntryMap
@@ -161,8 +159,7 @@ public class TPKBundle {
                     int bytesRead = stream.read(result, readOffset, length);
 
                     if (bytesRead == -1) {
-                        Logger.getLogger(this.getClass().getName())
-                                .warning("Didn't read correctly");
+                        Logger.getLogger(this.getClass().getName()).warning("Didn't read correctly");
                         length = 0;
                         result = null;
                     } else {

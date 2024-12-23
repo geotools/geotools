@@ -107,8 +107,8 @@ public final class PolygonIterator extends AbstractLiteIterator {
      * @param p The polygon
      * @param at The affine transform applied to coordinates during iteration
      * @param generalize if true apply simple distance based generalization
-     * @param maxDistance during iteration, a point will be skipped if it's distance from the
-     *     previous is less than maxDistance
+     * @param maxDistance during iteration, a point will be skipped if it's distance from the previous is less than
+     *     maxDistance
      */
     public PolygonIterator(Polygon p, AffineTransform at, boolean generalize, double maxDistance) {
         this(p, at, generalize);
@@ -134,11 +134,10 @@ public final class PolygonIterator extends AbstractLiteIterator {
     }
 
     /**
-     * Returns the coordinates and type of the current path segment in the iteration. The return
-     * value is the path-segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or
-     * SEG_CLOSE. A double array of length 6 must be passed in and can be used to store the
-     * coordinates of the point(s). Each point is stored as a pair of double x,y coordinates.
-     * SEG_MOVETO and SEG_LINETO types returns one point, SEG_QUADTO returns two points, SEG_CUBICTO
+     * Returns the coordinates and type of the current path segment in the iteration. The return value is the
+     * path-segment type: SEG_MOVETO, SEG_LINETO, SEG_QUADTO, SEG_CUBICTO, or SEG_CLOSE. A double array of length 6 must
+     * be passed in and can be used to store the coordinates of the point(s). Each point is stored as a pair of double
+     * x,y coordinates. SEG_MOVETO and SEG_LINETO types returns one point, SEG_QUADTO returns two points, SEG_CUBICTO
      * returns 3 points and SEG_CLOSE does not return any points.
      *
      * @param coords an array that holds the data returned from this method
@@ -195,8 +194,8 @@ public final class PolygonIterator extends AbstractLiteIterator {
     }
 
     /**
-     * Moves the iterator to the next segment of the path forwards along the primary direction of
-     * traversal as long as there are more points in that direction.
+     * Moves the iterator to the next segment of the path forwards along the primary direction of traversal as long as
+     * there are more points in that direction.
      */
     @Override
     public void next() {

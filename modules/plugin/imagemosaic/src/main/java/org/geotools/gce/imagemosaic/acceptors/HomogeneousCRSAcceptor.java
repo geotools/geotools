@@ -28,8 +28,7 @@ import org.geotools.referencing.CRS;
 /**
  * Check for homogeneous CRS in the upcoming granule.
  *
- * <p>If the upcoming granules has a CRS which is not homogenenous with the one for the mosaic we
- * have to discard it.
+ * <p>If the upcoming granules has a CRS which is not homogenenous with the one for the mosaic we have to discard it.
  */
 public class HomogeneousCRSAcceptor implements GranuleAcceptor {
 
@@ -40,22 +39,18 @@ public class HomogeneousCRSAcceptor implements GranuleAcceptor {
             File fileBeingProcessed,
             ImageMosaicConfigHandler mosaicConfigHandler)
             throws IOException {
-        String targetCoverageName =
-                mosaicConfigHandler.getTargetCoverageName(reader, inputCoverageName);
-        MosaicConfigurationBean config =
-                mosaicConfigHandler.getConfigurations().get(targetCoverageName);
+        String targetCoverageName = mosaicConfigHandler.getTargetCoverageName(reader, inputCoverageName);
+        MosaicConfigurationBean config = mosaicConfigHandler.getConfigurations().get(targetCoverageName);
         return config == null || checkCRS(reader, config, inputCoverageName);
     }
 
-    private boolean checkCRS(
-            GridCoverage2DReader reader, MosaicConfigurationBean config, String inputCoverageName) {
+    private boolean checkCRS(GridCoverage2DReader reader, MosaicConfigurationBean config, String inputCoverageName) {
         CoordinateReferenceSystem expectedCRS = config.getCrs();
         // old configs might be missing the CRS, in that case, use the reader's one, works fine
         // for homogeneous CRS mosaics too
         if (expectedCRS == null) expectedCRS = reader.getCoordinateReferenceSystem();
 
-        CoordinateReferenceSystem actualCRS =
-                reader.getCoordinateReferenceSystem(inputCoverageName);
+        CoordinateReferenceSystem actualCRS = reader.getCoordinateReferenceSystem(inputCoverageName);
 
         return CRS.equalsIgnoreMetadata(expectedCRS, actualCRS);
     }

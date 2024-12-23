@@ -66,10 +66,11 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
     protected String xsdFileName = "meteo.xsd";
     protected String xmlFileName = "mappings_solr.xml";
     protected String ST_NAMESPACE = "http://www.stations.org/1.0";
-    protected Name mappedTypeName =
-            Types.typeName("StationType-f46d72da-5591-4873-b210-5ed30a6ffb0d");
+    protected Name mappedTypeName = Types.typeName("StationType-f46d72da-5591-4873-b210-5ed30a6ffb0d");
     //
-    @Rule public TemporaryFolder tempfolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder tempfolder = new TemporaryFolder();
+
     protected File tempDir;
     protected File appSchemaCacheDir;
 
@@ -78,8 +79,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
 
     protected void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
-        FileUtils.copyFileToDirectory(
-                URLs.urlToFile(this.getClass().getResource(testData + baseFileName)), destDir);
+        FileUtils.copyFileToDirectory(URLs.urlToFile(this.getClass().getResource(testData + baseFileName)), destDir);
     }
 
     /** Clone entire folder to temp for possible modifications */
@@ -106,8 +106,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
     private void setupDataStore() throws Exception {
         final Map<String, Serializable> dsParams = new HashMap<>();
         dsParams.put("dbtype", "app-schema");
-        final URL url =
-                new URL(tempDir.toURI().toURL().toExternalForm() + File.separator + xmlFileName);
+        final URL url = new URL(tempDir.toURI().toURL().toExternalForm() + File.separator + xmlFileName);
         dsParams.put("url", url.toExternalForm());
         mappingDataStore = DataAccessFinder.getDataStore(dsParams);
     }
@@ -128,7 +127,8 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
     }
 
     protected void fieldsSetup() throws Exception {
-        File inFile = new File(this.getClass().getResource(testData + typesFileName).toURI());
+        File inFile =
+                new File(this.getClass().getResource(testData + typesFileName).toURI());
         JAXBContext jcontext = JAXBContext.newInstance(SolrTypes.class);
         Unmarshaller um = jcontext.createUnmarshaller();
         SolrTypes types = (SolrTypes) um.unmarshal(inFile);
@@ -138,7 +138,8 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
     }
 
     protected void indexSetup() throws Exception {
-        File inFile = new File(this.getClass().getResource(testData + solrDataFilename).toURI());
+        File inFile = new File(
+                this.getClass().getResource(testData + solrDataFilename).toURI());
         JAXBContext jcontext = JAXBContext.newInstance(Stations.class);
         Unmarshaller um = jcontext.createUnmarshaller();
         Stations stations = (Stations) um.unmarshal(inFile);
@@ -158,10 +159,9 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
 
         // Modify datasource and copy xml
         File xmlFile = URLs.urlToFile(this.getClass().getResource(testData + xmlFileName));
-        Document doc =
-                DocumentBuilderFactory.newInstance()
-                        .newDocumentBuilder()
-                        .parse(new InputSource(new FileInputStream(xmlFile)));
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(new InputSource(new FileInputStream(xmlFile)));
         Node solrDs = doc.getElementsByTagName("SolrDataStore").item(0);
         NodeList dsChilds = solrDs.getChildNodes();
         for (int i = 0; i < dsChilds.getLength(); i++) {

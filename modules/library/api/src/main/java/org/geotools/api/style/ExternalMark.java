@@ -13,12 +13,12 @@ import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
 
 /**
- * The alternative to a WellKnownName is an external mark format. The MarkIndex allows an individual
- * mark in a mark archive to be selected. An example format for an external mark archive would be a
- * TrueType font file, with MarkIndex being used to select an individual glyph from that file.
+ * The alternative to a WellKnownName is an external mark format. The MarkIndex allows an individual mark in a mark
+ * archive to be selected. An example format for an external mark archive would be a TrueType font file, with MarkIndex
+ * being used to select an individual glyph from that file.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
@@ -64,8 +64,7 @@ public interface ExternalMark {
      *   <li>image/gif
      * </ul>
      *
-     * This information is used by a renderer to determine if it can support the image format being
-     * supplied.
+     * This information is used by a renderer to determine if it can support the image format being supplied.
      *
      * @return mime type
      */
@@ -75,8 +74,8 @@ public interface ExternalMark {
     void setFormat(String mimeType);
 
     /**
-     * Returns an integer value that can used for accessing a particular Font character in a TTF
-     * file or a catalog for example.
+     * Returns an integer value that can used for accessing a particular Font character in a TTF file or a catalog for
+     * example.
      *
      * @return integer
      */

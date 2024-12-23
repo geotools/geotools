@@ -38,8 +38,7 @@ final class CompilerFactory {
      * @return CQLCompiler
      */
     public static ICompiler makeCompiler(
-            final Language language, final String predicate, final FilterFactory filterFactory)
-            throws CQLException {
+            final Language language, final String predicate, final FilterFactory filterFactory) throws CQLException {
 
         FilterFactory ff = filterFactory;
 

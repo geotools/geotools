@@ -50,8 +50,8 @@ public final class SoftValueHashMapTest {
     private static int TEST_CYCLES = (int) 1E1;
 
     /**
-     * Tests the {@link SoftValueHashMap} using strong references. The tested {@link
-     * SoftValueHashMap} should behave like a standard {@link Map} object.
+     * Tests the {@link SoftValueHashMap} using strong references. The tested {@link SoftValueHashMap} should behave
+     * like a standard {@link Map} object.
      */
     @Test
     public void testStrongReferences() {
@@ -69,10 +69,7 @@ public final class SoftValueHashMapTest {
                 key = null;
 
                 assertEquals("containsKey:", strongMap.containsKey(key), softMap.containsKey(key));
-                assertEquals(
-                        "containsValue:",
-                        strongMap.containsValue(value),
-                        softMap.containsValue(value));
+                assertEquals("containsValue:", strongMap.containsValue(value), softMap.containsValue(value));
                 assertSame("get:", strongMap.get(key), softMap.get(key));
                 assertEquals("equals:", strongMap, softMap);
                 if (random.nextBoolean()) {
@@ -89,8 +86,8 @@ public final class SoftValueHashMapTest {
     }
 
     /**
-     * Tests the {@link SoftValueHashMap} using soft references. In this test, we have to keep in
-     * mind than some elements in {@code softMap} may disappear at any time.
+     * Tests the {@link SoftValueHashMap} using soft references. In this test, we have to keep in mind than some
+     * elements in {@code softMap} may disappear at any time.
      */
     @Test
     public void testSoftReferences() throws InterruptedException {
@@ -159,10 +156,7 @@ public final class SoftValueHashMapTest {
         }
     }
 
-    /**
-     * Tests the {@link SoftValueHashMap} with threads performing a sequence of put and get
-     * operations on the cache.
-     */
+    /** Tests the {@link SoftValueHashMap} with threads performing a sequence of put and get operations on the cache. */
     @Test
     public void testGetPutInMultithreadEnv() throws InterruptedException {
         final Random random = getRandom();
@@ -185,8 +179,8 @@ public final class SoftValueHashMapTest {
     }
 
     /**
-     * Tests the {@link SoftValueHashMap} with threads that perform a sequence of put and get and
-     * threads that access elements in cache through the iterator
+     * Tests the {@link SoftValueHashMap} with threads that perform a sequence of put and get and threads that access
+     * elements in cache through the iterator
      */
     @Test
     public void testGetPutIteratorsInMultithreadEnv() throws InterruptedException {
@@ -225,8 +219,7 @@ public final class SoftValueHashMapTest {
         private Random random;
         private CountDownLatch latch;
 
-        public CacheTestThreadGetPut(
-                SoftValueHashMap<Integer, Integer> cache, Random random, CountDownLatch latch) {
+        public CacheTestThreadGetPut(SoftValueHashMap<Integer, Integer> cache, Random random, CountDownLatch latch) {
             this.cache = cache;
             this.random = random;
             this.latch = latch;
@@ -254,8 +247,7 @@ public final class SoftValueHashMapTest {
         private SoftValueHashMap<Integer, Integer> cache;
         private CountDownLatch latch;
 
-        public CacheTestThreadIterators(
-                SoftValueHashMap<Integer, Integer> cache, CountDownLatch latch) {
+        public CacheTestThreadIterators(SoftValueHashMap<Integer, Integer> cache, CountDownLatch latch) {
             this.cache = cache;
             this.latch = latch;
         }

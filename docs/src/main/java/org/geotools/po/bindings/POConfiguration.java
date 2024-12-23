@@ -40,8 +40,7 @@ public class POConfiguration extends Configuration {
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(PO.Items, ItemsBinding.class);
-        container.registerComponentImplementation(
-                PO.PurchaseOrderType, PurchaseOrderTypeBinding.class);
+        container.registerComponentImplementation(PO.PurchaseOrderType, PurchaseOrderTypeBinding.class);
         container.registerComponentImplementation(PO.SKU, SKUBinding.class);
         container.registerComponentImplementation(PO.USAddress, USAddressBinding.class);
         container.registerComponentImplementation(PO.Items_item, Items_itemBinding.class);

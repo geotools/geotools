@@ -24,9 +24,9 @@ import org.geotools.ows.ServiceException;
 /**
  * Process GetMapResponse.
  *
- * <p>Assume this is a placeholder allowing other code access to the InputStream? It would be nice
- * if this class actually provided a real object either returned Image, SVG XML Document or a
- * resolved GridCoverage in a manner similar to GetCapabilities.
+ * <p>Assume this is a placeholder allowing other code access to the InputStream? It would be nice if this class
+ * actually provided a real object either returned Image, SVG XML Document or a resolved GridCoverage in a manner
+ * similar to GetCapabilities.
  *
  * @author Richard Gould, Refractions Research
  */

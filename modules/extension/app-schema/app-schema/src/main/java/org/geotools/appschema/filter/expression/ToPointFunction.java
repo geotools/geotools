@@ -40,8 +40,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * This function converts double values to a 2D Point geometry type. This is needed when the data
- * store doesn't have geometry type columns. This function expects:
+ * This function converts double values to a 2D Point geometry type. This is needed when the data store doesn't have
+ * geometry type columns. This function expects:
  *
  * <ol>
  *   <li>Literal: SRS_NAME (optional)
@@ -62,11 +62,10 @@ public class ToPointFunction implements Function {
     private static final String USAGE =
             "Usage: toPoint('SRS_NAME'(optional), srsName(optional), point 1, point 2, gml:id(optional))";
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "toPoint",
-                    FunctionNameImpl.parameter("return", Point.class),
-                    FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "toPoint",
+            FunctionNameImpl.parameter("return", Point.class),
+            FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -121,30 +120,24 @@ public class ToPointFunction implements Function {
 
             if (parameters.size() > 5 || parameters.size() < 4) {
                 throw new IllegalArgumentException(
-                        "Wrong number of parameters for toPoint function: "
-                                + parameters.toString()
-                                + ". "
-                                + USAGE);
+                        "Wrong number of parameters for toPoint function: " + parameters.toString() + ". " + USAGE);
             }
             CoordinateReferenceSystem crs = null;
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
                 crs = CRS.decode(srsName);
             } catch (NoSuchAuthorityCodeException e) {
-                throw new IllegalArgumentException(
-                        "Invalid or unsupported SRS name detected for toPoint function: "
-                                + srsName
-                                + ". Cause: "
-                                + e.getMessage());
+                throw new IllegalArgumentException("Invalid or unsupported SRS name detected for toPoint function: "
+                        + srsName
+                        + ". Cause: "
+                        + e.getMessage());
             } catch (FactoryException e) {
                 throw new RuntimeException("Unable to decode SRS name. Cause: " + e.getMessage());
             }
             GeometryFactory fac = new GeometryFactory(new PrecisionModel());
-            point =
-                    fac.createPoint(
-                            new Coordinate(
-                                    parameters.get(2).evaluate(object, Double.class),
-                                    parameters.get(3).evaluate(object, Double.class)));
+            point = fac.createPoint(new Coordinate(
+                    parameters.get(2).evaluate(object, Double.class),
+                    parameters.get(3).evaluate(object, Double.class)));
             // set attributes
             String gmlId = null;
             if (parameters.size() == 5) {
@@ -155,18 +148,12 @@ public class ToPointFunction implements Function {
 
             if (parameters.size() > 3 || parameters.size() < 2) {
                 throw new IllegalArgumentException(
-                        "Wrong number of parameters for toPoint function: "
-                                + parameters.toString()
-                                + ". "
-                                + USAGE);
+                        "Wrong number of parameters for toPoint function: " + parameters.toString() + ". " + USAGE);
             }
             GeometryFactory fac = new GeometryFactory();
 
-            point =
-                    fac.createPoint(
-                            new Coordinate(
-                                    param1.evaluate(object, Double.class),
-                                    parameters.get(1).evaluate(object, Double.class)));
+            point = fac.createPoint(new Coordinate(
+                    param1.evaluate(object, Double.class), parameters.get(1).evaluate(object, Double.class)));
 
             if (parameters.size() == 3) {
                 String gmlId = parameters.get(2).evaluate(object, String.class);
@@ -177,8 +164,8 @@ public class ToPointFunction implements Function {
     }
 
     /**
-     * Set point attributes into its user data to be encoded in Geoserver: gml:id, srsName,
-     * srsDimension, axisLabels and uomLabels.
+     * Set point attributes into its user data to be encoded in Geoserver: gml:id, srsName, srsDimension, axisLabels and
+     * uomLabels.
      *
      * @param point The point object
      * @param crs Coordinate System object

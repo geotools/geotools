@@ -55,8 +55,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
     public static class GML2Delegate implements GMLDelegate {
 
-        static final QualifiedName FEATURE_MEMBER =
-                new QualifiedName(GML.NAMESPACE, "featureMember", "gml");
+        static final QualifiedName FEATURE_MEMBER = new QualifiedName(GML.NAMESPACE, "featureMember", "gml");
 
         QualifiedName featureMember;
 
@@ -117,8 +116,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
         }
 
         @Override
-        public List getFeatureProperties(
-                SimpleFeature f, XSDElementDeclaration element, Encoder e) {
+        public List getFeatureProperties(SimpleFeature f, XSDElementDeclaration element, Encoder e) {
             return GML2EncodingUtils.AbstractFeatureType_getProperties(
                     f,
                     element,
@@ -173,8 +171,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
             encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
             encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
             encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
-            encoders.put(
-                    GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix));
+            encoders.put(GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix));
         }
 
         @Override

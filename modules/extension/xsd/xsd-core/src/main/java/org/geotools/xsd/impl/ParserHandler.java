@@ -57,17 +57,16 @@ import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.ext.EntityResolver2;
 
 /**
- * The main sax event handler used for parsing the input document. This handler maintains a stack of
- * {@link Handler} objects. A handler is purshed onto the stack when a startElement event is
- * processed, and popped off the stack when the corresponding endElement event is processed.
+ * The main sax event handler used for parsing the input document. This handler maintains a stack of {@link Handler}
+ * objects. A handler is purshed onto the stack when a startElement event is processed, and popped off the stack when
+ * the corresponding endElement event is processed.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  */
 public class ParserHandler extends DefaultHandler2 {
 
     /**
-     * Customize the context, after the configuration has set up the context before the document is
-     * parsed.
+     * Customize the context, after the configuration has set up the context before the document is parsed.
      *
      * @author Niels Charlier
      */
@@ -260,8 +259,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws IOException, SAXException {
+    public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException {
         if (entityResolver != null) {
             return entityResolver.resolveEntity(publicId, systemId);
         } else {
@@ -335,8 +333,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (logger.isLoggable(Level.FINEST)) {
             logger.finest("startElement(" + uri + "," + localName + "," + qName);
         }
@@ -352,8 +349,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
 
         String prefix = namespaces.getPrefix(uri);
-        QName qualifiedName =
-                prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
+        QName qualifiedName = prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
 
         // get the handler at top of the stack and lookup child
         ElementHandler handler = getHandler(attributes, root, qualifiedName);
@@ -365,12 +361,9 @@ public class ParserHandler extends DefaultHandler2 {
                     && !handler.getElementDeclaration().getTargetNamespace().equals(uri)) {
 
                 if (!handler.getElementDeclaration().isAbstract()) {
-                    namespaces.declarePrefix(
-                            "", handler.getElementDeclaration().getTargetNamespace());
-                    qualifiedName =
-                            new QName(
-                                    handler.getElementDeclaration().getTargetNamespace(),
-                                    qualifiedName.getLocalPart());
+                    namespaces.declarePrefix("", handler.getElementDeclaration().getTargetNamespace());
+                    qualifiedName = new QName(
+                            handler.getElementDeclaration().getTargetNamespace(), qualifiedName.getLocalPart());
                 }
             }
 
@@ -383,8 +376,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
-    private ElementHandler getHandler(Attributes attributes, boolean root, QName qualifiedName)
-            throws SAXException {
+    private ElementHandler getHandler(Attributes attributes, boolean root, QName qualifiedName) throws SAXException {
         // First ask the parent handler for a child
         Handler parent = handlers.peek();
         ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
@@ -441,30 +433,26 @@ public class ParserHandler extends DefaultHandler2 {
             // {
             if (!isStrict()) {
                 if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
-                            "Could not find declaration for: "
-                                    + qualifiedName
-                                    + ". Checking if containing type declares a single particle.");
+                    logger.fine("Could not find declaration for: "
+                            + qualifiedName
+                            + ". Checking if containing type declares a single particle.");
                 }
 
                 if (parent.getComponent() instanceof ElementInstance) {
                     ElementInstance parentElement = (ElementInstance) parent.getComponent();
-                    List childParticles =
-                            index.getChildElementParticles(parentElement.getElementDeclaration());
+                    List childParticles = index.getChildElementParticles(parentElement.getElementDeclaration());
 
                     if (childParticles.size() == 1) {
-                        XSDParticle particle = (XSDParticle) childParticles.iterator().next();
+                        XSDParticle particle =
+                                (XSDParticle) childParticles.iterator().next();
                         XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
                         if (child.isElementDeclarationReference()) {
                             child = child.getResolvedElementDeclaration();
                         }
 
-                        handler =
-                                handlerFactory.createElementHandler(
-                                        new QName(child.getTargetNamespace(), child.getName()),
-                                        parent,
-                                        this);
+                        handler = handlerFactory.createElementHandler(
+                                new QName(child.getTargetNamespace(), child.getName()), parent, this);
                     }
                 }
             }
@@ -474,17 +462,13 @@ public class ParserHandler extends DefaultHandler2 {
             // check the case of where the namespace is wrong, do a lookup from
             // the parent just on local name
             if (!isStrict()) {
-                String msg =
-                        "Could not find declaration for: "
-                                + qualifiedName
-                                + ". Performing lookup by ignoring namespace";
+                String msg = "Could not find declaration for: "
+                        + qualifiedName
+                        + ". Performing lookup by ignoring namespace";
                 logger.fine(msg);
 
                 // * = match any namespace
-                handler =
-                        (ElementHandler)
-                                parent.createChildHandler(
-                                        new QName("*", qualifiedName.getLocalPart()));
+                handler = (ElementHandler) parent.createChildHandler(new QName("*", qualifiedName.getLocalPart()));
             }
         }
 
@@ -493,10 +477,9 @@ public class ParserHandler extends DefaultHandler2 {
             // if( context.getComponentInstance( Parser.Properties.PARSE_UNKNOWN_ELEMENTS ) != null)
             // {
             if (!isStrict()) {
-                String msg =
-                        "Could not find declaration for: "
-                                + qualifiedName
-                                + ". Creating a mock element declaration and parsing anyways...";
+                String msg = "Could not find declaration for: "
+                        + qualifiedName
+                        + ". Creating a mock element declaration and parsing anyways...";
                 logger.fine(msg);
 
                 // create a mock element declaration
@@ -512,10 +495,7 @@ public class ParserHandler extends DefaultHandler2 {
                 // check for a type definition in the context, this is only used by
                 // the parser in test mode
                 if (typeDefinition == null) {
-                    typeDefinition =
-                            (QName)
-                                    context.getComponentInstance(
-                                            "http://geotools.org/typeDefinition");
+                    typeDefinition = (QName) context.getComponentInstance("http://geotools.org/typeDefinition");
                     if (typeDefinition != null) {
                         context.unregisterComponent("http://geotools.org/typeDefinition");
                     }
@@ -550,8 +530,7 @@ public class ParserHandler extends DefaultHandler2 {
 
             // look up schema overrides
             List<XSDSchemaLocator> locators = Arrays.asList(findSchemaLocators());
-            List<XSDSchemaLocationResolver> resolvers =
-                    Arrays.asList(findSchemaLocationResolvers());
+            List<XSDSchemaLocationResolver> resolvers = Arrays.asList(findSchemaLocationResolvers());
 
             if ((locations != null) && (locations.length > 0)) {
                 // parse each namespace location pair into schema objects
@@ -564,9 +543,7 @@ public class ParserHandler extends DefaultHandler2 {
                         location = locations[i + 1];
                     } else {
                         logger.warning(
-                                "Schema location not specified as namespace/location pair. "
-                                        + "Ignoring "
-                                        + namespace);
+                                "Schema location not specified as namespace/location pair. " + "Ignoring " + namespace);
                         continue;
                     }
 
@@ -576,13 +553,7 @@ public class ParserHandler extends DefaultHandler2 {
                         if (override != null) {
                             // ensure that override has no spaces
                             override = override.replaceAll(" ", "%20");
-                            logger.finer(
-                                    "Found override for "
-                                            + namespace
-                                            + ": "
-                                            + location
-                                            + " ==> "
-                                            + override);
+                            logger.finer("Found override for " + namespace + ": " + location + " ==> " + override);
                             location = override;
 
                             break;
@@ -607,21 +578,16 @@ public class ParserHandler extends DefaultHandler2 {
                             try {
                                 Schemas.validateImportsIncludes(location, locators, resolvers);
                             } catch (IOException e) {
-                                throw (SAXException)
-                                        new SAXException("error validating").initCause(e);
+                                throw (SAXException) new SAXException("error validating").initCause(e);
                             }
                         }
 
                         // parse the document
                         try {
-                            schemas[i / 2] =
-                                    Schemas.parse(location, locators, resolvers, uriHandlers);
+                            schemas[i / 2] = Schemas.parse(location, locators, resolvers, uriHandlers);
                         } catch (Exception e) {
                             String msg =
-                                    "Error loading schema for namespace: "
-                                            + namespace
-                                            + " at location: "
-                                            + location;
+                                    "Error loading schema for namespace: " + namespace + " at location: " + location;
                             logger.warning(msg);
 
                             if (isStrict()) {
@@ -674,8 +640,7 @@ public class ParserHandler extends DefaultHandler2 {
 
                 if (isStrict()) {
                     // crap out
-                    String msg =
-                            "Could not find a schemaLocation attribute or " + "appropriate locator";
+                    String msg = "Could not find a schemaLocation attribute or " + "appropriate locator";
                     throw new SAXException(msg);
                 } else {
                     // just use the schema from configuration
@@ -714,8 +679,7 @@ public class ParserHandler extends DefaultHandler2 {
             if (!found) {
                 // add it if not operating in strict mode
                 if (!isStrict()) {
-                    logger.fine(
-                            "schema specified by parser configuration not found, supplementing...");
+                    logger.fine("schema specified by parser configuration not found, supplementing...");
 
                     XSDSchema[] copy = new XSDSchema[schemas.length + 1];
                     System.arraycopy(schemas, 0, copy, 0, schemas.length);
@@ -728,10 +692,9 @@ public class ParserHandler extends DefaultHandler2 {
                     copy[schemas.length] = result;
                     schemas = copy;
                 } else {
-                    String msg =
-                            "parser configuration specified schema: '"
-                                    + config.getNamespaceURI()
-                                    + "', but instance document does not reference this schema.";
+                    String msg = "parser configuration specified schema: '"
+                            + config.getNamespaceURI()
+                            + "', but instance document does not reference this schema.";
                     logger.info(msg);
                 }
             }
@@ -767,13 +730,11 @@ public class ParserHandler extends DefaultHandler2 {
         //            }
         if (!isStrict() && (locations == null)) {
             // use the configuration
-            logger.finer(
-                    "No schemaLocation found, using '"
-                            + config.getNamespaceURI()
-                            + " "
-                            + config.getXSD().getSchemaLocation());
-            locations =
-                    new String[] {config.getNamespaceURI(), config.getXSD().getSchemaLocation()};
+            logger.finer("No schemaLocation found, using '"
+                    + config.getNamespaceURI()
+                    + " "
+                    + config.getXSD().getSchemaLocation());
+            locations = new String[] {config.getNamespaceURI(), config.getXSD().getSchemaLocation()};
         }
         return locations;
     }
@@ -792,8 +753,7 @@ public class ParserHandler extends DefaultHandler2 {
 
         // create a qName object from the string
         String prefix = namespaces.getPrefix(uri);
-        QName qualifiedName =
-                prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
+        QName qualifiedName = prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
 
         handler.endElement(qualifiedName);
 
@@ -890,8 +850,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     protected XSDSchemaLocator[] findSchemaLocators() {
-        List<XSDSchemaLocator> l =
-                Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
+        List<XSDSchemaLocator> l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
 
         if ((l == null) || l.isEmpty()) {
             return new XSDSchemaLocator[] {};

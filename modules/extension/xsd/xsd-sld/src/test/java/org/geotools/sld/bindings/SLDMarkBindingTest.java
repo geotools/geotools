@@ -86,23 +86,19 @@ public class SLDMarkBindingTest extends SLDTestSupport {
         return new SLDConfiguration() {
             @Override
             protected void configureContext(MutablePicoContainer container) {
-                container.registerComponentImplementation(
-                        StyleFactory.class, StyleFactoryImpl.class);
+                container.registerComponentImplementation(StyleFactory.class, StyleFactoryImpl.class);
 
-                container.registerComponentInstance(
-                        ResourceLocator.class,
-                        (ResourceLocator)
-                                uri -> {
-                                    if ("file://foo.svg".equals(uri)) {
-                                        try {
-                                            return new URL("file://test/foo.svg");
-                                        } catch (MalformedURLException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    } else {
-                                        return null;
-                                    }
-                                });
+                container.registerComponentInstance(ResourceLocator.class, (ResourceLocator) uri -> {
+                    if ("file://foo.svg".equals(uri)) {
+                        try {
+                            return new URL("file://test/foo.svg");
+                        } catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        return null;
+                    }
+                });
             }
         };
     }

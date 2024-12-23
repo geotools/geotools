@@ -58,12 +58,10 @@ public class RATCollector {
                 final int max = maxField;
                 keyBuilder = row -> row.getF().get(min) + "-" + row.getF().get(max);
             } else {
-                throw new IllegalArgumentException(
-                        "Could not find value fields in the raster attribute table");
+                throw new IllegalArgumentException("Could not find value fields in the raster attribute table");
             }
         // initialize the rows map
-        rat.getRow()
-                .forEach(row -> allRows.computeIfAbsent(keyBuilder.apply(row), k -> row.getF()));
+        rat.getRow().forEach(row -> allRows.computeIfAbsent(keyBuilder.apply(row), k -> row.getF()));
     }
 
     public void collect(GDALRasterAttributeTable rat) {
@@ -80,10 +78,8 @@ public class RATCollector {
                     String currValue = curr.get(i);
                     if (countField != null && i == countField) continue;
                     if (!prevValue.equals(currValue)) {
-                        throw new IllegalArgumentException(
-                                String.format(
-                                        "Different values for band %d in row %s: %s != %s",
-                                        band, key, prevValue, currValue));
+                        throw new IllegalArgumentException(String.format(
+                                "Different values for band %d in row %s: %s != %s", band, key, prevValue, currValue));
                     }
                 }
                 if (countField != null) {

@@ -31,8 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the {@link ScaledColorSpace} implementation. This is a visual test when run from the
- * command line.
+ * Tests the {@link ScaledColorSpace} implementation. This is a visual test when run from the command line.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -59,8 +58,7 @@ public final class ScaledColorSpaceTest {
 
         final int transparency = Transparency.OPAQUE;
         final int datatype = DataBuffer.TYPE_FLOAT;
-        final ColorModel model =
-                new ComponentColorModel(colors, false, false, transparency, datatype);
+        final ColorModel model = new ComponentColorModel(colors, false, false, transparency, datatype);
         final WritableRaster data = model.createCompatibleWritableRaster(200, 200);
         final BufferedImage image = new BufferedImage(model, data, false, null);
         final int width = data.getWidth();

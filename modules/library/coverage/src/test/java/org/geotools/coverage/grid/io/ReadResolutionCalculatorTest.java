@@ -51,24 +51,14 @@ public class ReadResolutionCalculatorTest {
     public void testReadResolutionCalculatorNullRes() throws Exception {
         final CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857", true);
         final CoordinateReferenceSystem nativeCRS = CRS.decode("EPSG:4326", true);
-        final ReferencedEnvelope requestBounds =
-                new ReferencedEnvelope(
-                        -1.3184040176569374E7,
-                        -1.31787660216177E7,
-                        4020998.5368273035,
-                        4026272.691778981,
-                        requestCRS);
+        final ReferencedEnvelope requestBounds = new ReferencedEnvelope(
+                -1.3184040176569374E7, -1.31787660216177E7, 4020998.5368273035, 4026272.691778981, requestCRS);
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256), requestBounds);
 
         // We intentionally provide a null native res
         ReadResolutionCalculator calculator = new ReadResolutionCalculator(gg, nativeCRS, null);
-        ReferencedEnvelope readBounds =
-                new ReferencedEnvelope(
-                        -118.43424797058104,
-                        -118.38686943054199,
-                        33.941864643619226,
-                        33.981161019696614,
-                        nativeCRS);
+        ReferencedEnvelope readBounds = new ReferencedEnvelope(
+                -118.43424797058104, -118.38686943054199, 33.941864643619226, 33.981161019696614, nativeCRS);
         calculator.setAccurateResolution(true);
         double[] requestedResolution = calculator.computeRequestedResolution(readBounds);
 
@@ -88,8 +78,7 @@ public class ReadResolutionCalculatorTest {
         ReferencedEnvelope readBounds = requestBounds.transform(nativeCRS, true);
 
         // calculation with high oversampling, but not above the default limits
-        ReadResolutionCalculator calcDefault =
-                new ReadResolutionCalculator(gg, nativeCRS, new double[] {1, 1});
+        ReadResolutionCalculator calcDefault = new ReadResolutionCalculator(gg, nativeCRS, new double[] {1, 1});
         calcDefault.setAccurateResolution(true);
         double[] resolutionsDefault = calcDefault.computeRequestedResolution(readBounds);
         // due to high stretch this far up north, should be using almost the native resolution
@@ -97,8 +86,7 @@ public class ReadResolutionCalculatorTest {
         assertEquals(0.0333, resolutionsDefault[1], 1e-4);
 
         // limit oversampling factor and try again
-        ReadResolutionCalculator calcLimited =
-                new ReadResolutionCalculator(gg, nativeCRS, new double[] {1, 1});
+        ReadResolutionCalculator calcLimited = new ReadResolutionCalculator(gg, nativeCRS, new double[] {1, 1});
         calcLimited.setAccurateResolution(true);
         calcLimited.setMaxOversamplingFactor(10);
         double[] resolutionsLimited = calcLimited.computeRequestedResolution(readBounds);

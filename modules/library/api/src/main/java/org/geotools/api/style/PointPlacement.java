@@ -14,8 +14,8 @@ import org.geotools.api.filter.expression.Expression;
 /**
  * A PointPlacement specifies how a text label is positioned relative to a geometric point.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Ian Turton
@@ -24,32 +24,30 @@ import org.geotools.api.filter.expression.Expression;
 public interface PointPlacement extends LabelPlacement {
 
     /**
-     * Returns the AnchorPoint which identifies the location inside a textlabel to use as an
-     * "anchor" for positioning it relative to a point geometry.
+     * Returns the AnchorPoint which identifies the location inside a textlabel to use as an "anchor" for positioning it
+     * relative to a point geometry.
      *
      * @return anchorPoint from the relative to the original geometry
      */
     AnchorPoint getAnchorPoint();
 
     /**
-     * sets the AnchorPoint which identifies the location inside a textlabel to use as an "anchor"
-     * for positioning it relative to a point geometry.
+     * sets the AnchorPoint which identifies the location inside a textlabel to use as an "anchor" for positioning it
+     * relative to a point geometry.
      *
      * @param anchorPoint relative to the original geometry
      */
     void setAnchorPoint(AnchorPoint anchorPoint);
 
     /**
-     * Returns the Displacement which gives X and Y offset displacements to use for rendering a text
-     * label near a point.
+     * Returns the Displacement which gives X and Y offset displacements to use for rendering a text label near a point.
      *
      * @return Offset to use when rendering text near a point
      */
     Displacement getDisplacement();
 
     /**
-     * sets the Displacement which gives X and Y offset displacements to use for rendering a text
-     * label near a point.
+     * sets the Displacement which gives X and Y offset displacements to use for rendering a text label near a point.
      */
     void setDisplacement(Displacement displacement);
 

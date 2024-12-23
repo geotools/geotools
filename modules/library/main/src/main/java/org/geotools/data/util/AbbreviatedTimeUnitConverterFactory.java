@@ -21,9 +21,7 @@ import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
 
-/**
- * Converter Factory converting abbreviated timeUnit Strings (s, m, h, d) to {@link TimeUnit} enum.
- */
+/** Converter Factory converting abbreviated timeUnit Strings (s, m, h, d) to {@link TimeUnit} enum. */
 public class AbbreviatedTimeUnitConverterFactory implements ConverterFactory {
 
     @Override

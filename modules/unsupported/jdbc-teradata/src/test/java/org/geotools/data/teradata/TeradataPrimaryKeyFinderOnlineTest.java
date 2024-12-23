@@ -40,14 +40,11 @@ public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnli
 
     @Override
     public void testAssignedMultiPKeyView() throws Exception {
-        JDBCFeatureStore fs =
-                (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));
+        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));
 
         assertEquals(2, fs.getPrimaryKey().getColumns().size());
-        assertTrue(
-                fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
-        assertTrue(
-                fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
+        assertTrue(fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
+        assertTrue(fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
 
         try (FeatureIterator<?> i = fs.getFeatures().features()) {
             // On Teradata it's undered !!

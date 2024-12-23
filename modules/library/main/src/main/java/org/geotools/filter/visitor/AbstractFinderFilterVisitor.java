@@ -76,8 +76,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * Abstract FilterVisitor for answering yes / no questions about a filter.
  *
- * <p>These classes are not not stateless, they make use of an interal field to track if something
- * is found. The walk will be stopped and the value returned.
+ * <p>These classes are not not stateless, they make use of an interal field to track if something is found. The walk
+ * will be stopped and the value returned.
  *
  * @author Jody Garnett (Refractions Research)
  */
@@ -224,33 +224,32 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
     @Override
     public Object visit(final BBOX filter, Object data) {
         // We will just use a simple wrapper until we add a getExpression method
-        PropertyName property =
-                new PropertyName() {
-                    @Override
-                    public String getPropertyName() {
-                        return ((PropertyName) filter.getExpression1()).getPropertyName();
-                    }
+        PropertyName property = new PropertyName() {
+            @Override
+            public String getPropertyName() {
+                return ((PropertyName) filter.getExpression1()).getPropertyName();
+            }
 
-                    @Override
-                    public Object accept(ExpressionVisitor visitor, Object data) {
-                        return visitor.visit(this, data);
-                    }
+            @Override
+            public Object accept(ExpressionVisitor visitor, Object data) {
+                return visitor.visit(this, data);
+            }
 
-                    @Override
-                    public Object evaluate(Object object) {
-                        return null;
-                    }
+            @Override
+            public Object evaluate(Object object) {
+                return null;
+            }
 
-                    @Override
-                    public <T> T evaluate(Object object, Class<T> context) {
-                        return null;
-                    }
+            @Override
+            public <T> T evaluate(Object object, Class<T> context) {
+                return null;
+            }
 
-                    @Override
-                    public NamespaceSupport getNamespaceContext() {
-                        return null;
-                    }
-                };
+            @Override
+            public NamespaceSupport getNamespaceContext() {
+                return null;
+            }
+        };
         property.accept(this, data);
         if (found) return found;
         filter.getExpression2().accept(this, data);

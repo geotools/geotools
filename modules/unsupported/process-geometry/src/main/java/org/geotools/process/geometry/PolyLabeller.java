@@ -32,9 +32,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class PolyLabeller {
 
-    /**
-     * Distance tolerance used to test whether a centroid or a envelope center could be preferred
-     */
+    /** Distance tolerance used to test whether a centroid or a envelope center could be preferred */
     private static final double DISTANCE_TOLERANCE_PERC = 0.8;
 
     static GeometryBuilder GB = new GeometryBuilder();
@@ -73,8 +71,7 @@ public class PolyLabeller {
             for (int i = 0; i < geometry.getNumGeometries(); i++) {
                 Polygon p = (Polygon) geometry.getGeometryN(i);
                 LabelPosition polylabel = getPolyLabel_(p, precision);
-                if (widest == null || polylabel.getDistance() > widest.getDistance())
-                    widest = polylabel;
+                if (widest == null || polylabel.getDistance() > widest.getDistance()) widest = polylabel;
             }
             return widest.getPosition();
         } else {
@@ -102,13 +99,11 @@ public class PolyLabeller {
         double distanceEnvelope = envelopeCenter.distance(boundary);
 
         // prefer the centroid if inside and the distance is competitive with the poly label one
-        if (distanceCentroid > (distancePolyLabel * DISTANCE_TOLERANCE_PERC)
-                && polygon.contains(centroid)) {
+        if (distanceCentroid > (distancePolyLabel * DISTANCE_TOLERANCE_PERC) && polygon.contains(centroid)) {
             return new LabelPosition(centroid, distanceCentroid);
         }
         // prefer the envelope center if inside and the distance is competitive with the poly label
-        if (distanceEnvelope > (distancePolyLabel * DISTANCE_TOLERANCE_PERC)
-                && polygon.contains(envelopeCenter)) {
+        if (distanceEnvelope > (distancePolyLabel * DISTANCE_TOLERANCE_PERC) && polygon.contains(envelopeCenter)) {
             return new LabelPosition(envelopeCenter, distanceEnvelope);
         }
 
@@ -117,8 +112,8 @@ public class PolyLabeller {
     }
 
     /**
-     * The default precision should be rough enough, small values produce pretty poor output. The
-     * default is half the radius of the circle that has the same area as the polygon
+     * The default precision should be rough enough, small values produce pretty poor output. The default is half the
+     * radius of the circle that has the same area as the polygon
      */
     private static double getDefaultPrecision(Geometry polygon) {
         return Math.sqrt(polygon.getArea()) / Math.PI / 2;

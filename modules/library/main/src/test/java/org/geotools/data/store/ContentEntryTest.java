@@ -38,20 +38,18 @@ public class ContentEntryTest {
     /** Test that the a Transaction is removed from state when the Transaction is closed. */
     @Test
     public void transactionCacheClearedOnTransactionClose() {
-        ContentDataStore dataStore =
-                new ContentDataStore() {
+        ContentDataStore dataStore = new ContentDataStore() {
 
-                    @Override
-                    protected List<Name> createTypeNames() throws IOException {
-                        return null;
-                    }
+            @Override
+            protected List<Name> createTypeNames() throws IOException {
+                return null;
+            }
 
-                    @Override
-                    protected ContentFeatureSource createFeatureSource(ContentEntry entry)
-                            throws IOException {
-                        return null;
-                    }
-                };
+            @Override
+            protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+                return null;
+            }
+        };
 
         @SuppressWarnings("PMD.CloseResource") // need to test after closing
         Transaction transaction = new DefaultTransaction();

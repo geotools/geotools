@@ -20,15 +20,14 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.FilterFactory;
 
 /**
- * Implemented by functions that can turn themselves into a simpler, more efficient expression, when
- * certain conditions are met. Called by the SimplifyingfilterVisitor when the arguments of the
- * function are not all literals (in which case, a one time simplification is performed instead).
+ * Implemented by functions that can turn themselves into a simpler, more efficient expression, when certain conditions
+ * are met. Called by the SimplifyingfilterVisitor when the arguments of the function are not all literals (in which
+ * case, a one time simplification is performed instead).
  */
 public interface SimplifiableFunction {
 
     /**
-     * Returns a simplified version of the function, or the function itself it cannot be be
-     * simplified
+     * Returns a simplified version of the function, or the function itself it cannot be be simplified
      *
      * @param ff The filter factory to use for creating new expressions (mandatory, non null)
      * @param featureType The target feature type, if available, <code>null</code> otherwise

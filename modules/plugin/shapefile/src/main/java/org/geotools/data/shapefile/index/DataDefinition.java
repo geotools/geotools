@@ -70,14 +70,13 @@ public class DataDefinition {
         } else if (clazz.isAssignableFrom(Double.class)) {
             this.fields.add(new Field(clazz, 8));
         } else {
-            throw new IllegalArgumentException(
-                    "Unknow len of class " + clazz + "use addField(int)");
+            throw new IllegalArgumentException("Unknow len of class " + clazz + "use addField(int)");
         }
     }
 
     /**
-     * For classes with unknown length; this values will be threated as <code>String</code>s and
-     * truncated at the specified len
+     * For classes with unknown length; this values will be threated as <code>String</code>s and truncated at the
+     * specified len
      */
     public void addField(int len) {
         this.fields.add(new Field(String.class, len));
@@ -103,8 +102,8 @@ public class DataDefinition {
     }
 
     /**
-     * Gets the len of this field after the encoding, this method may be different from getLen()
-     * only if exists strings in the definition
+     * Gets the len of this field after the encoding, this method may be different from getLen() only if exists strings
+     * in the definition
      */
     public int getEncodedLen() {
         int len = 0;

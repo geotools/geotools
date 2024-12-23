@@ -18,12 +18,10 @@ import org.geotools.api.annotation.UML;
 import org.geotools.api.util.CodeList;
 
 /**
- * Meaning of the axis value range specified through {@linkplain
- * CoordinateSystemAxis#getMinimumValue minimum value} and {@linkplain
- * CoordinateSystemAxis#getMaximumValue maximum value}.
+ * Meaning of the axis value range specified through {@linkplain CoordinateSystemAxis#getMinimumValue minimum value} and
+ * {@linkplain CoordinateSystemAxis#getMaximumValue maximum value}.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  * @see CoordinateSystemAxis#getRangeMeaning
@@ -37,24 +35,23 @@ public final class RangeMeaning extends CodeList<RangeMeaning> {
     private static final List<RangeMeaning> VALUES = new ArrayList<>(2);
 
     /**
-     * Any value between and including {@linkplain CoordinateSystemAxis#getMinimumValue minimum
-     * value} and {@linkplain CoordinateSystemAxis#getMaximumValue maximum value} is valid.
+     * Any value between and including {@linkplain CoordinateSystemAxis#getMinimumValue minimum value} and
+     * {@linkplain CoordinateSystemAxis#getMaximumValue maximum value} is valid.
      */
     @UML(identifier = "exact", obligation = CONDITIONAL, specification = ISO_19111)
     public static final RangeMeaning EXACT = new RangeMeaning("EXACT");
 
     /**
-     * The axis is continuous with values wrapping around at the {@linkplain
-     * CoordinateSystemAxis#getMinimumValue minimum value} and {@linkplain
-     * CoordinateSystemAxis#getMaximumValue maximum value}. Values with the same meaning repeat
-     * modulo the difference between maximum value and minimum value.
+     * The axis is continuous with values wrapping around at the {@linkplain CoordinateSystemAxis#getMinimumValue
+     * minimum value} and {@linkplain CoordinateSystemAxis#getMaximumValue maximum value}. Values with the same meaning
+     * repeat modulo the difference between maximum value and minimum value.
      */
     @UML(identifier = "wraparound", obligation = CONDITIONAL, specification = ISO_19111)
     public static final RangeMeaning WRAPAROUND = new RangeMeaning("WRAPAROUND");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -80,8 +77,7 @@ public final class RangeMeaning extends CodeList<RangeMeaning> {
     }
 
     /**
-     * Returns the range meaning that matches the given string, or returns a new one if none match
-     * it.
+     * Returns the range meaning that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

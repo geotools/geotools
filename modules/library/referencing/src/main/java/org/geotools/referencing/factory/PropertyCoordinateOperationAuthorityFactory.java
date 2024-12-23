@@ -46,9 +46,8 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.SimpleInternationalString;
 
 /**
- * A {@link CoordinateOperationAuthorityFactory} backed by a properties file. Allows custom
- * transform definitions across two CRSs, expressed as WKT math transforms. Entries in the
- * properties file take this format:
+ * A {@link CoordinateOperationAuthorityFactory} backed by a properties file. Allows custom transform definitions across
+ * two CRSs, expressed as WKT math transforms. Entries in the properties file take this format:
  *
  * <pre>
  * [source crs code],[target crs code]=[WKT math transform]
@@ -65,8 +64,8 @@ import org.geotools.util.SimpleInternationalString;
  *   PARAMETER["Rotation angle of source coordinate reference system axes", 1.56504]]
  * </pre>
  *
- * For more compact definitions, parameter names can be replaced by their corresponding EPSG codes.
- * Following examples are the same as former ones:
+ * For more compact definitions, parameter names can be replaced by their corresponding EPSG codes. Following examples
+ * are the same as former ones:
  *
  * <pre>
  * 4230,4258=PARAM_MT["9615", PARAMETER["8656", "100800401.gsb"]]
@@ -79,16 +78,14 @@ import org.geotools.util.SimpleInternationalString;
  *
  * References:
  *
- * <p>See <a href="http://www.geoapi.org/3.0/javadoc/org/opengis/referencing/doc-files/WKT.html">
- * <cite>Well-Known Text format</cite></a> for math transform syntax. Visit the <a
- * href="http://www.epsg-registry.org/"><cite>EPSG Geodetic Parameter Registry</cite> </a> for EPSG
- * parameter codes and values.
+ * <p>See <a href="http://www.geoapi.org/3.0/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well-Known Text
+ * format</cite></a> for math transform syntax. Visit the <a href="http://www.epsg-registry.org/"><cite>EPSG Geodetic
+ * Parameter Registry</cite> </a> for EPSG parameter codes and values.
  *
  * <p>Note that invertible transforms will be used in both directions.
  *
- * <p>This factory doesn't cache any result. Any call to a {@code createFoo} method will trig a new
- * WKT parsing. For caching, this factory should be wrapped in some buffered factory like {@link
- * BufferedAuthorityFactory}.
+ * <p>This factory doesn't cache any result. Any call to a {@code createFoo} method will trig a new WKT parsing. For
+ * caching, this factory should be wrapped in some buffered factory like {@link BufferedAuthorityFactory}.
  *
  * @version $Id$
  * @author Oscar Fonts
@@ -100,15 +97,14 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
     private final Citation authority;
 
     /**
-     * The properties object for our properties file. Keys are CRS code pairs separated by a comma.
-     * The associated value is a WKT string for the Math Transform. See {@link
-     * PropertyCoordinateOperationAuthorityFactory}.
+     * The properties object for our properties file. Keys are CRS code pairs separated by a comma. The associated value
+     * is a WKT string for the Math Transform. See {@link PropertyCoordinateOperationAuthorityFactory}.
      */
     private final Properties definitions = new Properties();
 
     /**
-     * An unmodifiable view of the authority keys. This view is always up to date even if entries
-     * are added or removed in the {@linkplain #definitions} map.
+     * An unmodifiable view of the authority keys. This view is always up to date even if entries are added or removed
+     * in the {@linkplain #definitions} map.
      */
     @SuppressWarnings("unchecked")
     private final Set<String> codes = Collections.unmodifiableSet((Set) definitions.keySet());
@@ -117,15 +113,12 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * Creates a factory for the specified authority from the specified file.
      *
      * @param factories The underlying factories used for objects creation.
-     * @param authority The organization or party responsible for definition and maintenance of the
-     *     database.
+     * @param authority The organization or party responsible for definition and maintenance of the database.
      * @param definitions URL to the definition file.
      * @throws IOException if the definitions can't be read.
      */
     public PropertyCoordinateOperationAuthorityFactory(
-            final ReferencingFactoryContainer factories,
-            final Citation authority,
-            final URL definitions)
+            final ReferencingFactoryContainer factories, final Citation authority, final URL definitions)
             throws IOException {
         // Set priority low
         super(factories, MINIMUM_PRIORITY + 10);
@@ -154,8 +147,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         String[] crsPair = trimAuthority(code).split(",");
         if (crsPair.length == 2) {
             Set<CoordinateOperation> coordopset =
-                    createFromCoordinateReferenceSystemCodes(
-                            trimAuthority(crsPair[0]), trimAuthority(crsPair[1]));
+                    createFromCoordinateReferenceSystemCodes(trimAuthority(crsPair[0]), trimAuthority(crsPair[1]));
             if (!coordopset.isEmpty()) {
                 return coordopset.iterator().next();
             }
@@ -164,10 +156,9 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
     }
 
     /**
-     * Creates a {@link CoordinateOperation} from {@linkplain CoordinateReferenceSystem coordinate
-     * reference system} codes. This method returns a single operation from the properties file. If
-     * operation is invertible, will check also for the inverse one. If operation not found, it will
-     * return an empty set.
+     * Creates a {@link CoordinateOperation} from {@linkplain CoordinateReferenceSystem coordinate reference system}
+     * codes. This method returns a single operation from the properties file. If operation is invertible, will check
+     * also for the inverse one. If operation not found, it will return an empty set.
      *
      * @param sourceCRS Coded value of source coordinate reference system.
      * @param targetCRS Coded value of target coordinate reference system.
@@ -176,14 +167,12 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
-    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS)
+    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         Set<CoordinateOperation> coordops = new HashSet<>(1);
 
-        CoordinateOperation coordop =
-                createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS, false);
+        CoordinateOperation coordop = createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS, false);
         if (coordop == null) {
             // Not found. Try to create from the inverse.
             coordop = createFromCoordinateReferenceSystemCodes(targetCRS, sourceCRS, true);
@@ -196,21 +185,19 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
     }
 
     /**
-     * Seeks for a WKT definition in the properties file from a CRS pair, parses it, and creates the
-     * corresponding CoordinateOperation. Returns {@code null} if something went wrong.
+     * Seeks for a WKT definition in the properties file from a CRS pair, parses it, and creates the corresponding
+     * CoordinateOperation. Returns {@code null} if something went wrong.
      *
      * <p>Will log a WARNING message if a parsing error occurred.
      *
      * @param sourceCRS Coded value of source coordinate reference system.
      * @param targetCRS Coded value of target coordinate reference system.
      * @param inverse {@code true} to create operation from the inverse definition.
-     * @return The operation from {@code sourceCRS} to {@code targetCRS}, or {@code null} if not
-     *     found.
+     * @return The operation from {@code sourceCRS} to {@code targetCRS}, or {@code null} if not found.
      * @throws NoSuchAuthorityCodeException if a specified code was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CoordinateOperation createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS, boolean inverse)
+    CoordinateOperation createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS, boolean inverse)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         // Get WKT definition from properties
@@ -241,27 +228,24 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         // Need to create a derived MathTransform that will handle axis order and units
         // as defined in CRS. Had to cast to DefaultMathTransformFactory because
         // createBaseToDerived is not defined in MathTransformFactory interface (GeoAPI).
-        DefaultMathTransformFactory mtf =
-                (DefaultMathTransformFactory) factories.getMathTransformFactory();
+        DefaultMathTransformFactory mtf = (DefaultMathTransformFactory) factories.getMathTransformFactory();
         MathTransform mt2 = mtf.createBaseToDerived(source, mt, target.getCoordinateSystem());
 
         // Extract name from the transform, if possible, or use class name.
         String methodName;
         try {
             if (mt instanceof AbstractMathTransform) {
-                methodName =
-                        ((AbstractMathTransform) mt)
-                                .getParameterValues()
-                                .getDescriptor()
-                                .getName()
-                                .getCode();
+                methodName = ((AbstractMathTransform) mt)
+                        .getParameterValues()
+                        .getDescriptor()
+                        .getName()
+                        .getCode();
             } else if (mt instanceof AffineTransform2D) {
-                methodName =
-                        ((AffineTransform2D) mt)
-                                .getParameterValues()
-                                .getDescriptor()
-                                .getName()
-                                .getCode();
+                methodName = ((AffineTransform2D) mt)
+                        .getParameterValues()
+                        .getDescriptor()
+                        .getName()
+                        .getCode();
             } else {
                 methodName = mt.getClass().getSimpleName();
             }
@@ -273,27 +257,18 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
 
         // Create the OperationMethod
         OperationMethod method =
-                new DefaultOperationMethod(
-                        props, mt2.getSourceDimensions(), mt2.getTargetDimensions(), null);
+                new DefaultOperationMethod(props, mt2.getSourceDimensions(), mt2.getTargetDimensions(), null);
 
         // Finally create CoordinateOperation
         CoordinateOperation coordop = null;
         if (!inverse) { // Direct operation
             props.put("name", sourceCRS + " \u21E8 " + targetCRS);
-            coordop =
-                    DefaultOperation.create(
-                            props, source, target, mt2, method, CoordinateOperation.class);
+            coordop = DefaultOperation.create(props, source, target, mt2, method, CoordinateOperation.class);
         } else { // Inverse operation
             try {
                 props.put("name", targetCRS + " \u21E8 " + sourceCRS);
-                coordop =
-                        DefaultOperation.create(
-                                props,
-                                target,
-                                source,
-                                mt2.inverse(),
-                                method,
-                                CoordinateOperation.class);
+                coordop = DefaultOperation.create(
+                        props, target, source, mt2.inverse(), method, CoordinateOperation.class);
             } catch (NoninvertibleTransformException e) {
                 return null;
             }
@@ -302,8 +277,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
     }
 
     /**
-     * Returns the set of authority codes of the given type. Only CoordinateOperation.class is
-     * accepted as type.
+     * Returns the set of authority codes of the given type. Only CoordinateOperation.class is accepted as type.
      *
      * <p>This factory will not filter codes for its subclasses.
      *
@@ -323,14 +297,13 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * Gets a description of the object corresponding to a code.
      *
      * @param code Value allocated by authority.
-     * @return A description of the object, or {@code null} if the object corresponding to the
-     *     specified {@code code} has no description.
+     * @return A description of the object, or {@code null} if the object corresponding to the specified {@code code}
+     *     has no description.
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
 
         final String wkt = definitions.getProperty(trimAuthority(code));
 
@@ -349,9 +322,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         return null;
     }
 
-    /**
-     * Returns the organization or party responsible for definition and maintenance of the database.
-     */
+    /** Returns the organization or party responsible for definition and maintenance of the database. */
     @Override
     public Citation getAuthority() {
         return authority;

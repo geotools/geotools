@@ -31,12 +31,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * Implement a SimpleFeatureCollection by burning memory!
  *
- * <p>Contents are maintained in a sorted TreeMap by FID, this serves as a reference implementation
- * when exploring the SimpleFeatureCollection api.
+ * <p>Contents are maintained in a sorted TreeMap by FID, this serves as a reference implementation when exploring the
+ * SimpleFeatureCollection api.
  *
- * <p>This is similar to DefaultFeatureCollection, although additional methods are supported and
- * test cases have been written. Unlike DefaultFeatureCollection the type information must be known
- * at construction time.
+ * <p>This is similar to DefaultFeatureCollection, although additional methods are supported and test cases have been
+ * written. Unlike DefaultFeatureCollection the type information must be known at construction time.
  *
  * @author Jody Garnett, Refractions Research
  */
@@ -118,7 +117,8 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection
             return old;
         }
         return null;
-    };
+    }
+    ;
 
     /** Calculates the bounds of the features without caching. */
     @Override

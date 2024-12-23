@@ -78,10 +78,9 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.XMLHandlerHints;
 
 /**
- * Prepares a filter for XML encoded for interoperability with another system. It will behave
- * differently depending on the compliance level chosen. A new request will have to be made and the
- * features will have to be tested again on the client side if there are any FidFilters in the
- * filter. Consider the following to understand why:
+ * Prepares a filter for XML encoded for interoperability with another system. It will behave differently depending on
+ * the compliance level chosen. A new request will have to be made and the features will have to be tested again on the
+ * client side if there are any FidFilters in the filter. Consider the following to understand why:
  *
  * <pre>
  * and {
@@ -93,8 +92,7 @@ import org.geotools.xml.XMLHandlerHints;
  * }
  * </pre>
  *
- * for strict it would throw an exception, for low it would be left alone, but for Medium it would
- * end up as:
+ * for strict it would throw an exception, for low it would be left alone, but for Medium it would end up as:
  *
  * <pre>
  * and{
@@ -105,16 +103,14 @@ import org.geotools.xml.XMLHandlerHints;
  *
  * and getFids() would return the fids in the fidFilter.
  *
- * <p>So the final filter would (this is not standard but a common implementation) return the
- * results of the and filter as well as all the features that match the fids. Which is more than the
- * original filter would accept.
+ * <p>So the final filter would (this is not standard but a common implementation) return the results of the and filter
+ * as well as all the features that match the fids. Which is more than the original filter would accept.
  *
- * <p>The XML Document writer can operate at different levels of compliance. The geotools level is
- * extremely flexible and forgiving.
+ * <p>The XML Document writer can operate at different levels of compliance. The geotools level is extremely flexible
+ * and forgiving.
  *
- * <p>All NOT(FidFilter) are changed to Filter.INCLUDE. So make sure that the filter is processed
- * again on the client with the original filter For a description of the difference Compliance
- * levels that can be used see
+ * <p>All NOT(FidFilter) are changed to Filter.INCLUDE. So make sure that the filter is processed again on the client
+ * with the original filter For a description of the difference Compliance levels that can be used see
  *
  * <ul>
  *   <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_LOW}
@@ -124,8 +120,7 @@ import org.geotools.xml.XMLHandlerHints;
  *
  * @author Jesse Eichar
  */
-@SuppressWarnings(
-        "unchecked") // gigantic mess, too much untyped structures and methods to work on them
+@SuppressWarnings("unchecked") // gigantic mess, too much untyped structures and methods to work on them
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;
@@ -290,8 +285,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createMediumLevelLogicFilter(Filter filter, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createMediumLevelLogicFilter(Filter filter, int startOfFilterStack) throws IllegalFilterException {
         Data resultingFilter;
 
         if (filter instanceof And) {
@@ -299,8 +293,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             resultingFilter = buildFilter(filter, startOfFilterStack);
             resultingFilter.fids.addAll(fids);
 
-            if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
-                requiresPostProcessing = true;
+            if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty()) requiresPostProcessing = true;
         } else if (filter instanceof Or) {
             Set fids = orFids(startOfFilterStack);
             resultingFilter = buildFilter(filter, startOfFilterStack);
@@ -512,8 +505,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createHighLevelLogicFilter(Filter filter, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createHighLevelLogicFilter(Filter filter, int startOfFilterStack) throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
             Set fids;
 
@@ -618,12 +610,10 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     /**
-     * Returns true if the filter was one where the request to the server is more general than the
-     * actual filter. See {@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_MEDIUM} and example of when
-     * this can happen.
+     * Returns true if the filter was one where the request to the server is more general than the actual filter. See
+     * {@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_MEDIUM} and example of when this can happen.
      *
-     * @return true if the filter was one where the request to the server is more general than the
-     *     actual filter.
+     * @return true if the filter was one where the request to the server is more general than the actual filter.
      */
     public boolean requiresPostProcessing() {
         return requiresPostProcessing;

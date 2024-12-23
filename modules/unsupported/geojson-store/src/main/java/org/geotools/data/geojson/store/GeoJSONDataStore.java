@@ -155,8 +155,8 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Filter filter, Transaction transaction)
+            throws IOException {
         return null;
     }
 
@@ -167,8 +167,8 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction)
+            throws IOException {
         return null;
     }
 

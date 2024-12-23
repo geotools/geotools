@@ -28,11 +28,10 @@ import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
 
 /**
- * This class acts as a ProcessFactory for any process. It handles converting related bean
- * structures into a ProcessFactory object, and can be created from a describeprocess response and
- * can be passed around as a process encompassing object for ease of use. This factory can make a
- * representation of a process and its "execute" method will actually build a request to the server
- * to execute the process and return the results.
+ * This class acts as a ProcessFactory for any process. It handles converting related bean structures into a
+ * ProcessFactory object, and can be created from a describeprocess response and can be passed around as a process
+ * encompassing object for ease of use. This factory can make a representation of a process and its "execute" method
+ * will actually build a request to the server to execute the process and return the results.
  *
  * @author GDavis
  */
@@ -60,9 +59,7 @@ public class WPSFactory extends SingleProcessFactory {
         buildValuesFromProcessDescriptionType();
     }
 
-    /**
-     * Go through the ProcessDescriptionType object tree and set this flactory's values based on it.
-     */
+    /** Go through the ProcessDescriptionType object tree and set this flactory's values based on it. */
     private void buildValuesFromProcessDescriptionType() {
         this.version = this.pdt.getProcessVersion();
         this.title = this.pdt.getTitle().getValue();
@@ -90,8 +87,7 @@ public class WPSFactory extends SingleProcessFactory {
     }
 
     @Override
-    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
-            throws IllegalArgumentException {
+    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters) throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 

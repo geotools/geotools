@@ -10,8 +10,7 @@
 package org.geotools.api.parameter;
 
 /**
- * Thrown when a required parameter was not found in a {@linkplain ParameterDescriptorGroup
- * parameter group}.
+ * Thrown when a required parameter was not found in a {@linkplain ParameterDescriptorGroup parameter group}.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -28,8 +27,8 @@ public class ParameterNotFoundException extends IllegalArgumentException {
     /**
      * Creates an exception with the specified message and parameter name.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param parameterName The name of the parameter which was required but not found.
      */
     public ParameterNotFoundException(String message, String parameterName) {

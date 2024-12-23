@@ -17,9 +17,9 @@
 package org.geotools.graph.structure;
 
 /**
- * Represents an edge in Graph. An edge is an arc in a graph which connects exactly two nodes. These
- * two nodes are referred to as the A node and the B node of the edge. The order of the A node and
- * the B node is refered to as the <B>node orientation</B> of the edge.
+ * Represents an edge in Graph. An edge is an arc in a graph which connects exactly two nodes. These two nodes are
+ * referred to as the A node and the B node of the edge. The order of the A node and the B node is refered to as the
+ * <B>node orientation</B> of the edge.
  *
  * @see Node
  * @see Graph
@@ -51,8 +51,8 @@ public interface Edge extends Graphable {
     public Node getNodeB();
 
     /**
-     * Returns one of the two nodes of an edge. If the specified node is node A, then node B is
-     * returned, and vice versa.
+     * Returns one of the two nodes of an edge. If the specified node is node A, then node B is returned, and vice
+     * versa.
      *
      * @param node The node opposite of the node to return.
      * @return Node A if node B is specified, node B if node A is specified.
@@ -65,9 +65,8 @@ public interface Edge extends Graphable {
     /**
      * Compares the node orientation of the edge with another edge.
      *
-     * @return EQUAL_NODE_ORIENTATION : both nodes are equal in the correct order.
-     *     UNEQUAL_NODE_ORIENTATION: both nodes are not equal OPPOSITE_NODE_ORIENTATION : both nodes
-     *     are equal in opposite order.
+     * @return EQUAL_NODE_ORIENTATION : both nodes are equal in the correct order. UNEQUAL_NODE_ORIENTATION: both nodes
+     *     are not equal OPPOSITE_NODE_ORIENTATION : both nodes are equal in opposite order.
      */
     public int compareNodes(Edge other);
 }

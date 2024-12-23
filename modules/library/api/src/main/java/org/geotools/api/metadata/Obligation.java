@@ -53,8 +53,8 @@ public final class Obligation extends CodeList<Obligation> {
     public static final Obligation CONDITIONAL = new Obligation("CONDITIONAL");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */

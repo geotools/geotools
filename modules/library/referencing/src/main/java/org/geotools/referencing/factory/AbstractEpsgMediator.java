@@ -91,8 +91,7 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
                 this.datasource = lookupDataSource(hints);
             } catch (FactoryException lookupFailed) {
                 throw (NullPointerException)
-                        new NullPointerException("DataSource not provided:" + lookupFailed)
-                                .initCause(lookupFailed);
+                        new NullPointerException("DataSource not provided:" + lookupFailed).initCause(lookupFailed);
             }
         }
         hints.put(Hints.EPSG_DATA_SOURCE, this.datasource);
@@ -127,8 +126,8 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
      * Gets a description of the object corresponding to a code.
      *
      * @param code Value allocated by authority.
-     * @return A description of the object, or {@code null} if the object corresponding to the
-     *     specified {@code code} has no description.
+     * @return A description of the object, or {@code null} if the object corresponding to the specified {@code code}
+     *     has no description.
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */

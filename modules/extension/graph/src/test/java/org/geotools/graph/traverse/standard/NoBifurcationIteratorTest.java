@@ -50,24 +50,22 @@ public class NoBifurcationIteratorTest {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        super.visit(element, traversal);
-                        element.setCount(getCount() - 1);
+        CountingWalker walker = new CountingWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                super.visit(element, traversal);
+                element.setCount(getCount() - 1);
 
-                        // nodes should be visited in order
-                        Assert.assertEquals(element.getID(), getCount() - 1);
-                        return (GraphTraversal.CONTINUE);
-                    }
-                };
+                // nodes should be visited in order
+                Assert.assertEquals(element.getID(), getCount() - 1);
+                return (GraphTraversal.CONTINUE);
+            }
+        };
 
         NoBifurcationIterator iterator = createIterator();
         iterator.setSource(ends[0]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -76,12 +74,12 @@ public class NoBifurcationIteratorTest {
     }
 
     /**
-     * Create a simple graph which has no bifurcations and do a traversal suspending at some
-     * intermediate node. Then continue traversal.
+     * Create a simple graph which has no bifurcations and do a traversal suspending at some intermediate node. Then
+     * continue traversal.
      *
-     * <p>Expected: After suspend: 1. Every node of with an id greater than the id of the suspending
-     * node should not be visited. After continue: 1. First node visited after continue should have
-     * id = id + suspend node + 1 2. Every node should be visited.
+     * <p>Expected: After suspend: 1. Every node of with an id greater than the id of the suspending node should not be
+     * visited. After continue: 1. First node visited after continue should have id = id + suspend node + 1 2. Every
+     * node should be visited.
      */
     @Test
     public void test_1() {
@@ -89,64 +87,60 @@ public class NoBifurcationIteratorTest {
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         final int suspend = 50;
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    private int m_mode = 0;
+        CountingWalker walker = new CountingWalker() {
+            private int m_mode = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        super.visit(element, traversal);
-                        if (m_mode == 0) {
-                            // check for stopping node
-                            if (element.getID() == suspend) {
-                                m_mode++;
-                                return (GraphTraversal.SUSPEND);
-                            }
-                        } else if (m_mode == 1) {
-                            // check first node after continue
-                            Assert.assertEquals(element.getID(), suspend + 1);
-                            m_mode++;
-                        }
-                        return (GraphTraversal.CONTINUE);
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                super.visit(element, traversal);
+                if (m_mode == 0) {
+                    // check for stopping node
+                    if (element.getID() == suspend) {
+                        m_mode++;
+                        return (GraphTraversal.SUSPEND);
                     }
-                };
+                } else if (m_mode == 1) {
+                    // check first node after continue
+                    Assert.assertEquals(element.getID(), suspend + 1);
+                    m_mode++;
+                }
+                return (GraphTraversal.CONTINUE);
+            }
+        };
 
         NoBifurcationIterator iterator = createIterator();
         iterator.setSource(ends[0]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
         // stopping node should be visited and nodes with greater id should not
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
-                    else Assert.assertFalse(component.isVisited());
-                    return (0);
-                };
+        GraphVisitor visitor = component -> {
+            if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+            else Assert.assertFalse(component.isVisited());
+            return (0);
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         traversal.traverse();
 
         // every node should now be visited
-        visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    return (0);
-                };
+        visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            return (0);
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
-     * Create a simple graph which has no bifurcations and do a kill branch at some intermediate
-     * node. Then continue the traversal.
+     * Create a simple graph which has no bifurcations and do a kill branch at some intermediate node. Then continue the
+     * traversal.
      *
-     * <p>Expected: After kill: 1. Every node of with an id greater than the id of the killing node
-     * should not be visited. After continue: 2. No more nodes should be visited.
+     * <p>Expected: After kill: 1. Every node of with an id greater than the id of the killing node should not be
+     * visited. After continue: 2. No more nodes should be visited.
      */
     @Test
     public void test_2() {
@@ -154,42 +148,39 @@ public class NoBifurcationIteratorTest {
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), 100);
         final int kill = 50;
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    private int m_mode = 0;
+        CountingWalker walker = new CountingWalker() {
+            private int m_mode = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        super.visit(element, traversal);
-                        if (m_mode == 0) {
-                            // check for stopping node
-                            if (element.getID() == kill) {
-                                m_mode++;
-                                return (GraphTraversal.KILL_BRANCH);
-                            }
-                        } else if (m_mode == 1) {
-                            // should never get here
-                            Assert.fail();
-                        }
-                        return (GraphTraversal.CONTINUE);
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                super.visit(element, traversal);
+                if (m_mode == 0) {
+                    // check for stopping node
+                    if (element.getID() == kill) {
+                        m_mode++;
+                        return (GraphTraversal.KILL_BRANCH);
                     }
-                };
+                } else if (m_mode == 1) {
+                    // should never get here
+                    Assert.fail();
+                }
+                return (GraphTraversal.CONTINUE);
+            }
+        };
 
         NoBifurcationIterator iterator = createIterator();
         iterator.setSource(ends[0]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
         // kill node should be visited and nodes with greater id should not
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
-                    else Assert.assertFalse(component.isVisited());
-                    return (0);
-                };
+        GraphVisitor visitor = component -> {
+            if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
+            else Assert.assertFalse(component.isVisited());
+            return (0);
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
 
@@ -200,8 +191,8 @@ public class NoBifurcationIteratorTest {
     /**
      * Create a simple graph with a single bifurcation and do a full traversal.
      *
-     * <p>Exepected: 1. The traversal should stop at the bifurcating node. 2. Every node after the
-     * bifurcating node should not be visited.
+     * <p>Exepected: 1. The traversal should stop at the bifurcating node. 2. Every node after the bifurcating node
+     * should not be visited.
      */
     @Test
     public void test_3() {
@@ -213,21 +204,19 @@ public class NoBifurcationIteratorTest {
         NoBifurcationIterator iterator = createIterator();
         iterator.setSource(ends[0]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() < bif) {
-                        Assert.assertTrue(component.isVisited());
-                    } else if (component.getID() >= bif) {
-                        Assert.assertFalse(component.isVisited());
-                    }
+        GraphVisitor visitor = component -> {
+            if (component.getID() < bif) {
+                Assert.assertTrue(component.isVisited());
+            } else if (component.getID() >= bif) {
+                Assert.assertFalse(component.isVisited());
+            }
 
-                    return (0);
-                };
+            return (0);
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - bif);
     }
@@ -241,28 +230,25 @@ public class NoBifurcationIteratorTest {
     public void test_4() {
         int nnodes = 100;
         GraphTestUtil.buildCircular(builder(), nnodes);
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
-                    return (Graph.FAIL_QUERY);
-                };
+        GraphVisitor visitor = component -> {
+            if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
+            return (Graph.FAIL_QUERY);
+        };
         Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         NoBifurcationIterator iterator = createIterator();
         iterator.setSource(source);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
         // ensure all nodes visisited
-        visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    return (0);
-                };
+        visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            return (0);
+        };
 
         builder().getGraph().visitNodes(visitor);
 

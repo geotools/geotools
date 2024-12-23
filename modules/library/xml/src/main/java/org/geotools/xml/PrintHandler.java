@@ -29,12 +29,10 @@ import org.xml.sax.Attributes;
  */
 public interface PrintHandler {
     /** @throws IOException */
-    public void startElement(URI namespaceURI, String localName, Attributes attributes)
-            throws IOException;
+    public void startElement(URI namespaceURI, String localName, Attributes attributes) throws IOException;
 
     /** @throws IOException */
-    public void element(URI namespaceURI, String localName, Attributes attributes)
-            throws IOException;
+    public void element(URI namespaceURI, String localName, Attributes attributes) throws IOException;
 
     /** @throws IOException */
     public void endElement(URI namespaceURI, String localName) throws IOException;

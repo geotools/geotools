@@ -24,8 +24,7 @@ import org.locationtech.jts.io.InStream;
 /**
  * Wrapper around a {@link InStream} that can read bytes and <a
  * href="https://developers.google.com/protocol-buffers/docs/encoding#varints">varints</a> and a <a
- * href="https://developers.google.com/protocol-buffers/docs/encoding#signed-integers">signed
- * varint</a>
+ * href="https://developers.google.com/protocol-buffers/docs/encoding#signed-integers">signed varint</a>
  */
 public class VarintDataInStream {
 

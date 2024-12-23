@@ -29,8 +29,7 @@ import org.locationtech.jts.geom.LineString;
 public class FilterFunction_endAngle extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "endAngle", Double.class, parameter("linestring", LineString.class));
+            new FunctionNameImpl("endAngle", Double.class, parameter("linestring", LineString.class));
 
     public FilterFunction_endAngle() {
         super(NAME);

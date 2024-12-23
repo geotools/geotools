@@ -24,8 +24,8 @@ import org.geotools.filter.text.cql2.CQLException;
 /**
  * This interface presents the methods which will be implemented by the different compiles.
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -36,8 +36,8 @@ public interface ICompiler {
     public String getSource();
 
     /**
-     * Compiles the source string to produce a {@link Filter}. The filter result must be retrieved
-     * with {@link #getFilter()}.
+     * Compiles the source string to produce a {@link Filter}. The filter result must be retrieved with
+     * {@link #getFilter()}.
      */
     public void compileFilter() throws CQLException;
 
@@ -50,8 +50,8 @@ public interface ICompiler {
     public Filter getFilter() throws CQLException;
 
     /**
-     * Compiles the source string to produce an {@link Expression}. The resultant expression must be
-     * retrieved with {@link #getExpression()}.
+     * Compiles the source string to produce an {@link Expression}. The resultant expression must be retrieved with
+     * {@link #getExpression()}.
      */
     public void compileExpression() throws CQLException;
     /**
@@ -63,8 +63,8 @@ public interface ICompiler {
     public Expression getExpression() throws CQLException;
 
     /**
-     * Compiles the source string to produce a {@link List} of {@link Filter}. The result must be
-     * retrieved with {@link #getFilterList()()}.
+     * Compiles the source string to produce a {@link List} of {@link Filter}. The result must be retrieved with
+     * {@link #getFilterList()()}.
      */
     public void compileFilterList() throws CQLException;
 

@@ -25,8 +25,8 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.appschema.util.InterpolationProperties;
 
 /**
- * A registry that stores all app schema data access instances per application. This allows mappings
- * from different data accesses to be accessed globally.
+ * A registry that stores all app schema data access instances per application. This allows mappings from different data
+ * accesses to be accessed globally.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
@@ -42,9 +42,9 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     // -----------------------------------------------------------------------------------
 
     /**
-     * Return true if a type name is mapped in one of the registered app-schema data accesses. If
-     * the type mapping has mappingName, then it will be the key that is matched in the search. If
-     * it doesn't, then it will match the targetElementName.
+     * Return true if a type name is mapped in one of the registered app-schema data accesses. If the type mapping has
+     * mappingName, then it will be the key that is matched in the search. If it doesn't, then it will match the
+     * targetElementName.
      *
      * @param featureTypeName Feature type name
      */
@@ -53,8 +53,8 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     }
 
     /**
-     * Get a feature type mapping from a registered app-schema data access. Please note that this is
-     * only possible for app-schema data access instances.
+     * Get a feature type mapping from a registered app-schema data access. Please note that this is only possible for
+     * app-schema data access instances.
      *
      * @return feature type mapping
      */
@@ -71,14 +71,14 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      *
      * @return feature source
      */
-    public static FeatureSource<? extends FeatureType, ? extends Feature> getSimpleFeatureSource(
-            Name featureTypeName) throws IOException {
+    public static FeatureSource<? extends FeatureType, ? extends Feature> getSimpleFeatureSource(Name featureTypeName)
+            throws IOException {
         return getMappingByElement(featureTypeName).getSource();
     }
 
     /**
-     * Return true if a type name is mapped in one of the registered app-schema data accesses as
-     * targetElementName, regardless whether or not mappingName exists.
+     * Return true if a type name is mapped in one of the registered app-schema data accesses as targetElementName,
+     * regardless whether or not mappingName exists.
      */
     public static boolean hasTargetElement(Name featureTypeName) throws IOException {
         return getInstance().hasAppSchemaTargetElement(featureTypeName);

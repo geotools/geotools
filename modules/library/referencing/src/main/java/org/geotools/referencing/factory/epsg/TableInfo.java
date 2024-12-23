@@ -17,9 +17,9 @@
 package org.geotools.referencing.factory.epsg;
 
 /**
- * Information about a specific table. This class also provides some utility methods for the
- * creation of SQL queries. The MS-Access dialect of SQL is assumed (it will be translated into ANSI
- * SQL later by {@link DirectEpsgFactory#adaptSQL} if needed).
+ * Information about a specific table. This class also provides some utility methods for the creation of SQL queries.
+ * The MS-Access dialect of SQL is assumed (it will be translated into ANSI SQL later by
+ * {@link DirectEpsgFactory#adaptSQL} if needed).
  *
  * @since 2.2
  * @version $Id$
@@ -48,11 +48,7 @@ final class TableInfo {
     public final String[] typeNames;
 
     /** Stores information about a specific table. */
-    TableInfo(
-            final Class<?> type,
-            final String table,
-            final String codeColumn,
-            final String nameColumn) {
+    TableInfo(final Class<?> type, final String table, final String codeColumn, final String nameColumn) {
         this(type, table, codeColumn, nameColumn, null, null, null);
     }
 
@@ -75,20 +71,19 @@ final class TableInfo {
     }
 
     /**
-     * Checks {@link Class#isAssignableFrom} both ways. It may seems strange but try to catch the
-     * following use cases:
+     * Checks {@link Class#isAssignableFrom} both ways. It may seems strange but try to catch the following use cases:
      *
      * <ul>
      *   <li>
      *       <p>{@code table.type.isAssignableFrom(kind)}<br>
-     *       is for the case where a table is for {@code CoordinateReferenceSystem} while the user
-     *       type is some subtype like {@code GeographicCRS}. The {@code GeographicCRS} need to be
-     *       queried into the {@code CoordinateReferenceSystem} table. An additional filter will be
-     *       applied inside the {@link AuthorityCodes} class implementation.
+     *       is for the case where a table is for {@code CoordinateReferenceSystem} while the user type is some subtype
+     *       like {@code GeographicCRS}. The {@code GeographicCRS} need to be queried into the
+     *       {@code CoordinateReferenceSystem} table. An additional filter will be applied inside the
+     *       {@link AuthorityCodes} class implementation.
      *   <li>
      *       <p>{@code kind.isAssignableFrom(table.type)}<br>
-     *       is for the case where the user type is {@code IdentifiedObject} or {@code Object}, in
-     *       which case we basically want to iterate through every tables.
+     *       is for the case where the user type is {@code IdentifiedObject} or {@code Object}, in which case we
+     *       basically want to iterate through every tables.
      * </ul>
      */
     public boolean isTypeOf(final Class<?> kind) {

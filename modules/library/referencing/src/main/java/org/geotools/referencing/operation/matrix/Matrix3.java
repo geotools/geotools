@@ -67,8 +67,8 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /**
-     * Creates a new matrix initialized to the same value than the specified one. The specified
-     * matrix size must be {@value #SIZE}&times;{@value #SIZE}.
+     * Creates a new matrix initialized to the same value than the specified one. The specified matrix size must be
+     * {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix3(final Matrix matrix) {
         mat = new DMatrix3x3();
@@ -81,40 +81,31 @@ public class Matrix3 implements XMatrix, Serializable {
             }
         }
     }
-    /**
-     * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDF3.
-     */
+    /** Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDF3. */
     private DMatrix3x3 internal(Matrix matrix) {
         if (matrix instanceof Matrix3) {
             return ((Matrix3) matrix).mat;
         } else {
-            DMatrix3x3 a =
-                    new DMatrix3x3(
-                            matrix.getElement(0, 0),
-                            matrix.getElement(0, 1),
-                            matrix.getElement(0, 2),
-                            matrix.getElement(1, 0),
-                            matrix.getElement(1, 1),
-                            matrix.getElement(1, 2),
-                            matrix.getElement(2, 0),
-                            matrix.getElement(2, 1),
-                            matrix.getElement(2, 2));
+            DMatrix3x3 a = new DMatrix3x3(
+                    matrix.getElement(0, 0),
+                    matrix.getElement(0, 1),
+                    matrix.getElement(0, 2),
+                    matrix.getElement(1, 0),
+                    matrix.getElement(1, 1),
+                    matrix.getElement(1, 2),
+                    matrix.getElement(2, 0),
+                    matrix.getElement(2, 1),
+                    matrix.getElement(2, 2));
             return a;
         }
     }
-    /**
-     * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of rows in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumRow() {
         return SIZE;
     }
 
-    /**
-     * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumCol() {
         return SIZE;
@@ -241,15 +232,14 @@ public class Matrix3 implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
         for (int i = 0; i < values.length; i++) {
             mat.set(i, column, values[i]);
@@ -259,15 +249,14 @@ public class Matrix3 implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
 
         for (int i = 0; i < values.length; i++) {
@@ -372,12 +361,10 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /**
-     * Returns an affine transform for this matrix. This is a convenience method for
-     * interoperability with Java2D.
+     * Returns an affine transform for this matrix. This is a convenience method for interoperability with Java2D.
      *
      * @return The affine transform for this matrix.
-     * @throws IllegalStateException if this matrix is not 3&times;3, or if the last row is not
-     *     {@code [0 0 1]}.
+     * @throws IllegalStateException if this matrix is not 3&times;3, or if the last row is not {@code [0 0 1]}.
      */
     public final AffineTransform toAffineTransform2D() throws IllegalStateException {
         if (isAffine()) {
@@ -393,8 +380,8 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /**
-     * Returns a string representation of this matrix. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this matrix. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes only.
      */
     @Override
     public String toString() {

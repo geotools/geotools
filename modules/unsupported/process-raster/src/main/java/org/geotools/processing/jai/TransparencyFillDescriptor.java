@@ -47,8 +47,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * The resource strings that provide the general documentation and specify the parameter list
-     * for a TransparencyFill operation.
+     * The resource strings that provide the general documentation and specify the parameter list for a TransparencyFill
+     * operation.
      */
     private static final String[][] resources = {
         {"GlobalName", "TransparencyFill"},
@@ -75,8 +75,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * Returns an array of <code>PropertyGenerators</code> implementing property inheritance for the
-     * "TransparencyFill" operation.
+     * Returns an array of <code>PropertyGenerators</code> implementing property inheritance for the "TransparencyFill"
+     * operation.
      *
      * @return An array of property generators.
      */
@@ -88,13 +88,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     public static RenderedOp create(
-            RenderedImage source0,
-            FillType type,
-            RenderingHints hints,
-            Number noData,
-            Integer width) {
-        ParameterBlockJAI pb =
-                new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
+            RenderedImage source0, FillType type, RenderingHints hints, Number noData, Integer width) {
+        ParameterBlockJAI pb = new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);

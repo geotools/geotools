@@ -60,9 +60,7 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroup");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts = {
-            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-        };
+        SortBy[] sorts = {ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)};
         query.setSortBy(sorts);
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
@@ -70,8 +68,7 @@ public class GroupCandidateSelectionProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new GroupCandidateSelectionProcess()
-                        .execute(collection, "MIN", "numericVal", props);
+                new GroupCandidateSelectionProcess().execute(collection, "MIN", "numericVal", props);
         try (FeatureIterator it = features.features()) {
             List<Integer> numericResults = new ArrayList<>(6);
             while (it.hasNext()) {
@@ -91,9 +88,7 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroup");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts = {
-            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-        };
+        SortBy[] sorts = {ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)};
         query.setSortBy(sorts);
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
@@ -101,8 +96,7 @@ public class GroupCandidateSelectionProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new GroupCandidateSelectionProcess()
-                        .execute(collection, "MAX", "numericVal", props);
+                new GroupCandidateSelectionProcess().execute(collection, "MAX", "numericVal", props);
         try (FeatureIterator it = features.features()) {
             List<Integer> numericResults = new ArrayList<>(6);
             while (it.hasNext()) {
@@ -122,9 +116,7 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroupWithNullValues");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts = {
-            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-        };
+        SortBy[] sorts = {ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)};
         query.setSortBy(sorts);
         SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
@@ -132,8 +124,7 @@ public class GroupCandidateSelectionProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new GroupCandidateSelectionProcess()
-                        .execute(collection, "MIN", "numericVal", props);
+                new GroupCandidateSelectionProcess().execute(collection, "MIN", "numericVal", props);
         try (FeatureIterator it = features.features()) {
             List<Integer> numericResults = new ArrayList<>(6);
             while (it.hasNext()) {
@@ -153,9 +144,7 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroupWithGroupAllNull");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts = {
-            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-        };
+        SortBy[] sorts = {ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)};
         query.setSortBy(sorts);
         SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
@@ -163,8 +152,7 @@ public class GroupCandidateSelectionProcessTest {
         List<String> props = Arrays.asList("group", "group2");
         PropertyName pn = ff.property("numericVal");
         FeatureCollection features =
-                new GroupCandidateSelectionProcess()
-                        .execute(collection, "MIN", "numericVal", props);
+                new GroupCandidateSelectionProcess().execute(collection, "MIN", "numericVal", props);
         try (FeatureIterator it = features.features()) {
             List<Integer> numericResults = new ArrayList<>(6);
             while (it.hasNext()) {

@@ -26,8 +26,8 @@ public final class XSUtils {
     private XSUtils() {}
 
     /**
-     * Returns a configured Calendar object in base to System properties configurations, for use
-     * with temporal types like Date, DateTime and Time.
+     * Returns a configured Calendar object in base to System properties configurations, for use with temporal types
+     * like Date, DateTime and Time.
      */
     public static Calendar getConfiguredCalendar() {
         Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);

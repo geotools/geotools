@@ -62,9 +62,7 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
         ENVELOPE_PARTICLE.setMaxOccurs(-1);
         try {
             ENVELOPE_PARTICLE.setContent(
-                    GML.getInstance()
-                            .getSchema()
-                            .resolveElementDeclaration(GML.Envelope.getLocalPart()));
+                    GML.getInstance().getSchema().resolveElementDeclaration(GML.Envelope.getLocalPart()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,8 +90,7 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         BBOX box = (BBOX) object;
 
         List<Object[]> properties = new ArrayList<>();

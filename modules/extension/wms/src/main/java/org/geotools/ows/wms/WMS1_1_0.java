@@ -55,8 +55,8 @@ public class WMS1_1_0 extends WMS1_0_0 {
     }
 
     /**
-     * @see WMS1_0_0#createGetFeatureInfoRequest(java.net.URL,
-     *     org.geotools.ows.wms.request.GetMapRequest, java.util.Set, java.lang.String[])
+     * @see WMS1_0_0#createGetFeatureInfoRequest(java.net.URL, org.geotools.ows.wms.request.GetMapRequest,
+     *     java.util.Set, java.lang.String[])
      */
     @Override
     public org.geotools.ows.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest(
@@ -66,8 +66,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
 
     /** @see WMS1_0_0#createDescribeLayerRequest(java.net.URL) */
     @Override
-    public DescribeLayerRequest createDescribeLayerRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public DescribeLayerRequest createDescribeLayerRequest(URL onlineResource) throws UnsupportedOperationException {
         return new InternalDescribeLayerRequest(onlineResource, null);
     }
 
@@ -146,8 +145,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
     public static class GetFeatureInfoRequest extends WMS1_0_0.GetFeatureInfoRequest {
 
         /** */
-        public GetFeatureInfoRequest(
-                URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
+        public GetFeatureInfoRequest(URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);
         }
 
@@ -180,8 +178,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new DescribeLayerResponse(httpResponse, hints);
         }
     }
@@ -204,8 +201,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetLegendGraphicResponse(httpResponse);
         }
     }

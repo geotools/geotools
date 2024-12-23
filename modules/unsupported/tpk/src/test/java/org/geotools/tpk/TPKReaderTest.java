@@ -39,10 +39,9 @@ public class TPKReaderTest {
         TPKReader reader = new TPKReader(getClass().getResource("sample_v2.tpkx"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(200, 200)),
-                        new ReferencedEnvelope(-180, 180.0, -85.0, 85.0, TPKReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(200, 200)),
+                new ReferencedEnvelope(-180, 180.0, -85.0, 85.0, TPKReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -59,10 +58,9 @@ public class TPKReaderTest {
         TPKReader reader = new TPKReader(getClass().getResource("sample_v2.tpkx"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(500, 500)),
-                        new ReferencedEnvelope(-180, 180.0, -85.0, 85.0, TPKReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(500, 500)),
+                new ReferencedEnvelope(-180, 180.0, -85.0, 85.0, TPKReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -79,10 +77,8 @@ public class TPKReaderTest {
         TPKReader reader = new TPKReader(getClass().getResource("sample_v2.tpkx"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(500, 500)),
-                        new ReferencedEnvelope(0, 45, 0, 45, TPKReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(500, 500)), new ReferencedEnvelope(0, 45, 0, 45, TPKReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();

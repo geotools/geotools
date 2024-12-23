@@ -40,13 +40,12 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * This {@link CoverageProcessingNode} has been built for taking care of the band select operation
- * within the context of applying SLD 1.0.
+ * This {@link CoverageProcessingNode} has been built for taking care of the band select operation within the context of
+ * applying SLD 1.0.
  *
  * @author Simone Giannecchini, GeoSolutions.
  */
-class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
-        implements CoverageProcessingNode {
+class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter implements CoverageProcessingNode {
 
     /*
      * (non-Javadoc)
@@ -85,8 +84,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                 1,
                 hints,
                 SimpleInternationalString.wrap("BandSelectionNode"),
-                SimpleInternationalString.wrap(
-                        "Node which applies a BandSelection following SLD 1.0 spec."));
+                SimpleInternationalString.wrap("Node which applies a BandSelection following SLD 1.0 spec."));
     }
 
     /*
@@ -108,7 +106,8 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
         final List<CoverageProcessingNode> sources = this.getSources();
         if (sources != null && !sources.isEmpty()) {
             final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
-            GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
+            GridCoverageRendererUtilities.ensureSourceNotNull(
+                    source, this.getName().toString());
             GridCoverage2D output = null;
             if (bandIndex != -1) {
                 // /////////////////////////////////////////////////////////////////////
@@ -125,8 +124,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                 final int numSampleDimensions = source.getNumSampleDimensions();
                 if (bandIndex < 1 || bandIndex > numSampleDimensions)
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
+                            MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
 
                 // //
                 //
@@ -161,20 +159,16 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                     final ImageLayout layout = new ImageLayout();
                     final RenderedImage sourceRaster = source.getRenderedImage();
                     final SampleModel oldSM = sourceRaster.getSampleModel();
-                    final ColorModel cm =
-                            new ComponentColorModel(
-                                    ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                                    false,
-                                    false,
-                                    Transparency.OPAQUE,
-                                    oldSM.getDataType());
+                    final ColorModel cm = new ComponentColorModel(
+                            ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                            false,
+                            false,
+                            Transparency.OPAQUE,
+                            oldSM.getDataType());
                     layout.setColorModel(cm);
-                    layout.setSampleModel(
-                            cm.createCompatibleSampleModel(oldSM.getWidth(), oldSM.getHeight()));
+                    layout.setSampleModel(cm.createCompatibleSampleModel(oldSM.getWidth(), oldSM.getHeight()));
                     hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-                    output =
-                            (GridCoverage2D)
-                                    new SelectSampleDimension().doOperation(parameters, hints);
+                    output = (GridCoverage2D) new SelectSampleDimension().doOperation(parameters, hints);
                 }
 
                 // postcondition
@@ -206,10 +200,8 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                 bandIndex = sct.getChannelName().evaluate(null, Integer.class);
             } catch (NumberFormatException e) {
                 // something bad happened
-                final IllegalArgumentException iee =
-                        new IllegalArgumentException(
-                                MessageFormat.format(
-                                        ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
+                final IllegalArgumentException iee = new IllegalArgumentException(
+                        MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
                 iee.initCause(e);
                 throw iee;
             }

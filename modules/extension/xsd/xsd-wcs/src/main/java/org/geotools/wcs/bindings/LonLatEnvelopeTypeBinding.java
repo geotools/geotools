@@ -105,13 +105,9 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
             properties.put(CoordinateReferenceSystem.NAME_KEY, "WGS84");
             properties.put(CoordinateReferenceSystem.DOMAIN_OF_VALIDITY_KEY, ExtentImpl.WORLD);
 
-            CoordinateReferenceSystem crs =
-                    new DefaultCompoundCRS(
-                            properties,
-                            new CoordinateReferenceSystem[] {
-                                envelope.getCoordinateReferenceSystem(),
-                                DefaultTemporalCRS.TRUNCATED_JULIAN
-                            });
+            CoordinateReferenceSystem crs = new DefaultCompoundCRS(properties, new CoordinateReferenceSystem[] {
+                envelope.getCoordinateReferenceSystem(), DefaultTemporalCRS.TRUNCATED_JULIAN
+            });
 
             double[] minCP = new double[envelope.getDimension() + 1];
             double[] maxCP = new double[envelope.getDimension() + 1];
@@ -121,15 +117,13 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
                 maxCP[i] = envelope.getUpperCorner().getOrdinate(i);
             }
 
-            DefaultTemporalCRS TCRS =
-                    (DefaultTemporalCRS) ((CompoundCRS) crs).getCoordinateReferenceSystems().get(1);
+            DefaultTemporalCRS TCRS = (DefaultTemporalCRS)
+                    ((CompoundCRS) crs).getCoordinateReferenceSystems().get(1);
 
             Node timePositionNodeBegin = timePositions.get(0);
             Node timePositionNodeEnd = timePositions.get(1);
-            minCP[minCP.length - 1] =
-                    TCRS.toValue(((DefaultPosition) timePositionNodeBegin.getValue()).getDate());
-            maxCP[maxCP.length - 1] =
-                    TCRS.toValue(((DefaultPosition) timePositionNodeEnd.getValue()).getDate());
+            minCP[minCP.length - 1] = TCRS.toValue(((DefaultPosition) timePositionNodeBegin.getValue()).getDate());
+            maxCP[maxCP.length - 1] = TCRS.toValue(((DefaultPosition) timePositionNodeEnd.getValue()).getDate());
 
             GeneralPosition minDP = new GeneralPosition(minCP);
             minDP.setCoordinateReferenceSystem(crs);
@@ -195,18 +189,10 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
             if (temporalCRS != null) {
                 List<Position> envelopePositions = new LinkedList<>();
 
-                Position beginning =
-                        new DefaultPosition(
-                                ((DefaultTemporalCRS) temporalCRS)
-                                        .toDate(
-                                                envelope.getLowerCorner()
-                                                        .getOrdinate(envelope.getDimension() - 1)));
-                Position ending =
-                        new DefaultPosition(
-                                ((DefaultTemporalCRS) temporalCRS)
-                                        .toDate(
-                                                envelope.getUpperCorner()
-                                                        .getOrdinate(envelope.getDimension() - 1)));
+                Position beginning = new DefaultPosition(((DefaultTemporalCRS) temporalCRS)
+                        .toDate(envelope.getLowerCorner().getOrdinate(envelope.getDimension() - 1)));
+                Position ending = new DefaultPosition(((DefaultTemporalCRS) temporalCRS)
+                        .toDate(envelope.getUpperCorner().getOrdinate(envelope.getDimension() - 1)));
 
                 envelopePositions.add(beginning);
                 envelopePositions.add(ending);

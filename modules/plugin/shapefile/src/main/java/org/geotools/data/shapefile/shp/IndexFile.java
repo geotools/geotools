@@ -32,18 +32,16 @@ import org.geotools.util.NIOUtilities;
 
 /**
  * IndexFile parser for .shx files.<br>
- * For now, the creation of index files is done in the ShapefileWriter. But this can be used to
- * access the index.<br>
+ * For now, the creation of index files is done in the ShapefileWriter. But this can be used to access the index.<br>
  * For details on the index file, see <br>
- * <a href="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf"><b>"ESRI(r) Shapefile - A
- * Technical Description"</b><br>
+ * <a href="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf"><b>"ESRI(r) Shapefile - A Technical
+ * Description"</b><br>
  * * <i>'An ESRI White Paper . May 1997'</i></a>
  *
  * @author Ian Schneider
  */
 public class IndexFile implements FileReader, AutoCloseable {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexFile.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(IndexFile.class);
 
     private static final int RECS_IN_BUFFER = 2000;
 
@@ -76,8 +74,7 @@ public class IndexFile implements FileReader, AutoCloseable {
                 this.channel = (FileChannel) byteChannel;
                 if (useMemoryMappedBuffer) {
                     LOGGER.finest("Memory mapping file...");
-                    this.buf =
-                            this.channel.map(FileChannel.MapMode.READ_ONLY, 0, this.channel.size());
+                    this.buf = this.channel.map(FileChannel.MapMode.READ_ONLY, 0, this.channel.size());
 
                     this.channelOffset = 0;
                 } else {
@@ -156,9 +153,7 @@ public class IndexFile implements FileReader, AutoCloseable {
         check();
         int pos = 100 + index * 8;
         if (!this.useMemoryMappedBuffer) {
-            if (pos - this.channelOffset < 0
-                    || this.channelOffset + buf.limit() <= pos
-                    || this.lastIndex == -1) {
+            if (pos - this.channelOffset < 0 || this.channelOffset + buf.limit() <= pos || this.lastIndex == -1) {
                 LOGGER.finest("Filling buffer...");
                 this.channelOffset = pos;
                 this.channel.position(pos);

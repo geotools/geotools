@@ -33,16 +33,12 @@ public class FilterFunction_isWithinDistance3DTest {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
-        Feature f =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))},
-                        null);
+        Feature f = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))}, null);
         Literal literal_geom = ff.literal(gf.createPoint(new Coordinate(10, 30, 40)));
         Literal literal_num = ff.literal(15.0);
 
-        Function exp =
-                ff.function("isWithinDistance3D", ff.property("geom"), literal_geom, literal_num);
+        Function exp = ff.function("isWithinDistance3D", ff.property("geom"), literal_geom, literal_num);
         Object value = exp.evaluate(f);
         Assert.assertTrue(value instanceof Boolean);
         Assert.assertTrue((Boolean) value);

@@ -12,9 +12,8 @@ package org.geotools.api.annotation;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
 /**
- * Obligation of the element or entity. The enum values declared here are an exact copy of the code
- * list elements declared in the {@link org.geotools.api.metadata.Obligation} code list from the
- * metadata package.
+ * Obligation of the element or entity. The enum values declared here are an exact copy of the code list elements
+ * declared in the {@link org.geotools.api.metadata.Obligation} code list from the metadata package.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
@@ -35,8 +34,8 @@ public enum Obligation {
     MANDATORY,
 
     /**
-     * The element should always be {@code null}. This obligation code is used only when a
-     * subinterface overrides an association and force it to a {@code null} value. An example is
+     * The element should always be {@code null}. This obligation code is used only when a subinterface overrides an
+     * association and force it to a {@code null} value. An example is
      * {@link org.geotools.api.referencing.datum.TemporalDatum#getAnchorPoint}.
      */
     FORBIDDEN

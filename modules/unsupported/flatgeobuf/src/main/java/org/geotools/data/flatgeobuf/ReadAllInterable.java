@@ -70,11 +70,7 @@ final class ReadAllInterable implements Iterable<SimpleFeature> {
     private final SimpleFeatureBuilder fb;
     private final int startIndex;
 
-    ReadAllInterable(
-            HeaderMeta headerMeta,
-            LittleEndianDataInputStream data,
-            SimpleFeatureBuilder fb,
-            int startIndex) {
+    ReadAllInterable(HeaderMeta headerMeta, LittleEndianDataInputStream data, SimpleFeatureBuilder fb, int startIndex) {
         this.headerMeta = headerMeta;
         this.data = data;
         this.fb = fb;

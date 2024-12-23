@@ -105,8 +105,7 @@ final class DurationUtil {
     /**
      * Extract from duration string the values of hours, minutes and seconds
      *
-     * @return int[3] with hours, minutes and seconds if some value are not present -1 will be
-     *     returned.
+     * @return int[3] with hours, minutes and seconds if some value are not present -1 will be returned.
      */
     private static int[] extractDurationTime(final String duration) {
         for (int i = 0; i < DURATION_TIME.length; i++) {
@@ -162,8 +161,7 @@ final class DurationUtil {
      * @param duration a String formated like "P##Y##M##D"
      * @return a Date
      */
-    public static Date addDurationToDate(final Date date, final String duration)
-            throws NumberFormatException {
+    public static Date addDurationToDate(final Date date, final String duration) throws NumberFormatException {
         final int positive = 1;
 
         Date computedDate = null;
@@ -182,8 +180,7 @@ final class DurationUtil {
      * @param duration a String with format: PddYddMddD
      * @return Date a computed date. if duration have not got duration "P" return date value.
      */
-    private static Date computeDateFromDurationDate(
-            final Date date, final String duration, int sign) {
+    private static Date computeDateFromDurationDate(final Date date, final String duration, int sign) {
 
         int[] durationDate = extractDurationDate(duration);
 
@@ -237,8 +234,7 @@ final class DurationUtil {
      * @param sign 1 or -1 (add or subract)
      * @return Date a computed date. if duration have not got duration "T" return date value.
      */
-    private static Date computeDateFromDurationTime(
-            final Date date, final String duration, final int sign) {
+    private static Date computeDateFromDurationTime(final Date date, final String duration, final int sign) {
         DURATION_TIME = extractDurationTime(duration);
 
         if (isNull(DURATION_TIME)) {

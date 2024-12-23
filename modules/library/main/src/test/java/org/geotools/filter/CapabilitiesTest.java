@@ -73,10 +73,8 @@ public class CapabilitiesTest {
         capabilities2.addAll(capabilities);
         capabilities2.addType(And.class);
 
-        Assert.assertTrue(
-                capabilities2.getContents().getScalarCapabilities().hasLogicalOperators());
-        Assert.assertFalse(
-                capabilities.getContents().getScalarCapabilities().hasLogicalOperators());
+        Assert.assertTrue(capabilities2.getContents().getScalarCapabilities().hasLogicalOperators());
+        Assert.assertFalse(capabilities.getContents().getScalarCapabilities().hasLogicalOperators());
     }
 
     @Test
@@ -101,15 +99,13 @@ public class CapabilitiesTest {
         capabilities.addName("NotEqualTo");
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Filter filter =
-                ff.and(
-                        Arrays.asList(
-                                ff.greater(ff.property("a"), ff.literal(2)),
-                                ff.greaterOrEqual(ff.property("a"), ff.literal(2)),
-                                ff.less(ff.property("a"), ff.literal(2)),
-                                ff.lessOrEqual(ff.property("a"), ff.literal(2)),
-                                ff.equals(ff.property("a"), ff.literal(2)),
-                                ff.notEqual(ff.property("a"), ff.literal(2))));
+        Filter filter = ff.and(Arrays.asList(
+                ff.greater(ff.property("a"), ff.literal(2)),
+                ff.greaterOrEqual(ff.property("a"), ff.literal(2)),
+                ff.less(ff.property("a"), ff.literal(2)),
+                ff.lessOrEqual(ff.property("a"), ff.literal(2)),
+                ff.equals(ff.property("a"), ff.literal(2)),
+                ff.notEqual(ff.property("a"), ff.literal(2))));
         Assert.assertTrue("supports", capabilities.fullySupports(filter));
     }
 

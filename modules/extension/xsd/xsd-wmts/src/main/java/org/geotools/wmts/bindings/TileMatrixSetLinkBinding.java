@@ -102,8 +102,7 @@ public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
         TileMatrixSetLinkType link = factory.createTileMatrixSetLinkType();
 
         link.setTileMatrixSet((String) node.getChildValue("TileMatrixSet"));
-        link.setTileMatrixSetLimits(
-                (TileMatrixSetLimitsType) node.getChildValue("TileMatrixSetLimits"));
+        link.setTileMatrixSetLimits((TileMatrixSetLimitsType) node.getChildValue("TileMatrixSetLimits"));
         return link;
     }
 
@@ -123,8 +122,7 @@ public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
 
         if (matrixLink.getTileMatrixSetLimits() != null) {
 
-            TileMatrixSetLimitsBinding tileMatrixSetLimitsBinding =
-                    new TileMatrixSetLimitsBinding(factory);
+            TileMatrixSetLimitsBinding tileMatrixSetLimitsBinding = new TileMatrixSetLimitsBinding(factory);
             e = tileMatrixSetLimitsBinding.encode(matrixLink.getTileMatrixSetLimits(), document, e);
         }
 

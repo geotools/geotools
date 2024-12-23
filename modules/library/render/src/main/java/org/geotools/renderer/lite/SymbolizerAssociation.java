@@ -23,13 +23,11 @@ import org.geotools.util.factory.Hints;
 /**
  * Cache of context information associated with the Symbolizer.
  *
- * <p>Examples of context information include the transformations employed at different stages of
- * the rendering pileline.
+ * <p>Examples of context information include the transformations employed at different stages of the rendering
+ * pileline.
  */
 class SymbolizerAssociation {
-    /**
-     * Full transform from data {@link #crs} through to viewport CRS followed through to the screen.
-     */
+    /** Full transform from data {@link #crs} through to viewport CRS followed through to the screen. */
     public MathTransform xform = null;
 
     /** Initial transform between data {@link #crs} and viewport CRS. */
@@ -38,9 +36,8 @@ class SymbolizerAssociation {
     /**
      * The source CooridinateReferenceSystem used for the individual Geometries.
      *
-     * <p>Although we request Geometry information with {@link Hints#FEATURE_2D} the geometry may
-     * still be provided with with 3D ordinates. In this case we will need to post process the
-     * information into 2D for rendering.
+     * <p>Although we request Geometry information with {@link Hints#FEATURE_2D} the geometry may still be provided with
+     * with 3D ordinates. In this case we will need to post process the information into 2D for rendering.
      */
     public CoordinateReferenceSystem crs = null;
 
@@ -48,8 +45,7 @@ class SymbolizerAssociation {
     public MathTransform axform;
 
     /**
-     * The transformation used for forward projections during rendering, can have been amended by
-     * the projection handler
+     * The transformation used for forward projections during rendering, can have been amended by the projection handler
      */
     public MathTransform rxform;
 }

@@ -49,8 +49,7 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
         return new LoggingConnectionPoolingHTTPClient(client);
     }
 
-    static class LoggingConnectionPoolingHTTPClient extends LoggingHTTPClient
-            implements HTTPConnectionPooling {
+    static class LoggingConnectionPoolingHTTPClient extends LoggingHTTPClient implements HTTPConnectionPooling {
 
         public LoggingConnectionPoolingHTTPClient(HTTPClient delegate) {
             super(delegate);

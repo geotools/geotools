@@ -21,10 +21,9 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * The TileIdentifier implementation for the OpenStreetMap family. This identifier follows the grid
- * logic of similar implementations. Please refer to the <a
- * href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">OpenStreetMap Wiki</a> for the
- * exact description.
+ * The TileIdentifier implementation for the OpenStreetMap family. This identifier follows the grid logic of similar
+ * implementations. Please refer to the <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">OpenStreetMap
+ * Wiki</a> for the exact description.
  *
  * @author Ugo Taddei
  * @since 12

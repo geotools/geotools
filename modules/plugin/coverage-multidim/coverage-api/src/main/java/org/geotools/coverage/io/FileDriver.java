@@ -38,8 +38,7 @@ public interface FileDriver extends Driver {
      */
     public List<String> getFileExtensions();
 
-    public boolean canProcess(
-            DriverCapabilities operation, URL url, Map<String, Serializable> params);
+    public boolean canProcess(DriverCapabilities operation, URL url, Map<String, Serializable> params);
 
     public CoverageAccess process(
             DriverCapabilities operation,

@@ -52,9 +52,7 @@ public class WFSDataStoreFactoryTest {
     public void setUp() throws Exception {
         dsf = new WFSDataStoreFactory();
         params = new HashMap<>();
-        Files.copy(
-                TestData.openStream(dsf, "tinyows/GetCapabilities.xml"),
-                Paths.get("GetCapabilities.xml"));
+        Files.copy(TestData.openStream(dsf, "tinyows/GetCapabilities.xml"), Paths.get("GetCapabilities.xml"));
     }
 
     @After
@@ -69,9 +67,7 @@ public class WFSDataStoreFactoryTest {
         // URL not set
         assertFalse(dsf.canProcess(params));
 
-        params.put(
-                WFSDataStoreFactory.URL.key,
-                "http://someserver.example.org/wfs?request=GetCapabilities");
+        params.put(WFSDataStoreFactory.URL.key, "http://someserver.example.org/wfs?request=GetCapabilities");
         assertTrue(dsf.canProcess(params));
 
         params.put(WFSDataStoreFactory.USERNAME.key, "groldan");
@@ -110,11 +106,11 @@ public class WFSDataStoreFactoryTest {
     }
 
     /**
-     * @param capabilitiesFile the name of the GetCapabilities document under {@code
-     *     /org/geotools/data/wfs/impl/test-data}
+     * @param capabilitiesFile the name of the GetCapabilities document under
+     *     {@code /org/geotools/data/wfs/impl/test-data}
      */
-    private WFSDataStore testCreateDataStore(
-            final String capabilitiesFile, final Version expectedVersion) throws IOException {
+    private WFSDataStore testCreateDataStore(final String capabilitiesFile, final Version expectedVersion)
+            throws IOException {
 
         final URL capabilitiesUrl = getClass().getResource("test-data/" + capabilitiesFile);
         if (capabilitiesUrl == null) {
@@ -144,10 +140,7 @@ public class WFSDataStoreFactoryTest {
         }
     }
 
-    /**
-     * Test for GZIP settings, backwards compatibility: If no gzip settings is present, client has
-     * to enable gzip
-     */
+    /** Test for GZIP settings, backwards compatibility: If no gzip settings is present, client has to enable gzip */
     @Test
     public void testHttpClientGzipEncodingDefault() throws IOException {
         Boolean tryGzip = null;
@@ -171,13 +164,11 @@ public class WFSDataStoreFactoryTest {
         assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
     }
 
-    private void assertExpectForGzipParam(boolean expectGzipOnClient, Boolean tryGzip)
-            throws IOException {
+    private void assertExpectForGzipParam(boolean expectGzipOnClient, Boolean tryGzip) throws IOException {
         if (tryGzip != null) {
             params.put(WFSDataStoreFactory.TRY_GZIP.key, tryGzip);
         }
-        final URL capabilitiesUrl =
-                getClass().getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
+        final URL capabilitiesUrl = getClass().getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
         params.put(WFSDataStoreFactory.URL.key, capabilitiesUrl);
         params.put(WFSDataStoreFactory.TIMEOUT.key, 1);
         WFSDataStore store = dsf.createDataStore(params);
@@ -190,18 +181,14 @@ public class WFSDataStoreFactoryTest {
     public void testHttpPoolingTrueWithHttp() throws IOException {
         WFSDataStoreFactory factory = new WFSDataStoreFactory();
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
-        params.put(
-                WFSDataStoreFactory.URL.key,
-                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        params.put(WFSDataStoreFactory.URL.key, new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
         assertTrue(factory.getHttpClient(params) instanceof MultithreadedHttpClient);
     }
 
     @Test
     public void testHttpPoolingFalseWithHttp() throws IOException {
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, false);
-        params.put(
-                WFSDataStoreFactory.URL.key,
-                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        params.put(WFSDataStoreFactory.URL.key, new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
         assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
     }
 

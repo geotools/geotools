@@ -33,8 +33,7 @@ import org.geotools.api.util.InternationalString;
  *
  * <h3>Binding</h3>
  *
- * The {@link #getBinding()} method returns the java class of which the value of the property is an
- * instance of.
+ * The {@link #getBinding()} method returns the java class of which the value of the property is an instance of.
  *
  * <pre>
  *   Property property = ...;
@@ -45,8 +44,8 @@ import org.geotools.api.util.InternationalString;
  *
  * <h3>Restrictions</h3>
  *
- * The {@link #getRestrictions()} method returns a set of {@link Filter} objects which define
- * additional restrictions on the value of the property.
+ * The {@link #getRestrictions()} method returns a set of {@link Filter} objects which define additional restrictions on
+ * the value of the property.
  *
  * <pre>
  *   Property property = ...;
@@ -59,24 +58,23 @@ import org.geotools.api.util.InternationalString;
  *
  * <h3>Inheritance</h3>
  *
- * A property type may extend from another property type. When this occurs any restrictions defined
- * by the parent type are inherited by the child type. The binding declared by the super type may or
- * may not be a super class of the binding declared by the child type.
+ * A property type may extend from another property type. When this occurs any restrictions defined by the parent type
+ * are inherited by the child type. The binding declared by the super type may or may not be a super class of the
+ * binding declared by the child type.
  *
  * <p>
  *
  * <h3>Abstract Types</h3>
  *
- * A property type may be abstract similar to how a java class can be abstract. Such property types
- * are usually not referenced directly by a descriptor, but usually are the parent type of a
- * non-abstract property type.
+ * A property type may be abstract similar to how a java class can be abstract. Such property types are usually not
+ * referenced directly by a descriptor, but usually are the parent type of a non-abstract property type.
  *
  * <p>
  *
  * <h3>Example</h3>
  *
- * Property, PropertyDescriptor, and PropertyType are very similar to concepts encountered in xml
- * schema. Consider the following xml schema:
+ * Property, PropertyDescriptor, and PropertyType are very similar to concepts encountered in xml schema. Consider the
+ * following xml schema:
  *
  * <pre>
  *    &lt; simpleType name="number"/>
@@ -89,8 +87,8 @@ import org.geotools.api.util.InternationalString;
  *  </pre>
  *
  * <br>
- * In the above, "number", "integer", and "myComplexType" all map to PropertyType. While "foo" maps
- * to a PropertyDescriptor. Consider a complex attribute which is of type "myComplexType:
+ * In the above, "number", "integer", and "myComplexType" all map to PropertyType. While "foo" maps to a
+ * PropertyDescriptor. Consider a complex attribute which is of type "myComplexType:
  *
  * <pre>
  *  ComplexAttribute complexAttribute = ...;
@@ -124,8 +122,8 @@ public interface PropertyType {
     /**
      * The name of the property type.
      *
-     * <p>Note that this is not the same name as {@link Property#getName()}, which is the name of
-     * the instance of the type, not the type itself.
+     * <p>Note that this is not the same name as {@link Property#getName()}, which is the name of the instance of the
+     * type, not the type itself.
      *
      * <p>The returned name is a qualified name made up of two parts. The first a namespace uri
      * ({@link Name#getNamespaceURI()}, and the second a local part ({@link Name#getLocalPart()}.
@@ -150,8 +148,8 @@ public interface PropertyType {
      *
      * <p>This method returns <code>null</code> if no super type is defined.
      *
-     * <p>The super type may contain additional restrictions to be considered against properties of
-     * the the property type.
+     * <p>The super type may contain additional restrictions to be considered against properties of the the property
+     * type.
      *
      * @return The parent or super type, or <code>null</code>.
      */
@@ -169,11 +167,10 @@ public interface PropertyType {
      *
      * <p>Each restriction is a {@link Filter} object in which the property is passed through. If
      * {@link Filter#evaluate(Object)} returns <code>true</code> the restriction is met. If <code>
-     * false</code> is returned then the restriction has not been met and the property should be
-     * considered invalid. Remember to check getSuper().getRestrictions() as well.
+     * false</code> is returned then the restriction has not been met and the property should be considered invalid.
+     * Remember to check getSuper().getRestrictions() as well.
      *
-     * <p>This method returns an empty set in the case of no restrictions and should not return
-     * <code>null</code>.
+     * <p>This method returns an empty set in the case of no restrictions and should not return <code>null</code>.
      *
      * @return List<Restriction> used to validate allowable values.
      */
@@ -187,12 +184,12 @@ public interface PropertyType {
     InternationalString getDescription();
 
     /**
-     * A map of "user data" which enables applications to store "application-specific" information
-     * against a property type.
+     * A map of "user data" which enables applications to store "application-specific" information against a property
+     * type.
      *
-     * <p>As an example, consider an application that builds a PropertyType from an xml schema. A
-     * useful bit of information to attach to the PropertyType is the original schema itself, in
-     * whatever construct it might be stored in:
+     * <p>As an example, consider an application that builds a PropertyType from an xml schema. A useful bit of
+     * information to attach to the PropertyType is the original schema itself, in whatever construct it might be stored
+     * in:
      *
      * <pre>
      * <code>

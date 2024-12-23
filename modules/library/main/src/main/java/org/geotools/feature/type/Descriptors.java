@@ -30,16 +30,15 @@ import org.geotools.feature.NameImpl;
 /**
  * Helper methods for dealing with Descriptor.
  *
- * <p>This methods opperate directly on the interfaces provided by geoapi, no actual classes were
- * harmed in the making of these utility methods.
+ * <p>This methods opperate directly on the interfaces provided by geoapi, no actual classes were harmed in the making
+ * of these utility methods.
  *
  * @author Jody Garnett
  * @author Justin Deoliveira
  * @since 2.5
  */
 public class Descriptors {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Descriptors.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Descriptors.class);
 
     /**
      * Wraps a list of {@link AttributeType} in {@link AttributeDescriptor}.
@@ -359,8 +358,7 @@ public class Descriptors {
         Iterator i = schema.iterator();
         Iterator j = restrict.iterator();
         while (i.hasNext() && j.hasNext()) {
-            restriction.add(
-                    restrict((AttributeDescriptor) i.next(), (AttributeDescriptor) j.next()));
+            restriction.add(restrict((AttributeDescriptor) i.next(), (AttributeDescriptor) j.next()));
         }
         return restriction;
     }
@@ -368,8 +366,8 @@ public class Descriptors {
     /**
      * Locate type associated with provided name, or null if not found.
      *
-     * <p>Namespaces are not taken in count, so if two properties share the same local name, the
-     * first one that matches will be returned.
+     * <p>Namespaces are not taken in count, so if two properties share the same local name, the first one that matches
+     * will be returned.
      */
     public static AttributeType type(Collection schema, Name name) {
         AttributeDescriptor node = node(schema, name);
@@ -380,8 +378,8 @@ public class Descriptors {
     /**
      * Locate type associated with provided name, or null if not found.
      *
-     * <p>Namespaces are not taken in count, so if two properties share the same local name, the
-     * first one that matches will be returned.
+     * <p>Namespaces are not taken in count, so if two properties share the same local name, the first one that matches
+     * will be returned.
      */
     public static AttributeType type(ComplexType schema, String name) {
         return type(schema, new NameImpl(name));
@@ -485,8 +483,7 @@ public class Descriptors {
     /**
      * Finds the node associated with the provided type.
      *
-     * <p>Note a type may be included in more then one node, in which case this will only find the
-     * first one.
+     * <p>Note a type may be included in more then one node, in which case this will only find the first one.
      *
      * @return AttributeDescriptor assoicated with provided name, or null if not found.
      */
@@ -519,8 +516,8 @@ public class Descriptors {
     /**
      * List of types described by this schema.
      *
-     * <p>On the cases where order matters, the returned list preserves the order of descriptors
-     * declared in <code>schema</code>
+     * <p>On the cases where order matters, the returned list preserves the order of descriptors declared in <code>
+     * schema</code>
      *
      * @return List of nodes for the provided type, or empty.
      */
@@ -562,10 +559,7 @@ public class Descriptors {
         return max;
     }
 
-    /**
-     * Returns the list of descriptors defined in the provided schema, preserving declaration order
-     * when relevant.
-     */
+    /** Returns the list of descriptors defined in the provided schema, preserving declaration order when relevant. */
     // @SuppressWarnings("unchecked")
     public static List /*<? extends Descriptor>*/ list(AttributeType type) {
 

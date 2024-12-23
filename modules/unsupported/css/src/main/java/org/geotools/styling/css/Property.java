@@ -94,8 +94,8 @@ public class Property {
     }
 
     /**
-     * Returns true if any of the property values is other than null or None (will return true also
-     * if there is no value)
+     * Returns true if any of the property values is other than null or None (will return true also if there is no
+     * value)
      */
     public boolean hasValues() {
         return values.stream().anyMatch(v -> v != null && v != Value.NONE);

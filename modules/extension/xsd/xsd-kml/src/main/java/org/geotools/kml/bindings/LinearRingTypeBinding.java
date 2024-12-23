@@ -57,8 +57,7 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;
     GeometryFactory geometryFactory;
 
-    public LinearRingTypeBinding(
-            GeometryFactory geometryFactory, CoordinateSequenceFactory csFactory) {
+    public LinearRingTypeBinding(GeometryFactory geometryFactory, CoordinateSequenceFactory csFactory) {
         this.geometryFactory = geometryFactory;
         this.csFactory = csFactory;
     }
@@ -90,8 +89,7 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        CoordinateSequence coordinates =
-                (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
+        CoordinateSequence coordinates = (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
 
         // If the last point is not the same as the first point jts will throw an error
         // where as other KML readers like google earth just auto close the polygon so
@@ -100,8 +98,7 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
         Coordinate lastCoord = coordinates.getCoordinate(coordinates.size() - 1);
 
         if (!firstCoord.equals3D(lastCoord)) {
-            List<Coordinate> updateCoords =
-                    new ArrayList<>(Arrays.asList(coordinates.toCoordinateArray()));
+            List<Coordinate> updateCoords = new ArrayList<>(Arrays.asList(coordinates.toCoordinateArray()));
             updateCoords.add((Coordinate) firstCoord.clone());
 
             coordinates = csFactory.create(updateCoords.toArray(new Coordinate[0]));

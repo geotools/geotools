@@ -39,8 +39,7 @@ public class ComplexDataStoreConfig extends SourceDataStore {
      * @param type type of the geometry, e.g. POINT
      * @param isDefault TRUE fi this is the feature type default geometry
      */
-    public void addGeometry(
-            String indexName, String attributeName, String srid, String type, String isDefault) {
+    public void addGeometry(String indexName, String attributeName, String srid, String type, String isDefault) {
         indexesConfig.addGeometry(indexName, attributeName, srid, type, isDefault);
     }
 

@@ -56,8 +56,8 @@ public class VPFTest extends OnlineTestCase {
     }
 
     /**
-     * As the VMAP dataset is so large it requires a sepeate download. We are treating this as an
-     * online test - asking you to supply the location of this dataset on your machine.
+     * As the VMAP dataset is so large it requires a sepeate download. We are treating this as an online test - asking
+     * you to supply the location of this dataset on your machine.
      *
      * @return fixture listing where vmap folder (that contains lht)
      */

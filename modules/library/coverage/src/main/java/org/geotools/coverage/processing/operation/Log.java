@@ -90,13 +90,12 @@ public class Log extends BaseMathOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation("algebric")) {
             parameters.set(Operator.LOG, 0);
             @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources =
-                    (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
+                    parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {
                 handleROINoDataInternal(parameters, source, "algebric", 1, 2);
             }
@@ -111,7 +110,6 @@ public class Log extends BaseMathOperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "algebric", 1, 2, 3);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "algebric", 1, 2, 3);
     }
 }

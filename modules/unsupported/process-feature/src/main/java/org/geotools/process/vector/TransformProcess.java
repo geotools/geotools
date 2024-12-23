@@ -45,8 +45,8 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * Used to transform a feature collection as defined using a series of expressions.
  *
- * <p>The definition of the output feature type can be provided as a {@link Definition} data
- * structure or using a simple string format:
+ * <p>The definition of the output feature type can be provided as a {@link Definition} data structure or using a simple
+ * string format:
  *
  * <pre>
  * the_geom=the_geom
@@ -75,8 +75,8 @@ import org.locationtech.jts.geom.Geometry;
  * id: Long              summary=description            summary: String
  * description: String
  * </pre>
- *   <li>Process geometry - using functions like "the_geom=simplify( the_geom, 2.0 )" or
- *       "the_geom=centriod( the_geom )":
+ *   <li>Process geometry - using functions like "the_geom=simplify( the_geom, 2.0 )" or "the_geom=centriod( the_geom
+ *       )":
  *       <pre>
  * INPUT Schema          DEFINITION                     OUTPUT Schema
  * the_geom: Polygon     the_geom=centriod(the_geom)    the_geom: Point
@@ -108,8 +108,7 @@ public class TransformProcess implements VectorProcess {
     /**
      * Definition of an attribute used during transform
      *
-     * <p>Note this definition is terse as we are gathering the details from the origional
-     * FeatureType.
+     * <p>Note this definition is terse as we are gathering the details from the origional FeatureType.
      *
      * @author jody
      */
@@ -163,8 +162,7 @@ public class TransformProcess implements VectorProcess {
     /**
      * Parse out a list of {@link Definition} from the provided text description.
      *
-     * <p>The format expected here is one definition per line; using the format
-     * "name=...expression..".
+     * <p>The format expected here is one definition per line; using the format "name=...expression..".
      *
      * @return List of definition
      */
@@ -182,21 +180,14 @@ public class TransformProcess implements VectorProcess {
                 String expressionDefinition = line.substring(mark + 1).trim();
 
                 if (check.contains(name)) {
-                    throw new IllegalArgumentException(
-                            "Attribute " + name + " defined more than once");
+                    throw new IllegalArgumentException("Attribute " + name + " defined more than once");
                 }
                 Expression expression;
                 try {
                     expression = ECQL.toExpression(expressionDefinition);
                 } catch (CQLException e) {
                     throw new IllegalArgumentException(
-                            "Unable to parse expression "
-                                    + name
-                                    + "="
-                                    + expressionDefinition
-                                    + " "
-                                    + e,
-                            e);
+                            "Unable to parse expression " + name + "=" + expressionDefinition + " " + e, e);
                 }
                 Definition def = new Definition();
                 def.name = name;
@@ -209,8 +200,8 @@ public class TransformProcess implements VectorProcess {
     }
 
     /**
-     * Splits single-string definition list into a list of definitions. Either line breaks or ';'
-     * can be used as definition delimiters.
+     * Splits single-string definition list into a list of definitions. Either line breaks or ';' can be used as
+     * definition delimiters.
      *
      * @param defList the definition list string
      * @return the separate definitions
@@ -265,8 +256,7 @@ public class TransformProcess implements VectorProcess {
             if (Geometry.class.isAssignableFrom(binding)) {
                 CoordinateReferenceSystem crs;
                 AttributeType originalAttributeType = origional.getType(name);
-                if (originalAttributeType != null
-                        && originalAttributeType instanceof GeometryType) {
+                if (originalAttributeType != null && originalAttributeType instanceof GeometryType) {
                     GeometryType geometryType = (GeometryType) originalAttributeType;
                     crs = geometryType.getCoordinateReferenceSystem();
                 } else {
@@ -287,8 +277,8 @@ public class TransformProcess implements VectorProcess {
     //
 
     /**
-     * ReshapeFeatureCollection obtaining feature type by processing the list of definitions against
-     * the origional delegate feature collection.
+     * ReshapeFeatureCollection obtaining feature type by processing the list of definitions against the origional
+     * delegate feature collection.
      *
      * @author jody
      */
@@ -296,8 +286,7 @@ public class TransformProcess implements VectorProcess {
         List<Definition> definition;
         SimpleFeatureType schema;
 
-        public ReshapeFeatureCollection(
-                SimpleFeatureCollection delegate, List<Definition> definition) {
+        public ReshapeFeatureCollection(SimpleFeatureCollection delegate, List<Definition> definition) {
             super(delegate);
             this.definition = definition;
             this.schema = toReShapeFeatureType(delegate, definition);
@@ -326,9 +315,7 @@ public class TransformProcess implements VectorProcess {
         SimpleFeatureBuilder fb;
 
         public ReshapeFeatureIterator(
-                SimpleFeatureIterator delegate,
-                List<Definition> definition,
-                SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate, List<Definition> definition, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.definition = definition;
             fb = new SimpleFeatureBuilder(schema);

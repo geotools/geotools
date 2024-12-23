@@ -24,8 +24,8 @@ import org.geotools.util.logging.Logging;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper that takes the sprite index file (as a JSONObject) for a Mapbox Sprite Sheet and parses
- * the all the individual icons as {@link IconInfo} objects. For example:
+ * Wrapper that takes the sprite index file (as a JSONObject) for a Mapbox Sprite Sheet and parses the all the
+ * individual icons as {@link IconInfo} objects. For example:
  *
  * <pre>
  * <code>
@@ -78,13 +78,12 @@ public class SpriteIndex {
                     IconInfo iconInfo = parseIconInfoFromIndex(this.json, iconName);
                     icons.put(iconName, iconInfo);
                 } catch (Exception e) {
-                    LOGGER.warning(
-                            "Mapbox sprite icon index file "
-                                    + this.spriteIndexUrl
-                                    + " contained invalid value for key \""
-                                    + iconName
-                                    + "\". Exception was: "
-                                    + e.getMessage());
+                    LOGGER.warning("Mapbox sprite icon index file "
+                            + this.spriteIndexUrl
+                            + " contained invalid value for key \""
+                            + iconName
+                            + "\". Exception was: "
+                            + e.getMessage());
                 }
             }
         }
@@ -99,17 +98,15 @@ public class SpriteIndex {
      */
     protected static IconInfo parseIconInfoFromIndex(JSONObject iconIndex, String iconName) {
         if (!iconIndex.containsKey(iconName)) {
-            throw new MBSpriteException(
-                    "Sprite index file does not contain entry for icon with name: " + iconName);
+            throw new MBSpriteException("Sprite index file does not contain entry for icon with name: " + iconName);
         }
 
         Object o = iconIndex.get(iconName);
         if (!(o instanceof JSONObject)) {
-            throw new MBSpriteException(
-                    "Error parsing sprite index for \""
-                            + iconName
-                            + "\": Expected JSONObject, but is "
-                            + o.getClass().getSimpleName());
+            throw new MBSpriteException("Error parsing sprite index for \""
+                    + iconName
+                    + "\": Expected JSONObject, but is "
+                    + o.getClass().getSimpleName());
         }
         return new IconInfo(iconName, (JSONObject) o);
     }
@@ -131,19 +128,18 @@ public class SpriteIndex {
      */
     public IconInfo getIcon(String iconName) {
         if (!icons.containsKey(iconName)) {
-            throw new MBSpriteException(
-                    "Mapbox sprite icon index file "
-                            + this.spriteIndexUrl
-                            + " does not contain icon with name: "
-                            + iconName);
+            throw new MBSpriteException("Mapbox sprite icon index file "
+                    + this.spriteIndexUrl
+                    + " does not contain icon with name: "
+                    + iconName);
         } else {
             return icons.get(iconName);
         }
     }
 
     /**
-     * Wrapper for parsing the properties of an individual sprite index entry (JSONObject) for a
-     * single icon. For example:
+     * Wrapper for parsing the properties of an individual sprite index entry (JSONObject) for a single icon. For
+     * example:
      *
      * <pre>
      * <code>
@@ -198,10 +194,7 @@ public class SpriteIndex {
         private int intOrException(String k) {
             if (!json.containsKey(k)) {
                 throw new MBSpriteException(
-                        "Mapbox sprite icon with name \""
-                                + iconName
-                                + "\" is missing required property: "
-                                + k);
+                        "Mapbox sprite icon with name \"" + iconName + "\" is missing required property: " + k);
             }
             Object o = json.get(k);
 

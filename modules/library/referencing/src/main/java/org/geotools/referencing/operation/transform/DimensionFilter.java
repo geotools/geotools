@@ -33,11 +33,10 @@ import org.geotools.util.factory.Hints;
 
 /**
  * An utility class for the separation of {@linkplain ConcatenatedTransform concatenation} of
- * {@linkplain PassThroughTransform pass through transforms}. Given an arbitrary {@linkplain
- * MathTransform math transform}, this utility class will returns a new math transform that operates
- * only of a given set of source dimensions. For example if the supplied {@code transform} has
- * (<var>x</var>, <var>y</var>, <var>z</var>) inputs and (<var>longitude</var>, <var>latitude</var>,
- * <var>height</var>) outputs, then the following code:
+ * {@linkplain PassThroughTransform pass through transforms}. Given an arbitrary {@linkplain MathTransform math
+ * transform}, this utility class will returns a new math transform that operates only of a given set of source
+ * dimensions. For example if the supplied {@code transform} has (<var>x</var>, <var>y</var>, <var>z</var>) inputs and
+ * (<var>longitude</var>, <var>latitude</var>, <var>height</var>) outputs, then the following code:
  *
  * <blockquote>
  *
@@ -48,19 +47,17 @@ import org.geotools.util.factory.Hints;
  *
  * </blockquote>
  *
- * <p>will returns a transform with (<var>x</var>, <var>y</var>) inputs and (probably)
- * (<var>longitude</var>, <var>latitude</var>) outputs. The later can be verified with a call to
- * {@link #getTargetDimensions}.
+ * <p>will returns a transform with (<var>x</var>, <var>y</var>) inputs and (probably) (<var>longitude</var>,
+ * <var>latitude</var>) outputs. The later can be verified with a call to {@link #getTargetDimensions}.
  *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
- * @todo This class is specific to Geotools implementation; it is better to avoid it if you can. It
- *     could be generalized a bit if we perform the same operations on {@link
- *     org.geotools.api.referencing.operation.CoordinateOperation} interfaces instead of math
- *     transforms. We should revisit this issue after grid coverage API has been revisited (since
- *     grid coverage is a user of this class).
+ * @todo This class is specific to Geotools implementation; it is better to avoid it if you can. It could be generalized
+ *     a bit if we perform the same operations on {@link org.geotools.api.referencing.operation.CoordinateOperation}
+ *     interfaces instead of math transforms. We should revisit this issue after grid coverage API has been revisited
+ *     (since grid coverage is a user of this class).
  * @todo This class contains a set of static methods that could be factored out in some kind of
  *     {@code org.geotools.util.SortedIntegerSet} implementation.
  */
@@ -74,18 +71,16 @@ public class DimensionFilter {
     public static final Hints.Key INSTANCE = new Hints.Key(DimensionFilter.class);
 
     /**
-     * The input dimensions to keep, in strictly increasing order. This sequence can contains any
-     * integers in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code>
-     * exclusive.
+     * The input dimensions to keep, in strictly increasing order. This sequence can contains any integers in the range
+     * 0 inclusive to <code>
+     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code> exclusive.
      */
     private int[] sourceDimensions;
 
     /**
-     * The output dimensions to keep, in strictly increasing order. This sequence can contains any
-     * integers in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code>
-     * exclusive.
+     * The output dimensions to keep, in strictly increasing order. This sequence can contains any integers in the range
+     * 0 inclusive to <code>
+     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code> exclusive.
      */
     private int[] targetDimensions;
 
@@ -93,17 +88,16 @@ public class DimensionFilter {
     private final MathTransformFactory factory;
 
     /**
-     * Constructs a dimension filter with the {@linkplain
-     * ReferencingFactoryFinder#getMathTransformFactory default math transform factory}.
+     * Constructs a dimension filter with the {@linkplain ReferencingFactoryFinder#getMathTransformFactory default math
+     * transform factory}.
      */
     public DimensionFilter() {
         this(ReferencingFactoryFinder.getMathTransformFactory(null));
     }
 
     /**
-     * Constructs a dimension filter with a {@linkplain
-     * ReferencingFactoryFinder#getMathTransformFactory math transform factory built using the
-     * provided hints}.
+     * Constructs a dimension filter with a {@linkplain ReferencingFactoryFinder#getMathTransformFactory math transform
+     * factory built using the provided hints}.
      *
      * @param hints Hints to control the creation of the {@link MathTransformFactory}.
      */
@@ -121,9 +115,9 @@ public class DimensionFilter {
     }
 
     /**
-     * Creates or returns an existing instance from the given set of hints. If the hints contain a
-     * value for the {@link #INSTANCE} key, this value is returned. Otherwise a new instance is
-     * {@linkplain #DimensionFilter(Hints) created} with the given hints.
+     * Creates or returns an existing instance from the given set of hints. If the hints contain a value for the
+     * {@link #INSTANCE} key, this value is returned. Otherwise a new instance is {@linkplain #DimensionFilter(Hints)
+     * created} with the given hints.
      *
      * @param hints The hints, or {@code null} if none.
      * @return An existing or a new {@code DimensionFilter} instance (never {@code null}).
@@ -142,8 +136,8 @@ public class DimensionFilter {
     }
 
     /**
-     * Clears any {@linkplain #getSourceDimensions source} and {@linkplain #getTargetDimensions
-     * target dimension} setting.
+     * Clears any {@linkplain #getSourceDimensions source} and {@linkplain #getTargetDimensions target dimension}
+     * setting.
      */
     public void clear() {
         sourceDimensions = null;
@@ -151,11 +145,10 @@ public class DimensionFilter {
     }
 
     /**
-     * Add an input dimension to keep. The {@code dimension} applies to the source dimensions of the
-     * transform to be given to <code>{@linkplain #separate separate}(transform)</code>. The number
-     * must be in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code>
-     * exclusive.
+     * Add an input dimension to keep. The {@code dimension} applies to the source dimensions of the transform to be
+     * given to <code>{@linkplain #separate separate}(transform)</code>. The number must be in the range 0 inclusive to
+     * <code>
+     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code> exclusive.
      *
      * @param dimension The dimension to add.
      * @throws IllegalArgumentException if {@code dimension} is negative.
@@ -165,37 +158,36 @@ public class DimensionFilter {
     }
 
     /**
-     * Add input dimensions to keep. The {@code dimensions} apply to the source dimensions of the
-     * transform to be given to <code>{@linkplain #separate separate}(transform)</code>. All numbers
-     * must be in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code>
-     * exclusive. The {@code dimensions} values must be in strictly increasing order.
+     * Add input dimensions to keep. The {@code dimensions} apply to the source dimensions of the transform to be given
+     * to <code>{@linkplain #separate separate}(transform)</code>. All numbers must be in the range 0 inclusive to
+     * <code>
+     * transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code> exclusive. The
+     * {@code dimensions} values must be in strictly increasing order.
      *
      * @param dimensions The new sequence of dimensions.
-     * @throws IllegalArgumentException if {@code dimensions} contains negative values or is not a
-     *     strictly increasing sequence.
+     * @throws IllegalArgumentException if {@code dimensions} contains negative values or is not a strictly increasing
+     *     sequence.
      */
     public void addSourceDimensions(final int[] dimensions) throws IllegalArgumentException {
         sourceDimensions = add(sourceDimensions, dimensions);
     }
 
     /**
-     * Add a range of input dimensions to keep. The {@code lower} and {@code upper} values apply to
-     * the source dimensions of the transform to be given to <code>
+     * Add a range of input dimensions to keep. The {@code lower} and {@code upper} values apply to the source
+     * dimensions of the transform to be given to <code>
      * {@linkplain #separate separate}(transform)</code>.
      *
      * @param lower The lower dimension, inclusive. Must not be smaller than 0.
      * @param upper The upper dimension, exclusive. Must not be greater than <code>
      *     transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code>.
      */
-    public void addSourceDimensionRange(final int lower, final int upper)
-            throws IllegalArgumentException {
+    public void addSourceDimensionRange(final int lower, final int upper) throws IllegalArgumentException {
         sourceDimensions = add(sourceDimensions, lower, upper);
     }
 
     /**
-     * Returns the input dimensions. This information is available only if at least one setter
-     * method has been explicitly invoked for source dimensions.
+     * Returns the input dimensions. This information is available only if at least one setter method has been
+     * explicitly invoked for source dimensions.
      *
      * @return The input dimension as a sequence of strictly increasing values.
      * @throws IllegalStateException if input dimensions have not been set.
@@ -208,11 +200,10 @@ public class DimensionFilter {
     }
 
     /**
-     * Add an output dimension to keep. The {@code dimension} applies to the target dimensions of
-     * the transform to be given to <code>{@linkplain #separate separate}(transform)</code>. The
-     * number must be in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code>
-     * exclusive.
+     * Add an output dimension to keep. The {@code dimension} applies to the target dimensions of the transform to be
+     * given to <code>{@linkplain #separate separate}(transform)</code>. The number must be in the range 0 inclusive to
+     * <code>
+     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code> exclusive.
      *
      * @param dimension The dimension to add.
      * @throws IllegalArgumentException if {@code dimension} is negative.
@@ -222,46 +213,43 @@ public class DimensionFilter {
     }
 
     /**
-     * Add output dimensions to keep. The {@code dimensions} apply to the target dimensions of the
-     * transform to be given to <code>{@linkplain #separate separate}(transform)</code>. All numbers
-     * must be in the range 0 inclusive to <code>
-     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code>
-     * exclusive. The {@code dimensions} values must be in strictly increasing order.
+     * Add output dimensions to keep. The {@code dimensions} apply to the target dimensions of the transform to be given
+     * to <code>{@linkplain #separate separate}(transform)</code>. All numbers must be in the range 0 inclusive to
+     * <code>
+     * transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code> exclusive. The
+     * {@code dimensions} values must be in strictly increasing order.
      *
      * @param dimensions The new sequence of dimensions.
-     * @throws IllegalArgumentException if {@code dimensions} contains negative values or is not a
-     *     strictly increasing sequence.
+     * @throws IllegalArgumentException if {@code dimensions} contains negative values or is not a strictly increasing
+     *     sequence.
      */
     public void addTargetDimensions(int[] dimensions) throws IllegalArgumentException {
         targetDimensions = add(targetDimensions, dimensions);
     }
 
     /**
-     * Add a range of output dimensions to keep. The {@code lower} and {@code upper} values apply to
-     * the target dimensions of the transform to be given to <code>
+     * Add a range of output dimensions to keep. The {@code lower} and {@code upper} values apply to the target
+     * dimensions of the transform to be given to <code>
      * {@linkplain #separate separate}(transform)</code>.
      *
      * @param lower The lower dimension, inclusive. Must not be smaller than 0.
      * @param upper The upper dimension, exclusive. Must not be greater than <code>
      *     transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code>.
      */
-    public void addTargetDimensionRange(final int lower, final int upper)
-            throws IllegalArgumentException {
+    public void addTargetDimensionRange(final int lower, final int upper) throws IllegalArgumentException {
         targetDimensions = add(targetDimensions, lower, upper);
     }
 
     /**
-     * Returns the output dimensions. This information is available only if one of the following
-     * conditions is meet:
+     * Returns the output dimensions. This information is available only if one of the following conditions is meet:
      *
      * <p>
      *
      * <ul>
      *   <li>Target dimensions has been explicitly set using setter methods.
      *   <li>No target dimensions were set but <code>{@linkplain #separate separate}(transform)
-     *       </code> has been invoked at least once, in which case the target dimensions are
-     *       inferred automatically from the {@linkplain #getSourceDimensions source dimensions} and
-     *       the {@code transform}.
+     *       </code> has been invoked at least once, in which case the target dimensions are inferred automatically from
+     *       the {@linkplain #getSourceDimensions source dimensions} and the {@code transform}.
      * </ul>
      *
      * @return The output dimension as a sequence of strictly increasing values.
@@ -275,21 +263,21 @@ public class DimensionFilter {
     }
 
     /**
-     * Separates the specified math transform. This method returns a math transform that uses only
-     * the specified {@linkplain #getSourceDimensions source dimensions} and returns only the
-     * specified {@linkplain #getTargetDimensions target dimensions}. Special case:
+     * Separates the specified math transform. This method returns a math transform that uses only the specified
+     * {@linkplain #getSourceDimensions source dimensions} and returns only the specified
+     * {@linkplain #getTargetDimensions target dimensions}. Special case:
      *
      * <p>
      *
      * <ul>
      *   <li>
-     *       <p>If {@linkplain #getSourceDimensions source dimensions} are unspecified, then the
-     *       returned transform will expects all source dimensions as input but will produces only
-     *       the specified {@linkplain #getTargetDimensions target dimensions} as output.
+     *       <p>If {@linkplain #getSourceDimensions source dimensions} are unspecified, then the returned transform will
+     *       expects all source dimensions as input but will produces only the specified
+     *       {@linkplain #getTargetDimensions target dimensions} as output.
      *   <li>
-     *       <p>If {@linkplain #getTargetDimensions target dimensions} are unspecified, then the
-     *       returned transform will expects only the specified {@linkplain #getSourceDimensions
-     *       source dimensions} as input, and the target dimensions will be inferred automatically.
+     *       <p>If {@linkplain #getTargetDimensions target dimensions} are unspecified, then the returned transform will
+     *       expects only the specified {@linkplain #getSourceDimensions source dimensions} as input, and the target
+     *       dimensions will be inferred automatically.
      * </ul>
      *
      * @param transform The transform to separate.
@@ -335,9 +323,9 @@ public class DimensionFilter {
     }
 
     /**
-     * Separates the math transform on the basis of {@linkplain #sourceDimensions input dimensions}.
-     * The remaining {@linkplain #targetDimensions output dimensions} will be selected automatically
-     * according the specified input dimensions.
+     * Separates the math transform on the basis of {@linkplain #sourceDimensions input dimensions}. The remaining
+     * {@linkplain #targetDimensions output dimensions} will be selected automatically according the specified input
+     * dimensions.
      *
      * @param transform The transform to reduces.
      * @return A transform expecting only the specified input dimensions.
@@ -352,8 +340,7 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(sourceDimensions);
         if (upper > dimSource) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
         }
         /*
          * Check for easiest cases: same transform, identity transform or concatenated transforms.
@@ -429,12 +416,10 @@ public class DimensionFilter {
              * current implementation: our pass through transform doesn't accept arbitrary index
              * for modified ordinates.
              */
-            if (containsAll(sourceDimensions, lower, subLower)
-                    && containsAll(sourceDimensions, subUpper, upper)) {
+            if (containsAll(sourceDimensions, lower, subLower) && containsAll(sourceDimensions, subUpper, upper)) {
                 final int firstAffectedOrdinate = Math.max(0, subLower - lower);
                 final int numTrailingOrdinates = Math.max(0, upper - subUpper);
-                return factory.createPassThroughTransform(
-                        firstAffectedOrdinate, subTransform, numTrailingOrdinates);
+                return factory.createPassThroughTransform(firstAffectedOrdinate, subTransform, numTrailingOrdinates);
             }
             // TODO: handle more general case here...
             targetDimensions = null; // Clear before to fallback on the LinearTransform case.
@@ -449,8 +434,7 @@ public class DimensionFilter {
             int nRows = 0;
             boolean hasLastRow = false;
             final Matrix matrix = ((LinearTransform) transform).getMatrix();
-            assert dimSource + 1 == matrix.getNumCol() && dimTarget + 1 == matrix.getNumRow()
-                    : matrix;
+            assert dimSource + 1 == matrix.getNumCol() && dimTarget + 1 == matrix.getNumRow() : matrix;
             double[][] rows = new double[dimTarget + 1][];
             reduce:
             for (int j = 0; j < rows.length; j++) {
@@ -496,15 +480,15 @@ public class DimensionFilter {
     }
 
     /**
-     * Creates a transform which retains only a subset of an other transform's outputs. The number
-     * and nature of inputs stay unchanged. For example if the supplied {@code transform} has
-     * (<var>longitude</var>, <var>latitude</var>, <var>height</var>) outputs, then a sub-transform
-     * may be used to keep only the (<var>longitude</var>, <var>latitude</var>) part. In most cases,
-     * the created sub-transform is non-invertible since it loose informations.
+     * Creates a transform which retains only a subset of an other transform's outputs. The number and nature of inputs
+     * stay unchanged. For example if the supplied {@code transform} has (<var>longitude</var>, <var>latitude</var>,
+     * <var>height</var>) outputs, then a sub-transform may be used to keep only the (<var>longitude</var>,
+     * <var>latitude</var>) part. In most cases, the created sub-transform is non-invertible since it loose
+     * informations.
      *
-     * <p>This transform may be see as a non-square matrix transform with less rows than columns,
-     * concatenated with {@code transform}. However, invoking {@code createFilterTransfom(...)}
-     * allows the optimization of some common cases.
+     * <p>This transform may be see as a non-square matrix transform with less rows than columns, concatenated with
+     * {@code transform}. However, invoking {@code createFilterTransfom(...)} allows the optimization of some common
+     * cases.
      *
      * @param transform The transform to reduces.
      * @return The {@code transform} keeping only the output dimensions.
@@ -570,8 +554,8 @@ public class DimensionFilter {
     }
 
     /**
-     * Returns {@code true} if the given sequence contains all index in the range {@code lower}
-     * inclusive to {@code upper} exclusive.
+     * Returns {@code true} if the given sequence contains all index in the range {@code lower} inclusive to
+     * {@code upper} exclusive.
      *
      * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to test.
      * @param lower The lower value, inclusive.
@@ -620,11 +604,10 @@ public class DimensionFilter {
     }
 
     /**
-     * Adds the specified {@code dimension} to the specified sequence. Values are added in
-     * increasing order. Duplicated values are not added.
+     * Adds the specified {@code dimension} to the specified sequence. Values are added in increasing order. Duplicated
+     * values are not added.
      *
-     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to
-     *     update.
+     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to update.
      */
     private static int[] add(int[] sequence, int dimension) throws IllegalArgumentException {
         if (dimension < 0) {
@@ -646,14 +629,12 @@ public class DimensionFilter {
     }
 
     /**
-     * Adds the specified {@code dimensions} to the specified sequence. Values are added in
-     * increasing order. Duplicated values are not added.
+     * Adds the specified {@code dimensions} to the specified sequence. Values are added in increasing order. Duplicated
+     * values are not added.
      *
-     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to
-     *     update.
+     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to update.
      */
-    private static int[] add(int[] sequence, final int[] dimensions)
-            throws IllegalArgumentException {
+    private static int[] add(int[] sequence, final int[] dimensions) throws IllegalArgumentException {
         if (dimensions.length != 0) {
             ensureValidSeries(dimensions);
             if (sequence == null) {
@@ -670,18 +651,15 @@ public class DimensionFilter {
     }
 
     /**
-     * Adds the specified range to the specified sequence. Values are added in increasing order.
-     * Duplicated values are not added.
+     * Adds the specified range to the specified sequence. Values are added in increasing order. Duplicated values are
+     * not added.
      *
-     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to
-     *     update.
+     * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to update.
      * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}.
      */
-    private static int[] add(int[] sequence, int lower, final int upper)
-            throws IllegalArgumentException {
+    private static int[] add(int[] sequence, int lower, final int upper) throws IllegalArgumentException {
         if (lower < 0 || lower >= upper) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (sequence == null) {
             sequence = series(lower, upper);
@@ -717,8 +695,7 @@ public class DimensionFilter {
             final int value = dimensions[i];
             if (value <= last) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimensions[" + i + ']', value));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimensions[" + i + ']', value));
             }
             last = value;
         }

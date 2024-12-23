@@ -94,8 +94,7 @@ public class PullParser {
                         handler.startPrefixMapping(pre != null ? pre : "", pp.getNamespaceURI(i));
                     }
 
-                    handler.startElement(
-                            pp.getNamespaceURI(), pp.getLocalName(), str(pp.getName()), atts);
+                    handler.startElement(pp.getNamespaceURI(), pp.getLocalName(), str(pp.getName()), atts);
 
                     break;
 
@@ -154,9 +153,7 @@ public class PullParser {
     }
 
     String str(QName qName) {
-        return qName.getPrefix() != null
-                ? qName.getPrefix() + ":" + qName.getLocalPart()
-                : qName.getLocalPart();
+        return qName.getPrefix() != null ? qName.getPrefix() + ":" + qName.getLocalPart() : qName.getLocalPart();
     }
 
     class Attributes implements org.xml.sax.Attributes {
@@ -336,8 +333,7 @@ public class PullParser {
                     handlers.add(new TypePullParserHandler((Class<?>) spec, config));
                 } else if (spec instanceof QName) {
                     // TODO ignoring the namespace
-                    handlers.add(
-                            new ElementIgnoringNamespacePullParserHandler((QName) spec, config));
+                    handlers.add(new ElementIgnoringNamespacePullParserHandler((QName) spec, config));
                 } else if (spec instanceof PullParserHandler) {
                     handlers.add((PullParserHandler) spec);
                 } else {

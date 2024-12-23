@@ -33,10 +33,8 @@ public class FillMarginTest {
         bounds.expandBy(0.2, 0.2);
 
         // load font
-        Font f =
-                Font.createFont(
-                        Font.TRUETYPE_FONT,
-                        TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(
+                Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -55,10 +53,7 @@ public class FillMarginTest {
 
         BufferedImage image = RendererBaseTest.showRender("MarginFill", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected.png"),
-                image,
-                100);
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected.png"), image, 100);
     }
 
     @Test
@@ -73,10 +68,7 @@ public class FillMarginTest {
 
         BufferedImage image = RendererBaseTest.showRender("MarginFill", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected.png"),
-                image,
-                100);
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected.png"), image, 100);
     }
 
     @Test
@@ -93,8 +85,7 @@ public class FillMarginTest {
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 480, 480);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected-dpi300.png"),
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected-dpi300.png"),
                 image,
                 100);
     }
@@ -111,8 +102,7 @@ public class FillMarginTest {
 
         BufferedImage image = RendererBaseTest.showRender("MarkMargin", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/markmargin.png"),
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/markmargin.png"),
                 image,
                 100);
     }
@@ -129,8 +119,7 @@ public class FillMarginTest {
 
         BufferedImage image = RendererBaseTest.showRender("MarginFill", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/single-expected.png"),
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/single-expected.png"),
                 image,
                 100);
     }
@@ -145,11 +134,9 @@ public class FillMarginTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("MarkMarginRotation", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("MarkMarginRotation", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/markMarginRotation.png"),
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/markMarginRotation.png"),
                 image,
                 100);
     }
@@ -164,11 +151,9 @@ public class FillMarginTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("MarkLargeMargin", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("MarkLargeMargin", renderer, TIME, bounds);
         ImageAssert.assertEquals(
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/markLargeMargin.png"),
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/markLargeMargin.png"),
                 image,
                 100);
     }

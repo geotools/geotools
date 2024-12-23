@@ -29,8 +29,8 @@ public class TriangulationException extends RuntimeException {
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param message The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public TriangulationException(String message) {
         super(message);

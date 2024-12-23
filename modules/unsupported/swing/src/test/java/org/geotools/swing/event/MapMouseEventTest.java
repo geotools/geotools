@@ -61,16 +61,15 @@ public class MapMouseEventTest extends GraphicsTestBase {
 
     @Before
     public void setup() throws Exception {
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        pane = new MockMapPane();
-                        pane.setMapContent(new MapContent());
-                        pane.setScreenArea(SCREEN);
-                        pane.setDisplayArea(WORLD);
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                pane = new MockMapPane();
+                pane.setMapContent(new MapContent());
+                pane.setScreenArea(SCREEN);
+                pane.setDisplayArea(WORLD);
+            }
+        });
     }
 
     @Test
@@ -119,14 +118,13 @@ public class MapMouseEventTest extends GraphicsTestBase {
     }
 
     private void createEvent(final int x, final int y) throws Exception {
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        ev = new MouseEvent(pane, MouseEvent.MOUSE_PRESSED, 0L, 0, x, y, 1, false);
-                        mapEv = new MapMouseEvent(pane, ev);
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                ev = new MouseEvent(pane, MouseEvent.MOUSE_PRESSED, 0L, 0, x, y, 1, false);
+                mapEv = new MapMouseEvent(pane, ev);
+            }
+        });
     }
 
     private void assertRect(Rectangle2D expected, ReferencedEnvelope actual) {

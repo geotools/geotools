@@ -85,10 +85,7 @@ public class CQLBooleanValueExpressionTest {
         Assert.assertEquals("ATTR1 > 10 OR ATTR2 < 2 was expected", expected, result);
     }
 
-    /**
-     * Sample 1: ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10 Sample 2: ATTR3 < 4 AND (ATT1 > 10 OR ATT2 <
-     * 2)
-     */
+    /** Sample 1: ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10 Sample 2: ATTR3 < 4 AND (ATT1 > 10 OR ATT2 < 2) */
     @Test
     public void andOr() throws CQLException {
         // ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10

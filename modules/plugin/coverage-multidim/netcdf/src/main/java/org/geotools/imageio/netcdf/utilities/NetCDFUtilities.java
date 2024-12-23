@@ -137,11 +137,10 @@ public class NetCDFUtilities {
 
     public static final double DEFAULT_EARTH_RADIUS = 6371229.0d;
     /**
-     * When true, the stack trace that created a reader that wasn't closed is recorded and then
-     * printed out when warning the user about this.
+     * When true, the stack trace that created a reader that wasn't closed is recorded and then printed out when warning
+     * the user about this.
      */
-    public static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
+    public static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
 
     public static final Set<NetcdfDataset.Enhance> DEFAULT_ENHANCE_MODE;
 
@@ -236,7 +235,8 @@ public class NetCDFUtilities {
 
     public static final String LONG_NAME = "long_name";
 
-    public static final String ELEVATION_DIM = ImageMosaicFormat.ELEVATION.getName().toString();
+    public static final String ELEVATION_DIM =
+            ImageMosaicFormat.ELEVATION.getName().toString();
 
     public static final String TIME_DIM = ImageMosaicFormat.TIME.getName().toString();
 
@@ -293,14 +293,11 @@ public class NetCDFUtilities {
 
     static final Set<String> EXCLUDED_ATTRIBUTES = new HashSet<>();
 
-    public static final String ENHANCE_COORD_SYSTEMS =
-            "org.geotools.coverage.io.netcdf.enhance.CoordSystems";
+    public static final String ENHANCE_COORD_SYSTEMS = "org.geotools.coverage.io.netcdf.enhance.CoordSystems";
 
-    public static final String ENHANCE_SCALE_MISSING =
-            "org.geotools.coverage.io.netcdf.enhance.ScaleMissing";
+    public static final String ENHANCE_SCALE_MISSING = "org.geotools.coverage.io.netcdf.enhance.ScaleMissing";
 
-    public static final String ENHANCE_CONVERT_ENUMS =
-            "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
+    public static final String ENHANCE_CONVERT_ENUMS = "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
 
     public static boolean ENHANCE_SCALE_OFFSET = false;
 
@@ -319,9 +316,8 @@ public class NetCDFUtilities {
     private static boolean USE_CACHE;
 
     /**
-     * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
-     * WMO headers prepended by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner
-     * look for the header in this many bytes.
+     * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have WMO headers prepended
+     * by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner look for the header in this many bytes.
      */
     private static final int GRIB_SEARCH_BYTES = 16000;
 
@@ -362,38 +358,37 @@ public class NetCDFUtilities {
     }
 
     /**
-     * The dimension <strong>relative to the rank</strong> in {@link #variable} to use as image
-     * width. The actual dimension is {@code variable.getRank() - X_DIMENSION}. Is hard-coded
-     * because the loop in the {@code read} method expects this order.
+     * The dimension <strong>relative to the rank</strong> in {@link #variable} to use as image width. The actual
+     * dimension is {@code variable.getRank() - X_DIMENSION}. Is hard-coded because the loop in the {@code read} method
+     * expects this order.
      */
     public static final int X_DIMENSION = 1;
 
     /**
-     * The dimension <strong>relative to the rank</strong> in {@link #variable} to use as image
-     * height. The actual dimension is {@code variable.getRank() - Y_DIMENSION}. Is hard-coded
-     * because the loop in the {@code read} method expects this order.
+     * The dimension <strong>relative to the rank</strong> in {@link #variable} to use as image height. The actual
+     * dimension is {@code variable.getRank() - Y_DIMENSION}. Is hard-coded because the loop in the {@code read} method
+     * expects this order.
      */
     public static final int Y_DIMENSION = 2;
 
     /**
-     * The default dimension <strong>relative to the rank</strong> in {@link #variable} to use as Z
-     * dimension. The actual dimension is {@code variable.getRank() - Z_DIMENSION}.
+     * The default dimension <strong>relative to the rank</strong> in {@link #variable} to use as Z dimension. The
+     * actual dimension is {@code variable.getRank() - Z_DIMENSION}.
      *
      * <p>
      */
     public static final int Z_DIMENSION = 3;
 
     /**
-     * The data type to accept in images. Used for automatic detection of which
-     * coverageDescriptorsCache to assign to images.
+     * The data type to accept in images. Used for automatic detection of which coverageDescriptorsCache to assign to
+     * images.
      */
     public static final Set<DataType> VALID_TYPES = new HashSet<>(12);
 
-    public static final String NC4_ERROR_MESSAGE =
-            "Native NetCDF C library is not available. "
-                    + "Unable to handle NetCDF4 files on input/output."
-                    + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
-                    + "PATH environment variable\n if you want to support NetCDF4-Classic files";
+    public static final String NC4_ERROR_MESSAGE = "Native NetCDF C library is not available. "
+            + "Unable to handle NetCDF4 files on input/output."
+            + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
+            + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
         // TODO remove this block when enhance mode can be set some other way, possibly via read
@@ -469,18 +464,16 @@ public class NetCDFUtilities {
     }
 
     private static void initEnhanceMode() {
-        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
-                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
+        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
             DEFAULT_ENHANCE_MODE.remove(NetcdfDataset.Enhance.CoordSystems);
         }
 
         if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
             // These sets are taken from the deprecated NetCDFDataset.parseEnhanceMode
-            EnumSet<NetcdfDataset.Enhance> set =
-                    EnumSet.of(
-                            NetcdfDataset.Enhance.ConvertUnsigned,
-                            NetcdfDataset.Enhance.ApplyScaleOffset,
-                            NetcdfDataset.Enhance.ConvertMissing);
+            EnumSet<NetcdfDataset.Enhance> set = EnumSet.of(
+                    NetcdfDataset.Enhance.ConvertUnsigned,
+                    NetcdfDataset.Enhance.ApplyScaleOffset,
+                    NetcdfDataset.Enhance.ConvertMissing);
             DEFAULT_ENHANCE_MODE.addAll(set);
             ENHANCE_SCALE_OFFSET = true;
         }
@@ -519,16 +512,13 @@ public class NetCDFUtilities {
             LOGGER.info("NetCDF File Cache has been enabled");
             int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
             int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
-            int period =
-                    Integer.getInteger(
-                            "org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
+            int period = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
 
             // No replacements found for 5.5 even if deprecated. Documentation still uses it
             // https://docs.unidata.ucar.edu/netcdf-java/5.5/userguide/disk_caching.html#netcdffilecache
 
             if (useMemoryMapping()) {
-                rafFileCache =
-                        new MemoryMappedFileCache("rafCache", minElements, maxElements, -1, period);
+                rafFileCache = new MemoryMappedFileCache("rafCache", minElements, maxElements, -1, period);
             } else {
                 rafFileCache = new FileCache("rafCache", minElements, maxElements, -1, period);
             }
@@ -560,33 +550,30 @@ public class NetCDFUtilities {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property doesn't refer "
-                                + "to an existing folder. Please check the path: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property doesn't refer "
+                        + "to an existing folder. Please check the path: "
+                        + dir);
             }
             return false;
         } else if (!file.isDirectory()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property doesn't refer "
-                                + "to a directory. Please check the path: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property doesn't refer "
+                        + "to a directory. Please check the path: "
+                        + dir);
             }
             return false;
         } else if (!file.canWrite()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property refers to "
-                                + "a directory which can't be written. Please check the path and"
-                                + " the permissions for: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property refers to "
+                        + "a directory which can't be written. Please check the path and"
+                        + " the permissions for: "
+                        + dir);
             }
             return false;
         }
@@ -608,9 +595,8 @@ public class NetCDFUtilities {
     }
 
     /**
-     * Returns the data type which most closely represents the "raw" internal data of the variable.
-     * This is the value returned by the default implementation of {@link
-     * NetcdfImageReader#getRawDataType}.
+     * Returns the data type which most closely represents the "raw" internal data of the variable. This is the value
+     * returned by the default implementation of {@link NetcdfImageReader#getRawDataType}.
      *
      * @param variable The variable.
      * @return The data type, or {@link DataBuffer#TYPE_UNDEFINED} if unknown.
@@ -652,16 +638,16 @@ public class NetCDFUtilities {
     }
 
     /**
-     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful
-     * for our purposes. The method returns {@code true} if the specified variable is accepted.
+     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful for our purposes. The
+     * method returns {@code true} if the specified variable is accepted.
      */
     public static boolean isVariableAccepted(final Variable var, final CheckType checkType) {
         return isVariableAccepted(var, checkType, null);
     }
 
     /**
-     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful
-     * for our purposes. The method returns {@code true} if the specified variable is accepted.
+     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful for our purposes. The
+     * method returns {@code true} if the specified variable is accepted.
      */
     @SuppressWarnings("deprecation") // no alternative for Dimension.getFullName
     public static boolean isVariableAccepted(
@@ -737,18 +723,14 @@ public class NetCDFUtilities {
     }
 
     @SuppressWarnings("deprecation") // no Alternative for Dimension.getFullName
-    private static Variable getAuxiliaryCoordinate(
-            NetcdfDataset dataset, Group group, Variable var, String dimName) {
+    private static Variable getAuxiliaryCoordinate(NetcdfDataset dataset, Group group, Variable var, String dimName) {
         Variable coordinateVariable = null;
         Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
         if (attribute != null) {
             String coordinates = attribute.getStringValue();
             String[] coords = coordinates.split(" ");
             for (String coord : coords) {
-                Variable coordVar =
-                        group == null
-                                ? dataset.findVariable(coord)
-                                : group.findVariableLocal(coord);
+                Variable coordVar = group == null ? dataset.findVariable(coord) : group.findVariableLocal(coord);
                 List<Dimension> varDimensions = coordVar.getDimensions();
                 if (varDimensions != null
                         && varDimensions.size() == 1
@@ -762,8 +744,8 @@ public class NetCDFUtilities {
     }
 
     /**
-     * NetCDF files may contain a wide set of coverageDescriptorsCache. Some of them are unuseful
-     * for our purposes. The method returns {@code true} if the specified variable is accepted.
+     * NetCDF files may contain a wide set of coverageDescriptorsCache. Some of them are unuseful for our purposes. The
+     * method returns {@code true} if the specified variable is accepted.
      */
     public static boolean isVariableAccepted(final String name, final CheckType checkType) {
         if (checkType == CheckType.NONE) {
@@ -856,8 +838,7 @@ public class NetCDFUtilities {
                     return FileFormat.FC;
                 }
             } catch (XMLStreamException | FactoryConfigurationError e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             } finally {
                 if (reader != null) {
                     if (streamSource.getInputStream() != null) {
@@ -1005,28 +986,27 @@ public class NetCDFUtilities {
     }
 
     /**
-     * Returns a format to use for parsing values along the specified axis type. This method is
-     * invoked when parsing the date part of axis units like "<cite>days since 1990-01-01
-     * 00:00:00</cite>". Subclasses should override this method if the date part is formatted in a
-     * different way. The default implementation returns the following formats:
+     * Returns a format to use for parsing values along the specified axis type. This method is invoked when parsing the
+     * date part of axis units like "<cite>days since 1990-01-01 00:00:00</cite>". Subclasses should override this
+     * method if the date part is formatted in a different way. The default implementation returns the following
+     * formats:
      *
      * <p>
      *
      * <ul>
-     *   <li>For {@linkplain AxisType#Time time axis}, a {@link DateFormat} using the {@code
-     *       "yyyy-MM-dd HH:mm:ss"} pattern in UTC {@linkplain TimeZone timezone}.
+     *   <li>For {@linkplain AxisType#Time time axis}, a {@link DateFormat} using the {@code "yyyy-MM-dd HH:mm:ss"}
+     *       pattern in UTC {@linkplain TimeZone timezone}.
      *   <li>For all other kind of axis, a {@link NumberFormat}.
      * </ul>
      *
-     * <p>The {@linkplain Locale#ENGLISH English locale} is used by default for most formats because
-     * it is relatively close to ISO (for example regarding days and months order in dates) while
-     * using the English symbols.
+     * <p>The {@linkplain Locale#ENGLISH English locale} is used by default for most formats because it is relatively
+     * close to ISO (for example regarding days and months order in dates) while using the English symbols.
      *
      * @param type The type of the axis.
-     * @param prototype An example of the values to be parsed. Implementations may parse this
-     *     prototype when the axis type alone is not sufficient. For example the {@linkplain
-     *     AxisType#Time time axis type} should uses the {@code "yyyy-MM-dd"} date pattern, but some
-     *     files do not follow this convention and use the default local instead.
+     * @param prototype An example of the values to be parsed. Implementations may parse this prototype when the axis
+     *     type alone is not sufficient. For example the {@linkplain AxisType#Time time axis type} should uses the
+     *     {@code "yyyy-MM-dd"} date pattern, but some files do not follow this convention and use the default local
+     *     instead.
      * @return The format for parsing values along the axis.
      */
     public static Format getAxisFormat(final AxisType type, final String prototype) {
@@ -1098,9 +1078,7 @@ public class NetCDFUtilities {
         }
         String pattern = null;
         if (yearLast) {
-            pattern =
-                    (monthFirst ? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-"))
-                            + (twoDigitYear ? "yy" : "yyyy");
+            pattern = (monthFirst ? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-")) + (twoDigitYear ? "yy" : "yyyy");
         } else {
             pattern = (twoDigitYear ? "yy-" : "yyyy-") + (namedMonth ? "MMM-" : "MM-") + "dd";
             if (dateLength < pattern.length()) {
@@ -1123,11 +1101,10 @@ public class NetCDFUtilities {
     }
 
     /**
-     * Depending on the type of model/netcdf file, we will check for the presence of some
-     * coverageDescriptorsCache rather than some others. The method returns the type of check on
-     * which we need to leverage to restrict the set of interesting coverageDescriptorsCache. The
-     * method will check for some KEY/FLAGS/ATTRIBUTES within the input dataset in order to define
-     * the proper check type to be performed.
+     * Depending on the type of model/netcdf file, we will check for the presence of some coverageDescriptorsCache
+     * rather than some others. The method returns the type of check on which we need to leverage to restrict the set of
+     * interesting coverageDescriptorsCache. The method will check for some KEY/FLAGS/ATTRIBUTES within the input
+     * dataset in order to define the proper check type to be performed.
      *
      * @param dataset the input dataset.
      * @return the proper {@link CheckType} to be performed on the specified dataset.
@@ -1145,16 +1122,13 @@ public class NetCDFUtilities {
             String schemaName, String schemaDef, CoordinateReferenceSystem crs) {
         SimpleFeatureType indexSchema = null;
         if (schemaDef == null) {
-            throw new IllegalArgumentException(
-                    "Unable to create feature type from null definition!");
+            throw new IllegalArgumentException("Unable to create feature type from null definition!");
         }
         schemaDef = schemaDef.trim();
         // get the schema
         try {
             indexSchema = DataUtilities.createType(schemaName, schemaDef);
-            indexSchema =
-                    DataUtilities.createSubType(
-                            indexSchema, DataUtilities.attributeNames(indexSchema), crs);
+            indexSchema = DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), crs);
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             indexSchema = null;
@@ -1181,10 +1155,7 @@ public class NetCDFUtilities {
         return UNSUPPORTED_DIMENSIONS;
     }
 
-    /**
-     * @return an unmodifiable Set of the Dimensions to be ignored by the Coordinate parsing
-     *     machinery
-     */
+    /** @return an unmodifiable Set of the Dimensions to be ignored by the Coordinate parsing machinery */
     public static Set<String> getIgnoredDimensions() {
         return Collections.unmodifiableSet(IGNORED_DIMENSIONS);
     }
@@ -1210,8 +1181,7 @@ public class NetCDFUtilities {
             while (attributes.hasNext()) {
                 Attribute attribute = attributes.next();
                 fullName = attribute.getFullName();
-                if (fullName.equalsIgnoreCase(FILL_VALUE)
-                        || fullName.equalsIgnoreCase(MISSING_VALUE)) {
+                if (fullName.equalsIgnoreCase(FILL_VALUE) || fullName.equalsIgnoreCase(MISSING_VALUE)) {
                     return attribute.getNumericValue();
                 }
             }
@@ -1307,10 +1277,7 @@ public class NetCDFUtilities {
         }
     }
 
-    /**
-     * Return true in case that dataType refers to something which need to be handled as a Time
-     * (TimeStamp, Date)
-     */
+    /** Return true in case that dataType refers to something which need to be handled as a Time (TimeStamp, Date) */
     public static final boolean isATime(String classDataType) {
         return (classDataType.endsWith("Timestamp") || classDataType.endsWith("Date"));
     }
@@ -1357,8 +1324,8 @@ public class NetCDFUtilities {
     }
 
     /**
-     * Default parameter behavior properties TODO: better way of handling configuration settings,
-     * such as read parameters.
+     * Default parameter behavior properties TODO: better way of handling configuration settings, such as read
+     * parameters.
      */
     public static final String PARAMS_MAX_KEY = "org.geotools.coverage.io.netcdf.param.max";
 
@@ -1426,8 +1393,8 @@ public class NetCDFUtilities {
     }
 
     /**
-     * Clear all the internal caches. Call this method if the datastore config has been updated or
-     * the NetCDF XML file has been modified.
+     * Clear all the internal caches. Call this method if the datastore config has been updated or the NetCDF XML file
+     * has been modified.
      */
     public static void clearCaches() {
         clearCache();

@@ -39,8 +39,8 @@ abstract class GlyphVectorProcessor {
     }
 
     /**
-     * Whether this glyph processor supports multiple lines of text, or if the processing should
-     * stop at the first line. Defaults to true.
+     * Whether this glyph processor supports multiple lines of text, or if the processing should stop at the first line.
+     * Defaults to true.
      */
     public boolean supportsMultLine() {
         return true;
@@ -71,8 +71,7 @@ abstract class GlyphVectorProcessor {
     }
 
     /**
-     * Create a Straight GlyphVectorProcessor, pre-compute the affine transforms for each glyph
-     * along a straight line.
+     * Create a Straight GlyphVectorProcessor, pre-compute the affine transforms for each glyph along a straight line.
      */
     public static class Straight extends GlyphVectorProcessor {
 
@@ -92,10 +91,9 @@ abstract class GlyphVectorProcessor {
     }
 
     /**
-     * Create a Curved GlyphVectorProcessor, pre-compute the affine transforms for each glyph along
-     * a curved line. Does not consider letter orientation (only letter position). (taken from
-     * LabelPainter#paintCurvedLabel). Also, currenclty does not support multiple lines of text, but
-     * a simple single sentence along a line.
+     * Create a Curved GlyphVectorProcessor, pre-compute the affine transforms for each glyph along a curved line. Does
+     * not consider letter orientation (only letter position). (taken from LabelPainter#paintCurvedLabel). Also,
+     * currenclty does not support multiple lines of text, but a simple single sentence along a line.
      */
     public static class Curved extends GlyphVectorProcessor {
 
@@ -137,9 +135,7 @@ abstract class GlyphVectorProcessor {
                         Point2D p = gv.getGlyphPosition(i);
                         float advance = nextAdvance;
                         nextAdvance =
-                                i < numGlyphs - 1
-                                        ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f
-                                        : 0;
+                                i < numGlyphs - 1 ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f : 0;
                         c = cursor.getCurrentPosition(c);
                         AffineTransform t = new AffineTransform();
                         t.setToTranslation(c.x, c.y);

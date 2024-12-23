@@ -34,15 +34,14 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
- * Scans for all available URLChecker implementations, allows to register new ones, and provides a
- * convenient method to apply them on a given location.
+ * Scans for all available URLChecker implementations, allows to register new ones, and provides a convenient method to
+ * apply them on a given location.
  */
 public class URLCheckers {
     protected static final Logger LOGGER = Logging.getLogger(URLCheckers.class);
 
     /** Regular expression to find escaped periods/slashes in the URI before the query/fragment. */
-    private static final Pattern ILLEGAL_ESCAPES =
-            Pattern.compile("^[^?#]*%2[ef].*$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ILLEGAL_ESCAPES = Pattern.compile("^[^?#]*%2[ef].*$", Pattern.CASE_INSENSITIVE);
 
     /** The service registry for {@link URLCheckers}. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
@@ -67,18 +66,17 @@ public class URLCheckers {
     }
 
     /**
-     * Dynamically register a new URLChecker. The operation removes all instances of the same
-     * classes already present in the registry, if multiple instances are needed, one can use
-     * subclasses (eventually, anonymous inner classes) so that the instances are not sharing
-     * exactly the same class.
+     * Dynamically register a new URLChecker. The operation removes all instances of the same classes already present in
+     * the registry, if multiple instances are needed, one can use subclasses (eventually, anonymous inner classes) so
+     * that the instances are not sharing exactly the same class.
      */
     public static void register(URLChecker checker) {
         getServiceRegistry().registerFactory(checker, URLChecker.class);
     }
 
     /**
-     * Dynamically removes a new URLChecker, that might have been registered using the {@link
-     * #register(URLChecker)} method.
+     * Dynamically removes a new URLChecker, that might have been registered using the {@link #register(URLChecker)}
+     * method.
      */
     public static void deregister(URLChecker checker) {
         getServiceRegistry().deregisterFactory(checker, URLChecker.class);
@@ -113,22 +111,19 @@ public class URLCheckers {
     }
 
     /**
-     * Normalize location removing current directory {@code .} and parent directory {@code ..}
-     * names.
+     * Normalize location removing current directory {@code .} and parent directory {@code ..} names.
      *
-     * <p>Normalization uses {@link URI#normalize()} for URI and URL locations. Path locations are
-     * normalized using {@link Path#normalize()}.
+     * <p>Normalization uses {@link URI#normalize()} for URI and URL locations. Path locations are normalized using
+     * {@link Path#normalize()}.
      *
-     * <p>This normalization method forces empty hostname {@code file:///path} representation to
-     * provide a consistent location to check. RFC 8089 supports both empty hostname {@code
-     * file:///path} and {@code file:/path} no hostname as references to the same absolute path.
+     * <p>This normalization method forces empty hostname {@code file:///path} representation to provide a consistent
+     * location to check. RFC 8089 supports both empty hostname {@code file:///path} and {@code file:/path} no hostname
+     * as references to the same absolute path.
      *
-     * <p>Keep in mind that file paths are standardized to {@code /} on linux and {@code \\} on
-     * windows.
+     * <p>Keep in mind that file paths are standardized to {@code /} on linux and {@code \\} on windows.
      *
      * @param location String(URI/URI/path)
-     * @return normalized location, removing redundant {@code .} and {@code ..} path names if
-     *     required
+     * @return normalized location, removing redundant {@code .} and {@code ..} path names if required
      */
     public static String normalize(String location) {
         if (location.indexOf('.') == -1) {
@@ -142,15 +137,14 @@ public class URLCheckers {
                 if (normal.getScheme().equalsIgnoreCase("file") && normal.getHost() == null) {
                     // Standardize on empty hostname representation supported by RFC 8089
                     // Although file:/path is valid normalize as file:///path representation
-                    normal =
-                            new URI(
-                                    normal.getScheme(),
-                                    normal.getUserInfo(),
-                                    "",
-                                    normal.getPort(),
-                                    normal.getPath(),
-                                    normal.getQuery(),
-                                    normal.getFragment());
+                    normal = new URI(
+                            normal.getScheme(),
+                            normal.getUserInfo(),
+                            "",
+                            normal.getPort(),
+                            normal.getPath(),
+                            normal.getQuery(),
+                            normal.getFragment());
                 }
                 return normal.toString();
             } catch (URISyntaxException e) {
@@ -180,8 +174,7 @@ public class URLCheckers {
     /**
      * Confirm the location against all enabled URLChecker.
      *
-     * @param location String(URI/URI/path) to be normalized and evaluated using all available
-     *     URLCheckers
+     * @param location String(URI/URI/path) to be normalized and evaluated using all available URLCheckers
      * @throws URLCheckerException if the location is not allowed for use
      */
     public static void confirm(String location) throws URLCheckerException {
@@ -208,7 +201,6 @@ public class URLCheckers {
             if (urlChecker.confirm(normalized)) return;
         }
         // no URLChecker evaluated the passed URL/URI/Path
-        throw new URLCheckerException(
-                "Evaluation Failure: '" + location + "' was not accepted by external URL checks");
+        throw new URLCheckerException("Evaluation Failure: '" + location + "' was not accepted by external URL checks");
     }
 }

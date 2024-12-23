@@ -37,8 +37,7 @@ public final class ReprojectFeatureReaderTest {
     @Test
     public void testReprojectWithUserData() throws Exception {
         // create a feature collection wit a single feature
-        SimpleFeatureType featureType =
-                DataUtilities.createType("feature", "id:string,geometry:Point:srid=4326");
+        SimpleFeatureType featureType = DataUtilities.createType("feature", "id:string,geometry:Point:srid=4326");
         SimpleFeature feature = DataUtilities.createFeature(featureType, "1|POINT(1 2)");
         ListFeatureCollection features = new ListFeatureCollection(featureType);
         features.add(feature);
@@ -49,8 +48,7 @@ public final class ReprojectFeatureReaderTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader((SimpleFeatureCollection) features);
         int featuresCount = 0;
-        try (ReprojectFeatureReader reprojected =
-                new ReprojectFeatureReader(reader, sphericalMercator)) {
+        try (ReprojectFeatureReader reprojected = new ReprojectFeatureReader(reader, sphericalMercator)) {
             // check that the feature was correctly reprojected
             SimpleFeature reprojectedFeature = reprojected.next();
             assertThat(reprojectedFeature, notNullValue());

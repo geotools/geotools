@@ -64,28 +64,23 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * A Testing class involving footprint and transparency settings together with SLD, making sure that
- * transparency is preserved.
+ * A Testing class involving footprint and transparency settings together with SLD, making sure that transparency is
+ * preserved.
  */
 public class TransparencyStyledTest {
 
-    private static final StyleFactory SF =
-            CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+    private static final StyleFactory SF = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
-    private GridCoverage2D readCoverage(
-            File mosaicDirectory, FootprintBehavior fp, Color transparentColor)
+    private GridCoverage2D readCoverage(File mosaicDirectory, FootprintBehavior fp, Color transparentColor)
             throws NoSuchAuthorityCodeException, FactoryException, IOException {
 
-        ImageMosaicReader reader =
-                (ImageMosaicReader)
-                        new ImageMosaicFormatFactory().createFormat().getReader(mosaicDirectory);
+        ImageMosaicReader reader = (ImageMosaicReader)
+                new ImageMosaicFormatFactory().createFormat().getReader(mosaicDirectory);
 
-        ParameterValue<String> footprintBehaviorParam =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintBehaviorParam = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintBehaviorParam.setValue(fp.name());
 
-        ParameterValue<Color> inputTransparentColor =
-                AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
         inputTransparentColor.setValue(transparentColor);
 
         GeneralParameterValue[] readParams = {footprintBehaviorParam, inputTransparentColor};
@@ -121,8 +116,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement
-     * style to an imageMosaic with Transparent Footprint setting.
+     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement style to an imageMosaic
+     * with Transparent Footprint setting.
      */
     @Test
     public void testTransparentFootprintWithContrastEnhancementInChannelSelect()
@@ -158,8 +153,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement
-     * style to an imageMosaic with transparent color being set
+     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement style to an imageMosaic
+     * with transparent color being set
      */
     @Test
     public void testTransparentColorWithContrastEnhancementInChannelSelect()
@@ -195,8 +190,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement
-     * style to an imageMosaic with transparent color being set
+     * Test transparency is preserved when applying an RGB ChannelSelect and ContrastEnhancement style to an imageMosaic
+     * with transparent color being set
      */
     @Test
     public void testRGBAWithContrastEnhancementInChannelSelect()
@@ -215,8 +210,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying a ChannelSelect style to an imageMosaic with
-     * Transparent Footprint setting.
+     * Test transparency is preserved when applying a ChannelSelect style to an imageMosaic with Transparent Footprint
+     * setting.
      */
     @Test
     public void testTransparentFootprintWithChannelSelectRGB()
@@ -232,8 +227,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying a ChannelSelect style to an imageMosaic with
-     * Transparent color being set.
+     * Test transparency is preserved when applying a ChannelSelect style to an imageMosaic with Transparent color being
+     * set.
      */
     @Test
     public void testTransparentColorWithChannelSelectRGB()
@@ -249,8 +244,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying a ChannelSelect and Colormap style to an
-     * imageMosaic with Transparent Footprint setting.
+     * Test transparency is preserved when applying a ChannelSelect and Colormap style to an imageMosaic with
+     * Transparent Footprint setting.
      */
     @Test
     public void testTransparentFootprintWithChannelSelectColormap()
@@ -267,8 +262,8 @@ public class TransparencyStyledTest {
     }
 
     /**
-     * Test transparency is preserved when applying a ChannelSelect (Gray) style to an imageMosaic
-     * with Transparent Footprint setting.
+     * Test transparency is preserved when applying a ChannelSelect (Gray) style to an imageMosaic with Transparent
+     * Footprint setting.
      */
     @Test
     public void testTransparentFootprintWithChannelSelectGray()

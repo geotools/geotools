@@ -28,8 +28,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
 /**
- * An abstract implementation for CalcResults. Each subclass should implement its own getValue(),
- * merge(), and constructor methods.
+ * An abstract implementation for CalcResults. Each subclass should implement its own getValue(), merge(), and
+ * constructor methods.
  *
  * @author Cory Horner, Refractions
  * @since 2.2.M2
@@ -48,9 +48,8 @@ public class AbstractCalcResult implements CalcResult {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");
             } else {
-                throw new IllegalArgumentException(
-                        "The CalcResults claim to be compatible, but the appropriate merge "
-                                + "method has not been implemented.");
+                throw new IllegalArgumentException("The CalcResults claim to be compatible, but the appropriate merge "
+                        + "method has not been implemented.");
             }
         }
     }

@@ -31,12 +31,10 @@ import org.w3c.dom.Document;
 /**
  * This is a simple support class which allows you to generate an SVG file from a map.
  *
- * <p>To use, setup a Map object with the layers you want to render, create an envelope for the
- * region to be drawn and pass in an OutputStream (probably attached to a new file) for the
- * resulting SVG information to be stored in.
+ * <p>To use, setup a Map object with the layers you want to render, create an envelope for the region to be drawn and
+ * pass in an OutputStream (probably attached to a new file) for the resulting SVG information to be stored in.
  *
- * <p>Optional you can change the default size of the SVG canvas (in effect increasing the
- * resolution).
+ * <p>Optional you can change the default size of the SVG canvas (in effect increasing the resolution).
  *
  * @author James Macgill, PennState
  * @version 2.8
@@ -46,8 +44,8 @@ public class GenerateSVG {
 
     // exportSVG start
     /**
-     * Generate an SVG document from the supplied information. Note, use cavasSize first if you want
-     * to change the default output size.
+     * Generate an SVG document from the supplied information. Note, use cavasSize first if you want to change the
+     * default output size.
      *
      * @param map Contains the layers (features + styles) to be rendered
      * @param env The portion of the map to generate an SVG from
@@ -56,8 +54,7 @@ public class GenerateSVG {
      * @throws IOException Should anything go wrong whilst writing to 'out'
      * @throws ParserConfigurationException If critical XML tools are missing from the classpath
      */
-    public static void exportSVG(
-            MapContent map, ReferencedEnvelope env, OutputStream out, Dimension canvasSize)
+    public static void exportSVG(MapContent map, ReferencedEnvelope env, OutputStream out, Dimension canvasSize)
             throws IOException, ParserConfigurationException {
         if (canvasSize == null) {
             canvasSize = new Dimension(300, 300); // default of 300x300

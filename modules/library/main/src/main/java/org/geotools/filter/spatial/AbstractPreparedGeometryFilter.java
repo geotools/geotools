@@ -106,12 +106,8 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
         BOTH;
 
         private static Literals calculate(Expression expression1, Expression expression2) {
-            boolean left =
-                    expression1 instanceof Literal
-                            && ((Literal) expression1).getValue() instanceof Geometry;
-            boolean right =
-                    expression2 instanceof Literal
-                            && ((Literal) expression2).getValue() instanceof Geometry;
+            boolean left = expression1 instanceof Literal && ((Literal) expression1).getValue() instanceof Geometry;
+            boolean right = expression2 instanceof Literal && ((Literal) expression2).getValue() instanceof Geometry;
             if (left && right) {
                 return BOTH;
             }
@@ -129,19 +125,13 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
 
     /** Indicates which expressions are {@link Literal}s */
     protected Literals literals;
-    /**
-     * The PreparedGeometry for the left Geometry. Null if the left geometry is not a {@link
-     * Literal}
-     */
+    /** The PreparedGeometry for the left Geometry. Null if the left geometry is not a {@link Literal} */
     protected PreparedGeometry leftPreppedGeom;
-    /**
-     * The PreparedGeometry for the right Geometry. Null if the right geometry is not a {@link
-     * Literal}
-     */
+    /** The PreparedGeometry for the right Geometry. Null if the right geometry is not a {@link Literal} */
     protected PreparedGeometry rightPreppedGeom;
     /**
-     * If both expressions are literals the value will never change. In that case this field is that
-     * calculated value. It is false otherwise.
+     * If both expressions are literals the value will never change. In that case this field is that calculated value.
+     * It is false otherwise.
      */
     protected boolean cacheValue;
 
@@ -152,8 +142,7 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
         if (e2 != null) setExpression2(e2);
     }
 
-    protected AbstractPreparedGeometryFilter(
-            Expression e1, Expression e2, MatchAction matchAction) {
+    protected AbstractPreparedGeometryFilter(Expression e1, Expression e2, MatchAction matchAction) {
         super(e1, e2, matchAction);
         pGeomFac = new PreparedGeometryFactory();
         if (e1 != null) setExpression1(e1);
@@ -167,35 +156,31 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
         }
         literals = Literals.calculate(expression1, expression2);
         switch (literals) {
-            case BOTH:
-                {
-                    Geometry left = (Geometry) ((Literal) expression1).getValue();
-                    Geometry right = (Geometry) ((Literal) expression2).getValue();
-                    cacheValue = basicEvaluate(left, right);
-                    leftPreppedGeom = rightPreppedGeom = null;
-                    break;
-                }
-            case LEFT:
-                {
-                    Geometry left = (Geometry) ((Literal) expression1).getValue();
-                    leftPreppedGeom = pGeomFac.create(left);
-                    rightPreppedGeom = null;
-                    cacheValue = false;
-                    break;
-                }
-            case RIGHT:
-                {
-                    Geometry right = (Geometry) ((Literal) expression2).getValue();
-                    rightPreppedGeom = pGeomFac.create(right);
-                    leftPreppedGeom = null;
-                    cacheValue = false;
-                    break;
-                }
-            default:
-                {
-                    leftPreppedGeom = rightPreppedGeom = null;
-                    cacheValue = false;
-                }
+            case BOTH: {
+                Geometry left = (Geometry) ((Literal) expression1).getValue();
+                Geometry right = (Geometry) ((Literal) expression2).getValue();
+                cacheValue = basicEvaluate(left, right);
+                leftPreppedGeom = rightPreppedGeom = null;
+                break;
+            }
+            case LEFT: {
+                Geometry left = (Geometry) ((Literal) expression1).getValue();
+                leftPreppedGeom = pGeomFac.create(left);
+                rightPreppedGeom = null;
+                cacheValue = false;
+                break;
+            }
+            case RIGHT: {
+                Geometry right = (Geometry) ((Literal) expression2).getValue();
+                rightPreppedGeom = pGeomFac.create(right);
+                leftPreppedGeom = null;
+                cacheValue = false;
+                break;
+            }
+            default: {
+                leftPreppedGeom = rightPreppedGeom = null;
+                cacheValue = false;
+            }
         }
     }
 
@@ -212,14 +197,11 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
     }
 
     /**
-     * Performs the calculation on the two geometries. This is used to calculate the cached value in
-     * the case that both geometries are Literals. But in practice it is useful to extract this
-     * functionality into its own method.
+     * Performs the calculation on the two geometries. This is used to calculate the cached value in the case that both
+     * geometries are Literals. But in practice it is useful to extract this functionality into its own method.
      *
-     * @param left the geometry on the left of the equations (the geometry obtained from evaluating
-     *     Expression1)
-     * @param right the geometry on the right of the equations (the geometry obtained from
-     *     evaluating Expression2)
+     * @param left the geometry on the left of the equations (the geometry obtained from evaluating Expression1)
+     * @param right the geometry on the right of the equations (the geometry obtained from evaluating Expression2)
      * @return true if the filter evaluates to true for the two geometries
      */
     protected abstract boolean basicEvaluate(Geometry left, Geometry right);

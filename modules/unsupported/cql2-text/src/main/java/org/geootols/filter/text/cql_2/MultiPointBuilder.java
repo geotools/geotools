@@ -25,8 +25,8 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 
 /**
- * Builds a {@link MultiPoint} using the points made in previous steps of parsing process. Copied
- * from gt-cql, should be removed once the modules * are merged.
+ * Builds a {@link MultiPoint} using the points made in previous steps of parsing process. Copied from gt-cql, should be
+ * removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

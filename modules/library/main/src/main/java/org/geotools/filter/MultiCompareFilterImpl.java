@@ -46,8 +46,7 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         this.matchAction = matchAction;
     }
 
-    protected MultiCompareFilterImpl(
-            Expression e1, Expression e2, boolean matchCase, MatchAction matchAction) {
+    protected MultiCompareFilterImpl(Expression e1, Expression e2, boolean matchCase, MatchAction matchAction) {
         super(e1, e2, matchCase);
         this.matchAction = matchAction;
     }
@@ -83,13 +82,9 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         }
 
         Collection<Object> leftValues =
-                collection1 instanceof Collection
-                        ? collection1
-                        : Collections.singletonList(object1);
+                collection1 instanceof Collection ? collection1 : Collections.singletonList(object1);
         Collection<Object> rightValues =
-                collection2 instanceof Collection
-                        ? collection2
-                        : Collections.singletonList(object2);
+                collection2 instanceof Collection ? collection2 : Collections.singletonList(object2);
 
         int count = 0;
 

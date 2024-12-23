@@ -43,26 +43,23 @@ import org.geotools.util.logging.Logging;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 /**
- * Connection to the EPSG database in HSQL database engine format using JDBC. The EPSG database can
- * be downloaded from <A HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts
- * (modified for the HSQL syntax as <A HREF="doc-files/HSQL.html">explained here</A>) are bundled
- * into this plugin. The database version is given in the {@linkplain
- * org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
- * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The HSQL database is read
- * only.
+ * Connection to the EPSG database in HSQL database engine format using JDBC. The EPSG database can be downloaded from
+ * <A HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts (modified for the HSQL syntax as <A
+ * HREF="doc-files/HSQL.html">explained here</A>) are bundled into this plugin. The database version is given in the
+ * {@linkplain org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the
+ * {@linkplain org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The HSQL database is read only.
  *
  * <p>
  *
  * <H3>Implementation note</H3>
  *
- * The SQL scripts are executed the first time a connection is required. The database is then
- * created as cached tables ({@code HSQL.properties} and {@code HSQL.data} files) in a temporary
- * directory. Future connections to the EPSG database while reuse the cached tables, if available.
- * Otherwise, the scripts will be executed again in order to recreate them.
+ * The SQL scripts are executed the first time a connection is required. The database is then created as cached tables
+ * ({@code HSQL.properties} and {@code HSQL.data} files) in a temporary directory. Future connections to the EPSG
+ * database while reuse the cached tables, if available. Otherwise, the scripts will be executed again in order to
+ * recreate them.
  *
- * <p>If the EPSG database should be created in a different directory (or already exists in that
- * directory), it may be specified as a {@linkplain System#getProperty(String) system property}
- * nammed {@value #DIRECTORY_KEY}.
+ * <p>If the EPSG database should be created in a different directory (or already exists in that directory), it may be
+ * specified as a {@linkplain System#getProperty(String) system property} nammed {@value #DIRECTORY_KEY}.
  *
  * @since 2.4
  * @version $Id$
@@ -72,18 +69,14 @@ import org.hsqldb.jdbc.JDBCDataSource;
 public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
     public static final Logger LOGGER = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
     /**
-     * Current version of EPSG-HSQL plugin. This is usually the same version number than the one in
-     * the EPSG database bundled in this plugin. However this field may contains additional minor
-     * version number if there is some changes related to the EPSG-HSQL plugin rather than the EPSG
-     * database itself (for example additional database index).
+     * Current version of EPSG-HSQL plugin. This is usually the same version number than the one in the EPSG database
+     * bundled in this plugin. However this field may contains additional minor version number if there is some changes
+     * related to the EPSG-HSQL plugin rather than the EPSG database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     public static final Version VERSION = new Version("9.6.1");
 
-    /**
-     * The key for fetching the database directory from {@linkplain System#getProperty(String)
-     * system properties}.
-     */
+    /** The key for fetching the database directory from {@linkplain System#getProperty(String) system properties}. */
     public static final String DIRECTORY_KEY = "EPSG-HSQL.directory";
 
     /** The name of the ZIP file to read in order to create the cached database. */
@@ -102,19 +95,19 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
     static final String PREFIX = "jdbc:hsqldb:file:";
 
     /**
-     * Creates a new instance of this factory. If the {@value #DIRECTORY_KEY} {@linkplain
-     * System#getProperty(String) system property} is defined and contains the name of a directory
-     * with a valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME} database
-     * will be saved in that directory. Otherwise, a temporary directory will be used.
+     * Creates a new instance of this factory. If the {@value #DIRECTORY_KEY} {@linkplain System#getProperty(String)
+     * system property} is defined and contains the name of a directory with a valid {@linkplain File#getParent parent},
+     * then the {@value #DATABASE_NAME} database will be saved in that directory. Otherwise, a temporary directory will
+     * be used.
      */
     public ThreadedHsqlEpsgFactory() {
         this(null);
     }
 
     /**
-     * Creates a new instance of this data source using the specified hints. The priority is set to
-     * a lower value than the {@linkplain FactoryOnAccess}'s one in order to give precedence to the
-     * Access-backed database, if presents. Priorities are set that way because:
+     * Creates a new instance of this data source using the specified hints. The priority is set to a lower value than
+     * the {@linkplain FactoryOnAccess}'s one in order to give precedence to the Access-backed database, if presents.
+     * Priorities are set that way because:
      *
      * <ul>
      *   <li>The MS-Access format is the primary EPSG database format.
@@ -127,9 +120,9 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
 
     /**
      * Returns the default directory for the EPSG database. If the {@value #DIRECTORY_KEY}
-     * {@linkplain System#getProperty(String) system property} is defined and contains the name of a
-     * directory with a valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME}
-     * database will be saved in that directory. Otherwise, a temporary directory will be used.
+     * {@linkplain System#getProperty(String) system property} is defined and contains the name of a directory with a
+     * valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME} database will be saved in that
+     * directory. Otherwise, a temporary directory will be used.
      */
     private static File getDirectory() {
         try {
@@ -168,10 +161,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         return null;
     }
 
-    /**
-     * Extract the directory from the specified data source, or {@code null} if this information is
-     * not available.
-     */
+    /** Extract the directory from the specified data source, or {@code null} if this information is not available. */
     private static File getDirectory(final DataSource source) {
         if (source instanceof JDBCDataSource) {
             String path = ((JDBCDataSource) source).getDatabase();
@@ -224,8 +214,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
     }
 
     /**
-     * Returns {@code true} if the database contains data. This method returns {@code false} if an
-     * empty EPSG database has been automatically created by HSQL and not yet populated.
+     * Returns {@code true} if the database contains data. This method returns {@code false} if an empty EPSG database
+     * has been automatically created by HSQL and not yet populated.
      */
     private static boolean dataExists(File directory) throws SQLException {
         // check if the marker file is there, and all the other database files as well
@@ -237,8 +227,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
     }
 
     /**
-     * Returns the backing-store factory for HSQL syntax. If the cached tables are not available,
-     * they will be created now from the SQL scripts bundled in this plugin.
+     * Returns the backing-store factory for HSQL syntax. If the cached tables are not available, they will be created
+     * now from the SQL scripts bundled in this plugin.
      *
      * @param hints A map of hints, including the low-level factories to use for CRS creation.
      * @return The EPSG factory using HSQL syntax.
@@ -268,29 +258,23 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                      * INTO" statements using Compactor class in this package.
                      */
                     final LogRecord record =
-                            Loggings.format(
-                                    Level.FINE,
-                                    LoggingKeys.CREATING_CACHED_EPSG_DATABASE_$1,
-                                    VERSION);
+                            Loggings.format(Level.FINE, LoggingKeys.CREATING_CACHED_EPSG_DATABASE_$1, VERSION);
                     record.setLoggerName(logger.getName());
                     logger.log(record);
 
                     ZipInputStream zin =
-                            new ZipInputStream(
-                                    ThreadedHsqlEpsgFactory.class.getResourceAsStream(ZIP_FILE));
+                            new ZipInputStream(ThreadedHsqlEpsgFactory.class.getResourceAsStream(ZIP_FILE));
                     ZipEntry ze = null;
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
                         try {
-                            Utilities.assertNotZipSlipVulnarable(
-                                    new File(directory, ze.getName()), directory.toPath());
+                            Utilities.assertNotZipSlipVulnarable(new File(directory, ze.getName()), directory.toPath());
                         } catch (IOException zipSlipVulnerable) {
                             // check not expected to work when running as a windows service
                             LOGGER.fine("Expected Reference to internal jar:" + zipSlipVulnerable);
                         }
-                        FileOutputStream fout =
-                                new FileOutputStream(new File(directory, ze.getName()));
+                        FileOutputStream fout = new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {
                             fout.write(buf, 0, read);
                         }
@@ -303,10 +287,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     new File(directory, MARKER_FILE).createNewFile();
                 }
             } catch (IOException exception) {
-                SQLException e =
-                        new SQLException(MessageFormat.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
-                e.initCause(
-                        exception); // TODO: inline cause when we will be allowed to target Java 6.
+                SQLException e = new SQLException(MessageFormat.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
+                e.initCause(exception); // TODO: inline cause when we will be allowed to target Java 6.
                 throw e;
             } finally {
                 if (lock != null) {
@@ -320,18 +302,17 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                 }
             }
         }
-        FactoryUsingHSQL factory =
-                new FactoryUsingHSQL(hints, getDataSource()) {
-                    @Override
-                    protected void shutdown(boolean active) throws SQLException {
-                        // Disabled because finalizer shutdown causes concurrent EPSG lookup via
-                        // other FactoryUsingHSQL instances using the same database URL and thus
-                        // the same org.hsqldb.Database instance to fail in, for example,
-                        // GeoServer gs-main unit tests.
-                        // Note that createDataSource() opens the database with "shutdown=true"
-                        // so the database will be shutdown when the last session is closed.
-                    }
-                };
+        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource()) {
+            @Override
+            protected void shutdown(boolean active) throws SQLException {
+                // Disabled because finalizer shutdown causes concurrent EPSG lookup via
+                // other FactoryUsingHSQL instances using the same database URL and thus
+                // the same org.hsqldb.Database instance to fail in, for example,
+                // GeoServer gs-main unit tests.
+                // Note that createDataSource() opens the database with "shutdown=true"
+                // so the database will be shutdown when the last session is closed.
+            }
+        };
         factory.setValidationQuery("CALL NOW()");
         return factory;
     }

@@ -13,8 +13,8 @@ import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * An symbolizer interface for all unnormalized symbolizers, This interface should be used for
- * vendor specific symbolizers.
+ * An symbolizer interface for all unnormalized symbolizers, This interface should be used for vendor specific
+ * symbolizers.
  *
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

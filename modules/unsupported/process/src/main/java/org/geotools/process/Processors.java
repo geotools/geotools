@@ -31,11 +31,9 @@ import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
 
 /**
- * Factory and utility methods for {@link ProcessExecutor}, and {@link Process} classes defined in
- * this package.
+ * Factory and utility methods for {@link ProcessExecutor}, and {@link Process} classes defined in this package.
  *
- * <p>Defines static methods used to access the application's default process factory
- * implementations.
+ * <p>Defines static methods used to access the application's default process factory implementations.
  *
  * @author gdavis
  */
@@ -48,10 +46,7 @@ public class Processors extends FactoryFinder {
         // singleton
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         synchronized (Processors.class) {
             if (registry == null) {
@@ -67,8 +62,8 @@ public class Processors extends FactoryFinder {
     }
 
     /**
-     * Dynamically removes a process factory from SPI. Normally the factory has been added before
-     * via {@link #addProcessFactory(ProcessFactory)}
+     * Dynamically removes a process factory from SPI. Normally the factory has been added before via
+     * {@link #addProcessFactory(ProcessFactory)}
      */
     public static void removeProcessFactory(ProcessFactory factory) {
         if (lastFactory == factory) {
@@ -83,8 +78,7 @@ public class Processors extends FactoryFinder {
      * @return Set of ProcessFactory
      */
     public static Set<ProcessFactory> getProcessFactories() {
-        Stream<ProcessFactory> serviceProviders =
-                getServiceRegistry().getFactories(ProcessFactory.class, null, null);
+        Stream<ProcessFactory> serviceProviders = getServiceRegistry().getFactories(ProcessFactory.class, null, null);
         return new LazySet<>(serviceProviders);
     }
 
@@ -128,8 +122,7 @@ public class Processors extends FactoryFinder {
     }
 
     /**
-     * Look up an implementation of the named process on the classpath and describe the input
-     * parameter required.
+     * Look up an implementation of the named process on the classpath and describe the input parameter required.
      *
      * @param name Name of the Process
      * @return Description of the parameters required
@@ -142,18 +135,16 @@ public class Processors extends FactoryFinder {
     }
 
     /**
-     * Look up an implementation of the named process on the classpath and describe the expected
-     * results.
+     * Look up an implementation of the named process on the classpath and describe the expected results.
      *
-     * <p>Note the expected results are generated in part by the input parameters provided; this is
-     * to allow for processes where the output is controlled by the parameters (such as choosing a
-     * greyscale or color raster product; or choosing the version of GML produced etc...).
+     * <p>Note the expected results are generated in part by the input parameters provided; this is to allow for
+     * processes where the output is controlled by the parameters (such as choosing a greyscale or color raster product;
+     * or choosing the version of GML produced etc...).
      *
      * @param name Name of the Process
      * @return Description of the parameters required
      */
-    public static synchronized Map<String, Parameter<?>> getResultInfo(
-            Name name, Map<String, Object> parameters) {
+    public static synchronized Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters) {
         ProcessFactory factory = createProcessFactory(name);
         if (factory == null) return null;
 
@@ -161,8 +152,7 @@ public class Processors extends FactoryFinder {
     }
 
     /** Used to wrap a Process up as a Callable for use with an existing ExecutorService */
-    public static Callable<Map<String, Object>> createCallable(
-            final Process process, final Map<String, Object> input) {
+    public static Callable<Map<String, Object>> createCallable(final Process process, final Map<String, Object> input) {
         return () -> process.execute(input, new CallableProgressListener());
     }
 
@@ -177,8 +167,8 @@ public class Processors extends FactoryFinder {
     }
 
     /**
-     * Reinitializes all static state, including the ProcessFactory service registry and reference
-     * to the last used ProcessFactory
+     * Reinitializes all static state, including the ProcessFactory service registry and reference to the last used
+     * ProcessFactory
      */
     public static synchronized void reset() {
         if (registry == null) {
@@ -191,8 +181,8 @@ public class Processors extends FactoryFinder {
     }
 
     /**
-     * This progress listener checks if the current Thread is interrupted, it acts as a bridge
-     * between Future and ProgressListener code.
+     * This progress listener checks if the current Thread is interrupted, it acts as a bridge between Future and
+     * ProgressListener code.
      *
      * @author Jody
      */

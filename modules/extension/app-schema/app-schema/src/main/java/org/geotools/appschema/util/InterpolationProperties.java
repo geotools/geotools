@@ -33,19 +33,18 @@ import java.util.regex.Pattern;
 /**
  * Stores properties and provides methods to support interpolation of properties in a file.
  *
- * <p>Interpolation means the substitution of a string of the form ${some.property} with the value
- * of the property called "some.property".
+ * <p>Interpolation means the substitution of a string of the form ${some.property} with the value of the property
+ * called "some.property".
  *
- * <p>Interpolation is performed repeatedly, so can values can contain new interpolations. Infinite
- * loops are supported. This is not a feature.
+ * <p>Interpolation is performed repeatedly, so can values can contain new interpolations. Infinite loops are supported.
+ * This is not a feature.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University of Technology)
  */
 public class InterpolationProperties {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(InterpolationProperties.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(InterpolationProperties.class);
 
     /** Pattern to match a property to be substituted. Note the reluctant quantifier. */
     private static final Pattern PROPERTY_INTERPOLATION_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
@@ -65,21 +64,21 @@ public class InterpolationProperties {
     /**
      * Load properties from a configuration file.
      *
-     * <p>The name of the properties file is constructed by appending ".properties" to the
-     * identifier. If there is a system property with the name of this property file, it is used as
-     * a file to load, otherwise the property file is loaded from the root of the classpath.
+     * <p>The name of the properties file is constructed by appending ".properties" to the identifier. If there is a
+     * system property with the name of this property file, it is used as a file to load, otherwise the property file is
+     * loaded from the root of the classpath.
      *
      * <p>For example, if the identifier is <tt>app-schema</tt>:
      *
      * <ul>
      *   <li>If the system property <tt>app-schema.properties</tt> is set, e.g.
-     *       <tt>-Dapp-schema.properties=/path/to/some/local.properties</tt>, the indicated file, in
-     *       this case <tt>/path/to/some/local.properties</tt>, is loaded.
+     *       <tt>-Dapp-schema.properties=/path/to/some/local.properties</tt>, the indicated file, in this case
+     *       <tt>/path/to/some/local.properties</tt>, is loaded.
      *   <li>Otherwise, the classpath resource <tt>/app-schema.properties</tt> is loaded.
      * </ul>
      *
-     * Before the properties are returned, all system properties are copied; this means that system
-     * properties override any properties in the configuration file.
+     * Before the properties are returned, all system properties are copied; this means that system properties override
+     * any properties in the configuration file.
      *
      * @param identifier string used to construct property file name
      */
@@ -115,11 +114,10 @@ public class InterpolationProperties {
     /**
      * Interpolate all the properties in the input string.
      *
-     * <p>Properties are of the form ${some.property}, for which the value of property
-     * "some.property" is used.
+     * <p>Properties are of the form ${some.property}, for which the value of property "some.property" is used.
      *
-     * <p>It is an error for interpolated properties to not exist. A {@link RuntimeException} is
-     * thrown if the value of a referenced property is null.
+     * <p>It is an error for interpolated properties to not exist. A {@link RuntimeException} is thrown if the value of
+     * a referenced property is null.
      *
      * @param input string on which interpolation is to be performed
      * @return string with all properties expanded
@@ -131,8 +129,7 @@ public class InterpolationProperties {
             String propertyName = matcher.group(1);
             String propertyValue = (String) theProperties.get(propertyName);
             if (propertyValue == null) {
-                throw new RuntimeException(
-                        "Interpolation failed for missing property " + propertyName);
+                throw new RuntimeException("Interpolation failed for missing property " + propertyName);
             } else {
                 result = result.replace(matcher.group(), propertyValue).trim();
                 matcher.reset(result);
@@ -144,21 +141,21 @@ public class InterpolationProperties {
     /**
      * Load properties from a configuration file.
      *
-     * <p>The name of the properties file is constructed by appending ".properties" to the
-     * identifier. If there is a system property with the name of this property file, it is used as
-     * a file to load, otherwise the property file is loaded from the root of the classpath.
+     * <p>The name of the properties file is constructed by appending ".properties" to the identifier. If there is a
+     * system property with the name of this property file, it is used as a file to load, otherwise the property file is
+     * loaded from the root of the classpath.
      *
      * <p>For example, if the identifier is <tt>app-schema</tt>:
      *
      * <ul>
      *   <li>If the system property <tt>app-schema.properties</tt> is set, e.g.
-     *       <tt>-Dapp-schema.properties=/path/to/some/local.properties</tt>, the indicated file, in
-     *       this case <tt>/path/to/some/local.properties</tt>, is loaded.
+     *       <tt>-Dapp-schema.properties=/path/to/some/local.properties</tt>, the indicated file, in this case
+     *       <tt>/path/to/some/local.properties</tt>, is loaded.
      *   <li>Otherwise, the classpath resource <tt>/app-schema.properties</tt> is loaded.
      * </ul>
      *
-     * Before the properties are returned, all system properties are copied; this means that system
-     * properties override any properties in the configuration file.
+     * Before the properties are returned, all system properties are copied; this means that system properties override
+     * any properties in the configuration file.
      *
      * @param identifier string used to construct property file name
      * @return loaded properties
@@ -169,18 +166,14 @@ public class InterpolationProperties {
         String propertiesFileName = System.getProperty(propertiesName);
         if (propertiesFileName == null) {
             String propertiesResourceName = "/" + propertiesName;
-            try (InputStream stream =
-                    InterpolationProperties.class.getResourceAsStream(propertiesResourceName)) {
+            try (InputStream stream = InterpolationProperties.class.getResourceAsStream(propertiesResourceName)) {
                 if (stream != null) {
-                    LOGGER.info(
-                            "Loading properties from classpath resource " + propertiesResourceName);
+                    LOGGER.info("Loading properties from classpath resource " + propertiesResourceName);
                     properties.load(new BufferedInputStream(stream));
                 }
             } catch (Exception e) {
                 throw new RuntimeException(
-                        "Error loading properties from classpath resource "
-                                + propertiesResourceName,
-                        e);
+                        "Error loading properties from classpath resource " + propertiesResourceName, e);
             }
         } else {
             File propertiesFile = new File(propertiesFileName).getAbsoluteFile();
@@ -194,13 +187,11 @@ public class InterpolationProperties {
                                 + propertiesFile.toString(),
                         e);
             }
-            try (InputStream stream =
-                    new BufferedInputStream(new FileInputStream(propertiesFile))) {
+            try (InputStream stream = new BufferedInputStream(new FileInputStream(propertiesFile))) {
                 LOGGER.info("Loading properties file " + propertiesFile.toString());
                 properties.load(stream);
             } catch (Exception e) {
-                throw new RuntimeException(
-                        "Error loading properties file " + propertiesFile.toString(), e);
+                throw new RuntimeException("Error loading properties file " + propertiesFile.toString(), e);
             }
         }
         properties.putAll(System.getProperties());

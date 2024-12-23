@@ -47,9 +47,7 @@ public class FilterFunction_listMultiplyTest {
 
     @Before
     public void setUp() throws Exception {
-        dataType =
-                DataUtilities.createType(
-                        "listMultiply.test1", "id:0,geom:Point,dynamic_dasharray:String");
+        dataType = DataUtilities.createType("listMultiply.test1", "id:0,geom:Point,dynamic_dasharray:String");
 
         dashArrays = new String[] {"5 10", "15 30"};
         expectedDashArrays = new String[] {"10.0 20.0", "30.0 60.0"};
@@ -58,13 +56,8 @@ public class FilterFunction_listMultiplyTest {
         GeometryFactory fac = new GeometryFactory();
 
         for (int i = 0; i < dashArrays.length; i++) {
-            testFeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {
-                                i + 1, fac.createPoint(new Coordinate(i, i)), dashArrays[i]
-                            },
-                            "obj:" + i);
+            testFeatures[i] = SimpleFeatureBuilder.build(
+                    dataType, new Object[] {i + 1, fac.createPoint(new Coordinate(i, i)), dashArrays[i]}, "obj:" + i);
         }
     }
 
@@ -81,8 +74,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluate() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2), ff.literal("1 2 3"));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2), ff.literal("1 2 3"));
         Object evaluate = func.evaluate(null);
         assertTrue(evaluate instanceof String);
         assertEquals("2.0 4.0 6.0", evaluate.toString());
@@ -91,8 +83,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluate2() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2.5), ff.literal("1 2 3"));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2.5), ff.literal("1 2 3"));
         Object evaluate = func.evaluate(null);
         assertTrue(evaluate instanceof String);
         assertEquals("2.5 5.0 7.5", evaluate.toString());
@@ -101,8 +92,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluateNull() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2.5), ff.literal(null));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2.5), ff.literal(null));
         Object evaluate = func.evaluate(null);
         assertNull(evaluate);
     }
@@ -110,8 +100,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluate4() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(1), ff.literal("1 2 3"));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(1), ff.literal("1 2 3"));
         Object evaluate = func.evaluate(null);
         assertTrue(evaluate instanceof String);
         assertEquals("1.0 2.0 3.0", evaluate.toString());
@@ -119,10 +108,8 @@ public class FilterFunction_listMultiplyTest {
 
     @Test
     public void testEvaluate5() {
-        FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function(
-                                "listMultiply", ff.literal(2), ff.property("dynamic_dasharray"));
+        FilterFunction_listMultiply func = (FilterFunction_listMultiply)
+                ff.function("listMultiply", ff.literal(2), ff.property("dynamic_dasharray"));
 
         for (int i = 0; i < testFeatures.length; i++) {
             Object evaluate = func.evaluate(testFeatures[i]);
@@ -142,8 +129,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluateEmptyDasharray() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2.5), ff.literal(""));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2.5), ff.literal(""));
         Object evaluate = func.evaluate(null);
         assertNull(evaluate);
     }
@@ -151,8 +137,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluateMultipleSpaces() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2), ff.literal(" 1 2   3 "));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2), ff.literal(" 1 2   3 "));
         Object evaluate = func.evaluate(null);
         assertTrue(evaluate instanceof String);
         assertEquals("2.0 4.0 6.0", evaluate.toString());
@@ -161,8 +146,7 @@ public class FilterFunction_listMultiplyTest {
     @Test
     public void testEvaluateSingleValue() {
         FilterFunction_listMultiply func =
-                (FilterFunction_listMultiply)
-                        ff.function("listMultiply", ff.literal(2), ff.literal(" 1"));
+                (FilterFunction_listMultiply) ff.function("listMultiply", ff.literal(2), ff.literal(" 1"));
         Object evaluate = func.evaluate(null);
         assertTrue(evaluate instanceof String);
         assertEquals("2.0", evaluate.toString());

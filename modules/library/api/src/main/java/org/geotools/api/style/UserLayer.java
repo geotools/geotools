@@ -23,8 +23,8 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  * A UserLayer allows a user-defined layer to be built from WFS and WCS data.
  *
  * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor Report (OGC 02-070)
+ * version 1.0.0.</a>:
  *
  * <pre><code>
  * &lt;xsd:element name="UserLayer"&gt;

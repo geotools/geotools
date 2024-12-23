@@ -20,9 +20,7 @@ import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Test;
 
-/**
- * No such a thing as an ID Predicate in CQL2, checks the grammar parts have been removed correctly
- */
+/** No such a thing as an ID Predicate in CQL2, checks the grammar parts have been removed correctly */
 public class CQL2IDPredicateTest {
 
     /** Sample: IN( 'states.1', 'states.2', 'states.3' </pre> */

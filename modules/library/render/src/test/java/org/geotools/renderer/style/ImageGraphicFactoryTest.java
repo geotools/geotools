@@ -57,8 +57,7 @@ public class ImageGraphicFactoryTest {
 
     @Test
     public void testInvalidPaths() throws Exception {
-        Assert.assertNull(
-                image.getIcon(null, ff.literal("http://www.nowhere.com"), "image/not!", 20));
+        Assert.assertNull(image.getIcon(null, ff.literal("http://www.nowhere.com"), "image/not!", 20));
         try {
             image.getIcon(null, ff.literal("ThisIsNotAUrl"), "image/png", 20);
             Assert.fail("Should have throw an exception, invalid url");
@@ -86,8 +85,8 @@ public class ImageGraphicFactoryTest {
     }
 
     /**
-     * Tests that a fetched icon is added to the cache, and that the {@link
-     * GraphicCache#clearCache()} method correctly clears the cache.
+     * Tests that a fetched icon is added to the cache, and that the {@link GraphicCache#clearCache()} method correctly
+     * clears the cache.
      */
     @Test
     public void testClearCache() {
@@ -115,8 +114,6 @@ public class ImageGraphicFactoryTest {
         URLCheckers.register(new MockURLChecker("nope", u -> false));
 
         URL u = this.getClass().getResource("test-data/test.png");
-        assertThrows(
-                URLCheckerException.class,
-                () -> image.getIcon(null, ff.literal(u), "image/png", -1));
+        assertThrows(URLCheckerException.class, () -> image.getIcon(null, ff.literal(u), "image/png", -1));
     }
 }

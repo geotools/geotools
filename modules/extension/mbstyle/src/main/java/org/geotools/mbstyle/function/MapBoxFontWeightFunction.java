@@ -25,11 +25,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 /** Returns "bold" or "normal" based on the font name */
 public class MapBoxFontWeightFunction extends FunctionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "mbFontWeight",
-                    parameter("weight", Boolean.class),
-                    parameter("fontName", Integer.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "mbFontWeight", parameter("weight", Boolean.class), parameter("fontName", Integer.class));
 
     public MapBoxFontWeightFunction() {
         this.functionName = NAME;

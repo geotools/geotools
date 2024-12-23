@@ -107,8 +107,7 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
         if (transparent != null) {
             layer.setTransparent(transparent);
         }
-        layer.setCoverage(
-                (GeoPackageProcessRequest.TilesLayer.TilesCoverage) node.getChildValue("coverage"));
+        layer.setCoverage((GeoPackageProcessRequest.TilesLayer.TilesCoverage) node.getChildValue("coverage"));
         Object gridSet = node.getChildValue("gridset");
         if (gridSet instanceof String) {
             layer.setGridSetName((String) gridSet);
@@ -123,8 +122,7 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
             layer.setParameters(Arrays.asList((Parameter) parameters));
         } else if (parameters instanceof Map) {
             @SuppressWarnings("unchecked")
-            List<Parameter> parametersList =
-                    (List<Parameter>) ((Map<?, ?>) parameters).get("parameters");
+            List<Parameter> parametersList = (List<Parameter>) ((Map<?, ?>) parameters).get("parameters");
             layer.setParameters(parametersList);
         }
 

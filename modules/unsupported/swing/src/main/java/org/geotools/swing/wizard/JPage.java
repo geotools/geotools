@@ -46,8 +46,8 @@ public abstract class JPage {
     protected String nextPageIdentifier = FINISH;
 
     /**
-     * Wizard hosting this process page; we will access wizard.model directly to look up our friends
-     * for next and previous.
+     * Wizard hosting this process page; we will access wizard.model directly to look up our friends for next and
+     * previous.
      */
     private JWizard wizard;
 
@@ -62,8 +62,7 @@ public abstract class JPage {
     }
 
     /**
-     * Access the JPanel - init will be used to create the panel the first time this method is
-     * called.
+     * Access the JPanel - init will be used to create the panel the first time this method is called.
      *
      * @return JPanel used for this wizard page
      */
@@ -98,8 +97,8 @@ public abstract class JPage {
     /**
      * Identifier of the panel to use Next.
      *
-     * @return Return id of the next JProcessPage or null if next should be disabled. You can use
-     *     FINISH to indicate the wizard is complete and may be closed.
+     * @return Return id of the next JProcessPage or null if next should be disabled. You can use FINISH to indicate the
+     *     wizard is complete and may be closed.
      */
     public String getNextPageIdentifier() {
         return nextPageIdentifier;
@@ -125,8 +124,8 @@ public abstract class JPage {
     /**
      * Called to initialize the page for the first time.
      *
-     * <p>Please note this method will normally only be called once; even if the user clicks
-     * forwards and backwards to return to your page. It is only called if getPanel() returns null.
+     * <p>Please note this method will normally only be called once; even if the user clicks forwards and backwards to
+     * return to your page. It is only called if getPanel() returns null.
      *
      * <p>Calling this method directly will erase any previously constructed panel.
      */
@@ -137,8 +136,7 @@ public abstract class JPage {
     /**
      * Called just before the panel is to be displayed.
      *
-     * <p>This is a good time to populate your fields with values; hook up any listeners and
-     * gernally muck about.
+     * <p>This is a good time to populate your fields with values; hook up any listeners and gernally muck about.
      */
     public void preDisplayPanel() {
         // the default implementation does nothing
@@ -168,8 +166,8 @@ public abstract class JPage {
     public void preClosePanel() {}
 
     /**
-     * Called when the workflow is completed (either in Finish, Canel or Error) giving the page a
-     * chance to clean up any resources it is using such as a database connection.
+     * Called when the workflow is completed (either in Finish, Canel or Error) giving the page a chance to clean up any
+     * resources it is using such as a database connection.
      */
     public void dispose() {}
 }

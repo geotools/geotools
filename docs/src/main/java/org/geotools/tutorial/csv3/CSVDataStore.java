@@ -87,8 +87,8 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Filter filter, Transaction transaction)
+            throws IOException {
         return super.getFeatureWriter(this.csvFileState.getTypeName(), filter, transaction);
     }
 
@@ -99,8 +99,8 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction)
+            throws IOException {
         return super.getFeatureWriterAppend(this.csvFileState.getTypeName(), transaction);
     }
 

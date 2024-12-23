@@ -29,10 +29,10 @@ import org.geotools.graph.structure.basic.BasicGraph;
 import org.geotools.graph.structure.basic.BasicNode;
 
 /**
- * Basic implementation of GraphBuilder. This implementation of builder creates the graph when the
- * builder is created. The underlying graph implementation makes copies of the references to the
- * node and edge collections, not copies of the underlying collections themselves. In this way as
- * nodes and edges are added to the builder, it is reflected in the built graph.
+ * Basic implementation of GraphBuilder. This implementation of builder creates the graph when the builder is created.
+ * The underlying graph implementation makes copies of the references to the node and edge collections, not copies of
+ * the underlying collections themselves. In this way as nodes and edges are added to the builder, it is reflected in
+ * the built graph.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -73,8 +73,8 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /**
-     * Checks for loops in which case it only added the edge to the adjacency list of one of the
-     * nodes (both of its nodes are the same node).
+     * Checks for loops in which case it only added the edge to the adjacency list of one of the nodes (both of its
+     * nodes are the same node).
      *
      * @see GraphBuilder#addEdge(Edge)
      */

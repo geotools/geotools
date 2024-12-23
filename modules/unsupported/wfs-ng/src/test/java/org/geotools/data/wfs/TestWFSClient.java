@@ -43,8 +43,7 @@ public class TestWFSClient extends WFSClient {
 
     private GetFeatureRequest request;
 
-    public TestWFSClient(URL capabilitiesUrl, TestHttpClient http)
-            throws IOException, ServiceException {
+    public TestWFSClient(URL capabilitiesUrl, TestHttpClient http) throws IOException, ServiceException {
         super(capabilitiesUrl, http, WFSTestData.getGmlCompatibleConfig());
     }
 

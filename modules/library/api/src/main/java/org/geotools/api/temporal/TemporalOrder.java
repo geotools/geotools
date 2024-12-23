@@ -10,13 +10,12 @@
 package org.geotools.api.temporal;
 
 /**
- * Provides an operation for determining the position of this {@linkplain TemporalPrimitive temporal
- * primitive} relative to another {@linkplain TemporalPrimitive temporal primitive}.
+ * Provides an operation for determining the position of this {@linkplain TemporalPrimitive temporal primitive} relative
+ * to another {@linkplain TemporalPrimitive temporal primitive}.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
- * @todo The javadoc suggests that this interface should extends some kind of {@link
- *     TemporalPrimitive}.
+ * @todo The javadoc suggests that this interface should extends some kind of {@link TemporalPrimitive}.
  */
 public interface TemporalOrder {
     /** Determines the position of this primitive relative to another primitive. */

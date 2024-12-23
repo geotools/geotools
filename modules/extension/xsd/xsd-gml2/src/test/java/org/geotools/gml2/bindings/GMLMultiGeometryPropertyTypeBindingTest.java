@@ -38,12 +38,8 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(
-                        GML.NAMESPACE, "myMultiGeometryProperty", GML.GeometryPropertyType, null);
-        geometry =
-                createElement(
-                        GML.NAMESPACE, "myGeometryCollection", GML.GeometryCollectionType, null);
+        association = createElement(GML.NAMESPACE, "myMultiGeometryProperty", GML.GeometryPropertyType, null);
+        geometry = createElement(GML.NAMESPACE, "myGeometryCollection", GML.GeometryCollectionType, null);
     }
 
     @Test
@@ -51,23 +47,19 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
         Point p1 = new GeometryFactory().createPoint(new Coordinate(0, 0));
         Point p2 = new GeometryFactory().createPoint(new Coordinate(1, 1));
 
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {
-                            new GeometryFactory().createGeometryCollection(new Geometry[] {p1, p2})
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createGeometryCollection(new Geometry[] {p1, p2})},
+                null,
+                null);
 
         GMLGeometryAssociationTypeBinding s =
                 (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         GMLMultiGeometryPropertyTypeBinding s1 =
                 (GMLMultiGeometryPropertyTypeBinding) getBinding(GML.MultiGeometryPropertyType);
 
-        GeometryCollection p =
-                (GeometryCollection) s1.parse(association, node, s.parse(association, node, null));
+        GeometryCollection p = (GeometryCollection) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }
 }

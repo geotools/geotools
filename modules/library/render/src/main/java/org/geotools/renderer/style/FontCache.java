@@ -43,8 +43,7 @@ import java.util.logging.Logger;
  */
 public class FontCache {
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FontCache.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FontCache.class);
 
     static volatile FontCache defaultInstance;
 
@@ -140,9 +139,7 @@ public class FontCache {
     }
 
     private static InputStream getInputStream(String fontUrl) {
-        if (fontUrl.startsWith("http")
-                || fontUrl.startsWith("file:")
-                || fontUrl.startsWith("jar:")) {
+        if (fontUrl.startsWith("http") || fontUrl.startsWith("file:") || fontUrl.startsWith("jar:")) {
             try {
                 URL url = new URL(fontUrl);
                 return url.openStream();
@@ -179,17 +176,14 @@ public class FontCache {
     }
 
     /**
-     * Adds the specified font in the font cache. Useful if you want to load fonts that are not
-     * installed in the Operating System and cannot provide a full path to fonts either.
+     * Adds the specified font in the font cache. Useful if you want to load fonts that are not installed in the
+     * Operating System and cannot provide a full path to fonts either.
      */
     public void registerFont(Font f) {
         loadedFonts.put(f.getName(), f);
     }
 
-    /**
-     * Resets the font loading cache. If any font was manually registered, it will have to be
-     * registered again
-     */
+    /** Resets the font loading cache. If any font was manually registered, it will have to be registered again */
     public synchronized void resetCache() {
         if (systemFonts != null) {
             systemFonts.clear();
@@ -231,8 +225,7 @@ public class FontCache {
     }
 
     /**
-     * Returns the set of font families and font faces available in the system and those manually
-     * loaded into the cache
+     * Returns the set of font families and font faces available in the system and those manually loaded into the cache
      */
     public Set<String> getAvailableFonts() {
         Set<String> availableFonts = new HashSet<>();
@@ -244,11 +237,11 @@ public class FontCache {
     }
 
     /**
-     * Given a font name, returns alternatives for other scripts, based on the assumption they start
-     * with the same base name, e.g., "Noto Sans" also has a number of alternative fonts dedicated
-     * to specific scripts, like "Noti Sans Urdu", "Noto Sans Arabic", "Noto Sans Javanese" and so
-     * on. The code will not return style alterations like "Noto Sans Bold" or "Noto Sans Bold
-     * Italic" thought (strips all font names containing "bold" and "italic", case insesitive).
+     * Given a font name, returns alternatives for other scripts, based on the assumption they start with the same base
+     * name, e.g., "Noto Sans" also has a number of alternative fonts dedicated to specific scripts, like "Noti Sans
+     * Urdu", "Noto Sans Arabic", "Noto Sans Javanese" and so on. The code will not return style alterations like "Noto
+     * Sans Bold" or "Noto Sans Bold Italic" thought (strips all font names containing "bold" and "italic", case
+     * insesitive).
      *
      * @return A list of font names with the same base name
      */

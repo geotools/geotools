@@ -31,20 +31,15 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
- * Creating GetFeatureResponse parsers that can treat featureType that don't extend
- * SimpleFeatureType.
+ * Creating GetFeatureResponse parsers that can treat featureType that don't extend SimpleFeatureType.
  *
  * <p>Treats the same OutputFormats and Versions as GetFeatureResponseParserFactory.
  *
  * @author Roar Brænden
  */
-public class ComplexGetFeatureResponseParserFactory
-        extends AbstractGetFeatureResponseParserFactory {
+public class ComplexGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
-    /**
-     * Supporting GetFeature requests that also have request.getFullType() not being a
-     * SimpleFeatureType.
-     */
+    /** Supporting GetFeature requests that also have request.getFullType() not being a SimpleFeatureType. */
     @Override
     public boolean canProcess(WFSRequest request, String contentType) {
         if (!super.canProcess(request, contentType)) {
@@ -72,15 +67,13 @@ public class ComplexGetFeatureResponseParserFactory
      * <p>Using "in" instead of response.getResponseStream()
      */
     @Override
-    protected WFSResponse createResponseImpl(
-            WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
-        FeatureType schema =
-                ((GetFeatureRequest) request).getQueryType() == null
-                        ? ((GetFeatureRequest) request).getFullType()
-                        : ((GetFeatureRequest) request).getQueryType();
+    protected WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response, InputStream in)
+            throws IOException {
+        FeatureType schema = ((GetFeatureRequest) request).getQueryType() == null
+                ? ((GetFeatureRequest) request).getFullType()
+                : ((GetFeatureRequest) request).getQueryType();
         XmlComplexFeatureParser parser =
-                new XmlComplexFeatureParser(
-                        in, schema, request.getTypeName(), null, request.getStrategy());
+                new XmlComplexFeatureParser(in, schema, request.getTypeName(), null, request.getStrategy());
         try {
             return new ComplexGetFeatureResponse(request, response, parser);
         } catch (ServiceException e) {
@@ -89,8 +82,7 @@ public class ComplexGetFeatureResponseParserFactory
     }
 
     @Override
-    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
-            throws IOException {
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in) throws IOException {
         throw new UnsupportedOperationException("We don't support parsing SimpleFeature's.");
     }
 }

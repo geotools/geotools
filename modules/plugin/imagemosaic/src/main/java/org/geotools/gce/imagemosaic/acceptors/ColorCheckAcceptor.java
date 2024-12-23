@@ -35,13 +35,10 @@ public class ColorCheckAcceptor implements GranuleAcceptor {
             File fileBeingProcessed,
             ImageMosaicConfigHandler mosaicConfigHandler)
             throws IOException {
-        String targetCoverageName =
-                mosaicConfigHandler.getTargetCoverageName(coverage, inputCoverageName);
-        MosaicConfigurationBean config =
-                mosaicConfigHandler.getConfigurations().get(targetCoverageName);
+        String targetCoverageName = mosaicConfigHandler.getTargetCoverageName(coverage, inputCoverageName);
+        MosaicConfigurationBean config = mosaicConfigHandler.getConfigurations().get(targetCoverageName);
         if (config != null) {
-            RasterManager rasterManager =
-                    mosaicConfigHandler.getRasterManagerForTargetCoverage(targetCoverageName);
+            RasterManager rasterManager = mosaicConfigHandler.getRasterManagerForTargetCoverage(targetCoverageName);
             return checkColorModel(coverage, config, rasterManager, inputCoverageName);
         } else {
             // can't validate with empty configuration. usually this means we have a brand new

@@ -38,21 +38,18 @@ public class WithinImpl extends AbstractPreparedGeometryFilter implements Within
         switch (literals) {
             case BOTH:
                 return cacheValue;
-            case RIGHT:
-                {
-                    // if the right contains left then left is within right
-                    return rightPreppedGeom.contains(left);
-                }
-            case LEFT:
-                {
-                    // since within does not have an optimization with prepared geometries
-                    // there is nothing to be gained in this case so use the normal check
-                    return basicEvaluate(leftPreppedGeom.getGeometry(), right);
-                }
-            default:
-                {
-                    return basicEvaluate(left, right);
-                }
+            case RIGHT: {
+                // if the right contains left then left is within right
+                return rightPreppedGeom.contains(left);
+            }
+            case LEFT: {
+                // since within does not have an optimization with prepared geometries
+                // there is nothing to be gained in this case so use the normal check
+                return basicEvaluate(leftPreppedGeom.getGeometry(), right);
+            }
+            default: {
+                return basicEvaluate(left, right);
+            }
         }
     }
 

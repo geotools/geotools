@@ -65,12 +65,12 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
- * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
- * manager that allows to reuse connections to the backing server and to limit the {@link
- * #setMaxConnections(int) max number of concurrent connections}.
+ * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection manager that allows to
+ * reuse connections to the backing server and to limit the {@link #setMaxConnections(int) max number of concurrent
+ * connections}.
  *
- * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
- * and {@code http.proxyPassword} are respected.
+ * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser}, and
+ * {@code http.proxyPassword} are respected.
  *
  * <p>Copied from gt-wms.
  *
@@ -78,8 +78,7 @@ import org.geotools.util.logging.Logging;
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient extends AbstractHttpClient
-        implements HTTPConnectionPooling, HTTPProxy {
+public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPConnectionPooling, HTTPProxy {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
@@ -93,13 +92,12 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(6);
         connectionManager.setDefaultMaxPerRoute(6);
-        connectionConfig =
-                RequestConfig.custom()
-                        .setCookieSpec(CookieSpecs.DEFAULT)
-                        .setExpectContinueEnabled(true)
-                        .setSocketTimeout(30000)
-                        .setConnectTimeout(30000)
-                        .build();
+        connectionConfig = RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.DEFAULT)
+                .setExpectContinueEnabled(true)
+                .setSocketTimeout(30000)
+                .setConnectTimeout(30000)
+                .build();
 
         client = builder().build();
     }
@@ -107,14 +105,12 @@ public class MultithreadedHttpClient extends AbstractHttpClient
     private BasicCredentialsProvider credsProvider = null;
 
     private HttpClientBuilder builder() {
-        HttpClientBuilder builder =
-                HttpClientBuilder.create()
-                        .setUserAgent(
-                                String.format(
-                                        "GeoTools/%s (%s)",
-                                        GeoTools.getVersion(), this.getClass().getSimpleName()))
-                        .useSystemProperties()
-                        .setConnectionManager(connectionManager);
+        HttpClientBuilder builder = HttpClientBuilder.create()
+                .setUserAgent(String.format(
+                        "GeoTools/%s (%s)",
+                        GeoTools.getVersion(), this.getClass().getSimpleName()))
+                .useSystemProperties()
+                .setConnectionManager(connectionManager);
         if (credsProvider != null) {
             builder.setDefaultCredentialsProvider(credsProvider);
         }
@@ -122,16 +118,14 @@ public class MultithreadedHttpClient extends AbstractHttpClient
     }
 
     @Override
-    public HttpMethodResponse post(
-            final URL url, final InputStream postContent, final String postContentType)
+    public HttpMethodResponse post(final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
         return post(url, postContent, postContentType, null);
     }
 
     @Override
     public HttpMethodResponse post(
-            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
-            throws IOException {
+            URL url, InputStream postContent, String postContentType, Map<String, String> headers) throws IOException {
 
         if (headers == null) {
             headers = new HashMap<>();
@@ -144,10 +138,9 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         if (credsProvider != null) {
             // we can't read the input stream twice as would be needed if the server asks us to
             // authenticate
-            String input =
-                    new BufferedReader(new InputStreamReader(postContent, StandardCharsets.UTF_8))
-                            .lines()
-                            .collect(Collectors.joining("\n"));
+            String input = new BufferedReader(new InputStreamReader(postContent, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
             requestEntity = new StringEntity(input);
         } else {
             requestEntity = new InputStreamEntity(postContent);
@@ -172,18 +165,14 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         if (200 != response.getStatusCode()) {
             postMethod.releaseConnection();
             throw new IOException(
-                    "Server returned HTTP error code "
-                            + response.getStatusCode()
-                            + " for URL "
-                            + url.toExternalForm());
+                    "Server returned HTTP error code " + response.getStatusCode() + " for URL " + url.toExternalForm());
         }
 
         return response;
     }
 
     /** @return the http status code of the execution */
-    private HttpMethodResponse executeMethod(HttpRequestBase method)
-            throws IOException, HttpException {
+    private HttpMethodResponse executeMethod(HttpRequestBase method) throws IOException, HttpException {
 
         HttpClientContext localContext = HttpClientContext.create();
         HttpResponse resp;
@@ -192,9 +181,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
             // see https://stackoverflow.com/a/21592593
             AuthCache authCache = new BasicAuthCache();
             URI target = method.getURI();
-            authCache.put(
-                    new HttpHost(target.getHost(), target.getPort(), target.getScheme()),
-                    new BasicScheme());
+            authCache.put(new HttpHost(target.getHost(), target.getPort(), target.getScheme()), new BasicScheme());
             localContext.setAuthCache(authCache);
             resp = client.execute(method, localContext);
         } else {
@@ -247,10 +234,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         if (200 != response.getStatusCode()) {
             getMethod.releaseConnection();
             throw new IOException(
-                    "Server returned HTTP error code "
-                            + response.getStatusCode()
-                            + " for URL "
-                            + url.toExternalForm());
+                    "Server returned HTTP error code " + response.getStatusCode() + " for URL " + url.toExternalForm());
         }
         return response;
     }
@@ -258,9 +242,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
     private void setHeadersOn(Map<String, String> headers, HttpRequestBase request) {
         for (Map.Entry<String, String> header : headers.entrySet()) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                        Level.FINE,
-                        "Setting header " + header.getKey() + " = " + header.getValue());
+                LOGGER.log(Level.FINE, "Setting header " + header.getKey() + " = " + header.getValue());
             }
             request.setHeader(header.getKey(), header.getValue());
         }
@@ -299,10 +281,9 @@ public class MultithreadedHttpClient extends AbstractHttpClient
 
     @Override
     public void setConnectTimeout(int connectTimeout) {
-        connectionConfig =
-                RequestConfig.copy(connectionConfig)
-                        .setConnectionRequestTimeout(connectTimeout * 1000)
-                        .build();
+        connectionConfig = RequestConfig.copy(connectionConfig)
+                .setConnectionRequestTimeout(connectTimeout * 1000)
+                .build();
     }
 
     @Override
@@ -312,8 +293,9 @@ public class MultithreadedHttpClient extends AbstractHttpClient
 
     @Override
     public void setReadTimeout(int readTimeout) {
-        connectionConfig =
-                RequestConfig.copy(connectionConfig).setSocketTimeout(readTimeout * 1000).build();
+        connectionConfig = RequestConfig.copy(connectionConfig)
+                .setSocketTimeout(readTimeout * 1000)
+                .build();
     }
 
     @Override

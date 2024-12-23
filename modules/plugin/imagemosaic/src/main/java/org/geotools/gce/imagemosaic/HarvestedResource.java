@@ -99,8 +99,7 @@ enum HarvestedResource {
                 Hints hints,
                 final List<HarvestedSource> result,
                 ImageMosaicReader reader) {
-            harvestURLCollection(
-                    defaultCoverage, result, reader, Collections.singletonList((URL) source));
+            harvestURLCollection(defaultCoverage, result, reader, Collections.singletonList((URL) source));
         }
     },
     URL_COLLECTION(URL.class) {
@@ -139,8 +138,7 @@ enum HarvestedResource {
                 Hints hints,
                 final List<HarvestedSource> result,
                 ImageMosaicReader reader) {
-            harvestURICollection(
-                    defaultCoverage, result, reader, Collections.singletonList((URI) source));
+            harvestURICollection(defaultCoverage, result, reader, Collections.singletonList((URI) source));
         }
     },
     URI_COLLECTION(URI.class) {
@@ -173,12 +171,9 @@ enum HarvestedResource {
     };
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(HarvestedResource.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(HarvestedResource.class);
 
-    /**
-     * Harvesting of the input resource. The result will be strored inside the {@link List} object.
-     */
+    /** Harvesting of the input resource. The result will be strored inside the {@link List} object. */
     public abstract void harvest(
             String defaultCoverage,
             Object source,
@@ -264,9 +259,7 @@ enum HarvestedResource {
         }
 
         String protocol = null;
-        if (url != null
-                && ((protocol = url.getProtocol()) != null)
-                && !"file".equalsIgnoreCase(protocol)) {
+        if (url != null && ((protocol = url.getProtocol()) != null) && !"file".equalsIgnoreCase(protocol)) {
             return URL;
         }
 
@@ -283,10 +276,7 @@ enum HarvestedResource {
         return getResourceFromFile(file);
     }
 
-    /**
-     * Check if the File Object is a DIRECTORY or not and return the associated {@link
-     * HarvestedResource}
-     */
+    /** Check if the File Object is a DIRECTORY or not and return the associated {@link HarvestedResource} */
     private static HarvestedResource getResourceFromFile(File file) {
         if (file != null) {
             if (file.isDirectory()) {
@@ -307,8 +297,7 @@ enum HarvestedResource {
 
         // prepare the walker configuration
         CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        configuration.setParameter(
-                Utils.Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+        configuration.setParameter(Utils.Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
 
         // Setting of the HARVEST_DIRECTORY property for passing the checks even if it is
         // not used
@@ -320,9 +309,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0)
-                            ? coverageNames[0]
-                            : Utils.DEFAULT_INDEX_NAME;
+                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -337,38 +324,33 @@ enum HarvestedResource {
 
         // run the walker and collect information
         ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler =
-                new ImageMosaicConfigHandler(configuration, eventHandler) {
-                    @Override
-                    protected GranuleCatalog buildCatalog() throws IOException {
-                        return reader.granuleCatalog;
-                    };
-                };
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration, eventHandler) {
+            @Override
+            protected GranuleCatalog buildCatalog() throws IOException {
+                return reader.granuleCatalog;
+            }
+            ;
+        };
         // Creation of the Walker for the File List
         ImageMosaicReader.ImageMosaicFileCollectionWalker walker =
-                new ImageMosaicReader.ImageMosaicFileCollectionWalker(
-                        catalogHandler, eventHandler, files);
-        eventHandler.addProcessingEventListener(
-                new ImageMosaicEventHandlers.ProcessingEventListener() {
+                new ImageMosaicReader.ImageMosaicFileCollectionWalker(catalogHandler, eventHandler, files);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
 
-                    @Override
-                    public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                        if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
-                            ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
-                                    (ImageMosaicEventHandlers.FileProcessingEvent) event;
-                            result.add(
-                                    new DefaultHarvestedSource(
-                                            fileEvent.getFile(),
-                                            fileEvent.isIngested(),
-                                            fileEvent.getMessage()));
-                        }
-                    }
+            @Override
+            public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
+                    ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
+                            (ImageMosaicEventHandlers.FileProcessingEvent) event;
+                    result.add(new DefaultHarvestedSource(
+                            fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
+                }
+            }
 
-                    @Override
-                    public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
-                        // nothing to do
-                    }
-                });
+            @Override
+            public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+                // nothing to do
+            }
+        });
         // Wait the Walker ends its operations
         walker.run();
     }
@@ -386,9 +368,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0)
-                            ? coverageNames[0]
-                            : Utils.DEFAULT_INDEX_NAME;
+                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -405,13 +385,12 @@ enum HarvestedResource {
 
         // run the walker and collect information
         ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler =
-                new ImageMosaicConfigHandler(configuration, eventHandler) {
-                    @Override
-                    protected GranuleCatalog buildCatalog() throws IOException {
-                        return reader.granuleCatalog;
-                    }
-                };
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration, eventHandler) {
+            @Override
+            protected GranuleCatalog buildCatalog() throws IOException {
+                return reader.granuleCatalog;
+            }
+        };
 
         SourceSPIProviderFactory urlSourceSPIProvider = null;
         RasterManager rasterManager = reader.getRasterManager(defaultCoverage);
@@ -419,12 +398,10 @@ enum HarvestedResource {
             // We might be in the case of an empty mosaic not yet initialized.
             // let's try with the indexer parsing if any.
             Indexer indexer = IndexerUtils.initializeIndexer(null, mosaicSource);
-            boolean canBeEmpty =
-                    IndexerUtils.getParameterAsBoolean(Utils.Prop.CAN_BE_EMPTY, indexer);
+            boolean canBeEmpty = IndexerUtils.getParameterAsBoolean(Utils.Prop.CAN_BE_EMPTY, indexer);
             if (!canBeEmpty) {
                 eventHandler.fireException(
-                        new IOException(
-                                "The specified mosaic can't be empty but no default granules have been found"));
+                        new IOException("The specified mosaic can't be empty but no default granules have been found"));
                 return;
             }
             urlSourceSPIProvider = IndexerUtils.getSourceSPIProviderFactory(indexer);
@@ -434,37 +411,31 @@ enum HarvestedResource {
         }
 
         if (urlSourceSPIProvider == null) {
-            eventHandler.fireException(
-                    new IOException(
-                            "Unable to harvest the provided URL collection. No source SPI provider has been found"));
+            eventHandler.fireException(new IOException(
+                    "Unable to harvest the provided URL collection. No source SPI provider has been found"));
             return;
         }
 
         // Creation of the Walker for the URL List
-        ImageMosaicReader.ImageMosaicURLCollectionWalker walker =
-                new ImageMosaicReader.ImageMosaicURLCollectionWalker(
-                        catalogHandler, eventHandler, urlSourceSPIProvider, urls);
-        eventHandler.addProcessingEventListener(
-                new ImageMosaicEventHandlers.ProcessingEventListener() {
+        ImageMosaicReader.ImageMosaicURLCollectionWalker walker = new ImageMosaicReader.ImageMosaicURLCollectionWalker(
+                catalogHandler, eventHandler, urlSourceSPIProvider, urls);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
 
-                    @Override
-                    public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                        if (event instanceof ImageMosaicEventHandlers.URLProcessingEvent) {
-                            ImageMosaicEventHandlers.URLProcessingEvent urlEvent =
-                                    (ImageMosaicEventHandlers.URLProcessingEvent) event;
-                            result.add(
-                                    new DefaultHarvestedSource(
-                                            urlEvent.getUrl(),
-                                            urlEvent.isIngested(),
-                                            urlEvent.getMessage()));
-                        }
-                    }
+            @Override
+            public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+                if (event instanceof ImageMosaicEventHandlers.URLProcessingEvent) {
+                    ImageMosaicEventHandlers.URLProcessingEvent urlEvent =
+                            (ImageMosaicEventHandlers.URLProcessingEvent) event;
+                    result.add(new DefaultHarvestedSource(
+                            urlEvent.getUrl(), urlEvent.isIngested(), urlEvent.getMessage()));
+                }
+            }
 
-                    @Override
-                    public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
-                        // nothing to do
-                    }
-                });
+            @Override
+            public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+                // nothing to do
+            }
+        });
         // Wait the Walker ends its operations
         walker.run();
     }
@@ -482,9 +453,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0)
-                            ? coverageNames[0]
-                            : Utils.DEFAULT_INDEX_NAME;
+                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -501,13 +470,12 @@ enum HarvestedResource {
 
         // run the walker and collect information
         ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler =
-                new ImageMosaicConfigHandler(configuration, eventHandler) {
-                    @Override
-                    protected GranuleCatalog buildCatalog() throws IOException {
-                        return reader.granuleCatalog;
-                    }
-                };
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration, eventHandler) {
+            @Override
+            protected GranuleCatalog buildCatalog() throws IOException {
+                return reader.granuleCatalog;
+            }
+        };
 
         SourceSPIProviderFactory sspFactory = null;
         RasterManager rasterManager = reader.getRasterManager(defaultCoverage);
@@ -515,12 +483,10 @@ enum HarvestedResource {
             // We might be in the case of an empty mosaic not yet initialized.
             // let's try with the indexer parsing if any.
             Indexer indexer = IndexerUtils.initializeIndexer(null, mosaicSource);
-            boolean canBeEmpty =
-                    IndexerUtils.getParameterAsBoolean(Utils.Prop.CAN_BE_EMPTY, indexer);
+            boolean canBeEmpty = IndexerUtils.getParameterAsBoolean(Utils.Prop.CAN_BE_EMPTY, indexer);
             if (!canBeEmpty) {
                 eventHandler.fireException(
-                        new IOException(
-                                "The specified mosaic can't be empty but no default granules have been found"));
+                        new IOException("The specified mosaic can't be empty but no default granules have been found"));
                 return;
             }
             sspFactory = IndexerUtils.getSourceSPIProviderFactory(indexer);
@@ -530,37 +496,31 @@ enum HarvestedResource {
         }
 
         if (sspFactory == null) {
-            eventHandler.fireException(
-                    new IOException(
-                            "Unable to harvest the provided URI collection. No source SPI provider has been found"));
+            eventHandler.fireException(new IOException(
+                    "Unable to harvest the provided URI collection. No source SPI provider has been found"));
             return;
         }
 
         // Creation of the Walker for the URI List
         ImageMosaicReader.ImageMosaicURICollectionWalker walker =
-                new ImageMosaicReader.ImageMosaicURICollectionWalker(
-                        catalogHandler, eventHandler, sspFactory, urls);
-        eventHandler.addProcessingEventListener(
-                new ImageMosaicEventHandlers.ProcessingEventListener() {
+                new ImageMosaicReader.ImageMosaicURICollectionWalker(catalogHandler, eventHandler, sspFactory, urls);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
 
-                    @Override
-                    public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                        if (event instanceof ImageMosaicEventHandlers.URIProcessingEvent) {
-                            ImageMosaicEventHandlers.URIProcessingEvent uriEvent =
-                                    (ImageMosaicEventHandlers.URIProcessingEvent) event;
-                            result.add(
-                                    new DefaultHarvestedSource(
-                                            uriEvent.getURI(),
-                                            uriEvent.isIngested(),
-                                            uriEvent.getMessage()));
-                        }
-                    }
+            @Override
+            public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+                if (event instanceof ImageMosaicEventHandlers.URIProcessingEvent) {
+                    ImageMosaicEventHandlers.URIProcessingEvent uriEvent =
+                            (ImageMosaicEventHandlers.URIProcessingEvent) event;
+                    result.add(new DefaultHarvestedSource(
+                            uriEvent.getURI(), uriEvent.isIngested(), uriEvent.getMessage()));
+                }
+            }
 
-                    @Override
-                    public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
-                        // nothing to do
-                    }
-                });
+            @Override
+            public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+                // nothing to do
+            }
+        });
         // Wait the Walker ends its operations
         walker.run();
     }
@@ -574,16 +534,13 @@ enum HarvestedResource {
             IOFileFilter filter) {
         // prepare the walker configuration
         CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        configuration.setParameter(
-                Utils.Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+        configuration.setParameter(Utils.Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
         String indexingPath = directory.getAbsolutePath();
         configuration.setParameter(Utils.Prop.HARVEST_DIRECTORY, indexingPath);
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0)
-                            ? coverageNames[0]
-                            : Utils.DEFAULT_INDEX_NAME;
+                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
         configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
@@ -598,32 +555,26 @@ enum HarvestedResource {
         // run the walker and collect information
         ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
         final ImageMosaicConfigHandler catalogHandler =
-                new HarvestedResource.HarvestMosaicConfigHandler(
-                        configuration, eventHandler, reader);
+                new HarvestedResource.HarvestMosaicConfigHandler(configuration, eventHandler, reader);
         // build the index
-        ImageMosaicDirectoryWalker walker =
-                new ImageMosaicDirectoryWalker(catalogHandler, eventHandler, filter);
-        eventHandler.addProcessingEventListener(
-                new ImageMosaicEventHandlers.ProcessingEventListener() {
+        ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler, filter);
+        eventHandler.addProcessingEventListener(new ImageMosaicEventHandlers.ProcessingEventListener() {
 
-                    @Override
-                    public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                        if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
-                            ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
-                                    (ImageMosaicEventHandlers.FileProcessingEvent) event;
-                            result.add(
-                                    new DefaultHarvestedSource(
-                                            fileEvent.getFile(),
-                                            fileEvent.isIngested(),
-                                            fileEvent.getMessage()));
-                        }
-                    }
+            @Override
+            public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
+                    ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
+                            (ImageMosaicEventHandlers.FileProcessingEvent) event;
+                    result.add(new DefaultHarvestedSource(
+                            fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
+                }
+            }
 
-                    @Override
-                    public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
-                        // nothing to do
-                    }
-                });
+            @Override
+            public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+                // nothing to do
+            }
+        });
 
         walker.run();
     }
@@ -635,8 +586,8 @@ enum HarvestedResource {
     }
 
     /**
-     * Returns the element type of the resource. It can be the actual type, for single sources, or
-     * the type of the contained element, for collection sources
+     * Returns the element type of the resource. It can be the actual type, for single sources, or the type of the
+     * contained element, for collection sources
      */
     public Class<?> getElementType() {
         return elementType;

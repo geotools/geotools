@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * A writer that put some spaces in front of every lines. The indentation is initially set to 0
- * spaces. Users must invoke {@link #setIndentation} in order to set a different value.
+ * A writer that put some spaces in front of every lines. The indentation is initially set to 0 spaces. Users must
+ * invoke {@link #setIndentation} in order to set a different value.
  *
  * @version $Id$
  * @author Martin Desruisseaux
@@ -68,8 +68,8 @@ public class IndentedLineWriter extends FilterWriter {
     }
 
     /**
-     * Invoked when a new line is begining. The default implementation writes the amount of spaces
-     * specified by the last call to {@link #setIndentation}.
+     * Invoked when a new line is begining. The default implementation writes the amount of spaces specified by the last
+     * call to {@link #setIndentation}.
      *
      * @throws IOException If an I/O error occurs
      */

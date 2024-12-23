@@ -48,9 +48,8 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Class that builds an App-Schema iterator ready to be used with MongoDB. Data coming from MongoDB
- * is assumed to be always normalized, when using MongoDB with App-Schema we cannot chain multiple
- * collections together.
+ * Class that builds an App-Schema iterator ready to be used with MongoDB. Data coming from MongoDB is assumed to be
+ * always normalized, when using MongoDB with App-Schema we cannot chain multiple collections together.
  */
 public final class MongoComplexDataSource implements CustomSourceDataStore {
 
@@ -76,10 +75,7 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
 
     @Override
     public DataAccessMappingFeatureIterator buildIterator(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping featureTypeMapping,
-            Query query,
-            Transaction transaction) {
+            AppSchemaDataAccess store, FeatureTypeMapping featureTypeMapping, Query query, Transaction transaction) {
         // let's se if this is a feature type coming from MongoDB
         if (!(featureTypeMapping.getSource() != null
                 && featureTypeMapping.getSource().getDataStore() instanceof MongoDataStore)) {
@@ -88,11 +84,9 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
         }
         try {
             // we consider that data coming from MongoDB is always normalized
-            return new DataAccessMappingFeatureIterator(
-                    store, featureTypeMapping, query, false, true);
+            return new DataAccessMappingFeatureIterator(store, featureTypeMapping, query, false, true);
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    "Error creating App-Schema iterator for MongoDB data store.", exception);
+            throw new RuntimeException("Error creating App-Schema iterator for MongoDB data store.", exception);
         }
     }
 
@@ -115,14 +109,12 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
     }
 
     /**
-     * Returns all the JSON paths associated with the provided property name as property names, in
-     * practice this method finds the source expression associated with the attribute mapping
-     * matching the provided property name and extracts its JSON path converting it to a property
-     * name. Since the source expression may use multiple attributes, multiple JSON paths may be
-     * found.
+     * Returns all the JSON paths associated with the provided property name as property names, in practice this method
+     * finds the source expression associated with the attribute mapping matching the provided property name and
+     * extracts its JSON path converting it to a property name. Since the source expression may use multiple attributes,
+     * multiple JSON paths may be found.
      */
-    private List<PropertyName> extractJsonPaths(
-            FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
+    private List<PropertyName> extractJsonPaths(FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
         // get the expression of the mapping attribute matching the provided property name
         Expression expression = findPropertyExpression(featureTypeMapping, propertyName);
         if (expression == null) {
@@ -139,17 +131,14 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
     }
 
     /**
-     * Finds the mapping attribute matching the provided property name and gets its source
-     * expression or id expression. This method will navigate the feature type mapping in all its
-     * extend, including the nested mappings.
+     * Finds the mapping attribute matching the provided property name and gets its source expression or id expression.
+     * This method will navigate the feature type mapping in all its extend, including the nested mappings.
      */
-    private Expression findPropertyExpression(
-            FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
+    private Expression findPropertyExpression(FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
         // gets the property name steps, i.e. XML path parcels
         XPathUtil.StepList propertySteps = buildPropertySteps(featureTypeMapping, propertyName);
         // fidn the attribute mapping matching the provided proeprty name
-        AttributeMapping attributeMapping =
-                findAttributeMapping(featureTypeMapping, propertyName, propertySteps);
+        AttributeMapping attributeMapping = findAttributeMapping(featureTypeMapping, propertyName, propertySteps);
         if (attributeMapping == null) {
             // no attribute found we are done
             return null;
@@ -169,8 +158,7 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
     }
 
     /** Builds the property steps list, i.e. split the XML path into parcels. */
-    private XPathUtil.StepList buildPropertySteps(
-            FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
+    private XPathUtil.StepList buildPropertySteps(FeatureTypeMapping featureTypeMapping, PropertyName propertyName) {
         // get the correct namespace context, first we try the property name namespaces
         NamespaceSupport nameSpaces = propertyName.getNamespaceContext();
         if (nameSpaces == null) {
@@ -178,19 +166,15 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
             nameSpaces = featureTypeMapping.getNamespaces();
         }
         // build the property XML path steps list
-        return XPath.steps(
-                featureTypeMapping.getTargetFeature(), propertyName.getPropertyName(), nameSpaces);
+        return XPath.steps(featureTypeMapping.getTargetFeature(), propertyName.getPropertyName(), nameSpaces);
     }
 
     /**
-     * Finds the attribute mapping from in the provided feature type that matches the property name
-     * steps. This method sticks to the feature type attributes mappings and doesn't follow the
-     * nested mappings.
+     * Finds the attribute mapping from in the provided feature type that matches the property name steps. This method
+     * sticks to the feature type attributes mappings and doesn't follow the nested mappings.
      */
     private AttributeMapping findAttributeMapping(
-            FeatureTypeMapping featureTypeMapping,
-            PropertyName propertyName,
-            XPathUtil.StepList propertySteps) {
+            FeatureTypeMapping featureTypeMapping, PropertyName propertyName, XPathUtil.StepList propertySteps) {
         // let's check if any of the feature type attributes matches the property name
         for (AttributeMapping attributeMapping : featureTypeMapping.getAttributeMappings()) {
             // build the attribute mapping XML path steps list

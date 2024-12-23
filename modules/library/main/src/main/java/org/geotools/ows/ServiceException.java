@@ -25,15 +25,9 @@ public class ServiceException extends SAXException {
      */
     /** Request contains a Format not offered by the service instance */
     public static final String INVALID_FORMAT = "InvalidFormat";
-    /**
-     * Request contains an SRS not offered by the service instance for one or more of the Layers in
-     * the request.
-     */
+    /** Request contains an SRS not offered by the service instance for one or more of the Layers in the request. */
     public static final String INVALID_SRS = "InvalidSRS";
-    /**
-     * Request contains a CRS not offered by the server for one or more of the Layers in the
-     * request.
-     */
+    /** Request contains a CRS not offered by the server for one or more of the Layers in the request. */
     public static final String INVALID_CRS = "InvalidCRS";
     /** Request is for a Layer not offered by the service instance. */
     public static final String LAYER_NOT_DEFINED = "LayerNotDefined";
@@ -42,18 +36,18 @@ public class ServiceException extends SAXException {
     /** GetFeatureInfo request is applied to a Layer which is not declared queryable. */
     public static final String LAYER_NOT_QUERYABLE = "LayerNotQueryable";
     /**
-     * Value of (optional) UpdateSequence parameter in GetCapabilities request is equal to current
-     * value of Capabilities XML update sequence number.
+     * Value of (optional) UpdateSequence parameter in GetCapabilities request is equal to current value of Capabilities
+     * XML update sequence number.
      */
     public static final String CURRENT_UPDATE_SEQUENCE = "CurrentUpdateSequence";
     /**
-     * Value of (optional) UpdateSequence parameter in GetCapabilities request is greater than
-     * current value of Capabilities XML update sequence number.
+     * Value of (optional) UpdateSequence parameter in GetCapabilities request is greater than current value of
+     * Capabilities XML update sequence number.
      */
     public static final String INVALID_UPDATE_SEQUENCE = "InvalidUpdateSequence";
     /**
-     * Request does not include a sample dimension value, and the service instance did not declare a
-     * default value for that dimension.
+     * Request does not include a sample dimension value, and the service instance did not declare a default value for
+     * that dimension.
      */
     public static final String MISSING_DIMENSION_VALUE = "MissingDimensionValue";
     /** Request contains an invalid sample dimension value. */
@@ -65,8 +59,7 @@ public class ServiceException extends SAXException {
      */
 
     /** Comment for <code>serialVersionUID</code> */
-    private static final long serialVersionUID =
-            (("org.geotools.data.ows.ServiceException").hashCode());
+    private static final long serialVersionUID = (("org.geotools.data.ows.ServiceException").hashCode());
 
     private String code = "";
     private String locator = null;

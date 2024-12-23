@@ -88,9 +88,8 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     }
 
     /**
-     * Removes the edge from the out list of the in node and from the in list of the out node. Nodes
-     * are switched and then the edge is added to the in list of the new out node, and to the out
-     * list of the new in node.
+     * Removes the edge from the out list of the in node and from the in list of the out node. Nodes are switched and
+     * then the edge is added to the in list of the new out node, and to the out list of the new in node.
      *
      * @see Edge#reverse()
      */
@@ -203,10 +202,8 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     public int compareNodes(Edge other) {
         if (other instanceof DirectedEdge) {
             DirectedEdge de = (DirectedEdge) other;
-            if (de.getInNode().equals(m_in) && de.getOutNode().equals(m_out))
-                return (EQUAL_NODE_ORIENTATION);
-            if (de.getInNode().equals(m_out) && de.getOutNode().equals(m_in))
-                return (OPPOSITE_NODE_ORIENTATION);
+            if (de.getInNode().equals(m_in) && de.getOutNode().equals(m_out)) return (EQUAL_NODE_ORIENTATION);
+            if (de.getInNode().equals(m_out) && de.getOutNode().equals(m_in)) return (OPPOSITE_NODE_ORIENTATION);
         }
         return (UNEQUAL_NODE_ORIENTATION);
     }

@@ -101,9 +101,9 @@ public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * Even though the spec allows an instance of ParamterValueType to have multiple expressions as
-     * children, it is more often that there is only one. Therefore this binding returns the first
-     * expression it finds or null. If a subtype needs multiple expressions they should ovveride.
+     * Even though the spec allows an instance of ParamterValueType to have multiple expressions as children, it is more
+     * often that there is only one. Therefore this binding returns the first expression it finds or null. If a subtype
+     * needs multiple expressions they should ovveride.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

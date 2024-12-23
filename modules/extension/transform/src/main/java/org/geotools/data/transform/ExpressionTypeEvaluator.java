@@ -35,8 +35,8 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.filter.function.FilterFunction_Convert;
 
 /**
- * Utility class that tries to figure out the resulting type of an expression against a given
- * feature type by using static analysis.
+ * Utility class that tries to figure out the resulting type of an expression against a given feature type by using
+ * static analysis.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -50,9 +50,8 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
     }
 
     /**
-     * Returns the coordinate reference system of the last encontered geometry property. Unless a
-     * filter function that reprojects geometries is used, that's also the crs of the eventual
-     * output, in case it's a Geometry, that is.
+     * Returns the coordinate reference system of the last encontered geometry property. Unless a filter function that
+     * reprojects geometries is used, that's also the crs of the eventual output, in case it's a Geometry, that is.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return this.crs;
@@ -91,8 +90,7 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
         AttributeDescriptor result = expression.evaluate(schema, AttributeDescriptor.class);
         if (result == null) {
             throw new IllegalArgumentException(
-                    "Original feature type does not have a property named "
-                            + expression.getPropertyName());
+                    "Original feature type does not have a property named " + expression.getPropertyName());
         }
 
         if (result instanceof GeometryDescriptor) {
@@ -110,8 +108,7 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
 
         if (c1 == Integer.class && c2 == Integer.class) {
             return Integer.class;
-        } else if ((c1 == Integer.class || c1 == Long.class)
-                && (c2 == Integer.class || c2 == Long.class)) {
+        } else if ((c1 == Integer.class || c1 == Long.class) && (c2 == Integer.class || c2 == Long.class)) {
             return Long.class;
         } else {
             return Double.class;

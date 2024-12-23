@@ -27,8 +27,8 @@ import org.geotools.api.style.TextSymbolizer;
 
 /**
  * Encodes an iterator of {@link Symbolizer} as YSLD, delegating to {@link PointSymblolizerEncoder},
- * {@link PolygonSymbolizerEncoder}, {@link LineSymbolizerEncoder}, {@link TextSymbolizerEncoder},
- * or {@link RasterSymbolizerEncoder} as appropriate.
+ * {@link PolygonSymbolizerEncoder}, {@link LineSymbolizerEncoder}, {@link TextSymbolizerEncoder}, or
+ * {@link RasterSymbolizerEncoder} as appropriate.
  */
 public class SymbolizersEncoder extends YsldEncodeHandler<Symbolizer> {
 

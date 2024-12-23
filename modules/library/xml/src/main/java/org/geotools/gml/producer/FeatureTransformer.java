@@ -59,9 +59,8 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * FeatureTransformer provides a mechanism for converting Feature objects into (hopefully) valid
- * gml. This is a work in progress, so please be patient. A simple example of how to use this class
- * follows:
+ * FeatureTransformer provides a mechanism for converting Feature objects into (hopefully) valid gml. This is a work in
+ * progress, so please be patient. A simple example of how to use this class follows:
  *
  * <pre>
  *    SimpleFeatureCollection collection; // can also use FeatureReader!!
@@ -76,9 +75,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  *   ft.transform(collection,out);
  * </pre>
  *
- * <b>The above example assumes a homogenous collection of Features whose FeatureType has the
- * namespace "http://somewhere.org"</b> but note that not all DataSources currently provide
- * FeatureTypes with a namespace... There are two other mechanisms for prefixing your Features.<br>
+ * <b>The above example assumes a homogenous collection of Features whose FeatureType has the namespace
+ * "http://somewhere.org"</b> but note that not all DataSources currently provide FeatureTypes with a namespace... There
+ * are two other mechanisms for prefixing your Features.<br>
  * 1) Map a specific FeatureType <b>by identity</b> to prefix and nsURI
  *
  * <pre>
@@ -87,8 +86,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  *   ft.getFeatureTypeNamespaces().declareNamespace(fc,"xxx","http://somewhere.org");
  * </pre>
  *
- * 2) Provide a default namespace for any Features whose FeatureType either has an empty namespace,
- * OR, has not been mapped using the previous method. This is basically a catch-all mechanism.
+ * 2) Provide a default namespace for any Features whose FeatureType either has an empty namespace, OR, has not been
+ * mapped using the previous method. This is basically a catch-all mechanism.
  *
  * <pre>
  *   FeatureTransformer ft = new FeatureTransformer();
@@ -96,8 +95,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </pre>
  *
  * <br>
- * The collectionNamespace and prefix property refers to the prefix and namespace given to the
- * document root and defualts to wfs,http://www.opengis.wfs.
+ * The collectionNamespace and prefix property refers to the prefix and namespace given to the document root and
+ * defualts to wfs,http://www.opengis.wfs.
  *
  * @author Ian Schneider
  * @author Chris Holmes, TOPP
@@ -106,8 +105,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class FeatureTransformer extends TransformerBase {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
 
     private Set<String> gmlAtts;
 
@@ -142,13 +140,11 @@ public class FeatureTransformer extends TransformerBase {
     }
 
     /**
-     * Sets the number of decimals to be used in the geometry coordinates of the response. This
-     * allows for more efficient results, since often the storage format itself won't specify as
-     * many decimal places as the response might want. The default is 4, but should generally be set
-     * by the user of this class.
+     * Sets the number of decimals to be used in the geometry coordinates of the response. This allows for more
+     * efficient results, since often the storage format itself won't specify as many decimal places as the response
+     * might want. The default is 4, but should generally be set by the user of this class.
      *
-     * @param numDecimals the number of significant digits past the decimal to include in the
-     *     response.
+     * @param numDecimals the number of significant digits past the decimal to include in the response.
      */
     public void setNumDecimals(int numDecimals) {
         this.numDecimals = numDecimals;
@@ -175,12 +171,12 @@ public class FeatureTransformer extends TransformerBase {
     }
 
     /**
-     * Used to set the srsName attribute of the Geometries to be turned to xml. The srsName is
-     * applied to all the geometries and is not done on a case by case basis.
+     * Used to set the srsName attribute of the Geometries to be turned to xml. The srsName is applied to all the
+     * geometries and is not done on a case by case basis.
      *
      * @param srsName Spatial Reference System Name
-     * @task REVISIT: once we have better srs support in our feature model this should be rethought,
-     *     as it's a rather blunt approach.
+     * @task REVISIT: once we have better srs support in our feature model this should be rethought, as it's a rather
+     *     blunt approach.
      * @see CRS#toSRS(CoordinateReferenceSystem, boolean)
      */
     public void setSrsName(String srsName) {
@@ -191,31 +187,27 @@ public class FeatureTransformer extends TransformerBase {
      * Used to set a lockId attribute after a getFeatureWithLock.
      *
      * @param lockId The lockId of the lock on the WFS.
-     * @task REVISIT: Ian, this is probably the most wfs specific addition. If you'd like I can
-     *     subclass and add it there. It has to be added as an attribute to FeatureCollection, to
-     *     report a GetFeatureWithLock
+     * @task REVISIT: Ian, this is probably the most wfs specific addition. If you'd like I can subclass and add it
+     *     there. It has to be added as an attribute to FeatureCollection, to report a GetFeatureWithLock
      */
     public void setLockId(String lockId) {
         this.lockId = lockId;
     }
 
     /**
-     * If Gml Prefixing is enabled then attributes with names that could be prefixed with gml, such
-     * as description, pointProperty, and name, will be. So if an attribute called name is
-     * encountered, instead of prepending the default prefix (say gt2:name), it will turn out as
-     * gml:name. Right now this is fairly hacky, as the gml:name, gml:description, ect., should be
-     * in the first attributes by default. The actualy geometry encodings will always be prefixed
-     * with the proper gml, like gml:coordinates. This only applies to attributes, that could also
-     * be part of the features normal schema (for example a pointProperty could be declared in the
-     * gt2 namespace, instead of a gml:pointProperty it would be a gt2:pointProperty.
+     * If Gml Prefixing is enabled then attributes with names that could be prefixed with gml, such as description,
+     * pointProperty, and name, will be. So if an attribute called name is encountered, instead of prepending the
+     * default prefix (say gt2:name), it will turn out as gml:name. Right now this is fairly hacky, as the gml:name,
+     * gml:description, ect., should be in the first attributes by default. The actualy geometry encodings will always
+     * be prefixed with the proper gml, like gml:coordinates. This only applies to attributes, that could also be part
+     * of the features normal schema (for example a pointProperty could be declared in the gt2 namespace, instead of a
+     * gml:pointProperty it would be a gt2:pointProperty.
      *
-     * @param prefixGml <tt>true</tt> if prefixing gml should be enabled. Default is disabled, no
-     *     gml prefixing.
-     * @task REVISIT: only prefix name, description, and boundedBy if they occur in their proper
-     *     places. Right now names always get gml prefixed if the gmlPrefixing is on, which is less
-     *     than ideal.
-     * @task REVISIT: The other approach is to allow for generic mapping, users would set which
-     *     attributes they wanted to have different prefixes.
+     * @param prefixGml <tt>true</tt> if prefixing gml should be enabled. Default is disabled, no gml prefixing.
+     * @task REVISIT: only prefix name, description, and boundedBy if they occur in their proper places. Right now names
+     *     always get gml prefixed if the gmlPrefixing is on, which is less than ideal.
+     * @task REVISIT: The other approach is to allow for generic mapping, users would set which attributes they wanted
+     *     to have different prefixes.
      */
     public void setGmlPrefixing(boolean prefixGml) {
         this.prefixGml = prefixGml;
@@ -247,31 +239,29 @@ public class FeatureTransformer extends TransformerBase {
     }
 
     /**
-     * Sets whether a gml:boundedBy element should automatically be generated and included. The
-     * element will not be updateable, and is simply derived from the geometries present in the
-     * feature.
+     * Sets whether a gml:boundedBy element should automatically be generated and included. The element will not be
+     * updateable, and is simply derived from the geometries present in the feature.
      *
-     * <p>Note that the <tt>setGmlPrefixing()</tt> interacts with this occasionally, since it will
-     * hack in a gml prefix to a boundedBy attribute included in the featureType. If gml prefixing
-     * is on, and featureBounding is on, then the bounds from the attribute will be used. If gml
-     * prefixing is off, then that boundedBy attribute will presumably be in its own namespace, and
-     * so the automatic gml boundedBy will not conflict, so both will be printed, with the automatic
-     * one deriving its bounds from the boundedBy attribute and any other geometries in the feature
+     * <p>Note that the <tt>setGmlPrefixing()</tt> interacts with this occasionally, since it will hack in a gml prefix
+     * to a boundedBy attribute included in the featureType. If gml prefixing is on, and featureBounding is on, then the
+     * bounds from the attribute will be used. If gml prefixing is off, then that boundedBy attribute will presumably be
+     * in its own namespace, and so the automatic gml boundedBy will not conflict, so both will be printed, with the
+     * automatic one deriving its bounds from the boundedBy attribute and any other geometries in the feature
      *
-     * @param featureBounding <tt>true</tt> if the bounds of the feature should be automatically
-     *     calculated and included as a gml:boundedBy in the gml output. Note this puts a good bit
-     *     of bandwidth overhead on the output. Default is <tt>false</tt>
+     * @param featureBounding <tt>true</tt> if the bounds of the feature should be automatically calculated and included
+     *     as a gml:boundedBy in the gml output. Note this puts a good bit of bandwidth overhead on the output. Default
+     *     is <tt>false</tt>
      */
     public void setFeatureBounding(boolean featureBounding) {
         this.featureBounding = featureBounding;
     }
 
     /**
-     * If true, enables the generation of the full collection bounds. Depending on the collection
-     * being generated in output, this operation can be extremely expensive.
+     * If true, enables the generation of the full collection bounds. Depending on the collection being generated in
+     * output, this operation can be extremely expensive.
      *
-     * <p>Defaults to true (for backwards compatibility), disable explicitly if you don't want
-     * feature collection bounds to be generated.
+     * <p>Defaults to true (for backwards compatibility), disable explicitly if you don't want feature collection bounds
+     * to be generated.
      */
     public void setCollectionBounding(boolean collectionBounding) {
         this.collectionBounding = collectionBounding;
@@ -280,12 +270,7 @@ public class FeatureTransformer extends TransformerBase {
     @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
         FeatureTranslator t =
-                createTranslator(
-                        handler,
-                        collectionPrefix,
-                        collectionNamespace,
-                        featureTypeNamespaces,
-                        schemaLocation);
+                createTranslator(handler, collectionPrefix, collectionNamespace, featureTypeNamespaces, schemaLocation);
         java.util.Enumeration prefixes = nsLookup.getPrefixes();
 
         // setGmlPrefixing(true);
@@ -314,8 +299,7 @@ public class FeatureTransformer extends TransformerBase {
             String ns,
             FeatureTypeNamespaces featureTypeNamespaces,
             SchemaLocationSupport schemaLocationSupport) {
-        return new FeatureTranslator(
-                handler, prefix, ns, featureTypeNamespaces, schemaLocationSupport);
+        return new FeatureTranslator(handler, prefix, ns, featureTypeNamespaces, schemaLocationSupport);
     }
 
     public static class FeatureTypeNamespaces {
@@ -349,17 +333,12 @@ public class FeatureTransformer extends TransformerBase {
 
         @Override
         public String toString() {
-            return "FeatureTypeNamespaces[Default: "
-                    + defaultPrefix
-                    + ", lookUp: "
-                    + lookup.keySet()
-                    + "]";
+            return "FeatureTypeNamespaces[Default: " + defaultPrefix + ", lookUp: " + lookup.keySet() + "]";
         }
     }
 
     /** Outputs gml without any fancy indents or newlines. */
-    public class FeatureTranslator extends TranslatorSupport
-            implements FeatureCollectionIteration.Handler {
+    public class FeatureTranslator extends TranslatorSupport implements FeatureCollectionIteration.Handler {
         String fc = "FeatureCollection";
         protected GeometryTransformer.GeometryTranslator geometryTranslator;
         String memberString;
@@ -371,16 +350,16 @@ public class FeatureTransformer extends TransformerBase {
         /**
          * The string representing the Spatial Reference System of the data.
          *
-         * <p>This value should be determined by looking at the first GeometryAttributeType
-         * encountered (but this way GeoServer can override everything and be divorced from the
-         * actual (lack of) abilities of the underlying DataStore).
+         * <p>This value should be determined by looking at the first GeometryAttributeType encountered (but this way
+         * GeoServer can override everything and be divorced from the actual (lack of) abilities of the underlying
+         * DataStore).
          */
         String srsName = null;
         /**
          * Will be 0 - if unknown; 2 if normal and 3 if working with 3D coordinates.
          *
-         * <p>This value will be set based on looking at the *first* GeometryAttributeType
-         * encountered, a similar approach should be taken for determining the SRID name.
+         * <p>This value will be set based on looking at the *first* GeometryAttributeType encountered, a similar
+         * approach should be taken for determining the SRID name.
          *
          * @since 2.4.1
          */
@@ -410,27 +389,18 @@ public class FeatureTransformer extends TransformerBase {
             this.types = types;
             this.handler = handler;
             getNamespaceSupport()
-                    .declarePrefix(
-                            geometryTranslator.getDefaultPrefix(),
-                            geometryTranslator.getDefaultNamespace());
+                    .declarePrefix(geometryTranslator.getDefaultPrefix(), geometryTranslator.getDefaultNamespace());
             memberString = geometryTranslator.getDefaultPrefix() + ":featureMember";
         }
 
-        /**
-         * Method to be subclassed to return a custom geometry translator, mostly for gml3 geometry
-         * support.
-         */
+        /** Method to be subclassed to return a custom geometry translator, mostly for gml3 geometry support. */
         protected GeometryTranslator createGeometryTranslator(ContentHandler handler) {
             return new GeometryTransformer.GeometryTranslator(handler);
         }
 
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler,
-                int numDecimals,
-                boolean padWithZeros,
-                boolean forceDecimalEncoding) {
-            return new GeometryTransformer.GeometryTranslator(
-                    handler, numDecimals, padWithZeros, forceDecimalEncoding);
+                ContentHandler handler, int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
+            return new GeometryTransformer.GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding);
         }
         /** */
         protected GeometryTranslator createGeometryTranslator(
@@ -449,8 +419,7 @@ public class FeatureTransformer extends TransformerBase {
          * <p>This method can be used by code explicitly wishing to output 2D ordinates.
          *
          * @since 2.4.1
-         * @return GeometryTranslator that will delegate a CoordinateWriter configured with the
-         *     above parameters
+         * @return GeometryTranslator that will delegate a CoordinateWriter configured with the above parameters
          */
         protected GeometryTranslator createGeometryTranslator(
                 ContentHandler handler,
@@ -486,51 +455,46 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         void setNumDecimals(int numDecimals) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            numDecimals,
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding());
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    numDecimals,
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding());
         }
 
         void setPadWithZeros(boolean padWithZeros) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            padWithZeros,
-                            geometryTranslator.getForceDecimalEncoding());
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    padWithZeros,
+                    geometryTranslator.getForceDecimalEncoding());
         }
 
         void setForceDecimalEncoding(boolean forceDecimalEncoding) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            forceDecimalEncoding);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    forceDecimalEncoding);
         }
 
         void setUseDummyZ(boolean useDummyZ) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding(),
-                            useDummyZ);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding(),
+                    useDummyZ);
         }
 
         /** If set to 3 the real z value from the coordinates will be used */
         void setDimension(int dimension) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding(),
-                            dimension);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding(),
+                    dimension);
         }
 
         public void setLockId(String lockId) {
@@ -642,8 +606,7 @@ public class FeatureTransformer extends TransformerBase {
             }
         }
 
-        public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-                throws IOException {
+        public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
             try {
                 while (reader.hasNext() && running) {
                     SimpleFeature f = reader.next();
@@ -671,8 +634,7 @@ public class FeatureTransformer extends TransformerBase {
 
         public void startFeatureCollection() {
             try {
-                String element =
-                        (getDefaultPrefix() == null) ? fc : (getDefaultPrefix() + ":" + fc);
+                String element = (getDefaultPrefix() == null) ? fc : (getDefaultPrefix() + ":" + fc);
                 AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
@@ -715,10 +677,9 @@ public class FeatureTransformer extends TransformerBase {
 
                 Envelope env = null;
                 if (bounds != null) {
-                    env =
-                            new Envelope(
-                                    new Coordinate(bounds.getMinX(), bounds.getMinY()),
-                                    new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
+                    env = new Envelope(
+                            new Coordinate(bounds.getMinX(), bounds.getMinY()),
+                            new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
                 }
                 geometryTranslator.encode(env, srsName);
                 contentHandler.endElement("", "", boundedBy);
@@ -761,8 +722,8 @@ public class FeatureTransformer extends TransformerBase {
          * Sends sax for the ending of a feature.
          *
          * @param f Feature (implementation assume a SimpleFeature)
-         * @throws RuntimeException if something goes wrong during encode it is wrapped up as a
-         *     generic runtime exception
+         * @throws RuntimeException if something goes wrong during encode it is wrapped up as a generic runtime
+         *     exception
          */
         @Override
         public void endFeature(Feature f) {
@@ -830,8 +791,7 @@ public class FeatureTransformer extends TransformerBase {
                             if (dimension == 0) {
                                 // lets look at the CRS
                                 GeometryDescriptor geometryType = (GeometryDescriptor) descriptor;
-                                CoordinateReferenceSystem crs =
-                                        geometryType.getCoordinateReferenceSystem();
+                                CoordinateReferenceSystem crs = geometryType.getCoordinateReferenceSystem();
                                 if (crs == null) {
                                     // I won't even bother people with a warning
                                     // (until DataStore quality has improved
@@ -862,15 +822,13 @@ public class FeatureTransformer extends TransformerBase {
                 // REVISIT: xsi:nillable is the proper xml way to handle nulls,
                 // but OGC people are fine with just leaving it out.
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Could not transform '" + descriptor.getName() + "': " + e, e);
+                throw new IllegalStateException("Could not transform '" + descriptor.getName() + "': " + e, e);
             }
         }
 
         private String getDateString(Object value) {
             String text = null;
-            if (value instanceof java.sql.Date)
-                text = DateUtil.serializeSqlDate((java.sql.Date) value);
+            if (value instanceof java.sql.Date) text = DateUtil.serializeSqlDate((java.sql.Date) value);
             else if (value instanceof java.sql.Time) {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
@@ -883,9 +841,7 @@ public class FeatureTransformer extends TransformerBase {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
                     final Date dateValue = (Date) value;
-                    text =
-                            DatatypeConverterImpl.getInstance()
-                                    .printDateTime(dateToCalendar(dateValue));
+                    text = DatatypeConverterImpl.getInstance().printDateTime(dateToCalendar(dateValue));
                 } else {
                     text = DateUtil.serializeDateTime((Date) value);
                 }
@@ -917,12 +873,10 @@ public class FeatureTransformer extends TransformerBase {
         /**
          * Handles sax for a feature.
          *
-         * <p>Please take care when considering the prefix/namespace for the feature. It is defined
-         * by either:
+         * <p>Please take care when considering the prefix/namespace for the feature. It is defined by either:
          *
          * <ul>
-         *   <li>the FeatureType using type.getName().getNamespaceURI() and the user data entry for
-         *       "prefix".
+         *   <li>the FeatureType using type.getName().getNamespaceURI() and the user data entry for "prefix".
          *   <li>FeatureTypeNamespaces as provided to the constructor
          * </ul>
          *
@@ -953,10 +907,7 @@ public class FeatureTransformer extends TransformerBase {
 
                 if (currentPrefix == null) {
                     throw new IllegalStateException(
-                            "FeatureType namespace/prefix unknown for "
-                                    + name
-                                    + "look up in: "
-                                    + types);
+                            "FeatureType namespace/prefix unknown for " + name + "look up in: " + types);
                 } else if (currentPrefix.length() > 0) {
                     name = currentPrefix + ":" + name;
                 }
@@ -975,8 +926,7 @@ public class FeatureTransformer extends TransformerBase {
                     }
                 }
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Could not transform " + f.getIdentifier() + " :" + e, e);
+                throw new IllegalStateException("Could not transform " + f.getIdentifier() + " :" + e, e);
             }
         }
 

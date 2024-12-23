@@ -52,8 +52,7 @@ public class CSVDataStore extends ContentDataStore {
 
     // reader start
     /**
-     * Allow read access to file; for our package visible "friends". Please close the reader when
-     * done.
+     * Allow read access to file; for our package visible "friends". Please close the reader when done.
      *
      * @return CsvReader for file
      */
@@ -81,8 +80,7 @@ public class CSVDataStore extends ContentDataStore {
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
         if (geometryDescrptor != null
                 && CRS.equalsIgnoreMetadata(
-                        DefaultGeographicCRS.WGS84,
-                        geometryDescrptor.getCoordinateReferenceSystem())
+                        DefaultGeographicCRS.WGS84, geometryDescrptor.getCoordinateReferenceSystem())
                 && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
             header.add("LAT");
             header.add("LON");

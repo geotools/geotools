@@ -19,9 +19,8 @@ package org.geotools.data.ows;
 /**
  * Represents a GetCapabilitiesRequest.
  *
- * <p>The SECTION_* constants represent different sections of the Capabilities document. Specific
- * sections can be retrieved using these parameters. This is useful because some Capabilities
- * documents can be very large.
+ * <p>The SECTION_* constants represent different sections of the Capabilities document. Specific sections can be
+ * retrieved using these parameters. This is useful because some Capabilities documents can be very large.
  *
  * @author Richard Gould
  */

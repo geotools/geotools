@@ -97,35 +97,32 @@ public final class LinearConversionTest {
         assertTrue(matrix.isAffine());
         assertFalse(matrix.isIdentity());
         assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, -1, 0, 0},
-                            {0, 0, 1, 0},
-                            {-1, 0, 0, 0},
-                            {0, 0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, -1, 0, 0},
+                    {0, 0, 1, 0},
+                    {-1, 0, 0, 0},
+                    {0, 0, 0, 1}
+                }),
                 matrix);
         dstAxis = new AxisDirection[] {DOWN, NORTH};
         matrix = new GeneralMatrix(srcAxis, dstAxis);
         assertFalse(matrix.isIdentity());
         assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, 0, -1, 0},
-                            {1, 0, 0, 0},
-                            {0, 0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, 0, -1, 0},
+                    {1, 0, 0, 0},
+                    {0, 0, 0, 1}
+                }),
                 matrix);
         dstAxis = new AxisDirection[] {DOWN, DOWN};
         matrix = new GeneralMatrix(srcAxis, dstAxis);
         assertFalse(matrix.isIdentity());
         assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, 0, -1, 0},
-                            {0, 0, -1, 0},
-                            {0, 0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, 0, -1, 0},
+                    {0, 0, -1, 0},
+                    {0, 0, 0, 1}
+                }),
                 matrix);
         dstAxis = new AxisDirection[] {DOWN, GEOCENTRIC_X};
         try {
@@ -144,42 +141,36 @@ public final class LinearConversionTest {
         }
     }
 
-    /**
-     * Tests an example similar to the one provided in the {@link AbstractCS#testScaleAndSwapAxis}
-     * javadoc.
-     */
+    /** Tests an example similar to the one provided in the {@link AbstractCS#testScaleAndSwapAxis} javadoc. */
     @Test
     public void testScaleAndSwapAxis() {
         final Unit<Length> cm = MetricPrefix.CENTI(SI.METRE);
         final Unit<Length> mm = MetricPrefix.MILLI(SI.METRE);
-        final AbstractCS cs =
-                new DefaultCartesianCS(
-                        "Test",
-                        new DefaultCoordinateSystemAxis("y", SOUTH, cm),
-                        new DefaultCoordinateSystemAxis("x", EAST, mm));
+        final AbstractCS cs = new DefaultCartesianCS(
+                "Test",
+                new DefaultCoordinateSystemAxis("y", SOUTH, cm),
+                new DefaultCoordinateSystemAxis("x", EAST, mm));
         Matrix matrix = AbstractCS.swapAndScaleAxis(DefaultCartesianCS.GENERIC_2D, cs);
         assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, -100, 0},
-                            {1000, 0, 0},
-                            {0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, -100, 0},
+                    {1000, 0, 0},
+                    {0, 0, 1}
+                }),
                 matrix);
         matrix = AbstractCS.swapAndScaleAxis(DefaultCartesianCS.GENERIC_3D, cs);
         assertEquals(
-                new GeneralMatrix(
-                        new double[][] {
-                            {0, -100, 0, 0},
-                            {1000, 0, 0, 0},
-                            {0, 0, 0, 1}
-                        }),
+                new GeneralMatrix(new double[][] {
+                    {0, -100, 0, 0},
+                    {1000, 0, 0, 0},
+                    {0, 0, 0, 1}
+                }),
                 matrix);
     }
 
     /**
-     * Test the {@link ProjectionAnalyzer#createLinearConversion} method. Note: this requires a
-     * working {@link MathTransformFactory}.
+     * Test the {@link ProjectionAnalyzer#createLinearConversion} method. Note: this requires a working
+     * {@link MathTransformFactory}.
      *
      * @throws FactoryException If the conversion can't be created.
      */
@@ -192,14 +183,12 @@ public final class LinearConversionTest {
         parameters.parameter("semi_major").setValue(DefaultEllipsoid.WGS84.getSemiMajorAxis());
         parameters.parameter("semi_minor").setValue(DefaultEllipsoid.WGS84.getSemiMinorAxis());
         MathTransform transform = factory.createParameterizedTransform(parameters);
-        DefaultProjectedCRS sourceCRS =
-                new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
+        DefaultProjectedCRS sourceCRS = new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
 
         parameters.parameter("false_easting").setValue(1000);
         parameters.parameter("false_northing").setValue(2000);
         transform = factory.createParameterizedTransform(parameters);
-        DefaultProjectedCRS targetCRS =
-                new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
+        DefaultProjectedCRS targetCRS = new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
 
         Matrix conversion = ProjectionAnalyzer.createLinearConversion(sourceCRS, targetCRS, EPS);
         assertEquals(new Matrix3(1, 0, 1000, 0, 1, 2000, 0, 0, 1), conversion);

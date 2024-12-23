@@ -69,15 +69,13 @@ import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.SLDStyleFactory;
 
 /**
- * Parses a style or part of it and returns the size of the largest stroke and the biggest point
- * symbolizer whose width is specified with a literal expression.<br>
- * Also provides an indication whether the stroke width is accurate, or if a non literal width has
- * been found.
+ * Parses a style or part of it and returns the size of the largest stroke and the biggest point symbolizer whose width
+ * is specified with a literal expression.<br>
+ * Also provides an indication whether the stroke width is accurate, or if a non literal width has been found.
  */
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
 
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
@@ -87,27 +85,18 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     /** @uml.property name="buffer" */
     protected int buffer = 0;
 
-    /**
-     * Feature used to evaluate sizes (optional, without it expressions based on attributes won't
-     * work)
-     */
+    /** Feature used to evaluate sizes (optional, without it expressions based on attributes won't work) */
     Feature sample;
 
     /** Builds an estimator suitable for styles without expressions */
     public MetaBufferEstimator() {}
 
-    /**
-     * Builds an estimator suitable for styles with expression, will evaluate against the provided
-     * feature
-     */
+    /** Builds an estimator suitable for styles with expression, will evaluate against the provided feature */
     public MetaBufferEstimator(Feature sample) {
         this.sample = sample;
     }
 
-    /**
-     * Should you reuse this extractor multiple time, calling this method will reset the buffer and
-     * flags
-     */
+    /** Should you reuse this extractor multiple time, calling this method will reset the buffer and flags */
     public void reset() {
         estimateAccurate = true;
         buffer = 0;
@@ -171,8 +160,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     protected boolean isNull(Expression exp) {
         return exp == null
                 || exp instanceof NilExpression
-                || (exp instanceof ConstantExpression
-                        && ((ConstantExpression) exp).getValue() == null);
+                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null);
     }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.Symbolizer) */
@@ -330,17 +318,13 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                             return;
                         }
 
-                        Iterator<ExternalGraphicFactory> it =
-                                DynamicSymbolFactoryFinder.getExternalGraphicFactories();
+                        Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
                         while (it.hasNext() && icon == null) {
                             try {
                                 ExternalGraphicFactory factory = it.next();
                                 icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch (Exception e) {
-                                LOGGER.log(
-                                        Level.FINE,
-                                        "Error occurred evaluating external graphic",
-                                        e);
+                                LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                             }
                         }
                     }
@@ -386,8 +370,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             estimateAccurate = false;
             LOGGER.log(
                     Level.INFO,
-                    "Error occured during the graphic size estimation, "
-                            + "meta buffer estimate cannot be performed",
+                    "Error occured during the graphic size estimation, " + "meta buffer estimate cannot be performed",
                     e);
         }
     }

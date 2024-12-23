@@ -21,9 +21,8 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 
 /**
- * This class is the base class for building adapters/extensions to the ImageIO {@link
- * ImageReadParam} class for controlling the processing of reading a coverage from an {@link
- * ImageReader}.
+ * This class is the base class for building adapters/extensions to the ImageIO {@link ImageReadParam} class for
+ * controlling the processing of reading a coverage from an {@link ImageReader}.
  *
  * @author Simone Giannecchini
  * @since 2.3.x
@@ -33,9 +32,8 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
     protected ImageReadParam adaptee;
 
     /**
-     * An array of preferred tile size range pairs. The default value is <code>null</code>, which
-     * indicates that there are no preferred sizes. If the value is non-<code>null</code>, it must
-     * have an even length of at least two.
+     * An array of preferred tile size range pairs. The default value is <code>null</code>, which indicates that there
+     * are no preferred sizes. If the value is non-<code>null</code>, it must have an even length of at least two.
      *
      * <p>Subclasses that do not support reading tiles may ignore this value.
      *
@@ -66,8 +64,8 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
     protected boolean tilingSet = false;
 
     /**
-     * Returns the width of each tile in an raster as it will be reader If tiling parameters have
-     * not been set, an <code>IllegalStateException</code> is thrown.
+     * Returns the width of each tile in an raster as it will be reader If tiling parameters have not been set, an
+     * <code>IllegalStateException</code> is thrown.
      *
      * @return the tile width to be used for decoding.
      * @exception IllegalStateException if the tiling parameters have not been set.
@@ -83,8 +81,8 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
     }
 
     /**
-     * Returns the width of each tile in an raster as it will be reader If tiling parameters have
-     * not been set, an <code>IllegalStateException</code> is thrown.
+     * Returns the width of each tile in an raster as it will be reader If tiling parameters have not been set, an
+     * <code>IllegalStateException</code> is thrown.
      *
      * @return the tile height to be used for decoding.
      * @exception IllegalStateException if the tiling parameters have not been set.
@@ -101,16 +99,15 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
 
     /**
      * Specifies that the image should be tiled. The <code>tileWidth</code> and <code>tileHeight
-     * </code> parameters specify the width and height of the tiles in memory. If the tile width or
-     * height is greater than the width or height of the image, the image is not tiled in that
-     * dimension.
+     * </code> parameters specify the width and height of the tiles in memory. If the tile width or height is greater
+     * than the width or height of the image, the image is not tiled in that dimension.
      *
      * @param tileWidth the width of each tile.
      * @param tileHeight the height of each tile.
-     * @exception IllegalArgumentException if the tile size is not within one of the allowable
-     *     ranges returned by <code>getPreferredTileSizes</code>.
-     * @exception IllegalArgumentException if <code>tileWidth</code> or <code>tileHeight</code> is
-     *     less than or equal to 0.
+     * @exception IllegalArgumentException if the tile size is not within one of the allowable ranges returned by <code>
+     *     getPreferredTileSizes</code>.
+     * @exception IllegalArgumentException if <code>tileWidth</code> or <code>tileHeight</code> is less than or equal to
+     *     0.
      * @see #canWriteTiles
      * @see #canOffsetTiles
      * @see #getTileWidth()
@@ -167,17 +164,17 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
     }
 
     /**
-     * Returns an array of <code>Dimension</code>s indicating the legal size ranges for tiles. The
-     * returned array is a copy.
+     * Returns an array of <code>Dimension</code>s indicating the legal size ranges for tiles. The returned array is a
+     * copy.
      *
-     * <p>The information is returned as a set of pairs; the first element of a pair contains an
-     * (inclusive) minimum width and height, and the second element contains an (inclusive) maximum
-     * width and height. Together, each pair defines a valid range of sizes. To specify a fixed
-     * size, use the same width and height for both elements. To specify an arbitrary range, a value
-     * of <code>null</code> is used in place of an actual array of <code>Dimension</code>s.
+     * <p>The information is returned as a set of pairs; the first element of a pair contains an (inclusive) minimum
+     * width and height, and the second element contains an (inclusive) maximum width and height. Together, each pair
+     * defines a valid range of sizes. To specify a fixed size, use the same width and height for both elements. To
+     * specify an arbitrary range, a value of <code>null</code> is used in place of an actual array of <code>Dimension
+     * </code>s.
      *
-     * <p>If no array is specified on the constructor, but tiling is allowed, then this method
-     * returns <code>null</code>.
+     * <p>If no array is specified on the constructor, but tiling is allowed, then this method returns <code>null</code>
+     * .
      *
      * @exception UnsupportedOperationException if the plug-in does not support tiling.
      * @return an array of <code>Dimension</code>s with an even length of at least two, or <code>

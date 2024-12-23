@@ -39,11 +39,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *   <li>{@link #size()}
  *   <li>User interaction is provided by the public API for FeatureCollection:
  *       <ul>
- *         <li>{@link #features()}: makes use of {@link DelegateSimpleFeatureIterator} (if needed)
- *             to wrap your iterator up as a SimpleFeatureIterator for public use.
+ *         <li>{@link #features()}: makes use of {@link DelegateSimpleFeatureIterator} (if needed) to wrap your iterator
+ *             up as a SimpleFeatureIterator for public use.
  *       </ul>
- *       This is the origional implementation of FeatureCollection and is recommended when
- *       presenting {@link Collection} classes as a FeatureCollection.
+ *       This is the origional implementation of FeatureCollection and is recommended when presenting {@link Collection}
+ *       classes as a FeatureCollection.
  *
  * @author Jody Garnett (LISAsoft)
  */
@@ -73,12 +73,12 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     }
 
     /**
-     * Factory method used to open an iterator over collection contents for use by {@link
-     * #iterator()} and {@link #features()}.
+     * Factory method used to open an iterator over collection contents for use by {@link #iterator()} and
+     * {@link #features()}.
      *
-     * <p>If you return an instance of FeatureIterator some effort is taken to call the {@link
-     * FeatureIterator#close()} internally, however we cannot offer any assurance that client code
-     * using {@link #iterator()} will perform the same check.
+     * <p>If you return an instance of FeatureIterator some effort is taken to call the {@link FeatureIterator#close()}
+     * internally, however we cannot offer any assurance that client code using {@link #iterator()} will perform the
+     * same check.
      *
      * @return Iterator over collection contents
      */
@@ -95,8 +95,8 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     /**
      * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
      *
-     * <p>This implementation iterates over the elements in the collection, checking each element in
-     * turn for equality with the specified element.
+     * <p>This implementation iterates over the elements in the collection, checking each element in turn for equality
+     * with the specified element.
      *
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
@@ -119,14 +119,12 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     }
 
     /**
-     * Returns <tt>true</tt> if this collection contains all of the elements in the specified
-     * collection.
+     * Returns <tt>true</tt> if this collection contains all of the elements in the specified collection.
      *
      * <p>
      *
      * @param c collection to be checked for containment in this collection.
-     * @return <tt>true</tt> if this collection contains all of the elements in the specified
-     *     collection.
+     * @return <tt>true</tt> if this collection contains all of the elements in the specified collection.
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
@@ -215,8 +213,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }

@@ -95,8 +95,7 @@ public final class JdbcMultipleValue extends AttributeExpressionImpl implements 
             this.targetValue = parseOgcCqlExpression(targetValue, filterFactory);
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format("Error parsing target value expression '%s'.", targetValue),
-                    exception);
+                    String.format("Error parsing target value expression '%s'.", targetValue), exception);
         }
     }
 

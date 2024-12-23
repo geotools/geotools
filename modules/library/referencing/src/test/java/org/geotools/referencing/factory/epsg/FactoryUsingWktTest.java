@@ -51,11 +51,8 @@ public final class FactoryUsingWktTest {
     /** Gets the authority factory for ESRI. */
     @Before
     public void setUp() {
-        factory =
-                (FactoryUsingWKT)
-                        ReferencingFactoryFinder.getCRSAuthorityFactory(
-                                "EPSG",
-                                new Hints(Hints.CRS_AUTHORITY_FACTORY, FactoryUsingWKT.class));
+        factory = (FactoryUsingWKT) ReferencingFactoryFinder.getCRSAuthorityFactory(
+                "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, FactoryUsingWKT.class));
     }
 
     /**

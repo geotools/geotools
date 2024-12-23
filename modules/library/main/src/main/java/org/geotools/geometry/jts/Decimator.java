@@ -32,16 +32,15 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Accepts geometries and collapses all the vertices that will be rendered to the same pixel. This
- * class works only if the Geometries are based on {@link LiteCoordinateSequence} instances.
+ * Accepts geometries and collapses all the vertices that will be rendered to the same pixel. This class works only if
+ * the Geometries are based on {@link LiteCoordinateSequence} instances.
  *
  * @author jeichar
  * @since 2.1.x
  */
 public final class Decimator {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Decimator.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Decimator.class);
 
     static final double DP_THRESHOLD;
 
@@ -69,20 +68,18 @@ public final class Decimator {
     private double spany = -1;
 
     /**
-     * Builds a decimator that will generalize geometries so that two subsequent points will be at
-     * least pixelDistance away from each other when painted on the screen. Set pixelDistance to 0
-     * if you don't want any generalization (but just a transformation)
+     * Builds a decimator that will generalize geometries so that two subsequent points will be at least pixelDistance
+     * away from each other when painted on the screen. Set pixelDistance to 0 if you don't want any generalization (but
+     * just a transformation)
      */
     public Decimator(MathTransform screenToWorld, Rectangle paintArea, double pixelDistance) {
         if (screenToWorld != null && pixelDistance > 0) {
             try {
-                double[] spans =
-                        computeGeneralizationDistances(screenToWorld, paintArea, pixelDistance);
+                double[] spans = computeGeneralizationDistances(screenToWorld, paintArea, pixelDistance);
                 this.spanx = spans[0];
                 this.spany = spans[1];
             } catch (TransformException e) {
-                throw new RuntimeException(
-                        "Could not perform the generalization spans computation", e);
+                throw new RuntimeException("Could not perform the generalization spans computation", e);
             }
         } else {
             this.spanx = 1;
@@ -101,21 +98,20 @@ public final class Decimator {
     }
 
     /**
-     * djb - noticed that the old way of finding out the decimation is based on the (0,0) location
-     * of the image. This is often wildly unrepresentitive of the scale of the entire map.
+     * djb - noticed that the old way of finding out the decimation is based on the (0,0) location of the image. This is
+     * often wildly unrepresentitive of the scale of the entire map.
      *
-     * <p>A better thing to do is to decimate this on a per-shape basis (and use the shape's
-     * center). Another option would be to sample the image at different locations (say 9) and
-     * choose the smallest spanx/spany you find.
+     * <p>A better thing to do is to decimate this on a per-shape basis (and use the shape's center). Another option
+     * would be to sample the image at different locations (say 9) and choose the smallest spanx/spany you find.
      *
-     * <p>Also, if the xform is an affine Xform, you can be a bit more aggressive in the decimation.
-     * If its not an affine xform (ie. its actually doing a CRS xform), you may find this is a bit
-     * too aggressive due to any number of mathematical issues.
+     * <p>Also, if the xform is an affine Xform, you can be a bit more aggressive in the decimation. If its not an
+     * affine xform (ie. its actually doing a CRS xform), you may find this is a bit too aggressive due to any number of
+     * mathematical issues.
      *
      * <p>This is just a simple method that uses the centre of the given rectangle instead of (0,0).
      *
-     * <p>NOTE: this could need more work based on CRS, but the rectangle is in pixels so it should
-     * be fairly immune to all but crazy projections.
+     * <p>NOTE: this could need more work based on CRS, but the rectangle is in pixels so it should be fairly immune to
+     * all but crazy projections.
      */
     public Decimator(MathTransform screenToWorld, Rectangle paintArea) {
         // 0.8 is just so you don't decimate "too much". magic number.
@@ -123,32 +119,25 @@ public final class Decimator {
     }
 
     /**
-     * Given a full transformation from screen to world and the paint area computes a best guess of
-     * the maxium generalization distance that won't make the transformations induced by the
-     * generalization visible on screen.
+     * Given a full transformation from screen to world and the paint area computes a best guess of the maxium
+     * generalization distance that won't make the transformations induced by the generalization visible on screen.
      *
-     * <p>In other words, it computes how long a pixel is in the native spatial reference system of
-     * the data
+     * <p>In other words, it computes how long a pixel is in the native spatial reference system of the data
      */
     public static double[] computeGeneralizationDistances(
-            MathTransform screenToWorld, Rectangle paintArea, double pixelDistance)
-            throws TransformException {
+            MathTransform screenToWorld, Rectangle paintArea, double pixelDistance) throws TransformException {
         try {
             // init the spans with the upper right corner
-            double[] spans =
-                    getGeneralizationSpans(
-                            paintArea.x + paintArea.width / 2,
-                            paintArea.y + paintArea.height / 2,
-                            screenToWorld);
+            double[] spans = getGeneralizationSpans(
+                    paintArea.x + paintArea.width / 2, paintArea.y + paintArea.height / 2, screenToWorld);
             // search over a simple 3x3 grid for higher spans so that we perform a basic sampling of
             // the whole area and we pick the shortest generalization distances
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
-                    double[] ns =
-                            getGeneralizationSpans(
-                                    paintArea.x + paintArea.width * i / 2.0,
-                                    paintArea.y + paintArea.height * j / 2.0,
-                                    screenToWorld);
+                    double[] ns = getGeneralizationSpans(
+                            paintArea.x + paintArea.width * i / 2.0,
+                            paintArea.y + paintArea.height * j / 2.0,
+                            screenToWorld);
                     if (isFinite(ns[0]) && (ns[0] < spans[0] || !isFinite(spans[0]))) {
                         spans[0] = ns[0];
                     }
@@ -179,8 +168,7 @@ public final class Decimator {
     }
 
     /** Computes the real world distance of a one pixel segment centered in the specified point */
-    static double[] getGeneralizationSpans(double x, double y, MathTransform transform)
-            throws TransformException {
+    static double[] getGeneralizationSpans(double x, double y, MathTransform transform) throws TransformException {
         double[] original = {x - 0.5, y - 0.5, x + 0.5, y + 0.5};
         double[] transformed = new double[4];
         transform.transform(original, 0, transformed, 0, 2);
@@ -244,14 +232,12 @@ public final class Decimator {
                 return collection;
             }
         } else if (geometry instanceof Point) {
-            LiteCoordinateSequence seq =
-                    (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
             decimateTransformGeneralize(seq, transform, false, spanx, spany);
             return geometry;
         } else if (geometry instanceof Polygon) {
             Polygon polygon = (Polygon) geometry;
-            LinearRing shell =
-                    (LinearRing) decimateTransformGeneralize(polygon.getExteriorRing(), transform);
+            LinearRing shell = (LinearRing) decimateTransformGeneralize(polygon.getExteriorRing(), transform);
             boolean cloned = shell != polygon.getExteriorRing();
             final int length = polygon.getNumInteriorRing();
             LinearRing[] holes = cloned ? new LinearRing[length] : null;
@@ -405,15 +391,11 @@ public final class Decimator {
     }
 
     /**
-     * 1. remove any points that are within the spanx,spany. We ALWAYS keep 1st and last point 2.
-     * transform to screen coordinates 3. remove any points that are close (span <1)
+     * 1. remove any points that are within the spanx,spany. We ALWAYS keep 1st and last point 2. transform to screen
+     * coordinates 3. remove any points that are close (span <1)
      */
     private final void decimateTransformGeneralize(
-            LiteCoordinateSequence seq,
-            MathTransform transform,
-            boolean ring,
-            double spanx,
-            double spany)
+            LiteCoordinateSequence seq, MathTransform transform, boolean ring, double spanx, double spany)
             throws TransformException {
         // decimates before XFORM
         int ncoords = seq.size();
@@ -461,9 +443,7 @@ public final class Decimator {
         // generalize, use the heavier algorithm for longer lines
         int actualCoords = spanBasedGeneralize(ncoords, coords, spanx, spany);
         if (DP_THRESHOLD > 0 && actualCoords > DP_THRESHOLD) {
-            actualCoords =
-                    dpBasedGeneralize(
-                            actualCoords, coords, Math.min(spanx, spany) * Math.min(spanx, spany));
+            actualCoords = dpBasedGeneralize(actualCoords, coords, Math.min(spanx, spany) * Math.min(spanx, spany));
         }
 
         // handle rings
@@ -523,9 +503,7 @@ public final class Decimator {
     }
 
     private int dpBasedGeneralize(int ncoords, double[] coords, double maxDistance) {
-        while (coords[0] == coords[(ncoords - 1) * 2]
-                && coords[1] == coords[2 * ncoords - 1]
-                && ncoords > 0) {
+        while (coords[0] == coords[(ncoords - 1) * 2] && coords[1] == coords[2 * ncoords - 1] && ncoords > 0) {
             ncoords--;
         }
         if (ncoords == 0) {
@@ -547,8 +525,7 @@ public final class Decimator {
         return actualCoords;
     }
 
-    private void dpSimplifySection(
-            int first, int last, double[] coords, double maxDistanceSquared) {
+    private void dpSimplifySection(int first, int last, double[] coords, double maxDistanceSquared) {
         if (last - 1 <= first) {
             return;
         }
@@ -628,8 +605,7 @@ public final class Decimator {
     }
 
     /** */
-    private int copyCoordinate(
-            double[] coords, int dimension, int readDoubles, int currentDoubles) {
+    private int copyCoordinate(double[] coords, int dimension, int readDoubles, int currentDoubles) {
         for (int i = 0; i < dimension; i++) {
             coords[readDoubles + i] = coords[currentDoubles + i];
         }

@@ -84,8 +84,7 @@ public class OGCAPITest {
     @Test
     public void testFind() throws FactoryException {
         final GeographicCRS CRS84 = factory.createGeographicCRS("OGC:84");
-        final IdentifiedObjectFinder finder =
-                factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+        final IdentifiedObjectFinder finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         assertTrue("Newly created finder should default to full scan.", finder.isFullScanAllowed());
 
         finder.setFullScanAllowed(false);
@@ -96,15 +95,11 @@ public class OGCAPITest {
 
         finder.setFullScanAllowed(true);
         assertSame(
-                "Allowing scanning should not make any difference for this CRS84 instance.",
-                CRS84,
-                finder.find(CRS84));
+                "Allowing scanning should not make any difference for this CRS84 instance.", CRS84, finder.find(CRS84));
 
         assertNotSame("Required condition for next test.", CRS84, DefaultGeographicCRS.WGS84);
         assertNotEquals("Required condition for next test.", CRS84, DefaultGeographicCRS.WGS84);
-        assertTrue(
-                "Required condition for next test.",
-                CRS.equalsIgnoreMetadata(CRS84, DefaultGeographicCRS.WGS84));
+        assertTrue("Required condition for next test.", CRS.equalsIgnoreMetadata(CRS84, DefaultGeographicCRS.WGS84));
 
         finder.setFullScanAllowed(false);
         assertNull(
@@ -118,19 +113,17 @@ public class OGCAPITest {
                 finder.find(DefaultGeographicCRS.WGS84));
 
         finder.setFullScanAllowed(false);
-        assertNull(
-                "The scan result should not be cached.", finder.find(DefaultGeographicCRS.WGS84));
+        assertNull("The scan result should not be cached.", finder.find(DefaultGeographicCRS.WGS84));
 
         // --------------------------------------------------
         // Same test than above, using a CRS created from WKT
         // --------------------------------------------------
 
-        String wkt =
-                "GEOGCS[\"WGS 84\",\n"
-                        + "  DATUM[\"WGS84\",\n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "  UNIT[\"degree\", 0.017453292519943295]]";
+        String wkt = "GEOGCS[\"WGS 84\",\n"
+                + "  DATUM[\"WGS84\",\n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                + "  UNIT[\"degree\", 0.017453292519943295]]";
         CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         assertNotEquals("Required condition for next test.", CRS84, search);
         assertTrue("Required condition for next test.", CRS.equalsIgnoreMetadata(CRS84, search));
@@ -150,15 +143,14 @@ public class OGCAPITest {
     }
 
     /**
-     * Tests the {@link IdentifiedObjectFinder#find} method through a buffered authority factory.
-     * The objects found are expected to be cached.
+     * Tests the {@link IdentifiedObjectFinder#find} method through a buffered authority factory. The objects found are
+     * expected to be cached.
      */
     @Test
     public void testBufferedFind() throws FactoryException {
         final AbstractAuthorityFactory factory = new CachedCRSAuthorityDecorator(this.factory);
         final GeographicCRS CRS84 = factory.createGeographicCRS("OGC:84");
-        final IdentifiedObjectFinder finder =
-                factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+        final IdentifiedObjectFinder finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
 
         finder.setFullScanAllowed(false);
         assertSame(

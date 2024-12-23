@@ -95,9 +95,8 @@ public class FeatureJSON {
     /**
      * Sets the target feature type for parsing.
      *
-     * <p>Setting the target feature type will help the geojson parser determine the type of feature
-     * properties during properties. When the type is not around all properties are returned as a
-     * string.
+     * <p>Setting the target feature type will help the geojson parser determine the type of feature properties during
+     * properties. When the type is not around all properties are returned as a string.
      *
      * @param featureType The feature type. Parsed features will reference this feature type.
      */
@@ -118,8 +117,8 @@ public class FeatureJSON {
     /**
      * The flag controlling whether feature bounds are encoded.
      *
-     * <p>When set each feature object will contain a "bbox" attribute whose value is an array
-     * containing the elements of the bounding box (in x1,y1,x2,y2 order) of the feature
+     * <p>When set each feature object will contain a "bbox" attribute whose value is an array containing the elements
+     * of the bounding box (in x1,y1,x2,y2 order) of the feature
      */
     public boolean isEncodeFeatureBounds() {
         return encodeFeatureBounds;
@@ -137,9 +136,8 @@ public class FeatureJSON {
     /**
      * The flag controlling whether feature collection bounds are encoded.
      *
-     * <p>When set the feature collection object will contain a "bbox" attribute whose value is an
-     * array containing elements of the bounding box (in x1,y1,x2,y2 order) of the feature
-     * collection.
+     * <p>When set the feature collection object will contain a "bbox" attribute whose value is an array containing
+     * elements of the bounding box (in x1,y1,x2,y2 order) of the feature collection.
      */
     public boolean isEncodeFeatureCollectionBounds() {
         return encodeFeatureCollectionBounds;
@@ -157,16 +155,15 @@ public class FeatureJSON {
     /**
      * The flag controlling whether feature coordinate reference systems are encoded.
      *
-     * <p>When set each feature object will contain a "crs" attribute describing the coordinate
-     * reference system of the feature.
+     * <p>When set each feature object will contain a "crs" attribute describing the coordinate reference system of the
+     * feature.
      */
     public boolean isEncodeFeatureCRS() {
         return encodeFeatureCRS;
     }
 
     /**
-     * Sets the flag controlling whether feature collection coordinate reference systems are
-     * encoded.
+     * Sets the flag controlling whether feature collection coordinate reference systems are encoded.
      *
      * @see #isEncodeFeatureCollectionCRS()
      */
@@ -177,8 +174,8 @@ public class FeatureJSON {
     /**
      * The flag controlling whether feature collection coordinate reference systems are encoded.
      *
-     * <p>When set the feature collection object will contain a "crs" attribute describing the
-     * coordinate reference system of the feature collection.
+     * <p>When set the feature collection object will contain a "crs" attribute describing the coordinate reference
+     * system of the feature collection.
      */
     public boolean isEncodeFeatureCollectionCRS() {
         return encodeFeatureCollectionCRS;
@@ -245,8 +242,7 @@ public class FeatureJSON {
      */
     public SimpleFeature readFeature(Object input) throws IOException {
         return GeoJSONUtil.parse(
-                new FeatureHandler(
-                        featureType != null ? new SimpleFeatureBuilder(featureType) : null, attio),
+                new FeatureHandler(featureType != null ? new SimpleFeatureBuilder(featureType) : null, attio),
                 input,
                 false);
     }
@@ -270,27 +266,18 @@ public class FeatureJSON {
      * @param features The feature collection.
      * @param output The output. See {@link GeoJSONUtil#toWriter(Object)} for details.
      */
-    public void writeFeatureCollection(FeatureCollection features, Object output)
-            throws IOException {
+    public void writeFeatureCollection(FeatureCollection features, Object output) throws IOException {
         LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
         obj.put("type", "FeatureCollection");
 
         if (features.getSchema().getGeometryDescriptor() != null) {
             final ReferencedEnvelope bounds = features.getBounds();
-            final CoordinateReferenceSystem crs =
-                    bounds != null ? bounds.getCoordinateReferenceSystem() : null;
+            final CoordinateReferenceSystem crs = bounds != null ? bounds.getCoordinateReferenceSystem() : null;
 
             if (bounds != null) {
                 if (encodeFeatureCollectionBounds) {
-                    JSONStreamAware writer =
-                            out ->
-                                    JSONArray.writeJSONString(
-                                            Arrays.asList(
-                                                    bounds.getMinX(),
-                                                    bounds.getMinY(),
-                                                    bounds.getMaxX(),
-                                                    bounds.getMaxY()),
-                                            out);
+                    JSONStreamAware writer = out -> JSONArray.writeJSONString(
+                            Arrays.asList(bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()), out);
                     obj.put("bbox", writer);
                 }
             }
@@ -316,8 +303,7 @@ public class FeatureJSON {
             return true;
         }
         try {
-            CoordinateReferenceSystem standardCRS =
-                    CRS.decode("EPSG:4326"); // Consider CRS:84 due to axis order
+            CoordinateReferenceSystem standardCRS = CRS.decode("EPSG:4326"); // Consider CRS:84 due to axis order
             return CRS.equalsIgnoreMetadata(crs, standardCRS);
         } catch (Exception unexpected) {
             return false; // no way to tell
@@ -332,16 +318,15 @@ public class FeatureJSON {
      * @param features The feature collection.
      * @param output The output strema to write to.
      */
-    public void writeFeatureCollection(FeatureCollection features, OutputStream output)
-            throws IOException {
+    public void writeFeatureCollection(FeatureCollection features, OutputStream output) throws IOException {
         writeFeatureCollection(features, (Object) output);
     }
 
     /**
      * Reads a feature collection from GeoJSON.
      *
-     * <p>Warning that this method will load the entire feature collection into memory. For large
-     * feature collections {@link #streamFeatureCollection(Object)} should be used.
+     * <p>Warning that this method will load the entire feature collection into memory. For large feature collections
+     * {@link #streamFeatureCollection(Object)} should be used.
      *
      * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
      * @return The feature collection.
@@ -349,8 +334,7 @@ public class FeatureJSON {
      */
     public FeatureCollection readFeatureCollection(Object input) throws IOException {
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
-        try (FeatureCollectionIterator it =
-                (FeatureCollectionIterator) streamFeatureCollection(input)) {
+        try (FeatureCollectionIterator it = (FeatureCollectionIterator) streamFeatureCollection(input)) {
             while (it.hasNext()) {
                 features.add(it.next());
             }
@@ -373,8 +357,8 @@ public class FeatureJSON {
     /**
      * Reads a feature collection from GeoJSON.
      *
-     * <p>Warning that this method will load the entire feature collection into memory. For large
-     * feature collections {@link #streamFeatureCollection(Object)} should be used.
+     * <p>Warning that this method will load the entire feature collection into memory. For large feature collections
+     * {@link #streamFeatureCollection(Object)} should be used.
      *
      * <p>This method calls through to {@link #readFeatureCollection(Object)}.
      *
@@ -485,34 +469,31 @@ public class FeatureJSON {
     }
 
     /**
-     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it
-     * will parse all features searching for attributes not present in previous features.
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it will parse all
+     * features searching for attributes not present in previous features.
      *
      * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
-     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true
-     *     and the GeoJSON doesn't actually encode null values, only the first feature attributes
-     *     will be discovered.
+     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true and the GeoJSON
+     *     doesn't actually encode null values, only the first feature attributes will be discovered.
      * @return The feature collection schema
      * @throws IOException In the event of a parsing error or if the input json is invalid.
      */
-    public SimpleFeatureType readFeatureCollectionSchema(Object input, boolean nullValuesEncoded)
-            throws IOException {
+    public SimpleFeatureType readFeatureCollectionSchema(Object input, boolean nullValuesEncoded) throws IOException {
         return GeoJSONUtil.parse(new FeatureTypeHandler(nullValuesEncoded), input, false);
     }
 
     /**
-     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it
-     * will parse all features searching for attributes not present in previous features.
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it will parse all
+     * features searching for attributes not present in previous features.
      *
      * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
-     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true
-     *     and the GeoJSON doesn't actually encode null values, only the first feature attributes
-     *     will be discovered.
+     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true and the GeoJSON
+     *     doesn't actually encode null values, only the first feature attributes will be discovered.
      * @return The feature collection schema
      * @throws IOException In the event of a parsing error or if the input json is invalid.
      */
-    public SimpleFeatureType readFeatureCollectionSchema(
-            InputStream input, boolean nullValuesEncoded) throws IOException {
+    public SimpleFeatureType readFeatureCollectionSchema(InputStream input, boolean nullValuesEncoded)
+            throws IOException {
         return readFeatureCollectionSchema((Object) input, false);
     }
 
@@ -552,8 +533,7 @@ public class FeatureJSON {
 
             // crs
             if (encodeFeatureCRS) {
-                CoordinateReferenceSystem crs =
-                        feature.getFeatureType().getCoordinateReferenceSystem();
+                CoordinateReferenceSystem crs = feature.getFeatureType().getCoordinateReferenceSystem();
                 if (crs != null) {
                     try {
                         string("crs", sb).append(":");
@@ -572,18 +552,14 @@ public class FeatureJSON {
 
             // geometry
             if (feature.getDefaultGeometry() != null) {
-                string("geometry", sb)
-                        .append(":")
-                        .append(gjson.toString((Geometry) feature.getDefaultGeometry()));
+                string("geometry", sb).append(":").append(gjson.toString((Geometry) feature.getDefaultGeometry()));
                 sb.append(",");
             }
 
             // properties
-            int gindex =
-                    featureType.getGeometryDescriptor() != null
-                            ? featureType.indexOf(
-                                    featureType.getGeometryDescriptor().getLocalName())
-                            : -1;
+            int gindex = featureType.getGeometryDescriptor() != null
+                    ? featureType.indexOf(featureType.getGeometryDescriptor().getLocalName())
+                    : -1;
 
             string("properties", sb).append(":").append("{");
             boolean attributesWritten = false;
@@ -610,9 +586,7 @@ public class FeatureJSON {
                 } else if (value instanceof BoundingBox) {
                     array(ad.getLocalName(), gjson.toString((BoundingBox) value), sb);
                 } else if (value instanceof Geometry) {
-                    string(ad.getLocalName(), sb)
-                            .append(":")
-                            .append(gjson.toString((Geometry) value));
+                    string(ad.getLocalName(), sb).append(":").append(gjson.toString((Geometry) value));
                 } else {
                     entry(ad.getLocalName(), value, sb);
                 }
@@ -649,8 +623,7 @@ public class FeatureJSON {
 
         @Override
         public void writeJSONString(Writer out) throws IOException {
-            FeatureEncoder featureEncoder =
-                    new FeatureEncoder((SimpleFeatureType) features.getSchema());
+            FeatureEncoder featureEncoder = new FeatureEncoder((SimpleFeatureType) features.getSchema());
 
             out.write("[");
             try (FeatureIterator i = features.features()) {

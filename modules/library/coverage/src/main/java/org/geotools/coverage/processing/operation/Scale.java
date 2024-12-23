@@ -41,8 +41,8 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.jai.Registry;
 
 /**
- * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily
- * scale and translate a rendered image.
+ * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily scale and translate a
+ * rendered image.
  *
  * @version $Id$
  * @author Simone Giannecchini
@@ -63,8 +63,7 @@ public class Scale extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected RenderedImage createRenderedImage(
-            ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
         final RenderedImage source = (RenderedImage) parameters.getSource(0);
         final Interpolation interpolation;
         if (parameters.getObjectParameter("interpolation") != null)
@@ -82,16 +81,15 @@ public class Scale extends BaseScaleOperationJAI {
         PlanarImage image;
         if (interpolation != null
                 && !(interpolation instanceof InterpolationNearest)
-                && (transferType == DataBuffer.TYPE_FLOAT
-                        || transferType == DataBuffer.TYPE_DOUBLE)) {
+                && (transferType == DataBuffer.TYPE_FLOAT || transferType == DataBuffer.TYPE_DOUBLE)) {
 
             synchronized (lock) {
 
                 /**
-                 * Disables the native acceleration for the "Scale" operation. In JAI 1.1.2, the
-                 * "Scale" operation on TYPE_FLOAT datatype with INTERP_BILINEAR interpolation cause
-                 * an exception in the native code of medialib, which halt the Java Virtual Machine.
-                 * Using the pure Java implementation instead resolve the problem.
+                 * Disables the native acceleration for the "Scale" operation. In JAI 1.1.2, the "Scale" operation on
+                 * TYPE_FLOAT datatype with INTERP_BILINEAR interpolation cause an exception in the native code of
+                 * medialib, which halt the Java Virtual Machine. Using the pure Java implementation instead resolve the
+                 * problem.
                  *
                  * @todo Remove this hack when Sun will fix the medialib bug. See
                  *     http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4906854
@@ -109,9 +107,9 @@ public class Scale extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, SCALE, 5, 7);
     }
 
@@ -131,8 +129,7 @@ public class Scale extends BaseScaleOperationJAI {
             properties.putAll(props);
         }
 
-        if (parameters.parameters.getNumParameters() > 5
-                && parameters.parameters.getObjectParameter(8) != null) {
+        if (parameters.parameters.getNumParameters() > 5 && parameters.parameters.getObjectParameter(8) != null) {
             // Setting NoData property if needed
             Object bkgProp = parameters.parameters.getObjectParameter(8);
             if (bkgProp != null && bkgProp instanceof double[]) {
@@ -145,11 +142,9 @@ public class Scale extends BaseScaleOperationJAI {
         if (data instanceof RenderedOp) {
             String operationName = ((RenderedOp) data).getOperationName();
             PropertyGenerator propertyGenerator = null;
-            if (operationName.equalsIgnoreCase(SCALE)
-                    || operationName.equalsIgnoreCase(TRANSLATE)) {
+            if (operationName.equalsIgnoreCase(SCALE) || operationName.equalsIgnoreCase(TRANSLATE)) {
                 propertyGenerator =
-                        getOperationDescriptor(operationName)
-                                .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                        getOperationDescriptor(operationName).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
             }
             if (propertyGenerator != null) {
                 Object roiProp = propertyGenerator.getProperty(ROI, data);

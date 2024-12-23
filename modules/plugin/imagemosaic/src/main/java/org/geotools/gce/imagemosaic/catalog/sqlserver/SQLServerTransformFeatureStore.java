@@ -28,17 +28,15 @@ import org.geotools.data.transform.Definition;
 import org.geotools.data.transform.TransformFeatureStore;
 
 /**
- * A SQLServer transforming feature store, will transform on the fly all attempts to write so that
- * the underlying features are getting modified while exposing a different feature type to its
- * callers.
+ * A SQLServer transforming feature store, will transform on the fly all attempts to write so that the underlying
+ * features are getting modified while exposing a different feature type to its callers.
  */
 public class SQLServerTransformFeatureStore extends TransformFeatureStore {
 
     DataStore datastore;
 
     public SQLServerTransformFeatureStore(
-            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore)
-            throws IOException {
+            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore) throws IOException {
         super(store, name, definitions);
         this.datastore = datastore;
     }

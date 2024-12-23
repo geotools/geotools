@@ -64,13 +64,12 @@ public class VectorMosaicFilterTest {
         PropertyDataStore delegateStore = new PropertyDataStore(delegate);
 
         File granules = new File(delegate, "granules");
-        DataStore granulesStore =
-                new DecoratingDataStore(new PropertyDataStore(granules)) {
-                    @Override
-                    public void dispose() {
-                        fail("Dispose should not be called on granules store");
-                    }
-                };
+        DataStore granulesStore = new DecoratingDataStore(new PropertyDataStore(granules)) {
+            @Override
+            public void dispose() {
+                fail("Dispose should not be called on granules store");
+            }
+        };
 
         repository.register("delegate", delegateStore);
         repository.register("granulesStore", granulesStore);
@@ -80,8 +79,7 @@ public class VectorMosaicFilterTest {
         params.put(VectorMosaicStoreFactory.NAMESPACE.getName(), "topp");
         params.put(VectorMosaicStoreFactory.REPOSITORY_PARAM.getName(), repository);
         params.put(
-                VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI.getName(),
-                PropertyDataStoreFactory.class.getName());
+                VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI.getName(), PropertyDataStoreFactory.class.getName());
         MOSAIC_STORE = factory.createDataStore(params);
     }
 
@@ -166,8 +164,7 @@ public class VectorMosaicFilterTest {
         // if that happened, only two features are returned
         List<SimpleFeature> features =
                 DataUtilities.list(MOSAIC_STORE.getFeatureSource(typeName).getFeatures(q));
-        Set<Object> fids =
-                features.stream().map(f -> f.getAttribute("fid")).collect(Collectors.toSet());
+        Set<Object> fids = features.stream().map(f -> f.getAttribute("fid")).collect(Collectors.toSet());
         assertThat(fids, hasItems(101, 103));
         // however, only fid is returned to the caller
         SimpleFeature f = features.get(0);
@@ -198,8 +195,7 @@ public class VectorMosaicFilterTest {
     private static Set<Object> collectFids(String typeName, Query query) throws IOException {
         List<SimpleFeature> features =
                 DataUtilities.list(MOSAIC_STORE.getFeatureSource(typeName).getFeatures(query));
-        Set<Object> fids =
-                features.stream().map(f -> f.getAttribute("fid")).collect(Collectors.toSet());
+        Set<Object> fids = features.stream().map(f -> f.getAttribute("fid")).collect(Collectors.toSet());
         return fids;
     }
 

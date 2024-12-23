@@ -61,11 +61,10 @@ public class GraphPartitionerTest {
         Assert.assertEquals(g.getNodes().size(), builder().getGraph().getNodes().size());
         Assert.assertEquals(g.getEdges().size(), builder().getGraph().getEdges().size());
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertTrue(g.getNodes().contains(component));
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertTrue(g.getNodes().contains(component));
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
     }
 
@@ -110,18 +109,16 @@ public class GraphPartitionerTest {
         Assert.assertEquals(right.getNodes().size(), (int) Math.pow(2, k) - 1);
         Assert.assertEquals(right.getEdges().size(), (int) Math.pow(2, k) - 2);
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertTrue(component.getObject().toString().startsWith("0.0"));
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertTrue(component.getObject().toString().startsWith("0.0"));
+            return 0;
+        };
         left.visitNodes(visitor);
 
-        visitor =
-                component -> {
-                    Assert.assertTrue(component.getObject().toString().startsWith("0.1"));
-                    return 0;
-                };
+        visitor = component -> {
+            Assert.assertTrue(component.getObject().toString().startsWith("0.1"));
+            return 0;
+        };
         right.visitNodes(visitor);
     }
 

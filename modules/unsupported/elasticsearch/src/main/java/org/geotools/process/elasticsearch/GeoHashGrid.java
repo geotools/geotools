@@ -88,12 +88,12 @@ abstract class GeoHashGrid {
             String aggregationDefinition,
             String queryDefinition)
             throws TransformException, FactoryException, IOException {
-        final List<Map<String, Object>> buckets =
-                readFeatures(features, aggregationDefinition, queryDefinition);
+        final List<Map<String, Object>> buckets = readFeatures(features, aggregationDefinition, queryDefinition);
 
         // cannot trust the definition, as the store might update it to enforce safety limits
         // check from the first returned geohash instead
-        final String firstGeohash = buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
+        final String firstGeohash =
+                buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
         Integer precision;
         if (!isValid(firstGeohash)) {
             LOGGER.fine("No aggregations found or missing/invalid GeoHash key");
@@ -107,8 +107,7 @@ abstract class GeoHashGrid {
         cellHeight = GeoHash.heightDegrees(precision);
 
         boolean reproject =
-                !CRS.equalsIgnoreMetadata(
-                        srcEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+                !CRS.equalsIgnoreMetadata(srcEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
         if (reproject) {
             srcEnvelope = srcEnvelope.transform(DefaultGeographicCRS.WGS84, true);
         }
@@ -118,18 +117,15 @@ abstract class GeoHashGrid {
 
         // the envelope is expressed on the geohash cell centers, boundingbox is the full
         // coverage of the raster instead
-        boundingBox =
-                new ReferencedEnvelope(
-                        envelope.getMinX() - cellWidth / 2.0,
-                        envelope.getMaxX() + cellWidth / 2.0,
-                        envelope.getMinY() - cellHeight / 2.0,
-                        envelope.getMaxY() + cellHeight / 2.0,
-                        DefaultGeographicCRS.WGS84);
+        boundingBox = new ReferencedEnvelope(
+                envelope.getMinX() - cellWidth / 2.0,
+                envelope.getMaxX() + cellWidth / 2.0,
+                envelope.getMinY() - cellHeight / 2.0,
+                envelope.getMaxY() + cellHeight / 2.0,
+                DefaultGeographicCRS.WGS84);
 
-        final int numCol =
-                (int) Math.round((envelope.getMaxX() - envelope.getMinX()) / cellWidth + 1);
-        final int numRow =
-                (int) Math.round((envelope.getMaxY() - envelope.getMinY()) / cellHeight + 1);
+        final int numCol = (int) Math.round((envelope.getMaxX() - envelope.getMinX()) / cellWidth + 1);
+        final int numRow = (int) Math.round((envelope.getMaxY() - envelope.getMinY()) / cellHeight + 1);
         grid = new float[numRow][numCol];
         LOGGER.fine("Created grid with size (" + numCol + ", " + numRow + ")");
 
@@ -137,12 +133,11 @@ abstract class GeoHashGrid {
             for (float[] row : grid) Arrays.fill(row, emptyCellValue);
         }
         List<GridCell> cells = new ArrayList<>();
-        buckets.forEach(
-                bucket -> {
-                    Number rasterValue = computeCellValue(bucket);
-                    cells.add(new GridCell((String) bucket.get("key"), rasterValue));
-                    scale.prepareScale(rasterValue.floatValue());
-                });
+        buckets.forEach(bucket -> {
+            Number rasterValue = computeCellValue(bucket);
+            cells.add(new GridCell((String) bucket.get("key"), rasterValue));
+            scale.prepareScale(rasterValue.floatValue());
+        });
         cells.forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
     }
@@ -166,8 +161,7 @@ abstract class GeoHashGrid {
         final int row = grid.length - (int) Math.round((lat - envelope.getMinY()) / cellHeight) - 1;
         final int col = (int) Math.round((lon - envelope.getMinX()) / cellWidth);
 
-        grid[Math.min(row, grid.length - 1)][Math.min(col, grid[0].length - 1)] =
-                scale.scaleValue(value.floatValue());
+        grid[Math.min(row, grid.length - 1)][Math.min(col, grid[0].length - 1)] = scale.scaleValue(value.floatValue());
     }
 
     public GridCoverage2D toGridCoverage2D() {
@@ -177,12 +171,10 @@ abstract class GeoHashGrid {
     }
 
     private List<Map<String, Object>> readFeatures(
-            SimpleFeatureCollection features, String aggregationDefinition, String queryDefinition)
-            throws IOException {
+            SimpleFeatureCollection features, String aggregationDefinition, String queryDefinition) throws IOException {
         final List<Map<String, Object>> buckets = new ArrayList<>();
         FeatureCollection featureCollection = unwrap(features);
-        ElasticBucketVisitor visitor =
-                new ElasticBucketVisitor(aggregationDefinition, queryDefinition);
+        ElasticBucketVisitor visitor = new ElasticBucketVisitor(aggregationDefinition, queryDefinition);
         if (featureCollection instanceof ContentFeatureCollection
                 || featureCollection instanceof DecoratingSimpleFeatureCollection) {
             featureCollection.accepts(visitor, null);
@@ -196,8 +188,7 @@ abstract class GeoHashGrid {
                         final byte[] data = (byte[]) feature.getAttribute("_aggregation");
                         try {
                             final Map<String, Object> aggregation =
-                                    mapper.readValue(
-                                            data, new TypeReference<Map<String, Object>>() {});
+                                    mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
                             buckets.add(aggregation);
                         } catch (IOException e) {
                             LOGGER.fine("Failed to parse aggregation value: " + e);
@@ -220,15 +211,13 @@ abstract class GeoHashGrid {
 
     private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) {
         final String minHash =
-                GeoHash.encodeHash(
-                        Math.max(-90, outEnvelope.getMinY()), outEnvelope.getMinX(), precision);
+                GeoHash.encodeHash(Math.max(-90, outEnvelope.getMinY()), outEnvelope.getMinX(), precision);
         final LatLong minLatLon = GeoHash.decodeHash(minHash);
         final double minLon = minLatLon.getLon() + lonOffset;
 
         final double width = Math.ceil(outEnvelope.getWidth() / cellWidth) * cellWidth;
         final double maxLon = minLon + width - cellWidth;
-        final String maxHash =
-                GeoHash.encodeHash(Math.min(90, outEnvelope.getMaxY()), maxLon, precision);
+        final String maxHash = GeoHash.encodeHash(Math.min(90, outEnvelope.getMaxY()), maxLon, precision);
         final LatLong maxLatLon = GeoHash.decodeHash(maxHash);
 
         return new Envelope(minLon, maxLon, minLatLon.getLat(), maxLatLon.getLat());
@@ -257,16 +246,12 @@ abstract class GeoHashGrid {
     }
 
     private boolean isValid(String geohash) {
-        return geohash != null
-                && geohash.equals(
-                        GeoHash.encodeHash(GeoHash.decodeHash(geohash), geohash.length()));
+        return geohash != null && geohash.equals(GeoHash.encodeHash(GeoHash.decodeHash(geohash), geohash.length()));
     }
 
     String pluckBucketName(Map<String, Object> bucket) {
         if (!bucket.containsKey(BUCKET_NAME_KEY)) {
-            LOGGER.warning(
-                    "Unable to pluck key, bucket does not contain required field:"
-                            + BUCKET_NAME_KEY);
+            LOGGER.warning("Unable to pluck key, bucket does not contain required field:" + BUCKET_NAME_KEY);
             throw new IllegalArgumentException();
         }
         return bucket.get(BUCKET_NAME_KEY) + "";
@@ -274,9 +259,7 @@ abstract class GeoHashGrid {
 
     Number pluckDocCount(Map<String, Object> bucket) {
         if (!bucket.containsKey(DOC_COUNT_KEY)) {
-            LOGGER.warning(
-                    "Unable to pluck document count, bucket does not contain required key:"
-                            + DOC_COUNT_KEY);
+            LOGGER.warning("Unable to pluck document count, bucket does not contain required key:" + DOC_COUNT_KEY);
             throw new IllegalArgumentException();
         }
         return (Number) bucket.get(DOC_COUNT_KEY);
@@ -288,16 +271,13 @@ abstract class GeoHashGrid {
             value = pluckDocCount(bucket);
         } else {
             if (!bucket.containsKey(metricKey)) {
-                LOGGER.warning(
-                        "Unable to pluck metric, bucket does not contain required key:"
-                                + metricKey);
+                LOGGER.warning("Unable to pluck metric, bucket does not contain required key:" + metricKey);
                 throw new IllegalArgumentException();
             }
             @SuppressWarnings("unchecked")
             Map<String, Object> metric = (Map<String, Object>) bucket.get(metricKey);
             if (!metric.containsKey(valueKey)) {
-                LOGGER.warning(
-                        "Unable to pluck value, metric does not contain required key:" + valueKey);
+                LOGGER.warning("Unable to pluck value, metric does not contain required key:" + valueKey);
                 throw new IllegalArgumentException();
             }
             value = (Number) metric.get(valueKey);
@@ -309,15 +289,13 @@ abstract class GeoHashGrid {
     List<Map<String, Object>> pluckAggBuckets(Map<String, Object> parentBucket, String aggKey) {
         if (!parentBucket.containsKey(aggKey)) {
             LOGGER.warning(
-                    "Unable to pluck aggregation results, parent bucket does not contain required key:"
-                            + aggKey);
+                    "Unable to pluck aggregation results, parent bucket does not contain required key:" + aggKey);
             throw new IllegalArgumentException();
         }
         Map<String, Object> aggResults = (Map<String, Object>) parentBucket.get(aggKey);
         if (!aggResults.containsKey(BUCKETS_KEY)) {
             LOGGER.warning(
-                    "Unable to pluck buckets, aggregation results bucket does not contain required key:"
-                            + BUCKETS_KEY);
+                    "Unable to pluck buckets, aggregation results bucket does not contain required key:" + BUCKETS_KEY);
             throw new IllegalArgumentException();
         }
         return (List<Map<String, Object>>) aggResults.get(BUCKETS_KEY);

@@ -82,19 +82,17 @@ public class CompressesRasterWriter {
     /**
      * Compress and write data from a {@link RectIter map iterator}.
      *
-     * <p>This method converts every single row of the buffer of values to bytes, as needed by the
-     * deflater. Then the byterows are compressed and then written to file. Every rows first byte
-     * carries the information about compression (0 = not compressed, 1 = compressed). At the begin
-     * the place for the header is written to file, in the end the header is re-written with the
-     * right rowaddresses (at the begin we do not know how much compression will influence).
+     * <p>This method converts every single row of the buffer of values to bytes, as needed by the deflater. Then the
+     * byterows are compressed and then written to file. Every rows first byte carries the information about compression
+     * (0 = not compressed, 1 = compressed). At the begin the place for the header is written to file, in the end the
+     * header is re-written with the right rowaddresses (at the begin we do not know how much compression will
+     * influence).
      *
      * @param theCreatedFile - handler for the main map file
      * @param theCreatedNullFile - handler for the file of the null map (in cell_misc)
      */
     public void compressAndWrite(
-            ImageOutputStream theCreatedFile,
-            ImageOutputStream theCreatedNullFile,
-            RenderedImage renderedImage)
+            ImageOutputStream theCreatedFile, ImageOutputStream theCreatedNullFile, RenderedImage renderedImage)
             throws IOException {
         // set the number of bytes needed for the values to write to disk
         int numberofbytes = outputToDiskType * 4;
@@ -125,8 +123,7 @@ public class CompressesRasterWriter {
         int width = renderedImage.getWidth();
         // FIXME here I want to exploit tiling, not have the whole image loaded,
         // but when I do, I get an
-        RandomIter iterator =
-                RandomIterFactory.create(renderedImage, new Rectangle(0, 0, width, height));
+        RandomIter iterator = RandomIterFactory.create(renderedImage, new Rectangle(0, 0, width, height));
         // NewWritableFileRandomIter iterator =
         // NewFileImageRandomIterFactory.createWritableFileRandomIter((FileImage) renderedImage,
         // new Rectangle(0, 0, width, height));

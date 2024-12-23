@@ -66,28 +66,27 @@ public final class NameFactory {
     }
 
     /**
-     * Constructs a generic name from an array of local names and the default separator character.
-     * If any of the specified names is an {@link InternationalString}, then the <code>
-     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used
-     * in order to fetch an unlocalized name. Otherwise, the <code>
+     * Constructs a generic name from an array of local names and the default separator character. If any of the
+     * specified names is an {@link InternationalString}, then the <code>
+     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used in order to fetch an
+     * unlocalized name. Otherwise, the <code>
      * {@linkplain CharSequence#toString toString}()</code> method will be used.
      *
-     * @param names The local names as an array of strings or international strings. This array must
-     *     contains at least one element.
+     * @param names The local names as an array of strings or international strings. This array must contains at least
+     *     one element.
      */
     public static GenericName create(final CharSequence... names) {
         return create(names, org.geotools.util.GenericName.DEFAULT_SEPARATOR);
     }
 
     /**
-     * Constructs a generic name from an array of local names and the specified separator character.
-     * If any of the specified names is an {@link InternationalString}, then the <code>
-     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used
-     * in order to fetch an unlocalized name. Otherwise, the <code>
+     * Constructs a generic name from an array of local names and the specified separator character. If any of the
+     * specified names is an {@link InternationalString}, then the <code>
+     * {@linkplain InternationalString#toString(Locale) toString}(null)</code> method will be used in order to fetch an
+     * unlocalized name. Otherwise, the <code>
      * {@linkplain CharSequence#toString toString}()</code> method will be used.
      *
-     * @param names The local names as an array of strings. This array must contains at least one
-     *     element.
+     * @param names The local names as an array of strings. This array must contains at least one element.
      * @param separator The separator character to use.
      */
     public static GenericName create(final CharSequence[] names, final char separator) {
@@ -101,8 +100,7 @@ public final class NameFactory {
      * @param length The valid length of {@code names} array.
      * @param separator The separator character to use.
      */
-    private static GenericName create(
-            final CharSequence[] names, final int length, final char separator) {
+    private static GenericName create(final CharSequence[] names, final int length, final char separator) {
         if (length <= 0) {
             throw new IllegalArgumentException(String.valueOf(length));
         }
@@ -113,9 +111,9 @@ public final class NameFactory {
     }
 
     /**
-     * Returns the specified name in an array. The {@code value} may be either a {@link String},
-     * {@code String[]}, {@link GenericName} or {@code GenericName[]}. This method is used in {@link
-     * org.geotools.referencing.AbstractIdentifiedObject} constructors.
+     * Returns the specified name in an array. The {@code value} may be either a {@link String}, {@code String[]},
+     * {@link GenericName} or {@code GenericName[]}. This method is used in
+     * {@link org.geotools.referencing.AbstractIdentifiedObject} constructors.
      *
      * @param value The object to cast into an array of generic names.
      * @return The generic names.
@@ -150,7 +148,6 @@ public final class NameFactory {
             return names;
         }
         // TODO: localize
-        throw new ClassCastException(
-                "Cannot convert " + Classes.getShortClassName(value) + " to GenericName[]");
+        throw new ClassCastException("Cannot convert " + Classes.getShortClassName(value) + " to GenericName[]");
     }
 }

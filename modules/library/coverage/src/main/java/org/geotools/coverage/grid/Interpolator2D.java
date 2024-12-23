@@ -39,10 +39,9 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.util.CoverageUtilities;
 
 /**
- * A grid coverage using an {@linkplain Interpolation interpolation} for evaluating points. This
- * interpolator is not used for {@linkplain InterpolationNearest nearest-neighbor interpolation}
- * (use the plain {@link GridCoverage2D} class for that). It should work for other kinds of
- * interpolation however.
+ * A grid coverage using an {@linkplain Interpolation interpolation} for evaluating points. This interpolator is not
+ * used for {@linkplain InterpolationNearest nearest-neighbor interpolation} (use the plain {@link GridCoverage2D} class
+ * for that). It should work for other kinds of interpolation however.
  *
  * @since 2.2
  * @version $Id$
@@ -53,11 +52,10 @@ public final class Interpolator2D extends GridCoverage2D {
     /**
      * The source grid coverage which was specified at construction time (never {@code null}).
      *
-     * @serial This field duplicate the value obtained by <code>{@linkplain #getSources()}(0)</code>
-     *     except if this coverage has been deserialized. The source is required in order to get the
-     *     {@link #view} method to work. Because the {@linkplain GridCoverage2D#image image}
-     *     contained in the source is the same one than in this {@link Calculator2D}, there is few
-     *     cost in keeping it.
+     * @serial This field duplicate the value obtained by <code>{@linkplain #getSources()}(0)</code> except if this
+     *     coverage has been deserialized. The source is required in order to get the {@link #view} method to work.
+     *     Because the {@linkplain GridCoverage2D#image image} contained in the source is the same one than in this
+     *     {@link Calculator2D}, there is few cost in keeping it.
      */
     protected final GridCoverage2D source;
 
@@ -65,8 +63,8 @@ public final class Interpolator2D extends GridCoverage2D {
     private static final long serialVersionUID = 9028980295030908004L;
 
     /**
-     * The greatest value smaller than 1 representable as a {@code float} number. This value can be
-     * obtained with {@code org.geotools.referencing.util.XMath.previous(1f)}.
+     * The greatest value smaller than 1 representable as a {@code float} number. This value can be obtained with
+     * {@code org.geotools.referencing.util.XMath.previous(1f)}.
      */
     private static final float ONE_EPSILON = 0.99999994f;
 
@@ -74,8 +72,8 @@ public final class Interpolator2D extends GridCoverage2D {
     private static volatile Interpolation[] DEFAULTS;
 
     /**
-     * Transform from "real world" coordinates to grid coordinates. This transform maps coordinates
-     * to pixel <em>centers</em>.
+     * Transform from "real world" coordinates to grid coordinates. This transform maps coordinates to pixel
+     * <em>centers</em>.
      */
     private final MathTransform2D toGrid;
 
@@ -83,9 +81,9 @@ public final class Interpolator2D extends GridCoverage2D {
     private final Interpolation interpolation;
 
     /**
-     * Second interpolation method to use if this one failed. May be {@code null} if there is no
-     * fallback. By convention, {@code this} means that interpolation should fallback on {@code
-     * super.evaluate(...)} (i.e. nearest neighbor).
+     * Second interpolation method to use if this one failed. May be {@code null} if there is no fallback. By
+     * convention, {@code this} means that interpolation should fallback on {@code super.evaluate(...)} (i.e. nearest
+     * neighbor).
      */
     private final Interpolator2D fallback;
 
@@ -96,27 +94,18 @@ public final class Interpolator2D extends GridCoverage2D {
     private final int top, left;
 
     /**
-     * The interpolation bounds. Interpolation will use pixel inside this rectangle. This rectangle
-     * is passed as an argument to {@link RectIterFactory}.
+     * The interpolation bounds. Interpolation will use pixel inside this rectangle. This rectangle is passed as an
+     * argument to {@link RectIterFactory}.
      */
     private final Rectangle bounds;
 
-    /**
-     * Arrays to use for passing arguments to interpolation. This array will be constructed only
-     * when first needed.
-     */
+    /** Arrays to use for passing arguments to interpolation. This array will be constructed only when first needed. */
     private transient double[][] doubles;
 
-    /**
-     * Arrays to use for passing arguments to interpolation. This array will be constructed only
-     * when first needed.
-     */
+    /** Arrays to use for passing arguments to interpolation. This array will be constructed only when first needed. */
     private transient float[][] floats;
 
-    /**
-     * Arrays to use for passing arguments to interpolation. This array will be constructed only
-     * when first needed.
-     */
+    /** Arrays to use for passing arguments to interpolation. This array will be constructed only when first needed. */
     private transient int[][] ints;
 
     /** The {@link BorderExtender} for this {@link Interpolator2D} instance . */
@@ -151,12 +140,11 @@ public final class Interpolator2D extends GridCoverage2D {
     public static GridCoverage2D create(final GridCoverage2D coverage) {
         // No need to synchronize: not a big deal if two arrays are created.
         if (DEFAULTS == null) {
-            DEFAULTS =
-                    new Interpolation[] {
-                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
-                        Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
-                        Interpolation.getInstance(Interpolation.INTERP_NEAREST)
-                    };
+            DEFAULTS = new Interpolation[] {
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST)
+            };
         }
         return create(coverage, DEFAULTS);
     }
@@ -167,36 +155,30 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coverage The coverage to interpolate.
      * @param interpolation The interpolation to use.
      */
-    public static GridCoverage2D create(
-            final GridCoverage2D coverage, final Interpolation interpolation) {
+    public static GridCoverage2D create(final GridCoverage2D coverage, final Interpolation interpolation) {
         return create(coverage, new Interpolation[] {interpolation});
     }
 
     /**
-     * Constructs a new interpolator for an interpolation and its fallbacks. The fallbacks are used
-     * if the primary interpolation failed because of {@linkplain Float#NaN NaN} values in the
-     * interpolated point neighbor.
+     * Constructs a new interpolator for an interpolation and its fallbacks. The fallbacks are used if the primary
+     * interpolation failed because of {@linkplain Float#NaN NaN} values in the interpolated point neighbor.
      *
      * @param coverage The coverage to interpolate.
      * @param interpolations The interpolation to use and its fallback (if any).
      */
-    public static GridCoverage2D create(
-            GridCoverage2D coverage, final Interpolation[] interpolations) {
+    public static GridCoverage2D create(GridCoverage2D coverage, final Interpolation[] interpolations) {
         return create(coverage, interpolations, null);
     }
 
     /**
-     * Constructs a new interpolator for an interpolation and its fallbacks. The fallbacks are used
-     * if the primary interpolation failed because of {@linkplain Float#NaN NaN} values in the
-     * interpolated point neighbor.
+     * Constructs a new interpolator for an interpolation and its fallbacks. The fallbacks are used if the primary
+     * interpolation failed because of {@linkplain Float#NaN NaN} values in the interpolated point neighbor.
      *
      * @param coverage The coverage to interpolate.
      * @param interpolations The interpolation to use and its fallback (if any).
      */
     public static GridCoverage2D create(
-            GridCoverage2D coverage,
-            final Interpolation[] interpolations,
-            final BorderExtender be) {
+            GridCoverage2D coverage, final Interpolation[] interpolations, final BorderExtender be) {
         while (coverage instanceof Interpolator2D) {
             coverage = ((Interpolator2D) coverage).source;
         }
@@ -215,16 +197,13 @@ public final class Interpolator2D extends GridCoverage2D {
      * Constructs a new interpolator for the specified interpolation.
      *
      * @param coverage The coverage to interpolate.
-     * @param interpolations The interpolations to use and its fallback (if any). This array must
-     *     have at least 1 element.
+     * @param interpolations The interpolations to use and its fallback (if any). This array must have at least 1
+     *     element.
      * @param index The index of interpolation to use in the {@code interpolations} array.
      * @param be the {@link BorderExtender} instance to use for this operation.
      */
     private Interpolator2D(
-            final GridCoverage2D coverage,
-            final Interpolation[] interpolations,
-            final int index,
-            BorderExtender be) {
+            final GridCoverage2D coverage, final Interpolation[] interpolations, final int index, BorderExtender be) {
         super(null, coverage);
         this.source = coverage;
         this.interpolation = interpolations[index];
@@ -253,8 +232,7 @@ public final class Interpolator2D extends GridCoverage2D {
             this.toGrid = fallback.toGrid;
         } else
             try {
-                final MathTransform2D transform =
-                        gridGeometry.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
+                final MathTransform2D transform = gridGeometry.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
                 toGrid = transform.inverse();
             } catch (NoninvertibleTransformException exception) {
                 throw new IllegalArgumentException(exception);
@@ -296,8 +274,8 @@ public final class Interpolator2D extends GridCoverage2D {
     }
 
     /**
-     * Returns interpolations. The first array's element is the interpolation for this grid
-     * coverage. Other elements (if any) are fallbacks.
+     * Returns interpolations. The first array's element is the interpolation for this grid coverage. Other elements (if
+     * any) are fallbacks.
      */
     public Interpolation[] getInterpolations() {
         final List<Interpolation> interp = new ArrayList<>(4);
@@ -325,9 +303,9 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coord The coordinate point where to evaluate.
      * @param dest An array in which to store values, or {@code null}.
      * @return An array containing values.
-     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate.
-     *     More specifically, {@link PointOutsideCoverageException} is thrown if the evaluation
-     *     failed because the input point has invalid coordinates.
+     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate. More specifically,
+     *     {@link PointOutsideCoverageException} is thrown if the evaluation failed because the input point has invalid
+     *     coordinates.
      */
     @Override
     public int[] evaluate(final Point2D coord, int[] dest) throws CannotEvaluateException {
@@ -356,9 +334,9 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coord The coordinate point where to evaluate.
      * @param dest An array in which to store values, or {@code null}.
      * @return An array containing values.
-     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate.
-     *     More specifically, {@link PointOutsideCoverageException} is thrown if the evaluation
-     *     failed because the input point has invalid coordinates.
+     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate. More specifically,
+     *     {@link PointOutsideCoverageException} is thrown if the evaluation failed because the input point has invalid
+     *     coordinates.
      */
     @Override
     public float[] evaluate(final Point2D coord, float[] dest) throws CannotEvaluateException {
@@ -387,9 +365,9 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coord The coordinate point where to evaluate.
      * @param dest An array in which to store values, or {@code null}.
      * @return An array containing values.
-     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate.
-     *     More specifically, {@link PointOutsideCoverageException} is thrown if the evaluation
-     *     failed because the input point has invalid coordinates.
+     * @throws CannotEvaluateException if the values can't be computed at the specified coordinate. More specifically,
+     *     {@link PointOutsideCoverageException} is thrown if the evaluation failed because the input point has invalid
+     *     coordinates.
      */
     @Override
     public double[] evaluate(final Point2D coord, double[] dest) throws CannotEvaluateException {
@@ -413,9 +391,8 @@ public final class Interpolator2D extends GridCoverage2D {
     }
 
     /**
-     * Interpolate at the specified position. If {@code fallback!=null}, then {@code dest}
-     * <strong>must</strong> have been initialized with {@code super.evaluate(...)} prior to
-     * invoking this method.
+     * Interpolate at the specified position. If {@code fallback!=null}, then {@code dest} <strong>must</strong> have
+     * been initialized with {@code super.evaluate(...)} prior to invoking this method.
      *
      * @param x The x position in pixel's coordinates.
      * @param y The y position in pixel's coordinates.
@@ -460,8 +437,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();
@@ -510,9 +486,8 @@ public final class Interpolator2D extends GridCoverage2D {
     }
 
     /**
-     * Interpolates at the specified position. If {@code fallback!=null}, then {@code dest}
-     * <strong>must</strong> have been initialized with {@code super.evaluate(...)} prior to
-     * invoking this method.
+     * Interpolates at the specified position. If {@code fallback!=null}, then {@code dest} <strong>must</strong> have
+     * been initialized with {@code super.evaluate(...)} prior to invoking this method.
      *
      * @param x The x position in pixel's coordinates.
      * @param y The y position in pixel's coordinates.
@@ -521,8 +496,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param bandUp The last band's index+1 to interpolate.
      * @return {@code null} if point is outside grid coverage.
      */
-    private synchronized float[] interpolate(
-            final double x, final double y, float[] dest, int band, final int bandUp) {
+    private synchronized float[] interpolate(final double x, final double y, float[] dest, int band, final int bandUp) {
         final double x0 = Math.floor(x);
         final double y0 = Math.floor(y);
         final int ix = (int) x0;
@@ -558,8 +532,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();
@@ -608,9 +581,8 @@ public final class Interpolator2D extends GridCoverage2D {
     }
 
     /**
-     * Interpolates at the specified position. If {@code fallback!=null}, then {@code dest}
-     * <strong>must</strong> have been initialized with {@code super.evaluate(...)} prior to
-     * invoking this method.
+     * Interpolates at the specified position. If {@code fallback!=null}, then {@code dest} <strong>must</strong> have
+     * been initialized with {@code super.evaluate(...)} prior to invoking this method.
      *
      * @param x The x position in pixel's coordinates.
      * @param y The y position in pixel's coordinates.
@@ -619,8 +591,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param bandUp The last band's index+1 to interpolate.
      * @return {@code null} if point is outside grid coverage.
      */
-    private synchronized int[] interpolate(
-            final double x, final double y, int[] dest, int band, final int bandUp) {
+    private synchronized int[] interpolate(final double x, final double y, int[] dest, int band, final int bandUp) {
         final double x0 = Math.floor(x);
         final double y0 = Math.floor(y);
         final int ix = (int) x0;
@@ -655,8 +626,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();

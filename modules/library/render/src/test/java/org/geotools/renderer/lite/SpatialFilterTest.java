@@ -68,15 +68,13 @@ public class SpatialFilterTest {
         // the following is only to make the test work in Eclipse, where the test
         // classpath is tainted by the test classpath of dependent modules (whilst in Maven it's
         // not)
-        Set<CRSAuthorityFactory> factories =
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        Set<CRSAuthorityFactory> factories = ReferencingFactoryFinder.getCRSAuthorityFactories(null);
         for (CRSAuthorityFactory factory : factories) {
             if (factory.getClass().getSimpleName().equals("EPSGCRSAuthorityFactory")) {
                 ReferencingFactoryFinder.removeAuthorityFactory(factory);
             }
         }
-        assertEquals(
-                AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:ogc:def:crs:EPSG::4326")));
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:ogc:def:crs:EPSG::4326")));
     }
 
     @Before
@@ -94,19 +92,18 @@ public class SpatialFilterTest {
         content.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
         renderer.setMapContent(content);
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        renderedIds.add(feature.getID());
-                    }
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                renderedIds.add(feature.getID());
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        errorCount++;
-                    }
-                });
+            @Override
+            public void errorOccurred(Exception e) {
+                errorCount++;
+            }
+        });
 
         // System.setProperty("org.geotools.test.interactive", "true");
     }
@@ -157,8 +154,7 @@ public class SpatialFilterTest {
         rule.setFilter(ff.bbox("geom", 5, 1, 7, 3, null));
 
         // force EPSG axis order interpretation
-        renderer.setRendererHints(
-                Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
 
         content.addLayer(new FeatureLayer(pointFS, style));
 
@@ -179,18 +175,16 @@ public class SpatialFilterTest {
         Symbolizer ps = sb.createPointSymbolizer();
         Style style = sb.createStyle(ps);
         Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        rule.setFilter(
-                ff.bbox(
-                        "geom",
-                        envUTM31N.getMinX(),
-                        envUTM31N.getMinY(),
-                        envUTM31N.getMaxX(),
-                        envUTM31N.getMaxY(),
-                        "EPSG:32631"));
+        rule.setFilter(ff.bbox(
+                "geom",
+                envUTM31N.getMinX(),
+                envUTM31N.getMinY(),
+                envUTM31N.getMaxX(),
+                envUTM31N.getMaxY(),
+                "EPSG:32631"));
 
         // force EPSG axis order interpretation
-        renderer.setRendererHints(
-                Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
 
         content.addLayer(new FeatureLayer(pointFS, style));
 
@@ -255,8 +249,7 @@ public class SpatialFilterTest {
 
         content.addLayer(layer);
 
-        RendererBaseTest.showRender(
-                "Reprojected polygon as a definition query", renderer, TIME, bounds);
+        RendererBaseTest.showRender("Reprojected polygon as a definition query", renderer, TIME, bounds);
         assertEquals(1, renderedIds.size());
         assertEquals("point.4", renderedIds.iterator().next());
     }

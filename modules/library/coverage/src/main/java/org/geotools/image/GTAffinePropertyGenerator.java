@@ -34,8 +34,8 @@ import javax.media.jai.RenderedOp;
 import org.geotools.util.factory.Hints;
 
 /**
- * A property generator for the Affine operation that builds a ROI with a sane image layout even
- * with large upscale factors
+ * A property generator for the Affine operation that builds a ROI with a sane image layout even with large upscale
+ * factors
  *
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
@@ -76,9 +76,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
             // Retrieve the rendered source image and its ROI.
             RenderedImage src = pb.getRenderedSource(0);
             Object property = src.getProperty("ROI");
-            if (property == null
-                    || property.equals(java.awt.Image.UndefinedProperty)
-                    || !(property instanceof ROI)) {
+            if (property == null || property.equals(java.awt.Image.UndefinedProperty) || !(property instanceof ROI)) {
                 // Check on the parameterBlock
                 if (pb.getNumParameters() >= 4 && pb.getObjectParameter(3) != null) {
                     property = pb.getObjectParameter(3);
@@ -94,18 +92,14 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
             // Determine the effective source bounds.
             Rectangle srcBounds = null;
             PlanarImage dst = op.getRendering();
-            if (dst instanceof GeometricOpImage
-                    && ((GeometricOpImage) dst).getBorderExtender() == null) {
-                srcBounds =
-                        new Rectangle(
-                                src.getMinX() + interp.getLeftPadding(),
-                                src.getMinY() + interp.getTopPadding(),
-                                src.getWidth() - interp.getWidth() + 1,
-                                src.getHeight() - interp.getHeight() + 1);
+            if (dst instanceof GeometricOpImage && ((GeometricOpImage) dst).getBorderExtender() == null) {
+                srcBounds = new Rectangle(
+                        src.getMinX() + interp.getLeftPadding(),
+                        src.getMinY() + interp.getTopPadding(),
+                        src.getWidth() - interp.getWidth() + 1,
+                        src.getHeight() - interp.getHeight() + 1);
             } else {
-                srcBounds =
-                        new Rectangle(
-                                src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight());
+                srcBounds = new Rectangle(src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight());
             }
 
             // If necessary, clip the ROI to the effective source bounds.

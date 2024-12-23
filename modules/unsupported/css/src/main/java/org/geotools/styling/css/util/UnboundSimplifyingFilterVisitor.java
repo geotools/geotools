@@ -22,8 +22,8 @@ import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 
 /**
- * A filter visitor subclass that does not consider the env function already bound, and thus,
- * assumes it's still variable
+ * A filter visitor subclass that does not consider the env function already bound, and thus, assumes it's still
+ * variable
  *
  * @author Andrea Aime - GeoSolutions
  */

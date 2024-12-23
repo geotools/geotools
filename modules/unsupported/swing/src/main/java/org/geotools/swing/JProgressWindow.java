@@ -50,10 +50,10 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.SwingUtilities;
 
 /**
- * Reports progress of a lengthly operation in a window. This implementation can also format
- * warnings. Its method can be invoked from any thread (it doesn't need to be the <cite>Swing</cite>
- * thread), which make it easier to use it from some background thread. Such background thread
- * should have a low priority in order to avoid delaying Swing repaint events.
+ * Reports progress of a lengthly operation in a window. This implementation can also format warnings. Its method can be
+ * invoked from any thread (it doesn't need to be the <cite>Swing</cite> thread), which make it easier to use it from
+ * some background thread. Such background thread should have a low priority in order to avoid delaying Swing repaint
+ * events.
  *
  * @author Martin Desruisseaux
  * @since 2.0
@@ -64,9 +64,8 @@ public class JProgressWindow implements ProgressListener {
     private static final int WIDTH = 360;
 
     /**
-     * Initial height for the progress window, in pixels. Increase this value if some component
-     * (e.g. the "Cancel" button) seems truncated. The current value has been tested for Metal look
-     * and feel.
+     * Initial height for the progress window, in pixels. Increase this value if some component (e.g. the "Cancel"
+     * button) seems truncated. The current value has been tested for Metal look and feel.
      */
     private static final int HEIGHT = 140;
 
@@ -82,10 +81,7 @@ public class JProgressWindow implements ProgressListener {
     /** Amount of spaces to put in the margin of the warning messages window. */
     private static final int WARNING_MARGIN = 8;
 
-    /**
-     * The progress window as a {@link JDialog} or a {@link JInternalFrame}, depending of the parent
-     * component.
-     */
+    /** The progress window as a {@link JDialog} or a {@link JInternalFrame}, depending of the parent component. */
     private final Component window;
 
     /** The container where to add components like the progress bar. */
@@ -94,24 +90,21 @@ public class JProgressWindow implements ProgressListener {
     /** The progress bar. Values ranges from 0 to 100. */
     private final JProgressBar progressBar;
 
-    /**
-     * A description of the undergoing operation. Examples: "Reading header", "Reading data",
-     * <cite>etc.</cite>
-     */
+    /** A description of the undergoing operation. Examples: "Reading header", "Reading data", <cite>etc.</cite> */
     private final JLabel description;
 
     /** The cancel button. */
     private final JButton cancel;
 
     /**
-     * Component where to display warnings. The actual component class is {@link JTextArea}. But we
-     * declare {@link JComponent} here in order to avoid class loading before needed.
+     * Component where to display warnings. The actual component class is {@link JTextArea}. But we declare
+     * {@link JComponent} here in order to avoid class loading before needed.
      */
     private JComponent warningArea;
 
     /**
-     * The source of the last warning message. Used in order to avoid to repeat the source for all
-     * subsequent warning messages, if the source didn't changed.
+     * The source of the last warning message. Used in order to avoid to repeat the source for all subsequent warning
+     * messages, if the source didn't changed.
      */
     private String lastSource;
 
@@ -119,8 +112,8 @@ public class JProgressWindow implements ProgressListener {
     private volatile boolean canceled;
 
     /**
-     * Creates a window for reporting progress. The window will not appears immediately. It will
-     * appears only when the {@link #started} method will be invoked.
+     * Creates a window for reporting progress. The window will not appears immediately. It will appears only when the
+     * {@link #started} method will be invoked.
      *
      * @param parent The parent component, or {@code null} if none.
      */
@@ -129,8 +122,7 @@ public class JProgressWindow implements ProgressListener {
          * Creates the window containing the components.
          */
         Dimension parentSize;
-        final Vocabulary resources =
-                Vocabulary.getResources(parent != null ? parent.getLocale() : null);
+        final Vocabulary resources = Vocabulary.getResources(parent != null ? parent.getLocale() : null);
         final String title = resources.getString(VocabularyKeys.PROGRESSION);
         final JDesktopPane desktop = JOptionPane.getDesktopPaneForComponent(parent);
         if (desktop != null) {
@@ -149,8 +141,7 @@ public class JProgressWindow implements ProgressListener {
             dialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
             dialog.setResizable(false);
         }
-        window.setBounds(
-                (parentSize.width - WIDTH) / 2, (parentSize.height - HEIGHT) / 2, WIDTH, HEIGHT);
+        window.setBounds((parentSize.width - WIDTH) / 2, (parentSize.height - HEIGHT) / 2, WIDTH, HEIGHT);
         /*
          * Creates the label that is going to display the undergoing operation.
          * This label is initially empty.
@@ -162,9 +153,8 @@ public class JProgressWindow implements ProgressListener {
          */
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
-        progressBar.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createEmptyBorder(6, 9, 6, 9), progressBar.getBorder()));
+        progressBar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(6, 9, 6, 9), progressBar.getBorder()));
         /*
          * Creates the cancel button.
          */
@@ -180,10 +170,9 @@ public class JProgressWindow implements ProgressListener {
          * order to put some space between the window content and the window border.
          */
         final JPanel panel = new JPanel(new GridLayout(2, 1));
-        panel.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createEmptyBorder(VMARGIN, HMARGIN, VMARGIN, HMARGIN),
-                        BorderFactory.createEtchedBorder()));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(VMARGIN, HMARGIN, VMARGIN, HMARGIN),
+                BorderFactory.createEtchedBorder()));
         panel.add(description);
         panel.add(progressBar);
         content.setLayout(new BorderLayout());
@@ -227,10 +216,7 @@ public class JProgressWindow implements ProgressListener {
         set(Caller.LABEL, task.toString());
     }
 
-    /**
-     * Notifies that the operation begins. This method display the windows if it was not already
-     * visible.
-     */
+    /** Notifies that the operation begins. This method display the windows if it was not already visible. */
     @Override
     public void started() {
         call(Caller.STARTED);
@@ -255,8 +241,8 @@ public class JProgressWindow implements ProgressListener {
     }
 
     /**
-     * Notifies that the operation has finished. The window will disaspears, except if it contains
-     * warning or exception stack traces.
+     * Notifies that the operation has finished. The window will disaspears, except if it contains warning or exception
+     * stack traces.
      */
     @Override
     public void complete() {
@@ -286,16 +272,15 @@ public class JProgressWindow implements ProgressListener {
     }
 
     /**
-     * Display a warning message under the progress bar. The text area for warning messages appears
-     * only the first time this method is invoked.
+     * Display a warning message under the progress bar. The text area for warning messages appears only the first time
+     * this method is invoked.
      *
      * @param source DOCUMENT ME
      * @param margin DOCUMENT ME
      * @param warning DOCUMENT ME
      */
     @Override
-    public synchronized void warningOccurred(
-            final String source, String margin, final String warning) {
+    public synchronized void warningOccurred(final String source, String margin, final String warning) {
         final StringBuffer buffer = new StringBuffer(warning.length() + 16);
         if (source == null || !source.equals(lastSource)) {
             lastSource = source;
@@ -355,11 +340,10 @@ public class JProgressWindow implements ProgressListener {
     }
 
     /**
-     * Queries one of the components in the progress window. This method doesn't need to be invoked
-     * from the <cite>Swing</cite> thread.
+     * Queries one of the components in the progress window. This method doesn't need to be invoked from the
+     * <cite>Swing</cite> thread.
      *
-     * @param task The desired value as one of the {@link Caller#TITLE} or {@link Caller#LABEL}
-     *     constants.
+     * @param task The desired value as one of the {@link Caller#TITLE} or {@link Caller#LABEL} constants.
      * @return The value.
      */
     private Object get(final int task) {
@@ -369,11 +353,10 @@ public class JProgressWindow implements ProgressListener {
     }
 
     /**
-     * Sets the state of one of the components in the progress window. This method doesn't need to
-     * be invoked from the <cite>Swing</cite> thread.
+     * Sets the state of one of the components in the progress window. This method doesn't need to be invoked from the
+     * <cite>Swing</cite> thread.
      *
-     * @param task The value to change as one of the {@link Caller#TITLE} or {@link Caller#LABEL}
-     *     constants.
+     * @param task The value to change as one of the {@link Caller#TITLE} or {@link Caller#LABEL} constants.
      * @param value The new value.
      */
     private void set(final int task, final Object value) {
@@ -392,10 +375,9 @@ public class JProgressWindow implements ProgressListener {
     }
 
     /**
-     * Task to run in the <cite>Swing</cite> thread. Tasks are identified by a numeric constant. The
-     * {@code get} operations have negative identifiers and are executed by the {@link
-     * EventQueue#invokeAndWait} method. The {@code set} operations have positive identifiers and
-     * are executed by the {@link EventQueue#invokeLater} method.
+     * Task to run in the <cite>Swing</cite> thread. Tasks are identified by a numeric constant. The {@code get}
+     * operations have negative identifiers and are executed by the {@link EventQueue#invokeAndWait} method. The
+     * {@code set} operations have positive identifiers and are executed by the {@link EventQueue#invokeLater} method.
      *
      * @author Martin Desruisseaux (PMO, IRD)
      */
@@ -422,19 +404,17 @@ public class JProgressWindow implements ProgressListener {
         public static final int DISPOSE = 7;
 
         /**
-         * The task to execute, as one of the {@link #TITLE}, {@link #LABEL}, <cite>etc.</cite>
-         * constants or their negative counterpart.
+         * The task to execute, as one of the {@link #TITLE}, {@link #LABEL}, <cite>etc.</cite> constants or their
+         * negative counterpart.
          */
         private final int task;
 
-        /**
-         * The value to get (negative value {@link #task}) or set (positive value {@link #task}).
-         */
+        /** The value to get (negative value {@link #task}) or set (positive value {@link #task}). */
         public Object value;
 
         /**
-         * Creates an action. {@code task} must be one of {@link #TITLE}, {@link #LABEL}
-         * <cite>etc.</cite> constants or their negative counterpart.
+         * Creates an action. {@code task} must be one of {@link #TITLE}, {@link #LABEL} <cite>etc.</cite> constants or
+         * their negative counterpart.
          *
          * @param task the task key
          */
@@ -447,35 +427,30 @@ public class JProgressWindow implements ProgressListener {
         public void run() {
             final BoundedRangeModel model = progressBar.getModel();
             switch (task) {
-                case -LABEL:
-                    {
-                        value = description.getText();
-                        return;
-                    }
-                case +LABEL:
-                    {
-                        description.setText((String) value);
-                        return;
-                    }
-                case PROGRESS:
-                    {
-                        model.setValue(((Integer) value).intValue());
-                        progressBar.setIndeterminate(false);
-                        return;
-                    }
-                case STARTED:
-                    {
-                        model.setRangeProperties(0, 1, 0, 100, false);
-                        window.setVisible(true);
-                        break; // Need further action below.
-                    }
-                case COMPLETE:
-                    {
-                        model.setRangeProperties(100, 1, 0, 100, false);
-                        window.setVisible(warningArea != null);
-                        cancel.setEnabled(false);
-                        break; // Need further action below.
-                    }
+                case -LABEL: {
+                    value = description.getText();
+                    return;
+                }
+                case +LABEL: {
+                    description.setText((String) value);
+                    return;
+                }
+                case PROGRESS: {
+                    model.setValue(((Integer) value).intValue());
+                    progressBar.setIndeterminate(false);
+                    return;
+                }
+                case STARTED: {
+                    model.setRangeProperties(0, 1, 0, 100, false);
+                    window.setVisible(true);
+                    break; // Need further action below.
+                }
+                case COMPLETE: {
+                    model.setRangeProperties(100, 1, 0, 100, false);
+                    window.setVisible(warningArea != null);
+                    cancel.setEnabled(false);
+                    break; // Need further action below.
+                }
             }
             /*
              * Some of the tasks above requires an action on the window, which may be a JDialog or
@@ -485,66 +460,56 @@ public class JProgressWindow implements ProgressListener {
                 if (window instanceof JDialog) {
                     final JDialog window = (JDialog) JProgressWindow.this.window;
                     switch (task) {
-                        case -TITLE:
-                            {
-                                value = window.getTitle();
-                                return;
+                        case -TITLE: {
+                            value = window.getTitle();
+                            return;
+                        }
+                        case +TITLE: {
+                            window.setTitle((String) value);
+                            return;
+                        }
+                        case STARTED: {
+                            window.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                            return;
+                        }
+                        case COMPLETE: {
+                            window.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+                            return;
+                        }
+                        case DISPOSE: {
+                            window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                            if (warningArea == null || !window.isVisible()) {
+                                window.dispose();
                             }
-                        case +TITLE:
-                            {
-                                window.setTitle((String) value);
-                                return;
-                            }
-                        case STARTED:
-                            {
-                                window.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                                return;
-                            }
-                        case COMPLETE:
-                            {
-                                window.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-                                return;
-                            }
-                        case DISPOSE:
-                            {
-                                window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                                if (warningArea == null || !window.isVisible()) {
-                                    window.dispose();
-                                }
-                                return;
-                            }
+                            return;
+                        }
                     }
                 } else {
                     final JInternalFrame window = (JInternalFrame) JProgressWindow.this.window;
                     switch (task) {
-                        case -TITLE:
-                            {
-                                value = window.getTitle();
-                                return;
+                        case -TITLE: {
+                            value = window.getTitle();
+                            return;
+                        }
+                        case +TITLE: {
+                            window.setTitle((String) value);
+                            return;
+                        }
+                        case STARTED: {
+                            window.setClosable(false);
+                            return;
+                        }
+                        case COMPLETE: {
+                            window.setClosable(true);
+                            return;
+                        }
+                        case DISPOSE: {
+                            window.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+                            if (warningArea == null || !window.isVisible()) {
+                                window.dispose();
                             }
-                        case +TITLE:
-                            {
-                                window.setTitle((String) value);
-                                return;
-                            }
-                        case STARTED:
-                            {
-                                window.setClosable(false);
-                                return;
-                            }
-                        case COMPLETE:
-                            {
-                                window.setClosable(true);
-                                return;
-                            }
-                        case DISPOSE:
-                            {
-                                window.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-                                if (warningArea == null || !window.isVisible()) {
-                                    window.dispose();
-                                }
-                                return;
-                            }
+                            return;
+                        }
                     }
                 }
                 /*
@@ -558,10 +523,8 @@ public class JProgressWindow implements ProgressListener {
                     JProgressWindow.this.warningArea = warningArea;
                     warningArea.setFont(Font.getFont("Monospaced"));
                     warningArea.setEditable(false);
-                    namedArea.setBorder(
-                            BorderFactory.createEmptyBorder(0, HMARGIN, VMARGIN, HMARGIN));
-                    namedArea.add(
-                            new JLabel(getString(VocabularyKeys.WARNING)), BorderLayout.NORTH);
+                    namedArea.setBorder(BorderFactory.createEmptyBorder(0, HMARGIN, VMARGIN, HMARGIN));
+                    namedArea.add(new JLabel(getString(VocabularyKeys.WARNING)), BorderLayout.NORTH);
                     namedArea.add(scroll, BorderLayout.CENTER);
                     content.add(namedArea, BorderLayout.CENTER);
                     if (window instanceof JDialog) {

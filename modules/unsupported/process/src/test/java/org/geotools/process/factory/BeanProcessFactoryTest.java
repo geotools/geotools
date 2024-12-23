@@ -89,21 +89,20 @@ public class BeanProcessFactoryTest {
 
         // check SPI will see the factory if we register it using an iterator
         // provider
-        GeoTools.addFactoryIteratorProvider(
-                new FactoryIteratorProvider() {
+        GeoTools.addFactoryIteratorProvider(new FactoryIteratorProvider() {
 
-                    @Override
-                    public <T> Iterator<T> iterator(Class<T> category) {
-                        if (ProcessFactory.class.isAssignableFrom(category)) {
-                            @SuppressWarnings("unchecked")
-                            Iterator<T> result =
-                                    (Iterator<T>) Collections.singletonList(factory).iterator();
-                            return result;
-                        } else {
-                            return null;
-                        }
-                    }
-                });
+            @Override
+            public <T> Iterator<T> iterator(Class<T> category) {
+                if (ProcessFactory.class.isAssignableFrom(category)) {
+                    @SuppressWarnings("unchecked")
+                    Iterator<T> result =
+                            (Iterator<T>) Collections.singletonList(factory).iterator();
+                    return result;
+                } else {
+                    return null;
+                }
+            }
+        });
     }
 
     @Test
@@ -118,8 +117,7 @@ public class BeanProcessFactoryTest {
     @Test
     public void testDescribeIdentity() {
         NameImpl name = new NameImpl("bean", "Identity");
-        DescribeProcess describeProcessAnno =
-                IdentityProcess.class.getAnnotation(DescribeProcess.class);
+        DescribeProcess describeProcessAnno = IdentityProcess.class.getAnnotation(DescribeProcess.class);
 
         InternationalString desc = factory.getDescription(name);
         assertEquals(desc.toString(), describeProcessAnno.description());
@@ -173,8 +171,7 @@ public class BeanProcessFactoryTest {
         // prepare a mock feature collection
         SimpleFeatureCollection data = buildTestFeatures();
 
-        org.geotools.process.Process transformation =
-                factory.create(new NameImpl("bean", "VectorIdentityRT"));
+        org.geotools.process.Process transformation = factory.create(new NameImpl("bean", "VectorIdentityRT"));
         Map<String, Object> inputs = new HashMap<>();
         inputs.put("data", data);
         inputs.put("value", 10);
@@ -214,8 +211,7 @@ public class BeanProcessFactoryTest {
     @Test
     public void testMinMaxAcceptedValues() throws Exception {
         // test that the annotation is correctly generating the parameter metadata
-        Map<String, Parameter<?>> params =
-                factory.getParameterInfo(new NameImpl("bean", "Defaults"));
+        Map<String, Parameter<?>> params = factory.getParameterInfo(new NameImpl("bean", "Defaults"));
         assertEquals(2.0, params.get("int").metadata.get(Parameter.MAX));
         assertEquals(-1.0, params.get("int").metadata.get(Parameter.MIN));
         assertEquals(2.5, params.get("double").metadata.get(Parameter.MAX));

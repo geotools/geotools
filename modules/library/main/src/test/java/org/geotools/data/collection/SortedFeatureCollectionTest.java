@@ -51,29 +51,24 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
     @Test
     public void testSortAttribute() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.ASCENDING);
-        SortedSimpleFeatureCollection sorted =
-                new SortedSimpleFeatureCollection(delegate, new SortBy[] {sort});
+        SortedSimpleFeatureCollection sorted = new SortedSimpleFeatureCollection(delegate, new SortBy[] {sort});
         checkSorted(sorted, DataUtilities.sortComparator(sort));
     }
 
     @Test
     public void testSortAttributeDescending() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.DESCENDING);
-        SortedSimpleFeatureCollection sorted =
-                new SortedSimpleFeatureCollection(delegate, new SortBy[] {sort});
+        SortedSimpleFeatureCollection sorted = new SortedSimpleFeatureCollection(delegate, new SortBy[] {sort});
         checkSorted(sorted, DataUtilities.sortComparator(sort));
     }
 
-    private void checkSorted(
-            SortedSimpleFeatureCollection sorted, Comparator<SimpleFeature> comparator) {
+    private void checkSorted(SortedSimpleFeatureCollection sorted, Comparator<SimpleFeature> comparator) {
         try (SimpleFeatureIterator fi = sorted.features()) {
             SimpleFeature prev = null;
             while (fi.hasNext()) {
                 SimpleFeature curr = fi.next();
                 if (prev != null) {
-                    assertTrue(
-                            "Failed on " + prev + " / " + curr,
-                            comparator.compare(prev, curr) <= 0);
+                    assertTrue("Failed on " + prev + " / " + curr, comparator.compare(prev, curr) <= 0);
                 }
                 prev = curr;
             }

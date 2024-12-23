@@ -36,12 +36,12 @@ import org.geotools.renderer.style.MarkFactory;
 import org.geotools.util.SoftValueHashMap;
 
 /**
- * Factory to produce marks based on WKT representation of symbols. WKT geometries may be defined
- * directly in the SLD (prefixing it with @see {@value #WKT_PREFIX}, or in a WKT library stored in a
- * properties file (prefixing it with @see {@link #WKTLIB_PREFIX}).
+ * Factory to produce marks based on WKT representation of symbols. WKT geometries may be defined directly in the SLD
+ * (prefixing it with @see {@value #WKT_PREFIX}, or in a WKT library stored in a properties file (prefixing it with @see
+ * {@link #WKTLIB_PREFIX}).
  *
- * <p>The symbols stored in properties files are cached in soft references for better performance.
- * The root directory for properties files can be set using the {@link setRoot} method.
+ * <p>The symbols stored in properties files are cached in soft references for better performance. The root directory
+ * for properties files can be set using the {@link setRoot} method.
  *
  * @author Luca Morandini lmorandini@ieee.org
  * @author Simone Giannecchini, GeoSolutions
@@ -50,8 +50,7 @@ import org.geotools.util.SoftValueHashMap;
 public class WKTMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WKTMarkFactory.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WKTMarkFactory.class);
 
     public static final String WKT_PREFIX = "wkt://";
 
@@ -62,8 +61,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected static URL ROOT_DIRECTORY = null;
 
     // Cache used to store libraries of WKT geometries
-    protected static final SoftValueHashMap<String, Map<String, String>> CACHE =
-            new SoftValueHashMap<>();
+    protected static final SoftValueHashMap<String, Map<String, String>> CACHE = new SoftValueHashMap<>();
 
     /*
      * Clears cache. While the cache uses {@link
@@ -99,8 +97,8 @@ public class WKTMarkFactory implements MarkFactory {
     }
 
     /**
-     * Adds the shapes contained in a WKT library to the cache; if the url already exists in the
-     * cache, the shapes are not added
+     * Adds the shapes contained in a WKT library to the cache; if the url already exists in the cache, the shapes are
+     * not added
      *
      * @param urlLib URL of the WKT library as a properties file URL
      */
@@ -126,15 +124,14 @@ public class WKTMarkFactory implements MarkFactory {
     }
 
     /**
-     * Returns a WKT shaoe given that its URL specifies a WKT geometry or contains a reference to a
-     * WKT geometry specfied in a properties file
+     * Returns a WKT shaoe given that its URL specifies a WKT geometry or contains a reference to a WKT geometry
+     * specfied in a properties file
      *
      * @see org.geotools.renderer.style.MarkFactory#getShape(java.awt.Graphics2D,
      *     org.geotools.api.filter.expression.Expression, org.geotools.api.feature.Feature)
      */
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
 
         // cannot handle a null url
         if (symbolUrl == null) {
@@ -156,8 +153,7 @@ public class WKTMarkFactory implements MarkFactory {
 
         // See if it is a WKT library reference
         if (wellKnown.startsWith(WKTLIB_PREFIX)) {
-            String[] urlComponents =
-                    wellKnown.substring(WKTLIB_PREFIX.length()).split(WKT_SEPARATOR);
+            String[] urlComponents = wellKnown.substring(WKTLIB_PREFIX.length()).split(WKT_SEPARATOR);
             synchronized (this) {
                 wkt = this.getFromCache(urlComponents[0], urlComponents[1]);
                 if (wkt == null) {
@@ -190,10 +186,7 @@ public class WKTMarkFactory implements MarkFactory {
         try {
             libUrl = new URL(ROOT_DIRECTORY.toString() + "/" + libFile);
         } catch (MalformedURLException e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Could not parse WKT library URL: " + ROOT_DIRECTORY + "/" + libFile,
-                    e);
+            LOGGER.log(Level.WARNING, "Could not parse WKT library URL: " + ROOT_DIRECTORY + "/" + libFile, e);
             return properties;
         }
 

@@ -19,8 +19,8 @@ package org.geotools.util;
 import java.util.Collection;
 
 /**
- * Collection that ensures that all elements are assignable to a given base type. The base
- * {@linkplain #getElement type} is usually specified at collection construction time.
+ * Collection that ensures that all elements are assignable to a given base type. The base {@linkplain #getElement type}
+ * is usually specified at collection construction time.
  *
  * @param <E> The type of elements in the collection.
  * @since 2.4

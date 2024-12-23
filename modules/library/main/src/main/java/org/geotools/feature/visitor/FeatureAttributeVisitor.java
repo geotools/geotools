@@ -22,8 +22,7 @@ import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * Extension of FeatureVisitor for visitors that require access to properties of the feature
- * collection being visited.
+ * Extension of FeatureVisitor for visitors that require access to properties of the feature collection being visited.
  *
  * @author Justin Deoliveira, OpenGeo
  */
@@ -36,8 +35,8 @@ public interface FeatureAttributeVisitor extends FeatureVisitor {
      * Returns the expected output type given the input type.
      *
      * @param inputTypes The type of the input expressions
-     * @throws IllegalArgumentException If the list of input types is not a match for the {@link
-     *     #getExpressions()} result or is not acceptable for this visito
+     * @throws IllegalArgumentException If the list of input types is not a match for the {@link #getExpressions()}
+     *     result or is not acceptable for this visito
      */
     default Optional<List<Class>> getResultType(List<Class> inputTypes) {
         return Optional.empty();

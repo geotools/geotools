@@ -53,8 +53,8 @@ public final class OnLineFunction extends CodeList<OnLineFunction> {
     public static final OnLineFunction SEARCH = new OnLineFunction("SEARCH");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -80,8 +80,7 @@ public final class OnLineFunction extends CodeList<OnLineFunction> {
     }
 
     /**
-     * Returns the on line function that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the on line function that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

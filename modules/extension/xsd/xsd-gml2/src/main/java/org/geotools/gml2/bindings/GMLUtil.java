@@ -20,8 +20,7 @@ import org.locationtech.jts.geom.CoordinateSequence;
 
 public class GMLUtil {
     /**
-     * Determines the dimension of a coordinate sequence. This is based off of the first coordinate
-     * in the sequence.
+     * Determines the dimension of a coordinate sequence. This is based off of the first coordinate in the sequence.
      *
      * @param seq The coordinate sequence in question.
      * @return The best guess at a dimension, -1 if it can not be determined.

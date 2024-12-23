@@ -27,8 +27,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 
 /**
- * Sample implementation of {@link DataAccess} for testing. Create with {@link
- * SampleDataAccessFactory}.
+ * Sample implementation of {@link DataAccess} for testing. Create with {@link SampleDataAccessFactory}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @since 2.6
@@ -62,13 +61,12 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
         if (typeName.equals(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME)) {
             return new SampleDataAccessFeatureSource();
         } else if (typeName.equals(SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME)) {
-            throw new IllegalArgumentException(
-                    "Although this DataAccess claims to provide "
-                            + SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME
-                            + ", it does so only so that schema references"
-                            + " are resolved when this type is nested inside "
-                            + SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME
-                            + ". Direct access to the former feature type is not supported.");
+            throw new IllegalArgumentException("Although this DataAccess claims to provide "
+                    + SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME
+                    + ", it does so only so that schema references"
+                    + " are resolved when this type is nested inside "
+                    + SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME
+                    + ". Direct access to the former feature type is not supported.");
         } else {
             throw new RuntimeException("Unrecognised feature type " + typeName.toString());
         }
@@ -85,21 +83,19 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Get the feature type names provided by this {@link DataAccess}. Only {@link
-     * SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME} is supported.
+     * Get the feature type names provided by this {@link DataAccess}. Only
+     * {@link SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME} is supported.
      *
      * @see DataAccess#getNames()
      */
     @Override
     public List<Name> getNames() throws IOException {
-        return List.of(
-                SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME,
-                SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
+        return List.of(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME, SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
     }
 
     /**
-     * Return the feature type for supported type name. Only {@link
-     * SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME} is supported.
+     * Return the feature type for supported type name. Only {@link SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME} is
+     * supported.
      *
      * @see DataAccess#getSchema(org.geotools.api.feature.type.Name)
      */
@@ -117,8 +113,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Unsupported operation.
      *
-     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name,
-     *     org.geotools.api.feature.type.FeatureType)
+     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name, org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {

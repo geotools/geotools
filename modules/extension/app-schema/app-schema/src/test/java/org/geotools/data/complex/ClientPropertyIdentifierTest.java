@@ -49,8 +49,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Checks that gml:id attribute can be retrieved also when it is mapped as a regular <code>
- * &lt;ClientProperty&gt;</code> rather than an identifier (using <code>&lt;idExpression&gt;</code>
- * ).
+ * &lt;ClientProperty&gt;</code> rather than an identifier (using <code>&lt;idExpression&gt;</code> ).
  *
  * @author Stefano Costa, GeoSolutions
  */

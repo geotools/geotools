@@ -41,9 +41,8 @@ import org.geotools.referencing.CRS;
  *   <li>style: Style
  * </ul>
  *
- * Please note that a StyleLayerDescriptor (defined by SLD) document is usually used to describe the
- * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
- * layer of content
+ * Please note that a StyleLayerDescriptor (defined by SLD) document is usually used to describe the rendering
+ * requirements for an entire Map; while a Style (defined by SE) is focused on a single layer of content
  *
  * @since 2.7
  * @version 8.0
@@ -94,8 +93,7 @@ public class FeatureLayer extends StyleLayer {
     @Override
     protected synchronized void connectDataListener(boolean listen) {
         if (sourceListener == null) {
-            sourceListener =
-                    featureEvent -> fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
+            sourceListener = featureEvent -> fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
         }
         if (listen) {
             featureSource.addFeatureListener(sourceListener);
@@ -141,11 +139,10 @@ public class FeatureLayer extends StyleLayer {
     }
 
     /**
-     * Returns the definition query (filter) for this layer. If no definition query has been defined
-     * {@link Query.ALL} is returned.
+     * Returns the definition query (filter) for this layer. If no definition query has been defined {@link Query.ALL}
+     * is returned.
      *
-     * @return Query used to process content prior to display, or Query.ALL to indicate all content
-     *     is used
+     * @return Query used to process content prior to display, or Query.ALL to indicate all content is used
      */
     @Override
     public Query getQuery() {
@@ -157,16 +154,15 @@ public class FeatureLayer extends StyleLayer {
     }
 
     /**
-     * Sets a definition query for the layer which acts as a filter for the features that the layer
-     * will draw.
+     * Sets a definition query for the layer which acts as a filter for the features that the layer will draw.
      *
-     * <p>A consumer must ensure that this query is used in combination with the bounding box filter
-     * generated on each map interaction to limit the number of features returned to those that
-     * complains both the definition query and relies inside the area of interest.
+     * <p>A consumer must ensure that this query is used in combination with the bounding box filter generated on each
+     * map interaction to limit the number of features returned to those that complains both the definition query and
+     * relies inside the area of interest.
      *
-     * <p>IMPORTANT: only include attribute names in the query if you want them to be ALWAYS
-     * returned. It is desirable to not include attributes at all but let the layer user (a
-     * renderer?) to decide wich attributes are actually needed to perform its requiered operation.
+     * <p>IMPORTANT: only include attribute names in the query if you want them to be ALWAYS returned. It is desirable
+     * to not include attributes at all but let the layer user (a renderer?) to decide wich attributes are actually
+     * needed to perform its requiered operation.
      */
     public void setQuery(Query query) {
         this.query = query;
@@ -189,29 +185,16 @@ public class FeatureLayer extends StyleLayer {
 
                 if (boundsCrs == null && schemaCrs != null) {
                     LOGGER.warning(
-                            "Bounds crs not defined; assuming bounds from schema are correct for "
-                                    + featureSource);
-                    bounds =
-                            new ReferencedEnvelope(
-                                    bounds.getMinX(),
-                                    bounds.getMaxX(),
-                                    bounds.getMinY(),
-                                    bounds.getMaxY(),
-                                    schemaCrs);
+                            "Bounds crs not defined; assuming bounds from schema are correct for " + featureSource);
+                    bounds = new ReferencedEnvelope(
+                            bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY(), schemaCrs);
                 }
-                if (boundsCrs != null
-                        && schemaCrs != null
-                        && !CRS.equalsIgnoreMetadata(boundsCrs, schemaCrs)) {
+                if (boundsCrs != null && schemaCrs != null && !CRS.equalsIgnoreMetadata(boundsCrs, schemaCrs)) {
                     LOGGER.warning(
                             "Bounds crs and schema crs are not consistent; forcing the use of the schema crs so they are consistent");
                     // bounds = bounds.transform(schemaCrs, true );
-                    bounds =
-                            new ReferencedEnvelope(
-                                    bounds.getMinX(),
-                                    bounds.getMaxX(),
-                                    bounds.getMinY(),
-                                    bounds.getMaxY(),
-                                    schemaCrs);
+                    bounds = new ReferencedEnvelope(
+                            bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY(), schemaCrs);
                 }
                 return bounds;
             }

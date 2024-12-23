@@ -29,9 +29,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * Layer used to draw a raster {@link GridCoverage2DReader}.
  *
- * <p>Direct access to the {@link AbstractGridCoverage2DReader} is available using {@link
- * #getReader()}, the outline of the raster is also available via {@link #toFeatureCollection()} for
- * vector based rendering systems.
+ * <p>Direct access to the {@link AbstractGridCoverage2DReader} is available using {@link #getReader()}, the outline of
+ * the raster is also available via {@link #toFeatureCollection()} for vector based rendering systems.
  *
  * @author Jody Garnett
  * @version 8.0
@@ -67,8 +66,7 @@ public class GridReaderLayer extends RasterLayer {
      *
      * @param reader a reader with the new layer that will be added.
      */
-    public GridReaderLayer(
-            GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+    public GridReaderLayer(GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
         this(reader, style, null, params);
     }
 
@@ -76,14 +74,10 @@ public class GridReaderLayer extends RasterLayer {
      * Create layer title and optional parameters used to control the rendering process.
      *
      * @param reader a reader with the new layer that will be added.
-     * @param params GeneralParameterValue[] that describe how the {@link
-     *     AbstractGridCoverage2DReader} shall read the images
+     * @param params GeneralParameterValue[] that describe how the {@link AbstractGridCoverage2DReader} shall read the
+     *     images
      */
-    public GridReaderLayer(
-            GridCoverage2DReader reader,
-            Style style,
-            String title,
-            GeneralParameterValue[] params) {
+    public GridReaderLayer(GridCoverage2DReader reader, Style style, String title, GeneralParameterValue[] params) {
         super(style, title);
         this.reader = reader;
         this.params = params;

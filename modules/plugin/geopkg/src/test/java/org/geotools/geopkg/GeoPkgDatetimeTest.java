@@ -108,8 +108,8 @@ public class GeoPkgDatetimeTest {
     }
 
     /**
-     * Test avoidance of aggregate UniqueVisitor optimization (as they do not respect dialect type
-     * mapping for Date and Timestamp at this time.
+     * Test avoidance of aggregate UniqueVisitor optimization (as they do not respect dialect type mapping for Date and
+     * Timestamp at this time.
      *
      * @throws IOException
      */
@@ -129,8 +129,7 @@ public class GeoPkgDatetimeTest {
     }
 
     /**
-     * Tests attribute "time" (timestamp) as is used by LIST in WMS time dimension GetCapabilities
-     * CF. testUnique()
+     * Tests attribute "time" (timestamp) as is used by LIST in WMS time dimension GetCapabilities CF. testUnique()
      *
      * @throws IOException
      */
@@ -217,12 +216,8 @@ public class GeoPkgDatetimeTest {
     @Test
     public void testGroupBy() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.MAX,
-                        ff.property("date"),
-                        Arrays.asList(ff.property("txt")),
-                        NULL_LISTENER);
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.MAX, ff.property("date"), Arrays.asList(ff.property("txt")), NULL_LISTENER);
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
@@ -235,12 +230,8 @@ public class GeoPkgDatetimeTest {
     @Test
     public void testGroupBy_timestamp() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.MAX,
-                        ff.property("time"),
-                        Arrays.asList(ff.property("txt")),
-                        NULL_LISTENER);
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.MAX, ff.property("time"), Arrays.asList(ff.property("txt")), NULL_LISTENER);
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures();
@@ -249,26 +240,15 @@ public class GeoPkgDatetimeTest {
 
         assertEquals(5, results.size());
 
-        assertEquals(
-                java.sql.Timestamp.valueOf("2020-02-19 22:00:00.0"),
-                results.get(singletonList("1")));
-        assertEquals(
-                java.sql.Timestamp.valueOf("2020-02-19 23:00:00.0"),
-                results.get(singletonList("2")));
-        assertEquals(
-                java.sql.Timestamp.valueOf("2020-03-19 00:00:00.0"),
-                results.get(singletonList("3")));
-        assertEquals(
-                java.sql.Timestamp.valueOf("2020-03-19 01:00:00.0"),
-                results.get(singletonList("4")));
-        assertEquals(
-                java.sql.Timestamp.valueOf("2020-02-20 02:00:00.0"),
-                results.get(singletonList("5")));
+        assertEquals(java.sql.Timestamp.valueOf("2020-02-19 22:00:00.0"), results.get(singletonList("1")));
+        assertEquals(java.sql.Timestamp.valueOf("2020-02-19 23:00:00.0"), results.get(singletonList("2")));
+        assertEquals(java.sql.Timestamp.valueOf("2020-03-19 00:00:00.0"), results.get(singletonList("3")));
+        assertEquals(java.sql.Timestamp.valueOf("2020-03-19 01:00:00.0"), results.get(singletonList("4")));
+        assertEquals(java.sql.Timestamp.valueOf("2020-02-20 02:00:00.0"), results.get(singletonList("5")));
     }
 
     /**
-     * Test avoidance of aggregate between filter (as this needed some help to respect date and
-     * timestamp)
+     * Test avoidance of aggregate between filter (as this needed some help to respect date and timestamp)
      *
      * @throws IOException
      */
@@ -294,8 +274,7 @@ public class GeoPkgDatetimeTest {
     @Test
     public void testBetween_timestamp() throws IOException, CQLException, ParseException {
         // try ISO format for literals
-        Filter between =
-                ECQL.toFilter("time BETWEEN '2020-02-19T23:00:00Z' AND '2020-03-19T00:00:00Z'");
+        Filter between = ECQL.toFilter("time BETWEEN '2020-02-19T23:00:00Z' AND '2020-03-19T00:00:00Z'");
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures(between);
@@ -317,12 +296,8 @@ public class GeoPkgDatetimeTest {
     public String gmt2Local(String gmt) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
         java.util.Date parsedDate = dateFormat.parse(gmt);
-        java.util.Date local =
-                new java.util.Date(
-                        parsedDate.getTime()
-                                + Calendar.getInstance()
-                                        .getTimeZone()
-                                        .getOffset(parsedDate.getTime()));
+        java.util.Date local = new java.util.Date(
+                parsedDate.getTime() + Calendar.getInstance().getTimeZone().getOffset(parsedDate.getTime()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         var localStr = sdf.format(local);

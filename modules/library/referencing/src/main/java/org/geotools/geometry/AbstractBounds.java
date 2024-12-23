@@ -25,8 +25,8 @@ import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
 /**
- * Base class for {@linkplain Bounds envelope} implementations. This base class provides default
- * implementations for {@link #toString}, {@link #equals} and {@link #hashCode} methods.
+ * Base class for {@linkplain Bounds envelope} implementations. This base class provides default implementations for
+ * {@link #toString}, {@link #equals} and {@link #hashCode} methods.
  *
  * <p>This class do not holds any state. The decision to implement {@link java.io.Serializable} or
  * {@link org.geotools.util.Cloneable} interfaces is left to implementors.
@@ -47,25 +47,24 @@ public abstract class AbstractBounds implements Bounds {
      * @return Their common CRS, or {@code null} if none.
      * @throws MismatchedReferenceSystemException if the two positions don't use the same CRS.
      */
-    static CoordinateReferenceSystem getCoordinateReferenceSystem(
-            final Position minDP, final Position maxDP) throws MismatchedReferenceSystemException {
+    static CoordinateReferenceSystem getCoordinateReferenceSystem(final Position minDP, final Position maxDP)
+            throws MismatchedReferenceSystemException {
         final CoordinateReferenceSystem crs1 = minDP.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem crs2 = maxDP.getCoordinateReferenceSystem();
         if (crs1 == null) {
             return crs2;
         } else {
             if (crs2 != null && !crs1.equals(crs2)) {
-                throw new MismatchedReferenceSystemException(
-                        ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
             }
             return crs1;
         }
     }
 
     /**
-     * A coordinate position consisting of all the {@linkplain #getMinimum minimal ordinates}. The
-     * default implementation returns a direct position backed by this envelope, so changes in this
-     * envelope will be immediately reflected in the direct position.
+     * A coordinate position consisting of all the {@linkplain #getMinimum minimal ordinates}. The default
+     * implementation returns a direct position backed by this envelope, so changes in this envelope will be immediately
+     * reflected in the direct position.
      *
      * @return The lower corner.
      */
@@ -75,9 +74,9 @@ public abstract class AbstractBounds implements Bounds {
     }
 
     /**
-     * A coordinate position consisting of all the {@linkplain #getMaximum maximal ordinates}. The
-     * default implementation returns a direct position backed by this envelope, so changes in this
-     * envelope will be immediately reflected in the direct position.
+     * A coordinate position consisting of all the {@linkplain #getMaximum maximal ordinates}. The default
+     * implementation returns a direct position backed by this envelope, so changes in this envelope will be immediately
+     * reflected in the direct position.
      *
      * @return The upper corner.
      */
@@ -87,14 +86,14 @@ public abstract class AbstractBounds implements Bounds {
     }
 
     /**
-     * Returns a string representation of this envelope. The default implementation returns a string
-     * containing {@linkplain #getLowerCorner lower corner} coordinates first, followed by
-     * {@linkplain #getUpperCorner upper corner} coordinates. Other informations like the CRS or
-     * class name may or may not be presents at implementor choice.
+     * Returns a string representation of this envelope. The default implementation returns a string containing
+     * {@linkplain #getLowerCorner lower corner} coordinates first, followed by {@linkplain #getUpperCorner upper
+     * corner} coordinates. Other informations like the CRS or class name may or may not be presents at implementor
+     * choice.
      *
-     * <p>This string is okay for occasional formatting (for example for debugging purpose). But if
-     * there is a lot of envelopes to format, users will get more control by using their own
-     * instance of {@link org.geotools.referencing.CoordinateFormat}.
+     * <p>This string is okay for occasional formatting (for example for debugging purpose). But if there is a lot of
+     * envelopes to format, users will get more control by using their own instance of
+     * {@link org.geotools.referencing.CoordinateFormat}.
      */
     @Override
     public String toString() {
@@ -102,9 +101,8 @@ public abstract class AbstractBounds implements Bounds {
     }
 
     /**
-     * Formats the specified envelope. The returned string will contain the {@linkplain
-     * #getLowerCorner lower corner} coordinates first, followed by {@linkplain #getUpperCorner
-     * upper corner} coordinates.
+     * Formats the specified envelope. The returned string will contain the {@linkplain #getLowerCorner lower corner}
+     * coordinates first, followed by {@linkplain #getUpperCorner upper corner} coordinates.
      */
     static String toString(final Bounds envelope) {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(envelope));
@@ -145,14 +143,13 @@ public abstract class AbstractBounds implements Bounds {
     }
 
     /**
-     * Returns {@code true} if the specified object is also an {@linkplain Bounds envelope} with
-     * equals coordinates and {@linkplain #getCoordinateReferenceSystem CRS}.
+     * Returns {@code true} if the specified object is also an {@linkplain Bounds envelope} with equals coordinates and
+     * {@linkplain #getCoordinateReferenceSystem CRS}.
      *
      * @param object The object to compare with this envelope.
      * @return {@code true} if the given object is equals to this envelope.
-     * @todo Current implementation requires that {@code object} is of the same class. We can not
-     *     relax this rule before we ensure that every implementations in the Geotools code base
-     *     follow the same contract.
+     * @todo Current implementation requires that {@code object} is of the same class. We can not relax this rule before
+     *     we ensure that every implementations in the Geotools code base follow the same contract.
      */
     @Override
     public boolean equals(final Object object) {
@@ -166,8 +163,7 @@ public abstract class AbstractBounds implements Bounds {
                         return false;
                     }
                 }
-                if (Utilities.equals(
-                        this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
+                if (Utilities.equals(this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
                     assert hashCode() == that.hashCode() : this;
                     return true;
                 }
@@ -176,10 +172,7 @@ public abstract class AbstractBounds implements Bounds {
         return false;
     }
 
-    /**
-     * Base class for direct position from an envelope. This class delegates its work to the
-     * enclosing envelope.
-     */
+    /** Base class for direct position from an envelope. This class delegates its work to the enclosing envelope. */
     private abstract class Corner extends AbstractPosition {
         /** The coordinate reference system in which the coordinate is given. */
         @Override

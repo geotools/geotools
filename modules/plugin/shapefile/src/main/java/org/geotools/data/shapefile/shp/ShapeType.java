@@ -19,8 +19,8 @@ package org.geotools.data.shapefile.shp;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Not much but a type safe enumeration of file types as ints and names. The descriptions can easily
- * be tied to a ResourceBundle if someone wants to do that.
+ * Not much but a type safe enumeration of file types as ints and names. The descriptions can easily be tied to a
+ * ResourceBundle if someone wants to do that.
  *
  * @author Ian Schneider
  */
@@ -86,8 +86,7 @@ public enum ShapeType {
     }
 
     /**
-     * Is this a multipoint shape? Hint- all shapes are multipoint except NULL, UNDEFINED, and the
-     * POINTs.
+     * Is this a multipoint shape? Hint- all shapes are multipoint except NULL, UNDEFINED, and the POINTs.
      *
      * @return true if multipoint, false otherwise.
      */
@@ -158,8 +157,8 @@ public enum ShapeType {
     }
 
     /**
-     * Each ShapeType corresponds to a handler. In the future this should probably go else where to
-     * allow different handlers, or something...
+     * Each ShapeType corresponds to a handler. In the future this should probably go else where to allow different
+     * handlers, or something...
      *
      * @throws ShapefileException If the ShapeType is bogus.
      * @return The correct handler for this ShapeType. Returns a new one.

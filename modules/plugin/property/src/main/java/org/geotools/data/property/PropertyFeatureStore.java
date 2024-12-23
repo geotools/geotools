@@ -35,8 +35,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 
 /**
- * Implementation used for writeable property files. Supports limited caching of number of features
- * and bounds.
+ * Implementation used for writeable property files. Supports limited caching of number of features and bounds.
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
@@ -77,25 +76,23 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
-        return new PropertyFeatureWriter(
-                this, getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
+        return new PropertyFeatureWriter(this, getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
     }
 
     /**
-     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both
-     * ContentFeatureStore and CSVFeatureSource at the same time
+     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both ContentFeatureStore and
+     * CSVFeatureSource at the same time
      */
-    PropertyFeatureSource delegate =
-            new PropertyFeatureSource(entry, query) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    PropertyFeatureStore.this.setTransaction(
-                            transaction); // Keep these two implementations on the same transaction
-                }
-            };
+    PropertyFeatureSource delegate = new PropertyFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            PropertyFeatureStore.this.setTransaction(
+                    transaction); // Keep these two implementations on the same transaction
+        }
+    };
 
     //
     // Internal Delegate Methods
@@ -120,8 +117,7 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

@@ -26,8 +26,8 @@ import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.range.RangeType;
 
 /**
- * Describes a {@link CoverageSource} in terms of Name, {@link SpatialDomain}, {@link
- * VerticalDomain}, {@link TemporalDomain}, {@link AdditionalDomain}s, {@link DimensionDescriptor}s
+ * Describes a {@link CoverageSource} in terms of Name, {@link SpatialDomain}, {@link VerticalDomain},
+ * {@link TemporalDomain}, {@link AdditionalDomain}s, {@link DimensionDescriptor}s
  */
 public class CoverageSourceDescriptor {
 

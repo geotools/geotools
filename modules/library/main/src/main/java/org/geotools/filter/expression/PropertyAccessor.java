@@ -25,8 +25,8 @@ public interface PropertyAccessor {
     /**
      * Determines if the property accessor can handle the property denoted by <param>xpath</param>.
      *
-     * <p>Can be used to perform checks against schema to ensure that the propery accessor will
-     * actually work with the provided instance.
+     * <p>Can be used to perform checks against schema to ensure that the propery accessor will actually work with the
+     * provided instance.
      *
      * @param object The target object.
      * @param xpath An xpath expression denoting a property of the target object.
@@ -37,8 +37,8 @@ public interface PropertyAccessor {
     /**
      * Accesses a property of <param>object</param> via xpath expression.
      *
-     * <p>{@link #canHandle(Object, String)} should be called before calling this method to ensure
-     * that the property can be safely accessed.
+     * <p>{@link #canHandle(Object, String)} should be called before calling this method to ensure that the property can
+     * be safely accessed.
      *
      * @param object The target object.
      * @param xpath An xpath expression denoting a property of the target object.
@@ -51,8 +51,8 @@ public interface PropertyAccessor {
     /**
      * Sets a property of <param>object</param> via xpath expression.
      *
-     * <p>{@link #canHandle(Object, String)} should be called before calling this method to ensure
-     * that the property can be safely accessed.
+     * <p>{@link #canHandle(Object, String)} should be called before calling this method to ensure that the property can
+     * be safely accessed.
      *
      * @param object The target object.
      * @param xpath An xpath expression denoting a property of the target object.
@@ -60,6 +60,5 @@ public interface PropertyAccessor {
      * @param target The target context we intend to update (often null or Geometry.class)
      * @throws IllegalArgumentException In the even that xpath is not supported.
      */
-    <T> void set(Object object, String xpath, T value, Class<T> target)
-            throws IllegalArgumentException;
+    <T> void set(Object object, String xpath, T value, Class<T> target) throws IllegalArgumentException;
 }

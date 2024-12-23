@@ -30,8 +30,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 /**
  * Abstract implementation of Process for feature collections.
  *
- * <p>Subclasses need to implement {@link #processFeature(SimpleFeature, Map)}. This method should
- * perform the operation on the feature, changing any attributes on the feature as necessary.
+ * <p>Subclasses need to implement {@link #processFeature(SimpleFeature, Map)}. This method should perform the operation
+ * on the feature, changing any attributes on the feature as necessary.
  *
  * @see FeatureToFeatureProcessFactory
  * @author Justin Deoliveira, OpenGEO
@@ -51,16 +51,14 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
         }
 
         // read the parameters, features and buffer amount
-        FeatureCollection features =
-                (FeatureCollection) input.get(FeatureToFeatureProcessFactory.FEATURES.key);
+        FeatureCollection features = (FeatureCollection) input.get(FeatureToFeatureProcessFactory.FEATURES.key);
 
         // start progress
         float scale = 100f / features.size();
         monitor.started();
 
         // create the result feature collection
-        SimpleFeatureType targetSchema =
-                getTargetSchema((SimpleFeatureType) features.getSchema(), input);
+        SimpleFeatureType targetSchema = getTargetSchema((SimpleFeatureType) features.getSchema(), input);
         DefaultFeatureCollection result = new DefaultFeatureCollection(null, targetSchema);
 
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(result.getSchema());
@@ -91,12 +89,10 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
     }
 
     /**
-     * Subclasses should override if the target schema is different that then original schema (mind,
-     * if the number of attributes changes it's better to roll your own class instead of using this
-     * one)
+     * Subclasses should override if the target schema is different that then original schema (mind, if the number of
+     * attributes changes it's better to roll your own class instead of using this one)
      */
-    protected SimpleFeatureType getTargetSchema(
-            SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
         return sourceSchema;
     }
 }

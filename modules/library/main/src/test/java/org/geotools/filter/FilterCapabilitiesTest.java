@@ -39,8 +39,7 @@ import org.junit.Test;
  */
 public class FilterCapabilitiesTest {
     /** Standard logging instance */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterCapabilitiesTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterCapabilitiesTest.class);
 
     /** Feature on which to preform tests */
     private org.geotools.api.filter.Filter gFilter;
@@ -107,15 +106,9 @@ public class FilterCapabilitiesTest {
             Assert.assertTrue(capabilities.fullySupports(compFilter));
             Assert.assertFalse(capabilities.fullySupports(gFilter));
             Assert.assertFalse(capabilities.fullySupports(logFilter));
-            logFilter =
-                    ff.and(
-                            compFilter,
-                            ff.between(ff.property("sample"), ff.literal(1), ff.literal(2)));
+            logFilter = ff.and(compFilter, ff.between(ff.property("sample"), ff.literal(1), ff.literal(2)));
             Assert.assertTrue(capabilities.fullySupports(logFilter));
-            logFilter =
-                    ff.or(
-                            logFilter,
-                            ff.between(ff.property("sample"), ff.literal(1), ff.literal(2)));
+            logFilter = ff.or(logFilter, ff.between(ff.property("sample"), ff.literal(1), ff.literal(2)));
             Assert.assertTrue(capabilities.fullySupports(logFilter));
             logFilter = ff.and(logFilter, gFilter);
             Assert.assertFalse(capabilities.fullySupports(logFilter));

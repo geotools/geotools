@@ -57,23 +57,18 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
     public void testJoinSchema() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        Join join =
-                new Join(
-                        tname("ftjoin"),
-                        ff.equal(
-                                ff.property(aname("stringProperty")),
-                                ff.property(aname("name")),
-                                true));
+        Join join = new Join(
+                tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
         join.setAlias("b");
         q.getJoins().add(join);
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         SimpleFeatureType schema = features.getSchema();
         AttributeDescriptor ad = schema.getDescriptor("b");
         assertNotNull(ad);
         assertEquals(SimpleFeature.class, ad.getType().getBinding());
-        SimpleFeatureType joinedSchema =
-                (SimpleFeatureType) ad.getUserData().get(ContentDataStore.JOINED_FEATURE_TYPE);
+        SimpleFeatureType joinedSchema = (SimpleFeatureType) ad.getUserData().get(ContentDataStore.JOINED_FEATURE_TYPE);
         assertEquals(dataStore.getSchema(tname("ftjoin")), joinedSchema);
     }
 
@@ -87,19 +82,14 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
                 FilterFactory ff = dataStore.getFilterFactory();
                 Query q = new Query(tname("ft1"));
                 q.getJoins()
-                        .add(
-                                new Join(
-                                        tname("ftjoin"),
-                                        ff.equal(
-                                                ff.property(aname("stringProperty")),
-                                                ff.property(aname("name")),
-                                                true)));
+                        .add(new Join(
+                                tname("ftjoin"),
+                                ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true)));
 
                 SimpleFeatureCollection features =
                         dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
                 assertEquals(
-                        dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
-                        features.size());
+                        dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(), features.size());
 
                 try (SimpleFeatureIterator it = features.features()) {
                     assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
@@ -131,26 +121,21 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
         try (SimpleFeatureIterator ita =
                         dataStore.getFeatureSource(tname("ft1")).getFeatures().features();
-                SimpleFeatureIterator itb =
-                        dataStore.getFeatureSource(tname("ftjoin")).getFeatures().features()) {
+                SimpleFeatureIterator itb = dataStore
+                        .getFeatureSource(tname("ftjoin"))
+                        .getFeatures()
+                        .features()) {
 
             FilterFactory ff = dataStore.getFilterFactory();
             Query q = new Query(tname("ft1"));
-            Join join =
-                    new Join(
-                            tname("ftjoin"),
-                            ff.equal(
-                                    ff.property(aname("id")),
-                                    ff.property(aname("ftjoin.id")),
-                                    true));
+            Join join = new Join(
+                    tname("ftjoin"), ff.equal(ff.property(aname("id")), ff.property(aname("ftjoin.id")), true));
             join.setAlias(tname("ftjoin"));
             q.getJoins().add(join);
 
             SimpleFeatureCollection features =
                     dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
-            assertEquals(
-                    dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
-                    features.size());
+            assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(), features.size());
 
             try (SimpleFeatureIterator it = features.features()) {
                 assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
@@ -185,26 +170,21 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
         try (SimpleFeatureIterator ita =
                         dataStore.getFeatureSource(tname("ft1")).getFeatures().features();
-                SimpleFeatureIterator itb =
-                        dataStore.getFeatureSource(tname("ftjoin")).getFeatures().features()) {
+                SimpleFeatureIterator itb = dataStore
+                        .getFeatureSource(tname("ftjoin"))
+                        .getFeatures()
+                        .features()) {
             FilterFactory ff = dataStore.getFilterFactory();
             Query q = new Query(tname("ft1"));
             q.setAlias("b");
-            Join join =
-                    new Join(
-                            tname("ftjoin"),
-                            ff.equal(
-                                    ff.property(aname("stringProperty")),
-                                    ff.property(aname("name")),
-                                    true));
+            Join join = new Join(
+                    tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
             join.setAlias("a");
             q.getJoins().add(join);
 
             SimpleFeatureCollection features =
                     dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
-            assertEquals(
-                    dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
-                    features.size());
+            assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(), features.size());
 
             try (SimpleFeatureIterator it = features.features()) {
                 assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
@@ -240,16 +220,13 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.getJoins()
-                .add(
-                        new Join(
-                                tname("ftjoin"),
-                                ff.equal(
-                                        ff.property(aname("stringProperty")),
-                                        ff.property(aname("name")),
-                                        true)));
+                .add(new Join(
+                        tname("ftjoin"),
+                        ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true)));
         q.setFilter(ff.equal(ff.property(aname("stringProperty")), ff.literal("two"), true));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
@@ -277,18 +254,14 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        Join j =
-                new Join(
-                        tname("ftjoin"),
-                        ff.equal(
-                                ff.property(aname("stringProperty")),
-                                ff.property(aname("name")),
-                                true));
+        Join j = new Join(
+                tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
         j.setProperties(Query.NO_PROPERTIES);
         q.getJoins().add(j);
         q.setFilter(ff.equal(ff.property(aname("stringProperty")), ff.literal("two"), true));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
@@ -312,13 +285,8 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        Join j =
-                new Join(
-                        tname("ftjoin"),
-                        ff.equal(
-                                ff.property(aname("stringProperty")),
-                                ff.property(aname("name")),
-                                true));
+        Join j = new Join(
+                tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
         j.filter(ff.greater(ff.property(aname("join1intProperty")), ff.literal(1)));
         q.getJoins().add(j);
         q.setFilter(ff.less(ff.property(aname("intProperty")), ff.literal(3)));
@@ -339,26 +307,20 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         Filter j = ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true);
         Query q = new Query(tname("ft1"));
         q.getJoins().add(new Join(tname("ftjoin"), j));
-        q.setFilter(
-                ff.equal(
-                        ff.function(
-                                "__equals",
-                                ff.property(aname("stringProperty")),
-                                ff.literal("one")),
-                        ff.literal(true),
-                        true));
+        q.setFilter(ff.equal(
+                ff.function("__equals", ff.property(aname("stringProperty")), ff.literal("one")),
+                ff.literal(true),
+                true));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         // test with post filter on table being joined
         q = new Query(tname("ft1"));
         Join join = new Join(tname("ftjoin"), j);
-        join.filter(
-                ff.equal(
-                        ff.function("__equals", ff.property(aname("name")), ff.literal("one")),
-                        ff.literal(true),
-                        true));
+        join.filter(ff.equal(
+                ff.function("__equals", ff.property(aname("name")), ff.literal("one")), ff.literal(true), true));
         q.getJoins().add(join);
 
         features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
@@ -380,27 +342,21 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         Join join = new Join(tname("ftjoin"), j);
         join.setProperties(Query.NO_PROPERTIES);
         q.getJoins().add(join);
-        q.setFilter(
-                ff.equal(
-                        ff.function(
-                                "__equals",
-                                ff.property(aname("stringProperty")),
-                                ff.literal("one")),
-                        ff.literal(true),
-                        true));
+        q.setFilter(ff.equal(
+                ff.function("__equals", ff.property(aname("stringProperty")), ff.literal("one")),
+                ff.literal(true),
+                true));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         // test with post filter on table being joined
         q = new Query(tname("ft1"));
         join = new Join(tname("ftjoin"), j);
         join.setProperties(Query.NO_PROPERTIES);
-        join.filter(
-                ff.equal(
-                        ff.function("__equals", ff.property(aname("name")), ff.literal("one")),
-                        ff.literal(true),
-                        true));
+        join.filter(ff.equal(
+                ff.function("__equals", ff.property(aname("name")), ff.literal("one")), ff.literal(true), true));
         q.getJoins().add(join);
 
         features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
@@ -422,7 +378,8 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         q.getJoins().add(new Join(tname("ftjoin"), j));
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.DESCENDING));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertEquals("two", it.next().getAttribute(aname("stringProperty")));
@@ -450,7 +407,8 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         q.setStartIndex(1);
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
@@ -475,17 +433,15 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.getJoins()
-                .add(
-                        new Join(
-                                        tname("ft1"),
-                                        ff.equal(
-                                                ff.property(aname("intProperty")),
-                                                ff.property(aname("foo.intProperty")),
-                                                true))
-                                .alias(aname("foo")));
+                .add(new Join(
+                                tname("ft1"),
+                                ff.equal(
+                                        ff.property(aname("intProperty")), ff.property(aname("foo.intProperty")), true))
+                        .alias(aname("foo")));
         q.setFilter(ff.equal(ff.property(aname("stringProperty")), ff.literal("two"), true));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
@@ -516,14 +472,11 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         q.getJoins()
-                .add(
-                        new Join(
-                                tname("ftjoin"),
-                                ff.contains(
-                                        ff.property(aname("geom")),
-                                        ff.property(aname("geometry")))));
+                .add(new Join(
+                        tname("ftjoin"), ff.contains(ff.property(aname("geom")), ff.property(aname("geometry")))));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(6, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
@@ -564,9 +517,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
             assertTrue(it.hasNext());
             f = it.next();
             assertEquals(2, ((Number) f.getAttribute(aname("intProperty"))).intValue());
-            assertEquals(
-                    "two",
-                    ((SimpleFeature) f.getAttribute(tname("ftjoin"))).getAttribute(aname("name")));
+            assertEquals("two", ((SimpleFeature) f.getAttribute(tname("ftjoin"))).getAttribute(aname("name")));
 
             assertFalse(it.hasNext());
         }
@@ -583,19 +534,14 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ftjoin"));
         q.getJoins()
-                .add(
-                        new Join(
-                                        tname("ft1"),
-                                        ff.equal(
-                                                ff.property(aname("name")),
-                                                ff.property(aname("stringProperty")),
-                                                true))
-                                .type(Type.OUTER));
+                .add(new Join(
+                                tname("ft1"),
+                                ff.equal(ff.property(aname("name")), ff.property(aname("stringProperty")), true))
+                        .type(Type.OUTER));
 
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("ftjoin")).getFeatures(q);
-        assertEquals(
-                dataStore.getFeatureSource(tname("ftjoin")).getFeatures(q).size(), features.size());
+        assertEquals(dataStore.getFeatureSource(tname("ftjoin")).getFeatures(q).size(), features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
             while (it.hasNext()) {
@@ -623,22 +569,15 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ftjoin"));
         q.getJoins()
-                .add(
-                        new Join(
-                                tname("ft1"),
-                                ff.equal(
-                                        ff.property(aname("name")),
-                                        ff.property(aname("stringProperty")),
-                                        true)));
+                .add(new Join(
+                        tname("ft1"),
+                        ff.equal(ff.property(aname("name")), ff.property(aname("stringProperty")), true)));
 
         q.getJoins()
-                .add(
-                        new Join(
-                                tname("ftjoin2"),
-                                ff.equal(
-                                        ff.property(aname("join2intProperty")),
-                                        ff.property(aname("join1intProperty")),
-                                        true)));
+                .add(new Join(
+                        tname("ftjoin2"),
+                        ff.equal(
+                                ff.property(aname("join2intProperty")), ff.property(aname("join1intProperty")), true)));
 
         SimpleFeatureCollection features =
                 dataStore.getFeatureSource(tname("ftjoin")).getFeatures(q);
@@ -668,20 +607,16 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
     public void testJoinWithFidFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
-        Join join =
-                new Join(
-                        tname("ftjoin"),
-                        ff.equal(
-                                ff.property(aname("stringProperty")),
-                                ff.property(aname("name")),
-                                true));
+        Join join = new Join(
+                tname("ftjoin"), ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true));
         join.setAlias("b");
         q.getJoins().add(join);
         // add a filter for the feature id of the primary table
         FeatureId id = ff.featureId(tname("ft1") + ".2");
         q.setFilter(ff.id(Collections.singleton(id)));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
         assertEquals(1, features.size());
         SimpleFeature f = DataUtilities.first(features);
         assertEquals(id.getID(), f.getID());

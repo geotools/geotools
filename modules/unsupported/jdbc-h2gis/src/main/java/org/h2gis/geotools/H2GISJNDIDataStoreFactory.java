@@ -27,8 +27,7 @@ import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
- * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the
- * H2 Java database.
+ * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the H2 Java database.
  *
  * <p>JNDI DataStoreFactory for H2GIS database.
  *

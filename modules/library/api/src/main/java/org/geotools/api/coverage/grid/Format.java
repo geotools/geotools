@@ -16,9 +16,8 @@ import org.geotools.api.annotation.UML;
 import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
- * A discovery mechanism to determine the formats supported by a {@link GridCoverageExchange}
- * implementation. A {@code GridCoverageExchange} implementation can support a number of file format
- * or resources.
+ * A discovery mechanism to determine the formats supported by a {@link GridCoverageExchange} implementation. A
+ * {@code GridCoverageExchange} implementation can support a number of file format or resources.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
@@ -41,18 +40,10 @@ public interface Format {
     String getVersion();
 
     /** Retrieve the parameter information for a {@link GridCoverageReader#read read} operation. */
-    @UML(
-            identifier = "getParameterInfo, numParameters",
-            obligation = MANDATORY,
-            specification = OGC_01004)
+    @UML(identifier = "getParameterInfo, numParameters", obligation = MANDATORY, specification = OGC_01004)
     ParameterValueGroup getReadParameters();
 
-    /**
-     * Retrieve the parameter information for a {@link GridCoverageWriter#write write} operation.
-     */
-    @UML(
-            identifier = "getParameterInfo, numParameters",
-            obligation = MANDATORY,
-            specification = OGC_01004)
+    /** Retrieve the parameter information for a {@link GridCoverageWriter#write write} operation. */
+    @UML(identifier = "getParameterInfo, numParameters", obligation = MANDATORY, specification = OGC_01004)
     ParameterValueGroup getWriteParameters();
 }

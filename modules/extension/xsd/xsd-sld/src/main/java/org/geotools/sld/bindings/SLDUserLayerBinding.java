@@ -124,8 +124,7 @@ public class SLDUserLayerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:LayerFeatureConstraints"/&gt;
         if (node.hasChild("LayerFeatureConstraints")) {
-            LayerFeatureConstraints lfc =
-                    (LayerFeatureConstraints) node.getChildValue("LayerFeatureConstraints");
+            LayerFeatureConstraints lfc = (LayerFeatureConstraints) node.getChildValue("LayerFeatureConstraints");
             userLayer.setLayerFeatureConstraints(lfc.getFeatureTypeConstraints());
         }
 

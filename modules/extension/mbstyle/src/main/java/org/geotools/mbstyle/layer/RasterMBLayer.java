@@ -219,8 +219,8 @@ public class RasterMBLayer extends MBLayer {
      *   <li>Assumes 3-band RGB
      * </ul>
      *
-     * @param styleContext The MBStyle to which this layer belongs, used as a context for things
-     *     like resolving sprite and glyph names to full urls.
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite
+     *     and glyph names to full urls.
      * @return FeatureTypeStyle
      */
     @Override
@@ -229,43 +229,32 @@ public class RasterMBLayer extends MBLayer {
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
-        RasterSymbolizer symbolizer =
-                sf.rasterSymbolizer(
-                        getId(),
-                        null,
-                        sf.description(Text.text("raster"), null),
-                        Units.PIXEL,
-                        opacity(),
-                        null,
-                        null,
-                        null,
-                        ce,
-                        null,
-                        null);
+        RasterSymbolizer symbolizer = sf.rasterSymbolizer(
+                getId(),
+                null,
+                sf.description(Text.text("raster"), null),
+                Units.PIXEL,
+                opacity(),
+                null,
+                null,
+                null,
+                ce,
+                null,
+                null);
 
         List<Rule> rules = new ArrayList<>();
         MBFilter filter = getFilter();
         org.geotools.api.style.Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.MAX_VALUE,
-                        Arrays.asList(symbolizer),
-                        filter.filter());
+                sf.rule(getId(), null, null, 0.0, Double.MAX_VALUE, Arrays.asList(symbolizer), filter.filter());
         rules.add(rule);
 
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null,
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null,
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                rules));
     }
 
     /**

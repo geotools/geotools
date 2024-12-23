@@ -85,9 +85,7 @@ public class QuantitativeResultImpl extends MetadataEntity implements Quantitati
         values = copyList(newValues, values, Record.class);
     }
 
-    /**
-     * Set the quantitative value or values, content determined by the evaluation procedure used.
-     */
+    /** Set the quantitative value or values, content determined by the evaluation procedure used. */
     public void setValues(final double[] newValues) {
         final List<Record> records;
         if (newValues == null) {

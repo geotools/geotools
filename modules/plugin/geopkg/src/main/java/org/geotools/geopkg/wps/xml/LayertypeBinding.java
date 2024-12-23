@@ -75,8 +75,8 @@ public abstract class LayertypeBinding extends AbstractComplexBinding {
         return GeoPackageProcessRequest.Layer.class;
     }
 
-    public abstract GeoPackageProcessRequest.Layer parseLayer(
-            ElementInstance instance, Node node, Object value) throws Exception;
+    public abstract GeoPackageProcessRequest.Layer parseLayer(ElementInstance instance, Node node, Object value)
+            throws Exception;
 
     /**
      *

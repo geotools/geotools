@@ -60,20 +60,18 @@ public class ObliqueOrthographic extends Orthographic {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected ObliqueOrthographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected ObliqueOrthographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
         sinphi0 = sin(latitudeOfOrigin);
         cosphi0 = cos(latitudeOfOrigin);
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         final double cosphi = cos(y);
         final double coslam = cos(x);
         final double sinphi = sin(y);
@@ -90,13 +88,9 @@ public class ObliqueOrthographic extends Orthographic {
         return new Point2D.Double(x, y);
     }
 
-    /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
-     * {@code ptDst}.
-     */
+    /** Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in {@code ptDst}. */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {

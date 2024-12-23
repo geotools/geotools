@@ -37,10 +37,8 @@ public interface SolrLayerMapper {
             @Override
             public SolrLayerMapper createMapper(Map<String, ?> params) throws IOException {
                 if (!params.containsKey(SolrDataStoreFactory.FIELD.key)) {
-                    throw new IllegalArgumentException(
-                            format(
-                                    "Layer mapper '%s' requires '%s' key",
-                                    FIELD.name(), SolrDataStoreFactory.FIELD.key));
+                    throw new IllegalArgumentException(format(
+                            "Layer mapper '%s' requires '%s' key", FIELD.name(), SolrDataStoreFactory.FIELD.key));
                 }
                 return new FieldLayerMapper((String) SolrDataStoreFactory.FIELD.lookUp(params));
             }

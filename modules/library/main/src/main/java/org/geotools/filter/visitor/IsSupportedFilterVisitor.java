@@ -80,11 +80,10 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 
 /**
- * This visitor will return Boolean.TRUE if the provided filter is supported by the the
- * FilterCapabilities.
+ * This visitor will return Boolean.TRUE if the provided filter is supported by the the FilterCapabilities.
  *
- * <p>This method will look up the right information in the provided FilterCapabilities instance for
- * you depending on the type of filter provided.
+ * <p>This method will look up the right information in the provided FilterCapabilities instance for you depending on
+ * the type of filter provided.
  *
  * <p>Example:
  *

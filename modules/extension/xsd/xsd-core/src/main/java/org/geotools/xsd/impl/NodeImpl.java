@@ -94,8 +94,8 @@ public class NodeImpl implements Node {
     /**
      * Contents of this node.
      *
-     * <p>XXX: either return unmodifeable Collection, or return the collection directly. Client code
-     * should make the copy iff they need it. Going to try changing it and see what breaks.
+     * <p>XXX: either return unmodifeable Collection, or return the collection directly. Client code should make the
+     * copy iff they need it. Going to try changing it and see what breaks.
      *
      * @see Node#getChildren()
      */

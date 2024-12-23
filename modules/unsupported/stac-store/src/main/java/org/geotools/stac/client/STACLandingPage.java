@@ -22,10 +22,7 @@ import static org.geotools.stac.client.STACClient.JSON_MIME;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Landing page for STAC APIs, basically a document with links, with the addition of conformance
- * classes.
- */
+/** Landing page for STAC APIs, basically a document with links, with the addition of conformance classes. */
 public class STACLandingPage extends AbstractDocument {
 
     private static final String SERCH_REL = "search";
@@ -42,21 +39,19 @@ public class STACLandingPage extends AbstractDocument {
     }
 
     public String getSearchLink(HttpMethod method) {
-        String link =
-                getLinks().stream()
-                        .filter(l -> isSearchLink(l, method, GEOJSON_MIME))
-                        .map(l -> l.getHref())
-                        .findFirst()
-                        .orElse(null);
+        String link = getLinks().stream()
+                .filter(l -> isSearchLink(l, method, GEOJSON_MIME))
+                .map(l -> l.getHref())
+                .findFirst()
+                .orElse(null);
 
         // bit of tolerance, although this is wrong
         if (link == null)
-            link =
-                    getLinks().stream()
-                            .filter(l -> isSearchLink(l, method, JSON_MIME))
-                            .map(l -> l.getHref())
-                            .findFirst()
-                            .orElse(null);
+            link = getLinks().stream()
+                    .filter(l -> isSearchLink(l, method, JSON_MIME))
+                    .map(l -> l.getHref())
+                    .findFirst()
+                    .orElse(null);
 
         return link;
     }

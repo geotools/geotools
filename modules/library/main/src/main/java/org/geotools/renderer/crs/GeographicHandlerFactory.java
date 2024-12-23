@@ -33,13 +33,9 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
-        if (renderingEnvelope != null
-                && renderingEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS) {
+        if (renderingEnvelope != null && renderingEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS) {
             CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
             GeographicCRS geogCrs = (GeographicCRS) CRS.getHorizontalCRS(crs);
             CoordinateReferenceSystem horizontalSourceCrs = CRS.getHorizontalCRS(sourceCrs);
@@ -51,33 +47,20 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
                 // cut them out
                 if (!CRS.equalsIgnoreMetadata(horizontalSourceCrs, geogCrs)) {
                     if (CRS.getAxisOrder(sourceCrs) == AxisOrder.NORTH_EAST) {
-                        validArea =
-                                new ReferencedEnvelope(
-                                        MIN_LATITUDE,
-                                        MAX_LATITUDE,
-                                        Float.MAX_VALUE,
-                                        -Float.MAX_VALUE,
-                                        horizontalSourceCrs);
+                        validArea = new ReferencedEnvelope(
+                                MIN_LATITUDE, MAX_LATITUDE, Float.MAX_VALUE, -Float.MAX_VALUE, horizontalSourceCrs);
                     } else {
-                        validArea =
-                                new ReferencedEnvelope(
-                                        Integer.MAX_VALUE,
-                                        -Integer.MAX_VALUE,
-                                        MIN_LATITUDE,
-                                        MAX_LATITUDE,
-                                        horizontalSourceCrs);
+                        validArea = new ReferencedEnvelope(
+                                Integer.MAX_VALUE, -Integer.MAX_VALUE, MIN_LATITUDE, MAX_LATITUDE, horizontalSourceCrs);
                     }
                 }
             }
 
             if (wrap && maxWraps > 0) {
-                double centralMeridian =
-                        geogCrs.getDatum().getPrimeMeridian().getGreenwichLongitude();
-                WrappingProjectionHandler handler =
-                        new WrappingProjectionHandler(
-                                renderingEnvelope, validArea, sourceCrs, centralMeridian, maxWraps);
-                handler.setDatelineWrappingCheckEnabled(
-                        !isWrappingException(crs, horizontalSourceCrs));
+                double centralMeridian = geogCrs.getDatum().getPrimeMeridian().getGreenwichLongitude();
+                WrappingProjectionHandler handler = new WrappingProjectionHandler(
+                        renderingEnvelope, validArea, sourceCrs, centralMeridian, maxWraps);
+                handler.setDatelineWrappingCheckEnabled(!isWrappingException(crs, horizontalSourceCrs));
                 return handler;
             } else {
                 return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
@@ -87,8 +70,7 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
         return null;
     }
 
-    private boolean isWrappingException(
-            CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCRS)
+    private boolean isWrappingException(CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCRS)
             throws FactoryException {
         MathTransform mt = CRS.findMathTransform(sourceCrs, targetCRS, true);
         // this projection does not wrap coordinates, generates values larger than 180 instead

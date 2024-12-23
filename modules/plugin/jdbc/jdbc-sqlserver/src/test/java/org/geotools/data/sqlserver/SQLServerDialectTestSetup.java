@@ -19,19 +19,16 @@ public class SQLServerDialectTestSetup extends SQLServerTestSetup {
         sql = "ALTER TABLE multiGeom ALTER COLUMN name VARCHAR(255) COLLATE Latin1_General_CS_AS";
         run(sql);
 
-        sql =
-                "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
-                        + "(geometry::STGeomFromText('POINT (132782 457575)',28992), 'Atoomweg 45', geometry::STGeomFromText('POLYGON ((132781 457574, 132783 457575, 132781 457578, 132779 457576, 132781 457574))',28992));";
+        sql = "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
+                + "(geometry::STGeomFromText('POINT (132782 457575)',28992), 'Atoomweg 45', geometry::STGeomFromText('POLYGON ((132781 457574, 132783 457575, 132781 457578, 132779 457576, 132781 457574))',28992));";
         run(sql);
 
-        sql =
-                "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
-                        + "(geometry::STGeomFromText('POINT (132975 457666)',28992), 'Atoomweg 48', geometry::STGeomFromText('POLYGON ((132973 457701, 132971 457700, 132972 457698, 132974 457699, 132973 457701))',28992));";
+        sql = "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
+                + "(geometry::STGeomFromText('POINT (132975 457666)',28992), 'Atoomweg 48', geometry::STGeomFromText('POLYGON ((132973 457701, 132971 457700, 132972 457698, 132974 457699, 132973 457701))',28992));";
         run(sql);
 
-        sql =
-                "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
-                        + "(geometry::STGeomFromText('POINT (132974 457620)',28992), 'Atoomweg 46', geometry::STGeomFromText('POLYGON ((132974 457622, 132972 457620, 132974 457618, 132976 457619, 132974 457622))',28992));";
+        sql = "INSERT INTO multiGeom (geometry,name,polygon_geom) VALUES "
+                + "(geometry::STGeomFromText('POINT (132974 457620)',28992), 'Atoomweg 46', geometry::STGeomFromText('POLYGON ((132974 457622, 132972 457620, 132974 457618, 132976 457619, 132974 457622))',28992));";
         run(sql);
 
         // create the spatial index on the geometry and geom column; create a second spatial index

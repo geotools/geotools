@@ -20,9 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Class used to track the number of times a granule is accessed and the number of unique granules
- */
+/** Class used to track the number of times a granule is accessed and the number of unique granules */
 public class GranuleTracker {
     private Set<String> granuleNames = new HashSet<>();
     private AtomicInteger count = new AtomicInteger(0);

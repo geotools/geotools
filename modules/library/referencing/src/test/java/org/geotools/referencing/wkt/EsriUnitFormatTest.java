@@ -32,10 +32,9 @@ public class EsriUnitFormatTest {
     private final UnitFormatter esriUnitFormatter = EsriUnitFormat.getInstance();
 
     /**
-     * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for
-     * units that have labels or aliases defined in the default format. The goal is ensuring that
-     * the label and alias definitions have been correctly cloned from the default format instance
-     * to the GT format instances
+     * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for units that have labels
+     * or aliases defined in the default format. The goal is ensuring that the label and alias definitions have been
+     * correctly cloned from the default format instance to the GT format instances
      */
     @Test
     public void testFormatUnitOfQAppendable() throws IOException {
@@ -52,15 +51,13 @@ public class EsriUnitFormatTest {
     }
 
     /**
-     * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for
-     * units that have labels or aliases defined only in the custom GT formats
+     * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for units that have labels
+     * or aliases defined only in the custom GT formats
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                NonSI.DEGREE_ANGLE, esriUnitFormatter, "Degree");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(NonSI.DEGREE_ANGLE, esriUnitFormatter, "Degree");
         UnitFormatTest.doTestFormatForGTDefinedUnits(SI.METRE, esriUnitFormatter, "Meter");
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                Units.SEXAGESIMAL_DMS, esriUnitFormatter, "D.MS");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, esriUnitFormatter, "D.MS");
     }
 }

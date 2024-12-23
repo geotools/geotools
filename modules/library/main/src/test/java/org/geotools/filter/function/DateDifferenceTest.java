@@ -49,8 +49,7 @@ public class DateDifferenceTest {
         // Adding 1 hour and getting the difference in minutes
         calendar.add(Calendar.HOUR, 1);
         Date d2 = calendar.getTime();
-        Function function =
-                ff.function("dateDifference", ff.literal(d2), ff.literal(d1), ff.literal("m"));
+        Function function = ff.function("dateDifference", ff.literal(d2), ff.literal(d1), ff.literal("m"));
         assertEquals(60, function.evaluate(null, Integer.class), 0d);
 
         // Adding 5 days and getting the difference in days
@@ -78,8 +77,7 @@ public class DateDifferenceTest {
 
         // let's waste a second :)
         Thread.sleep(1000);
-        function =
-                ff.function("dateDifference", ff.function("now"), ff.literal(d1), ff.literal("s"));
+        function = ff.function("dateDifference", ff.function("now"), ff.literal(d1), ff.literal("s"));
 
         // Make sure that the difference in seconds is greater than 1
         assertTrue(function.evaluate(null, Integer.class) >= 1);

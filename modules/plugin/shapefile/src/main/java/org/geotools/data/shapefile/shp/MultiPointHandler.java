@@ -46,8 +46,7 @@ public class MultiPointHandler implements ShapeHandler {
 
     public MultiPointHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
         if (!type.isMultiPointType()) {
-            throw new ShapefileException(
-                    "Multipointhandler constructor - expected type to be 8, 18, or 28");
+            throw new ShapefileException("Multipointhandler constructor - expected type to be 8, 18, or 28");
         }
 
         shapeType = type;
@@ -83,13 +82,12 @@ public class MultiPointHandler implements ShapeHandler {
             length = (mp.getNumGeometries() * 16) + 40 + 16 + (8 * mp.getNumGeometries());
         } else if (shapeType == ShapeType.MULTIPOINTZ) {
             // add the additional ZMin,ZMax, plus 8 per Z
-            length =
-                    (mp.getNumGeometries() * 16)
-                            + 40
-                            + 16
-                            + (8 * mp.getNumGeometries())
-                            + 16
-                            + (8 * mp.getNumGeometries());
+            length = (mp.getNumGeometries() * 16)
+                    + 40
+                    + 16
+                    + (8 * mp.getNumGeometries())
+                    + 16
+                    + (8 * mp.getNumGeometries());
         } else {
             throw new IllegalStateException("Expected ShapeType of Arc, got " + shapeType);
         }
@@ -115,16 +113,9 @@ public class MultiPointHandler implements ShapeHandler {
         int measure = flatGeometry ? 0 : 1;
         CoordinateSequence cs;
         if (shapeType == ShapeType.MULTIPOINTZ || shapeType == ShapeType.MULTIPOINTM) {
-            cs =
-                    JTS.createCS(
-                            geometryFactory.getCoordinateSequenceFactory(),
-                            numpoints,
-                            dimensions + measure,
-                            measure);
+            cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions + measure, measure);
         } else {
-            cs =
-                    JTS.createCS(
-                            geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
+            cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
         }
 
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
@@ -144,8 +135,7 @@ public class MultiPointHandler implements ShapeHandler {
             }
         }
 
-        boolean isArcZWithM =
-                shapeType == ShapeType.MULTIPOINTZ && (dbuffer.remaining() >= numpoints + 2);
+        boolean isArcZWithM = shapeType == ShapeType.MULTIPOINTZ && (dbuffer.remaining() >= numpoints + 2);
         if ((isArcZWithM || shapeType == ShapeType.MULTIPOINTM) && !flatGeometry) {
             ((Buffer) dbuffer).position(dbuffer.position() + 2);
 
@@ -217,10 +207,9 @@ public class MultiPointHandler implements ShapeHandler {
             buffer.putDouble(mvalues.stream().min(Double::compare).get());
             buffer.putDouble(mvalues.stream().max(Double::compare).get());
             // encode all M values
-            mvalues.forEach(
-                    x -> {
-                        buffer.putDouble(x);
-                    });
+            mvalues.forEach(x -> {
+                buffer.putDouble(x);
+            });
         }
     }
 }

@@ -110,8 +110,7 @@ public final class CategoryListTest {
     }
 
     /**
-     * Tests the {@link CategoryList#getCategory} method and a limited set of {@link
-     * CategoryList#transform} calls.
+     * Tests the {@link CategoryList#getCategory} method and a limited set of {@link CategoryList#transform} calls.
      *
      * @throws TransformException If an error occured while transforming a value.
      */

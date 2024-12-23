@@ -25,18 +25,16 @@ import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A list of unsigned integer values. This class packs the values in the minimal amount of bits
- * required for storing unsigned integers of the given {@linkplain #maximalValue maximal value}.
+ * A list of unsigned integer values. This class packs the values in the minimal amount of bits required for storing
+ * unsigned integers of the given {@linkplain #maximalValue maximal value}.
  *
- * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's
- * reponsability.
+ * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's reponsability.
  *
  * @since 2.5
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */
-public class IntegerList extends AbstractList<Integer>
-        implements RandomAccess, Serializable, Cloneable {
+public class IntegerList extends AbstractList<Integer> implements RandomAccess, Serializable, Cloneable {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1241962316404811189L;
 
@@ -44,8 +42,8 @@ public class IntegerList extends AbstractList<Integer>
     private static final int VALUE_SIZE = 64;
 
     /**
-     * The shift to apply on {@code index} in order to produce a result equivalent to {@code index}
-     * / {@value #VALUE_SIZE}.
+     * The shift to apply on {@code index} in order to produce a result equivalent to {@code index} /
+     * {@value #VALUE_SIZE}.
      */
     private static final int BASE_SHIFT = 6;
 
@@ -56,8 +54,8 @@ public class IntegerList extends AbstractList<Integer>
     private static final int OFFSET_MASK = 63;
 
     /**
-     * The packed values. We use the {@code long} type instead of {@code int} on the basis that 64
-     * bits machines are becoming more and more common.
+     * The packed values. We use the {@code long} type instead of {@code int} on the basis that 64 bits machines are
+     * becoming more and more common.
      */
     private long[] values;
 
@@ -81,13 +79,12 @@ public class IntegerList extends AbstractList<Integer>
     }
 
     /**
-     * Creates a new list with the given initial size. The value of all elements are initialized to
-     * 0.
+     * Creates a new list with the given initial size. The value of all elements are initialized to 0.
      *
      * @param initialCapacity The initial capacity.
      * @param maximalValue The maximal value to be allowed, inclusive.
-     * @param fill If {@code true}, the initial {@linkplain #size} is set to the initial capacity
-     *     with all values set to 0.
+     * @param fill If {@code true}, the initial {@linkplain #size} is set to the initial capacity with all values set to
+     *     0.
      */
     public IntegerList(final int initialCapacity, int maximalValue, final boolean fill) {
         if (initialCapacity <= 0) {
@@ -95,8 +92,7 @@ public class IntegerList extends AbstractList<Integer>
                     MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, initialCapacity));
         }
         if (maximalValue <= 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, maximalValue));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, maximalValue));
         }
         int bitCount = 0;
         do {
@@ -127,8 +123,8 @@ public class IntegerList extends AbstractList<Integer>
     }
 
     /**
-     * Returns the maximal value that can be stored in this list. May be slighly higher than the
-     * value given to the constructor.
+     * Returns the maximal value that can be stored in this list. May be slighly higher than the value given to the
+     * constructor.
      *
      * @return The maximal value, inclusive.
      */
@@ -147,9 +143,9 @@ public class IntegerList extends AbstractList<Integer>
     }
 
     /**
-     * Sets the list size to the given value. If the new size is lower than previous size, then the
-     * elements after the new size are discarted. If the new size is greater than the previous one,
-     * then the extra elements are initialized to 0.
+     * Sets the list size to the given value. If the new size is lower than previous size, then the elements after the
+     * new size are discarted. If the new size is greater than the previous one, then the extra elements are initialized
+     * to 0.
      *
      * @param size The new size.
      */
@@ -175,16 +171,15 @@ public class IntegerList extends AbstractList<Integer>
     }
 
     /**
-     * Fills the list with the given value. Every existing values are overwritten from index 0
-     * inclusive up to {@link #size} exclusive.
+     * Fills the list with the given value. Every existing values are overwritten from index 0 inclusive up to
+     * {@link #size} exclusive.
      *
      * @param value The value to set.
      */
     @SuppressWarnings("fallthrough")
     public void fill(int value) {
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         final long p;
         if (value == 0) {
@@ -206,13 +201,12 @@ public class IntegerList extends AbstractList<Integer>
                 case 32:
                     p = (value & 0xFFFFFFFFL) | ((long) value << 32);
                     break;
-                default:
-                    { // General case (unoptimized)
-                        for (int i = 0; i < size; i++) {
-                            setUnchecked(i, value);
-                        }
-                        return;
+                default: { // General case (unoptimized)
+                    for (int i = 0; i < size; i++) {
+                        setUnchecked(i, value);
                     }
+                    return;
+                }
             }
         Arrays.fill(values, 0, length(size), p);
     }
@@ -244,8 +238,7 @@ public class IntegerList extends AbstractList<Integer>
      */
     public void addInteger(final int value) throws IllegalArgumentException {
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         final int length = length(++size);
         if (length > values.length) {
@@ -275,8 +268,7 @@ public class IntegerList extends AbstractList<Integer>
      */
     public int getInteger(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
         }
         index *= bitCount;
         int base = index >>> BASE_SHIFT;
@@ -318,19 +310,17 @@ public class IntegerList extends AbstractList<Integer>
      */
     public void setInteger(int index, int value) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
         }
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         setUnchecked(index, value);
     }
 
     /**
-     * Sets the element at the given index as the {@code int} primitive type. This argument does not
-     * check argument validity, since it is assumed already done.
+     * Sets the element at the given index as the {@code int} primitive type. This argument does not check argument
+     * validity, since it is assumed already done.
      *
      * @param index The element index.
      * @param value The value at the given index.

@@ -47,13 +47,12 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Utility class to parse FeatureType given by an XML schema location and the name of the Feature
- * <b>Element</b> whose type is the one needed.
+ * Utility class to parse FeatureType given by an XML schema location and the name of the Feature <b>Element</b> whose
+ * type is the one needed.
  *
- * <p>Currently only <b>simple</b> FeatureTypes are supported. In the feature, complex schemas may
- * be supported by porting the EmfAppSchemaParser class in the community schema datastore module,
- * depending on the availability of complex {@link Feature} support on the mainstream GeoTools
- * distribution.
+ * <p>Currently only <b>simple</b> FeatureTypes are supported. In the feature, complex schemas may be supported by
+ * porting the EmfAppSchemaParser class in the community schema datastore module, depending on the availability of
+ * complex {@link Feature} support on the mainstream GeoTools distribution.
  *
  * @author Gabriel Roldan
  * @since 2.5.x
@@ -62,28 +61,24 @@ class EmfAppSchemaParser {
     /**
      * Parses the FeatureType pointed out by the {@code schemaLocation} URL and returns it.
      *
-     * <p>The returned {@link FeatureType} default geometry, will be the first geometric attribute
-     * distinct from {@code gml:location}, or {@code gml:location} if no additional geometric
-     * property is found. Note: this code is borrowed and adapted from {@link
-     * ParserHandler#startDocument()}
+     * <p>The returned {@link FeatureType} default geometry, will be the first geometric attribute distinct from
+     * {@code gml:location}, or {@code gml:location} if no additional geometric property is found. Note: this code is
+     * borrowed and adapted from {@link ParserHandler#startDocument()}
      *
      * @param configuration the WFS configuration for the parser to grab {@link Binding}s from.
-     * @param featureName the qualified name of the Feature element in the schema, for which the
-     *     feature type is to be parsed.
-     * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
-     *     This information shall be provided here as the schema itself has no knowledge of the CRS
-     *     used.
+     * @param featureName the qualified name of the Feature element in the schema, for which the feature type is to be
+     *     parsed.
+     * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type. This information shall
+     *     be provided here as the schema itself has no knowledge of the CRS used.
      */
     public static SimpleFeatureType parse(
-            Configuration configuration, final QName featureName, CoordinateReferenceSystem crs)
-            throws IOException {
+            Configuration configuration, final QName featureName, CoordinateReferenceSystem crs) throws IOException {
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
         return parse(configuration, elementDecl, crs);
     }
 
     /** Use the provided schemaLocation with a GML3 ApplicationSchemaConfiguration */
-    public static SimpleFeatureType parse(
-            URL schemaLocation, QName featureName, CoordinateReferenceSystem crs)
+    public static SimpleFeatureType parse(URL schemaLocation, QName featureName, CoordinateReferenceSystem crs)
             throws IOException {
         // use GML3 application Schema by default
         String namespaceURI = featureName.getNamespaceURI();
@@ -96,9 +91,7 @@ class EmfAppSchemaParser {
 
     /** Parse the provided element declaration into a SimpleFeatureType. */
     public static SimpleFeatureType parse(
-            Configuration configuration,
-            XSDElementDeclaration elementDecl,
-            CoordinateReferenceSystem crs)
+            Configuration configuration, XSDElementDeclaration elementDecl, CoordinateReferenceSystem crs)
             throws IOException {
 
         Map<QName, Object> bindings = configuration.setupBindings();
@@ -159,8 +152,8 @@ class EmfAppSchemaParser {
         }
     }
 
-    private static XSDElementDeclaration parseFeatureType(
-            final QName featureTypeName, Configuration configuration) throws DataSourceException {
+    private static XSDElementDeclaration parseFeatureType(final QName featureTypeName, Configuration configuration)
+            throws DataSourceException {
 
         SchemaIndex schemaIndex;
         try {
@@ -169,8 +162,7 @@ class EmfAppSchemaParser {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
-        XSDElementDeclaration elementDeclaration =
-                schemaIndex.getElementDeclaration(featureTypeName);
+        XSDElementDeclaration elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
         return elementDeclaration;
     }

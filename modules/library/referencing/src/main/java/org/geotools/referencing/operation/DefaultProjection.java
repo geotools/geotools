@@ -27,15 +27,14 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 
 /**
- * A {@linkplain DefaultConversion conversion} transforming
- * (<var>longitude</var>,<var>latitude</var>) coordinates to cartesian coordinates
- * (<var>x</var>,<var>y</var>).
+ * A {@linkplain DefaultConversion conversion} transforming (<var>longitude</var>,<var>latitude</var>) coordinates to
+ * cartesian coordinates (<var>x</var>,<var>y</var>).
  *
  * <p>An unofficial list of projections and their parameters can be found <A
- * HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>. Most projections expect the
- * following parameters: <code>"central_meridian"</code> (default to 0), <code>"latitude_of_origin"
- * </code> (default to 0), <code>"scale_factor"</code> (default to 1), <code>"false_easting"</code>
- * (default to 0) and <code>"false_northing"</code> (default to 0).
+ * HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>. Most projections expect the following parameters:
+ * <code>"central_meridian"</code> (default to 0), <code>"latitude_of_origin"
+ * </code> (default to 0), <code>"scale_factor"</code> (default to 1), <code>"false_easting"</code> (default to 0) and
+ * <code>"false_northing"</code> (default to 0).
  *
  * @since 2.1
  * @version $Id$
@@ -48,15 +47,15 @@ public class DefaultProjection extends DefaultConversion implements Projection {
     private static final long serialVersionUID = -7176751851369816864L;
 
     /**
-     * Constructs a new projection with the same values than the specified one, together with the
-     * specified source and target CRS. While the source conversion can be an arbitrary one, it is
-     * typically a {@linkplain DefiningConversion defining conversion}.
+     * Constructs a new projection with the same values than the specified one, together with the specified source and
+     * target CRS. While the source conversion can be an arbitrary one, it is typically a {@linkplain DefiningConversion
+     * defining conversion}.
      *
      * @param conversion The defining conversion.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      */
     public DefaultProjection(
             final Conversion conversion,
@@ -67,15 +66,14 @@ public class DefaultProjection extends DefaultConversion implements Projection {
     }
 
     /**
-     * Constructs a projection from a set of properties. The properties given in argument follow the
-     * same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a projection from a set of properties. The properties given in argument follow the same rules than for
+     * the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS, or {@code null} if not available.
      * @param targetCRS The target CRS, or {@code null} if not available.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source coordinate
-     *     reference system} to positions in the {@linkplain #getTargetCRS target coordinate
-     *     reference system}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source coordinate reference system} to
+     *     positions in the {@linkplain #getTargetCRS target coordinate reference system}.
      * @param method The operation method.
      */
     public DefaultProjection(

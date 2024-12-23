@@ -22,8 +22,8 @@ package org.geotools.geometry.jts.coordinatesequence;
  * A factory to obtain a builder for JTS CoordinateSequence objects.
  *
  * @author wolf
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
- *     Java - Code Style - Code Templates
+ *     <p>TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
+ *     Code Templates
  */
 public class CSBuilderFactory {
     private static Class<? extends CSBuilder> defaultBuilderClass;
@@ -47,8 +47,7 @@ public class CSBuilderFactory {
     /** @param builderClass */
     public static void setDefaultBuilderClass(Class<? extends CSBuilder> builderClass) {
         if (!CSBuilder.class.isAssignableFrom(builderClass))
-            throw new RuntimeException(
-                    builderClass.getName() + " does not implement the CSBuilder interface");
+            throw new RuntimeException(builderClass.getName() + " does not implement the CSBuilder interface");
         defaultBuilderClass = builderClass;
     }
 }

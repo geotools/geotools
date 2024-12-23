@@ -20,13 +20,12 @@ import java.net.URL;
 import java.util.Properties;
 
 /**
- * Describes an abstract DescribeProcess request. Provides everything except the versioning info,
- * which subclasses must implement.
+ * Describes an abstract DescribeProcess request. Provides everything except the versioning info, which subclasses must
+ * implement.
  *
  * @author gdavis
  */
-public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest
-        implements DescribeProcessRequest {
+public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest implements DescribeProcessRequest {
 
     /**
      * Constructs a basic DescribeProcessRequest, without versioning info.

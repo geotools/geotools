@@ -32,8 +32,7 @@ import org.junit.Test;
 public final class BursaWolfTransformBuilderTest {
     /** Test {@link BursaWolfTransformBuilder}. */
     @Test
-    public void testBursaWolfParamCalculaterXrotation()
-            throws FactoryException, TransformException {
+    public void testBursaWolfParamCalculaterXrotation() throws FactoryException, TransformException {
         Random random = new Random(773418718);
 
         double R = 6370000;
@@ -45,13 +44,9 @@ public final class BursaWolfTransformBuilderTest {
 
         vectors.add(new MappedPosition(new GeneralPosition(R, 0, 0), new GeneralPosition(R, 0, 0)));
 
-        vectors.add(
-                new MappedPosition(
-                        new GeneralPosition(0, cos * R, -sin * R), new GeneralPosition(0, R, 0)));
+        vectors.add(new MappedPosition(new GeneralPosition(0, cos * R, -sin * R), new GeneralPosition(0, R, 0)));
 
-        vectors.add(
-                new MappedPosition(
-                        new GeneralPosition(0, sin * R, cos * R), new GeneralPosition(0, 0, R)));
+        vectors.add(new MappedPosition(new GeneralPosition(0, sin * R, cos * R), new GeneralPosition(0, 0, R)));
 
         double[] points = new double[vectors.size() * 3];
 
@@ -68,17 +63,14 @@ public final class BursaWolfTransformBuilderTest {
 
         for (int i = 0; i < vectors.size(); i++) {
             assertEquals(dstPoints[i * 3], vectors.get(i).getTarget().getCoordinate()[0], 1E-2);
-            assertEquals(
-                    dstPoints[(i * 3) + 1], vectors.get(i).getTarget().getCoordinate()[1], 1E-2);
-            assertEquals(
-                    dstPoints[(i * 3) + 2], vectors.get(i).getTarget().getCoordinate()[2], 1E-2);
+            assertEquals(dstPoints[(i * 3) + 1], vectors.get(i).getTarget().getCoordinate()[1], 1E-2);
+            assertEquals(dstPoints[(i * 3) + 2], vectors.get(i).getTarget().getCoordinate()[2], 1E-2);
         }
     }
 
     /**
-     * The test that generates random transformation parameters and source points. The destination
-     * points are calculated using generated parameters. Then the parameters are computed by the
-     * builder and compared against original.
+     * The test that generates random transformation parameters and source points. The destination points are calculated
+     * using generated parameters. Then the parameters are computed by the builder and compared against original.
      */
     @Test
     public void test2BursaWolfParamCalculater() throws FactoryException, TransformException {
@@ -105,11 +97,8 @@ public final class BursaWolfTransformBuilderTest {
             double alfa = ((45 + (random.nextDouble() * 10)) * Math.PI) / 180;
 
             //   generate source points
-            ptSrc =
-                    new GeneralPosition(
-                            R * Math.sin(gamma) * Math.cos(alfa),
-                            R * Math.sin(gamma) * Math.cos(alfa),
-                            R * Math.cos(gamma));
+            ptSrc = new GeneralPosition(
+                    R * Math.sin(gamma) * Math.cos(alfa), R * Math.sin(gamma) * Math.cos(alfa), R * Math.cos(gamma));
 
             double[] pom = new double[3];
 

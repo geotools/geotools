@@ -30,8 +30,7 @@ public class CollectionConverterFactoryTest {
         source.add(1);
         source.add(2);
 
-        Object converted =
-                CollectionConverterFactory.CollectionToCollection.convert(source, Set.class);
+        Object converted = CollectionConverterFactory.CollectionToCollection.convert(source, Set.class);
 
         Assert.assertTrue(converted instanceof Set);
         Set target = (Set) converted;
@@ -45,8 +44,7 @@ public class CollectionConverterFactoryTest {
         source.add(1);
         source.add(2);
 
-        Object converted =
-                CollectionConverterFactory.CollectionToArray.convert(source, Integer[].class);
+        Object converted = CollectionConverterFactory.CollectionToArray.convert(source, Integer[].class);
         Assert.assertTrue(converted instanceof Integer[]);
         Integer[] target = (Integer[]) converted;
         Assert.assertEquals(Integer.valueOf(1), target[0]);

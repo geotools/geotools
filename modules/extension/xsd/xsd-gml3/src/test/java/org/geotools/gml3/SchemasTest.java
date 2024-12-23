@@ -19,20 +19,16 @@ public class SchemasTest {
     public void testConcurrentParse() throws Exception {
         URL location = SchemasTest.class.getResource("states.xsd");
         final File schemaFile = new File(location.toURI());
-        final List<XSDSchemaLocator> locators =
-                Arrays.asList(GML.getInstance().createSchemaLocator());
+        final List<XSDSchemaLocator> locators = Arrays.asList(GML.getInstance().createSchemaLocator());
 
         ExecutorService es = Executors.newFixedThreadPool(32);
         List<Future<Void>> results = new ArrayList<>();
         for (int i = 0; i < 128; i++) {
-            Future<Void> future =
-                    es.submit(
-                            () -> {
-                                XSDSchema schema =
-                                        Schemas.parse(schemaFile.getAbsolutePath(), locators, null);
-                                Schemas.dispose(schema);
-                                return null;
-                            });
+            Future<Void> future = es.submit(() -> {
+                XSDSchema schema = Schemas.parse(schemaFile.getAbsolutePath(), locators, null);
+                Schemas.dispose(schema);
+                return null;
+            });
             results.add(future);
         }
 

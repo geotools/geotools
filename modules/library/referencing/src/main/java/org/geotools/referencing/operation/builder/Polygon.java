@@ -24,8 +24,7 @@ import org.geotools.api.geometry.Position;
 import org.geotools.geometry.Position2D;
 
 /**
- * Simple polygons like three - sided (triangle) or four - sided (qadrilateral), that are used for
- * triangulation.
+ * Simple polygons like three - sided (triangle) or four - sided (qadrilateral), that are used for triangulation.
  *
  * @since 2.4
  * @version $Id$
@@ -163,11 +162,10 @@ class Polygon implements Cloneable {
         ArrayList<Position> redCoords = new ArrayList<>();
 
         for (Position vertex : vertices) {
-            redCoords.add(
-                    new Position2D(
-                            vertex.getCoordinateReferenceSystem(),
-                            vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
-                            vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));
+            redCoords.add(new Position2D(
+                    vertex.getCoordinateReferenceSystem(),
+                    vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
+                    vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));
         }
 
         return redCoords;

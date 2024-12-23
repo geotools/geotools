@@ -24,41 +24,36 @@ public class BBoxBindingTest extends FESTestSupport {
     public void testEncode() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(
-                        Double.valueOf(48.81752162),
-                        Double.valueOf(48.81915540),
-                        Double.valueOf(-3.47568429),
-                        Double.valueOf(-3.47261370),
-                        CRS.decode("EPSG:4326"));
+        ReferencedEnvelope env = new ReferencedEnvelope(
+                Double.valueOf(48.81752162),
+                Double.valueOf(48.81915540),
+                Double.valueOf(-3.47568429),
+                Double.valueOf(-3.47261370),
+                CRS.decode("EPSG:4326"));
         Filter bboxFilter = ff.bbox(ff.property("geom"), env);
         Encoder encoder = new Encoder(createConfiguration());
         String encodedFilter = encoder.encodeAsString(bboxFilter, FES.Filter);
         Assert.assertTrue(encodedFilter.contains("<fes:ValueReference>geom</fes:ValueReference>"));
         Assert.assertTrue(
-                encodedFilter.contains(
-                        "<gml:Envelope srsDimension=\"2\" srsName=\"urn:ogc:def:crs:EPSG::4326\">"));
-        Assert.assertTrue(
-                encodedFilter.contains("<gml:lowerCorner>48.817522 -3.475684</gml:lowerCorner>"));
-        Assert.assertTrue(
-                encodedFilter.contains("<gml:upperCorner>48.819155 -3.472614</gml:upperCorner>"));
+                encodedFilter.contains("<gml:Envelope srsDimension=\"2\" srsName=\"urn:ogc:def:crs:EPSG::4326\">"));
+        Assert.assertTrue(encodedFilter.contains("<gml:lowerCorner>48.817522 -3.475684</gml:lowerCorner>"));
+        Assert.assertTrue(encodedFilter.contains("<gml:upperCorner>48.819155 -3.472614</gml:upperCorner>"));
     }
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<fes:Filter "
-                        + "xmlns:xs='http://www.w3.org/2001/XMLSchema' "
-                        + "xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "xmlns:gml='http://www.opengis.net/gml/3.2'>"
-                        + "		<fes:BBOX>"
-                        + "			<fes:ValueReference>geom</fes:ValueReference>"
-                        + "			<gml:Envelope srsDimension='2' srsName='urn:ogc:def:crs:EPSG::4326'>"
-                        + "				<gml:lowerCorner>48.817522 -3.475684</gml:lowerCorner>"
-                        + "				<gml:upperCorner>48.819155 -3.472614</gml:upperCorner>"
-                        + "			</gml:Envelope>"
-                        + "		</fes:BBOX>"
-                        + "</fes:Filter>";
+        String xml = "<fes:Filter "
+                + "xmlns:xs='http://www.w3.org/2001/XMLSchema' "
+                + "xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "xmlns:gml='http://www.opengis.net/gml/3.2'>"
+                + "		<fes:BBOX>"
+                + "			<fes:ValueReference>geom</fes:ValueReference>"
+                + "			<gml:Envelope srsDimension='2' srsName='urn:ogc:def:crs:EPSG::4326'>"
+                + "				<gml:lowerCorner>48.817522 -3.475684</gml:lowerCorner>"
+                + "				<gml:upperCorner>48.819155 -3.472614</gml:upperCorner>"
+                + "			</gml:Envelope>"
+                + "		</fes:BBOX>"
+                + "</fes:Filter>";
 
         buildDocument(xml);
         BBOX bbox = (BBOX) parse();

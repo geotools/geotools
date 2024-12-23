@@ -53,8 +53,7 @@ public abstract class BinaryLogicAbstract extends AbstractFilter {
         // this method takes all the elements from the first list and checks if they are present
         // in the second list the same number of times. Couple with the size comparison above
         // it should do the trick
-        return children.stream()
-                .allMatch(e -> frequency(children, e) == frequency(that.children, e));
+        return children.stream().allMatch(e -> frequency(children, e) == frequency(that.children, e));
     }
 
     @Override

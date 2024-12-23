@@ -25,11 +25,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 /** Returns "italic" or "normal" based on the font name */
 public class MapBoxFontStyleFunction extends FunctionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "mbFontStyle",
-                    parameter("style", Boolean.class),
-                    parameter("fontName", Integer.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "mbFontStyle", parameter("style", Boolean.class), parameter("fontName", Integer.class));
 
     public MapBoxFontStyleFunction() {
         this.functionName = NAME;

@@ -18,8 +18,8 @@
 package org.geotools.api.filter.temporal;
 
 /**
- * Filter operator that determines if two temporal periods interact in any way as defined by the
- * Filter Encoding Specification.
+ * Filter operator that determines if two temporal periods interact in any way as defined by the Filter Encoding
+ * Specification.
  *
  * <p>The OverlappedBy operator is defined as a shortcut for the following:
  *

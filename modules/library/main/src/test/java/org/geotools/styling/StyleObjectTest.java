@@ -138,12 +138,10 @@ public class StyleObjectTest {
 
     @Test
     public void testRule() throws Exception {
-        Symbolizer symb1 =
-                styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
+        Symbolizer symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
 
-        Symbolizer symb2 =
-                styleFactory.createPolygonSymbolizer(
-                        styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
+        Symbolizer symb2 = styleFactory.createPolygonSymbolizer(
+                styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
@@ -151,9 +149,8 @@ public class StyleObjectTest {
         Rule clone = (Rule) ((Cloneable) rule).clone();
         assertClone(rule, clone);
 
-        symb2 =
-                styleFactory.createPolygonSymbolizer(
-                        styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
+        symb2 = styleFactory.createPolygonSymbolizer(
+                styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule notEq = styleFactory.createRule();
         notEq.symbolizers().add(symb2);
@@ -200,25 +197,22 @@ public class StyleObjectTest {
         Font clone = (Font) ((Cloneable) font).clone();
         assertClone(font, clone);
 
-        Font other =
-                styleFactory.createFont(
-                        filterFactory.literal("other"),
-                        filterFactory.literal("normal"),
-                        filterFactory.literal("BOLD"),
-                        filterFactory.literal(12));
+        Font other = styleFactory.createFont(
+                filterFactory.literal("other"),
+                filterFactory.literal("normal"),
+                filterFactory.literal("BOLD"),
+                filterFactory.literal(12));
 
         assertEqualsContract(clone, other, font);
     }
 
     @Test
     public void testHalo() {
-        Halo halo =
-                styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(10));
+        Halo halo = styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(10));
         Halo clone = (Halo) ((Cloneable) halo).clone();
         assertClone(halo, clone);
 
-        Halo other =
-                styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(12));
+        Halo other = styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(12));
         assertEqualsContract(clone, other, halo);
     }
 
@@ -234,25 +228,21 @@ public class StyleObjectTest {
 
     @Test
     public void testAnchorPoint() {
-        AnchorPoint anchorPoint =
-                styleFactory.createAnchorPoint(filterFactory.literal(1), filterFactory.literal(2));
+        AnchorPoint anchorPoint = styleFactory.createAnchorPoint(filterFactory.literal(1), filterFactory.literal(2));
         AnchorPoint clone = (AnchorPoint) ((Cloneable) anchorPoint).clone();
         assertClone(anchorPoint, clone);
 
-        AnchorPoint other =
-                styleFactory.createAnchorPoint(filterFactory.literal(3), filterFactory.literal(4));
+        AnchorPoint other = styleFactory.createAnchorPoint(filterFactory.literal(3), filterFactory.literal(4));
         assertEqualsContract(clone, other, anchorPoint);
     }
 
     @Test
     public void testDisplacement() {
-        Displacement displacement =
-                styleFactory.createDisplacement(filterFactory.literal(1), filterFactory.literal(2));
+        Displacement displacement = styleFactory.createDisplacement(filterFactory.literal(1), filterFactory.literal(2));
         Displacement clone = (Displacement) ((Cloneable) displacement).clone();
         assertClone(displacement, clone);
 
-        Displacement other =
-                styleFactory.createDisplacement(filterFactory.literal(3), filterFactory.literal(4));
+        Displacement other = styleFactory.createDisplacement(filterFactory.literal(3), filterFactory.literal(4));
         assertEqualsContract(clone, other, displacement);
     }
 
@@ -297,7 +287,8 @@ public class StyleObjectTest {
         Graphic clone = (Graphic) ((Cloneable) graphic).clone();
         assertClone(graphic, clone);
         assertEqualsContract(clone, graphic);
-        Assert.assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
+        Assert.assertEquals(
+                clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = styleFactory.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
@@ -305,13 +296,11 @@ public class StyleObjectTest {
 
     @Test
     public void testExternalGraphic() {
-        ExternalGraphic exGraphic =
-                styleFactory.createExternalGraphic("http://somewhere", "image/png");
+        ExternalGraphic exGraphic = styleFactory.createExternalGraphic("http://somewhere", "image/png");
         ExternalGraphic clone = (ExternalGraphic) ((Cloneable) exGraphic).clone();
         assertClone(exGraphic, clone);
 
-        ExternalGraphic notEq =
-                styleFactory.createExternalGraphic("http://somewhereelse", "image/jpeg");
+        ExternalGraphic notEq = styleFactory.createExternalGraphic("http://somewhereelse", "image/jpeg");
         assertEqualsContract(clone, notEq, exGraphic);
 
         // make sure it works for different format, same url
@@ -349,9 +338,7 @@ public class StyleObjectTest {
 
         assertClone(stroke, clone);
 
-        Stroke notEq =
-                styleFactory.createStroke(
-                        filterFactory.literal("#FF0000"), filterFactory.literal(10));
+        Stroke notEq = styleFactory.createStroke(filterFactory.literal("#FF0000"), filterFactory.literal(10));
         assertEqualsContract(clone, notEq, stroke);
 
         // a stroke is a complex object with lots of properties,

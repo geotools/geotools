@@ -26,9 +26,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Run a test scripts. Scripts include a test suite provided by OpenGIS. Each script contains a list
- * of source and target coordinates reference systems (in WKT), source coordinate points and
- * expected coordinate points after the transformation from source CRS to target CRS.
+ * Run a test scripts. Scripts include a test suite provided by OpenGIS. Each script contains a list of source and
+ * target coordinates reference systems (in WKT), source coordinate points and expected coordinate points after the
+ * transformation from source CRS to target CRS.
  *
  * <p>This is probably the most important test case for the whole CRS module.
  *
@@ -301,10 +301,9 @@ public final class ScriptTest {
     }
 
     /**
-     * Run "WagnerIV.txt". Disabled as the projection is not really working as expected, but don't
-     * have time to investigate. If you want to try and fix this please enable the service provider
-     * as well by adding the org.geotools.referencing.operation.projection.Mollweide$WagnerVProvider
-     * line into
+     * Run "WagnerIV.txt". Disabled as the projection is not really working as expected, but don't have time to
+     * investigate. If you want to try and fix this please enable the service provider as well by adding the
+     * org.geotools.referencing.operation.projection.Mollweide$WagnerVProvider line into
      * referencing/src/main/resources/META-INF/services/org.geotools.referencing.operation.MathTransformProvider
      */
     @Test

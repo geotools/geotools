@@ -63,12 +63,11 @@ public class BinarySpatialOpTypeBinding extends AbstractComplexBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         Expression e = FESParseEncodeUtil.getProperty((BinarySpatialOperator) object, name);
         if (e instanceof Literal && ((Literal) e).getValue() instanceof Geometry) {
-            return (EncoderDelegate)
-                    output -> {
-                        Encoder encoder = new Encoder(new GMLConfiguration());
-                        encoder.setInline(true);
-                        encoder.encode(((Literal) e).getValue(), GML.AbstractGeometry, output);
-                    };
+            return (EncoderDelegate) output -> {
+                Encoder encoder = new Encoder(new GMLConfiguration());
+                encoder.setInline(true);
+                encoder.encode(((Literal) e).getValue(), GML.AbstractGeometry, output);
+            };
         } else {
             return e;
         }

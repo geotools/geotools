@@ -92,8 +92,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         featureTypeConstraint.clear();
         if (layer.layerFeatureConstraints() != null) {
             for (FeatureTypeConstraint featureConstraint : layer.layerFeatureConstraints()) {
-                featureTypeConstraint.add(
-                        new FeatureTypeConstraintBuilder(this).reset(featureConstraint));
+                featureTypeConstraint.add(new FeatureTypeConstraintBuilder(this).reset(featureConstraint));
             }
         }
         styles.clear();

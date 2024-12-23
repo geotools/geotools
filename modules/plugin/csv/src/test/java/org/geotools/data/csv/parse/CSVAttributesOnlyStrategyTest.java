@@ -51,8 +51,7 @@ public class CSVAttributesOnlyStrategyTest {
 
     @Test
     public void testCreateFeature() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car", "8,9.9,cdr");
+        String input = CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car", "8,9.9,cdr");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVStrategy strategy = new CSVAttributesOnlyStrategy(fileState);
 

@@ -43,8 +43,7 @@ public class AbbreviatedTimeUnitConverterFactoryTest {
         assertConversion(converter, "k", null);
     }
 
-    private void assertConversion(
-            Converter converter, String timeUnitString, TimeUnit expectedTimeUnit)
+    private void assertConversion(Converter converter, String timeUnitString, TimeUnit expectedTimeUnit)
             throws Exception {
         TimeUnit convertedTimeUnit = converter.convert(timeUnitString, TimeUnit.class);
         Assert.assertEquals(convertedTimeUnit, expectedTimeUnit);

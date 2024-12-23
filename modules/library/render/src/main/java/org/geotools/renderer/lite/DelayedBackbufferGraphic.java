@@ -44,8 +44,8 @@ import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
 /**
- * A graphic drawing on a BufferedImage compatible with a main graphic. Used to delay the allocation
- * of the back buffer until the last moment
+ * A graphic drawing on a BufferedImage compatible with a main graphic. Used to delay the allocation of the back buffer
+ * until the last moment
  *
  * @author Andrea Aime - OpenGeo
  */
@@ -69,10 +69,8 @@ final class DelayedBackbufferGraphic extends Graphics2D {
             if (master instanceof DelayedBackbufferGraphic) {
                 ((DelayedBackbufferGraphic) master).init();
             }
-            image =
-                    master.getDeviceConfiguration()
-                            .createCompatibleImage(
-                                    screenSize.width, screenSize.height, Transparency.TRANSLUCENT);
+            image = master.getDeviceConfiguration()
+                    .createCompatibleImage(screenSize.width, screenSize.height, Transparency.TRANSLUCENT);
             delegate = image.createGraphics();
             delegate.setRenderingHints(master.getRenderingHints());
         }
@@ -171,14 +169,12 @@ final class DelayedBackbufferGraphic extends Graphics2D {
     }
 
     @Override
-    public boolean drawImage(
-            Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
         return delegate.drawImage(img, x, y, width, height, bgcolor, observer);
     }
 
     @Override
-    public boolean drawImage(
-            Image img, int x, int y, int width, int height, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
         return delegate.drawImage(img, x, y, width, height, observer);
     }
 
@@ -200,16 +196,7 @@ final class DelayedBackbufferGraphic extends Graphics2D {
 
     @Override
     public boolean drawImage(
-            Image img,
-            int dx1,
-            int dy1,
-            int dx2,
-            int dy2,
-            int sx1,
-            int sy1,
-            int sx2,
-            int sy2,
-            ImageObserver observer) {
+            Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return delegate.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
     }
 

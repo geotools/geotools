@@ -24,8 +24,7 @@ public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
     static final ThisPropertyAccessor THIS_ACCESSOR = new ThisPropertyAccessor();
 
     @Override
-    public PropertyAccessor createPropertyAccessor(
-            Class type, String xpath, Class target, Hints hints) {
+    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
         if (".".equals(xpath)) return THIS_ACCESSOR;
         else return null;
     }
@@ -39,15 +38,13 @@ public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             if (object instanceof Attribute) return (T) ((Attribute) object).getValue();
             else return (T) object;
         }
 
         @Override
-        public void set(Object object, String xpath, Object value, Class target)
-                throws IllegalArgumentException {
+        public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
             throw new IllegalArgumentException("Can't change the value itself");
         }
     }

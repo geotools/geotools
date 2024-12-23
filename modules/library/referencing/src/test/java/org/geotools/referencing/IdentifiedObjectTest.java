@@ -39,8 +39,8 @@ import org.junit.Test;
  */
 public final class IdentifiedObjectTest {
     /**
-     * Tests {@link NamedIdentifier} attributes. Useful for making sure that the hash code
-     * enumerated in the switch statement in the constructor have the correct value.
+     * Tests {@link NamedIdentifier} attributes. Useful for making sure that the hash code enumerated in the switch
+     * statement in the constructor have the correct value.
      */
     @Test
     public void testIdentifier() {
@@ -60,18 +60,12 @@ public final class IdentifiedObjectTest {
                 "This is an authority",
                 identifier.getAuthority().getTitle().toString());
         assertEquals("version", "This is a version", identifier.getVersion());
+        assertEquals("remarks", "There is remarks", identifier.getRemarks().toString(Locale.ENGLISH));
         assertEquals(
-                "remarks", "There is remarks", identifier.getRemarks().toString(Locale.ENGLISH));
+                "remarks_fr", "Voici des remarques", identifier.getRemarks().toString(Locale.FRENCH));
+        assertEquals("remarks_fr_CA", "Pareil", identifier.getRemarks().toString(Locale.CANADA_FRENCH));
         assertEquals(
-                "remarks_fr",
-                "Voici des remarques",
-                identifier.getRemarks().toString(Locale.FRENCH));
-        assertEquals(
-                "remarks_fr_CA", "Pareil", identifier.getRemarks().toString(Locale.CANADA_FRENCH));
-        assertEquals(
-                "remarks_fr_BE",
-                "Voici des remarques",
-                identifier.getRemarks().toString(new Locale("fr", "BE")));
+                "remarks_fr_BE", "Voici des remarques", identifier.getRemarks().toString(new Locale("fr", "BE")));
 
         assertNotNull(properties.remove("authority"));
         assertNull(properties.put("AutHOrITY", new CitationImpl("An other authority")));
@@ -111,19 +105,14 @@ public final class IdentifiedObjectTest {
                 new AbstractIdentifiedObject(properties, remaining, new String[] {"local"});
         assertEquals("name", "This is a name", reference.getName().getCode());
         assertEquals("remarks", "There is remarks", reference.getRemarks().toString(null));
-        assertEquals(
-                "remarks_fr",
-                "Voici des remarques",
-                reference.getRemarks().toString(Locale.FRENCH));
+        assertEquals("remarks_fr", "Voici des remarques", reference.getRemarks().toString(Locale.FRENCH));
 
         // Check extra properties
         assertEquals("Size:", 6, remaining.size());
         assertEquals("dummy", "Doesn't matter", remaining.get("dummy"));
         assertEquals("dummy_fr", "Rien d'intéressant", remaining.get("dummy_fr"));
         assertEquals(
-                "local",
-                "A custom localized string",
-                ((InternationalString) remaining.get("local")).toString(null));
+                "local", "A custom localized string", ((InternationalString) remaining.get("local")).toString(null));
         assertEquals(
                 "local_fr",
                 "Une chaîne personalisée",
@@ -149,12 +138,8 @@ public final class IdentifiedObjectTest {
         final AbstractReferenceSystem reference = new AbstractReferenceSystem(properties);
         assertEquals("name", "This is a name", reference.getName().getCode());
         assertEquals("scope", "This is a scope", reference.getScope().toString(null));
-        assertEquals(
-                "scope_fr", "Valide dans ce domaine", reference.getScope().toString(Locale.FRENCH));
+        assertEquals("scope_fr", "Valide dans ce domaine", reference.getScope().toString(Locale.FRENCH));
         assertEquals("remarks", "There is remarks", reference.getRemarks().toString(null));
-        assertEquals(
-                "remarks_fr",
-                "Voici des remarques",
-                reference.getRemarks().toString(Locale.FRENCH));
+        assertEquals("remarks_fr", "Voici des remarques", reference.getRemarks().toString(Locale.FRENCH));
     }
 }

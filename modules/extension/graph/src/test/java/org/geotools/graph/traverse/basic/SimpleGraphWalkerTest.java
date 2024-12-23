@@ -30,11 +30,10 @@ public class SimpleGraphWalkerTest {
     public void test_visit() {
         m_visited = false;
 
-        GraphVisitor visitor =
-                component -> {
-                    m_visited = true;
-                    return (GraphTraversal.CONTINUE);
-                };
+        GraphVisitor visitor = component -> {
+            m_visited = true;
+            return (GraphTraversal.CONTINUE);
+        };
 
         Node n = new BasicNode();
         n.setVisited(false);

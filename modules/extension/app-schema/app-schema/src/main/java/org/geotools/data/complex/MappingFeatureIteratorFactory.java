@@ -51,10 +51,9 @@ public class MappingFeatureIteratorFactory {
             org.geotools.util.logging.Logging.getLogger(MappingFeatureIteratorFactory.class);
 
     /**
-     * Temporary filter visitor to determine whether the filter concerns any attribute mapping that
-     * has isList enabled. This is because Bureau of Meteorology requires a subset of the property
-     * value to be returned, instead of the full value. This should be a temporary solution. This
-     * won't work with feature chaining at the moment.
+     * Temporary filter visitor to determine whether the filter concerns any attribute mapping that has isList enabled.
+     * This is because Bureau of Meteorology requires a subset of the property value to be returned, instead of the full
+     * value. This should be a temporary solution. This won't work with feature chaining at the moment.
      *
      * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
      */
@@ -68,8 +67,7 @@ public class MappingFeatureIteratorFactory {
 
         private FeatureTypeMapping mappings;
 
-        public IsListFilterVisitor(
-                List<AttributeMapping> listMappings, FeatureTypeMapping mappings) {
+        public IsListFilterVisitor(List<AttributeMapping> listMappings, FeatureTypeMapping mappings) {
             this.listMappings = listMappings;
             this.mappings = mappings;
             isListFilter = false;
@@ -99,13 +97,9 @@ public class MappingFeatureIteratorFactory {
     }
 
     public static IMappingFeatureIterator getInstance(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping mapping,
-            Query query,
-            Filter unrolledFilter)
+            AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query, Filter unrolledFilter)
             throws IOException {
-        return MappingFeatureIteratorFactory.getInstance(
-                store, mapping, query, unrolledFilter, null);
+        return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter, null);
     }
 
     public static IMappingFeatureIterator getInstance(
@@ -115,8 +109,7 @@ public class MappingFeatureIteratorFactory {
             Filter unrolledFilter,
             Transaction transaction)
             throws IOException {
-        return MappingFeatureIteratorFactory.getInstance(
-                store, mapping, query, unrolledFilter, transaction, true);
+        return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter, transaction, true);
     }
 
     public static IMappingFeatureIterator getInstance(
@@ -132,8 +125,7 @@ public class MappingFeatureIteratorFactory {
         // then create a specific iterator
         if (indexEnable && mapping.getIndexSource() != null) {
             IndexedMappingFeatureIteratorFactory factory =
-                    new IndexedMappingFeatureIteratorFactory(
-                            store, mapping, query, unrolledFilter, transaction);
+                    new IndexedMappingFeatureIteratorFactory(store, mapping, query, unrolledFilter, transaction);
             if (factory.getIndexModeProcessor().isIndexDrivenIteratorCase()) {
                 return factory.buildInstance();
             }
@@ -148,13 +140,10 @@ public class MappingFeatureIteratorFactory {
 
         FeatureSource mappedSource = mapping.getSource();
 
-        if (isJoining
-                && !(mappedSource instanceof JDBCFeatureSource
-                        || mappedSource instanceof JDBCFeatureStore)) {
+        if (isJoining && !(mappedSource instanceof JDBCFeatureSource || mappedSource instanceof JDBCFeatureStore)) {
             // check if joining is explicitly set for non database backends
             if (AppSchemaDataAccessConfigurator.isJoiningSet()) {
-                throw new IllegalArgumentException(
-                        "Joining queries are only supported on JDBC data stores");
+                throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             } else {
                 // override default behaviour
                 // this is not intended
@@ -164,9 +153,8 @@ public class MappingFeatureIteratorFactory {
 
         if (isJoining) {
             if (!(query instanceof JoiningQuery)) {
-                boolean hasIdColumn =
-                        !Expression.NIL.equals(mapping.getFeatureIdExpression())
-                                && !(mapping.getFeatureIdExpression() instanceof Literal);
+                boolean hasIdColumn = !Expression.NIL.equals(mapping.getFeatureIdExpression())
+                        && !(mapping.getFeatureIdExpression() instanceof Literal);
                 query = new JoiningQuery(query);
                 if (hasIdColumn) {
                     FilterAttributeExtractor extractor = new FilterAttributeExtractor();
@@ -186,17 +174,13 @@ public class MappingFeatureIteratorFactory {
             Query unrolledQuery = store.unrollQuery(query, mapping);
             unrolledQuery.setFilter(unrolledFilter);
             if (query instanceof JoiningQuery && unrolledQuery instanceof JoiningQuery) {
-                ((JoiningQuery) unrolledQuery)
-                        .setRootMapping(((JoiningQuery) query).getRootMapping());
+                ((JoiningQuery) unrolledQuery).setRootMapping(((JoiningQuery) query).getRootMapping());
             }
             if (isSimpleType(mapping)) {
-                iterator =
-                        new MappingAttributeIterator(
-                                store, mapping, query, unrolledQuery, transaction);
+                iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery, transaction);
             } else {
                 iterator =
-                        new DataAccessMappingFeatureIterator(
-                                store, mapping, query, unrolledQuery, false, transaction);
+                        new DataAccessMappingFeatureIterator(store, mapping, query, unrolledQuery, false, transaction);
             }
         } else {
             // HACK HACK HACK
@@ -212,9 +196,7 @@ public class MappingFeatureIteratorFactory {
                 }
             }
             // END OF HACK
-            if (isJoining
-                    || mappedSource instanceof JDBCFeatureSource
-                    || mappedSource instanceof JDBCFeatureStore) {
+            if (isJoining || mappedSource instanceof JDBCFeatureSource || mappedSource instanceof JDBCFeatureStore) {
                 // has database as data source, we can use the data source filter capabilities
                 FilterCapabilities capabilities = getFilterCapabilities(mappedSource);
                 ComplexFilterSplitter splitter = new ComplexFilterSplitter(capabilities, mapping);
@@ -262,22 +244,13 @@ public class MappingFeatureIteratorFactory {
                     maxFeatures = query.getMaxFeatures();
                     removeQueryLimitIfDenormalised = true;
                 }
-                iterator =
-                        new DataAccessMappingFeatureIterator(
-                                store,
-                                mapping,
-                                query,
-                                isFiltered,
-                                removeQueryLimitIfDenormalised,
-                                hasPostFilter,
-                                transaction);
+                iterator = new DataAccessMappingFeatureIterator(
+                        store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, hasPostFilter, transaction);
                 if (isListFilter != null) {
                     ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
                 }
                 if (hasPostFilter) {
-                    iterator =
-                            new PostFilteringMappingFeatureIterator(
-                                    iterator, filter, maxFeatures, offset);
+                    iterator = new PostFilteringMappingFeatureIterator(iterator, filter, maxFeatures, offset);
                 }
             } else if (mappedSource instanceof MappingFeatureSource) {
                 // web service data access wrapper
@@ -288,16 +261,13 @@ public class MappingFeatureIteratorFactory {
             } else {
                 // non database sources e.g. property data store
                 Filter filter = query.getFilter();
-                for (CustomSourceDataStore customSourceDataStore :
-                        CustomSourceDataStore.loadExtensions()) {
+                for (CustomSourceDataStore customSourceDataStore : CustomSourceDataStore.loadExtensions()) {
                     // extension point to allow custom data source to provide their own iterator
-                    iterator =
-                            customSourceDataStore.buildIterator(store, mapping, query, transaction);
+                    iterator = customSourceDataStore.buildIterator(store, mapping, query, transaction);
                 }
                 if (iterator == null) {
-                    iterator =
-                            new DataAccessMappingFeatureIterator(
-                                    store, mapping, query, !Filter.INCLUDE.equals(filter), true);
+                    iterator = new DataAccessMappingFeatureIterator(
+                            store, mapping, query, !Filter.INCLUDE.equals(filter), true);
                 }
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
@@ -318,13 +288,11 @@ public class MappingFeatureIteratorFactory {
             throws IllegalArgumentException {
         FilterCapabilities capabilities = null;
         if (mappedSource instanceof JDBCFeatureSource) {
-            capabilities =
-                    ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
+            capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
         } else if (mappedSource instanceof JDBCFeatureStore) {
             capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
         } else {
-            throw new IllegalArgumentException(
-                    "Joining queries are only supported on JDBC data stores");
+            throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
         }
         return capabilities;
     }

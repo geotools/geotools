@@ -18,8 +18,7 @@ public class DescribeEOCoverageSetTest {
     public void testParseDescribeCoverage() throws Exception {
         String capRequestPath = "requestDescribeEOCoverageSet.xml";
         DescribeEOCoverageSetType dcs =
-                (DescribeEOCoverageSetType)
-                        parser.parse(getClass().getResourceAsStream(capRequestPath));
+                (DescribeEOCoverageSetType) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", dcs.getService());
         assertEquals("2.0.0", dcs.getVersion());
 

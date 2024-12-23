@@ -72,19 +72,17 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
         return (FeatureId) this.id;
     }
     /**
-     * Get the total bounds of this feature which is calculated by doing a union of the bounds of
-     * each geometry this feature is associated with.
+     * Get the total bounds of this feature which is calculated by doing a union of the bounds of each geometry this
+     * feature is associated with.
      *
      * @return An Envelope containing the total bounds of this Feature.
-     * @task REVISIT: what to return if there are no geometries in the feature? For now we'll return
-     *     a null envelope, make this part of interface? (IanS - by OGC standards, all Feature must
-     *     have geom)
+     * @task REVISIT: what to return if there are no geometries in the feature? For now we'll return a null envelope,
+     *     make this part of interface? (IanS - by OGC standards, all Feature must have geom)
      */
     @Override
     public BoundingBox getBounds() {
 
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds = new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
         for (Property property : getValue()) {
             if (property instanceof GeometryAttribute) {
                 bounds.include(((GeometryAttribute) property).getBounds());

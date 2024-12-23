@@ -35,16 +35,10 @@ public class BBOX3DImplTest {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
-        Feature f1 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))},
-                        null);
-        Feature f2 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature2", gf.createPoint(new Coordinate(10, 10, 60))},
-                        null);
+        Feature f1 = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))}, null);
+        Feature f2 = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature2", gf.createPoint(new Coordinate(10, 10, 60))}, null);
 
         BoundingBox3D envelope1 = new ReferencedEnvelope3D(0, 50, 0, 50, 0, 50, null);
         Filter bbox1 = ff.bbox(ff.property("geom"), envelope1);

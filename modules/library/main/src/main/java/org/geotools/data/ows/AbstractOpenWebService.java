@@ -36,13 +36,13 @@ import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
 
 /**
- * This abstract class provides a building block for one to implement an Open Web Service (OWS)
- * client. Each OWS is usually defined by an OGC specification, available at <a
+ * This abstract class provides a building block for one to implement an Open Web Service (OWS) client. Each OWS is
+ * usually defined by an OGC specification, available at <a
  * href="http://www.opengeospatial.org">http://www.opengeospatial.org</a>.
  *
- * <p>This class provides version negotiation, Capabilities document retrieval, and a
- * request/response infrastructure. Implementing subclasses need to provide their own Specifications
- * (representing versions of the OWS to be implemented) and their own request/response instances.
+ * <p>This class provides version negotiation, Capabilities document retrieval, and a request/response infrastructure.
+ * Implementing subclasses need to provide their own Specifications (representing versions of the OWS to be implemented)
+ * and their own request/response instances.
  *
  * @author Richard Gould
  */
@@ -77,22 +77,17 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         this(serverURL, HTTPClientFinder.createClient(), null);
     }
 
-    public AbstractOpenWebService(final URL serverURL, HTTPClient httpClient)
-            throws IOException, ServiceException {
+    public AbstractOpenWebService(final URL serverURL, HTTPClient httpClient) throws IOException, ServiceException {
         this(serverURL, httpClient, null);
     }
 
-    public AbstractOpenWebService(
-            final URL serverURL, final HTTPClient httpClient, final C capabilities)
+    public AbstractOpenWebService(final URL serverURL, final HTTPClient httpClient, final C capabilities)
             throws ServiceException, IOException {
         this(serverURL, httpClient, capabilities, null);
     }
 
     public AbstractOpenWebService(
-            final URL serverURL,
-            final HTTPClient httpClient,
-            final C capabilities,
-            Map<String, Object> hints)
+            final URL serverURL, final HTTPClient httpClient, final C capabilities, Map<String, Object> hints)
             throws ServiceException, IOException {
         this(serverURL, httpClient, capabilities, hints, null);
     }
@@ -123,8 +118,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         if (capabilities == null) {
             this.capabilities = negotiateVersion();
             if (this.capabilities == null) {
-                throw new ServiceException(
-                        "Version negotiation unable to retrieve or parse Capabilities document.");
+                throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
             }
         } else {
             this.capabilities = capabilities;
@@ -139,11 +133,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         if (specification == null) {
             specification = specs[specs.length - 1];
-            LOGGER.warning(
-                    "Unable to choose a specification based on cached capabilities. "
-                            + "Arbitrarily choosing spec '"
-                            + specification.getVersion()
-                            + "'.");
+            LOGGER.warning("Unable to choose a specification based on cached capabilities. "
+                    + "Arbitrarily choosing spec '"
+                    + specification.getVersion()
+                    + "'.");
         }
     }
 
@@ -161,8 +154,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     }
 
     /**
-     * Get the getCapabilities document. If there was an error parsing it during creation, it will
-     * return null (and it should have thrown an exception during creation).
+     * Get the getCapabilities document. If there was an error parsing it during creation, it will return null (and it
+     * should have thrown an exception during creation).
      *
      * @return a Capabilities object, representing the Capabilities of the server
      */
@@ -171,8 +164,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     /**
      * Description of this service.
      *
-     * <p>Provides a very quick description of the service, for more information please review the
-     * capabilitie document.
+     * <p>Provides a very quick description of the service, for more information please review the capabilitie document.
      *
      * <p>
      *
@@ -217,33 +209,30 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * Version number negotiation occurs as follows (credit OGC):
      *
      * <ul>
-     *   <li><b>1) </b> If the server implements the requested version number, the server shall send
-     *       that version.
-     *   <li><b>2a) </b> If a version unknown to the server is requested, the server shall send the
-     *       highest version less than the requested version.
-     *   <li><b>2b) </b> If the client request is for a version lower than any of those known to the
-     *       server, then the server shall send the lowest version it knows.
-     *   <li><b>3a) </b> If the client does not understand the new version number sent by the
-     *       server, it may either cease communicating with the server or send a new request with a
-     *       new version number that the client does understand but which is less than that sent by
-     *       the server (if the server had responded with a lower version).
-     *   <li><b>3b) </b> If the server had responded with a higher version (because the request was
-     *       for a version lower than any known to the server), and the client does not understand
-     *       the proposed higher version, then the client may send a new request with a version
-     *       number higher than that sent by the server.
+     *   <li><b>1) </b> If the server implements the requested version number, the server shall send that version.
+     *   <li><b>2a) </b> If a version unknown to the server is requested, the server shall send the highest version less
+     *       than the requested version.
+     *   <li><b>2b) </b> If the client request is for a version lower than any of those known to the server, then the
+     *       server shall send the lowest version it knows.
+     *   <li><b>3a) </b> If the client does not understand the new version number sent by the server, it may either
+     *       cease communicating with the server or send a new request with a new version number that the client does
+     *       understand but which is less than that sent by the server (if the server had responded with a lower
+     *       version).
+     *   <li><b>3b) </b> If the server had responded with a higher version (because the request was for a version lower
+     *       than any known to the server), and the client does not understand the proposed higher version, then the
+     *       client may send a new request with a version number higher than that sent by the server.
      * </ul>
      *
-     * <p>The OGC tells us to repeat this process (or give up). This means we are actually going to
-     * come up with a bit of setup cost in figuring out our GetCapabilities request. This means that
-     * it is possible that we may make multiple requests before being satisfied with a response.
+     * <p>The OGC tells us to repeat this process (or give up). This means we are actually going to come up with a bit
+     * of setup cost in figuring out our GetCapabilities request. This means that it is possible that we may make
+     * multiple requests before being satisfied with a response.
      *
-     * <p>Also, if we are unable to parse a given version for some reason, for example, malformed
-     * XML, we will request a lower version until we have run out of versions to request with. Thus,
-     * a server that does not play nicely may take some time to parse and might not even succeed.
+     * <p>Also, if we are unable to parse a given version for some reason, for example, malformed XML, we will request a
+     * lower version until we have run out of versions to request with. Thus, a server that does not play nicely may
+     * take some time to parse and might not even succeed.
      *
      * @return a capabilities object that represents the Capabilities on the server
-     * @throws IOException if there is an error communicating with the server, or the XML cannot be
-     *     parsed
+     * @throws IOException if there is an error communicating with the server, or the XML cannot be parsed
      * @throws ServiceException if the server returns a ServiceException
      */
     @SuppressWarnings("unchecked")
@@ -264,10 +253,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             String[] tokens = serverURL.getQuery().split("&");
             for (String token : tokens) {
                 String[] param = token.split("=");
-                if (param != null
-                        && param.length > 1
-                        && param[0] != null
-                        && param[0].equalsIgnoreCase("version")) {
+                if (param != null && param.length > 1 && param[0] != null && param[0].equalsIgnoreCase("version")) {
                     if (versions.contains(param[1])) test = versions.indexOf(param[1]);
                 }
             }
@@ -277,8 +263,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
-            GetCapabilitiesRequest request =
-                    tempSpecification.createGetCapabilitiesRequest(serverURL);
+            GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
             request.setRequestHints(hints);
 
             // Grab document
@@ -359,13 +344,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         // could not talk to this server
         if (exception != null) {
             IOException e =
-                    new IOException(
-                            "Could not establish version negotiation: " + exception.getMessage(),
-                            exception);
+                    new IOException("Could not establish version negotiation: " + exception.getMessage(), exception);
             throw e;
         } else {
-            throw new ServiceException(
-                    "Version negotiation unable to retrieve or parse Capabilities document.");
+            throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
         }
     }
 
@@ -425,8 +407,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     }
 
     /**
-     * Issues a request to the server and returns that server's response. It asks the server to send
-     * the response gzipped to provide a faster transfer time.
+     * Issues a request to the server and returns that server's response. It asks the server to send the response
+     * gzipped to provide a faster transfer time.
      *
      * @param request the request to be issued
      * @return a response from the server, which is created according to the specific Request
@@ -488,8 +470,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         return in;
     }
 
-    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
-            throws IOException, ServiceException {
+    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
     }
 

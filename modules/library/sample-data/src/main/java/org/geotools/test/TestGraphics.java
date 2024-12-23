@@ -46,8 +46,8 @@ import java.util.Map;
 /**
  * Utility class you can use in test cases to ensure a renderer is doing what you expected.
  *
- * <p>Originally made to check up on SLD settings; adding to support data in case it is of general
- * utility. Please be advised it is very hard to write cross platform tests for things
+ * <p>Originally made to check up on SLD settings; adding to support data in case it is of general utility. Please be
+ * advised it is very hard to write cross platform tests for things
  *
  * @author Jody Garnett
  */
@@ -349,31 +349,20 @@ public class TestGraphics extends Graphics2D {
     }
 
     @Override
-    public boolean drawImage(
-            Image img, int x, int y, int width, int height, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean drawImage(
-            Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean drawImage(
-            Image img,
-            int dx1,
-            int dy1,
-            int dx2,
-            int dy2,
-            int sx1,
-            int sy1,
-            int sx2,
-            int sy2,
-            ImageObserver observer) {
+            Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         // TODO Auto-generated method stub
         return false;
     }

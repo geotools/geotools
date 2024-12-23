@@ -26,8 +26,7 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /**
- * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} instances with the
- * related custom EPSG.
+ * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} instances with the related custom EPSG.
  *
  * @author Daniele Romagnoli - GeoSolutions
  */
@@ -64,8 +63,7 @@ public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAut
                 if (url != null) {
                     return url;
                 } else {
-                    LOGGER.log(
-                            Level.SEVERE, "Had troubles converting " + cust_proj_file + " to URL");
+                    LOGGER.log(Level.SEVERE, "Had troubles converting " + cust_proj_file + " to URL");
                 }
             }
         } else {

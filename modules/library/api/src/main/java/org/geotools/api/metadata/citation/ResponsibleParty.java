@@ -12,8 +12,7 @@ package org.geotools.api.metadata.citation;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Identification of, and means of communication with, person(s) and organizations associated with
- * the dataset.
+ * Identification of, and means of communication with, person(s) and organizations associated with the dataset.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
@@ -21,9 +20,9 @@ import org.geotools.api.util.InternationalString;
  */
 public interface ResponsibleParty {
     /**
-     * Name of the responsible person- surname, given name, title separated by a delimiter. Only one
-     * of {@code individualName}, {@link #getOrganisationName organisationName} and {@link
-     * #getPositionName positionName} should be provided.
+     * Name of the responsible person- surname, given name, title separated by a delimiter. Only one of
+     * {@code individualName}, {@link #getOrganisationName organisationName} and {@link #getPositionName positionName}
+     * should be provided.
      *
      * @return Name, surname, given name and title of the responsible person, or {@code null}.
      */
@@ -38,9 +37,8 @@ public interface ResponsibleParty {
     InternationalString getOrganisationName();
 
     /**
-     * Role or position of the responsible person. Only one of {@link #getIndividualName
-     * individualName}, {@link #getOrganisationName organisationName} and {@code positionName}
-     * should be provided.
+     * Role or position of the responsible person. Only one of {@link #getIndividualName individualName},
+     * {@link #getOrganisationName organisationName} and {@code positionName} should be provided.
      *
      * @return Role or position of the responsible person, or {@code null}
      */

@@ -19,8 +19,7 @@ package org.geotools.ows.wms.xml;
 import java.net.URL;
 
 /**
- * This class is used for representing the Attribution element inside a Layer when parsing a
- * GetCapabilities response.
+ * This class is used for representing the Attribution element inside a Layer when parsing a GetCapabilities response.
  *
  * @author Nicola Lagomarsini GeoSolutions S.A.S.
  */
@@ -68,12 +67,6 @@ public class Attribution {
 
     @Override
     public String toString() {
-        return "Attribution [title="
-                + title
-                + ", onlineResource="
-                + onlineResource
-                + ", logoURL="
-                + logoURL
-                + "]";
+        return "Attribution [title=" + title + ", onlineResource=" + onlineResource + ", logoURL=" + logoURL + "]";
     }
 }

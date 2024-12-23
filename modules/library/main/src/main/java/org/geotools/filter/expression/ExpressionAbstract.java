@@ -39,8 +39,8 @@ public abstract class ExpressionAbstract implements Expression {
     /**
      * Default implementation delegates handling of context conversion to Converters utility class.
      *
-     * <p>Subclasses are expected to make use of the {@linkplain Converters} utility class (as the
-     * easiest way to provide value morphing in conformance with the Filter specification).
+     * <p>Subclasses are expected to make use of the {@linkplain Converters} utility class (as the easiest way to
+     * provide value morphing in conformance with the Filter specification).
      */
     @Override
     public <T> T evaluate(Object object, Class<T> context) {

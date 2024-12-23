@@ -40,17 +40,15 @@ class ColorMapUtilities {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /**
-     * Compare deux valeurs de type {@code double}. Cette m�thode est similaire � {@link
-     * Double#compare(double,double)}, except� qu'elle ordonne aussi les diff�rentes valeurs NaN.
+     * Compare deux valeurs de type {@code double}. Cette m�thode est similaire � {@link Double#compare(double,double)},
+     * except� qu'elle ordonne aussi les diff�rentes valeurs NaN.
      */
     static int compare(final double v1, final double v2) {
         if (Double.isNaN(v1) && Double.isNaN(v2)) {
@@ -170,23 +168,17 @@ class ColorMapUtilities {
         final int dim = point.getDimension();
         if (dim != 1) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$2,
-                            Integer.valueOf(1),
-                            Integer.valueOf(dim)));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, Integer.valueOf(1), Integer.valueOf(dim)));
         }
     }
     /**
-     * Check that all the output values for the various {@link
-     * DefaultConstantPiecewiseTransformElement} are equal.
+     * Check that all the output values for the various {@link DefaultConstantPiecewiseTransformElement} are equal.
      *
      * @param preservingElements array of {@link DefaultConstantPiecewiseTransformElement}s.
-     * @return the array of {@link DefaultConstantPiecewiseTransformElement}s if the check is
-     *     successful.
+     * @return the array of {@link DefaultConstantPiecewiseTransformElement}s if the check is successful.
      * @throws IllegalArgumentException in case the check is unsuccessful.
      */
-    static DefaultPiecewiseTransform1DElement[] checkPreservingElements(
-            LinearColorMapElement[] preservingElements) {
+    static DefaultPiecewiseTransform1DElement[] checkPreservingElements(LinearColorMapElement[] preservingElements) {
         if (preservingElements != null) {
             double outval = Double.NaN;
             Color color = null;
@@ -194,13 +186,11 @@ class ColorMapUtilities {
                 // the no data element must be a linear transform mapping to a single value
                 if (!(preservingElements[i] instanceof ConstantColorMapElement))
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$1, (Object) preservingElements));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, (Object) preservingElements));
                 final ConstantColorMapElement nc = (ConstantColorMapElement) preservingElements[i];
                 if (nc.getColors().length != 1) {
                     final Object arg0 = nc.getColors();
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
                 }
                 if (i == 0) {
                     outval = nc.getOutputMaximum();
@@ -208,13 +198,11 @@ class ColorMapUtilities {
                 } else {
                     if (compare(outval, nc.getOutputMaximum()) != 0) {
                         final Object arg0 = nc.getColors();
-                        throw new IllegalArgumentException(
-                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
                     }
                     if (!color.equals(nc.getColors()[0])) {
                         final Object arg0 = nc.getColors();
-                        throw new IllegalArgumentException(
-                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
                     }
                 }
             }

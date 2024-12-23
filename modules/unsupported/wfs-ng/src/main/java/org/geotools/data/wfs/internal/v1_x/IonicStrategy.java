@@ -35,23 +35,21 @@ import org.picocontainer.MutablePicoContainer;
 public class IonicStrategy extends StrictWFS_1_x_Strategy {
 
     /** A filter 1.0 configuration to encode Filters issued to Ionic */
-    private static final Configuration Ionic_filter_1_0_0_Configuration =
-            new OGCConfiguration() {
+    private static final Configuration Ionic_filter_1_0_0_Configuration = new OGCConfiguration() {
 
-                @Override
-                protected void registerBindings(Map<QName, Object> bindings) {
-                    super.registerBindings(bindings);
-                }
+        @Override
+        protected void registerBindings(Map<QName, Object> bindings) {
+            super.registerBindings(bindings);
+        }
 
-                @Override
-                protected void registerBindings(MutablePicoContainer container) {
-                    super.registerBindings(container);
-                    // override the binding for GML.BoxType to use the one producing an output Ionic
-                    // understands
-                    container.registerComponentImplementation(
-                            GML.BoxType, IonicGML2BoxTypeBinding.class);
-                }
-            };
+        @Override
+        protected void registerBindings(MutablePicoContainer container) {
+            super.registerBindings(container);
+            // override the binding for GML.BoxType to use the one producing an output Ionic
+            // understands
+            container.registerComponentImplementation(GML.BoxType, IonicGML2BoxTypeBinding.class);
+        }
+    };
 
     /**
      * A gml:Box binding to override the default one to adapt to the Ionic server that recognizes
@@ -62,9 +60,8 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     private static class IonicGML2BoxTypeBinding extends GMLBoxTypeBinding {
 
         /**
-         * Returns a {@link CoordinateSequence} for the {@code coordinates} property so its handled
-         * by a {@link GMLCoordinatesTypeBinding} at encoding time as {@code gml:coordinates} that
-         * Ionic understands
+         * Returns a {@link CoordinateSequence} for the {@code coordinates} property so its handled by a
+         * {@link GMLCoordinatesTypeBinding} at encoding time as {@code gml:coordinates} that Ionic understands
          */
         @Override
         public Object getProperty(Object object, QName name) throws Exception {
@@ -80,9 +77,9 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     }
 
     /**
-     * We can't use POST at all against Ionic cause it is not a WFS 1.1 implementation and expect
-     * the filters to be encoded as per Filter 1.0, and I wasn't able of creating a WFS 1.1 with
-     * Filter 1.0 {@link Configuration} that works.
+     * We can't use POST at all against Ionic cause it is not a WFS 1.1 implementation and expect the filters to be
+     * encoded as per Filter 1.0, and I wasn't able of creating a WFS 1.1 with Filter 1.0 {@link Configuration} that
+     * works.
      *
      * @return false
      */
@@ -95,8 +92,8 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     }
 
     /**
-     * Ionic does not declare the supported output formats in the caps, yet it fails if asked for
-     * {@code text/xml; subtype=gml/3.1.1} but succeeds if asked for {@code GML3}
+     * Ionic does not declare the supported output formats in the caps, yet it fails if asked for {@code text/xml;
+     * subtype=gml/3.1.1} but succeeds if asked for {@code GML3}
      */
     @Override
     public String getDefaultOutputFormat(WFSOperationType op) {
@@ -113,8 +110,8 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     }
 
     /**
-     * Ionic uses {@code urn:opengis:def:crs:ogc::83} instead of {@code EPSG:4269}. If that's the
-     * case, the query srsName is replaced by the kown "EPSG:4269" code
+     * Ionic uses {@code urn:opengis:def:crs:ogc::83} instead of {@code EPSG:4269}. If that's the case, the query
+     * srsName is replaced by the kown "EPSG:4269" code
      */
     @Override
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest request) {

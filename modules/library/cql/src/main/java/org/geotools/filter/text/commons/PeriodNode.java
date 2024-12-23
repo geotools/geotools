@@ -22,12 +22,11 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 
 /**
- * Period is constructed in the parsing process. this has convenient method to deliver begin and end
- * date of period. a period can be created from date-time/date-time or date-time/duration or
- * duration/date-time
+ * Period is constructed in the parsing process. this has convenient method to deliver begin and end date of period. a
+ * period can be created from date-time/date-time or date-time/duration or duration/date-time
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @since 2.4
  * @author Mauricio Pazos - Axios Engineering
@@ -52,8 +51,7 @@ public class PeriodNode {
         this.end = end;
     }
 
-    public static PeriodNode createPeriodDateAndDate(
-            final Literal beginDate, final Literal endDate) {
+    public static PeriodNode createPeriodDateAndDate(final Literal beginDate, final Literal endDate) {
         PeriodNode period = new PeriodNode(beginDate, endDate);
 
         return period;

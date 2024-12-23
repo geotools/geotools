@@ -51,14 +51,12 @@ import org.geotools.util.factory.GeoTools;
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
  */
-public abstract class ClassificationFunction extends DefaultExpression
-        implements FunctionExpression {
+public abstract class ClassificationFunction extends DefaultExpression implements FunctionExpression {
 
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
-    static final FilterFactory FF =
-            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     FunctionName name;
 
@@ -108,8 +106,8 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /**
-     * Returns the function parameters (the contents are Expressions, usually attribute expression
-     * and literal expression).
+     * Returns the function parameters (the contents are Expressions, usually attribute expression and literal
+     * expression).
      */
     @Override
     public List<org.geotools.api.filter.expression.Expression> getParameters() {
@@ -192,8 +190,8 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /**
-     * Truncates a double to a certain number of decimals places. Note: truncation at zero decimal
-     * places will still show up as x.0, since we're using the double type.
+     * Truncates a double to a certain number of decimals places. Note: truncation at zero decimal places will still
+     * show up as x.0, since we're using the double type.
      *
      * @param value number to round-off
      * @param decimalPlaces number of decimal places to leave
@@ -207,10 +205,9 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /**
-     * Corrects a round off operation by incrementing or decrementing the decimal place (preferably
-     * the smallest one). This should usually be used to adjust the bounds to include a value.
-     * Example: 0.31-->0.44 where 0.44 is the maximum value and end of the range. We could just make
-     * the , round(0.31, 1)=0.3; round(0.44 max value = 0.49
+     * Corrects a round off operation by incrementing or decrementing the decimal place (preferably the smallest one).
+     * This should usually be used to adjust the bounds to include a value. Example: 0.31-->0.44 where 0.44 is the
+     * maximum value and end of the range. We could just make the , round(0.31, 1)=0.3; round(0.44 max value = 0.49
      */
     protected double fixRound(double value, int decimalPlaces, boolean up) {
         double divisor = Math.pow(10, decimalPlaces);
@@ -221,9 +218,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         return newVal;
     }
 
-    /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     */
+    /** Creates a String representation of this Function with the function name and the arguments. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -232,8 +227,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -248,8 +242,8 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /**
-     * This method return percentages by using a single groupBy query to retrieve class members. Can
-     * be used if the class width is the same for all the classes.
+     * This method return percentages by using a single groupBy query to retrieve class members. Can be used if the
+     * class width is the same for all the classes.
      *
      * @param collection the feature collection to classify
      * @param percentages the array of percentages to fill
@@ -260,41 +254,30 @@ public abstract class ClassificationFunction extends DefaultExpression
      * @throws IOException
      */
     protected double[] computeGroupByPercentages(
-            FeatureCollection collection,
-            double[] percentages,
-            int totalSize,
-            double min,
-            double classWidth)
+            FeatureCollection collection, double[] percentages, int totalSize, double min, double classWidth)
             throws IOException {
         Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
         Divide divide = FF.divide(subtract, FF.literal(classWidth));
         Function convert = FF.function("convert", divide, FF.literal(Integer.class));
         GroupByVisitor groupBy =
-                new GroupByVisitor(
-                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
+                new GroupByVisitor(Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
         collection.accepts(groupBy, null);
         @SuppressWarnings("unchecked")
         Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
-        Map<Integer, Integer> resultIntKeys =
-                result.entrySet().stream()
-                        .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
+        Map<Integer, Integer> resultIntKeys = result.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
         // getting a tree set from the keys to get them asc ordered and
         // collect percentages in the right order
         Set<Integer> keys = new TreeSet<>(resultIntKeys.keySet());
         for (Integer key : keys) {
             int intKey = key.intValue();
-            computePercentage(
-                    percentages, Double.valueOf(resultIntKeys.get(key)), totalSize, intKey);
+            computePercentage(percentages, Double.valueOf(resultIntKeys.get(key)), totalSize, intKey);
         }
         return percentages;
     }
 
-    /**
-     * Compute the percentage from the input parameters, setting in the percentages array at the
-     * specified index
-     */
-    protected void computePercentage(
-            double[] percentages, double classMembers, double totalSize, int index) {
+    /** Compute the percentage from the input parameters, setting in the percentages array at the specified index */
+    protected void computePercentage(double[] percentages, double classMembers, double totalSize, int index) {
         // handle case when the query return one class plus,
         // e.g. classWidth is an integer so that in an interval of values 1-25,
         // for three classes, we would have value 25 falling in group with key 3

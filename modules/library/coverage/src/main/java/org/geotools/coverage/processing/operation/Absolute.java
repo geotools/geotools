@@ -92,13 +92,12 @@ public class Absolute extends BaseMathOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
             parameters.set(Operator.ABSOLUTE, 0);
             @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources =
-                    (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
+                    parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {
                 handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
             }
@@ -113,7 +112,6 @@ public class Absolute extends BaseMathOperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], ALGEBRIC, 1, 2, 3);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], ALGEBRIC, 1, 2, 3);
     }
 }

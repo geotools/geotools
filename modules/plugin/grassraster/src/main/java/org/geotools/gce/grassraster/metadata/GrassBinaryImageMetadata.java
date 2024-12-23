@@ -101,10 +101,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     public static final String nativeMetadataFormatName =
             "eu.hydrologis.jgrass.grassbinary.imageio.GrassBinaryImageMetadata_1.0"; // $NON-NLS-1$
 
-    /**
-     * the list of supported metadata format names. In this case, only the native metadata format is
-     * supported.
-     */
+    /** the list of supported metadata format names. In this case, only the native metadata format is supported. */
     public static final String[] metadataFormatNames = {nativeMetadataFormatName};
 
     /**
@@ -148,23 +145,19 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     /**
      * the list of strings representing the categories of this raster.
      *
-     * <p><b>EXAMPLE:</b> for a category of claysand referring to a value 5 on the raster we have:
-     * <code>5.0:claysand</code>
+     * <p><b>EXAMPLE:</b> for a category of claysand referring to a value 5 on the raster we have: <code>5.0:claysand
+     * </code>
      */
     private List<String> categoriesString = null;
 
-    /**
-     * the coordinate reference system for this map (may default to {@link
-     * DefaultGeographicCRS#WGS84})
-     */
+    /** the coordinate reference system for this map (may default to {@link DefaultGeographicCRS#WGS84}) */
     private CoordinateReferenceSystem crs;
 
     /**
-     * Constructs the object using a {@link GrassBinaryRasterReadHandler} to initialize the metadata
-     * fields.
+     * Constructs the object using a {@link GrassBinaryRasterReadHandler} to initialize the metadata fields.
      *
-     * @param rasterReader input {@link GrassBinaryRasterReadHandler} used to retrieve the metadata
-     *     of the native grass raster file.
+     * @param rasterReader input {@link GrassBinaryRasterReadHandler} used to retrieve the metadata of the native grass
+     *     raster file.
      */
     public GrassBinaryImageMetadata(GrassBinaryRasterReadHandler rasterReader) {
         this();
@@ -247,8 +240,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
 
     @Override
     public IIOMetadataFormat getMetadataFormat(String formatName) {
-        if (formatName.equals(nativeMetadataFormatName))
-            return new GrassBinaryImageMetadataFormat();
+        if (formatName.equals(nativeMetadataFormatName)) return new GrassBinaryImageMetadataFormat();
 
         throw new IllegalArgumentException("Not a recognized format!");
     }
@@ -290,8 +282,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     }
 
     /**
-     * Creates a {@linkplain Node} tree from the available metadata informations of the native
-     * raster.
+     * Creates a {@linkplain Node} tree from the available metadata informations of the native raster.
      *
      * @return the root of the tree containing the metadata of the native raster.
      */

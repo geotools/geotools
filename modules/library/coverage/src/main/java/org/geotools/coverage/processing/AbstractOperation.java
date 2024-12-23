@@ -30,9 +30,9 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Provides descriptive information for a {@linkplain Coverage coverage} processing operation. The
- * descriptive information includes such information as the name of the operation, operation
- * description, and number of source grid coverages required for the operation.
+ * Provides descriptive information for a {@linkplain Coverage coverage} processing operation. The descriptive
+ * information includes such information as the name of the operation, operation description, and number of source grid
+ * coverages required for the operation.
  *
  * @since 2.2
  * @version $Id$
@@ -40,14 +40,14 @@ import org.geotools.util.factory.Hints;
  */
 public abstract class AbstractOperation implements Operation, Serializable {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = -1441856042779942954L;;
+    private static final long serialVersionUID = -1441856042779942954L;
+    ;
 
     /** The parameters descriptor. */
     protected final ParameterDescriptorGroup descriptor;
 
     /**
-     * Constructs an operation. The operation name will be the same than the parameter descriptor
-     * name.
+     * Constructs an operation. The operation name will be the same than the parameter descriptor name.
      *
      * @param descriptor The parameters descriptor.
      */
@@ -57,8 +57,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the name of the processing operation. The default implementation returns the
-     * {@linkplain #descriptor} code name.
+     * Returns the name of the processing operation. The default implementation returns the {@linkplain #descriptor}
+     * code name.
      *
      * @todo The return type will be changed from {@link String} to {@link Identifier}.
      */
@@ -68,8 +68,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the description of the processing operation. If there is no description, returns
-     * {@code null}. The default implementation returns the {@linkplain #descriptor} remarks.
+     * Returns the description of the processing operation. If there is no description, returns {@code null}. The
+     * default implementation returns the {@linkplain #descriptor} remarks.
      */
     @Override
     public String getDescription() {
@@ -78,8 +78,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the URL for documentation on the processing operation. If no online documentation is
-     * available the string will be null. The default implementation returns {@code null}.
+     * Returns the URL for documentation on the processing operation. If no online documentation is available the string
+     * will be null. The default implementation returns {@code null}.
      */
     @Override
     public String getDocURL() {
@@ -93,8 +93,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the vendor name of the processing operation implementation. The default
-     * implementation returns "Geotools 2".
+     * Returns the vendor name of the processing operation implementation. The default implementation returns "Geotools
+     * 2".
      */
     @Override
     public String getVendor() {
@@ -132,13 +132,11 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Applies a process operation to a coverage. This method is invoked by {@link
-     * DefaultProcessor}.
+     * Applies a process operation to a coverage. This method is invoked by {@link DefaultProcessor}.
      *
      * @param parameters List of name value pairs for the parameters required for the operation.
-     * @param hints A set of rendering hints, or {@code null} if none. The {@code DefaultProcessor}
-     *     may provides hints for the following keys: {@link Hints#COORDINATE_OPERATION_FACTORY} and
-     *     {@link Hints#JAI_INSTANCE}.
+     * @param hints A set of rendering hints, or {@code null} if none. The {@code DefaultProcessor} may provides hints
+     *     for the following keys: {@link Hints#COORDINATE_OPERATION_FACTORY} and {@link Hints#JAI_INSTANCE}.
      * @return The result as a coverage.
      * @throws CoverageProcessingException if the operation can't be applied.
      */
@@ -146,8 +144,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
             throws CoverageProcessingException;
 
     /**
-     * Returns a hash value for this operation. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this operation. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -172,8 +170,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns a string representation of this operation. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this operation. The returned string is implementation dependent. It is usually
+     * provided for debugging purposes only.
      */
     @Override
     public String toString() {

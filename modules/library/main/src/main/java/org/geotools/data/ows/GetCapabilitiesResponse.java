@@ -21,8 +21,8 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
- * Base class for GetCapabilities responses. They should typically attempt to parse the Capabilities
- * document in inputStream in the constructor.
+ * Base class for GetCapabilities responses. They should typically attempt to parse the Capabilities document in
+ * inputStream in the constructor.
  *
  * @author Richard Gould
  */

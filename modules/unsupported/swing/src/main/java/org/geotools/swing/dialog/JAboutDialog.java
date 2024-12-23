@@ -33,12 +33,10 @@ import javax.swing.JTextArea;
 import org.geotools.util.factory.GeoTools;
 
 /**
- * An 'About' dialog which displays information about the host environment, software licenses
- * pertaining to GeoTools (not implemented yet) and, if provided, summary details about your
- * application.
+ * An 'About' dialog which displays information about the host environment, software licenses pertaining to GeoTools
+ * (not implemented yet) and, if provided, summary details about your application.
  *
- * <p>Environment information is obtained from {@linkplain GeoTools#getEnvironmentInfo()} and
- * consists of:
+ * <p>Environment information is obtained from {@linkplain GeoTools#getEnvironmentInfo()} and consists of:
  *
  * <ul>
  *   <li>GeoTools version
@@ -46,11 +44,11 @@ import org.geotools.util.factory.GeoTools;
  *   <li>Host operating system and version
  * </ul>
  *
- * The GeoTools jar listing is obtained from {@linkplain GeoTools#getGeoToolsJarInfo()} and consists
- * of GeoTools jars (of the active version) on the application's class path.
+ * The GeoTools jar listing is obtained from {@linkplain GeoTools#getGeoToolsJarInfo()} and consists of GeoTools jars
+ * (of the active version) on the application's class path.
  *
- * <p>To have the dialog display details of your own application, you pass them as a String to the
- * dialog constructor as in this example:
+ * <p>To have the dialog display details of your own application, you pass them as a String to the dialog constructor as
+ * in this example:
  *
  * <pre><code>
  * final String appInfo = String.format(
@@ -65,8 +63,7 @@ import org.geotools.util.factory.GeoTools;
  * });
  * </code></pre>
  *
- * When no application details are provided the 'Application' category will not be shown in the
- * dialog's category list.
+ * When no application details are provided the 'Application' category will not be shown in the dialog's category list.
  *
  * @author Michael Bedward
  * @since 2.7
@@ -260,9 +257,7 @@ public class JAboutDialog extends AbstractSimpleDialog {
         textArea.setText("This is the licence info");
     }
 
-    /**
-     * Displays GeoTools jars on the classpath. This is only called on the event dispatch thread.
-     */
+    /** Displays GeoTools jars on the classpath. This is only called on the event dispatch thread. */
     private void showJarInfo() {
         textArea.setText(GeoTools.getGeoToolsJarInfo());
     }

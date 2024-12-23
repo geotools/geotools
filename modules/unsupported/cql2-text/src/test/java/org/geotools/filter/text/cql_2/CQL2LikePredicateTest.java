@@ -26,8 +26,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Like works the same as in (E)CQL, but ILIKE does not exist, replaced by the CASEI function. TODO:
- * add support for it, in all comparisons)
+ * Like works the same as in (E)CQL, but ILIKE does not exist, replaced by the CASEI function. TODO: add support for it,
+ * in all comparisons)
  */
 public class CQL2LikePredicateTest extends ECQLLikePredicateTest {
 

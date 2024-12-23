@@ -44,8 +44,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Element;
 
 /**
- * Uses {@link ComplexBinding#getProperty(Object, QName)} to obtain properties from the object being
- * encoded.
+ * Uses {@link ComplexBinding#getProperty(Object, QName)} to obtain properties from the object being encoded.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -72,8 +71,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         final List<Object[]> properties = new ArrayList<>();
 
         // first get all the properties that can be inferred from the schema
-        final List<XSDParticle> children =
-                encoder.getSchemaIndex().getChildElementParticles(element);
+        final List<XSDParticle> children = encoder.getSchemaIndex().getChildElementParticles(element);
 
         // check if it is an unbounded sequence
         if (isUnboundedSequence(object, element)) {
@@ -89,8 +87,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 // get the object(s) for this element
                 GetPropertyExecutor executor = new GetPropertyExecutor(object, child);
 
-                BindingVisitorDispatch.walk(
-                        object, encoder.getBindingWalker(), element, executor, context);
+                BindingVisitorDispatch.walk(object, encoder.getBindingWalker(), element, executor, context);
 
                 if (executor.getChildObject() != null) {
                     properties.add(new Object[] {particle, executor.getChildObject()});
@@ -100,8 +97,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
             // second, get the properties which cannot be inferred from the schema
             GetPropertiesExecutor executor = new GetPropertiesExecutor(object, element);
 
-            BindingVisitorDispatch.walk(
-                    object, encoder.getBindingWalker(), element, executor, context);
+            BindingVisitorDispatch.walk(object, encoder.getBindingWalker(), element, executor, context);
 
             if (!executor.getProperties().isEmpty()) {
                 // group into a map of name, list (name can be a QName or a XSDParticle...)
@@ -128,18 +124,15 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     // check for comment
                     if (Encoder.COMMENT.equals(name)) {
                         // create a dom element which text nodes for the comments
-                        Element comment =
-                                encoder.getDocument().createElement(Encoder.COMMENT.getLocalPart());
+                        Element comment = encoder.getDocument().createElement(Encoder.COMMENT.getLocalPart());
 
                         for (Object value : values) {
-                            comment.appendChild(
-                                    encoder.getDocument().createTextNode(value.toString()));
+                            comment.appendChild(encoder.getDocument().createTextNode(value.toString()));
                         }
 
                         XSDParticle particle = XSDFactory.eINSTANCE.createXSDParticle();
 
-                        XSDElementDeclaration elementDecl =
-                                XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                        XSDElementDeclaration elementDecl = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                         elementDecl.setTargetNamespace(Encoder.COMMENT.getNamespaceURI());
                         elementDecl.setName(Encoder.COMMENT.getLocalPart());
                         elementDecl.setElement(comment);
@@ -151,14 +144,12 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     }
 
                     // find hte element
-                    XSDElementDeclaration elementDecl =
-                            encoder.getSchemaIndex().getElementDeclaration(name);
+                    XSDElementDeclaration elementDecl = encoder.getSchemaIndex().getElementDeclaration(name);
 
                     if (elementDecl == null) {
                         // look for the element declaration as a particle of the containing type
                         XSDParticle particle =
-                                Schemas.getChildElementParticle(
-                                        element.getType(), name.getLocalPart(), true);
+                                Schemas.getChildElementParticle(element.getType(), name.getLocalPart(), true);
                         if (particle != null) {
                             particles.put(name, particle);
                             continue;
@@ -170,10 +161,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         // matter what, modifying the underlying schema, this might
                         // be dangerous. What we should do is force the schema to
                         // resolve all of its imports when the encoder starts
-                        elementDecl =
-                                encoder.getSchema()
-                                        .resolveElementDeclaration(
-                                                name.getNamespaceURI(), name.getLocalPart());
+                        elementDecl = encoder.getSchema()
+                                .resolveElementDeclaration(name.getNamespaceURI(), name.getLocalPart());
                     }
 
                     // look for a particle in the containing type which is either
@@ -181,8 +170,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     // b) in the same subsittuion group
                     // if found use the particle to dervice multiplicity
                     XSDParticle reference = null;
-                    for (XSDParticle particle :
-                            Schemas.getChildElementParticles(element.getType(), true)) {
+                    for (XSDParticle particle : Schemas.getChildElementParticles(element.getType(), true)) {
                         XSDElementDeclaration el = (XSDElementDeclaration) particle.getContent();
                         if (el.isElementDeclarationReference()) {
                             el = el.getResolvedElementDeclaration();
@@ -196,8 +184,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
                     // wrap the property in a particle
                     XSDParticle particle = XSDFactory.eINSTANCE.createXSDParticle();
-                    XSDElementDeclaration wrapper =
-                            XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                    XSDElementDeclaration wrapper = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                     wrapper.setResolvedElementDeclaration(elementDecl);
                     particle.setContent(wrapper);
 
@@ -278,10 +265,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         partContent = partContent.getResolvedElementDeclaration();
                     }
                     if (child.getName().equals(partContent.getName())
-                            && ((child.getTargetNamespace() != null
-                                            && partContent.getTargetNamespace() != null)
-                                    ? child.getTargetNamespace()
-                                            .equals(partContent.getTargetNamespace())
+                            && ((child.getTargetNamespace() != null && partContent.getTargetNamespace() != null)
+                                    ? child.getTargetNamespace().equals(partContent.getTargetNamespace())
                                     : true)) {
                         sortedProperties.add(prop);
                         properties.remove(prop);
@@ -297,8 +282,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         }
     }
 
-    private void processUnboundedSequence(
-            Object object, List<Object[]> properties, List<XSDParticle> children) {
+    private void processUnboundedSequence(Object object, List<Object[]> properties, List<XSDParticle> children) {
         final ComplexAttribute complexAttr = (ComplexAttribute) object;
         final Deque<Attribute> attrDeque = getChildrenAttributes(complexAttr);
         // separate into repeat tuples
@@ -314,11 +298,11 @@ public class BindingPropertyExtractor implements PropertyExtractor {
             if (tuple != null && !tuple.isEmpty()) {
                 for (XSDParticle particle : children) {
                     XSDElementDeclaration childAux = (XSDElementDeclaration) particle.getContent();
-                    if (childAux.isElementDeclarationReference())
-                        childAux = childAux.getResolvedElementDeclaration();
+                    if (childAux.isElementDeclarationReference()) childAux = childAux.getResolvedElementDeclaration();
                     final XSDElementDeclaration child = childAux;
-                    final Optional<Attribute> attributeOpt =
-                            tuple.stream().filter(x -> attributeMatches(x, child)).findFirst();
+                    final Optional<Attribute> attributeOpt = tuple.stream()
+                            .filter(x -> attributeMatches(x, child))
+                            .findFirst();
                     if (attributeOpt.isPresent()) {
                         final Attribute attribute = attributeOpt.get();
                         properties.add(new Object[] {particle, attribute.getValue()});
@@ -346,8 +330,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         XSDTypeDefinition anonymousTypeDefinition = element.getAnonymousTypeDefinition();
         if (anonymousTypeDefinition == null
                 || anonymousTypeDefinition.getComplexType() == null
-                || anonymousTypeDefinition.getComplexType().getMaxOccurs()
-                        != XSDParticle.UNBOUNDED) {
+                || anonymousTypeDefinition.getComplexType().getMaxOccurs() != XSDParticle.UNBOUNDED) {
             return false;
         }
         // checks complex attribute and children
@@ -364,17 +347,16 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
     private Deque<Attribute> getChildrenAttributes(ComplexAttribute complesAttribute) {
         final Collection<Property> props = complesAttribute.getProperties();
-        final Deque<Attribute> attrDeque =
-                props.stream()
-                        .filter(x -> x instanceof Attribute)
-                        .map(x -> (Attribute) x)
-                        .collect(Collectors.toCollection(ArrayDeque::new));
+        final Deque<Attribute> attrDeque = props.stream()
+                .filter(x -> x instanceof Attribute)
+                .map(x -> (Attribute) x)
+                .collect(Collectors.toCollection(ArrayDeque::new));
         return attrDeque;
     }
 
     /**
-     * Check whether properties can be sorted to the order as in the "children" list. This is only
-     * possible when all properties have references (XSDParticle) in the "children" list.
+     * Check whether properties can be sorted to the order as in the "children" list. This is only possible when all
+     * properties have references (XSDParticle) in the "children" list.
      *
      * @param properties feature properties obtained
      * @param children list of XSDParticle in the order as they appear in the schema
@@ -412,8 +394,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 if (child.getName().equals(partContent.getName())
                         && (child.getTargetNamespace() == null
                                 ? partContent.getTargetNamespace() == null
-                                : child.getTargetNamespace()
-                                        .equals(partContent.getTargetNamespace()))) {
+                                : child.getTargetNamespace().equals(partContent.getTargetNamespace()))) {
                     notFound = false;
                     break;
                 }

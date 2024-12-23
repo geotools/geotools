@@ -12,8 +12,8 @@ package org.geotools.api.filter.spatial;
 // Annotations
 
 /**
- * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code
- * true} if the geometry of the two operands are equal.
+ * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code true} if the geometry of
+ * the two operands are equal.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

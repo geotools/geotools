@@ -45,8 +45,7 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     if (source instanceof ComplexAttribute) {
-                        Collection<? extends Property> valueMap =
-                                ((ComplexAttribute) source).getValue();
+                        Collection<? extends Property> valueMap = ((ComplexAttribute) source).getValue();
                         if (valueMap.isEmpty() || valueMap.size() > 1) {
                             return null;
                         } else {
@@ -144,8 +143,8 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
     }
 
     /**
-     * Helper method that just checks if the provided source is a collection of objects and that all
-     * the objects are either NULL or that the expected type is assignable from them.
+     * Helper method that just checks if the provided source is a collection of objects and that all the objects are
+     * either NULL or that the expected type is assignable from them.
      */
     private boolean isCollectionOf(Object source, Class<?> expected) {
         if (!(source instanceof Collection<?>)) {

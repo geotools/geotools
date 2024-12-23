@@ -19,7 +19,6 @@ package org.geotools.api.referencing.operation;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see org.geotools.api.referencing.crs.ProjectedCRS
- * @see <A HREF="http://mathworld.wolfram.com/ConicProjection.html">Conic projection on
- *     MathWorld</A>
+ * @see <A HREF="http://mathworld.wolfram.com/ConicProjection.html">Conic projection on MathWorld</A>
  */
 public interface ConicProjection extends Projection {}

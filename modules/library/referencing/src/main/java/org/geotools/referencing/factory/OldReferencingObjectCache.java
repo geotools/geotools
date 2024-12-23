@@ -23,8 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Caching implementation for ReferencingObjectCache. This instance is used when actual caching is
- * desired. This is a temporary class.
+ * Caching implementation for ReferencingObjectCache. This instance is used when actual caching is desired. This is a
+ * temporary class.
  *
  * @since 2.4
  * @author Cory Horner (Refractions Research)
@@ -36,22 +36,21 @@ final class OldReferencingObjectCache {
      * <p>The following may be seen for a key (String key?):
      *
      * <ul>
-     *   <li>Object (ie a strong reference) usually a referencing object like
-     *       CoordinateReferenceSystem or Datum
+     *   <li>Object (ie a strong reference) usually a referencing object like CoordinateReferenceSystem or Datum
      *   <li>WeakReference used to hold a referencing object (may be cleaned up at any time
      * </ul>
      */
     private final LinkedHashMap<Object, Object> pool = new LinkedHashMap<>(32, 0.75f, true);
 
     /**
-     * The maximum number of objects to keep by strong reference. If a greater amount of objects are
-     * created, then the strong references for the oldest ones are replaced by weak references.
+     * The maximum number of objects to keep by strong reference. If a greater amount of objects are created, then the
+     * strong references for the oldest ones are replaced by weak references.
      */
     private final int maxStrongReferences;
 
     /**
-     * Creates a new cache which will hold the specified amount of object by strong references. Any
-     * additional object will be help by weak references.
+     * Creates a new cache which will hold the specified amount of object by strong references. Any additional object
+     * will be help by weak references.
      */
     public OldReferencingObjectCache(final int maxStrongReferences) {
         this.maxStrongReferences = maxStrongReferences;
@@ -65,8 +64,8 @@ final class OldReferencingObjectCache {
     }
 
     /**
-     * Returns an object from the pool for the specified code. If the object was retained as a
-     * {@linkplain Reference weak reference}, the {@link Reference#get referent} is returned.
+     * Returns an object from the pool for the specified code. If the object was retained as a {@linkplain Reference
+     * weak reference}, the {@link Reference#get referent} is returned.
      *
      * @param key The authority code.
      * @todo Consider logging a message here to the finer or finest level.
@@ -81,10 +80,10 @@ final class OldReferencingObjectCache {
     }
 
     /**
-     * Put an element in the pool. This method is invoked everytime a {@code createFoo(...)} method
-     * is invoked, even if an object was already in the pool for the given code, for the following
-     * reasons: 1) Replaces weak reference by strong reference (if applicable) and 2) Alters the
-     * linked hash set order, so that this object is declared as the last one used.
+     * Put an element in the pool. This method is invoked everytime a {@code createFoo(...)} method is invoked, even if
+     * an object was already in the pool for the given code, for the following reasons: 1) Replaces weak reference by
+     * strong reference (if applicable) and 2) Alters the linked hash set order, so that this object is declared as the
+     * last one used.
      *
      * @param key the authority code.
      * @param object The referencing object to add in the pool.
@@ -94,8 +93,7 @@ final class OldReferencingObjectCache {
         pool.put(key, object);
         int toReplace = pool.size() - maxStrongReferences;
         if (toReplace > 0) {
-            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator();
-                    it.hasNext(); ) {
+            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator(); it.hasNext(); ) {
                 final Map.Entry<Object, Object> entry = it.next();
                 final Object value = entry.getValue();
                 if (value instanceof Reference) {

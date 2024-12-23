@@ -26,8 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Online test against tile.openstreetmap.org Activate by adding empty file
- * "osm_tile_client.properties"
+ * Online test against tile.openstreetmap.org Activate by adding empty file "osm_tile_client.properties"
  *
  * @author Roar Brænden
  */

@@ -15,9 +15,8 @@ import org.geotools.api.filter.Filter;
 /**
  * The type of operations to be invoked on an attribute.
  *
- * <p>Invoking an operation on an attribute is used to calculate a derived quantity or update
- * attribute state. OperationType is used to define the required parameters and expected result for
- * an Operation.
+ * <p>Invoking an operation on an attribute is used to calculate a derived quantity or update attribute state.
+ * OperationType is used to define the required parameters and expected result for an Operation.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */
@@ -26,8 +25,7 @@ public interface OperationType extends PropertyType {
     /**
      * Access to super type information.
      *
-     * <p>The super type of an operation provides additional restrictions and description for this
-     * operation.
+     * <p>The super type of an operation provides additional restrictions and description for this operation.
      *
      * @return super type
      */
@@ -37,10 +35,9 @@ public interface OperationType extends PropertyType {
     /**
      * Indicate that this OperationType may not be used directly.
      *
-     * <p>This indicates that a sub type will need to actually define the operation meaning here. As
-     * an example a graph system could have an Edge that would have "related" operation returning
-     * that was abstract, and a sub type road would define "related" based on touches, or "contains"
-     * or "common vertex".
+     * <p>This indicates that a sub type will need to actually define the operation meaning here. As an example a graph
+     * system could have an Edge that would have "related" operation returning that was abstract, and a sub type road
+     * would define "related" based on touches, or "contains" or "common vertex".
      */
     @Override
     boolean isAbstract();
@@ -58,8 +55,7 @@ public interface OperationType extends PropertyType {
     /**
      * We need the following AttributeTypes as parameters.
      *
-     * <p>Note we do not need AttributeDescriptors here as parameters are ordered, so name is not
-     * needed.
+     * <p>Note we do not need AttributeDescriptors here as parameters are ordered, so name is not needed.
      *
      * @return indicates paramters required for operation
      */

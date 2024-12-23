@@ -35,12 +35,11 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class DateTimeParserTest extends Assert {
 
-    private static final DateTimeParser PARSER =
-            new DateTimeParser(
-                    -1,
-                    DateTimeParser.FLAG_IS_LENIENT
-                            | DateTimeParser.FLAG_GET_TIME_ON_CURRENT
-                            | DateTimeParser.FLAG_GET_TIME_ON_NOW);
+    private static final DateTimeParser PARSER = new DateTimeParser(
+            -1,
+            DateTimeParser.FLAG_IS_LENIENT
+                    | DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+                    | DateTimeParser.FLAG_GET_TIME_ON_NOW);
 
     private Locale initialLocale;
 
@@ -516,29 +515,21 @@ public class DateTimeParserTest extends Assert {
     @Test
     public void testInfiniteLoopZeroInterval() {
         String value = "1970-01-01T00:00:00.000Z/1970-01-01T00:00:00.000Z/P0D";
-        RuntimeException e =
-                Assert.assertThrows(
-                        RuntimeException.class, () -> new DateTimeParser(100).parse(value));
+        RuntimeException e = Assert.assertThrows(RuntimeException.class, () -> new DateTimeParser(100).parse(value));
         Assert.assertEquals("Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
     }
 
     @Test
     public void testInfiniteLoopIntegerOverflow() {
-        String value =
-                "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT4611686018427387.903S";
-        RuntimeException e =
-                Assert.assertThrows(
-                        RuntimeException.class, () -> new DateTimeParser(100).parse(value));
+        String value = "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT4611686018427387.903S";
+        RuntimeException e = Assert.assertThrows(RuntimeException.class, () -> new DateTimeParser(100).parse(value));
         Assert.assertEquals("Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
     }
 
     @Test
     public void testInfiniteLoopIntegerUnderflow() {
-        String value =
-                "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT-4611686018427387.904S";
-        RuntimeException e =
-                Assert.assertThrows(
-                        RuntimeException.class, () -> new DateTimeParser(100).parse(value));
+        String value = "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT-4611686018427387.904S";
+        RuntimeException e = Assert.assertThrows(RuntimeException.class, () -> new DateTimeParser(100).parse(value));
         Assert.assertEquals("Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
     }
 
@@ -547,11 +538,8 @@ public class DateTimeParserTest extends Assert {
     @Test
     public void testNegativeYear() throws ParseException {
         final String value = "-01-06-01";
-        DateTimeParser parser =
-                new DateTimeParser(
-                        100,
-                        DateTimeParser.FLAG_GET_TIME_ON_PRESENT
-                                | DateTimeParser.FLAG_SINGLE_DATE_AS_DATERANGE);
+        DateTimeParser parser = new DateTimeParser(
+                100, DateTimeParser.FLAG_GET_TIME_ON_PRESENT | DateTimeParser.FLAG_SINGLE_DATE_AS_DATERANGE);
 
         Collection col = parser.parse(value);
         Assert.assertEquals(1, col.size());

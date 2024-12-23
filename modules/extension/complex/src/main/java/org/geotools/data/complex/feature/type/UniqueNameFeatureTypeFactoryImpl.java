@@ -30,12 +30,12 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 
 /**
- * A specialisation of {@link FeatureTypeFactoryImpl} that returns {@link UniqueNameFeatureTypeImpl}
- * instead of {@link FeatureTypeImpl} to avoid equality tests on types with cyclic definitions.
+ * A specialisation of {@link FeatureTypeFactoryImpl} that returns {@link UniqueNameFeatureTypeImpl} instead of
+ * {@link FeatureTypeImpl} to avoid equality tests on types with cyclic definitions.
  *
- * <p>Users of this factory must not use it to create multiple FeatureType instances with the same
- * name unless they represent the same type, because other parts of the implementation will assume
- * they are equal, and if they are not, Bad Things Will Happen.
+ * <p>Users of this factory must not use it to create multiple FeatureType instances with the same name unless they
+ * represent the same type, because other parts of the implementation will assume they are equal, and if they are not,
+ * Bad Things Will Happen.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see GEOT-3354
@@ -43,14 +43,11 @@ import org.geotools.feature.type.FeatureTypeImpl;
 public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
 
     /**
-     * Override superclass to return {@link UniqueNameFeatureTypeImpl} instead of {@link
-     * FeatureTypeImpl}.
+     * Override superclass to return {@link UniqueNameFeatureTypeImpl} instead of {@link FeatureTypeImpl}.
      *
-     * @see
-     *     org.geotools.feature.type.FeatureTypeFactoryImpl#createFeatureType(org.geotools.api.feature.type.Name,
-     *     java.util.Collection, org.geotools.api.feature.type.GeometryDescriptor, boolean,
-     *     java.util.List, org.geotools.api.feature.type.AttributeType,
-     *     org.geotools.api.util.InternationalString)
+     * @see org.geotools.feature.type.FeatureTypeFactoryImpl#createFeatureType(org.geotools.api.feature.type.Name,
+     *     java.util.Collection, org.geotools.api.feature.type.GeometryDescriptor, boolean, java.util.List,
+     *     org.geotools.api.feature.type.AttributeType, org.geotools.api.util.InternationalString)
      */
     @Override
     public FeatureType createFeatureType(

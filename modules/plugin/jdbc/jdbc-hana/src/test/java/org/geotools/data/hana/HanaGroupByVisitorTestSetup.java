@@ -70,35 +70,11 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "2016-06-03 16:00:00",
                     "2016-06-03");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    3,
-                    "SCHOOL_A",
-                    "SCHOOL",
-                    "WIND",
-                    null,
-                    20.0,
-                    "2016-06-03 20:00:00",
-                    "2016-06-03");
+                    BUILDINGS_TABLE, 3, "SCHOOL_A", "SCHOOL", "WIND", null, 20.0, "2016-06-03 20:00:00", "2016-06-03");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    4,
-                    "SCHOOL_B",
-                    "SCHOOL",
-                    "SOLAR",
-                    null,
-                    30.0,
-                    "2016-06-05 12:00:00",
-                    "2016-06-05");
+                    BUILDINGS_TABLE, 4, "SCHOOL_B", "SCHOOL", "SOLAR", null, 30.0, "2016-06-05 12:00:00", "2016-06-05");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    5,
-                    "SCHOOL_B",
-                    "SCHOOL",
-                    "FUEL",
-                    null,
-                    60.0,
-                    "2016-06-06 12:00:00",
-                    "2016-06-06");
+                    BUILDINGS_TABLE, 5, "SCHOOL_B", "SCHOOL", "FUEL", null, 60.0, "2016-06-06 12:00:00", "2016-06-06");
             htu.insertIntoTestTable(
                     BUILDINGS_TABLE,
                     6,
@@ -130,15 +106,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "2016-06-07 18:00:00",
                     "2016-06-07");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    9,
-                    "FABRIC_B",
-                    "FABRIC",
-                    "WIND",
-                    null,
-                    20.0,
-                    "2016-06-07 20:00:00",
-                    "2016-06-07");
+                    BUILDINGS_TABLE, 9, "FABRIC_B", "FABRIC", "WIND", null, 20.0, "2016-06-07 20:00:00", "2016-06-07");
             htu.insertIntoTestTable(
                     BUILDINGS_TABLE,
                     10,
@@ -150,25 +118,9 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "2016-06-15 12:00:00",
                     "2016-06-15");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    11,
-                    "HOUSE_A",
-                    "HOUSE",
-                    "FUEL",
-                    null,
-                    6.0,
-                    "2016-06-15 19:00:00",
-                    "2016-06-15");
+                    BUILDINGS_TABLE, 11, "HOUSE_A", "HOUSE", "FUEL", null, 6.0, "2016-06-15 19:00:00", "2016-06-15");
             htu.insertIntoTestTable(
-                    BUILDINGS_TABLE,
-                    12,
-                    "HOUSE_B",
-                    "HOUSE",
-                    "NUCLEAR",
-                    null,
-                    4.0,
-                    "2016-06-15 20:00:00",
-                    "2016-06-15");
+                    BUILDINGS_TABLE, 12, "HOUSE_B", "HOUSE", "NUCLEAR", null, 4.0, "2016-06-15 20:00:00", "2016-06-15");
         }
     }
 
@@ -195,24 +147,15 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
             };
             htu.createTestTable(FT1_TABLE, cols);
 
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 0, htu.geometry("POINT(0 0)", 1000004326), 0, 0.0, "aa");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 1, htu.geometry("POINT(0 0)", 1000004326), 1, 1.0, "ba");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 2, htu.geometry("POINT(0 0)", 1000004326), 2, 2.0, "ca");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 3, htu.geometry("POINT(1 1)", 1000004326), 10, 10.0, "ab");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 4, htu.geometry("POINT(1 1)", 1000004326), 11, 11.0, "bb");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 5, htu.geometry("POINT(1 1)", 1000004326), 12, 12.0, "cb");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 6, htu.geometry("POINT(2 2)", 1000004326), 20, 20.0, "ac");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 7, htu.geometry("POINT(2 2)", 1000004326), 21, 21.0, "bc");
-            htu.insertIntoTestTable(
-                    FT1_TABLE, 8, htu.geometry("POINT(2 2)", 1000004326), 22, 22.0, "cc");
+            htu.insertIntoTestTable(FT1_TABLE, 0, htu.geometry("POINT(0 0)", 1000004326), 0, 0.0, "aa");
+            htu.insertIntoTestTable(FT1_TABLE, 1, htu.geometry("POINT(0 0)", 1000004326), 1, 1.0, "ba");
+            htu.insertIntoTestTable(FT1_TABLE, 2, htu.geometry("POINT(0 0)", 1000004326), 2, 2.0, "ca");
+            htu.insertIntoTestTable(FT1_TABLE, 3, htu.geometry("POINT(1 1)", 1000004326), 10, 10.0, "ab");
+            htu.insertIntoTestTable(FT1_TABLE, 4, htu.geometry("POINT(1 1)", 1000004326), 11, 11.0, "bb");
+            htu.insertIntoTestTable(FT1_TABLE, 5, htu.geometry("POINT(1 1)", 1000004326), 12, 12.0, "cb");
+            htu.insertIntoTestTable(FT1_TABLE, 6, htu.geometry("POINT(2 2)", 1000004326), 20, 20.0, "ac");
+            htu.insertIntoTestTable(FT1_TABLE, 7, htu.geometry("POINT(2 2)", 1000004326), 21, 21.0, "bc");
+            htu.insertIntoTestTable(FT1_TABLE, 8, htu.geometry("POINT(2 2)", 1000004326), 22, 22.0, "cc");
         }
     }
 

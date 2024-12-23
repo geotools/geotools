@@ -100,22 +100,20 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
     @Override
     public Object getProperty(final Object object, QName name) throws Exception {
         if (VALUE.equals(name.getLocalPart())) {
-            return (EncoderDelegate)
-                    output -> {
-                        Object value = ((PropertyType) object).getValue();
+            return (EncoderDelegate) output -> {
+                Object value = ((PropertyType) object).getValue();
 
-                        output.startElement(
-                                WFS.NAMESPACE, VALUE, "wfs:" + VALUE, new AttributesImpl());
-                        if (value instanceof Geometry) {
-                            Encoder encoder = new Encoder(new GMLConfiguration());
-                            encoder.setInline(true);
-                            encoder.encode(value, GML._Geometry, output);
-                        } else {
-                            String s = value.toString();
-                            output.characters(s.toCharArray(), 0, s.length());
-                        }
-                        output.endElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE);
-                    };
+                output.startElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE, new AttributesImpl());
+                if (value instanceof Geometry) {
+                    Encoder encoder = new Encoder(new GMLConfiguration());
+                    encoder.setInline(true);
+                    encoder.encode(value, GML._Geometry, output);
+                } else {
+                    String s = value.toString();
+                    output.characters(s.toCharArray(), 0, s.length());
+                }
+                output.endElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE);
+            };
         }
 
         return super.getProperty(object, name);

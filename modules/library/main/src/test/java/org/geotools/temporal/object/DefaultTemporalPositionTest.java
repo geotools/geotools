@@ -70,8 +70,7 @@ public class DefaultTemporalPositionTest {
     public void testSetFrame() {
         TemporalReferenceSystem result = ((DefaultTemporalPosition) temporalPosition1).getFrame();
         NamedIdentifier name = new NamedIdentifier(Citations.CRS, "Babylonian calendar");
-        ((DefaultTemporalPosition) temporalPosition1)
-                .setFrame(new DefaultTemporalReferenceSystem(name, null));
+        ((DefaultTemporalPosition) temporalPosition1).setFrame(new DefaultTemporalReferenceSystem(name, null));
         assertNotEquals(((DefaultTemporalPosition) temporalPosition1).getFrame(), result);
     }
 
@@ -79,8 +78,7 @@ public class DefaultTemporalPositionTest {
     @Test
     public void testSetIndeterminatePosition() {
         IndeterminateValue result = temporalPosition1.getIndeterminatePosition();
-        ((DefaultTemporalPosition) temporalPosition1)
-                .setIndeterminatePosition(IndeterminateValue.BEFORE);
+        ((DefaultTemporalPosition) temporalPosition1).setIndeterminatePosition(IndeterminateValue.BEFORE);
         assertNotEquals(temporalPosition1.getIndeterminatePosition(), result);
     }
 

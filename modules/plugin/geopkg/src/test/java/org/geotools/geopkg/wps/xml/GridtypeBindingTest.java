@@ -36,16 +36,15 @@ public class GridtypeBindingTest extends GPKGTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        buildDocument(
-                "<grid>"
-                        + "<zoomlevel>3</zoomlevel>"
-                        + "<tilewidth>512</tilewidth>"
-                        + "<tileheight>256</tileheight>"
-                        + "<matrixwidth>32</matrixwidth>"
-                        + "<matrixheight>16</matrixheight>"
-                        + "<pixelxsize>0.05</pixelxsize>"
-                        + "<pixelysize>0.06</pixelysize>"
-                        + " </grid>");
+        buildDocument("<grid>"
+                + "<zoomlevel>3</zoomlevel>"
+                + "<tilewidth>512</tilewidth>"
+                + "<tileheight>256</tileheight>"
+                + "<matrixwidth>32</matrixwidth>"
+                + "<matrixheight>16</matrixheight>"
+                + "<pixelxsize>0.05</pixelxsize>"
+                + "<pixelysize>0.06</pixelysize>"
+                + " </grid>");
         Object result = parse(GPKG.gridtype);
         assertTrue(result instanceof TileMatrix);
         TileMatrix matrix = (TileMatrix) result;

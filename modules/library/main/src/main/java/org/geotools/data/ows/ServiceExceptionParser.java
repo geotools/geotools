@@ -40,8 +40,7 @@ import org.geotools.ows.ServiceException;
 public class ServiceExceptionParser {
 
     /**
-     * Tries to read a ServiceExceptionReport from the input stream, and construct a chain of
-     * ServiceExceptions.
+     * Tries to read a ServiceExceptionReport from the input stream, and construct a chain of ServiceExceptions.
      *
      * <p>ServiceExceptions beyond the first can be accessed using ServiceException.next();
      *
@@ -82,14 +81,12 @@ public class ServiceExceptionParser {
         return exceptions.isEmpty() ? null : exceptions.get(0);
     }
 
-    private static String parseServiceExceptionMessage(XMLStreamReader reader)
-            throws XMLStreamException {
+    private static String parseServiceExceptionMessage(XMLStreamReader reader) throws XMLStreamException {
         reader.require(START_ELEMENT, null, "ServiceException");
         return reader.getElementText();
     }
 
-    private static String parseServiceExceptionCode(XMLStreamReader reader)
-            throws XMLStreamException {
+    private static String parseServiceExceptionCode(XMLStreamReader reader) throws XMLStreamException {
         reader.require(START_ELEMENT, null, "ServiceException");
         String value = null;
         for (int i = 0; i < reader.getAttributeCount(); i++) {

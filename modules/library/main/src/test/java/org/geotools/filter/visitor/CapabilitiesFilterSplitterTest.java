@@ -122,9 +122,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         runTest(f, Capabilities.SIMPLE_COMPARISONS_OPENGIS, nameAtt);
     }
 
-    /**
-     * an update is in transaction that modifies an attribute that NOT is referenced in the query
-     */
+    /** an update is in transaction that modifies an attribute that NOT is referenced in the query */
     @Test
     public void testVisitCompareFilterWithUpdateDifferentAttribute() throws Exception {
         Filter f = createPropertyIsEqualToFilter(nameAtt, "david");
@@ -192,7 +190,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(filter, visitor.getFilterPost());
         assertEquals(Filter.INCLUDE, visitor.getFilterPre());
 
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         visitor = newVisitor(simpleLogicalCaps);
 
         filter.accept(visitor, null);
@@ -216,7 +215,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(funtionFilter.toString(), visitor.getFilterPost().toString());
         assertEquals(geomFilter.toString(), visitor.getFilterPre().toString());
 
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         visitor = newVisitor(simpleLogicalCaps);
 
         andFilter.accept(visitor, null);
@@ -240,7 +240,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(Filter.INCLUDE, visitor.getFilterPre());
         assertEquals(orFilter, visitor.getFilterPost());
 
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         visitor = newVisitor(simpleLogicalCaps);
 
         orFilter.accept(visitor, null);
@@ -262,7 +263,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(not, visitor.getFilterPost());
         assertEquals(Filter.INCLUDE, visitor.getFilterPre());
 
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         visitor = newVisitor(simpleLogicalCaps);
 
         not.accept(visitor, null);
@@ -274,7 +276,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
     @Test
     public void testNullParentNullAccessor() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
         visitor = newVisitor(simpleLogicalCaps);
 
         Filter funtionFilter = createFunctionFilter();
@@ -310,7 +313,8 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         f = ff.and(f, g);
 
         simpleLogicalCaps.addType(BBOX.class);
-        simpleLogicalCaps.addName(testFunction.getName(), testFunction.getParameters().size());
+        simpleLogicalCaps.addName(
+                testFunction.getName(), testFunction.getParameters().size());
 
         visitor = new CapabilitiesFilterSplitter(simpleLogicalCaps, null, null);
         f.accept(visitor, null);
@@ -318,27 +322,23 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(f, visitor.getFilterPre());
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
 
-        visitor =
-                new CapabilitiesFilterSplitter(
-                        simpleLogicalCaps,
-                        null,
-                        new ClientTransactionAccessor() {
+        visitor = new CapabilitiesFilterSplitter(simpleLogicalCaps, null, new ClientTransactionAccessor() {
 
-                            @Override
-                            public Filter getDeleteFilter() {
-                                return null;
-                            }
+            @Override
+            public Filter getDeleteFilter() {
+                return null;
+            }
 
-                            @Override
-                            public Filter getUpdateFilter(String attributePath) {
-                                if (attributePath.equals("eventtype")) {
-                                    HashSet ids = new HashSet();
-                                    ids.add(ff.featureId("fid"));
-                                    return ff.id(ids);
-                                }
-                                return null;
-                            }
-                        });
+            @Override
+            public Filter getUpdateFilter(String attributePath) {
+                if (attributePath.equals("eventtype")) {
+                    HashSet ids = new HashSet();
+                    ids.add(ff.featureId("fid"));
+                    return ff.id(ids);
+                }
+                return null;
+            }
+        });
 
         f.accept(visitor, null);
 

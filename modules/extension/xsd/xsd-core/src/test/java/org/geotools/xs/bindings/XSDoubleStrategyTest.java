@@ -25,10 +25,7 @@ import org.geotools.xsd.ElementInstance;
 import org.junit.Test;
 
 public class XSDoubleStrategyTest extends TestSchema {
-    /**
-     * For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for
-     * double.
-     */
+    /** For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for double. */
 
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDoubleStrategy.parse(Element, Node[], Object)'
@@ -57,10 +54,7 @@ public class XSDoubleStrategyTest extends TestSchema {
         return XS.DOUBLE;
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues("", null);

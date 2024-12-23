@@ -64,8 +64,7 @@ public class AbstractGetMapRequestTest {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             // TODO Auto-generated method stub
             return null;
         }

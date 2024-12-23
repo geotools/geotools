@@ -46,14 +46,10 @@ public class ProcessFunctionTest {
         SimpleFeatureCollection features = store.getFeatureSource().getFeatures();
 
         // first param, the context feature collection
-        Function featuresParam =
-                ff.function("parameter", ff.literal(BufferFeatureCollectionFactory.FEATURES.key));
+        Function featuresParam = ff.function("parameter", ff.literal(BufferFeatureCollectionFactory.FEATURES.key));
         // second param, the buffer size
         Function bufferParam =
-                ff.function(
-                        "parameter",
-                        ff.literal(BufferFeatureCollectionFactory.BUFFER.key),
-                        ff.literal(1000));
+                ff.function("parameter", ff.literal(BufferFeatureCollectionFactory.BUFFER.key), ff.literal(1000));
         // build the function and call it
         Function buffer = ff.function("gt:BufferFeatureCollection", featuresParam, bufferParam);
 

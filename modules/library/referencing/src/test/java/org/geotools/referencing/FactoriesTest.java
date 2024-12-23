@@ -64,8 +64,8 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * Tests the creation of {@link CoordinateReferenceSystem} objects and dependencies through
- * factories (not authority factories).
+ * Tests the creation of {@link CoordinateReferenceSystem} objects and dependencies through factories (not authority
+ * factories).
  *
  * @version $Id$
  */
@@ -74,8 +74,8 @@ public final class FactoriesTest {
     private static PrintStream out = System.out;
 
     /**
-     * Convenience method creating a map with only the "name" property. This is the only mandatory
-     * property for object creation.
+     * Convenience method creating a map with only the "name" property. This is the only mandatory property for object
+     * creation.
      */
     private static Map<String, ?> name(final String name) {
         return Collections.singletonMap("name", name);
@@ -96,46 +96,38 @@ public final class FactoriesTest {
         final DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
         final CSFactory csFactory = ReferencingFactoryFinder.getCSFactory(null);
         final CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-        final MathTransformFactory mtFactory =
-                ReferencingFactoryFinder.getMathTransformFactory(null);
+        final MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
 
         final Unit<Length> meters = SI.METRE;
-        final Ellipsoid airy1830 =
-                datumFactory.createEllipsoid(name("Airy1830"), 6377563.396, 6356256.910, meters);
+        final Ellipsoid airy1830 = datumFactory.createEllipsoid(name("Airy1830"), 6377563.396, 6356256.910, meters);
         out.println();
         out.println("create Coodinate Reference System....2: ");
         out.println(airy1830.toWKT());
 
         final Unit<Angle> degrees = NonSI.DEGREE_ANGLE;
-        final PrimeMeridian greenwich =
-                datumFactory.createPrimeMeridian(name("Greenwich"), 0, degrees);
+        final PrimeMeridian greenwich = datumFactory.createPrimeMeridian(name("Greenwich"), 0, degrees);
         out.println();
         out.println("create Coodinate Reference System....3: ");
         out.println(greenwich.toWKT());
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultPrimeMeridian.GREENWICH;
-        final GeodeticDatum datum =
-                datumFactory.createGeodeticDatum(name("Airy1830"), airy1830, greenwich);
+        final GeodeticDatum datum = datumFactory.createGeodeticDatum(name("Airy1830"), airy1830, greenwich);
         out.println();
         out.println("create Coodinate Reference System....4: ");
         out.println(datum.toWKT());
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultEllipsoidalCS.GEODETIC_2D;
-        final EllipsoidalCS ellCS =
-                csFactory.createEllipsoidalCS(
-                        name("Ellipsoidal"),
-                        csFactory.createCoordinateSystemAxis(
-                                name("Longitude"), "long", AxisDirection.EAST, degrees),
-                        csFactory.createCoordinateSystemAxis(
-                                name("Latitude"), "lat", AxisDirection.NORTH, degrees));
+        final EllipsoidalCS ellCS = csFactory.createEllipsoidalCS(
+                name("Ellipsoidal"),
+                csFactory.createCoordinateSystemAxis(name("Longitude"), "long", AxisDirection.EAST, degrees),
+                csFactory.createCoordinateSystemAxis(name("Latitude"), "lat", AxisDirection.NORTH, degrees));
         out.println();
         out.println("create Coodinate Reference System....5: ");
         out.println(ellCS); // No WKT for coordinate systems
 
-        final GeographicCRS geogCRS =
-                crsFactory.createGeographicCRS(name("Airy1830"), datum, ellCS);
+        final GeographicCRS geogCRS = crsFactory.createGeographicCRS(name("Airy1830"), datum, ellCS);
         out.println();
         out.println("create Coodinate Reference System....6: ");
         out.println(geogCRS.toWKT());
@@ -153,13 +145,10 @@ public final class FactoriesTest {
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultCartesianCS.PROJECTED;
-        final CartesianCS cartCS =
-                csFactory.createCartesianCS(
-                        name("Cartesian"),
-                        csFactory.createCoordinateSystemAxis(
-                                name("Easting"), "x", AxisDirection.EAST, meters),
-                        csFactory.createCoordinateSystemAxis(
-                                name("Northing"), "y", AxisDirection.NORTH, meters));
+        final CartesianCS cartCS = csFactory.createCartesianCS(
+                name("Cartesian"),
+                csFactory.createCoordinateSystemAxis(name("Easting"), "x", AxisDirection.EAST, meters),
+                csFactory.createCoordinateSystemAxis(name("Northing"), "y", AxisDirection.NORTH, meters));
         out.println();
         out.println("create Coodinate Reference System....8: ");
         out.println(cartCS); // No WKT for coordinate systems
@@ -178,8 +167,7 @@ public final class FactoriesTest {
 
         final Conversion conversion = new DefiningConversion("GBN grid", param);
         final ProjectedCRS projCRS =
-                crsFactory.createProjectedCRS(
-                        name("Great_Britian_National_Grid"), geogCRS, conversion, cartCS);
+                crsFactory.createProjectedCRS(name("Great_Britian_National_Grid"), geogCRS, conversion, cartCS);
         out.println();
         out.println("create Coodinate System....9: ");
         out.println(projCRS.toWKT());
@@ -196,8 +184,7 @@ public final class FactoriesTest {
         out.println("Testing classification names");
         out.println("----------------------------");
         final CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-        final MathTransformFactory mtFactory =
-                ReferencingFactoryFinder.getMathTransformFactory(null);
+        final MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
         final Collection<OperationMethod> methods = mtFactory.getAvailableMethods(Projection.class);
         final Map<String, ?> dummyName = Collections.singletonMap("name", "Test");
         for (final OperationMethod method : methods) {
@@ -223,23 +210,23 @@ public final class FactoriesTest {
                  * oriented variants with an affine transform.
                  */
                 out.println(classification);
-                final boolean skip =
-                        classification.equalsIgnoreCase("Transverse Mercator (South Orientated)")
-                                || classification.equalsIgnoreCase("Equidistant_Cylindrical")
-                                || classification.equalsIgnoreCase("Behrmann")
-                                || classification.equalsIgnoreCase(
-                                        "Lambert Cylindrical Equal Area (Spherical)");
+                final boolean skip = classification.equalsIgnoreCase("Transverse Mercator (South Orientated)")
+                        || classification.equalsIgnoreCase("Equidistant_Cylindrical")
+                        || classification.equalsIgnoreCase("Behrmann")
+                        || classification.equalsIgnoreCase("Lambert Cylindrical Equal Area (Spherical)");
                 if (!skip) {
                     assertEquals(
                             classification,
-                            ((MapProjection) mt).getParameterDescriptors().getName().getCode());
+                            ((MapProjection) mt)
+                                    .getParameterDescriptors()
+                                    .getName()
+                                    .getCode());
                 }
-                final ProjectedCRS projCRS =
-                        crsFactory.createProjectedCRS(
-                                dummyName,
-                                DefaultGeographicCRS.WGS84,
-                                new DefiningConversion(dummyName, method, mt),
-                                DefaultCartesianCS.PROJECTED);
+                final ProjectedCRS projCRS = crsFactory.createProjectedCRS(
+                        dummyName,
+                        DefaultGeographicCRS.WGS84,
+                        new DefiningConversion(dummyName, method, mt),
+                        DefaultCartesianCS.PROJECTED);
                 final Conversion conversion = projCRS.getConversionFromBase();
                 assertSame(mt, conversion.getMathTransform());
                 final OperationMethod projMethod = conversion.getMethod();
@@ -249,8 +236,8 @@ public final class FactoriesTest {
     }
 
     /**
-     * Tests datum aliases. Note: ellipsoid and prime meridian are dummy values just (not conform to
-     * the usage in real world) just for testing purpose.
+     * Tests datum aliases. Note: ellipsoid and prime meridian are dummy values just (not conform to the usage in real
+     * world) just for testing purpose.
      *
      * @throws FactoryException If a CRS can not be created.
      */
@@ -295,37 +282,25 @@ public final class FactoriesTest {
             assertTrue(pass, aliases[3] instanceof ScopedName);
         }
 
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "Tokyo"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "Tokyo"), ellipsoid, meridian);
         Collection<GenericName> aliases = datum.getAlias();
         assertEquals(4, aliases.size());
 
         ((DatumAliases) factory).freeUnused();
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "_toKyo  _"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "_toKyo  _"), ellipsoid, meridian);
         assertEquals(4, datum.getAlias().size());
         assertEquals(aliases, datum.getAlias());
 
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "D_Tokyo"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "D_Tokyo"), ellipsoid, meridian);
         assertEquals(4, datum.getAlias().size());
 
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "Luxembourg 1930"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "Luxembourg 1930"), ellipsoid, meridian);
         assertEquals(3, datum.getAlias().size());
 
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "Dummy"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "Dummy"), ellipsoid, meridian);
         assertTrue("Non existing datum should have no alias.", datum.getAlias().isEmpty());
 
-        datum =
-                factory.createGeodeticDatum(
-                        Collections.singletonMap("name", "WGS 84"), ellipsoid, meridian);
+        datum = factory.createGeodeticDatum(Collections.singletonMap("name", "WGS 84"), ellipsoid, meridian);
         assertTrue(AbstractIdentifiedObject.nameMatches(datum, "WGS 84"));
         assertTrue(AbstractIdentifiedObject.nameMatches(datum, "WGS_1984"));
         assertTrue(AbstractIdentifiedObject.nameMatches(datum, "World Geodetic System 1984"));

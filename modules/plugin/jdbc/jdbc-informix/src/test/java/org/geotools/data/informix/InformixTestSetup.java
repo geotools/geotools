@@ -43,12 +43,11 @@ public class InformixTestSetup extends JDBCTestSetup {
         //        run("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''));");
 
         try {
-            run(
-                    "insert into spatial_references "
-                            + "(srid, description, auth_name, auth_srid, falsex, falsey, xyunits, falsez, zunits, falsem, munits, "
-                            + "srtext) values "
-                            + "(26713, 'NAD27 / UTM zone 13N (for GeoTools tests)', 'EPSG', 26713, 0, 0, 1000, 0, 1000, 0, 1000, "
-                            + "'PROJCS')");
+            run("insert into spatial_references "
+                    + "(srid, description, auth_name, auth_srid, falsex, falsey, xyunits, falsez, zunits, falsem, munits, "
+                    + "srtext) values "
+                    + "(26713, 'NAD27 / UTM zone 13N (for GeoTools tests)', 'EPSG', 26713, 0, 0, 1000, 0, 1000, 0, 1000, "
+                    + "'PROJCS')");
         } catch (Exception e) {
             //            e.printStackTrace();
         }
@@ -88,18 +87,15 @@ public class InformixTestSetup extends JDBCTestSetup {
         //        run("SET sql_mode='NO_AUTO_VALUE_ON_ZERO';");
 
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft1 VALUES (")
-                .append("0,ST_GeomFromText('POINT(0 0)',4326)::ST_Point, 0, 0.0,'zero');");
+        sb.append("INSERT INTO ft1 VALUES (").append("0,ST_GeomFromText('POINT(0 0)',4326)::ST_Point, 0, 0.0,'zero');");
         run(sb.toString());
 
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft1 VALUES (")
-                .append("1,ST_GeomFromText('POINT(1 1)',4326)::ST_Point, 1, 1.1,'one');");
+        sb.append("INSERT INTO ft1 VALUES (").append("1,ST_GeomFromText('POINT(1 1)',4326)::ST_Point, 1, 1.1,'one');");
         run(sb.toString());
 
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft1 VALUES (")
-                .append("2,ST_GeomFromText('POINT(2 2)',4326)::ST_Point, 2, 2.2,'two');");
+        sb.append("INSERT INTO ft1 VALUES (").append("2,ST_GeomFromText('POINT(2 2)',4326)::ST_Point, 2, 2.2,'two');");
         run(sb.toString());
         // ft4
         runft4();
@@ -115,13 +111,11 @@ public class InformixTestSetup extends JDBCTestSetup {
 
         run("create index ft4_geom_idx on ft4(geometry ST_Geometry_ops) using rtree;");
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft4 VALUES (")
-                .append("0,ST_GeomFromText('POINT(0 0)',4326)::ST_Point, 0, 0.0,'zero');");
+        sb.append("INSERT INTO ft4 VALUES (").append("0,ST_GeomFromText('POINT(0 0)',4326)::ST_Point, 0, 0.0,'zero');");
         run(sb.toString());
 
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft4 VALUES (")
-                .append("1,ST_GeomFromText('POINT(1 1)',4326)::ST_Point, 1, 1.1,'one');");
+        sb.append("INSERT INTO ft4 VALUES (").append("1,ST_GeomFromText('POINT(1 1)',4326)::ST_Point, 1, 1.1,'one');");
         run(sb.toString());
 
         sb = new StringBuffer();
@@ -135,8 +129,7 @@ public class InformixTestSetup extends JDBCTestSetup {
         run(sb.toString());
 
         sb = new StringBuffer();
-        sb.append("INSERT INTO ft4 VALUES (")
-                .append("4,ST_GeomFromText('POINT(4 4)',4326)::ST_Point, 2, 2.2,'two');");
+        sb.append("INSERT INTO ft4 VALUES (").append("4,ST_GeomFromText('POINT(4 4)',4326)::ST_Point, 2, 2.2,'two');");
         run(sb.toString());
 
         sb = new StringBuffer();

@@ -61,14 +61,11 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testDefaultCoverage() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         assertNotNull(gc);
@@ -85,25 +82,19 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testCoverageSRS() throws IOException, FactoryException {
-        GeoPackageReader reader =
-                new GeoPackageReader(
-                        GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
-        CoordinateReferenceSystem crs =
-                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
+        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
         assertEquals(crs, CRS.decode("EPSG:3857", true));
         reader.dispose();
     }
 
     @Test
     public void testZoomlevel0() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(-160, 160.0, -80.0, 80, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -115,27 +106,21 @@ public class GeoPackageReaderTest {
         assertEquals(768, img.getHeight());
 
         // test CRS is consistent now
-        assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        gc.getCoordinateReferenceSystem(),
-                        gc.getEnvelope().getCoordinateReferenceSystem()));
+        assertTrue(CRS.equalsIgnoreMetadata(
+                gc.getCoordinateReferenceSystem(), gc.getEnvelope().getCoordinateReferenceSystem()));
 
         // ImageIO.write(img, "png", URLs.urlToFile(getClass().getResource("world_lakes.png")));
-        ImageAssert.assertEquals(
-                URLs.urlToFile(GeoPackageTest.class.getResource("bluemarble.jpeg")), img, 250);
+        ImageAssert.assertEquals(URLs.urlToFile(GeoPackageTest.class.getResource("bluemarble.jpeg")), img, 250);
         reader.dispose();
     }
 
     @Test
     public void testZoomlevel1() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(0, 160, 0, 80, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(0, 160, 0, 80, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -150,14 +135,11 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testZoomlevel2() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(0, 80, 0, 40, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(0, 80, 0, 40, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -172,14 +154,11 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testZoomlevel3() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(0, 40, 0, 20, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(0, 40, 0, 20, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -194,14 +173,11 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testZoomlevel4() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(1000, 500)),
-                        new ReferencedEnvelope(0, 20, 0, 10, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(1000, 500)), new ReferencedEnvelope(0, 20, 0, 10, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -218,19 +194,15 @@ public class GeoPackageReaderTest {
     public void testTilePositioning() throws IOException {
         // before GEOT-5809 the bounds might have matched, but the raster contents were wrong, check
         // image vs image
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(128, 128)),
-                        new ReferencedEnvelope(-81, -80, 30, 31, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(128, 128)), new ReferencedEnvelope(-81, -80, 30, 31, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
-        File reference =
-                new File("./src/test/resources/org/geotools/geopkg/tilePositionZoomLevel4.png");
+        File reference = new File("./src/test/resources/org/geotools/geopkg/tilePositionZoomLevel4.png");
         ImageAssert.assertEquals(reference, img, 1000);
         reader.dispose();
     }
@@ -238,8 +210,7 @@ public class GeoPackageReaderTest {
     @Test
     public void testPngJpegTileReading() throws IOException {
         // hit everything, mixing transparent and opaque
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
         GridCoverage2D gc = reader.read(null);
         RenderedImage img = gc.getRenderedImage();
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
@@ -250,13 +221,10 @@ public class GeoPackageReaderTest {
     @Test
     public void testZoomLevel0Empty() throws IOException {
         // hit everything at zoom level 0
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(128, 128)),
-                        new ReferencedEnvelope(-180, 180, -90, 90, WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(128, 128)), new ReferencedEnvelope(-180, 180, -90, 90, WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
 
@@ -270,8 +238,7 @@ public class GeoPackageReaderTest {
 
     @Test
     public void testNumberOverviews() throws IOException {
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
         assertEquals(4, reader.getDatasetLayout().getNumInternalOverviews());
 
         // get all
@@ -290,14 +257,12 @@ public class GeoPackageReaderTest {
     @Test
     public void testAlphaInterpolation() throws Exception {
         // Read RGBA GeoPackage tiles with non-opaque values
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("rivers.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("rivers.gpkg"), null);
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3857", true);
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(128, 128)),
-                        new ReferencedEnvelope(-9000000, 2000000, -8000000, 3000000, crs));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(128, 128)),
+                new ReferencedEnvelope(-9000000, 2000000, -8000000, 3000000, crs));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage rgbA = gc.getRenderedImage();
@@ -332,8 +297,7 @@ public class GeoPackageReaderTest {
     @Test
     public void testtCoverageWithDots() throws IOException {
         // used to break here, query failed to run
-        GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("dot.in.name.gpkg"), null);
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("dot.in.name.gpkg"), null);
         GridCoverage2D gc = reader.read("dot.in.name", null);
         assertNotNull(gc);
 

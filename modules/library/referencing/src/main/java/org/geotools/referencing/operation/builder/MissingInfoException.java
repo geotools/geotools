@@ -19,8 +19,7 @@ package org.geotools.referencing.operation.builder;
 import org.geotools.api.referencing.FactoryException;
 
 /**
- * Thrown when a required operation can't be performed because some information is missing or isn't
- * set up properly.
+ * Thrown when a required operation can't be performed because some information is missing or isn't set up properly.
  *
  * @since 2.4
  * @version $Id$
@@ -34,8 +33,8 @@ public class MissingInfoException extends FactoryException {
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param message The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public MissingInfoException(String message) {
         super(message);

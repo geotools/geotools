@@ -28,8 +28,7 @@ class HanaVersion {
     /**
      * Constructor.
      *
-     * @param versionString The version string in the format
-     *     "version.00.revision.patchlevel.buildid"..
+     * @param versionString The version string in the format "version.00.revision.patchlevel.buildid"..
      */
     public HanaVersion(String versionString) {
         String[] components = versionString.split("\\.");

@@ -31,9 +31,7 @@ public class MeasureConverterTest {
     public void testStringToMeasure() {
         assertEquals(new Measure(10, SI.METRE), Converters.convert("10m", Measure.class));
         assertEquals(new Measure(0.3, USCustomary.FOOT), Converters.convert(".3ft", Measure.class));
-        assertEquals(
-                new Measure(3e-10, NonSI.DEGREE_ANGLE),
-                Converters.convert("3e-10\u00B0", Measure.class));
+        assertEquals(new Measure(3e-10, NonSI.DEGREE_ANGLE), Converters.convert("3e-10\u00B0", Measure.class));
         assertEquals(new Measure(3, null), Converters.convert("3", Measure.class));
     }
 
@@ -41,8 +39,6 @@ public class MeasureConverterTest {
     public void testMeasureToString() {
         assertEquals("10m", Converters.convert(new Measure(10, SI.METRE), String.class));
         assertEquals("0.3ft", Converters.convert(new Measure(0.3, USCustomary.FOOT), String.class));
-        assertEquals(
-                "3E-10\u00B0",
-                Converters.convert(new Measure(3e-10, NonSI.DEGREE_ANGLE), String.class));
+        assertEquals("3E-10\u00B0", Converters.convert(new Measure(3e-10, NonSI.DEGREE_ANGLE), String.class));
     }
 }

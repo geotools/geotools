@@ -41,20 +41,20 @@ import org.slf4j.MarkerFactory;
  */
 public class LogbackLogger extends LoggerAdapter {
     /**
-     * Marker used to tag configuration {@link Logging#FATAL} messages, as checked with sl4j {@code
-     * logger.isErrorEnabled(FATAL)}.
+     * Marker used to tag configuration {@link Logging#FATAL} messages, as checked with sl4j
+     * {@code logger.isErrorEnabled(FATAL)}.
      */
     public static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
     /**
-     * Marker used to tag configuration {@link Level#CONFIG} messages, as checked with sl4j {@code
-     * logger.isInfoEnabled(CONFIG)}.
+     * Marker used to tag configuration {@link Level#CONFIG} messages, as checked with sl4j
+     * {@code logger.isInfoEnabled(CONFIG)}.
      */
     public static final Marker CONFIG = MarkerFactory.getMarker("CONFIG");
 
     /**
-     * Marker used to tag configuration {@link Level#FINEST} messages, as checked with sl4j {@code
-     * logger.isInfoEnabled(FINEST)}.
+     * Marker used to tag configuration {@link Level#FINEST} messages, as checked with sl4j
+     * {@code logger.isInfoEnabled(FINEST)}.
      */
     public static final Marker FINEST = MarkerFactory.getMarker("FINEST");
 
@@ -68,8 +68,8 @@ public class LogbackLogger extends LoggerAdapter {
     /**
      * Sets the level for this logger.
      *
-     * <p>Care is taken to use reflection to access logback-classic Level and Logger classes (to
-     * avoid hard runtime dependency when only the sl4j api is provided at runtime).
+     * <p>Care is taken to use reflection to access logback-classic Level and Logger classes (to avoid hard runtime
+     * dependency when only the sl4j api is provided at runtime).
      *
      * <p>Of logback-classic is unavailable level cannot be changed programmatically.
      *
@@ -215,19 +215,16 @@ public class LogbackLogger extends LoggerAdapter {
         logger.trace(FINEST, message);
     }
 
-    /**
-     * Logs a record at the specified level, passing the provided throwable to slf4j api.</code>.
-     */
+    /** Logs a record at the specified level, passing the provided throwable to slf4j api.</code>. */
     @Override
     public void log(final Level level, final String message, final Throwable thrown) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    if (n < 0 || n == Integer.MAX_VALUE) break;
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, fallthrough since we are greater than SEVERE.
-                }
+            default: {
+                if (n < 0 || n == Integer.MAX_VALUE) break;
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, fallthrough since we are greater than SEVERE.
+            }
             case 11:
                 logger.error(FATAL, message, thrown);
                 break;

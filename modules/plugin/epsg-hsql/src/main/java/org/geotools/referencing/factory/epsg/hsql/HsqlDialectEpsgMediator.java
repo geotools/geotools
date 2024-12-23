@@ -38,9 +38,9 @@ public class HsqlDialectEpsgMediator extends AbstractEpsgMediator {
     }
 
     /**
-     * Creates a new instance of this data source using the specified hints. The priority is set to
-     * a lower value than the {@linkplain FactoryOnAccess}'s one in order to give precedence to the
-     * Access-backed database, if presents. Priorities are set that way because:
+     * Creates a new instance of this data source using the specified hints. The priority is set to a lower value than
+     * the {@linkplain FactoryOnAccess}'s one in order to give precedence to the Access-backed database, if presents.
+     * Priorities are set that way because:
      *
      * <ul>
      *   <li>The MS-Access format is the primary EPSG database format.

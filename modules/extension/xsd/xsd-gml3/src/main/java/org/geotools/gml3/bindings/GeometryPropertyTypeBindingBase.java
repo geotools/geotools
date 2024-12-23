@@ -38,8 +38,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
 
     private GML3EncodingUtils encodingUtils;
 
-    public GeometryPropertyTypeBindingBase(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public GeometryPropertyTypeBindingBase(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         this.idSet = idRegistry;
         this.encodingUtils = encodingUtils;
     }
@@ -65,10 +64,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
         return node.getChildValue(getGeometryType());
     }
 
-    /**
-     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
-     *     org.w3c.dom.Element)
-     */
+    /** @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element) */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         checkExistingId((Geometry) object);
@@ -82,14 +78,13 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         return encodingUtils.GeometryPropertyType_GetProperties((Geometry) object);
     }
 
     /**
-     * Check if the geometry contains a feature which id is pre-existing in the document. If it's
-     * true, make the geometry empty and add xlink:href property
+     * Check if the geometry contains a feature which id is pre-existing in the document. If it's true, make the
+     * geometry empty and add xlink:href property
      *
      * @param geom The geometry to be checked
      */

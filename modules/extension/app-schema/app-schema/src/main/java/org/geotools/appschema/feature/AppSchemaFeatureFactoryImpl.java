@@ -69,8 +69,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     /**
      * Create a new geometry attribute, even for null id.
      *
-     * @see
-     *     org.geotools.feature.AbstractFeatureFactoryImpl#createGeometryAttribute(java.lang.Object,
+     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createGeometryAttribute(java.lang.Object,
      *     org.geotools.api.feature.type.GeometryDescriptor, java.lang.String,
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
@@ -80,26 +79,24 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
         if (crs != null && !(crs.equals(descriptor.getCoordinateReferenceSystem()))) {
             // update CRS
             GeometryType origType = descriptor.getType();
-            GeometryType geomType =
-                    new GeometryTypeImpl(
-                            origType.getName(),
-                            origType.getBinding(),
-                            crs,
-                            origType.isIdentified(),
-                            origType.isAbstract(),
-                            origType.getRestrictions(),
-                            origType.getSuper(),
-                            origType.getDescription());
+            GeometryType geomType = new GeometryTypeImpl(
+                    origType.getName(),
+                    origType.getBinding(),
+                    crs,
+                    origType.isIdentified(),
+                    origType.isAbstract(),
+                    origType.getRestrictions(),
+                    origType.getSuper(),
+                    origType.getDescription());
             geomType.getUserData().putAll(origType.getUserData());
 
-            descriptor =
-                    new GeometryDescriptorImpl(
-                            geomType,
-                            descriptor.getName(),
-                            descriptor.getMinOccurs(),
-                            descriptor.getMaxOccurs(),
-                            descriptor.isNillable(),
-                            descriptor.getDefaultValue());
+            descriptor = new GeometryDescriptorImpl(
+                    geomType,
+                    descriptor.getName(),
+                    descriptor.getMinOccurs(),
+                    descriptor.getMaxOccurs(),
+                    descriptor.isNillable(),
+                    descriptor.getDefaultValue());
             descriptor.getUserData().putAll(descriptor.getUserData());
         }
         return new GeometryAttributeImpl(value, descriptor, buildSafeGmlObjectId(id));
@@ -108,30 +105,25 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     /**
      * Create a new complex attribute, even for null value or id.
      *
-     * @see
-     *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
+     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
      *     org.geotools.api.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
-    public ComplexAttribute createComplexAttribute(
-            Collection value, AttributeDescriptor descriptor, String id) {
-        return new ComplexAttributeImpl(
-                buildCollectionIfNull(value), descriptor, buildSafeGmlObjectId(id));
+    public ComplexAttribute createComplexAttribute(Collection value, AttributeDescriptor descriptor, String id) {
+        return new ComplexAttributeImpl(buildCollectionIfNull(value), descriptor, buildSafeGmlObjectId(id));
     }
 
     /**
      * Create a new complex attribute, even for null value or id.
      *
-     * @see
-     *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
+     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
      *     org.geotools.api.feature.type.ComplexType, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
     public ComplexAttribute createComplexAttribute(Collection value, ComplexType type, String id) {
-        return new ComplexAttributeImpl(
-                buildCollectionIfNull(value), type, buildSafeGmlObjectId(id));
+        return new ComplexAttributeImpl(buildCollectionIfNull(value), type, buildSafeGmlObjectId(id));
     }
 
     /**
@@ -185,8 +177,8 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     }
 
     /**
-     * If the value collection is null, construct and return a new empty collection. If value
-     * collection is not null, it is returned.
+     * If the value collection is null, construct and return a new empty collection. If value collection is not null, it
+     * is returned.
      *
      * @return a non-null collection
      */

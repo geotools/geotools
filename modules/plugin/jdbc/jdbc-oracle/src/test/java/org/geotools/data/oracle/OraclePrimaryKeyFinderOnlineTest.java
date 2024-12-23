@@ -34,8 +34,7 @@ public class OraclePrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
 
     /** override to add failure diagnostic message. */
     @Override
-    protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features)
-            throws Exception {
+    protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
         b.add("four");
         b.add(new GeometryFactory().createPoint(new Coordinate(4, 4)));
@@ -52,7 +51,6 @@ public class OraclePrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
                         + " does not match expected "
                         + tname(featureType.getTypeName())
                         + ".4(\\..*)?",
-                ((String) f.getUserData().get("fid"))
-                        .matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
+                ((String) f.getUserData().get("fid")).matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
 }

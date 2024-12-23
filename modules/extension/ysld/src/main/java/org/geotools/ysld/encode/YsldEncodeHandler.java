@@ -54,10 +54,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     @SuppressWarnings("unchecked")
     YsldEncodeHandler(T obj) {
-        this.it =
-                obj != null
-                        ? Collections.singleton(obj).iterator()
-                        : (Iterator<T>) Collections.emptyIterator();
+        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator<T>) Collections.emptyIterator();
     }
 
     @Override
@@ -202,13 +199,11 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     /**
-     * Takes an {@link Expression} and encodes it as YSLD. Literals are encoded as Strings.
-     * Concatenation expressions are removed, as they are implicit in the YSLD syntax. Other
-     * non-literal expressions are wrapped in ${}.
+     * Takes an {@link Expression} and encodes it as YSLD. Literals are encoded as Strings. Concatenation expressions
+     * are removed, as they are implicit in the YSLD syntax. Other non-literal expressions are wrapped in ${}.
      *
-     * <p>If the resulting string can be converted to the number, returns an appropriate {@link
-     * Number} object. Otherwise returns a {@link String}. Returns null if the passed expressison
-     * was null
+     * <p>If the resulting string can be converted to the number, returns an appropriate {@link Number} object.
+     * Otherwise returns a {@link String}. Returns null if the passed expressison was null
      *
      * @param expr Expression to encode
      * @return {@link String} or {@link Number} representation of expr, or null if expr is null.
@@ -222,7 +217,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         for (Expression subExpr : subExpressions) {
             if (!isNull(subExpr)) {
                 if (subExpr instanceof Literal) {
-                    builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
+                    builder.append(
+                            escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
                 } else {
                     builder.append("${")
                             .append(escapeForEmbededCQL(ECQL.toCQL(subExpr)))

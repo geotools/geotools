@@ -194,10 +194,8 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * <p>
      *
      * <ul>
-     *   <li>Use a postivie number to indicate the number of arguments. Example: add( number1,
-     *       number2 ) = 2
-     *   <li>Use a negative number to indicate a minimum number: Example: concat( str1, str2,... )
-     *       has -2
+     *   <li>Use a postivie number to indicate the number of arguments. Example: add( number1, number2 ) = 2
+     *   <li>Use a negative number to indicate a minimum number: Example: concat( str1, str2,... ) has -2
      * </ul>
      */
     private static List<Parameter<?>> generateArguments(int count) {
@@ -254,8 +252,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * @param description human readable description
      * @return parameter description
      */
-    public static <T> Parameter<T> parameter(
-            String name, Class<T> type, String title, String description) {
+    public static <T> Parameter<T> parameter(String name, Class<T> type, String title, String description) {
         return new org.geotools.api.data.Parameter<>(name, type, title, description);
     }
 }

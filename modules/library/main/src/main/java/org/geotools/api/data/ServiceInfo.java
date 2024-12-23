@@ -22,11 +22,10 @@ import java.util.Set;
 /**
  * Information about a service.
  *
- * <p>You can treat this bean as a "summary view" on more complete metadata information that may be
- * accessible as header or table information.
+ * <p>You can treat this bean as a "summary view" on more complete metadata information that may be accessible as header
+ * or table information.
  *
- * <p>The names used in this class have been taken from Dublin Code and it's application profile for
- * RDF.
+ * <p>The names used in this class have been taken from Dublin Code and it's application profile for RDF.
  *
  * @author Jody Garnett, Refractions Research
  * @author David Zwiers, Refractions Research
@@ -38,8 +37,8 @@ public interface ServiceInfo {
     /**
      * Human readable title representing the service.
      *
-     * <p>The title is used to represent the service in the context of a user interface and should
-     * make use of the current Locale if possible.
+     * <p>The title is used to represent the service in the context of a user interface and should make use of the
+     * current Locale if possible.
      *
      * @return title, null if unsupported.
      */
@@ -57,16 +56,16 @@ public interface ServiceInfo {
     /**
      * Human readable description of this service.
      *
-     * <p>This use is understood to be in agreement with "dublin-core", implementors may use either
-     * abstract or description as needed.
+     * <p>This use is understood to be in agreement with "dublin-core", implementors may use either abstract or
+     * description as needed.
      *
      * <p>
      *
      * <ul>
-     *   <li>Dublin Core: <quote> A textual description of the content of the resource, including
-     *       abstracts in the case of document-like objects or content descriptions in the case of
-     *       visual resources. </quote> When providing actual dublin-core metadata you can gather up
-     *       all the description information into a single string for searching.
+     *   <li>Dublin Core: <quote> A textual description of the content of the resource, including abstracts in the case
+     *       of document-like objects or content descriptions in the case of visual resources. </quote> When providing
+     *       actual dublin-core metadata you can gather up all the description information into a single string for
+     *       searching.
      *   <li>WMS: abstract
      *   <li>WFS: abstract
      *   <li>shapefile shp.xml information

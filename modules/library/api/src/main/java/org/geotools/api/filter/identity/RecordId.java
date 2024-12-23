@@ -12,9 +12,8 @@ package org.geotools.api.filter.identity;
 /**
  * RecordId refered to by CSW-2 specification.
  *
- * <p>Records are identified with a String, commonly referred to as an "id". We are using
- * SimpleFeature to represent a Record at the moment (since our Record does not have a getID()
- * method).
+ * <p>Records are identified with a String, commonly referred to as an "id". We are using SimpleFeature to represent a
+ * Record at the moment (since our Record does not have a getID() method).
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Jody Garnett, Refractions Research Inc.

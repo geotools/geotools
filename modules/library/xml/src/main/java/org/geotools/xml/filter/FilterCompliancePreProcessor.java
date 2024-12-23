@@ -78,10 +78,9 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.XMLHandlerHints;
 
 /**
- * Prepares a filter for xml encoded for interoperability with another system. It will behave
- * differently depeding on the compliance level chosen. A new request will have to be made and the
- * features will have to be tested again on the client side if there are any FidFilters in the
- * filter. Consider the following to understand why:
+ * Prepares a filter for xml encoded for interoperability with another system. It will behave differently depeding on
+ * the compliance level chosen. A new request will have to be made and the features will have to be tested again on the
+ * client side if there are any FidFilters in the filter. Consider the following to understand why:
  *
  * <pre>
  * and {
@@ -93,8 +92,7 @@ import org.geotools.xml.XMLHandlerHints;
  * }
  * </pre>
  *
- * for strict it would throw an exception, for low it would be left alone, but for Medium it would
- * end up as:
+ * for strict it would throw an exception, for low it would be left alone, but for Medium it would end up as:
  *
  * <pre>
  * and{
@@ -105,16 +103,14 @@ import org.geotools.xml.XMLHandlerHints;
  *
  * and getFids() would return the fids in the fidFilter.
  *
- * <p>So the final filter would (this is not standard but a common implementation) return the
- * results of the and filter as well as all the features that match the fids. Which is more than the
- * original filter would accept.
+ * <p>So the final filter would (this is not standard but a common implementation) return the results of the and filter
+ * as well as all the features that match the fids. Which is more than the original filter would accept.
  *
- * <p>The XML Document writer can operate at different levels of compliance. The geotools level is
- * extremely flexible and forgiving.
+ * <p>The XML Document writer can operate at different levels of compliance. The geotools level is extremely flexible
+ * and forgiving.
  *
- * <p>All NOT(FidFilter) are changed to Filter.INCLUDE. So make sure that the filter is processed
- * again on the client with the original filter For a description of the difference Compliance
- * levels that can be used see
+ * <p>All NOT(FidFilter) are changed to Filter.INCLUDE. So make sure that the filter is processed again on the client
+ * with the original filter For a description of the difference Compliance levels that can be used see
  *
  * <ul>
  *   <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_LOW}
@@ -324,8 +320,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     for (Filter child : filter.getChildren()) {
                         extraData = child.accept(this, extraData);
                     }
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_AND, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_AND, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -363,8 +358,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     for (Filter child : filter.getChildren()) {
                         extraData = child.accept(this, extraData);
                     }
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_OR, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_OR, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -403,8 +397,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     child = filter.getFilter();
                     extraData = child.accept(this, extraData);
 
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_NOT, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_NOT, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -427,31 +420,28 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
         return extraData;
-    };
+    }
+    ;
 
-    private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         Data resultingFilter;
 
         switch (filterType) {
-            case FilterType.LOGIC_AND:
-                {
-                    Set<String> fids = andFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
+            case FilterType.LOGIC_AND: {
+                Set<String> fids = andFids(startOfFilterStack);
+                resultingFilter = buildFilter(filterType, startOfFilterStack);
+                resultingFilter.fids.addAll(fids);
 
-                    if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
-                        requiresPostProcessing = true;
-                    break;
-                }
+                if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty()) requiresPostProcessing = true;
+                break;
+            }
 
-            case FilterType.LOGIC_OR:
-                {
-                    Set<String> fids = orFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
-                    break;
-                }
+            case FilterType.LOGIC_OR: {
+                Set<String> fids = orFids(startOfFilterStack);
+                resultingFilter = buildFilter(filterType, startOfFilterStack);
+                resultingFilter.fids.addAll(fids);
+                break;
+            }
 
             case FilterType.LOGIC_NOT:
                 resultingFilter = buildFilter(filterType, startOfFilterStack);
@@ -540,8 +530,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
      * @param filterType LOGIC_NOT, LOGIC_AND or LOGIC_OR
      * @return Data Stack data representing the genrated filter
      */
-    private Data buildFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data buildFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         if (current.isEmpty()) {
             return Data.ALL;
         }
@@ -670,8 +659,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
             Set<String> fids;
 
@@ -684,22 +672,21 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
                     return filter;
 
-                case FilterType.LOGIC_OR:
-                    {
-                        if (hasNonFidFilter(startOfFilterStack)) {
-                            throw new UnsupportedFilterException(
-                                    "Maximum compliance does not allow Logic filters to contain FidFilters");
-                        }
-
-                        fids = orFids(startOfFilterStack);
-
-                        pop(startOfFilterStack);
-
-                        Data data = new Data();
-                        data.fids.addAll(fids);
-
-                        return data;
+                case FilterType.LOGIC_OR: {
+                    if (hasNonFidFilter(startOfFilterStack)) {
+                        throw new UnsupportedFilterException(
+                                "Maximum compliance does not allow Logic filters to contain FidFilters");
                     }
+
+                    fids = orFids(startOfFilterStack);
+
+                    pop(startOfFilterStack);
+
+                    Data data = new Data();
+                    data.fids.addAll(fids);
+
+                    return data;
+                }
 
                 case FilterType.LOGIC_NOT:
                     return buildFilter(filterType, startOfFilterStack);
@@ -745,7 +732,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     public Object visit(PropertyIsNull filter, Object extraData) {
         current.push(new Data(filter));
         return extraData;
-    };
+    }
+    ;
 
     // NilFilter
     @Override
@@ -884,12 +872,10 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     }
 
     /**
-     * Returns true if the filter was one where the request to the server is more general than the
-     * actual filter. See {@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_MEDIUM} and example of when
-     * this can happen.
+     * Returns true if the filter was one where the request to the server is more general than the actual filter. See
+     * {@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_MEDIUM} and example of when this can happen.
      *
-     * @return true if the filter was one where the request to the server is more general than the
-     *     actual filter.
+     * @return true if the filter was one where the request to the server is more general than the actual filter.
      */
     public boolean requiresPostProcessing() {
         return requiresPostProcessing;

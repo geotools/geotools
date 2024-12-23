@@ -26,8 +26,8 @@ import org.xml.sax.SAXNotRecognizedException;
 /**
  * KeyHandler purpose.
  *
- * <p>represents a 'key' element. This class is not currently used asside from as a placeholder.
- * TODO use this class semantically
+ * <p>represents a 'key' element. This class is not currently used asside from as a placeholder. TODO use this class
+ * semantically
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
@@ -46,9 +46,7 @@ public class KeyHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((name == null) ? 1 : name.hashCode());
+        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((name == null) ? 1 : name.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -87,8 +85,7 @@ public class KeyHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {

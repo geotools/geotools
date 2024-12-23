@@ -40,8 +40,7 @@ import org.junit.Before;
 @SuppressWarnings("deprecation")
 public class GDALTestCase {
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GDALTestCase.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GDALTestCase.class);
 
     protected static void forceDataLoading(final GridCoverage2D gc) {
         Assert.assertNotNull(gc);
@@ -49,10 +48,7 @@ public class GDALTestCase {
         if (TestData.isInteractiveTest()) {
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane()
-                    .add(
-                            new javax.media.jai.widget.ScrollingImagePanel(
-                                    gc.getRenderedImage(), 800, 800));
+            frame.getContentPane().add(new javax.media.jai.widget.ScrollingImagePanel(gc.getRenderedImage(), 800, 800));
             frame.pack();
             SwingUtilities.invokeLater(() -> frame.setVisible(true));
         } else {
@@ -60,16 +56,10 @@ public class GDALTestCase {
         }
     }
 
-    /**
-     * A String containing the name of the supported format. It will be used to customize the
-     * messages.
-     */
+    /** A String containing the name of the supported format. It will be used to customize the messages. */
     private String supportedFormat;
 
-    /**
-     * The {@code GridFormatFactorySpi} provided by the specific subclass to handle a specific
-     * format.
-     */
+    /** The {@code GridFormatFactorySpi} provided by the specific subclass to handle a specific format. */
     private GridFormatFactorySpi factorySpi;
 
     public GDALTestCase(final String supportedFormat, final GridFormatFactorySpi factorySpi) {

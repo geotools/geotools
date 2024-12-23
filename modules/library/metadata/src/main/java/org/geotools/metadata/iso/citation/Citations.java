@@ -32,25 +32,23 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 
 /**
- * A set of pre-defined constants and static methods working on {@linkplain Citation citations}.
- * Pre-defined metadata constants are usually declared in implementation classes like {@link
- * ResponsiblePartyImpl}. But citations are an exception since they are extensively referenced in
- * the Geotools library, and handling citations requires some convenience methods. They are factored
- * out in this {@code Citations} class for clarity.
+ * A set of pre-defined constants and static methods working on {@linkplain Citation citations}. Pre-defined metadata
+ * constants are usually declared in implementation classes like {@link ResponsiblePartyImpl}. But citations are an
+ * exception since they are extensively referenced in the Geotools library, and handling citations requires some
+ * convenience methods. They are factored out in this {@code Citations} class for clarity.
  *
  * <p>Citations may be about an <cite>organisation</cite> (e.g. {@linkplain #OPEN_GIS OpenGIS}), a
- * <cite>specification</cite> (e.g. {@linkplain #WMS}) or an <cite>authority</cite> that maintains
- * definitions of codes (e.g. {@linkplain #EPSG}). In the later case, the citation contains an
- * {@linkplain Citation#getIdentifiers identifier} which is the namespace of the codes maintained by
- * the authority. For example the identifier for the {@link #EPSG} citation is {@code "EPSG"}, and
- * EPSG codes look like {@code "EPSG:4326"}.
+ * <cite>specification</cite> (e.g. {@linkplain #WMS}) or an <cite>authority</cite> that maintains definitions of codes
+ * (e.g. {@linkplain #EPSG}). In the later case, the citation contains an {@linkplain Citation#getIdentifiers
+ * identifier} which is the namespace of the codes maintained by the authority. For example the identifier for the
+ * {@link #EPSG} citation is {@code "EPSG"}, and EPSG codes look like {@code "EPSG:4326"}.
  *
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett
- * @todo Classify the pre-defined constants using the javadoc {@code @category} tag once it will be
- *     available (targeted for J2SE 1.6).
+ * @todo Classify the pre-defined constants using the javadoc {@code @category} tag once it will be available (targeted
+ *     for J2SE 1.6).
  */
 public final class Citations {
     /** Do not allows instantiation of this class. */
@@ -63,10 +61,9 @@ public final class Citations {
     ///////////////////////////////////////////////////////////////////////
 
     /**
-     * The <A HREF="http://www.opengeospatial.org">Open Geospatial consortium</A> organisation.
-     * "Open Geospatial consortium" is the new name for "OpenGIS consortium". An {@linkplain
-     * Citation#getAlternateTitles alternate title} for this citation is "OGC" (according ISO 19115,
-     * alternate titles often contain abreviations).
+     * The <A HREF="http://www.opengeospatial.org">Open Geospatial consortium</A> organisation. "Open Geospatial
+     * consortium" is the new name for "OpenGIS consortium". An {@linkplain Citation#getAlternateTitles alternate title}
+     * for this citation is "OGC" (according ISO 19115, alternate titles often contain abreviations).
      *
      * @see ResponsiblePartyImpl#OGC
      * @see #OPEN_GIS
@@ -83,10 +80,9 @@ public final class Citations {
     }
 
     /**
-     * The <A HREF="http://www.opengis.org">OpenGIS consortium</A> organisation. "OpenGIS
-     * consortium" is the old name for "Open Geospatial consortium". {@linkplain
-     * Citation#getAlternateTitles Alternate titles} for this citation are "OpenGIS" and "OGC"
-     * (according ISO 19115, alternate titles often contain abreviations).
+     * The <A HREF="http://www.opengis.org">OpenGIS consortium</A> organisation. "OpenGIS consortium" is the old name
+     * for "Open Geospatial consortium". {@linkplain Citation#getAlternateTitles Alternate titles} for this citation are
+     * "OpenGIS" and "OGC" (according ISO 19115, alternate titles often contain abreviations).
      *
      * @see ResponsiblePartyImpl#OPEN_GIS
      * @see #OGC
@@ -179,9 +175,9 @@ public final class Citations {
 
     // Do not put the ...files/?artifact... link in the head sentence: it break javadoc formatting.
     /**
-     * The Web Map Service specification. {@linkplain Citation#getAlternateTitles Alternate titles}
-     * for this citation are "WMS", "WMS 1.3.0", "OGC 04-024" and "ISO 19128". Note that the version
-     * numbers may be upgrated in future Geotools versions.
+     * The Web Map Service specification. {@linkplain Citation#getAlternateTitles Alternate titles} for this citation
+     * are "WMS", "WMS 1.3.0", "OGC 04-024" and "ISO 19128". Note that the version numbers may be upgrated in future
+     * Geotools versions.
      *
      * @see <A HREF="http://www.opengeospatial.org/">Open Geospatial Consortium</A>
      * @see <A HREF="http://www.opengis.org/docs/01-068r3.pdf">WMS 1.1.1 specification</A>
@@ -228,9 +224,9 @@ public final class Citations {
     }
 
     /**
-     * The <A HREF="http://java.sun.com/products/java-media/jai">Java Advanced Imaging</A> library.
-     * An {@linkplain Citation#getAlternateTitles alternate title} for this citation is "JAI"
-     * (according ISO 19115, alternate titles often contain abreviations).
+     * The <A HREF="http://java.sun.com/products/java-media/jai">Java Advanced Imaging</A> library. An
+     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "JAI" (according ISO 19115,
+     * alternate titles often contain abreviations).
      *
      * @see ResponsiblePartyImpl#SUN_MICROSYSTEMS
      */
@@ -252,19 +248,18 @@ public final class Citations {
 
     /**
      * The <A HREF="http://www.epsg.org">European Petroleum Survey Group</A> authority. An
-     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "EPSG"
-     * (according ISO 19115, alternate titles often contain abreviations). In addition, this
-     * citation contains the "EPSG" {@linkplain Citation#getIdentifiers identifier} for the
-     * "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
+     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "EPSG" (according ISO 19115,
+     * alternate titles often contain abreviations). In addition, this citation contains the "EPSG"
+     * {@linkplain Citation#getIdentifiers identifier} for the "Authority name" {@linkplain Citation#getIdentifierTypes
+     * identifier type}.
      *
-     * <p>This citation is used as an authority for {@linkplain
-     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain
-     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on EPSG data,
-     * Geotools compares the {@code "EPSG"} string against the {@linkplain Citation#getIdentifiers
-     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
-     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
-     * #identifierMatches(Citation,String) identifierMatches} method.
+     * <p>This citation is used as an authority for
+     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system} identifiers.
+     * When searching an {@linkplain org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on EPSG
+     * data, Geotools compares the {@code "EPSG"} string against the {@linkplain Citation#getIdentifiers identifiers}
+     * (or against the {@linkplain Citation#getTitle title} and {@linkplain Citation#getAlternateTitles alternate
+     * titles} if there is no identifier) using the {@link #identifierMatches(Citation,String) identifierMatches}
+     * method.
      *
      * @see ResponsiblePartyImpl#EPSG
      * @see #AUTO
@@ -282,23 +277,21 @@ public final class Citations {
     }
 
     /**
-     * The <A HREF="http://www.opengis.org/docs/01-068r3.pdf">WMS 1.1.1</A> "Automatic Projections"
-     * authority. An {@linkplain Citation#getAlternateTitles alternate title} for this citation is
-     * "AUTO" (according ISO 19115, alternate titles often contain abreviations). In addition, this
-     * citation contains the "AUTO" {@linkplain Citation#getIdentifiers identifier} for the
-     * "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
+     * The <A HREF="http://www.opengis.org/docs/01-068r3.pdf">WMS 1.1.1</A> "Automatic Projections" authority. An
+     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "AUTO" (according ISO 19115,
+     * alternate titles often contain abreviations). In addition, this citation contains the "AUTO"
+     * {@linkplain Citation#getIdentifiers identifier} for the "Authority name" {@linkplain Citation#getIdentifierTypes
+     * identifier type}.
      *
-     * <p><strong>Warning:</strong> {@code AUTO} is different from {@link #AUTO2} used for WMS
-     * 1.3.0.
+     * <p><strong>Warning:</strong> {@code AUTO} is different from {@link #AUTO2} used for WMS 1.3.0.
      *
-     * <p>This citation is used as an authority for {@linkplain
-     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain
-     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on AUTO data,
-     * Geotools compares the {@code "AUTO"} string against the {@linkplain Citation#getIdentifiers
-     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
-     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
-     * #identifierMatches(Citation,String) identifierMatches} method.
+     * <p>This citation is used as an authority for
+     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system} identifiers.
+     * When searching an {@linkplain org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on AUTO
+     * data, Geotools compares the {@code "AUTO"} string against the {@linkplain Citation#getIdentifiers identifiers}
+     * (or against the {@linkplain Citation#getTitle title} and {@linkplain Citation#getAlternateTitles alternate
+     * titles} if there is no identifier) using the {@link #identifierMatches(Citation,String) identifierMatches}
+     * method.
      *
      * @see <A HREF="http://www.opengeospatial.org/">Open Geospatial Consortium</A>
      * @see <A HREF="http://www.opengis.org/docs/01-068r3.pdf">WMS 1.1.1 specification</A>
@@ -319,11 +312,8 @@ public final class Citations {
          */
         final Collection<ResponsibleParty> parties = c.getCitedResponsibleParties();
         parties.add(ResponsiblePartyImpl.OGC);
-        parties.add(
-                ResponsiblePartyImpl.OGC(
-                        Role.PUBLISHER,
-                        OnLineFunction.DOWNLOAD,
-                        "http://www.opengis.org/docs/01-068r3.pdf"));
+        parties.add(ResponsiblePartyImpl.OGC(
+                Role.PUBLISHER, OnLineFunction.DOWNLOAD, "http://www.opengis.org/docs/01-068r3.pdf"));
         c.getPresentationForm().add(PresentationForm.DOCUMENT_DIGITAL); // See comment in WMS.
         c.freeze();
         AUTO = c;
@@ -331,23 +321,20 @@ public final class Citations {
 
     // Do not put the ...files/?artifact... link in the head sentence: it break javadoc formatting.
     /**
-     * The WMS 1.3.0 "Automatic Projections" authority. An {@linkplain Citation#getAlternateTitles
-     * alternate title} for this citation is "AUTO2" (according ISO 19115, alternate titles often
-     * contain abreviations). In addition, this citation contains the "AUTO2" {@linkplain
-     * Citation#getIdentifiers identifier} for the "Authority name" {@linkplain
-     * Citation#getIdentifierTypes identifier type}.
+     * The WMS 1.3.0 "Automatic Projections" authority. An {@linkplain Citation#getAlternateTitles alternate title} for
+     * this citation is "AUTO2" (according ISO 19115, alternate titles often contain abreviations). In addition, this
+     * citation contains the "AUTO2" {@linkplain Citation#getIdentifiers identifier} for the "Authority name"
+     * {@linkplain Citation#getIdentifierTypes identifier type}.
      *
-     * <p><strong>Warning:</strong> {@code AUTO2} is different from {@link #AUTO} used for WMS 1.1.1
-     * and earlier.
+     * <p><strong>Warning:</strong> {@code AUTO2} is different from {@link #AUTO} used for WMS 1.1.1 and earlier.
      *
-     * <p>This citation is used as an authority for {@linkplain
-     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain
-     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on AUTO2 data,
-     * Geotools compares the {@code "AUTO2"} string against the {@linkplain Citation#getIdentifiers
-     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
-     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
-     * #identifierMatches(Citation,String) identifierMatches} method.
+     * <p>This citation is used as an authority for
+     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system} identifiers.
+     * When searching an {@linkplain org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on
+     * AUTO2 data, Geotools compares the {@code "AUTO2"} string against the {@linkplain Citation#getIdentifiers
+     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain Citation#getAlternateTitles
+     * alternate titles} if there is no identifier) using the {@link #identifierMatches(Citation,String)
+     * identifierMatches} method.
      *
      * @see <A HREF="http://www.opengeospatial.org/">Open Geospatial Consortium</A>
      * @see <A HREF="http://portal.opengis.org/files/?artifact_id=5316">WMS 1.3.0 specification</A>
@@ -396,9 +383,9 @@ public final class Citations {
     }
 
     /**
-     * URN in the OGC namespace. This citation contains the {@code "urn:ogc:def"} and {@code
-     * "urn:x-ogc:def"} {@linkplain Citation#getIdentifiers identifiers} for the "Authority name"
-     * {@linkplain Citation#getIdentifierTypes identifier type}.
+     * URN in the OGC namespace. This citation contains the {@code "urn:ogc:def"} and {@code "urn:x-ogc:def"}
+     * {@linkplain Citation#getIdentifiers identifiers} for the "Authority name" {@linkplain Citation#getIdentifierTypes
+     * identifier type}.
      *
      * @since 2.4
      */
@@ -416,8 +403,8 @@ public final class Citations {
 
     /**
      * URL in the OGC namespace. This citation contains the {@code "http://www.opengis.net/gml"}
-     * {@linkplain Citation#getIdentifiers identifiers} for the "Authority name" {@linkplain
-     * Citation#getIdentifierTypes identifier type}.
+     * {@linkplain Citation#getIdentifiers identifiers} for the "Authority name" {@linkplain Citation#getIdentifierTypes
+     * identifier type}.
      *
      * @since 2.4
      */
@@ -433,9 +420,9 @@ public final class Citations {
     }
 
     /**
-     * HTTP URI in the OGC namespace. This citation contains the {@code
-     * "http://www.opengis.net/def"} {@linkplain Citation#getIdentifiers identifiers} for the
-     * "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
+     * HTTP URI in the OGC namespace. This citation contains the {@code "http://www.opengis.net/def"}
+     * {@linkplain Citation#getIdentifiers identifiers} for the "Authority name" {@linkplain Citation#getIdentifierTypes
+     * identifier type}.
      *
      * @since 9
      */
@@ -462,11 +449,10 @@ public final class Citations {
     };
 
     /**
-     * Returns a citation of the given name. If the given name matches a {@linkplain
-     * Citation#getTitle title} or an {@linkplain Citation#getAlternateTitles alternate titles} of
-     * one of the pre-defined constants ({@link #EPSG}, {@link #GEOTIFF}, <cite>etc.</cite>), then
-     * this constant is returned. Otherwise, a new citation is created with the specified name as
-     * the title.
+     * Returns a citation of the given name. If the given name matches a {@linkplain Citation#getTitle title} or an
+     * {@linkplain Citation#getAlternateTitles alternate titles} of one of the pre-defined constants ({@link #EPSG},
+     * {@link #GEOTIFF}, <cite>etc.</cite>), then this constant is returned. Otherwise, a new citation is created with
+     * the specified name as the title.
      *
      * @param title The citation title (or alternate title).
      * @return A citation using the specified name
@@ -481,10 +467,10 @@ public final class Citations {
     }
 
     /**
-     * Returns {@code true} if at least one {@linkplain Citation#getTitle title} or {@linkplain
-     * Citation#getAlternateTitles alternate title} in {@code c1} is equals to a title or alternate
-     * title in {@code c2}. The comparaison is case-insensitive and ignores leading and trailing
-     * spaces. The titles ordering is not significant.
+     * Returns {@code true} if at least one {@linkplain Citation#getTitle title} or
+     * {@linkplain Citation#getAlternateTitles alternate title} in {@code c1} is equals to a title or alternate title in
+     * {@code c2}. The comparaison is case-insensitive and ignores leading and trailing spaces. The titles ordering is
+     * not significant.
      *
      * @param c1 The first citation to compare.
      * @param c2 the second citation to compare.
@@ -519,9 +505,9 @@ public final class Citations {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain Citation#getTitle title} or any {@linkplain
-     * Citation#getAlternateTitles alternate title} in the given citation matches the given string.
-     * The comparaison is case-insensitive and ignores leading and trailing spaces.
+     * Returns {@code true} if the {@linkplain Citation#getTitle title} or any {@linkplain Citation#getAlternateTitles
+     * alternate title} in the given citation matches the given string. The comparaison is case-insensitive and ignores
+     * leading and trailing spaces.
      *
      * @param citation The citation to check for.
      * @param title The title or alternate title to compare.
@@ -538,13 +524,11 @@ public final class Citations {
                 return true;
             }
             final String asLocalized = candidate.toString();
-            if (!Objects.equals(asLocalized, asString)
-                    && asLocalized.trim().equalsIgnoreCase(title)) {
+            if (!Objects.equals(asLocalized, asString) && asLocalized.trim().equalsIgnoreCase(title)) {
                 return true;
             }
             if (iterator == null) {
-                final Collection<? extends InternationalString> titles =
-                        citation.getAlternateTitles();
+                final Collection<? extends InternationalString> titles = citation.getAlternateTitles();
                 if (titles == null) {
                     break;
                 }
@@ -559,14 +543,13 @@ public final class Citations {
     }
 
     /**
-     * Returns {@code true} if at least one {@linkplain Citation#getIdentifiers identifier} in
-     * {@code c1} is equals to an identifier in {@code c2}. The comparaison is case-insensitive and
-     * ignores leading and trailing spaces. The identifier ordering is not significant.
+     * Returns {@code true} if at least one {@linkplain Citation#getIdentifiers identifier} in {@code c1} is equals to
+     * an identifier in {@code c2}. The comparaison is case-insensitive and ignores leading and trailing spaces. The
+     * identifier ordering is not significant.
      *
-     * <p>If (and <em>only</em> if) the citations do not contains any identifier, then this method
-     * fallback on titles comparaison using the {@link #titleMatches(Citation,Citation)
-     * titleMatches} method. This fallback exists for compatibility with client codes using citation
-     * {@linkplain Citation#getTitle titles} without identifiers.
+     * <p>If (and <em>only</em> if) the citations do not contains any identifier, then this method fallback on titles
+     * comparaison using the {@link #titleMatches(Citation,Citation) titleMatches} method. This fallback exists for
+     * compatibility with client codes using citation {@linkplain Citation#getTitle titles} without identifiers.
      *
      * @param c1 The first citation to compare.
      * @param c2 the second citation to compare.
@@ -597,12 +580,11 @@ public final class Citations {
     }
 
     /**
-     * Returns {@code true} if any {@linkplain Citation#getIdentifiers identifiers} in the given
-     * citation matches the given string. The comparaison is case-insensitive and ignores leading
-     * and trailing spaces. If (and <em>only</em> if) the citation do not contains any identifier,
-     * then this method fallback on titles comparaison using the {@link #titleMatches(Citation,
-     * String) titleMatches} method. This fallback exists for compatibility with client codes using
-     * citation {@linkplain Citation#getTitle titles} without identifiers.
+     * Returns {@code true} if any {@linkplain Citation#getIdentifiers identifiers} in the given citation matches the
+     * given string. The comparaison is case-insensitive and ignores leading and trailing spaces. If (and <em>only</em>
+     * if) the citation do not contains any identifier, then this method fallback on titles comparaison using the
+     * {@link #titleMatches(Citation, String) titleMatches} method. This fallback exists for compatibility with client
+     * codes using citation {@linkplain Citation#getTitle titles} without identifiers.
      *
      * @param citation The citation to check for.
      * @param identifier The identifier to compare.
@@ -625,9 +607,8 @@ public final class Citations {
     }
 
     /**
-     * Returns the shortest identifier for the specified citation, or the title if there is no
-     * identifier. This method is useful for extracting the namespace from an authority, for example
-     * {@code "EPSG"}.
+     * Returns the shortest identifier for the specified citation, or the title if there is no identifier. This method
+     * is useful for extracting the namespace from an authority, for example {@code "EPSG"}.
      *
      * @param citation The citation for which to get the identifier.
      * @return The shortest identifier of the given citation.

@@ -137,8 +137,8 @@ public class ShpFilesTest {
         assertEquals(".shape", new ShpFiles("dir/.shape.shp").getTypeName());
     }
 
-    public static Map<ShpFileType, File> createFiles(
-            String string, ShpFileType[] values, boolean uppercase) throws IOException {
+    public static Map<ShpFileType, File> createFiles(String string, ShpFileType[] values, boolean uppercase)
+            throws IOException {
         Map<ShpFileType, File> files = new HashMap<>();
 
         String extensionWithPeriod = values[0].extensionWithPeriod;
@@ -164,8 +164,7 @@ public class ShpFilesTest {
 
     @Test
     public void testShapefileFilesAll() throws Exception {
-        Map<ShpFileType, File> expected =
-                createFiles("testShapefileFilesAll", ShpFileType.values(), false);
+        Map<ShpFileType, File> expected = createFiles("testShapefileFilesAll", ShpFileType.values(), false);
 
         File file = expected.values().iterator().next();
         ShpFiles shapefiles = new ShpFiles(file);
@@ -175,8 +174,7 @@ public class ShpFilesTest {
 
     @Test
     public void testURLStringConstructor() throws Exception {
-        Map<ShpFileType, File> expected =
-                createFiles("testURLStringConstructor", ShpFileType.values(), false);
+        Map<ShpFileType, File> expected = createFiles("testURLStringConstructor", ShpFileType.values(), false);
 
         File file = expected.values().iterator().next();
         ShpFiles shapefiles = new ShpFiles(file.toURI().toURL().toExternalForm());
@@ -186,8 +184,7 @@ public class ShpFilesTest {
 
     @Test
     public void testFileStringConstructor() throws Exception {
-        Map<ShpFileType, File> expected =
-                createFiles("testFileStringConstructor", ShpFileType.values(), false);
+        Map<ShpFileType, File> expected = createFiles("testFileStringConstructor", ShpFileType.values(), false);
 
         File file = expected.values().iterator().next();
         ShpFiles shapefiles = new ShpFiles(file.getPath());
@@ -198,8 +195,7 @@ public class ShpFilesTest {
     @Test
     public void testShapefileFilesSome() throws Exception {
         Map<ShpFileType, File> expected =
-                createFiles(
-                        "testShapefileFilesSome", new ShpFileType[] {SHP, DBF, SHX, PRJ}, false);
+                createFiles("testShapefileFilesSome", new ShpFileType[] {SHP, DBF, SHX, PRJ}, false);
 
         File prj = expected.remove(PRJ);
 
@@ -250,8 +246,7 @@ public class ShpFilesTest {
 
     @Test
     public void testFileURLs() throws Exception {
-        Map<ShpFileType, File> expected =
-                createFiles("testShapefileFilesAll", ShpFileType.values(), false);
+        Map<ShpFileType, File> expected = createFiles("testShapefileFilesAll", ShpFileType.values(), false);
 
         File file = expected.values().iterator().next();
         ShpFiles shapefiles = new ShpFiles(file.toURI().toURL());
@@ -261,9 +256,7 @@ public class ShpFilesTest {
 
     @Test
     public void testGetTypeNameSpecialCharacters() throws Exception {
-        assertEquals(
-                "Åéìòù",
-                new ShpFiles("shapefile/test-data/special-characters/Åéìòù.shp").getTypeName());
+        assertEquals("Åéìòù", new ShpFiles("shapefile/test-data/special-characters/Åéìòù.shp").getTypeName());
     }
 
     private void assertEqualMaps(Map<ShpFileType, File> expected, Map<ShpFileType, String> files)
@@ -271,8 +264,7 @@ public class ShpFilesTest {
 
         Set<Entry<ShpFileType, File>> expectedEntries = expected.entrySet();
         for (Entry<ShpFileType, File> entry : expectedEntries) {
-            assertEquals(
-                    entry.getValue().toURI().toURL().toExternalForm(), files.get(entry.getKey()));
+            assertEquals(entry.getValue().toURI().toURL().toExternalForm(), files.get(entry.getKey()));
         }
     }
 }

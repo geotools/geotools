@@ -27,25 +27,22 @@ import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.util.factory.Hints;
 
 /**
- * Chooses <var>N</var> {@linkplain org.geotools.coverage.GridSampleDimension sample dimensions}
- * from a grid coverage and copies their sample data to the destination grid coverage in the order
- * specified. The {@code "SampleDimensions"} parameter specifies the source {@link
- * org.geotools.coverage.GridSampleDimension} indices, and its size ({@code
- * SampleDimensions.length}) determines the number of sample dimensions of the destination grid
- * coverage. The destination coverage may have any number of sample dimensions, and a particular
- * sample dimension of the source coverage may be repeated in the destination coverage by specifying
- * it multiple times in the {@code "SampleDimensions"} parameter.
+ * Chooses <var>N</var> {@linkplain org.geotools.coverage.GridSampleDimension sample dimensions} from a grid coverage
+ * and copies their sample data to the destination grid coverage in the order specified. The {@code "SampleDimensions"}
+ * parameter specifies the source {@link org.geotools.coverage.GridSampleDimension} indices, and its size
+ * ({@code SampleDimensions.length}) determines the number of sample dimensions of the destination grid coverage. The
+ * destination coverage may have any number of sample dimensions, and a particular sample dimension of the source
+ * coverage may be repeated in the destination coverage by specifying it multiple times in the
+ * {@code "SampleDimensions"} parameter.
  *
  * <p><strong>Geotools extension:</strong><br>
- * This operation can also be used for selecting a different "visible sample dimension". Some images
- * may contain useful data in more than one sample dimension, but renderer the content using only 1
- * sample dimension at time. The {@code "VisibleSampleDimension"} parameter can be used for
- * selecting this sample dimension. If omitted, then the new grid coverage will inherit its source's
- * visible sample dimension.
+ * This operation can also be used for selecting a different "visible sample dimension". Some images may contain useful
+ * data in more than one sample dimension, but renderer the content using only 1 sample dimension at time. The
+ * {@code "VisibleSampleDimension"} parameter can be used for selecting this sample dimension. If omitted, then the new
+ * grid coverage will inherit its source's visible sample dimension.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"SelectSampleDimension"</CODE><br>
- * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain BandSelectDescriptor BandSelect}"</CODE>
- * <br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain BandSelectDescriptor BandSelect}"</CODE> <br>
  * <STRONG>Parameters:</STRONG>
  *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
@@ -90,48 +87,39 @@ public class SelectSampleDimension extends Operation2D {
     private static final long serialVersionUID = 6889502343896409135L;
 
     /** The parameter descriptor for the sample dimension indices. */
-    public static final ParameterDescriptor<int[]> SAMPLE_DIMENSIONS =
-            new DefaultParameterDescriptor<>(
-                    Citations.OGC,
-                    "SampleDimensions",
-                    int[].class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<int[]> SAMPLE_DIMENSIONS = new DefaultParameterDescriptor<>(
+            Citations.OGC,
+            "SampleDimensions",
+            int[].class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
-    /**
-     * The parameter descriptor for the visible dimension indice. This is a Geotools-specific
-     * parameter.
-     */
-    public static final ParameterDescriptor<Integer> VISIBLE_SAMPLE_DIMENSION =
-            new DefaultParameterDescriptor<>(
-                    Citations.GEOTOOLS,
-                    "VisibleSampleDimension",
-                    Integer.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    0, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    /** The parameter descriptor for the visible dimension indice. This is a Geotools-specific parameter. */
+    public static final ParameterDescriptor<Integer> VISIBLE_SAMPLE_DIMENSION = new DefaultParameterDescriptor<>(
+            Citations.GEOTOOLS,
+            "VisibleSampleDimension",
+            Integer.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            0, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /** Constructs a default {@code "SelectSampleDimension"} operation. */
     public SelectSampleDimension() {
-        super(
-                new DefaultParameterDescriptorGroup(
-                        "SelectSampleDimension",
-                        new ParameterDescriptor[] {
-                            SOURCE_0, SAMPLE_DIMENSIONS, VISIBLE_SAMPLE_DIMENSION
-                        }));
+        super(new DefaultParameterDescriptorGroup(
+                "SelectSampleDimension",
+                new ParameterDescriptor[] {SOURCE_0, SAMPLE_DIMENSIONS, VISIBLE_SAMPLE_DIMENSION}));
     }
 
     /**
-     * Applies the band select operation to a grid coverage. This method is invoked by {@link
-     * org.geotools.coverage.processing.DefaultProcessor} for the {@code "SelectSampleDimension"}
-     * operation.
+     * Applies the band select operation to a grid coverage. This method is invoked by
+     * {@link org.geotools.coverage.processing.DefaultProcessor} for the {@code "SelectSampleDimension"} operation.
      *
      * @param parameters List of name value pairs for the parameters.
      * @param hints A set of rendering hints, or {@code null} if none.

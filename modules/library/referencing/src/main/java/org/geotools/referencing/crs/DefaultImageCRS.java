@@ -28,9 +28,8 @@ import org.geotools.api.referencing.datum.ImageDatum;
 import org.geotools.referencing.AbstractReferenceSystem;
 
 /**
- * An engineering coordinate reference system applied to locations in images. Image coordinate
- * reference systems are treated as a separate sub-type because a separate user community exists for
- * images with its own terms of reference.
+ * An engineering coordinate reference system applied to locations in images. Image coordinate reference systems are
+ * treated as a separate sub-type because a separate user community exists for images with its own terms of reference.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
@@ -48,10 +47,10 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
     private static final long serialVersionUID = 7312452786096397847L;
 
     /**
-     * Constructs a new image CRS with the same values than the specified one. This copy constructor
-     * provides a way to wrap an arbitrary implementation into a Geotools one or a user-defined one
-     * (as a subclass), usually in order to leverage some implementation-specific API. This
-     * constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new image CRS with the same values than the specified one. This copy constructor provides a way to
+     * wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order to
+     * leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are not
+     * cloned.
      *
      * @param crs The coordinate reference system to copy.
      * @since 2.2
@@ -79,8 +78,7 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultImageCRS(
-            final Map<String, ?> properties, final ImageDatum datum, final AffineCS cs) {
+    public DefaultImageCRS(final Map<String, ?> properties, final ImageDatum datum, final AffineCS cs) {
         super(properties, datum, cs);
     }
 
@@ -99,8 +97,7 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
     /**
      * Returns a hash value for this geographic CRS.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")

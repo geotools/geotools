@@ -51,17 +51,15 @@ import org.geotools.referencing.operation.matrix.XMatrix;
 import si.uom.NonSI;
 
 /**
- * A usually affine, or otherwise a projective transform. A projective transform is capable of
- * mapping an arbitrary quadrilateral into another arbitrary quadrilateral, while preserving the
- * straightness of lines. In the special case where the transform is affine, the parallelism of
- * lines in the source is preserved in the output.
+ * A usually affine, or otherwise a projective transform. A projective transform is capable of mapping an arbitrary
+ * quadrilateral into another arbitrary quadrilateral, while preserving the straightness of lines. In the special case
+ * where the transform is affine, the parallelism of lines in the source is preserved in the output.
  *
- * <p>Such a coordinate transformation can be represented by a square {@linkplain GeneralMatrix
- * matrix} of an arbitrary size. Point coordinates must have a dimension equals to <code>
- * {@linkplain Matrix#getNumCol}-1</code>. For example, for square matrix of size 4&times;4,
- * coordinate points are three-dimensional. The transformed points <code>(x',y',z')</code> are
- * computed as below (note that this computation is similar to {@link
- * javax.media.jai.PerspectiveTransform} in <cite>Java Advanced Imaging</cite>):
+ * <p>Such a coordinate transformation can be represented by a square {@linkplain GeneralMatrix matrix} of an arbitrary
+ * size. Point coordinates must have a dimension equals to <code>
+ * {@linkplain Matrix#getNumCol}-1</code>. For example, for square matrix of size 4&times;4, coordinate points are
+ * three-dimensional. The transformed points <code>(x',y',z')</code> are computed as below (note that this computation
+ * is similar to {@link javax.media.jai.PerspectiveTransform} in <cite>Java Advanced Imaging</cite>):
  *
  * <blockquote>
  *
@@ -78,19 +76,17 @@ import si.uom.NonSI;
  *
  * </blockquote>
  *
- * In the special case of an affine transform, the last row contains only zero values except in the
- * last column, which contains 1.
+ * In the special case of an affine transform, the last row contains only zero values except in the last column, which
+ * contains 1.
  *
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see javax.media.jai.PerspectiveTransform
  * @see java.awt.geom.AffineTransform
- * @see <A HREF="http://mathworld.wolfram.com/AffineTransformation.html">Affine transformation on
- *     MathWorld</A>
+ * @see <A HREF="http://mathworld.wolfram.com/AffineTransformation.html">Affine transformation on MathWorld</A>
  */
-public class ProjectiveTransform extends AbstractMathTransform
-        implements LinearTransform, Serializable {
+public class ProjectiveTransform extends AbstractMathTransform implements LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -2104496465933824935L;
 
@@ -107,8 +103,7 @@ public class ProjectiveTransform extends AbstractMathTransform
     private transient ProjectiveTransform inverse;
 
     /**
-     * Constructs a transform from the specified matrix. The matrix should be affine, but it will
-     * not be verified.
+     * Constructs a transform from the specified matrix. The matrix should be affine, but it will not be verified.
      *
      * @param matrix The matrix.
      */
@@ -125,8 +120,7 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Creates a transform for the specified matrix. The matrix should be affine, but it is not be
-     * verified.
+     * Creates a transform for the specified matrix. The matrix should be affine, but it is not be verified.
      *
      * @param matrix The affine transform as a matrix.
      * @return The transform for the given matrix.
@@ -156,9 +150,8 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Creates a transform for the specified matrix as a Java2D object. This method is provided for
-     * interoperability with <A
-     * HREF="http://java.sun.com/products/java-media/2D/index.jsp">Java2D</A>.
+     * Creates a transform for the specified matrix as a Java2D object. This method is provided for interoperability
+     * with <A HREF="http://java.sun.com/products/java-media/2D/index.jsp">Java2D</A>.
      *
      * @param matrix The affine transform as a matrix.
      * @return The transform for the given matrix.
@@ -209,19 +202,16 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Creates a matrix that keep only a subset of the ordinate values. The dimension of source
-     * coordinates is {@code sourceDim} and the dimension of target coordinates is {@code
-     * toKeep.length}.
+     * Creates a matrix that keep only a subset of the ordinate values. The dimension of source coordinates is
+     * {@code sourceDim} and the dimension of target coordinates is {@code toKeep.length}.
      *
      * @param sourceDim the dimension of source coordinates.
      * @param toKeep the indices of ordinate values to keep.
-     * @return The matrix to give to the {@link #create(Matrix)} method in order to create the
-     *     transform.
-     * @throws IndexOutOfBoundsException if a value of {@code toKeep} is lower than 0 or not smaller
-     *     than {@code sourceDim}.
+     * @return The matrix to give to the {@link #create(Matrix)} method in order to create the transform.
+     * @throws IndexOutOfBoundsException if a value of {@code toKeep} is lower than 0 or not smaller than
+     *     {@code sourceDim}.
      */
-    public static Matrix createSelectMatrix(final int sourceDim, final int[] toKeep)
-            throws IndexOutOfBoundsException {
+    public static Matrix createSelectMatrix(final int sourceDim, final int[] toKeep) throws IndexOutOfBoundsException {
         final int targetDim = toKeep.length;
         final XMatrix matrix = MatrixFactory.create(targetDim + 1, sourceDim + 1);
         matrix.setZero();
@@ -239,9 +229,8 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Returns the matrix elements as a group of parameters values. The number of parameters depends
-     * on the matrix size. Only matrix elements different from their default value will be included
-     * in this group.
+     * Returns the matrix elements as a group of parameters values. The number of parameters depends on the matrix size.
+     * Only matrix elements different from their default value will be included in this group.
      *
      * @param matrix The matrix to returns as a group of parameters.
      * @return A copy of the parameter values for this math transform.
@@ -253,9 +242,8 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Returns the matrix elements as a group of parameters values. The number of parameters depends
-     * on the matrix size. Only matrix elements different from their default value will be included
-     * in this group.
+     * Returns the matrix elements as a group of parameters values. The number of parameters depends on the matrix size.
+     * Only matrix elements different from their default value will be included in this group.
      *
      * @return A copy of the parameter values for this math transform.
      */
@@ -265,10 +253,10 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Transforms an array of floating point coordinates by this matrix. Point coordinates must have
-     * a dimension equals to <code>{@link Matrix#getNumCol}-1</code>. For example, for square matrix
-     * of size 4&times;4, coordinate points are three-dimensional and stored in the arrays starting
-     * at the specified offset ({@code srcOff}) in the order <code>
+     * Transforms an array of floating point coordinates by this matrix. Point coordinates must have a dimension equals
+     * to <code>{@link Matrix#getNumCol}-1</code>. For example, for square matrix of size 4&times;4, coordinate points
+     * are three-dimensional and stored in the arrays starting at the specified offset ({@code srcOff}) in the order
+     * <code>
      * [x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>,
      *        x<sub>1</sub>, y<sub>1</sub>, z<sub>1</sub>...,
      *        x<sub>n</sub>, y<sub>n</sub>, z<sub>n</sub>]</code>.
@@ -276,13 +264,12 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @param srcPts The array containing the source point coordinates.
      * @param srcOff The offset to the first point to be transformed in the source array.
      * @param dstPts The array into which the transformed point coordinates are returned.
-     * @param dstOff The offset to the location of the first transformed point that is stored in the
-     *     destination array. The source and destination array sections can be overlaps.
+     * @param dstOff The offset to the location of the first transformed point that is stored in the destination array.
+     *     The source and destination array sections can be overlaps.
      * @param numPts The number of points to be transformed
      */
     @Override
-    public void transform(
-            float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         final int inputDimension = numCol - 1; // The last ordinate will be assumed equals to 1.
         final int outputDimension = numRow - 1;
         final double[] buffer = new double[numRow];
@@ -322,10 +309,10 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Transforms an array of floating point coordinates by this matrix. Point coordinates must have
-     * a dimension equals to <code>{@link Matrix#getNumCol}-1</code>. For example, for square matrix
-     * of size 4&times;4, coordinate points are three-dimensional and stored in the arrays starting
-     * at the specified offset ({@code srcOff}) in the order <code>
+     * Transforms an array of floating point coordinates by this matrix. Point coordinates must have a dimension equals
+     * to <code>{@link Matrix#getNumCol}-1</code>. For example, for square matrix of size 4&times;4, coordinate points
+     * are three-dimensional and stored in the arrays starting at the specified offset ({@code srcOff}) in the order
+     * <code>
      * [x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub>,
      *        x<sub>1</sub>, y<sub>1</sub>, z<sub>1</sub>...,
      *        x<sub>n</sub>, y<sub>n</sub>, z<sub>n</sub>]</code>.
@@ -333,13 +320,12 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @param srcPts The array containing the source point coordinates.
      * @param srcOff The offset to the first point to be transformed in the source array.
      * @param dstPts The array into which the transformed point coordinates are returned.
-     * @param dstOff The offset to the location of the first transformed point that is stored in the
-     *     destination array. The source and destination array sections can be overlaps.
+     * @param dstOff The offset to the location of the first transformed point that is stored in the destination array.
+     *     The source and destination array sections can be overlaps.
      * @param numPts The number of points to be transformed
      */
     @Override
-    public void transform(
-            double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         final int inputDimension = numCol - 1; // The last ordinate will be assumed equals to 1.
         final int outputDimension = numRow - 1;
         final double[] buffer = new double[numRow];
@@ -379,8 +365,7 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Gets the derivative of this transform at a point. For a matrix transform, the derivative is
-     * the same everywhere.
+     * Gets the derivative of this transform at a point. For a matrix transform, the derivative is the same everywhere.
      */
     @Override
     public Matrix derivative(final Point2D point) {
@@ -388,8 +373,7 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Gets the derivative of this transform at a point. For a matrix transform, the derivative is
-     * the same everywhere.
+     * Gets the derivative of this transform at a point. For a matrix transform, the derivative is the same everywhere.
      */
     @Override
     public Matrix derivative(final Position point) {
@@ -440,9 +424,8 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /**
-     * Tests whether this transform does not move any points by using the provided tolerance. This
-     * method work in the same way than {@link
-     * org.geotools.referencing.operation.matrix.XMatrix#isIdentity(double)}.
+     * Tests whether this transform does not move any points by using the provided tolerance. This method work in the
+     * same way than {@link org.geotools.referencing.operation.matrix.XMatrix#isIdentity(double)}.
      *
      * @since 2.4
      */
@@ -478,11 +461,8 @@ public class ProjectiveTransform extends AbstractMathTransform
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (SingularMatrixException
-                        | IllegalArgumentException
-                        | MatrixDimensionException exception) {
-                    throw new NoninvertibleTransformException(
-                            ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
+                } catch (SingularMatrixException | IllegalArgumentException | MatrixDimensionException exception) {
+                    throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
                 }
                 inverse = createInverse(matrix);
                 inverse.inverse = this;
@@ -491,17 +471,14 @@ public class ProjectiveTransform extends AbstractMathTransform
         return inverse;
     }
 
-    /**
-     * Creates an inverse transform using the specified matrix. To be overridden by {@link
-     * GeocentricTranslation}.
-     */
+    /** Creates an inverse transform using the specified matrix. To be overridden by {@link GeocentricTranslation}. */
     ProjectiveTransform createInverse(final Matrix matrix) {
         return new ProjectiveTransform(matrix);
     }
 
     /**
-     * Returns a hash value for this transform. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this transform. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -521,18 +498,15 @@ public class ProjectiveTransform extends AbstractMathTransform
         }
         if (super.equals(object)) {
             final ProjectiveTransform that = (ProjectiveTransform) object;
-            return this.numRow == that.numRow
-                    && this.numCol == that.numCol
-                    && Arrays.equals(this.elt, that.elt);
+            return this.numRow == that.numRow && this.numCol == that.numCol && Arrays.equals(this.elt, that.elt);
         }
         return false;
     }
 
     /**
-     * The provider for the "<cite>Affine general parametric transformation</cite>" (EPSG 9624). The
-     * OGC's name is {@code "Affine"}. The default matrix size is {@value
-     * org.geotools.parameter.MatrixParameterDescriptors#DEFAULT_MATRIX_SIZE}&times;{@value
-     * org.geotools.parameter.MatrixParameterDescriptors#DEFAULT_MATRIX_SIZE}.
+     * The provider for the "<cite>Affine general parametric transformation</cite>" (EPSG 9624). The OGC's name is
+     * {@code "Affine"}. The default matrix size is
+     * {@value org.geotools.parameter.MatrixParameterDescriptors#DEFAULT_MATRIX_SIZE}&times;{@value org.geotools.parameter.MatrixParameterDescriptors#DEFAULT_MATRIX_SIZE}.
      *
      * <p>Note that affine transform is a special case of projective transform.
      *
@@ -558,17 +532,12 @@ public class ProjectiveTransform extends AbstractMathTransform
             final Map<String, Object> properties = new HashMap<>(4, 0.8f);
             properties.put(NAME_KEY, name);
             properties.put(IDENTIFIERS_KEY, name);
-            properties.put(
-                    ALIAS_KEY,
-                    new NamedIdentifier[] {
-                        name,
-                        new NamedIdentifier(
-                                Citations.EPSG, "Affine general parametric transformation"),
-                        new NamedIdentifier(Citations.EPSG, "9624"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(VocabularyKeys.AFFINE_TRANSFORM))
-                    });
+            properties.put(ALIAS_KEY, new NamedIdentifier[] {
+                name,
+                new NamedIdentifier(Citations.EPSG, "Affine general parametric transformation"),
+                new NamedIdentifier(Citations.EPSG, "9624"),
+                new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.AFFINE_TRANSFORM))
+            });
             PARAMETERS = new MatrixParameterDescriptors(properties);
         }
 
@@ -601,30 +570,26 @@ public class ProjectiveTransform extends AbstractMathTransform
         @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
-            final MathTransform transform =
-                    create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
+            final MathTransform transform = create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
             return new Delegate(
-                    transform,
-                    getProvider(transform.getSourceDimensions(), transform.getTargetDimensions()));
+                    transform, getProvider(transform.getSourceDimensions(), transform.getTargetDimensions()));
         }
 
         /**
-         * Returns the operation method for the specified source and target dimensions. This method
-         * provides different methods for different matrix sizes.
+         * Returns the operation method for the specified source and target dimensions. This method provides different
+         * methods for different matrix sizes.
          *
          * @param sourceDimensions The number of source dimensions.
          * @param targetDimensions The number of target dimensions.
          * @return The provider for transforms of the given source and target dimensions.
          */
-        public static ProviderAffine getProvider(
-                final int sourceDimensions, final int targetDimensions) {
+        public static ProviderAffine getProvider(final int sourceDimensions, final int targetDimensions) {
             if (sourceDimensions == targetDimensions) {
                 final int i = sourceDimensions - 1;
                 if (i >= 0 && i < methods.length) {
                     ProviderAffine method = methods[i];
                     if (method == null) {
-                        methods[i] =
-                                method = new ProviderAffine(sourceDimensions, targetDimensions);
+                        methods[i] = method = new ProviderAffine(sourceDimensions, targetDimensions);
                     }
                     return method;
                 }
@@ -644,24 +609,20 @@ public class ProjectiveTransform extends AbstractMathTransform
         private static final long serialVersionUID = -2104496465933824935L;
 
         /** The longitude offset. */
-        public static final ParameterDescriptor OFFSET =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "Longitude offset")
-                        },
-                        Double.NaN,
-                        -180,
-                        +180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor OFFSET = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.EPSG, "Longitude offset")},
+                Double.NaN,
+                -180,
+                +180,
+                NonSI.DEGREE_ANGLE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "Longitude rotation"),
-                            new NamedIdentifier(Citations.EPSG, "9601")
-                        },
-                        new ParameterDescriptor[] {OFFSET});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "Longitude rotation"),
+                    new NamedIdentifier(Citations.EPSG, "9601")
+                },
+                new ParameterDescriptor[] {OFFSET});
 
         /** Constructs a provider with default parameters. */
         public ProviderLongitudeRotation() {

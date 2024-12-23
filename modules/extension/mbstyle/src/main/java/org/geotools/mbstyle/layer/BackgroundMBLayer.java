@@ -34,9 +34,9 @@ import org.json.simple.JSONObject;
 /**
  * The background color or pattern of the map.
  *
- * <p>MBLayer wrapper around a {@link JSONObject} representation of a "background" type latyer. All
- * methods act as accessors on provided JSON layer, no other state is maintained. This allows
- * modifications to be made cleanly with out chance of side-effect.
+ * <p>MBLayer wrapper around a {@link JSONObject} representation of a "background" type latyer. All methods act as
+ * accessors on provided JSON layer, no other state is maintained. This allows modifications to be made cleanly with out
+ * chance of side-effect.
  *
  * <ul>
  *   <li>get methods: access the json directly
@@ -65,8 +65,7 @@ public class BackgroundMBLayer extends MBLayer {
      * @return The color with which the background will be drawn.
      */
     public Color getBackgroundColor() {
-        return parse.convertToColor(
-                parse.optional(String.class, paint, "background-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
     }
 
     /**
@@ -81,11 +80,10 @@ public class BackgroundMBLayer extends MBLayer {
     }
 
     /**
-     * Optional string. Name of image in sprite to use for drawing an image background. For seamless
-     * patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
+     * Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image
+     * width and height must be a factor of two (2, 4, 8, ..., 512).
      *
-     * @return Name of image in sprite to use for drawing an image background, or null if not
-     *     defined.
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public String getBackgroundPattern() {
         return parse.optional(String.class, paint, "background-pattern", null);
@@ -99,11 +97,10 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Maps {@link #getBackgroundPattern()} to an {@link Expression}.
      *
-     * <p>Optional string. Name of image in sprite to use for drawing an image background. For
-     * seamless patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
+     * <p>Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image
+     * width and height must be a factor of two (2, 4, 8, ..., 512).
      *
-     * @return Name of image in sprite to use for drawing an image background, or null if not
-     *     defined.
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public Expression backgroundPattern() {
         return parse.string(paint, "background-pattern", null);
@@ -132,8 +129,8 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Transform {@link BackgroundMBLayer} to GeoTools FeatureTypeStyle.
      *
-     * @param styleContext The MBStyle to which this layer belongs, used as a context for things
-     *     like resolving sprite and glyph names to full urls.
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite
+     *     and glyph names to full urls.
      * @return FeatureTypeStyle
      */
     @Override
@@ -143,16 +140,13 @@ public class BackgroundMBLayer extends MBLayer {
     }
 
     public Fill getFill(MBStyle styleContext) {
-        return getFill(
-                styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
+        return getFill(styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
     }
 
     private Fill getFill(MBStyle styleContext, MBStyleTransformer transformer) {
         if (hasBackgroundPattern()) {
-            ExternalGraphic eg =
-                    transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
-            GraphicFill gf =
-                    sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
             return sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
             return sf.fill(null, backgroundColor(), backgroundOpacity());

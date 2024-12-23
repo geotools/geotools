@@ -213,9 +213,7 @@ public class GeobufGeometry {
                     start = end;
                 }
                 if (rings.length > 1) {
-                    polygons[p] =
-                            geometryFactory.createPolygon(
-                                    rings[0], Arrays.copyOfRange(rings, 1, rings.length));
+                    polygons[p] = geometryFactory.createPolygon(rings[0], Arrays.copyOfRange(rings, 1, rings.length));
                 } else {
                     polygons[p] = geometryFactory.createPolygon(rings[0]);
                 }

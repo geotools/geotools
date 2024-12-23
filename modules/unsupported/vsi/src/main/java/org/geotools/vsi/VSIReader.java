@@ -50,11 +50,7 @@ public final class VSIReader extends BaseGDALGridCoverage2DReader implements Gri
      * @throws IOException
      */
     public VSIReader(Object input, Hints hints) throws IOException {
-        super(
-                VSIDataset.fromObject(input).getFile(),
-                hints,
-                WORLD_FILE_EXT,
-                new VRTImageReaderSpi());
+        super(VSIDataset.fromObject(input).getFile(), hints, WORLD_FILE_EXT, new VRTImageReaderSpi());
     }
 
     /**

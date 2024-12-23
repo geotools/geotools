@@ -41,8 +41,7 @@ import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.util.NIOUtilities;
 
 /**
- * A DbaseFileWriter is used to write a dbase III format file. The general use of this class is:
- * <CODE><PRE>
+ * A DbaseFileWriter is used to write a dbase III format file. The general use of this class is: <CODE><PRE>
  * DbaseFileHeader header = ...
  * WritableFileChannel out = new FileOutputStream(&quot;thefile.dbf&quot;).getChannel();
  * DbaseFileWriter w = new DbaseFileWriter(header,out);
@@ -50,8 +49,7 @@ import org.geotools.util.NIOUtilities;
  *   w.write( getMyRecord() );
  * }
  * w.close();
- * </PRE></CODE> You must supply the <CODE>moreRecords</CODE> and <CODE>getMyRecord()</CODE>
- * logic...
+ * </PRE></CODE> You must supply the <CODE>moreRecords</CODE> and <CODE>getMyRecord()</CODE> logic...
  *
  * @author Ian Schneider
  */
@@ -61,8 +59,8 @@ public class DbaseFileWriter implements Closeable {
     WritableByteChannel channel;
     private ByteBuffer buffer;
     /**
-     * The null values to use for each column. This will be accessed only when null values are
-     * actually encountered, but it is allocated in the ctor to save time and memory.
+     * The null values to use for each column. This will be accessed only when null values are actually encountered, but
+     * it is allocated in the ctor to save time and memory.
      */
     private final byte[][] nullValues;
 
@@ -70,8 +68,7 @@ public class DbaseFileWriter implements Closeable {
     private Charset charset;
     private TimeZone timeZone;
 
-    private boolean reportFieldSizeErrors =
-            Boolean.getBoolean("org.geotools.shapefile.reportFieldSizeErrors");
+    private boolean reportFieldSizeErrors = Boolean.getBoolean("org.geotools.shapefile.reportFieldSizeErrors");
 
     /**
      * Create a DbaseFileWriter using the specified header and writing to the given channel.
@@ -91,8 +88,7 @@ public class DbaseFileWriter implements Closeable {
      * @param out The Channel to write to.
      * @throws IOException If errors occur while initializing.
      */
-    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset)
-            throws IOException {
+    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset) throws IOException {
         this(header, out, charset, null);
     }
 
@@ -104,17 +100,14 @@ public class DbaseFileWriter implements Closeable {
      * @param charset The charset the dbf is (will be) encoded in
      * @throws IOException If errors occur while initializing.
      */
-    public DbaseFileWriter(
-            DbaseFileHeader header, WritableByteChannel out, Charset charset, TimeZone timeZone)
+    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset, TimeZone timeZone)
             throws IOException {
         header.writeHeader(out);
         this.header = header;
         this.channel = out;
         this.charset = charset == null ? Charset.defaultCharset() : charset;
         this.timeZone = timeZone == null ? TimeZone.getDefault() : timeZone;
-        this.formatter =
-                new DbaseFileWriter.FieldFormatter(
-                        this.charset, this.timeZone, !reportFieldSizeErrors);
+        this.formatter = new DbaseFileWriter.FieldFormatter(this.charset, this.timeZone, !reportFieldSizeErrors);
         streamLogger.open();
 
         // As the 'shapelib' osgeo project does, we use specific values for
@@ -162,7 +155,8 @@ public class DbaseFileWriter implements Closeable {
     private void write() throws IOException {
         buffer.position(0);
         int r = buffer.remaining();
-        while ((r -= channel.write(buffer)) > 0) {; // do nothing
+        while ((r -= channel.write(buffer)) > 0) {
+            ; // do nothing
         }
     }
 
@@ -176,10 +170,7 @@ public class DbaseFileWriter implements Closeable {
     public void write(Object[] record) throws IOException, DbaseFileException {
         if (record.length != header.getNumFields()) {
             throw new DbaseFileException(
-                    "Wrong number of fields "
-                            + record.length
-                            + " expected "
-                            + header.getNumFields());
+                    "Wrong number of fields " + record.length + " expected " + header.getNumFields());
         }
 
         buffer.position(0);
@@ -212,8 +203,7 @@ public class DbaseFileWriter implements Closeable {
      *
      * @param obj The value to convert; never null.
      * @param col The column this object will be encoded into.
-     * @return The bytes of a string representation of the given object in the current character
-     *     encoding.
+     * @return The bytes of a string representation of the given object in the current character encoding.
      * @throws UnsupportedEncodingException Thrown if the current charset is unsupported.
      */
     private byte[] fieldBytes(Object obj, final int col) throws UnsupportedEncodingException {
@@ -245,9 +235,7 @@ public class DbaseFileWriter implements Closeable {
                 }
             case 'F':
             case 'f':
-                o =
-                        formatter.getFieldString(
-                                fieldLen, header.getFieldDecimalCount(col), (Number) obj);
+                o = formatter.getFieldString(fieldLen, header.getFieldDecimalCount(col), (Number) obj);
                 break;
             case 'D':
             case 'd':
@@ -321,8 +309,7 @@ public class DbaseFileWriter implements Closeable {
         private Charset charset;
 
         private boolean swallowFieldSizeErrors = false;
-        private static Logger logger =
-                org.geotools.util.logging.Logging.getLogger(DbaseFileWriter.class);
+        private static Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileWriter.class);
 
         public FieldFormatter(Charset charset, TimeZone timeZone, boolean swallowFieldSizeErrors) {
             // Avoid grouping on number format
@@ -426,8 +413,7 @@ public class DbaseFileWriter implements Closeable {
             final int time = (int) (difference % MILLISECS_PER_DAY);
 
             try (ByteArrayOutputStream o_bytes = new ByteArrayOutputStream();
-                    DataOutputStream o_stream =
-                            new DataOutputStream(new BufferedOutputStream(o_bytes))) {
+                    DataOutputStream o_stream = new DataOutputStream(new BufferedOutputStream(o_bytes))) {
                 o_stream.writeInt(days);
                 o_stream.writeInt(time);
                 o_stream.flush();

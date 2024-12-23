@@ -51,24 +51,23 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     public static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage.class);
 
     /**
-     * Sources grid coverage, or {@code null} if none. This information is lost during
-     * serialization, in order to avoid sending a too large amount of data over the network.
+     * Sources grid coverage, or {@code null} if none. This information is lost during serialization, in order to avoid
+     * sending a too large amount of data over the network.
      */
     private final transient List<GridCoverage> sources;
 
     /**
-     * Constructs a grid coverage using the specified coordinate reference system. If the coordinate
-     * reference system is {@code null}, then the subclasses must override {@link #getDimension()}.
+     * Constructs a grid coverage using the specified coordinate reference system. If the coordinate reference system is
+     * {@code null}, then the subclasses must override {@link #getDimension()}.
      *
      * @param name The grid coverage name.
-     * @param crs The coordinate reference system. This specifies the coordinate system used when
-     *     accessing a coverage or grid coverage with the {@code evaluate(...)} methods.
-     * @param propertySource The source for this coverage, or {@code null} if none. Source may be
-     *     (but is not limited to) a {@link javax.media.jai.PlanarImage} or an other {@code
-     *     AbstractGridCoverage} object.
-     * @param properties The set of properties for this coverage, or {@code null} if there is none.
-     *     Keys are {@link String} objects ({@link javax.media.jai.util.CaselessStringKey} are
-     *     accepted as well), while values may be any {@link Object}.
+     * @param crs The coordinate reference system. This specifies the coordinate system used when accessing a coverage
+     *     or grid coverage with the {@code evaluate(...)} methods.
+     * @param propertySource The source for this coverage, or {@code null} if none. Source may be (but is not limited
+     *     to) a {@link javax.media.jai.PlanarImage} or an other {@code AbstractGridCoverage} object.
+     * @param properties The set of properties for this coverage, or {@code null} if there is none. Keys are
+     *     {@link String} objects ({@link javax.media.jai.util.CaselessStringKey} are accepted as well), while values
+     *     may be any {@link Object}.
      */
     protected AbstractGridCoverage(
             final CharSequence name,
@@ -80,17 +79,15 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     }
 
     /**
-     * Constructs a grid coverage with sources. Arguments are the same than for the {@linkplain
-     * #AbstractGridCoverage(CharSequence,CoordinateReferenceSystem,PropertySource,Map) previous
+     * Constructs a grid coverage with sources. Arguments are the same than for the
+     * {@linkplain #AbstractGridCoverage(CharSequence,CoordinateReferenceSystem,PropertySource,Map) previous
      * constructor}, with an additional {@code sources} argument.
      *
      * @param name The grid coverage name.
      * @param crs The coordinate reference system.
-     * @param sources The {@linkplain #getSources sources} for a grid coverage, or {@code null} if
-     *     none.
+     * @param sources The {@linkplain #getSources sources} for a grid coverage, or {@code null} if none.
      * @param propertySource The source for properties for this coverage, or {@code null} if none.
-     * @param properties Set of additional properties for this coverage, or {@code null} if there is
-     *     none.
+     * @param properties Set of additional properties for this coverage, or {@code null} if there is none.
      */
     protected AbstractGridCoverage(
             final CharSequence name,
@@ -128,14 +125,12 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     }
 
     /**
-     * Returns the source data for a grid coverage. If the {@code GridCoverage} was produced from an
-     * underlying dataset, the returned list is an empty list. If the {@code GridCoverage} was
-     * produced using {@link org.geotools.api.coverage.grid.GridCoverageProcessor}, then it should
-     * return the source grid coverage of the one used as input to {@code GridCoverageProcessor}. In
-     * general the {@code getSources()} method is intended to return the original {@code
-     * GridCoverage} on which it depends. This is intended to allow applications to establish what
-     * {@code GridCoverage}s will be affected when others are updated, as well as to trace back to
-     * the "raw data".
+     * Returns the source data for a grid coverage. If the {@code GridCoverage} was produced from an underlying dataset,
+     * the returned list is an empty list. If the {@code GridCoverage} was produced using
+     * {@link org.geotools.api.coverage.grid.GridCoverageProcessor}, then it should return the source grid coverage of
+     * the one used as input to {@code GridCoverageProcessor}. In general the {@code getSources()} method is intended to
+     * return the original {@code GridCoverage} on which it depends. This is intended to allow applications to establish
+     * what {@code GridCoverage}s will be affected when others are updated, as well as to trace back to the "raw data".
      */
     @Override
     public List<GridCoverage> getSources() {
@@ -147,27 +142,21 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
         }
     }
 
-    /**
-     * Returns {@code true} if grid data can be edited. The default implementation returns {@code
-     * false}.
-     */
+    /** Returns {@code true} if grid data can be edited. The default implementation returns {@code false}. */
     @Override
     public boolean isDataEditable() {
         return false;
     }
 
-    /**
-     * Returns the number of predetermined overviews for the grid. The default implementation
-     * returns 0.
-     */
+    /** Returns the number of predetermined overviews for the grid. The default implementation returns 0. */
     @Override
     public int getNumOverviews() {
         return 0;
     }
 
     /**
-     * Returns the grid geometry for an overview. The default implementation always throws an
-     * exception, since the default {@linkplain #getNumOverviews number of overviews} is 0.
+     * Returns the grid geometry for an overview. The default implementation always throws an exception, since the
+     * default {@linkplain #getNumOverviews number of overviews} is 0.
      *
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
      */
@@ -177,9 +166,8 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     }
 
     /**
-     * Returns a pre-calculated overview for a grid coverage. The default implementation always
-     * throws an exception, since the default {@linkplain #getNumOverviews number of overviews} is
-     * 0.
+     * Returns a pre-calculated overview for a grid coverage. The default implementation always throws an exception,
+     * since the default {@linkplain #getNumOverviews number of overviews} is 0.
      *
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
      */
@@ -194,12 +182,11 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     }
 
     /**
-     * Constructs an error message for a point that can not be evaluated. This is used for
-     * formatting error messages.
+     * Constructs an error message for a point that can not be evaluated. This is used for formatting error messages.
      *
      * @param point The coordinate point to format.
-     * @param outside {@code true} if the evaluation failed because the given point is outside the
-     *     coverage, or {@code false} if it failed for an other (unknown) reason.
+     * @param outside {@code true} if the evaluation failed because the given point is outside the coverage, or
+     *     {@code false} if it failed for an other (unknown) reason.
      * @return An error message.
      * @since 2.5
      */
@@ -208,20 +195,18 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     }
 
     /**
-     * Constructs an error message for a position that can not be evaluated. This is used for
-     * formatting error messages.
+     * Constructs an error message for a position that can not be evaluated. This is used for formatting error messages.
      *
      * @param point The coordinate point to format.
-     * @param outside {@code true} if the evaluation failed because the given point is outside the
-     *     coverage, or {@code false} if it failed for an other (unknown) reason.
+     * @param outside {@code true} if the evaluation failed because the given point is outside the coverage, or
+     *     {@code false} if it failed for an other (unknown) reason.
      * @return An error message.
      * @since 2.5
      */
     protected String formatEvaluateError(final Position point, final boolean outside) {
         final Locale locale = getLocale();
         return MessageFormat.format(
-                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
-                toString(point, locale));
+                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1, toString(point, locale));
     }
 
     /**

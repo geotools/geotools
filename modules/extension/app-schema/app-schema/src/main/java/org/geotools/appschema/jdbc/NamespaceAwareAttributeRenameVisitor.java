@@ -43,8 +43,7 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
      * Creates a copy of the input {@link NestedAttributeExpression} with renamed attributes.
      *
      * @param expression the expression to visit
-     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the
-     *     returned expression
+     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the returned expression
      * @return a new {@link NestedAttributeExpression} expression with renamed attributes
      */
     public Expression visit(NestedAttributeExpression expression, Object extraData) {
@@ -59,8 +58,7 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
      * Creates a copy of the input {@link PropertyName} expression with renamed attributes.
      *
      * @param expression the expression to visit
-     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the
-     *     returned expression
+     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the returned expression
      * @return a new {@link PropertyName} expression with renamed attributes
      */
     @Override
@@ -68,7 +66,6 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
         if (expression.getPropertyName().equals(sourceProperty)) {
             return getFactory(extraData).property(targetProperty, expression.getNamespaceContext());
         }
-        return getFactory(extraData)
-                .property(expression.getPropertyName(), expression.getNamespaceContext());
+        return getFactory(extraData).property(expression.getPropertyName(), expression.getNamespaceContext());
     }
 }

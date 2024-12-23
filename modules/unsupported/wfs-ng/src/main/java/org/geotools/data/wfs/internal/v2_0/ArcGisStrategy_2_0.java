@@ -30,8 +30,7 @@ public class ArcGisStrategy_2_0 extends StrictWFS_2_0_Strategy {
                 "This ArcGIS server WFS strategy is unsupported - consider using the better tested (and supported) version 1.0.0.");
     }
     /**
-     * Pull Parser doesn't manage to parse feature count from response, so asking for HITS is a
-     * waste of time currently.
+     * Pull Parser doesn't manage to parse feature count from response, so asking for HITS is a waste of time currently.
      */
     @Override
     public boolean supports(final ResultType resultType) {

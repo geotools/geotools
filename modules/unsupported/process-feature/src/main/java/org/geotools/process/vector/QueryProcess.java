@@ -44,8 +44,7 @@ public class QueryProcess implements VectorProcess {
                             collectionType = String.class,
                             min = 0)
                     List<String> attributes,
-            @DescribeParameter(name = "filter", min = 0, description = "The filter to apply")
-                    Filter filter)
+            @DescribeParameter(name = "filter", min = 0, description = "The filter to apply") Filter filter)
             throws ProcessException {
         // apply filtering if necessary
         if (filter != null && !filter.equals(Filter.INCLUDE)) {

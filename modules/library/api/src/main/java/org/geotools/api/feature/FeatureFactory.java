@@ -23,9 +23,8 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 /**
  * Factory for creation of attributes, associations, and features.
  *
- * <p>Implementations of this interface should not contain any "special logic" for creating
- * attributes and features. Method implementations should be straight through calls to a
- * constructor.
+ * <p>Implementations of this interface should not contain any "special logic" for creating attributes and features.
+ * Method implementations should be straight through calls to a constructor.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Justin Deoliveira (The Open Planning Project)
@@ -61,10 +60,7 @@ public interface FeatureFactory {
      * @param crs The coordinate reference system of the attribute, may be <code>null</code>.
      */
     GeometryAttribute createGeometryAttribute(
-            Object geometry,
-            GeometryDescriptor descriptor,
-            String id,
-            CoordinateReferenceSystem crs);
+            Object geometry, GeometryDescriptor descriptor, String id, CoordinateReferenceSystem crs);
 
     /**
      * Creates a complex attribute.
@@ -75,8 +71,7 @@ public interface FeatureFactory {
      * @param descriptor The attribute descriptor.
      * @param id The id of the attribute, may be <code>null</code>.
      */
-    ComplexAttribute createComplexAttribute(
-            Collection<Property> value, AttributeDescriptor descriptor, String id);
+    ComplexAttribute createComplexAttribute(Collection<Property> value, AttributeDescriptor descriptor, String id);
 
     /**
      * Creates a complex attribute.
@@ -85,8 +80,7 @@ public interface FeatureFactory {
      * @param type The type of the attribute.
      * @param id The id of the attribute, may be <code>null</code>.
      */
-    ComplexAttribute createComplexAttribute(
-            Collection<Property> value, ComplexType type, String id);
+    ComplexAttribute createComplexAttribute(Collection<Property> value, ComplexType type, String id);
 
     /**
      * Creates a feature.

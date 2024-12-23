@@ -102,8 +102,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertEquals(1.0, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNotNull(rs.getContrastEnhancement());
         assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
-        assertEquals(
-                0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0.0);
+        assertEquals(0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
         assertEquals(org.geotools.api.style.ColorMap.TYPE_RAMP, cmap.getType());
@@ -164,8 +163,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test
     public void testDiscreteColors() {
-        ColorMapBuilder cm =
-                new ColorMapBuilder().type(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
+        ColorMapBuilder cm = new ColorMapBuilder().type(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
         cm.entry().quantity(150).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
         Style style = cm.buildStyle();
@@ -187,12 +185,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
     }
 
-    void assertEntry(
-            String colorHex,
-            double quantity,
-            double opacity,
-            String label,
-            ColorMapEntry colorMapEntry) {
+    void assertEntry(String colorHex, double quantity, double opacity, String label, ColorMapEntry colorMapEntry) {
         assertEquals(colorHex, colorMapEntry.getColor().evaluate(null, String.class));
         assertEquals(quantity, colorMapEntry.getQuantity().evaluate(null, Double.class), 0.0);
         assertEquals(opacity, colorMapEntry.getOpacity().evaluate(null, Double.class), 0.0);
@@ -233,10 +226,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertNull(rgbChannels);
         assertEquals(
                 "BAND1",
-                rs.getChannelSelection()
-                        .getGrayChannel()
-                        .getChannelName()
-                        .evaluate(null, String.class));
+                rs.getChannelSelection().getGrayChannel().getChannelName().evaluate(null, String.class));
     }
 
     @Test

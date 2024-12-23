@@ -55,8 +55,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * Abstract test class to be used to unit test bindings.
  *
- * <p>Subclasses must implement the {@link #createConfiguration()} method. It must return a new
- * instance of {@link Configuration}. Example:
+ * <p>Subclasses must implement the {@link #createConfiguration()} method. It must return a new instance of
+ * {@link Configuration}. Example:
  *
  * <pre>
  *         <code>
@@ -69,8 +69,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         </code>
  * </pre>
  *
- * <p>The {@link #parse()} method is used to test binding parsing. Subclasses should call this from
- * test methods after building up an instance document with {@link #document}. Example
+ * <p>The {@link #parse()} method is used to test binding parsing. Subclasses should call this from test methods after
+ * building up an instance document with {@link #document}. Example
  *
  * <pre>
  *         <code>
@@ -93,8 +93,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         </code>
  * </pre>
  *
- * <p>The {@link #encode(Object, QName)} method is used to test binding encoding. Subclasses should
- * call this method from test methods after creating an object to be encoded. Example:
+ * <p>The {@link #encode(Object, QName)} method is used to test binding encoding. Subclasses should call this method
+ * from test methods after creating an object to be encoded. Example:
  *
  * <pre>
  *         <code>
@@ -114,9 +114,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         </code>
  * </pre>
  *
- * <p>The {@link #binding(QName)} method is used to obtain an instance of a particular binding.
- * Subclasses should call this method to assert other properties of the binding, such as type
- * mapping and execution mode. Example:
+ * <p>The {@link #binding(QName)} method is used to obtain an instance of a particular binding. Subclasses should call
+ * this method to assert other properties of the binding, such as type mapping and execution mode. Example:
  *
  * <pre>
  *         <code>
@@ -142,8 +141,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public abstract class XMLTestSupport extends XmlTestSupport {
     /** Logging instance */
-    protected static Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
+    protected static Logger logger = org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
 
     /** the instance document */
     protected Document document;
@@ -181,8 +179,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         Configuration config = createConfiguration();
 
         if (type != null) {
-            config.getContext()
-                    .registerComponentInstance("http://geotools.org/typeDefinition", type);
+            config.getContext().registerComponentInstance("http://geotools.org/typeDefinition", type);
         }
 
         // register additional namespaces
@@ -250,9 +247,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
 
         if (type != null) {
             // set the hint
-            configuration
-                    .getContext()
-                    .registerComponentInstance("http://geotools.org/typeDefinition", type);
+            configuration.getContext().registerComponentInstance("http://geotools.org/typeDefinition", type);
         }
 
         XSDSchema schema = configuration.getXSD().getSchema();
@@ -299,8 +294,8 @@ public abstract class XMLTestSupport extends XmlTestSupport {
     /**
      * Convenience method for obtaining an instance of a binding.
      *
-     * @param name The qualified name of the element,attribute,or type the binding "binds" to, the
-     *     key of the binding in the container.
+     * @param name The qualified name of the element,attribute,or type the binding "binds" to, the key of the binding in
+     *     the container.
      * @return The binding.
      */
     protected Binding binding(QName name) {
@@ -371,8 +366,8 @@ public abstract class XMLTestSupport extends XmlTestSupport {
     }
 
     /**
-     * Convenience method which parses the specified string into a dom and sets the built document
-     * which is to be parsed.
+     * Convenience method which parses the specified string into a dom and sets the built document which is to be
+     * parsed.
      *
      * @param xml A string of xml
      */
@@ -388,10 +383,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         return getElementByQName(dom.getDocumentElement(), name);
     }
 
-    /**
-     * Convenience method for finding a single descendant of a particular node which matches the
-     * specified name.
-     */
+    /** Convenience method for finding a single descendant of a particular node which matches the specified name. */
     protected Element getElementByQName(Element parent, QName name) {
         NodeList nodes = parent.getElementsByTagNameNS(name.getNamespaceURI(), name.getLocalPart());
 
@@ -407,10 +399,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         return getElementsByQName(dom.getDocumentElement(), name);
     }
 
-    /**
-     * Convenience method for finding decendants of a particular node which match the specified
-     * name.
-     */
+    /** Convenience method for finding decendants of a particular node which match the specified name. */
     protected NodeList getElementsByQName(Element parent, QName name) {
         return parent.getElementsByTagNameNS(name.getNamespaceURI(), name.getLocalPart());
     }

@@ -47,8 +47,8 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
     protected TableColumnDef varTableColumnDef;
 
     /**
-     * This method is called every time before particular test execution. It creates new instance of
-     * tested class and it can perform some more actions which are necessary for performs tests.
+     * This method is called every time before particular test execution. It creates new instance of tested class and it
+     * can perform some more actions which are necessary for performs tests.
      */
     @Before
     public void setUp() throws IOException {
@@ -61,22 +61,18 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
         // tis.close();
     } // end of setUp()
 
-    /**
-     * Method for testing original source method: java.lang.String getColDesc() from tested class
-     */
+    /** Method for testing original source method: java.lang.String getColDesc() from tested class */
     @Test
     @Ignore
     public void XtestGetColDesc() {
-        Assert.assertEquals(
-                "Cheking column description.", "Row id", varTableColumnDef.getColDesc());
+        Assert.assertEquals("Cheking column description.", "Row id", varTableColumnDef.getColDesc());
     } // end of testGetColDesc()
 
     /** Method for testing original source method: int getColumnSize() from tested class */
     @Test
     @Ignore
     public void XtestGetColumnSize() {
-        Assert.assertEquals(
-                "Cheking column size.", DATA_LONG_INTEGER_LEN, varTableColumnDef.getColumnSize());
+        Assert.assertEquals("Cheking column size.", DATA_LONG_INTEGER_LEN, varTableColumnDef.getColumnSize());
     } // end of testGetColumnSize()
 
     /** Method for testing original source method: int getElementsNumber() from tested class */
@@ -100,19 +96,14 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
         Assert.assertEquals("Cheking column name.", "id", varTableColumnDef.getName());
     } // end of testGetName()
 
-    /**
-     * Method for testing original source method: java.lang.String getNarrTable() from tested class
-     */
+    /** Method for testing original source method: java.lang.String getNarrTable() from tested class */
     @Test
     @Ignore
     public void XtestGetNarrTable() {
         Assert.assertNull("Cheking narrative table name.", varTableColumnDef.getNarrTable());
     } // end of testGetNarrTable()
 
-    /**
-     * Method for testing original source method: java.lang.String getThematicIdx() from tested
-     * class
-     */
+    /** Method for testing original source method: java.lang.String getThematicIdx() from tested class */
     @Test
     @Ignore
     public void XtestGetThematicIdx() {
@@ -126,15 +117,11 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
         Assert.assertEquals("Cheking column type.", DATA_LONG_INTEGER, varTableColumnDef.getType());
     } // end of testGetType()
 
-    /**
-     * Method for testing original source method: java.lang.String getValDescTableName() from tested
-     * class
-     */
+    /** Method for testing original source method: java.lang.String getValDescTableName() from tested class */
     @Test
     @Ignore
     public void XtestGetValDescTableName() {
-        Assert.assertNull(
-                "Cheking description table name.", varTableColumnDef.getValDescTableName());
+        Assert.assertNull("Cheking description table name.", varTableColumnDef.getValDescTableName());
     } // end of testGetValDescTableName()
 
     /** Method for testing original source method: boolean isNumeric() from tested class */

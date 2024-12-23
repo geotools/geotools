@@ -49,9 +49,9 @@ import org.geotools.util.Arguments;
 import org.geotools.util.TableWriter;
 
 /**
- * A console for executing CRS operations from the command line. Instructions are read from the
- * {@linkplain System#in standard input stream} and results are sent to the {@linkplain System#out
- * standard output stream}. Instructions include:
+ * A console for executing CRS operations from the command line. Instructions are read from the {@linkplain System#in
+ * standard input stream} and results are sent to the {@linkplain System#out standard output stream}. Instructions
+ * include:
  *
  * <table>
  *   <tr><td nowrap valign="top">{@code SET} <var>name</var> {@code =} <var>wkt</var></td><td>
@@ -116,14 +116,13 @@ public class Console extends AbstractConsole {
     private final NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 
     /**
-     * The number separator in vectors. Usually {@code ,}, but could also be {@code ;} if the coma
-     * is already used as the decimal separator.
+     * The number separator in vectors. Usually {@code ,}, but could also be {@code ;} if the coma is already used as
+     * the decimal separator.
      */
     private final String numberSeparator;
 
     /** The coordinate operation factory to use. */
-    private final CoordinateOperationFactory factory =
-            ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+    private final CoordinateOperationFactory factory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
 
     /** The source and target CRS, or {@code null} if not yet determined. */
     private CoordinateReferenceSystem sourceCRS, targetCRS;
@@ -135,22 +134,19 @@ public class Console extends AbstractConsole {
     private MathTransform transform;
 
     /**
-     * The tolerance value. If non-null, the difference between the computed and the specified
-     * target point will be compared against this tolerance threshold. If it is greater, a message
-     * will be printed.
+     * The tolerance value. If non-null, the difference between the computed and the specified target point will be
+     * compared against this tolerance threshold. If it is greater, a message will be printed.
      */
     private double[] tolerance;
 
     /**
-     * The last error thats occured while processing an instruction. Used in order to print the
-     * stack trace on request.
+     * The last error thats occured while processing an instruction. Used in order to print the stack trace on request.
      */
     private transient Exception lastError;
 
     /**
-     * Creates a new console instance using {@linkplain System#in standard input stream},
-     * {@linkplain System#out standard output stream}, {@linkplain System#err error output stream}
-     * and the system default line separator.
+     * Creates a new console instance using {@linkplain System#in standard input stream}, {@linkplain System#out
+     * standard output stream}, {@linkplain System#err error output stream} and the system default line separator.
      */
     public Console() {
         super(new Preprocessor(new Parser()));
@@ -168,8 +164,8 @@ public class Console extends AbstractConsole {
     }
 
     /**
-     * Returns the character to use as a number separator. As a side effect, this method also adjust
-     * the minimum and maximum digits.
+     * Returns the character to use as a number separator. As a side effect, this method also adjust the minimum and
+     * maximum digits.
      */
     private static String getNumberSeparator(final NumberFormat numberFormat) {
         numberFormat.setGroupingUsed(false);
@@ -186,9 +182,8 @@ public class Console extends AbstractConsole {
     }
 
     /**
-     * Run the console from the command line. Before to process all instructions from the
-     * {@linkplain System#in standard input stream}, this method first process the following
-     * optional command-line arguments:
+     * Run the console from the command line. Before to process all instructions from the {@linkplain System#in standard
+     * input stream}, this method first process the following optional command-line arguments:
      *
      * <p>
      *
@@ -266,8 +261,7 @@ public class Console extends AbstractConsole {
      * Execute the specified instruction.
      *
      * @param instruction The instruction to execute.
-     * @throws IOException if an I/O operation failed while writting to the {@linkplain #out output
-     *     stream}.
+     * @throws IOException if an I/O operation failed while writting to the {@linkplain #out output stream}.
      * @throws ParseException if a line can't be parsed.
      * @throws FactoryException If a transform can't be created.
      * @throws TransformException if a transform failed.
@@ -303,8 +297,7 @@ public class Console extends AbstractConsole {
                         throw unexpectedArgument("stacktrace");
                     }
                     if (lastError != null) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", lastError);
+                        java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", lastError);
                     }
                     return;
                 }
@@ -361,16 +354,12 @@ public class Console extends AbstractConsole {
                     // -------------------------------
                     if (key1.equalsIgnoreCase("crs")) {
                         if (key0.equalsIgnoreCase("source")) {
-                            sourceCRS =
-                                    (CoordinateReferenceSystem)
-                                            parseObject(value, CoordinateReferenceSystem.class);
+                            sourceCRS = (CoordinateReferenceSystem) parseObject(value, CoordinateReferenceSystem.class);
                             transform = null;
                             return;
                         }
                         if (key0.equalsIgnoreCase("target")) {
-                            targetCRS =
-                                    (CoordinateReferenceSystem)
-                                            parseObject(value, CoordinateReferenceSystem.class);
+                            targetCRS = (CoordinateReferenceSystem) parseObject(value, CoordinateReferenceSystem.class);
                             transform = null;
                             return;
                         }
@@ -397,8 +386,7 @@ public class Console extends AbstractConsole {
                 }
             }
         }
-        throw new ParseException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
+        throw new ParseException(MessageFormat.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
     }
 
     /** Executes the "{@code print crs}" instruction. */
@@ -512,8 +500,7 @@ public class Console extends AbstractConsole {
     }
 
     /**
-     * Print the specified point to the specified table. This helper method is for use by {@link
-     * #printPts}.
+     * Print the specified point to the specified table. This helper method is for use by {@link #printPts}.
      *
      * @param point The point to print, or {@code null} if none.
      * @throws IOException if an error occured while writting to the output stream.
@@ -552,14 +539,12 @@ public class Console extends AbstractConsole {
             if (crs instanceof AbstractCRS)
                 try {
                     final Measure distance =
-                            ((AbstractCRS) crs)
-                                    .distance(position1.getCoordinate(), position2.getCoordinate());
+                            ((AbstractCRS) crs).distance(position1.getCoordinate(), position2.getCoordinate());
                     table.setAlignment(TableWriter.ALIGN_RIGHT);
                     table.write(numberFormat.format(distance.doubleValue()));
                     table.write("  ");
                     table.nextColumn();
-                    table.write(
-                            String.valueOf(UnitFormat.getInstance().format(distance.getUnit())));
+                    table.write(String.valueOf(UnitFormat.getInstance().format(distance.getUnit())));
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     return;
                 } catch (UnsupportedOperationException ignore) {
@@ -579,15 +564,13 @@ public class Console extends AbstractConsole {
     ///////////////////////////////////////////////////////////
 
     /**
-     * Invoked automatically when the {@code target pt} instruction were executed and a {@code test
-     * tolerance} were previously set. The default implementation compares the transformed source
-     * point with the expected target point. If a mismatch greater than the tolerance error is
-     * found, an exception is thrown. Subclasses may overrides this method in order to performs more
-     * tests.
+     * Invoked automatically when the {@code target pt} instruction were executed and a {@code test tolerance} were
+     * previously set. The default implementation compares the transformed source point with the expected target point.
+     * If a mismatch greater than the tolerance error is found, an exception is thrown. Subclasses may overrides this
+     * method in order to performs more tests.
      *
      * @throws TransformException if the source point can't be transformed, or a mistmatch is found.
-     * @throws MismatchedDimensionException if the transformed source point doesn't have the
-     *     expected dimension.
+     * @throws MismatchedDimensionException if the transformed source point doesn't have the expected dimension.
      */
     protected void test() throws TransformException, MismatchedDimensionException {
         final Position transformedSource = transform.transform(sourcePosition, null);
@@ -601,15 +584,14 @@ public class Console extends AbstractConsole {
             // Use '!' for catching NaN.
             if (!(Math.abs(transformedSource.getOrdinate(i) - targetPosition.getOrdinate(i))
                     <= tolerance[Math.min(i, tolerance.length - 1)])) {
-                throw new TransformException(
-                        "Expected " + targetPosition + " but got " + transformedSource);
+                throw new TransformException("Expected " + targetPosition + " but got " + transformedSource);
             }
         }
     }
 
     /**
-     * Check if the specified string start and end with the specified delimitors, and returns the
-     * string without the delimitors.
+     * Check if the specified string start and end with the specified delimitors, and returns the string without the
+     * delimitors.
      *
      * @param text The string to check.
      * @param start The delimitor required at the string begining.
@@ -649,8 +631,7 @@ public class Console extends AbstractConsole {
             final Number result = numberFormat.parse(token, position);
             if (position.getIndex() != token.length()) {
                 throw new ParseException(
-                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token),
-                        position.getErrorIndex());
+                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token), position.getErrorIndex());
             }
             values[i] = result.doubleValue();
         }
@@ -658,8 +639,8 @@ public class Console extends AbstractConsole {
     }
 
     /**
-     * Update the internal state after a change, before to apply transformation. The most important
-     * change is to update the math transform, if needed.
+     * Update the internal state after a change, before to apply transformation. The most important change is to update
+     * the math transform, if needed.
      */
     private void update() throws FactoryException {
         if (transform == null && sourceCRS != null && targetCRS != null) {
@@ -675,8 +656,7 @@ public class Console extends AbstractConsole {
      */
     private static ParseException unexpectedArgument(final String instruction) {
         return new ParseException(
-                MessageFormat.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction),
-                0);
+                MessageFormat.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction), 0);
     }
 
     /**

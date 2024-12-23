@@ -95,8 +95,8 @@ public interface CoordinateAccess extends CoordinateSequence {
      * Retrive ordinates as an array.
      *
      * <p>Example: (x,y) getDimension()==2<br>
-     * This is defined for the number of dimensions. If the other attributes happen to be a double,
-     * they can still be accessed by using an ordinate value greater than getDimension().
+     * This is defined for the number of dimensions. If the other attributes happen to be a double, they can still be
+     * accessed by using an ordinate value greater than getDimension().
      *
      * <ul>
      *   <li>ordinate 0: x ordinate
@@ -180,8 +180,7 @@ public interface CoordinateAccess extends CoordinateSequence {
      * <b>attributes</b>:[ [ m1, m2,...,mN], [ g1, g2,..., gN] ]
      * </code></pre>
      *
-     * @param ordinateArrays dimensions column major ordinate arrays (these are spatially
-     *     significant)
+     * @param ordinateArrays dimensions column major ordinate arrays (these are spatially significant)
      * @param attributeArrays Individual attribute arrays may be primitive or object arrays
      */
     void setCoordinateArrays(double[][] ordinateArrays, Object[] attributeArrays);
@@ -196,8 +195,8 @@ public interface CoordinateAccess extends CoordinateSequence {
      * <b>attributes</b>: [ atr1, atr2, ...., atrN ]
      * </code></pre>
      *
-     * <p>When dealing with attributes that are all double values the ordinates array may be used to
-     * set both ordinates and attribute values.
+     * <p>When dealing with attributes that are all double values the ordinates array may be used to set both ordinates
+     * and attribute values.
      *
      * <p>Optimized Use: where D is getDimensions() and N is getNumAttributes():
      *

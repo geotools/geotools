@@ -91,8 +91,7 @@ public class XSDoubleBinding implements SimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding returns objects of type {@link java.lang.Double}. This is an override so value
-     * is null.
+     * This binding returns objects of type {@link java.lang.Double}. This is an override so value is null.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

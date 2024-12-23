@@ -35,7 +35,8 @@ import org.junit.rules.TemporaryFolder;
  */
 public class SchemaCacheTest {
 
-    @Rule public TemporaryFolder folder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Test the {@link SchemaCache#delete(File) method.
@@ -58,12 +59,9 @@ public class SchemaCacheTest {
     public void resolve() throws Exception {
         // intentionally construct non-canonical cache directory
         File cacheDirectory =
-                new File(
-                        URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")),
-                        "../cache");
+                new File(URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")), "../cache");
         SchemaResolver resolver = new SchemaResolver(new SchemaCache(cacheDirectory, false));
-        String resolvedLocation =
-                resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
+        String resolvedLocation = resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
         Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
@@ -80,8 +78,8 @@ public class SchemaCacheTest {
     }
 
     /**
-     * Tests if current data directory have workspace and styles directories and workspace directory
-     * has default.xml file inside.
+     * Tests if current data directory have workspace and styles directories and workspace directory has default.xml
+     * file inside.
      */
     @Test
     public void testIsSuitableDirectoryToContainCache() throws Exception {

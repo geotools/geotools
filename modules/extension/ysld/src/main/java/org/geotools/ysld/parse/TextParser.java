@@ -53,23 +53,20 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         context.push(new FontHandler());
         context.push("halo", new HaloParser());
         context.push(new PlacementParser());
-        context.push(
-                new FillParser(factory) {
-                    @Override
-                    protected void fill(Fill fill) {
-                        sym.setFill(fill);
-                    }
-                });
-        context.push(
-                "graphic",
-                new GraphicParser(factory) {
-                    @Override
-                    protected void graphic(Graphic g) {
-                        if (sym instanceof TextSymbolizer) {
-                            sym.setGraphic(g);
-                        }
-                    }
-                });
+        context.push(new FillParser(factory) {
+            @Override
+            protected void fill(Fill fill) {
+                sym.setFill(fill);
+            }
+        });
+        context.push("graphic", new GraphicParser(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                if (sym instanceof TextSymbolizer) {
+                    sym.setGraphic(g);
+                }
+            }
+        });
     }
 
     class FontHandler extends YsldParseHandler {
@@ -80,12 +77,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             super(TextParser.this.factory);
 
             FilterFactory ff = factory.filter;
-            font =
-                    factory.style.createFont(
-                            ff.literal("serif"),
-                            ff.literal("normal"),
-                            ff.literal("normal"),
-                            ff.literal(10));
+            font = factory.style.createFont(
+                    ff.literal("serif"), ff.literal("normal"), ff.literal("normal"), ff.literal(10));
         }
 
         @Override
@@ -125,13 +118,12 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
             YamlMap map = obj.map();
 
-            context.push(
-                    new FillParser(factory) {
-                        @Override
-                        protected void fill(Fill fill) {
-                            halo.setFill(fill);
-                        }
-                    });
+            context.push(new FillParser(factory) {
+                @Override
+                protected void fill(Fill fill) {
+                    halo.setFill(fill);
+                }
+            });
 
             if (map.has("radius")) {
                 halo.setRadius(Util.expression(map.str("radius"), factory));

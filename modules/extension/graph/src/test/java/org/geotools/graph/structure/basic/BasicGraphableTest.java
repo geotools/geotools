@@ -29,13 +29,12 @@ public class BasicGraphableTest {
     @Before
     public void setUp() throws Exception {
 
-        m_graphable =
-                new BasicGraphable() {
-                    @Override
-                    public Iterator<? extends Graphable> getRelated() {
-                        return null;
-                    }
-                };
+        m_graphable = new BasicGraphable() {
+            @Override
+            public Iterator<? extends Graphable> getRelated() {
+                return null;
+            }
+        };
     }
 
     /**
@@ -54,8 +53,8 @@ public class BasicGraphableTest {
     /**
      * Test BasicGraphable#setObject(Object). <br>
      * <br>
-     * Test: Create a new object and set underlying object. Expected: Underlying object should be
-     * equal to created object.
+     * Test: Create a new object and set underlying object. Expected: Underlying object should be equal to created
+     * object.
      */
     @Test
     public void test_setObject() {

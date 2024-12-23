@@ -49,8 +49,8 @@ import org.junit.Test;
  */
 public final class NITFTest extends GDALTestCase {
     /**
-     * file name of a valid NITF sample data to be used for tests. The sample data is available at
-     * <A HREF="http://dl.maptools.org/dl/gdal/data/nitf/cadrg/"> cadrg sample data</A>
+     * file name of a valid NITF sample data to be used for tests. The sample data is available at <A
+     * HREF="http://dl.maptools.org/dl/gdal/data/nitf/cadrg/"> cadrg sample data</A>
      */
     private static final String fileName = "001zc013.on1";
 
@@ -96,31 +96,22 @@ public final class NITFTest extends GDALTestCase {
         final double cropFactor = 2.0;
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getLowerCorner().getOrdinate(0)
-                                    + (oldEnvelope.getSpan(0) / cropFactor),
-                            oldEnvelope.getLowerCorner().getOrdinate(1)
-                                    + (oldEnvelope.getSpan(1) / cropFactor)
-                        },
-                        new double[] {
-                            oldEnvelope.getUpperCorner().getOrdinate(0),
-                            oldEnvelope.getUpperCorner().getOrdinate(1)
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                },
+                new double[] {
+                    oldEnvelope.getUpperCorner().getOrdinate(0),
+                    oldEnvelope.getUpperCorner().getOrdinate(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
-        final ParameterValue gg =
-                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(
-                                        0,
-                                        0,
-                                        (int) (range.width / 2.0 / cropFactor),
-                                        (int) (range.height / 2.0 / cropFactor))),
-                        cropEnvelope));
+        final ParameterValue gg = ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(
+                        0, 0, (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
+                cropEnvelope));
         gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }

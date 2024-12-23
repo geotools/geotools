@@ -66,18 +66,17 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * An authority factory that caches all objects created by delegate factories. This class is set up
- * to cache the full complement of referencing objects: In many cases a single implementation will
- * be used for several the authority factory interfaces - but this is not a requirement. The
- * behaviour of the {@code createFoo(String)} methods first looks if a previously created object
- * exists for the given code. If such an object exists, it is returned directly. The testing of the
- * cache is synchronized and may block if the referencing object is under construction.
+ * An authority factory that caches all objects created by delegate factories. This class is set up to cache the full
+ * complement of referencing objects: In many cases a single implementation will be used for several the authority
+ * factory interfaces - but this is not a requirement. The behaviour of the {@code createFoo(String)} methods first
+ * looks if a previously created object exists for the given code. If such an object exists, it is returned directly.
+ * The testing of the cache is synchronized and may block if the referencing object is under construction.
  *
- * <p>If the object is not yet created, the definition is delegated to the appropriate the
- * {@linkplain an AuthorityFactory authority factory} and the result is cached for next time.
+ * <p>If the object is not yet created, the definition is delegated to the appropriate the {@linkplain an
+ * AuthorityFactory authority factory} and the result is cached for next time.
  *
- * <p>This object is responsible for owning a {{ReferencingObjectCache}}; there are several
- * implementations to choose from on construction.
+ * <p>This object is responsible for owning a {{ReferencingObjectCache}}; there are several implementations to choose
+ * from on construction.
  *
  * @since 2.4
  * @version $Id$
@@ -115,9 +114,8 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     /**
      * Constructs an instance wrapping the specified factory with a default cache.
      *
-     * <p>The provided authority factory must implement {@link DatumAuthorityFactory}, {@link
-     * CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
-     * CoordinateOperationAuthorityFactory} .
+     * <p>The provided authority factory must implement {@link DatumAuthorityFactory}, {@link CSAuthorityFactory},
+     * {@link CRSAuthorityFactory} and {@link CoordinateOperationAuthorityFactory} .
      *
      * @param factory The factory to cache. Can not be {@code null}.
      */
@@ -126,21 +124,18 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /**
-     * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences}
-     * argument specify the maximum number of objects to keep by strong reference. If a greater
-     * amount of objects are created, then the strong references for the oldest ones are replaced by
-     * weak references.
+     * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences} argument specify the
+     * maximum number of objects to keep by strong reference. If a greater amount of objects are created, then the
+     * strong references for the oldest ones are replaced by weak references.
      *
-     * <p>This constructor is protected because subclasses must declare which of the {@link
-     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} {@link
-     * SearchableAuthorityFactory} and {@link CoordinateOperationAuthorityFactory} interfaces they
-     * choose to implement.
+     * <p>This constructor is protected because subclasses must declare which of the {@link DatumAuthorityFactory},
+     * {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} {@link SearchableAuthorityFactory} and
+     * {@link CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The cache to use
      */
-    protected CachedAuthorityDecorator(
-            AuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    protected CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         authority = factory;
@@ -152,8 +147,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
-            throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -192,8 +186,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
@@ -225,8 +218,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
         if (crs == null) {
@@ -776,9 +768,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
                 cache.writeLock(key);
                 operations = (Set<CoordinateOperation>) cache.peek(key);
                 if (operations == null) {
-                    operations =
-                            operationAuthority.createFromCoordinateReferenceSystemCodes(
-                                    sourceCode, targetCode);
+                    operations = operationAuthority.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
                     // can we not trust operationAuthority to return us an unmodifiableSet ?
                     // operations = Collections.unmodifiableSet( operations );
 

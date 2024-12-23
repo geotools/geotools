@@ -27,8 +27,7 @@ public class PlaceholderEntityResolver implements EntityResolver {
     public PlaceholderEntityResolver() {}
 
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         return null;
     }
 }

@@ -24,9 +24,8 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * MapBox Expression function that will return the expression evaluation result of the first
- * expression that evaluates to a non-null value. If no expression evaluates to a non-null value,
- * this function will return null.
+ * MapBox Expression function that will return the expression evaluation result of the first expression that evaluates
+ * to a non-null value. If no expression evaluates to a non-null value, this function will return null.
  *
  * <p>Format:
  *

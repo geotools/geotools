@@ -67,13 +67,11 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 
 /**
- * Algorithm computing the image footprint. Some optimizations are made. When running along the
- * image perimeter, whenever a closed polygon is found, the inner area is filled to make sure we
- * won't analyze that.
+ * Algorithm computing the image footprint. Some optimizations are made. When running along the image perimeter,
+ * whenever a closed polygon is found, the inner area is filled to make sure we won't analyze that.
  *
- * <p>It can deal with {@link GridCoverage2D} instances, returning footprint in real world
- * coordinates, as well as with {@link RenderedImage} instances, returning footprint in raster space
- * coordinates
+ * <p>It can deal with {@link GridCoverage2D} instances, returning footprint in real world coordinates, as well as with
+ * {@link RenderedImage} instances, returning footprint in raster space coordinates
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
@@ -199,8 +197,8 @@ public final class MarchingSquaresVectorizer {
     private RenderingHints hints;
 
     /**
-     * A stack containing images we need to dispose. We dispose them at the end of the processing to
-     * avoid cache thrashing
+     * A stack containing images we need to dispose. We dispose them at the end of the processing to avoid cache
+     * thrashing
      */
     private Stack<RenderedImage> imagesStack = new Stack<>();
 
@@ -210,9 +208,8 @@ public final class MarchingSquaresVectorizer {
     /** An helper class used to store some information acquired during scan */
     static class ScanInfo {
         /**
-         * A trigger which is internally enabled when no polygons having area greater than the
-         * threshold have been found. In that case, the algorithm will return the first polygon
-         * found.
+         * A trigger which is internally enabled when no polygons having area greater than the threshold have been
+         * found. In that case, the algorithm will return the first polygon found.
          */
         boolean takeFirst = false;
 
@@ -230,8 +227,7 @@ public final class MarchingSquaresVectorizer {
         /** Reports that the scan area fully contains invalid pixels */
         boolean fullyInvalid = false;
 
-        private void isFullyInvalid(
-                List<Polygon> geometriesList, RenderedImage inputRI, RenderingHints localHints)
+        private void isFullyInvalid(List<Polygon> geometriesList, RenderedImage inputRI, RenderingHints localHints)
                 throws Exception {
             if (geometriesList.isEmpty()) {
                 // Must be a fully "invalid-Pixels" image, or an error occurred
@@ -296,12 +292,11 @@ public final class MarchingSquaresVectorizer {
     private ImageLoadingType imageLoadingType;
 
     /**
-     * Ranges of values to be excluded from the valid polygon search. MarchingSquare is born to
-     * extract polygons from NOT-ZERO pixels. For RGB images we compute luminance and we work on
-     * NOT-ZERO luminance. The exclusion range allows to specify different range of values to be
-     * excluded. This may be helpful when you want to exclude "Dark" pixels from the output, where
-     * "Dark" means having a luminance between 0 and a reference value (As an instance: 10) as well
-     * as "white pixels" such as clouds (adding a range like 254, 255).
+     * Ranges of values to be excluded from the valid polygon search. MarchingSquare is born to extract polygons from
+     * NOT-ZERO pixels. For RGB images we compute luminance and we work on NOT-ZERO luminance. The exclusion range
+     * allows to specify different range of values to be excluded. This may be helpful when you want to exclude "Dark"
+     * pixels from the output, where "Dark" means having a luminance between 0 and a reference value (As an instance:
+     * 10) as well as "white pixels" such as clouds (adding a range like 254, 255).
      */
     private List<Range<Integer>> exclusionLuminanceRanges = DEFAULT_RANGES;
 
@@ -312,14 +307,12 @@ public final class MarchingSquaresVectorizer {
      * Main Constructor using {@link GridCoverage2D} as input.
      *
      * @param inGeodata the input {@link GridCoverage2D}
-     * @param hints hints to be used by inner processing, it usually contains tile caches,
-     *     schedulers
+     * @param hints hints to be used by inner processing, it usually contains tile caches, schedulers
      * @param thresholdArea the minimum area required by a polygon to be included in the result
-     * @param simplifierFactor the simplifier factor to be applied to compute the simplified version
-     *     of the biggest polygon.
+     * @param simplifierFactor the simplifier factor to be applied to compute the simplified version of the biggest
+     *     polygon.
      * @param imageLoadingType the type of imageLoading (DEFERRED vs IMMEDIATE).
-     * @param exclusionLuminanceRanges the ranges of luminance values to be excluded by the
-     *     computation.
+     * @param exclusionLuminanceRanges the ranges of luminance values to be excluded by the computation.
      */
     public MarchingSquaresVectorizer(
             GridCoverage2D inGeodata,
@@ -346,16 +339,13 @@ public final class MarchingSquaresVectorizer {
     }
 
     /**
-     * Main Constructor using {@link RenderedImage} as input. Returned footprint coordinates will be
-     * in raster space.
+     * Main Constructor using {@link RenderedImage} as input. Returned footprint coordinates will be in raster space.
      *
      * @param ri the input {@link RenderedImage}
-     * @param hints hints to be used by inner processing, it usually contains tile caches,
-     *     schedulers
+     * @param hints hints to be used by inner processing, it usually contains tile caches, schedulers
      * @param thresholdArea the minimum area required by a polygon to be included in the result
      * @param imageLoadingType the type of imageLoading (DEFERRED vs IMMEDIATE).
-     * @param exclusionLuminanceRanges the range of luminance values to be excluded by the
-     *     computation.
+     * @param exclusionLuminanceRanges the range of luminance values to be excluded by the computation.
      */
     public MarchingSquaresVectorizer(
             final RenderedImage ri,
@@ -409,8 +399,8 @@ public final class MarchingSquaresVectorizer {
     }
 
     /**
-     * When set to {@code true} (the default) will perform extra checks on the output polygons to
-     * make sure they are valid geometries
+     * When set to {@code true} (the default) will perform extra checks on the output polygons to make sure they are
+     * valid geometries
      */
     public void setForceValid(boolean forceValid) {
         this.forceValid = forceValid;
@@ -422,8 +412,8 @@ public final class MarchingSquaresVectorizer {
     }
 
     /**
-     * Specifies which type of imageLoading ({@link ImageLoadingType}) to be used, {@link
-     * ImageLoadingType#DEFERRED} vs {@link ImageLoadingType#IMMEDIATE}
+     * Specifies which type of imageLoading ({@link ImageLoadingType}) to be used, {@link ImageLoadingType#DEFERRED} vs
+     * {@link ImageLoadingType#IMMEDIATE}
      */
     public void setImageLoadingType(ImageLoadingType imageLoadingType) {
         this.imageLoadingType = imageLoadingType;
@@ -468,8 +458,7 @@ public final class MarchingSquaresVectorizer {
             iter = RandomIterFactory.create(inputRI, null);
 
             if (inGeodata != null) {
-                HashMap<String, Double> regionMap =
-                        CoverageUtilities.getRegionParamsFromGridCoverage(inGeodata);
+                HashMap<String, Double> regionMap = CoverageUtilities.getRegionParamsFromGridCoverage(inGeodata);
                 imageProperties.init(regionMap, inputRI);
                 xRes = regionMap.get(CoverageUtilities.XRES);
                 yRes = regionMap.get(CoverageUtilities.YRES);
@@ -555,8 +544,7 @@ public final class MarchingSquaresVectorizer {
             } else {
                 // do we have transparency combination matrix
 
-                final double fillValue =
-                        (tr == Transparency.OPAQUE) ? (1.0 / numBands) : (1.0 / (numBands - 1));
+                final double fillValue = (tr == Transparency.OPAQUE) ? (1.0 / numBands) : (1.0 / (numBands - 1));
                 final double[][] matrix = new double[1][numBands + 1];
                 for (int i = 0; i < numBands; i++) {
                     matrix[0][i] = fillValue;
@@ -573,15 +561,14 @@ public final class MarchingSquaresVectorizer {
         final ImageLayout layout2 = (ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT);
         layout2.setColorModel(ColorUtilities.GRAY_CM);
         layout2.setSampleModel(
-                ColorUtilities.GRAY_CM.createCompatibleSampleModel(
-                        inputRI.getTileWidth(), inputRI.getTileHeight()));
+                ColorUtilities.GRAY_CM.createCompatibleSampleModel(inputRI.getTileWidth(), inputRI.getTileHeight()));
 
         return inputRI;
     }
 
     /**
-     * Check if the provided geometries list is empty. In case the reference raster doesn't contain
-     * any valid points (isAllZeros), then return an empty GeometryCollection
+     * Check if the provided geometries list is empty. In case the reference raster doesn't contain any valid points
+     * (isAllZeros), then return an empty GeometryCollection
      */
     private boolean noGeometries(final List<Polygon> geometriesList, final boolean isAllZeros) {
         if (geometriesList.isEmpty()) {
@@ -599,8 +586,8 @@ public final class MarchingSquaresVectorizer {
     }
 
     /**
-     * If validation is requested, scan the geometries and build valid polygons (in case they
-     * aren't) by also removing holes.
+     * If validation is requested, scan the geometries and build valid polygons (in case they aren't) by also removing
+     * holes.
      */
     private List<Polygon> validateGeometries(List<Polygon> geometriesList) {
         if (forceValid && (!geometriesList.isEmpty())) {
@@ -673,11 +660,9 @@ public final class MarchingSquaresVectorizer {
             final double tolerance = Math.max(xRes, yRes) * simplifierFactor;
 
             // Avoid simplification on small polygons
-            simplifiedFootprintGeometry =
-                    (area > MIN_AREA_TO_BE_SIMPLIFIED)
-                            ? TopologyPreservingSimplifier.simplify(
-                                    finalSimplifiedFootprint, tolerance)
-                            : finalSimplifiedFootprint;
+            simplifiedFootprintGeometry = (area > MIN_AREA_TO_BE_SIMPLIFIED)
+                    ? TopologyPreservingSimplifier.simplify(finalSimplifiedFootprint, tolerance)
+                    : finalSimplifiedFootprint;
 
             if (simplifiedFootprintGeometry == null) {
                 throw new IllegalStateException("No simplified Footprint can be computed");
@@ -707,10 +692,7 @@ public final class MarchingSquaresVectorizer {
     }
 
     private void identifyGeometries(
-            final RandomIter iter,
-            final int sampleDataType,
-            final List<Polygon> geometriesList,
-            ScanInfo scanInfo)
+            final RandomIter iter, final int sampleDataType, final List<Polygon> geometriesList, ScanInfo scanInfo)
             throws TransformException {
 
         // Preliminar check
@@ -738,15 +720,13 @@ public final class MarchingSquaresVectorizer {
             if (sampleDataType == DataBuffer.TYPE_DOUBLE) {
                 for (int tileY = minTileY; tileY <= maxTileY; tileY++) {
                     for (int tileX = minTileX; tileX <= maxTileX; tileX++) {
-                        identifyGeometryDouble(
-                                iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
+                        identifyGeometryDouble(iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
                     }
                 }
             } else if (sampleDataType == DataBuffer.TYPE_BYTE) {
                 for (int tileY = minTileY; tileY <= maxTileY; tileY++) {
                     for (int tileX = minTileX; tileX <= maxTileX; tileX++) {
-                        identifyGeometryByte(
-                                iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
+                        identifyGeometryByte(iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
                     }
                 }
             }
@@ -761,13 +741,7 @@ public final class MarchingSquaresVectorizer {
             scanInfo.takeFirst = true;
 
             Polygon polygon =
-                    identifyPerimeter(
-                            iter,
-                            scanInfo.refColumn,
-                            scanInfo.refRow,
-                            awtPolygon,
-                            sampleDataType,
-                            scanInfo);
+                    identifyPerimeter(iter, scanInfo.refColumn, scanInfo.refRow, awtPolygon, sampleDataType, scanInfo);
             geometriesList.add(polygon);
         }
     }
@@ -797,13 +771,7 @@ public final class MarchingSquaresVectorizer {
                         if (!bitSet.get(col - minX, row - minY)) {
                             if (value == I_VALUE) {
                                 Polygon polygon =
-                                        identifyPerimeter(
-                                                iter,
-                                                col,
-                                                row,
-                                                awtPolygon,
-                                                DataBuffer.TYPE_BYTE,
-                                                scanInfo);
+                                        identifyPerimeter(iter, col, row, awtPolygon, DataBuffer.TYPE_BYTE, scanInfo);
                                 if (polygon != null) {
                                     if (removeCollinear) {
                                         if (LOGGER.isLoggable(Level.FINE)) {
@@ -854,13 +822,7 @@ public final class MarchingSquaresVectorizer {
                         if (!bitSet.get(col - minX, row - minY) && !Double.isNaN(value)) {
                             if (areEqual(value, D_VALUE)) {
                                 Polygon polygon =
-                                        identifyPerimeter(
-                                                iter,
-                                                col,
-                                                row,
-                                                awtPolygon,
-                                                DataBuffer.TYPE_DOUBLE,
-                                                scanInfo);
+                                        identifyPerimeter(iter, col, row, awtPolygon, DataBuffer.TYPE_DOUBLE, scanInfo);
                                 if (polygon != null) {
                                     if (removeCollinear) {
                                         if (LOGGER.isLoggable(Level.FINE)) {
@@ -887,8 +849,8 @@ public final class MarchingSquaresVectorizer {
     }
 
     /**
-     * Rescale the image to byte/ushort and setup a lookup which maps valid values to zero. The
-     * algorithm will indeed looks for zero (after the lookup mapping), which means valid pixels
+     * Rescale the image to byte/ushort and setup a lookup which maps valid values to zero. The algorithm will indeed
+     * looks for zero (after the lookup mapping), which means valid pixels
      */
     private RenderedImage prepareMaskingLookup(RenderedImage inputRI, RenderingHints localHints) {
         final int dataType = inputRI.getSampleModel().getDataType();
@@ -898,39 +860,30 @@ public final class MarchingSquaresVectorizer {
         worker.setRenderingHints(localHints);
         if (dataType != DataBuffer.TYPE_BYTE) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Rescaling dynamic to fit BYTE datatype from "
-                                + ImageUtilities.getDatabufferTypeName(dataType));
+                LOGGER.fine("Rescaling dynamic to fit BYTE datatype from "
+                        + ImageUtilities.getDatabufferTypeName(dataType));
             }
 
             switch (dataType) {
                 case DataBuffer.TYPE_USHORT:
-                    inputRI =
-                            worker.lookup(
-                                            createLookupTableUShort(
-                                                    exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableUShort(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 case DataBuffer.TYPE_SHORT:
                     scale = MAX_8BIT_VALUE / Short.MAX_VALUE;
                     offset = MAX_8BIT_VALUE * Short.MIN_VALUE / (Short.MIN_VALUE - Short.MAX_VALUE);
                     worker.rescale(new double[] {scale}, new double[] {offset});
                     imagesStack.push(worker.getRenderedImage());
-                    inputRI =
-                            worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 case DataBuffer.TYPE_INT:
                     scale = MAX_8BIT_VALUE / Integer.MAX_VALUE;
-                    offset =
-                            MAX_8BIT_VALUE
-                                    * Integer.MIN_VALUE
-                                    / (Integer.MIN_VALUE - Integer.MAX_VALUE);
+                    offset = MAX_8BIT_VALUE * Integer.MIN_VALUE / (Integer.MIN_VALUE - Integer.MAX_VALUE);
                     worker.rescale(new double[] {scale}, new double[] {offset});
                     imagesStack.push(worker.getRenderedImage());
-                    inputRI =
-                            worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 default:
                     throw new UnsupportedOperationException("Wrong data type:" + dataType);
@@ -938,16 +891,14 @@ public final class MarchingSquaresVectorizer {
 
             assert inputRI.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         } else {
-            inputRI =
-                    worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                            .getRenderedImage();
+            inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                    .getRenderedImage();
         }
         return inputRI;
     }
 
     /** Check if the image is fully covered by only valid values */
-    private boolean checkFullyCovered(
-            RandomIter iter, final int refValue, final List<Polygon> geometriesList) {
+    private boolean checkFullyCovered(RandomIter iter, final int refValue, final List<Polygon> geometriesList) {
         int[] yvals = {imageProperties.minY, imageProperties.maxY};
         for (int y : yvals) {
             for (int x = imageProperties.minX; x <= imageProperties.maxX; x++) {
@@ -974,8 +925,7 @@ public final class MarchingSquaresVectorizer {
     }
 
     /** Check if the image is fully covered by only valid values */
-    private boolean checkFullyCovered(
-            RandomIter iter, double refValue, List<Polygon> geometriesList) {
+    private boolean checkFullyCovered(RandomIter iter, double refValue, List<Polygon> geometriesList) {
         for (int y = imageProperties.minY;
                 y <= imageProperties.maxY;
                 y += (imageProperties.maxY - imageProperties.minY)) {
@@ -1037,10 +987,8 @@ public final class MarchingSquaresVectorizer {
 
         int initialValue = value(iter, initialX, initialY, sampleDataType, false);
         if (initialValue == 0) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Supplied initial coordinates (%d, %d) do not lie on a perimeter.",
-                            initialX, initialY));
+            throw new IllegalArgumentException(String.format(
+                    "Supplied initial coordinates (%d, %d) do not lie on a perimeter.", initialX, initialY));
         }
         if (initialValue == 15) {
             // not a border pixel
@@ -1152,8 +1100,7 @@ public final class MarchingSquaresVectorizer {
             awtPolygon.addPoint(x, y);
         } while ((x != initialX) || (y != initialY));
 
-        double polygonArea =
-                getPolygonArea(awtPolygon.xpoints, awtPolygon.ypoints, awtPolygon.npoints - 1);
+        double polygonArea = getPolygonArea(awtPolygon.xpoints, awtPolygon.ypoints, awtPolygon.npoints - 1);
         if (polygonArea < thresholdArea) {
             if (!scanInfo.firstFound) {
                 // Taking note that at least a polygon have
@@ -1173,8 +1120,7 @@ public final class MarchingSquaresVectorizer {
 
         coordinateList.add(startCoordinate);
 
-        Coordinate[] coordinateArray =
-                coordinateList.toArray(new Coordinate[coordinateList.size()]);
+        Coordinate[] coordinateArray = coordinateList.toArray(new Coordinate[coordinateList.size()]);
 
         LinearRing linearRing = GF.createLinearRing(coordinateArray);
         Polygon polygon = GF.createPolygon(linearRing, null);
@@ -1182,18 +1128,14 @@ public final class MarchingSquaresVectorizer {
         return polygon;
     }
 
-    /**
-     * Simple utility method checking if the tested pixel belongs to a lower corner 2*2 checker
-     * board.
-     */
+    /** Simple utility method checking if the tested pixel belongs to a lower corner 2*2 checker board. */
     private boolean isLowerCorner(RandomIter iter, int x, int y, int sampleDataType) {
         return (value(iter, x + 1, y, sampleDataType, false) == 4)
                 && (value(iter, x, y + 1, sampleDataType, false) == 2)
                 && (value(iter, x + 1, y + 1, sampleDataType, false) == 1);
     }
 
-    private int value(
-            RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
+    private int value(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
         int sum = 0;
 
         if (isSet(iter, x - 1, y - 1, dataType, forceSetting)) // UL
@@ -1222,13 +1164,11 @@ public final class MarchingSquaresVectorizer {
         return sum;
     }
 
-    private boolean isSet(
-            RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
-        boolean isOutsideGrid =
-                (x < imageProperties.minX)
-                        || (x > imageProperties.maxX)
-                        || (y < imageProperties.minY)
-                        || (y > imageProperties.maxY);
+    private boolean isSet(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
+        boolean isOutsideGrid = (x < imageProperties.minX)
+                || (x > imageProperties.maxX)
+                || (y < imageProperties.minY)
+                || (y > imageProperties.maxY);
         if (isOutsideGrid) {
             return false;
         }
@@ -1278,14 +1218,13 @@ public final class MarchingSquaresVectorizer {
 
     public static class ImageAnalysisResultThdLocal {
 
-        private static final InheritableThreadLocal<Exception> tl =
-                new InheritableThreadLocal<Exception>() {
-                    @Override
-                    protected Exception initialValue() {
+        private static final InheritableThreadLocal<Exception> tl = new InheritableThreadLocal<Exception>() {
+            @Override
+            protected Exception initialValue() {
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         public static Exception get() {
             return tl.get();
@@ -1373,8 +1312,7 @@ public final class MarchingSquaresVectorizer {
         return LookupTableFactory.create(b, dataType);
     }
 
-    private LookupTable createLookupTableUShort(
-            List<Range<Integer>> exclusionValues, int dataType) {
+    private LookupTable createLookupTableUShort(List<Range<Integer>> exclusionValues, int dataType) {
         final byte[] bUShort = new byte[65536];
         Arrays.fill(bUShort, (byte) 0);
         for (Range<Integer> exclusionValue : exclusionValues) {

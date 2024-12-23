@@ -52,6 +52,8 @@ public class GMLMultiPointPropertyTypeBinding2Test extends GMLTestSupport {
                 doc.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiPoint.getLocalPart())
                         .getLength());
         assertEquals(
-                2, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
+                2,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart())
+                        .getLength());
     }
 }

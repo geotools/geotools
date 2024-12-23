@@ -53,8 +53,8 @@ import org.geotools.util.factory.OptionalFactory;
  */
 public class FactoryDependencies {
     /**
-     * A list of interfaces that may be implemented by this class. Used for the properties printed
-     * between parenthesis by {@link #createTree()}.
+     * A list of interfaces that may be implemented by this class. Used for the properties printed between parenthesis
+     * by {@link #createTree()}.
      */
     private static final Class[] TYPES = {
         CRSFactory.class,
@@ -72,38 +72,22 @@ public class FactoryDependencies {
 
     /** Labels for {@link #TYPES}. */
     private static final String[] TYPE_LABELS = {
-        "crs",
-        "crs",
-        "cs",
-        "cs",
-        "datum",
-        "datum",
-        "operation",
-        "operation",
-        "buffered",
-        "optional",
-        "registered"
+        "crs", "crs", "cs", "cs", "datum", "datum", "operation", "operation", "buffered", "optional", "registered"
     };
 
     /**
-     * The number of elements in {@link #TYPES} which are referencing factories. They are printed in
-     * a different color than the last elements.
+     * The number of elements in {@link #TYPES} which are referencing factories. They are printed in a different color
+     * than the last elements.
      */
     private static final int FACTORY_COUNT = TYPES.length - 3;
 
     /** The factory to format. */
     private final Factory factory;
 
-    /**
-     * {@code true} for applying colors on a ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compliant
-     * output device.
-     */
+    /** {@code true} for applying colors on a ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compliant output device. */
     private boolean colorEnabled;
 
-    /**
-     * {@code true} for printing attributes {@link #TYPE_LABELS} between parenthesis after the
-     * factory name.
-     */
+    /** {@code true} for printing attributes {@link #TYPE_LABELS} between parenthesis after the factory name. */
     private boolean attributes;
 
     /** Creates a new dependency tree for the specified factory. */
@@ -111,33 +95,28 @@ public class FactoryDependencies {
         this.factory = factory;
     }
 
-    /**
-     * Returns {@code true} if syntax coloring is enabled. Syntax coloring is disabled by default.
-     */
+    /** Returns {@code true} if syntax coloring is enabled. Syntax coloring is disabled by default. */
     public boolean isColorEnabled() {
         return colorEnabled;
     }
 
     /**
-     * Enables or disables syntax coloring on ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compatible
-     * terminal. By default, syntax coloring is disabled.
+     * Enables or disables syntax coloring on ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compatible terminal. By default,
+     * syntax coloring is disabled.
      */
     public void setColorEnabled(final boolean enabled) {
         colorEnabled = enabled;
     }
 
-    /**
-     * Returns {@code true} if attributes are to be printed. By default, attributes are not printed.
-     */
+    /** Returns {@code true} if attributes are to be printed. By default, attributes are not printed. */
     public boolean isAttributeEnabled() {
         return attributes;
     }
 
     /**
-     * Enables or disables the addition of attributes after factory names. Attributes are labels
-     * like "{@code crs}", "{@code datum}", <cite>etc.</cite> put between parenthesis. They give
-     * indications on the services implemented by the factory (e.g. {@link CRSAuthorityFactory},
-     * {@link DatumAuthorityFactory}, <cite>etc.</cite>).
+     * Enables or disables the addition of attributes after factory names. Attributes are labels like "{@code crs}",
+     * "{@code datum}", <cite>etc.</cite> put between parenthesis. They give indications on the services implemented by
+     * the factory (e.g. {@link CRSAuthorityFactory}, {@link DatumAuthorityFactory}, <cite>etc.</cite>).
      */
     public void setAttributeEnabled(final boolean enabled) {
         attributes = enabled;
@@ -181,9 +160,7 @@ public class FactoryDependencies {
                             throw new AssertionError(); // Should never happen.
                         }
                     } else {
-                        child =
-                                OptionalDependencies.createTreeNode(
-                                        String.valueOf(element), element, false);
+                        child = OptionalDependencies.createTreeNode(String.valueOf(element), element, false);
                     }
                     root.add(child);
                 }
@@ -194,8 +171,7 @@ public class FactoryDependencies {
 
     /** Creates a single node for the specified factory. */
     private DefaultMutableTreeNode createNode(final Factory factory) {
-        final StringBuilder buffer =
-                new StringBuilder(Classes.getShortClassName(factory)).append('[');
+        final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(factory)).append('[');
         if (factory instanceof AuthorityFactory) {
             final Citation authority = ((AuthorityFactory) factory).getAuthority();
             if (authority != null) {

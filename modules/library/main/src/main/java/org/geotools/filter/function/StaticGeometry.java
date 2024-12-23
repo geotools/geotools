@@ -653,15 +653,10 @@ public class StaticGeometry {
     }
 
     public static boolean in5(Object s, Object s1, Object s2, Object s3, Object s4, Object s5) {
-        return (equalTo(s, s1)
-                || equalTo(s, s2)
-                || equalTo(s, s3)
-                || equalTo(s, s4)
-                || equalTo(s, s5));
+        return (equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4) || equalTo(s, s5));
     }
 
-    public static boolean in6(
-            Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6) {
+    public static boolean in6(Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6) {
         return (equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
@@ -670,8 +665,7 @@ public class StaticGeometry {
                 || equalTo(s, s6));
     }
 
-    public static boolean in7(
-            Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) {
+    public static boolean in7(Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) {
         return (equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
@@ -682,15 +676,7 @@ public class StaticGeometry {
     }
 
     public static boolean in8(
-            Object s,
-            Object s1,
-            Object s2,
-            Object s3,
-            Object s4,
-            Object s5,
-            Object s6,
-            Object s7,
-            Object s8) {
+            Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7, Object s8) {
         return (equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)

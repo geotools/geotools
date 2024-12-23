@@ -12,8 +12,8 @@ package org.geotools.api.temporal;
 import javax.measure.Unit;
 
 /**
- * A data type for intervals of time which supports the expression of duration in terms of a
- * specified multiple of a single unit of time.
+ * A data type for intervals of time which supports the expression of duration in terms of a specified multiple of a
+ * single unit of time.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
@@ -31,8 +31,7 @@ public interface IntervalLength extends Duration {
 
     /**
      * The length of the time interval as an integer multiple of one {@linkplain #getRadix
-     * radix}<sup>(-{@linkplain #getFactor factor})</sup> of the {@linkplain #getUnit specified
-     * unit}.
+     * radix}<sup>(-{@linkplain #getFactor factor})</sup> of the {@linkplain #getUnit specified unit}.
      */
     int getValue();
 }

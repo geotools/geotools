@@ -68,8 +68,8 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
     }
 
     /**
-     * Test categorization with "succeeding" thresholds (the default behaviour). A succeeding
-     * threshold is whose value belongs to the next category.
+     * Test categorization with "succeeding" thresholds (the default behaviour). A succeeding threshold is whose value
+     * belongs to the next category.
      */
     @Test
     public void testSucceedingThresholds() throws Exception {
@@ -94,15 +94,13 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
 
         // above last threshold
-        result =
-                fn.evaluate(
-                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 
     /**
-     * Test categorization with "preceding" thresholds (the default behaviour). A succeeding
-     * threshold is whose value belongs to the next category.
+     * Test categorization with "preceding" thresholds (the default behaviour). A succeeding threshold is whose value
+     * belongs to the next category.
      */
     @Test
     public void testPrecedingThresholds() throws Exception {
@@ -128,9 +126,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
 
         // above last threshold
-        result =
-                fn.evaluate(
-                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 

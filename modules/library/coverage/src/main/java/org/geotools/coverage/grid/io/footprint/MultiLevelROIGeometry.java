@@ -59,10 +59,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
     private boolean empty;
 
     public MultiLevelROIGeometry(
-            Geometry footprint,
-            Geometry granuleBounds,
-            double inset,
-            FootprintInsetPolicy insetPolicy) {
+            Geometry footprint, Geometry granuleBounds, double inset, FootprintInsetPolicy insetPolicy) {
         this.originalFootprint = footprint;
         this.granuleBounds = granuleBounds;
         this.inset = inset;
@@ -77,11 +74,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
 
     @Override
     public ROIGeometry getTransformedROI(
-            AffineTransform at,
-            int imageIndex,
-            Rectangle imgBounds,
-            ImageReadParam params,
-            ReadType readType) {
+            AffineTransform at, int imageIndex, Rectangle imgBounds, ImageReadParam params, ReadType readType) {
         if (empty) {
             return null;
         }
@@ -91,14 +84,13 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
         ROIGeometry roiGeometry = roiCache.get(at);
         if (roiGeometry == null) {
             Geometry rescaled;
-            AffineTransformation geometryAT =
-                    new AffineTransformation(
-                            at.getScaleX(),
-                            at.getShearX(),
-                            at.getTranslateX(),
-                            at.getShearY(),
-                            at.getScaleY(),
-                            at.getTranslateY());
+            AffineTransformation geometryAT = new AffineTransformation(
+                    at.getScaleX(),
+                    at.getShearX(),
+                    at.getTranslateX(),
+                    at.getShearY(),
+                    at.getScaleY(),
+                    at.getTranslateY());
             if (inset > 0) {
                 double scale = Math.min(Math.abs(at.getScaleX()), Math.abs(at.getScaleY()));
                 double rescaledInset = scale * inset;
@@ -157,8 +149,7 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
     static class FastClipROIGeometry extends ROIGeometry {
 
         private static final long serialVersionUID = -4283288388988174306L;
-        private static final AffineTransformation Y_INVERSION =
-                new AffineTransformation(1, 0, 0, 0, -1, 0);
+        private static final AffineTransformation Y_INVERSION = new AffineTransformation(1, 0, 0, 0, -1, 0);
 
         public FastClipROIGeometry(Geometry geom) {
             super(geom);
@@ -182,8 +173,8 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
          * Gets a {@link Geometry} from an input {@link ROI}.
          *
          * @param roi the ROI
-         * @return a {@link Geometry} instance from the provided input; null in case the input roi
-         *     is neither a geometry, nor a shape.
+         * @return a {@link Geometry} instance from the provided input; null in case the input roi is neither a
+         *     geometry, nor a shape.
          */
         private Geometry getGeometry(ROI roi) {
             if (roi instanceof ROIGeometry) {

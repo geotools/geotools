@@ -22,9 +22,9 @@ import si.uom.SI;
 import systems.uom.common.USCustomary;
 
 /**
- * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java
- * Units defined in <code>javax.measure.unit</code>. Each entry in this enum provides both the Java
- * Unit for the given UOM and the corresponding String that is defined by the SE standard.
+ * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java Units defined in
+ * <code>javax.measure.unit</code>. Each entry in this enum provides both the Java Unit for the given UOM and the
+ * corresponding String that is defined by the SE standard.
  */
 public enum UomOgcMapping {
     METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"),
@@ -36,8 +36,7 @@ public enum UomOgcMapping {
     private Unit<Length> unit;
 
     /**
-     * Internal constructor: specifies the UOM mapping passing a specific Java Unit and the
-     * corresponding OGC SE string.
+     * Internal constructor: specifies the UOM mapping passing a specific Java Unit and the corresponding OGC SE string.
      *
      * @param unit a Java Unit (e.g., <code>SI.METRE</code>).
      * @param seString a String that follows the OGC SE specification.
@@ -81,8 +80,7 @@ public enum UomOgcMapping {
         for (UomOgcMapping uom : UomOgcMapping.values()) {
             if (uom.getSEString().equals(seString)) return uom;
         }
-        throw new IllegalArgumentException(
-                "'" + seString + "' is not a valid OGC SE standard Unit of Measure");
+        throw new IllegalArgumentException("'" + seString + "' is not a valid OGC SE standard Unit of Measure");
     }
 
     /**
@@ -90,14 +88,12 @@ public enum UomOgcMapping {
      *
      * @param unit a Java Unit (e.g., <code>SI.METRE</code>).
      * @return the corresponding UnitOfMeasure.
-     * @throws IllegalArgumentException if the provided Unit is not part of the OGC SE
-     *     specification.
+     * @throws IllegalArgumentException if the provided Unit is not part of the OGC SE specification.
      */
     public static UomOgcMapping get(Unit<Length> unit) throws IllegalArgumentException {
         for (UomOgcMapping uom : UomOgcMapping.values()) {
             if (uom.getUnit().equals(unit)) return uom;
         }
-        throw new IllegalArgumentException(
-                "'" + unit + "' is not a valid OGC SE standard Unit of Measure");
+        throw new IllegalArgumentException("'" + unit + "' is not a valid OGC SE standard Unit of Measure");
     }
 }

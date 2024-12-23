@@ -24,8 +24,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 
 /**
- * Return the number of bands of the evaluation context, which is supposed to be a coverage, or an
- * object that can be converted to on.
+ * Return the number of bands of the evaluation context, which is supposed to be a coverage, or an object that can be
+ * converted to on.
  */
 public class BandsFunction extends FunctionExpressionImpl {
     public static FunctionName NAME = new FunctionNameImpl("bands", Integer.class);

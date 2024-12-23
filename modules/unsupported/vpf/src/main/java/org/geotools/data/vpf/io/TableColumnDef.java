@@ -20,9 +20,8 @@ import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.util.DataUtils;
 
 /**
- * This class contains definition of VPF standard table column definition according to specification
- * found in: "Interface Standard for Vector Product Format." Objects of this type are immutable.
- * Created: Thu Jan 02 23:11:27 2003
+ * This class contains definition of VPF standard table column definition according to specification found in:
+ * "Interface Standard for Vector Product Format." Objects of this type are immutable. Created: Thu Jan 02 23:11:27 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
  * @source $URL$

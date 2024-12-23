@@ -42,8 +42,8 @@ public final class IIOMetadataDumper {
     private String metadata;
 
     /**
-     * Constructor for a {@link IIOMetadataDumper} accepting and {@link IIOMetadata} and a {@link
-     * String} for the format name of the XML metadata to use.
+     * Constructor for a {@link IIOMetadataDumper} accepting and {@link IIOMetadata} and a {@link String} for the format
+     * name of the XML metadata to use.
      *
      * @param metadata The metadta to display.
      * @param name The format of the metaata to display.
@@ -57,9 +57,8 @@ public final class IIOMetadataDumper {
     }
 
     /**
-     * Constructor for a {@link IIOMetadataDumper} accepting an {@link IIOMetadataNode}. It has no
-     * way to choose the format of the metadata to parse since this choice has been already done
-     * previously.
+     * Constructor for a {@link IIOMetadataDumper} accepting an {@link IIOMetadataNode}. It has no way to choose the
+     * format of the metadata to parse since this choice has been already done previously.
      */
     public IIOMetadataDumper(IIOMetadataNode rootNode) {
         this.root = rootNode;
@@ -127,8 +126,8 @@ public final class IIOMetadataDumper {
     /**
      * Sets the name of the format we want to get the XML representation for.
      *
-     * <p>This method causes a new generation of the string representation if the format is
-     * different from the one stored.
+     * <p>This method causes a new generation of the string representation if the format is different from the one
+     * stored.
      *
      * @param formatName The name of the format we want to get the XML representation for.
      */

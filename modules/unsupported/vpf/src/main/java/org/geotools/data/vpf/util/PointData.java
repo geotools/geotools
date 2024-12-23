@@ -43,10 +43,7 @@ public class PointData extends HashMap<Object, Object> {
 
                 while (st.hasMoreTokens()) {
                     StringTokenizer st2 = new StringTokenizer(st.nextToken(), ",");
-                    c[i] =
-                            new Coordinate(
-                                    Double.parseDouble(st2.nextToken()),
-                                    Double.parseDouble(st2.nextToken()));
+                    c[i] = new Coordinate(Double.parseDouble(st2.nextToken()), Double.parseDouble(st2.nextToken()));
                     i++;
                 }
 

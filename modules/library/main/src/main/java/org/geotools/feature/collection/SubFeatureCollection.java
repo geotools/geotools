@@ -29,12 +29,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Reasonable default implementation for subCollection making use of parent {@link
- * SimpleFeatureCollection#features()} and provided Filter.
+ * Reasonable default implementation for subCollection making use of parent {@link SimpleFeatureCollection#features()}
+ * and provided Filter.
  *
- * <p>This is only a reasonable implementation and is not optimal. It is recommended that
- * implementors construct a new {@link Query} and use {@link
- * SimpleFeatureSource#getFeatures(Query)}.
+ * <p>This is only a reasonable implementation and is not optimal. It is recommended that implementors construct a new
+ * {@link Query} and use {@link SimpleFeatureSource#getFeatures(Query)}.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */
@@ -59,8 +58,7 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
             subfilter = Filter.INCLUDE;
         }
         if (subfilter.equals(Filter.EXCLUDE)) {
-            throw new IllegalArgumentException(
-                    "A subcollection with Filter.EXCLUDE would be empty");
+            throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
         }
         if (collection instanceof SubFeatureCollection) {
             SubFeatureCollection filtered = (SubFeatureCollection) collection;

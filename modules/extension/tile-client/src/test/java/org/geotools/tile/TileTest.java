@@ -91,8 +91,7 @@ public class TileTest {
 
     @Test
     public void testGetExtent() {
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
         Assert.assertEquals(env, this.tile.getExtent());
     }
 
@@ -103,14 +102,10 @@ public class TileTest {
 
     protected Tile createTestTile() {
 
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
         ZoomLevel zoomLevel = new WebMercatorZoomLevel(5);
 
-        return new Tile(
-                TileIdentifierTest.createTileIdentifierPrototype(zoomLevel, 10, 12, "SomeService"),
-                env,
-                256) {
+        return new Tile(TileIdentifierTest.createTileIdentifierPrototype(zoomLevel, 10, 12, "SomeService"), env, 256) {
 
             @Override
             public URL getUrl() {

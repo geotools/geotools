@@ -10,10 +10,10 @@
 package org.geotools.api.referencing.operation;
 
 /**
- * Transforms one-dimensional coordinate points. {@link CoordinateOperation#getMathTransform} may
- * returns instance of this interface when source and destination coordinate systems are both one
- * dimensional. {@code MathTransform1D} extends {@link MathTransform} by adding a simple method
- * transforming a value without the overhead of creating data array.
+ * Transforms one-dimensional coordinate points. {@link CoordinateOperation#getMathTransform} may returns instance of
+ * this interface when source and destination coordinate systems are both one dimensional. {@code MathTransform1D}
+ * extends {@link MathTransform} by adding a simple method transforming a value without the overhead of creating data
+ * array.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -29,8 +29,8 @@ public interface MathTransform1D extends MathTransform {
     double transform(double value) throws TransformException;
 
     /**
-     * Gets the derivative of this function at a value. The derivative is the 1&times;1 matrix of
-     * the non-translating portion of the approximate affine map at the value.
+     * Gets the derivative of this function at a value. The derivative is the 1&times;1 matrix of the non-translating
+     * portion of the approximate affine map at the value.
      *
      * @param value The value where to evaluate the derivative.
      * @return The derivative at the specified point.

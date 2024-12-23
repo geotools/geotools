@@ -62,8 +62,7 @@ public final class GPKG extends XSD {
 
     /* Type Definitions */
     /** @generated */
-    public static final QName coveragetype =
-            new QName("http://www.opengis.net/gpkg", "coveragetype");
+    public static final QName coveragetype = new QName("http://www.opengis.net/gpkg", "coveragetype");
     /** @generated */
     public static final QName geopkgtype = new QName("http://www.opengis.net/gpkg", "geopkgtype");
     /** @generated */
@@ -73,14 +72,11 @@ public final class GPKG extends XSD {
     /** @generated */
     public static final QName layertype = new QName("http://www.opengis.net/gpkg", "layertype");
     /** @generated */
-    public static final QName geopkgtype_features =
-            new QName("http://www.opengis.net/gpkg", "geopkgtype_features");
+    public static final QName geopkgtype_features = new QName("http://www.opengis.net/gpkg", "geopkgtype_features");
     /** @generated */
-    public static final QName geopkgtype_tiles =
-            new QName("http://www.opengis.net/gpkg", "geopkgtype_tiles");
+    public static final QName geopkgtype_tiles = new QName("http://www.opengis.net/gpkg", "geopkgtype_tiles");
     /** @generated */
-    public static final QName gridsettype_grids =
-            new QName("http://www.opengis.net/gpkg", "gridsettype_grids");
+    public static final QName gridsettype_grids = new QName("http://www.opengis.net/gpkg", "gridsettype_grids");
     /** @generated */
     public static final QName bboxtype = new QName("http://www.opengis.net/gpkg", "bboxtype");
 
@@ -90,8 +86,7 @@ public final class GPKG extends XSD {
 
     public static final QName overview = new QName("http://www.opengis.net/gpkg", "overview");
 
-    public static final QName parametertype =
-            new QName("http://www.opengis.net/gpkg", "parametertype");
+    public static final QName parametertype = new QName("http://www.opengis.net/gpkg", "parametertype");
 
     /* Attributes */
 

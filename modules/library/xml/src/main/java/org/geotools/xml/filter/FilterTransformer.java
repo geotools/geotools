@@ -100,8 +100,7 @@ public class FilterTransformer extends TransformerBase {
     }
 
     public static class FilterTranslator extends TranslatorSupport
-            implements org.geotools.api.filter.FilterVisitor,
-                    org.geotools.api.filter.expression.ExpressionVisitor {
+            implements org.geotools.api.filter.FilterVisitor, org.geotools.api.filter.expression.ExpressionVisitor {
         GeometryTransformer.GeometryTranslator geometryEncoder;
 
         public FilterTranslator(ContentHandler handler) {
@@ -503,10 +502,9 @@ public class FilterTransformer extends TransformerBase {
                 Expression expression = (Expression) o;
                 expression.accept(this, null);
             } else {
-                throw new IllegalArgumentException(
-                        "Cannot encode "
-                                + (o == null ? "null" : o.getClass().getName())
-                                + " should be Filter or Expression");
+                throw new IllegalArgumentException("Cannot encode "
+                        + (o == null ? "null" : o.getClass().getName())
+                        + " should be Filter or Expression");
             }
         }
 
@@ -545,8 +543,7 @@ public class FilterTransformer extends TransformerBase {
             atts.addAttribute("", "name", "name", "", expression.getName());
             start(type, atts);
 
-            for (org.geotools.api.filter.expression.Expression parameter :
-                    expression.getParameters()) {
+            for (org.geotools.api.filter.expression.Expression parameter : expression.getParameters()) {
                 parameter.accept(this, extraData);
             }
             end(type);

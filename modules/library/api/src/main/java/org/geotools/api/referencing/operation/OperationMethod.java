@@ -14,29 +14,28 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Definition of an algorithm used to perform a coordinate operation. Most operation methods use a
- * number of operation parameters, although some coordinate conversions use none. Each coordinate
- * operation using the method assigns values to these parameters.
+ * Definition of an algorithm used to perform a coordinate operation. Most operation methods use a number of operation
+ * parameters, although some coordinate conversions use none. Each coordinate operation using the method assigns values
+ * to these parameters.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see Operation
  */
 public interface OperationMethod extends IdentifiedObject {
     /**
-     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
-     * by {@link #getFormula}.
+     * Key for the <code>{@value}</code> property. This is used for setting the value to be returned by
+     * {@link #getFormula}.
      *
      * @see #getFormula
      */
     String FORMULA_KEY = "formula";
 
     /**
-     * Formula(s) or procedure used by this operation method. This may be a reference to a
-     * publication. Note that the operation method may not be analytic, in which case this attribute
-     * references or contains the procedure, not an analytic formula.
+     * Formula(s) or procedure used by this operation method. This may be a reference to a publication. Note that the
+     * operation method may not be analytic, in which case this attribute references or contains the procedure, not an
+     * analytic formula.
      *
      * @return The formula used by this method.
      */

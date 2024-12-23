@@ -37,9 +37,8 @@ public class DefaultSingleOperation extends AbstractCoordinateOperation implemen
     private static final long serialVersionUID = 672935231344137185L;
 
     /**
-     * Constructs a new single operation with the same values than the specified defining
-     * conversion, together with the specified source and target CRS. This constructor is used by
-     * {@link DefaultConversion} only.
+     * Constructs a new single operation with the same values than the specified defining conversion, together with the
+     * specified source and target CRS. This constructor is used by {@link DefaultConversion} only.
      */
     DefaultSingleOperation(
             final Conversion definition,
@@ -50,14 +49,14 @@ public class DefaultSingleOperation extends AbstractCoordinateOperation implemen
     }
 
     /**
-     * Constructs a single operation from a set of properties. The properties given in argument
-     * follow the same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a single operation from a set of properties. The properties given in argument follow the same rules
+     * than for the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      */
     public DefaultSingleOperation(
             final Map<String, ?> properties,

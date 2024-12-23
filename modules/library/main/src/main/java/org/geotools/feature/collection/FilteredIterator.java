@@ -26,11 +26,11 @@ import org.geotools.feature.FeatureIterator;
 /**
  * Provides an implementation of Iterator that will filter contents using the provided filter.
  *
- * <p>This is a *Generic* iterator not limited to Feature, this will become more interesting as
- * Filter is able to evaulate itself with more things then just Features.
+ * <p>This is a *Generic* iterator not limited to Feature, this will become more interesting as Filter is able to
+ * evaulate itself with more things then just Features.
  *
- * <p>This also explains the use of Collection (where you may have expected a FeatureCollection).
- * However <code>FeatureCollectoin.close( iterator )</code> will be called on the internal delgate.
+ * <p>This also explains the use of Collection (where you may have expected a FeatureCollection). However <code>
+ * FeatureCollectoin.close( iterator )</code> will be called on the internal delgate.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */

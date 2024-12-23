@@ -34,8 +34,7 @@ import org.geotools.util.logging.Logging;
 /**
  * Converter factory for converting SQL Large Objects.
  *
- * <p>The factory provides conversions from java.sql.Blob to byte[] and from java.sql.Clob to
- * java.lang.String.
+ * <p>The factory provides conversions from java.sql.Blob to byte[] and from java.sql.Clob to java.lang.String.
  *
  * @author Stefan Uhrig, SAP SE
  */

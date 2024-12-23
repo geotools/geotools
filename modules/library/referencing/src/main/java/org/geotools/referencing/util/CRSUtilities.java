@@ -56,10 +56,10 @@ import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.util.Classes;
 
 /**
- * A set of static methods working on OpenGIS&reg; {@linkplain CoordinateReferenceSystem coordinate
- * reference system} objects. Some of those methods are useful, but not really rigorous. This is why
- * they do not appear in the "official" package, but instead in this private one. <strong>Do not
- * rely on this API!</strong> It may change in incompatible way in any future release.
+ * A set of static methods working on OpenGIS&reg; {@linkplain CoordinateReferenceSystem coordinate reference system}
+ * objects. Some of those methods are useful, but not really rigorous. This is why they do not appear in the "official"
+ * package, but instead in this private one. <strong>Do not rely on this API!</strong> It may change in incompatible way
+ * in any future release.
  *
  * @since 2.0
  * @version $Id$
@@ -70,11 +70,10 @@ public final class CRSUtilities {
     private CRSUtilities() {}
 
     /**
-     * Returns the dimension within the coordinate system of the first occurrence of an axis
-     * colinear with the specified axis. If an axis with the same {@linkplain
-     * CoordinateSystemAxis#getDirection direction} or an {@linkplain AxisDirection#inverse
-     * opposite} direction than {@code axis} ocurs in the coordinate system, then the dimension of
-     * the first such occurrence is returned. That is, the a value <i>k</i> such that:
+     * Returns the dimension within the coordinate system of the first occurrence of an axis colinear with the specified
+     * axis. If an axis with the same {@linkplain CoordinateSystemAxis#getDirection direction} or an
+     * {@linkplain AxisDirection#inverse opposite} direction than {@code axis} ocurs in the coordinate system, then the
+     * dimension of the first such occurrence is returned. That is, the a value <i>k</i> such that:
      *
      * <blockquote>
      *
@@ -84,18 +83,16 @@ public final class CRSUtilities {
      *
      * </blockquote>
      *
-     * is {@code true}. If no such axis occurs in this coordinate system, then {@code -1} is
-     * returned.
+     * is {@code true}. If no such axis occurs in this coordinate system, then {@code -1} is returned.
      *
-     * <p>For example, {@code dimensionColinearWith(CoordinateSystemAxis.TIME)} returns the
-     * dimension number of time axis.
+     * <p>For example, {@code dimensionColinearWith(CoordinateSystemAxis.TIME)} returns the dimension number of time
+     * axis.
      *
      * @param cs The coordinate system to examine.
      * @param axis The axis to look for.
      * @return The dimension number of the specified axis, or {@code -1} if none.
      */
-    public static int dimensionColinearWith(
-            final CoordinateSystem cs, final CoordinateSystemAxis axis) {
+    public static int dimensionColinearWith(final CoordinateSystem cs, final CoordinateSystemAxis axis) {
         int candidate = -1;
         final int dimension = cs.getDimension();
         final AxisDirection direction = axis.getDirection().absolute();
@@ -112,9 +109,8 @@ public final class CRSUtilities {
     }
 
     /**
-     * Returns the unit used for all axis in the specified coordinate system. If not all axis uses
-     * the same unit, then this method returns {@code null}. This convenience method is often used
-     * for Well Know Text (WKT) formatting.
+     * Returns the unit used for all axis in the specified coordinate system. If not all axis uses the same unit, then
+     * this method returns {@code null}. This convenience method is often used for Well Know Text (WKT) formatting.
      *
      * @param cs The coordinate system for which to get the unit.
      * @return The unit for all axis in the given coordinate system, or {@code null}.
@@ -138,8 +134,7 @@ public final class CRSUtilities {
     /** Returns the components of the specified CRS, or {@code null} if none. */
     private static List<CoordinateReferenceSystem> getComponents(CoordinateReferenceSystem crs) {
         if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> components =
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final List<CoordinateReferenceSystem> components = ((CompoundCRS) crs).getCoordinateReferenceSystems();
             if (!components.isEmpty()) {
                 return components;
             }
@@ -148,19 +143,17 @@ public final class CRSUtilities {
     }
 
     /**
-     * Returns the dimension of the first coordinate reference system of the given type. The {@code
-     * type} argument must be a subinterface of {@link CoordinateReferenceSystem}. If no such
-     * dimension is found, then this method returns {@code -1}.
+     * Returns the dimension of the first coordinate reference system of the given type. The {@code type} argument must
+     * be a subinterface of {@link CoordinateReferenceSystem}. If no such dimension is found, then this method returns
+     * {@code -1}.
      *
      * @param crs The coordinate reference system (CRS) to examine.
-     * @param type The CRS type to look for. Must be a subclass of {@link
-     *     CoordinateReferenceSystem}.
+     * @param type The CRS type to look for. Must be a subclass of {@link CoordinateReferenceSystem}.
      * @return The dimension range of the specified CRS type, or {@code -1} if none.
      * @throws IllegalArgumentException if the {@code type} is not legal.
      */
     public static int getDimensionOf(
-            final CoordinateReferenceSystem crs,
-            final Class<? extends CoordinateReferenceSystem> type)
+            final CoordinateReferenceSystem crs, final Class<? extends CoordinateReferenceSystem> type)
             throws IllegalArgumentException {
         if (type.isAssignableFrom(crs.getClass())) {
             return 0;
@@ -185,16 +178,14 @@ public final class CRSUtilities {
      * @param crs The coordinate reference system to decompose.
      * @param lower The first dimension to keep, inclusive.
      * @param upper The last dimension to keep, exclusive.
-     * @return The sub-coordinate system, or {@code null} if {@code crs} can't be decomposed for
-     *     dimensions in the range {@code [lower..upper]}.
+     * @return The sub-coordinate system, or {@code null} if {@code crs} can't be decomposed for dimensions in the range
+     *     {@code [lower..upper]}.
      */
-    public static CoordinateReferenceSystem getSubCRS(
-            CoordinateReferenceSystem crs, int lower, int upper) {
+    public static CoordinateReferenceSystem getSubCRS(CoordinateReferenceSystem crs, int lower, int upper) {
         int dimension = crs.getCoordinateSystem().getDimension();
         if (lower < 0 || lower > upper || upper > dimension) {
             final Object arg0 = lower < 0 ? lower : upper;
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
         }
         while (lower != 0 || upper != dimension) {
             final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -215,20 +206,17 @@ public final class CRSUtilities {
     }
 
     /**
-     * Returns a two-dimensional coordinate reference system representing the two first dimensions
-     * of the specified coordinate reference system. If {@code crs} is already a two-dimensional
-     * CRS, then it is returned unchanged. Otherwise, if it is a {@link CompoundCRS}, then the head
-     * coordinate reference system is examined.
+     * Returns a two-dimensional coordinate reference system representing the two first dimensions of the specified
+     * coordinate reference system. If {@code crs} is already a two-dimensional CRS, then it is returned unchanged.
+     * Otherwise, if it is a {@link CompoundCRS}, then the head coordinate reference system is examined.
      *
      * @param crs The coordinate system, or {@code null}.
-     * @return A two-dimensional coordinate reference system that represents the two first
-     *     dimensions of {@code crs}, or {@code null} if {@code crs} was {@code null}.
-     * @throws TransformException if {@code crs} can't be reduced to a two-coordinate system. We use
-     *     this exception class since this method is usually invoked in the context of a
-     *     transformation process.
+     * @return A two-dimensional coordinate reference system that represents the two first dimensions of {@code crs}, or
+     *     {@code null} if {@code crs} was {@code null}.
+     * @throws TransformException if {@code crs} can't be reduced to a two-coordinate system. We use this exception
+     *     class since this method is usually invoked in the context of a transformation process.
      */
-    public static CoordinateReferenceSystem getCRS2D(CoordinateReferenceSystem crs)
-            throws TransformException {
+    public static CoordinateReferenceSystem getCRS2D(CoordinateReferenceSystem crs) throws TransformException {
         if (crs != null) {
             while (crs.getCoordinateSystem().getDimension() != 2) {
                 final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -244,10 +232,9 @@ public final class CRSUtilities {
     }
 
     /**
-     * Changes the dimension declared in the name. For example if {@code name} is "WGS 84
-     * (geographic 3D)", {@code search} is "3D" and {@code replace} is "2D", then this method
-     * returns "WGS 84 (geographic 2D)". If the string to search is not found, then it is
-     * concatenated to the name.
+     * Changes the dimension declared in the name. For example if {@code name} is "WGS 84 (geographic 3D)",
+     * {@code search} is "3D" and {@code replace} is "2D", then this method returns "WGS 84 (geographic 2D)". If the
+     * string to search is not found, then it is concatenated to the name.
      *
      * @param object The identified object having the original name.
      * @param search The dimension token to search in the {@code object} name.
@@ -303,9 +290,9 @@ public final class CRSUtilities {
     }
 
     /**
-     * Returns the ellipsoid used by the specified coordinate reference system, providing that the
-     * two first dimensions use an instance of {@link GeographicCRS}. Otherwise (i.e. if the two
-     * first dimensions are not geographic), returns {@code null}.
+     * Returns the ellipsoid used by the specified coordinate reference system, providing that the two first dimensions
+     * use an instance of {@link GeographicCRS}. Otherwise (i.e. if the two first dimensions are not geographic),
+     * returns {@code null}.
      *
      * @param crs The coordinate reference system for which to get the ellipsoid.
      * @return The ellipsoid in the given CRS, or {@code null} if none.
@@ -322,9 +309,8 @@ public final class CRSUtilities {
     }
 
     /**
-     * Derives a geographic CRS with (<var>longitude</var>, <var>latitude</var>) axis order in
-     * decimal degrees, relative to Greenwich. If no such CRS can be obtained of created, returns
-     * {@link DefaultGeographicCRS#WGS84}.
+     * Derives a geographic CRS with (<var>longitude</var>, <var>latitude</var>) axis order in decimal degrees, relative
+     * to Greenwich. If no such CRS can be obtained of created, returns {@link DefaultGeographicCRS#WGS84}.
      *
      * @param crs A source CRS.
      * @return A two-dimensional geographic CRS with standard axis. Never {@code null}.
@@ -342,25 +328,19 @@ public final class CRSUtilities {
         }
         GeodeticDatum geoDatum = (GeodeticDatum) datum;
         if (geoDatum.getPrimeMeridian().getGreenwichLongitude() != 0) {
-            geoDatum =
-                    new DefaultGeodeticDatum(
-                            geoDatum.getName().getCode(),
-                            geoDatum.getEllipsoid(),
-                            DefaultPrimeMeridian.GREENWICH);
+            geoDatum = new DefaultGeodeticDatum(
+                    geoDatum.getName().getCode(), geoDatum.getEllipsoid(), DefaultPrimeMeridian.GREENWICH);
         } else if (crs instanceof GeographicCRS) {
-            if (CRS.equalsIgnoreMetadata(
-                    DefaultEllipsoidalCS.GEODETIC_2D, crs.getCoordinateSystem())) {
+            if (CRS.equalsIgnoreMetadata(DefaultEllipsoidalCS.GEODETIC_2D, crs.getCoordinateSystem())) {
                 return (GeographicCRS) crs;
             }
         }
-        return new DefaultGeographicCRS(
-                crs.getName().getCode(), geoDatum, DefaultEllipsoidalCS.GEODETIC_2D);
+        return new DefaultGeographicCRS(crs.getName().getCode(), geoDatum, DefaultEllipsoidalCS.GEODETIC_2D);
     }
 
     /**
-     * Transforms the relative distance vector specified by {@code source} and stores the result in
-     * {@code dest}. A relative distance vector is transformed without applying the translation
-     * components.
+     * Transforms the relative distance vector specified by {@code source} and stores the result in {@code dest}. A
+     * relative distance vector is transformed without applying the translation components.
      *
      * @param transform The transform to apply.
      * @param origin The position where to compute the delta transform in the source CS.
@@ -369,8 +349,7 @@ public final class CRSUtilities {
      * @throws TransformException if the transformation failed.
      * @since 2.3
      */
-    public static Position deltaTransform(
-            final MathTransform transform, final Position origin, final Position source)
+    public static Position deltaTransform(final MathTransform transform, final Position origin, final Position source)
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
@@ -391,9 +370,8 @@ public final class CRSUtilities {
     }
 
     /**
-     * Transforms the relative distance vector specified by {@code source} and stores the result in
-     * {@code dest}. A relative distance vector is transformed without applying the translation
-     * components.
+     * Transforms the relative distance vector specified by {@code source} and stores the result in {@code dest}. A
+     * relative distance vector is transformed without applying the translation components.
      *
      * @param transform The transform to apply.
      * @param origin The position where to compute the delta transform in the source CS.
@@ -404,10 +382,7 @@ public final class CRSUtilities {
      * @see AffineTransform#deltaTransform(Point2D,Point2D)
      */
     public static Point2D deltaTransform(
-            final MathTransform2D transform,
-            final Point2D origin,
-            final Point2D source,
-            Point2D dest)
+            final MathTransform2D transform, final Point2D origin, final Point2D source, Point2D dest)
             throws TransformException {
         if (transform instanceof AffineTransform) {
             return ((AffineTransform) transform).deltaTransform(source, dest);
@@ -429,16 +404,15 @@ public final class CRSUtilities {
 
     /**
      * Returns a character string for the specified geographic area. The string will have the form
-     * "45°00.00'N-50°00.00'N 30°00.00'E-40°00.00'E". If a map projection is required in order to
-     * obtain this representation, it will be automatically applied. This string is mostly used for
-     * debugging purpose.
+     * "45°00.00'N-50°00.00'N 30°00.00'E-40°00.00'E". If a map projection is required in order to obtain this
+     * representation, it will be automatically applied. This string is mostly used for debugging purpose.
      *
      * @param crs The coordinate reference system of the bounding box.
      * @param bounds The bounding box to format.
      * @return The bounding box formatted as a string.
-     * @todo Move this method as a static method in {@link org.geotools.referencing.CRS}. Or yet
-     *     better: move formatting code in {@code GeographicBoundingBox.toString()} method, and move
-     *     the transformation code into {@code GeographicBoundingBox} constructor.
+     * @todo Move this method as a static method in {@link org.geotools.referencing.CRS}. Or yet better: move formatting
+     *     code in {@code GeographicBoundingBox.toString()} method, and move the transformation code into
+     *     {@code GeographicBoundingBox} constructor.
      * @todo Do not requires specifically WGS 84, using {@link #getStandardGeographicCRS}.
      */
     public static String toWGS84String(CoordinateReferenceSystem crs, Rectangle2D bounds) {
@@ -447,15 +421,12 @@ public final class CRSUtilities {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
         if (crs2D == null) {
             final Object arg0 = crs.getName();
-            exception =
-                    new UnsupportedOperationException(
-                            MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
+            exception = new UnsupportedOperationException(MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
         } else
             try {
                 if (!CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs2D)) {
-                    final CoordinateOperation op =
-                            ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                    .createOperation(crs2D, DefaultGeographicCRS.WGS84);
+                    final CoordinateOperation op = ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                            .createOperation(crs2D, DefaultGeographicCRS.WGS84);
                     bounds = CRS.transform(op, bounds, null);
                 }
                 final AngleFormat fmt = new AngleFormat("DD°MM.m'");

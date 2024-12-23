@@ -30,8 +30,7 @@ public class FilterFunction_round extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("round", "float");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "round", parameter("float", Float.class), parameter("number", Number.class));
+            new FunctionNameImpl("round", parameter("float", Float.class), parameter("number", Number.class));
 
     public FilterFunction_round() {
         super(NAME);

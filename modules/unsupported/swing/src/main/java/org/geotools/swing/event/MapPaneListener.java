@@ -48,8 +48,7 @@ public interface MapPaneListener {
     void onRenderingStarted(MapPaneEvent ev);
 
     /**
-     * Called when a rendering task has stopped. This includes normal completion, cancellation or
-     * failure.
+     * Called when a rendering task has stopped. This includes normal completion, cancellation or failure.
      *
      * @param ev the event
      */

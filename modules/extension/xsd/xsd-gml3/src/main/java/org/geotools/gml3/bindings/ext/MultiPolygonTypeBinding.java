@@ -26,9 +26,9 @@ public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPol
     }
 
     /**
-     * Implement comparable because MultiPolygonBinding, MultiSurfaceBinding and Surface are bound
-     * to the same class, MultiPolygon. Since MultiPolygon is deprecated by gml3 and MultiSurface
-     * only has children that are also mapped to MultiPolygons, Surface always wins.
+     * Implement comparable because MultiPolygonBinding, MultiSurfaceBinding and Surface are bound to the same class,
+     * MultiPolygon. Since MultiPolygon is deprecated by gml3 and MultiSurface only has children that are also mapped to
+     * MultiPolygons, Surface always wins.
      */
     @Override
     public int compareTo(Object o) {

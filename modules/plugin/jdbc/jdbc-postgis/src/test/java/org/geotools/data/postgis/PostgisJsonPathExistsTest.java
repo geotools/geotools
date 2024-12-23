@@ -55,12 +55,8 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
     @Test
     public void testFunctionJsonArrayContainsJsonPathExists() throws Exception {
         filterToSql.setFeatureType(testSchema);
-        Function pointer =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("OPERATIONS"),
-                        ff.literal("/operations"),
-                        ff.literal("OP1"));
+        Function pointer = ff.function(
+                "jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/operations"), ff.literal("OP1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"OP1\")')", sql);
@@ -70,11 +66,7 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
     public void testFunctionJsonArrayContainsNumberJsonPathExists() throws Exception {
         filterToSql.setFeatureType(testSchema);
         Function pointer =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("OPERATIONS"),
-                        ff.literal("/operations"),
-                        ff.literal(1));
+                ff.function("jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/operations"), ff.literal(1));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == 1)')", sql);
@@ -83,28 +75,18 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
     @Test
     public void testNestedObjectJsonArrayContainsJsonPathExists() throws Exception {
         filterToSql.setFeatureType(testSchema);
-        Function pointer =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("OPERATIONS"),
-                        ff.literal("/operations/parameters"),
-                        ff.literal("P1"));
+        Function pointer = ff.function(
+                "jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/operations/parameters"), ff.literal("P1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals(
-                "jsonb_path_exists(OPERATIONS::jsonb, '$.operations ? (@.parameters == \"P1\")')",
-                sql);
+        assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$.operations ? (@.parameters == \"P1\")')", sql);
     }
 
     @Test
     public void testFunctionJsonArrayContainsEscapingPointerJsonPathExists() throws Exception {
         filterToSql.setFeatureType(testSchema);
         Function pointer =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("OPERATIONS"),
-                        ff.literal("/\"'FOO"),
-                        ff.literal("OP1"));
+                ff.function("jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/\"'FOO"), ff.literal("OP1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.\\\"''FOO == \"OP1\")')", sql);
@@ -113,15 +95,10 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
     @Test
     public void testFunctionJsonArrayContainsEscapingExpectedJsonPathExists() throws Exception {
         filterToSql.setFeatureType(testSchema);
-        Function pointer =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("OPERATIONS"),
-                        ff.literal("/operations"),
-                        ff.literal("\"'FOO"));
+        Function pointer = ff.function(
+                "jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/operations"), ff.literal("\"'FOO"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals(
-                "jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"\"'FOO\")')", sql);
+        assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"\"'FOO\")')", sql);
     }
 }

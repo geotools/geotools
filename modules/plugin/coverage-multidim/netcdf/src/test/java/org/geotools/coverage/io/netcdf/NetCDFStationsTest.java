@@ -42,10 +42,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Tests that a data set that contains a dimension with multiple bands is correctly handled. Is very
- * important to use a clean test directory for each run, this guarantees that generated files (like
- * the binary index for example) are not reused. The stations data set is very small (perfect for
- * testing proposes) please use netcdf dump if you need to check is content.
+ * Tests that a data set that contains a dimension with multiple bands is correctly handled. Is very important to use a
+ * clean test directory for each run, this guarantees that generated files (like the binary index for example) are not
+ * reused. The stations data set is very small (perfect for testing proposes) please use netcdf dump if you need to
+ * check is content.
  */
 public final class NetCDFStationsTest {
 
@@ -92,8 +92,7 @@ public final class NetCDFStationsTest {
     }
 
     @Test
-    public void readMultipleBandsDimensionWithDifferentOrderAndRepeatedBandsSelection()
-            throws Exception {
+    public void readMultipleBandsDimensionWithDifferentOrderAndRepeatedBandsSelection() throws Exception {
 
         // we should have six bands with values indexes ordered as 2, 0, 1, 1, 2, 0
         ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
@@ -109,19 +108,18 @@ public final class NetCDFStationsTest {
     }
 
     /**
-     * Helper method that simply checks that the raster contains the expected data. The number of
-     * bands should match the number of expected banks in the provided order. This testes are run
-     * for the NetCDF reader and the ImageMosaicReader.
+     * Helper method that simply checks that the raster contains the expected data. The number of bands should match the
+     * number of expected banks in the provided order. This testes are run for the NetCDF reader and the
+     * ImageMosaicReader.
      */
-    private void checkRasterData(GeneralParameterValue[] parameters, int[]... expected)
-            throws Exception {
+    private void checkRasterData(GeneralParameterValue[] parameters, int[]... expected) throws Exception {
         checkRasterData(readCoverageUsingNetCdfReader(parameters), expected);
         checkRasterData(readCoverageUsingImageMosaicReader(parameters), expected);
     }
 
     /**
-     * Helper method that simply checks that the raster contains the expected data. The number of
-     * bands should match the number of expected banks in the provided order.
+     * Helper method that simply checks that the raster contains the expected data. The number of bands should match the
+     * number of expected banks in the provided order.
      */
     private void checkRasterData(Raster data, int[]... expected) {
 
@@ -150,12 +148,8 @@ public final class NetCDFStationsTest {
         }
     }
 
-    /**
-     * Helper method that reads stationA data set using the NetCdf reader directly. Some basic
-     * checks are also made.
-     */
-    private Raster readCoverageUsingNetCdfReader(GeneralParameterValue[] readParameters)
-            throws Exception {
+    /** Helper method that reads stationA data set using the NetCdf reader directly. Some basic checks are also made. */
+    private Raster readCoverageUsingNetCdfReader(GeneralParameterValue[] readParameters) throws Exception {
 
         // create test directory for this test removing any existing one
         File testDirectory = new File(TestData.file(this, "."), "MultipleBandsDimensionTest");
@@ -201,11 +195,10 @@ public final class NetCDFStationsTest {
     }
 
     /**
-     * Helper method that reads stationA data set using the image mosaic reader directly. Some basic
-     * checks are also made.
+     * Helper method that reads stationA data set using the image mosaic reader directly. Some basic checks are also
+     * made.
      */
-    private Raster readCoverageUsingImageMosaicReader(GeneralParameterValue[] readParameters)
-            throws Exception {
+    private Raster readCoverageUsingImageMosaicReader(GeneralParameterValue[] readParameters) throws Exception {
 
         // create test directory for this test removing any existing one
         File testDirectory = new File(TestData.file(this, "."), "MultipleBandsDimensionTest");
@@ -219,15 +212,11 @@ public final class NetCDFStationsTest {
 
             // move test files to the test directory
             FileUtils.copyFileToDirectory(TestData.file(this, "stations.nc"), testDirectory);
-            FileUtils.copyFileToDirectory(
-                    TestData.file(this, "stations_mosaic_indexer.xml"), testDirectory);
-            FileUtils.copyFileToDirectory(
-                    TestData.file(this, "stations_netcdf_auxiliary.xml"), testDirectory);
-            FileUtils.copyFileToDirectory(
-                    TestData.file(this, "stations_datastore.properties"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_mosaic_indexer.xml"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_netcdf_auxiliary.xml"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_datastore.properties"), testDirectory);
             FileUtils.moveFile(
-                    new File(testDirectory, "stations_mosaic_indexer.xml"),
-                    new File(testDirectory, "indexer.xml"));
+                    new File(testDirectory, "stations_mosaic_indexer.xml"), new File(testDirectory, "indexer.xml"));
             FileUtils.moveFile(
                     new File(testDirectory, "stations_netcdf_auxiliary.xml"),
                     new File(testDirectory, "netcdf_auxiliary.xml"));

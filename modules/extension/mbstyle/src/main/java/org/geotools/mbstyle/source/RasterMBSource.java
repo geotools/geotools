@@ -20,8 +20,8 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper around a {@link JSONObject} holding a Mapbox raser source. Tiled sources (vector and
- * raster) must specify their details in terms of the TileJSON specification.
+ * Wrapper around a {@link JSONObject} holding a Mapbox raser source. Tiled sources (vector and raster) must specify
+ * their details in terms of the TileJSON specification.
  *
  * @see MBSource
  * @see <a
@@ -40,8 +40,7 @@ public class RasterMBSource extends TileMBSource {
     /**
      * (Optional) Units in pixels. Defaults to 512.
      *
-     * <p>The minimum visual size to display tiles for this layer. Only configurable for raster
-     * layers.
+     * <p>The minimum visual size to display tiles for this layer. Only configurable for raster layers.
      *
      * @return Number for the tile size, defaulting to 512
      */

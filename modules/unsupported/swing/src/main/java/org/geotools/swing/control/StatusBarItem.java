@@ -86,8 +86,8 @@ public abstract class StatusBarItem extends JPanel {
     }
 
     /**
-     * For items that display numeric values, sets the number of digits to show to the right of the
-     * decimal place. This base implementation does nothing.
+     * For items that display numeric values, sets the number of digits to show to the right of the decimal place. This
+     * base implementation does nothing.
      *
      * @param numDecimals number of digits after decimal place
      */

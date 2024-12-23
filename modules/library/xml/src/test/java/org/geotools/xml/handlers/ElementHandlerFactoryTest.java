@@ -27,23 +27,13 @@ import org.xml.sax.SAXException;
 
 /** @author Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it */
 public class ElementHandlerFactoryTest {
-    private static final Logger logger =
-            Logger.getLogger(ElementHandlerFactoryTest.class.getName());
+    private static final Logger logger = Logger.getLogger(ElementHandlerFactoryTest.class.getName());
 
     @Test
     public void testCreateElementHandlerIgnoresUnknownTypes() {
         ElementHandlerFactory factory = new ElementHandlerFactory(logger);
-        Element el =
-                new ElementGT(
-                        "test",
-                        "test",
-                        URI.create("http://www.geotools.org"), /* Type */
-                        null,
-                        0,
-                        0,
-                        false,
-                        null,
-                        false);
+        Element el = new ElementGT(
+                "test", "test", URI.create("http://www.geotools.org"), /* Type */ null, 0, 0, false, null, false);
         try {
             XMLElementHandler elementHandler = factory.createElementHandler(el);
             Assert.assertNotNull(elementHandler);

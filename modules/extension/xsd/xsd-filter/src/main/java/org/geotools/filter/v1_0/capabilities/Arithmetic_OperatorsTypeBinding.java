@@ -78,8 +78,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="ogc:Simple_Arithmetic"/&gt;
-        boolean simpleArithmetic =
-                node.hasChild("Simple_Arithmetic") || node.hasChild("SimpleArithmetic"); // 1.1
+        boolean simpleArithmetic = node.hasChild("Simple_Arithmetic") || node.hasChild("SimpleArithmetic"); // 1.1
 
         // &lt;xsd:element name="Functions" type="ogc:FunctionsType"/&gt;
         Functions functions = node.getChildValue(Functions.class);
@@ -91,8 +90,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         ArithmeticOperators arithmetic = (ArithmeticOperators) object;
 
-        if ((name.equals(OGC.Simple_Arithmetic)
-                        || name.equals(org.geotools.filter.v1_1.OGC.SimpleArithmetic))
+        if ((name.equals(OGC.Simple_Arithmetic) || name.equals(org.geotools.filter.v1_1.OGC.SimpleArithmetic))
                 && arithmetic.hasSimpleArithmetic()) {
             return new Object();
         }

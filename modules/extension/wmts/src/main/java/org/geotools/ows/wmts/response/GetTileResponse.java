@@ -28,9 +28,8 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 /**
  * Represents the response of a tile request.
  *
- * <p>In most cases this is a image, but it can also be a file like kml with reference to an image.
- * In such cases the content-type / responseStream must be used. Error-situations is managed in the
- * same manner as other OWS responses.
+ * <p>In most cases this is a image, but it can also be a file like kml with reference to an image. In such cases the
+ * content-type / responseStream must be used. Error-situations is managed in the same manner as other OWS responses.
  *
  * @author ian
  */
@@ -43,8 +42,8 @@ public class GetTileResponse extends Response {
     private final BufferedImage tileImage;
 
     /**
-     * Constructor of GetTileResponse. Reads the image if the content-type is set to image. Other
-     * content-types should use the responseStream.
+     * Constructor of GetTileResponse. Reads the image if the content-type is set to image. Other content-types should
+     * use the responseStream.
      */
     public GetTileResponse(HTTPResponse httpResponse, WMTSServiceType wmtsServiceType)
             throws ServiceException, IOException {

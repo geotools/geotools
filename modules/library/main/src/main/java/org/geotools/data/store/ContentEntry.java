@@ -29,8 +29,8 @@ import org.geotools.api.feature.type.Name;
  *
  * <p>This class is only of concern to subclasses, client code should never see this class.
  *
- * <p>Each entry maintains state on a per-transaction basis. The {@link #getState(Transaction)}
- * method is used to get at this state.
+ * <p>Each entry maintains state on a per-transaction basis. The {@link #getState(Transaction)} method is used to get at
+ * this state.
  *
  * <pre>
  *   <code>
@@ -99,8 +99,8 @@ public class ContentEntry {
     /**
      * Returns state for the entry for a particular transaction.
      *
-     * <p>In the event that no state exists for the supplied transaction one will be created by
-     * copying the state of {@link Transaction#AUTO_COMMIT}.
+     * <p>In the event that no state exists for the supplied transaction one will be created by copying the state of
+     * {@link Transaction#AUTO_COMMIT}.
      *
      * @param transaction A transaction.
      * @return The state for the transaction.
@@ -122,8 +122,8 @@ public class ContentEntry {
     /**
      * Called by a ContentState to let others transactions know of a modification.
      *
-     * <p>Transaction.AUTO_COMMIT state will call this method for everything; others mostly use this
-     * to broadcast the BatchFeatureEvents issued during commit and rollback.
+     * <p>Transaction.AUTO_COMMIT state will call this method for everything; others mostly use this to broadcast the
+     * BatchFeatureEvents issued during commit and rollback.
      */
     void notifiyFeatureEvent(ContentState source, FeatureEvent notification) {
         for (ContentState entry : state.values()) {
@@ -135,8 +135,7 @@ public class ContentEntry {
                     listener.changed(notification);
                 } catch (Throwable t) {
                     // problem issuing notification to an interested party
-                    dataStore.LOGGER.log(
-                            Level.WARNING, "Problem issuing feature event " + notification, t);
+                    dataStore.LOGGER.log(Level.WARNING, "Problem issuing feature event " + notification, t);
                 }
             }
         }

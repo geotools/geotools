@@ -23,8 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * Convenience class that creates a URL from a templateURL by exchanging {TileMatrix}, {TileCol} and
- * {TileRow}
+ * Convenience class that creates a URL from a templateURL by exchanging {TileMatrix}, {TileCol} and {TileRow}
  *
  * @author Roar Brænden
  */

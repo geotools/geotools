@@ -41,8 +41,8 @@ public abstract class MediaMBSource extends MBSource {
     }
 
     /**
-     * (Required) Array of [longitude, latitude] pairs for the image corners listed in clockwise
-     * order: top left, top right, bottom right, bottom left. Example: <br>
+     * (Required) Array of [longitude, latitude] pairs for the image corners listed in clockwise order: top left, top
+     * right, bottom right, bottom left. Example: <br>
      * <code>
      * "coordinates": [
      *   [-80.425, 46.437],
@@ -57,16 +57,14 @@ public abstract class MediaMBSource extends MBSource {
     public List<Point2D.Double> getCoordinates() {
         JSONArray arr = parser.getJSONArray(json, "coordinates");
         if (arr.size() != 4) {
-            throw new MBFormatException(
-                    "image/video/canvas source \"coordinates\" tag requires JSONArray of size 4");
+            throw new MBFormatException("image/video/canvas source \"coordinates\" tag requires JSONArray of size 4");
         } else {
             List<Point2D.Double> coords = new ArrayList<>();
             for (Object o : arr) {
                 if (o instanceof JSONArray) {
                     coords.add(parsePoint((JSONArray) o));
                 } else {
-                    throw new MBFormatException(
-                            "image/video/canvas source \"coordinates\" values must be JSONArrays");
+                    throw new MBFormatException("image/video/canvas source \"coordinates\" values must be JSONArrays");
                 }
             }
             return coords;
@@ -79,8 +77,7 @@ public abstract class MediaMBSource extends MBSource {
         } else if (o instanceof String) {
             return Double.valueOf((String) o);
         } else {
-            throw new MBFormatException(
-                    "image/video/canvas source \"coordinates\" tags must contain Numbers");
+            throw new MBFormatException("image/video/canvas source \"coordinates\" tags must contain Numbers");
         }
     }
 

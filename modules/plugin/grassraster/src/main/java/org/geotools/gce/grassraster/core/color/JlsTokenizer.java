@@ -21,8 +21,8 @@ import java.util.NoSuchElementException;
 
 // import java.util.NoSuchElementException;
 /**
- * Providing much the same functionality as java.util.StringTokenizer, but avoiding some of its more
- * common problems. In particular:
+ * Providing much the same functionality as java.util.StringTokenizer, but avoiding some of its more common problems. In
+ * particular:
  *
  * <ul>
  *   <li>
@@ -34,16 +34,14 @@ import java.util.NoSuchElementException;
  *       <pre>
  * ,a,
  * </pre>
- *       yields a blank token both before and after a, whereas with StringTokenizer both are
- *       swallowed.
+ *       yields a blank token both before and after a, whereas with StringTokenizer both are swallowed.
  * </ul>
  *
- * Some pieces of StringTokenizer aren't supported, such as returning delimiters and changing
- * delimiters during operation.
+ * Some pieces of StringTokenizer aren't supported, such as returning delimiters and changing delimiters during
+ * operation.
  *
- * <p>This class is deliberately <b>not</b> a subclass of StringTokenizer as the behaviour is
- * significantly different. It can, however, be used in many places where StringTokenizer is
- * appropriate.
+ * <p>This class is deliberately <b>not</b> a subclass of StringTokenizer as the behaviour is significantly different.
+ * It can, however, be used in many places where StringTokenizer is appropriate.
  *
  * @author JSkeet
  */
@@ -69,10 +67,10 @@ public class JlsTokenizer {
     private int position = 0;
 
     /**
-     * Constructs a string tokenizer for the specified string. The tokenizer uses the default
-     * delimiter set, which is <code>"&nbsp;&#92;t&#92;n&#92;r&#92;f"</code>: the space character,
-     * the tab character, the newline character, the carriage-return character, and the form-feed
-     * character. Delimiter characters themselves will not be treated as tokens.
+     * Constructs a string tokenizer for the specified string. The tokenizer uses the default delimiter set, which is
+     * <code>"&nbsp;&#92;t&#92;n&#92;r&#92;f"</code>: the space character, the tab character, the newline character, the
+     * carriage-return character, and the form-feed character. Delimiter characters themselves will not be treated as
+     * tokens.
      *
      * @param str a string to be parsed.
      */
@@ -82,8 +80,8 @@ public class JlsTokenizer {
 
     /**
      * Constructs a string tokenizer for the specified string. The characters in the <code>delim
-     * </code> argument are the delimiters for separating tokens. Delimiter characters themselves
-     * will not be treated as tokens.
+     * </code> argument are the delimiters for separating tokens. Delimiter characters themselves will not be treated as
+     * tokens.
      *
      * @param str a string to be parsed.
      * @param delim the delimiters.
@@ -95,12 +93,11 @@ public class JlsTokenizer {
     }
 
     /**
-     * Tests if there are more tokens available from this tokenizer's string. If this method returns
-     * <tt>true</tt>, then a subsequent call to <tt>nextToken</tt> with no argument will
-     * successfully return a token.
+     * Tests if there are more tokens available from this tokenizer's string. If this method returns <tt>true</tt>, then
+     * a subsequent call to <tt>nextToken</tt> with no argument will successfully return a token.
      *
-     * @return <code>true</code> if and only if there is at least one token in the string after the
-     *     current position; <code>false</code> otherwise.
+     * @return <code>true</code> if and only if there is at least one token in the string after the current position;
+     *     <code>false</code> otherwise.
      */
     public boolean hasMoreTokens() {
         return !(position > dataLength);
@@ -150,8 +147,8 @@ public class JlsTokenizer {
     }
 
     /**
-     * Returns the same value as the <code>hasMoreTokens</code> method. It exists so that this class
-     * can implement the <code>Enumeration</code> interface.
+     * Returns the same value as the <code>hasMoreTokens</code> method. It exists so that this class can implement the
+     * <code>Enumeration</code> interface.
      *
      * @return <code>true</code> if there are more tokens; <code>false</code> otherwise.
      */
@@ -160,9 +157,9 @@ public class JlsTokenizer {
     }
 
     /**
-     * Returns the same value as the <code>nextToken</code> method, except that its declared return
-     * value is <code>Object</code> rather than <code>String</code>. It exists so that this class
-     * can implement the <code>Enumeration</code> interface.
+     * Returns the same value as the <code>nextToken</code> method, except that its declared return value is <code>
+     * Object</code> rather than <code>String</code>. It exists so that this class can implement the <code>Enumeration
+     * </code> interface.
      *
      * @return the next token in the string.
      * @exception NoSuchElementException if there are no more tokens in this tokenizer's string.
@@ -172,8 +169,8 @@ public class JlsTokenizer {
     }
 
     /**
-     * Calculates the number of times that this tokenizer's <code>nextToken</code> method can be
-     * called before it generates an exception. The current position is not advanced.
+     * Calculates the number of times that this tokenizer's <code>nextToken</code> method can be called before it
+     * generates an exception. The current position is not advanced.
      *
      * @return the number of tokens remaining in the string using the current delimiter set.
      * @see uk.org.skeet.util.JlsTokenizer#nextToken()

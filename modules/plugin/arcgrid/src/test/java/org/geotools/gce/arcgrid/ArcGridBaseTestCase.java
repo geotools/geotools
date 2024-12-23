@@ -29,8 +29,7 @@ import org.junit.Test;
 /** @author Giannecchini */
 public abstract class ArcGridBaseTestCase {
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
 
     protected File[] testFiles;
 
@@ -44,9 +43,7 @@ public abstract class ArcGridBaseTestCase {
         // unzip it
         TestData.unzipFile(this, "arcgrid/arcgrid.zip");
 
-        testFiles =
-                TestData.file(this, "arcgrid/")
-                        .listFiles(pathname -> new ArcGridFormat().accepts(pathname));
+        testFiles = TestData.file(this, "arcgrid/").listFiles(pathname -> new ArcGridFormat().accepts(pathname));
     }
 
     @After

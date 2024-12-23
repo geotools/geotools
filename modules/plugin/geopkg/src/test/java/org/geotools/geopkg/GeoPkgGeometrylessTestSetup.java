@@ -27,13 +27,11 @@ public class GeoPkgGeometrylessTestSetup extends org.geotools.jdbc.JDBCGeometryl
         // drop old data
         ((GeoPkgTestSetup) delegate).removeTable("person");
         ((GeoPkgTestSetup) delegate).removeTable("zipcode");
-        run(
-                "CREATE TABLE person (fid INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, name VARCHAR, age INTEGER)");
+        run("CREATE TABLE person (fid INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, name VARCHAR, age INTEGER)");
         run("INSERT INTO person (id,name,age) VALUES (0, 'Paul', 32)");
         run("INSERT INTO person (id,name,age) VALUES (1, 'Anne', 40)");
-        String sql =
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
-                        + "('person', 'features', 'person', 4326)";
+        String sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
+                + "('person', 'features', 'person', 4326)";
         run(sql);
     }
 

@@ -23,8 +23,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.StyleBuilder;
 
 /**
- * Container class for instances of {@link StyleFactory}, {@link StyleBuilder}, and {@link
- * FilterFactory} used when parsing
+ * Container class for instances of {@link StyleFactory}, {@link StyleBuilder}, and {@link FilterFactory} used when
+ * parsing
  */
 public class Factory {
     StyleFactory style;

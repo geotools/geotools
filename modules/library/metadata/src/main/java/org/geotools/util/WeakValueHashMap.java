@@ -28,10 +28,9 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * A hashtable-based {@link Map} implementation with <em>weak values</em>. An entry in a {@code
- * WeakValueHashMap} will automatically be removed when its value is no longer in ordinary use. This
- * class is similar to the standard {@link java.util.WeakHashMap} class provided in J2SE, except
- * that weak references are hold on values instead of keys.
+ * A hashtable-based {@link Map} implementation with <em>weak values</em>. An entry in a {@code WeakValueHashMap} will
+ * automatically be removed when its value is no longer in ordinary use. This class is similar to the standard
+ * {@link java.util.WeakHashMap} class provided in J2SE, except that weak references are hold on values instead of keys.
  *
  * <p>The {@code WeakValueHashMap} class is thread-safe.
  *
@@ -51,8 +50,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     private static final float LOAD_FACTOR = 0.75f;
 
     /**
-     * An entry in the {@link WeakValueHashMap}. This is a weak reference to a value together with a
-     * strong reference to a key.
+     * An entry in the {@link WeakValueHashMap}. This is a weak reference to a value together with a strong reference to
+     * a key.
      */
     private final class Entry extends WeakReference<V> implements Map.Entry<K, V> {
         /** The key. */
@@ -61,10 +60,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         /** The next entry, or {@code null} if there is none. */
         Entry next;
 
-        /**
-         * Index for this element in {@link #table}. This index must be updated at every {@link
-         * #rehash} call.
-         */
+        /** Index for this element in {@link #table}. This index must be updated at every {@link #rehash} call. */
         int index;
 
         /** Constructs a new weak reference. */
@@ -99,8 +95,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         }
 
         /**
-         * Clear the reference. The {@link WeakCollectionCleaner} requires that this method is
-         * overridden in order to remove this entry from the enclosing hash map.
+         * Clear the reference. The {@link WeakCollectionCleaner} requires that this method is overridden in order to
+         * remove this entry from the enclosing hash map.
          */
         @Override
         public void clear() {
@@ -141,10 +137,9 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     private int threshold;
 
     /**
-     * The timestamp when {@link #table} was last rehashed. This information is used to avoid too
-     * early table reduction. When the garbage collector collected a lot of elements, we will wait
-     * at least 20 seconds before rehashing {@link #table}. Too early table reduction leads to many
-     * cycles like "reduce", "expand", "reduce", "expand", etc.
+     * The timestamp when {@link #table} was last rehashed. This information is used to avoid too early table reduction.
+     * When the garbage collector collected a lot of elements, we will wait at least 20 seconds before rehashing
+     * {@link #table}. Too early table reduction leads to many cycles like "reduce", "expand", "reduce", "expand", etc.
      */
     private long lastRehashTime;
 
@@ -188,8 +183,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     }
 
     /**
-     * Invoked by {@link Entry} when an element has been collected by the garbage collector. This
-     * method will remove the weak reference from {@link #table}.
+     * Invoked by {@link Entry} when an element has been collected by the garbage collector. This method will remove the
+     * weak reference from {@link #table}.
      */
     private synchronized void removeEntry(final Entry toRemove) {
         assert valid() : count;
@@ -233,8 +228,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     /**
      * Rehashs {@link #table}.
      *
-     * @param augmentation {@code true} if this method is invoked for augmenting {@link #table}, or
-     *     {@code false} if it is invoked for making the table smaller.
+     * @param augmentation {@code true} if this method is invoked for augmenting {@link #table}, or {@code false} if it
+     *     is invoked for making the table smaller.
      */
     private void rehash(final boolean augmentation) {
         assert Thread.holdsLock(this);
@@ -268,8 +263,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         final Logger logger = Logging.getLogger(WeakValueHashMap.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
-            final LogRecord record =
-                    new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
+            final LogRecord record = new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
             record.setSourceMethodName(augmentation ? "unique" : "remove");
             record.setSourceClassName(WeakValueHashMap.class.getName());
             record.setLoggerName(logger.getName());
@@ -279,11 +273,10 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     }
 
     /**
-     * Checks if this {@code WeakValueHashMap} is valid. This method counts the number of elements
-     * and compare it to {@link #count}. If the check fails, the number of elements is corrected (if
-     * we didn't, an {@link AssertionError} would be thrown for every operations after the first
-     * error, which make debugging more difficult). The set is otherwise unchanged, which should
-     * help to get similar behaviour as if assertions hasn't been turned on.
+     * Checks if this {@code WeakValueHashMap} is valid. This method counts the number of elements and compare it to
+     * {@link #count}. If the check fails, the number of elements is corrected (if we didn't, an {@link AssertionError}
+     * would be thrown for every operations after the first error, which make debugging more difficult). The set is
+     * otherwise unchanged, which should help to get similar behaviour as if assertions hasn't been turned on.
      */
     private boolean valid() {
         int n = 0;
@@ -331,8 +324,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     }
 
     /**
-     * Returns the value to which this map maps the specified key. Returns {@code null} if the map
-     * contains no mapping for this key.
+     * Returns the value to which this map maps the specified key. Returns {@code null} if the map contains no mapping
+     * for this key.
      *
      * @param key Key whose associated value is to be returned.
      * @return The value to which this map maps the specified key.
@@ -381,13 +374,12 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
     }
 
     /**
-     * Associates the specified value with the specified key in this map. The value is associated
-     * using a {@link WeakReference}.
+     * Associates the specified value with the specified key in this map. The value is associated using a
+     * {@link WeakReference}.
      *
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
-     * @return previous value associated with specified key, or {@code null} if there was no mapping
-     *     for key.
+     * @return previous value associated with specified key, or {@code null} if there was no mapping for key.
      * @throws NullPointerException if the key or the value is {@code null}.
      */
     @Override
@@ -403,8 +395,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
      * Removes the mapping for this key from this map if present.
      *
      * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or {@code null} if there was no entry
-     *     for key.
+     * @return previous value associated with specified key, or {@code null} if there was no entry for key.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -421,8 +412,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
 
     /**
      * Returns a set view of the mappings contained in this map. Each element in this set is a
-     * {@link java.util.Map.Entry}. The current implementation thrown {@link
-     * UnsupportedOperationException}.
+     * {@link java.util.Map.Entry}. The current implementation thrown {@link UnsupportedOperationException}.
      *
      * @return a set view of the mappings contained in this map.
      */

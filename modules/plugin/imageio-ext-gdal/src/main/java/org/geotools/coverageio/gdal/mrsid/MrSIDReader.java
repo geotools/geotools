@@ -37,8 +37,7 @@ import org.geotools.util.factory.Hints;
 public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     /** Logger. */
     @SuppressWarnings("unused")
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MrSIDReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MrSIDReader.class);
 
     private static final String worldFileExt = ".sdw";
 
@@ -64,8 +63,7 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
     /**
      * Setting Envelope, GridRange and CRS from the given {@code ImageReader}
      *
-     * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for
-     *     setting properties
+     * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for setting properties
      */
     @Override
     protected void setCoverageProperties(ImageReader reader) throws IOException {

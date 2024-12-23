@@ -47,8 +47,7 @@ public class GeoJSON {
             } else if (obj instanceof CoordinateReferenceSystem) {
                 fjson.writeCRS((CoordinateReferenceSystem) obj, output);
             } else {
-                throw new IllegalArgumentException(
-                        "Unable able to encode object of type " + obj.getClass());
+                throw new IllegalArgumentException("Unable able to encode object of type " + obj.getClass());
             }
         }
     }

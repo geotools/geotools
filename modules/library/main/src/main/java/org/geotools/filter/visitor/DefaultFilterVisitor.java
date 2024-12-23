@@ -75,10 +75,10 @@ import org.geotools.api.filter.temporal.TOverlaps;
 /**
  * Abstract implementation of FilterVisitor that simply walks the data structure.
  *
- * <p>This class implements the full FilterVisitor interface and will visit every Filter member of a
- * Filter object. This class performs no actions and is not intended to be used directly, instead
- * extend it and overide the methods for the Filter type you are interested in. Remember to call the
- * super method if you want to ensure that the entire filter tree is still visited.
+ * <p>This class implements the full FilterVisitor interface and will visit every Filter member of a Filter object. This
+ * class performs no actions and is not intended to be used directly, instead extend it and overide the methods for the
+ * Filter type you are interested in. Remember to call the super method if you want to ensure that the entire filter
+ * tree is still visited.
  *
  * <pre><code>
  * FilterVisitor allFids = new DefaultFilterVisitor(){

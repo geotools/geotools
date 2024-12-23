@@ -71,8 +71,7 @@ public class NumberFormatTest {
         Literal ds = ff.literal(":");
         Literal gs = ff.literal(";");
 
-        Function f =
-                ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
+        Function f = ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
         Assert.assertEquals("x123;456:79", f.evaluate(null, String.class));
     }
 
@@ -105,8 +104,7 @@ public class NumberFormatTest {
         Literal ds = ff.literal(":");
         Literal gs = ff.literal(";");
 
-        Function f =
-                ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
+        Function f = ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
         Assert.assertNull(f.evaluate(null, String.class));
     }
 
@@ -119,8 +117,7 @@ public class NumberFormatTest {
         Literal ds = ff.literal(":");
         Literal gs = ff.literal(";");
 
-        Function f =
-                ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
+        Function f = ff.function("numberFormat2", new Expression[] {pattern, number, minus, ds, gs});
         Assert.assertNull(f.evaluate(null, String.class));
     }
 

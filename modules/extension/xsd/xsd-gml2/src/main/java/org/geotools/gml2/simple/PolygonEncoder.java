@@ -31,11 +31,9 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
 
     static final QualifiedName POLYGON = new QualifiedName(GML.NAMESPACE, "Polygon", "gml");
 
-    static final QualifiedName OUTER_BOUNDARY =
-            new QualifiedName(GML.NAMESPACE, "outerBoundaryIs", "gml");
+    static final QualifiedName OUTER_BOUNDARY = new QualifiedName(GML.NAMESPACE, "outerBoundaryIs", "gml");
 
-    static final QualifiedName INNER_BOUNDARY =
-            new QualifiedName(GML.NAMESPACE, "innerBoundaryIs", "gml");
+    static final QualifiedName INNER_BOUNDARY = new QualifiedName(GML.NAMESPACE, "innerBoundaryIs", "gml");
 
     QualifiedName polygon;
 

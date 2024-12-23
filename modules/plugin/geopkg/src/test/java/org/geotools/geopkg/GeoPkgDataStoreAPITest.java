@@ -42,7 +42,8 @@ public class GeoPkgDataStoreAPITest {
 
     DataStore dataStore = null;
 
-    @Rule public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
+    @Rule
+    public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
 
     @Before
     public void setUp() throws Exception {

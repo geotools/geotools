@@ -61,8 +61,8 @@ import org.geotools.api.style.UserLayer;
 import org.geotools.filter.FilterAttributeExtractor;
 
 /**
- * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
- * those that the Style expects to find in order to work properly
+ * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is, those that the Style
+ * expects to find in order to work properly
  *
  * @author Andrea Aime - OpenGeo
  */
@@ -80,10 +80,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     /** if the default geometry is used, this will be true. See GEOS-469 */
     boolean defaultGeometryUsed = false;
 
-    /**
-     * Symbolizer geometry is enabled by default, but there are relevant cases in which we don't
-     * desire that
-     */
+    /** Symbolizer geometry is enabled by default, but there are relevant cases in which we don't desire that */
     boolean symbolizerGeometriesVisitEnabled = true;
 
     public boolean isSymbolizerGeometriesVisitEnabled() {
@@ -408,10 +405,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         visitCqlExpression(exgr.getFormat());
 
         try {
-            if (exgr.getLocation() != null) visitCqlExpression(exgr.getLocation().toString());
+            if (exgr.getLocation() != null)
+                visitCqlExpression(exgr.getLocation().toString());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(
-                    "Errors while inspecting " + "the location of an external graphic", e);
+            throw new RuntimeException("Errors while inspecting " + "the location of an external graphic", e);
         }
     }
 

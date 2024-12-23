@@ -79,8 +79,8 @@ import org.geotools.api.filter.temporal.TOverlaps;
  * Integer one = (Integer) filter.accepts( NullFilterVisitor.NULL_VISITOR, 1 );
  * </code></pre>
  *
- * The class can also be used as an alternative to DefaultFilterVisitor if you want to only walk
- * part of the data structure:
+ * The class can also be used as an alternative to DefaultFilterVisitor if you want to only walk part of the data
+ * structure:
  *
  * <pre><code>
  * FilterVisitor allFids = new NullFilterVisitor(){
@@ -105,23 +105,22 @@ import org.geotools.api.filter.temporal.TOverlaps;
  * @author Jody Garnett (Refractions Research)
  */
 public abstract class NullFilterVisitor implements FilterVisitor, ExpressionVisitor {
-    public static NullFilterVisitor NULL_VISITOR =
-            new NullFilterVisitor() {
-                @Override
-                public Object visit(And filter, Object data) {
-                    return data;
-                }
+    public static NullFilterVisitor NULL_VISITOR = new NullFilterVisitor() {
+        @Override
+        public Object visit(And filter, Object data) {
+            return data;
+        }
 
-                @Override
-                public Object visit(Or filter, Object data) {
-                    return data;
-                }
+        @Override
+        public Object visit(Or filter, Object data) {
+            return data;
+        }
 
-                @Override
-                public Object visit(Not filter, Object data) {
-                    return data;
-                }
-            };
+        @Override
+        public Object visit(Not filter, Object data) {
+            return data;
+        }
+    };
 
     public NullFilterVisitor() {}
 

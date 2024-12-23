@@ -62,8 +62,7 @@ public class TileServiceTest {
         }
 
         @Override
-        public TileIdentifier identifyTileAtCoordinate(
-                double lon, double lat, ZoomLevel zoomLevel) {
+        public TileIdentifier identifyTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel) {
             return MINE_TILE;
         }
 
@@ -100,8 +99,7 @@ public class TileServiceTest {
         }
 
         @Override
-        public Tile findTileAtCoordinate(
-                double lon, double lat, ZoomLevel zoomLevel, TileService service) {
+        public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service) {
             return null;
         }
 

@@ -21,17 +21,15 @@ import java.util.Queue;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Default Implementation of {@link org.geotools.api.util.ProgressListener} that does retain
- * exceptions.
+ * Default Implementation of {@link org.geotools.api.util.ProgressListener} that does retain exceptions.
  *
- * <p>We do not put particular attention on the management of canceled, started, completed, this is
- * a default implementation.
+ * <p>We do not put particular attention on the management of canceled, started, completed, this is a default
+ * implementation.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @since 2.8
  */
-public class DefaultProgressListener extends NullProgressListener
-        implements org.geotools.api.util.ProgressListener {
+public class DefaultProgressListener extends NullProgressListener implements org.geotools.api.util.ProgressListener {
 
     @Override
     public String toString() {
@@ -55,13 +53,7 @@ public class DefaultProgressListener extends NullProgressListener
     public static class Warning {
         @Override
         public String toString() {
-            return "Warning [margin="
-                    + margin
-                    + ", source="
-                    + source
-                    + ", warning="
-                    + warning
-                    + "]";
+            return "Warning [margin=" + margin + ", source=" + source + ", warning=" + warning + "]";
         }
 
         public String getSource() {

@@ -69,10 +69,9 @@ public class Tuple {
     }
 
     private Tuple parse(String str) throws IllegalArgumentException {
-        LOG.warning(
-                "The tuple syntax "
-                        + str
-                        + " is deprecated. Please update your style to use '[' and ']' instead of '(' and ')' for tuples");
+        LOG.warning("The tuple syntax "
+                + str
+                + " is deprecated. Please update your style to use '[' and ']' instead of '(' and ')' for tuples");
         Matcher m = pattern.matcher(str);
         if (!m.matches()) {
             throw new IllegalArgumentException();

@@ -36,10 +36,10 @@ import org.geotools.util.Utilities;
 import tech.units.indriya.AbstractUnit;
 
 /**
- * A parameter group for {@linkplain Matrix matrix} elements. The amount of {@linkplain
- * ParameterValue parameter values} is extensible, i.e. it can grown or shrink according the value
- * of <code>"num_row"</code> and <code>"num_col"</code> parameters. The parameters format may vary
- * according the information provided to the constructor, but it is typically as below:
+ * A parameter group for {@linkplain Matrix matrix} elements. The amount of {@linkplain ParameterValue parameter values}
+ * is extensible, i.e. it can grown or shrink according the value of <code>"num_row"</code> and <code>"num_col"</code>
+ * parameters. The parameters format may vary according the information provided to the constructor, but it is typically
+ * as below:
  *
  * <blockquote>
  *
@@ -67,26 +67,21 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7386537348359343836L;
 
-    /**
-     * The default matrix size for the {@linkplain #MatrixParameterDescriptors(Map) one-argument
-     * constructor}.
-     */
+    /** The default matrix size for the {@linkplain #MatrixParameterDescriptors(Map) one-argument constructor}. */
     public static final int DEFAULT_MATRIX_SIZE = 3;
 
     /**
-     * The height and weight of the matrix of {@link #parameters} to cache. Descriptors for row or
-     * column indices greater than or equals to this value will not be cached.
+     * The height and weight of the matrix of {@link #parameters} to cache. Descriptors for row or column indices
+     * greater than or equals to this value will not be cached.
      */
     private static final int CACHE_SIZE = 8;
 
     /**
-     * The cached descriptors for each elements in a matrix. Descriptors do not depends on matrix
-     * element values. Consequently, the same descriptors can be reused for all {@link
-     * MatrixParameters} instances.
+     * The cached descriptors for each elements in a matrix. Descriptors do not depends on matrix element values.
+     * Consequently, the same descriptors can be reused for all {@link MatrixParameters} instances.
      */
     @SuppressWarnings("unchecked")
-    private final ParameterDescriptor<Double>[] parameters =
-            new ParameterDescriptor[CACHE_SIZE * CACHE_SIZE];
+    private final ParameterDescriptor<Double>[] parameters = new ParameterDescriptor[CACHE_SIZE * CACHE_SIZE];
 
     /** The descriptor for the {@code "num_row"} parameter. */
     protected final ParameterDescriptor<Integer> numRow;
@@ -102,8 +97,8 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
 
     /**
      * Constructs a parameter group with default name format matching <cite><A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well
-     * Known Text</A></cite> usages.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well Known
+     * Text</A></cite> usages.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      */
@@ -126,11 +121,11 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     }
 
     /**
-     * Constructs a parameter group. The properties map is given unchanged to the {@linkplain
-     * AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class constructor}. The {@code
-     * parameters} array should contains parameters <strong>other</strong> than matrix elements. The
-     * first parameter is assumed to be the number of rows, and the second parameter the number of
-     * columns. All extra parameters are ignored.
+     * Constructs a parameter group. The properties map is given unchanged to the
+     * {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class constructor}. The
+     * {@code parameters} array should contains parameters <strong>other</strong> than matrix elements. The first
+     * parameter is assumed to be the number of rows, and the second parameter the number of columns. All extra
+     * parameters are ignored.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param parameters The {@code "num_row"} and {@code "num_col"} parameters.
@@ -162,32 +157,27 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @param upper The upper range value, exclusive.
      * @throws IndexOutOfBoundsException if {@code index} is outside the expected range.
      */
-    static void checkIndice(final String name, final int index, final int upper)
-            throws IndexOutOfBoundsException {
+    static void checkIndice(final String name, final int index, final int upper) throws IndexOutOfBoundsException {
         if (index < 0 || index >= upper) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, index));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, index));
         }
     }
 
     /**
-     * Returns the parameter in this group for the specified name. The name can be a matrix element
-     * if it uses the following syntax: <code>"elt_<var>row</var>_<var>col</var>"</code> where
-     * {@code "elt_"} is the {@linkplain #prefix} for all matrix elements, and <var>row</var> and
-     * <var>col</var> are row and column indices respectively. For example {@code "elt_2_1"} is the
-     * element name for the value at line 2 and row 1. The row and column index are 0 based.
+     * Returns the parameter in this group for the specified name. The name can be a matrix element if it uses the
+     * following syntax: <code>"elt_<var>row</var>_<var>col</var>"</code> where {@code "elt_"} is the
+     * {@linkplain #prefix} for all matrix elements, and <var>row</var> and <var>col</var> are row and column indices
+     * respectively. For example {@code "elt_2_1"} is the element name for the value at line 2 and row 1. The row and
+     * column index are 0 based.
      *
      * @param name The case insensitive name of the parameter to search for.
      * @return The parameter for the given name.
      * @throws ParameterNotFoundException if there is no parameter for the given name.
      */
     @Override
-    public final GeneralParameterDescriptor descriptor(final String name)
-            throws ParameterNotFoundException {
+    public final GeneralParameterDescriptor descriptor(final String name) throws ParameterNotFoundException {
         return descriptor(
-                name,
-                ((Number) numRow.getMaximumValue()).intValue(),
-                ((Number) numCol.getMaximumValue()).intValue());
+                name, ((Number) numRow.getMaximumValue()).intValue(), ((Number) numCol.getMaximumValue()).intValue());
     }
 
     /**
@@ -233,10 +223,9 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     }
 
     /**
-     * Returns the parameter in this group for a matrix element at the specified index. row and
-     * column indices are 0 based. Indices must be lower that the {@linkplain
-     * ParameterDescriptor#getMaximumValue maximum values} given to the {@link #numRow} and {@link
-     * #numCol} parameters.
+     * Returns the parameter in this group for a matrix element at the specified index. row and column indices are 0
+     * based. Indices must be lower that the {@linkplain ParameterDescriptor#getMaximumValue maximum values} given to
+     * the {@link #numRow} and {@link #numCol} parameters.
      *
      * @param row The row indice.
      * @param column The column indice
@@ -262,8 +251,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @return The parameter descriptor for the specified matrix element.
      * @throws IndexOutOfBoundsException if {@code row} or {@code column} is out of bounds.
      */
-    final ParameterDescriptor<Double> descriptor(
-            final int row, final int column, final int numRow, final int numCol)
+    final ParameterDescriptor<Double> descriptor(final int row, final int column, final int numRow, final int numCol)
             throws IndexOutOfBoundsException {
         checkIndice("row", row, numRow);
         checkIndice("column", column, numCol);
@@ -282,16 +270,15 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
          * is no need to synchronize since it is not a big deal if the same parameter is
          * constructed twice.
          */
-        param =
-                new DefaultParameterDescriptor<>(
-                        Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
-                        Double.class,
-                        null,
-                        (row == column) ? 1.0 : 0.0,
-                        null,
-                        null,
-                        AbstractUnit.ONE,
-                        true);
+        param = new DefaultParameterDescriptor<>(
+                Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
+                Double.class,
+                null,
+                (row == column) ? 1.0 : 0.0,
+                null,
+                null,
+                AbstractUnit.ONE,
+                true);
         if (index >= 0) {
             parameters[index] = param;
         }
@@ -299,29 +286,29 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     }
 
     /**
-     * Returns the parameters in this group. The number or elements is inferred from the {@linkplain
-     * ParameterDescriptor#getDefaultValue default values} given to the {@link #numRow} and {@link
-     * #numCol} parameters.
+     * Returns the parameters in this group. The number or elements is inferred from the
+     * {@linkplain ParameterDescriptor#getDefaultValue default values} given to the {@link #numRow} and {@link #numCol}
+     * parameters.
      *
      * @return The matrix parameters, including all elements.
      */
     @Override
     public final List<GeneralParameterDescriptor> descriptors() {
         return descriptors(
-                this.numRow.getDefaultValue().intValue(), this.numCol.getDefaultValue().intValue());
+                this.numRow.getDefaultValue().intValue(),
+                this.numCol.getDefaultValue().intValue());
     }
 
     /**
-     * Implementation of the {@link #descriptors()} method. Returns the parameters in this group for
-     * a matrix of the specified size.
+     * Implementation of the {@link #descriptors()} method. Returns the parameters in this group for a matrix of the
+     * specified size.
      *
      * @param numRow The number of rows.
      * @param numCol The number of columns.
      * @return The matrix parameters, including all elements.
      */
     final List<GeneralParameterDescriptor> descriptors(final int numRow, final int numCol) {
-        final GeneralParameterDescriptor[] parameters =
-                new GeneralParameterDescriptor[numRow * numCol + 2];
+        final GeneralParameterDescriptor[] parameters = new GeneralParameterDescriptor[numRow * numCol + 2];
         int k = 0;
         parameters[k++] = this.numRow;
         parameters[k++] = this.numCol;
@@ -335,10 +322,9 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     }
 
     /**
-     * Creates a new instance of {@linkplain MatrixParameters parameter values} with elements
-     * initialized to the 1 on the diagonal, and 0 everywere else. The returned parameter group is
-     * extensible, i.e. the number of elements will depends upon the value associated to the {@link
-     * #numRow} and {@link #numCol numCol} parameters.
+     * Creates a new instance of {@linkplain MatrixParameters parameter values} with elements initialized to the 1 on
+     * the diagonal, and 0 everywere else. The returned parameter group is extensible, i.e. the number of elements will
+     * depends upon the value associated to the {@link #numRow} and {@link #numCol numCol} parameters.
      *
      * @return A new parameter initialized to the default value.
      */
@@ -354,8 +340,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @return A matrix constructed from the specified group of parameters.
      * @throws InvalidParameterNameException if a parameter name was not recognized.
      */
-    public Matrix getMatrix(final ParameterValueGroup parameters)
-            throws InvalidParameterNameException {
+    public Matrix getMatrix(final ParameterValueGroup parameters) throws InvalidParameterNameException {
         if (parameters instanceof MatrixParameters) {
             // More efficient implementation
             return ((MatrixParameters) parameters).getMatrix();
@@ -378,8 +363,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
                     final int split = name.indexOf(separator, prefix.length());
                     if (split >= 0)
                         try {
-                            final int row =
-                                    Integer.parseInt(name.substring(prefix.length(), split));
+                            final int row = Integer.parseInt(name.substring(prefix.length(), split));
                             final int col = Integer.parseInt(name.substring(split + 1));
                             matrix.setElement(row, col, ((ParameterValue) param).doubleValue());
                             continue;
@@ -387,10 +371,8 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
                             cause = exception;
                         }
                 }
-                final InvalidParameterNameException exception =
-                        new InvalidParameterNameException(
-                                MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name),
-                                name);
+                final InvalidParameterNameException exception = new InvalidParameterNameException(
+                        MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
                 if (cause != null) {
                     exception.initCause(cause);
                 }
@@ -404,8 +386,8 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * Compares the specified object with this parameter group for equality.
      *
      * @param object The object to compare to {@code this}.
-     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
-     *     comparing only properties relevant to transformations.
+     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for comparing only
+     *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
     @Override
@@ -420,8 +402,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
     /**
      * Returns a hash value for this parameter.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")

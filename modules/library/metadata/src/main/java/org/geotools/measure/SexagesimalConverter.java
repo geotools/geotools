@@ -21,11 +21,10 @@ import javax.measure.UnitConverter;
 import tech.units.indriya.function.AbstractConverter;
 
 /**
- * A converter from fractional degrees to sexagesimal degrees. Sexagesimal degrees are pseudo-unit
- * in the format
+ * A converter from fractional degrees to sexagesimal degrees. Sexagesimal degrees are pseudo-unit in the format
  *
- * <p><cite>sign - degrees - decimal point - minutes (two digits) - integer seconds (two digits) -
- * fraction of seconds (any precision)</cite>.
+ * <p><cite>sign - degrees - decimal point - minutes (two digits) - integer seconds (two digits) - fraction of seconds
+ * (any precision)</cite>.
  *
  * <p>Unfortunatly, this pseudo-unit is extensively used in the EPSG database.
  *
@@ -47,8 +46,8 @@ class SexagesimalConverter extends AbstractConverter {
     static final SexagesimalConverter FRACTIONAL = new SexagesimalConverter(10000);
 
     /**
-     * The value to divide DMS unit by. For "degree minute second" (EPSG code 9107), this is 1. For
-     * "sexagesimal degree" (EPSG code 9110), this is 10000.
+     * The value to divide DMS unit by. For "degree minute second" (EPSG code 9107), this is 1. For "sexagesimal degree"
+     * (EPSG code 9110), this is 10000.
      */
     final int divider;
 
@@ -58,18 +57,15 @@ class SexagesimalConverter extends AbstractConverter {
     /**
      * Constructs a converter for sexagesimal units.
      *
-     * @param divider The value to divide DMS unit by. For "degree minute second" (EPSG code 9107),
-     *     this is 1. For "sexagesimal degree" (EPSG code 9110), this is 10000.
+     * @param divider The value to divide DMS unit by. For "degree minute second" (EPSG code 9107), this is 1. For
+     *     "sexagesimal degree" (EPSG code 9110), this is 10000.
      */
     private SexagesimalConverter(final int divider) {
         this.divider = divider;
         this.inverse = new Inverse(this);
     }
 
-    /**
-     * Constructs a converter for sexagesimal units. This constructor is for {@link Inverse} usage
-     * only.
-     */
+    /** Constructs a converter for sexagesimal units. This constructor is for {@link Inverse} usage only. */
     private SexagesimalConverter(final int divider, final SexagesimalConverter inverse) {
         this.divider = divider;
         this.inverse = inverse;

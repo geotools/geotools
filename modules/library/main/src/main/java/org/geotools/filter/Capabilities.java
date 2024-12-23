@@ -82,11 +82,11 @@ import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 /**
  * Allows for easier interaction with FilterCapabilities.
  *
- * <p>This class provides some out of the box FilterCapabilities constants that you can quickly use
- * to describe the encoding abilities of your service.
+ * <p>This class provides some out of the box FilterCapabilities constants that you can quickly use to describe the
+ * encoding abilities of your service.
  *
- * <p>This class behaves similar to Citations in that the constants are to be considered immutable,
- * methods have been provided to assist in composing your own set of FilterCapabilities.
+ * <p>This class behaves similar to Citations in that the constants are to be considered immutable, methods have been
+ * provided to assist in composing your own set of FilterCapabilities.
  *
  * <p>Example:
  *
@@ -96,8 +96,7 @@ import org.geotools.filter.visitor.OperatorNameFilterVisitor;
  * capabilities.addAll( Capabilities.SIMPLE_COMPARISONS );
  * </code></pre>
  *
- * You can use the Capabilities class at runtime to check existing filters to see if they are fully
- * supported:
+ * You can use the Capabilities class at runtime to check existing filters to see if they are fully supported:
  *
  * <pre><code>
  * if( fullySupports( filter )) {
@@ -166,15 +165,9 @@ public class Capabilities {
 
     static {
         logicalNames = new HashMap<>();
-        logicalNames.put(
-                And.class,
-                "And"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
-        logicalNames.put(
-                Or.class,
-                "Or"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
-        logicalNames.put(
-                Not.class,
-                "Not"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(And.class, "And"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(Or.class, "Or"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(Not.class, "Not"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
     }
 
     private static Map<Class<?>, String> filterNames;
@@ -210,8 +203,7 @@ public class Capabilities {
         exprNames.put(Function.class, "Function");
     }
 
-    private static final OperatorNameFilterVisitor operationNameVisitor =
-            new OperatorNameFilterVisitor();
+    private static final OperatorNameFilterVisitor operationNameVisitor = new OperatorNameFilterVisitor();
 
     /** Support for logical types AND, OR and NOT */
     public static Capabilities LOGICAL;
@@ -231,8 +223,7 @@ public class Capabilities {
         SIMPLE_COMPARISONS = new Capabilities();
         SIMPLE_COMPARISONS.addType(PropertyIsEqualTo.class); // COMPARE_EQUALS|
         SIMPLE_COMPARISONS.addType(PropertyIsGreaterThan.class); // COMPARE_GREATER_THAN
-        SIMPLE_COMPARISONS.addType(
-                PropertyIsGreaterThanOrEqualTo.class); // COMPARE_GREATER_THAN_EQUAL
+        SIMPLE_COMPARISONS.addType(PropertyIsGreaterThanOrEqualTo.class); // COMPARE_GREATER_THAN_EQUAL
         SIMPLE_COMPARISONS.addType(PropertyIsLessThan.class); // COMPARE_LESS_THAN
         SIMPLE_COMPARISONS.addType(PropertyIsLessThanOrEqualTo.class); // COMPARE_LESS_THAN_EQUAL
         SIMPLE_COMPARISONS.addType(PropertyIsNotEqualTo.class); // COMPARE_NOT_EQUALS;
@@ -242,10 +233,7 @@ public class Capabilities {
 
     /** This is a quick visitor (returning true / false) that only checks one level deep. */
     IsSupportedFilterVisitor supportedVisitor;
-    /**
-     * Visitor (returning true / false) if the provided filter is supported by our
-     * FilterCapabilities.
-     */
+    /** Visitor (returning true / false) if the provided filter is supported by our FilterCapabilities. */
     IsFullySupportedFilterVisitor fullySupportedVisitor;
 
     /** Internal FilterCapabilities data structure used to maintain state. */
@@ -294,8 +282,8 @@ public class Capabilities {
      * <p>If this is a known name (avaialble as part of opengis interface) it will be grouped into:
      *
      * <ul>
-     *   <li>Spatial Operators: Will added a SpatialOperator into the mix with Point, LineString,
-     *       Polygon as the supported geometry operands (based on the assumption of JTS)
+     *   <li>Spatial Operators: Will added a SpatialOperator into the mix with Point, LineString, Polygon as the
+     *       supported geometry operands (based on the assumption of JTS)
      *   <li>Comparison Operators:
      *   <li>Arithmetic Operators: will cause hassimpleArithmetic to be true
      *   <li>Other: will be treated as a no argument function call
@@ -318,8 +306,7 @@ public class Capabilities {
         if (name == null) {
             return;
         } else if (spatialNames.containsValue(name)) {
-            SpatialOperatorsImpl operators =
-                    contents.getSpatialCapabilities().getSpatialOperators();
+            SpatialOperatorsImpl operators = contents.getSpatialCapabilities().getSpatialOperators();
             if (operators.getOperator(name) == null) {
                 SpatialOperatorImpl operator = new SpatialOperatorImpl(name);
                 // default JTS?
@@ -336,15 +323,13 @@ public class Capabilities {
                 operators.getOperators().add(operator);
             }
         } else if (scalarNames.containsValue(name)) {
-            ComparisonOperatorsImpl operators =
-                    contents.getScalarCapabilities().getComparisonOperators();
+            ComparisonOperatorsImpl operators = contents.getScalarCapabilities().getComparisonOperators();
             if (operators.getOperator(name) == null) {
                 OperatorImpl operator = new OperatorImpl(name);
                 operators.getOperators().add(operator);
             }
         } else if (arithmaticNames.containsValue(name)) {
-            ArithmeticOperatorsImpl operators =
-                    contents.getScalarCapabilities().getArithmeticOperators();
+            ArithmeticOperatorsImpl operators = contents.getScalarCapabilities().getArithmeticOperators();
             operators.setSimpleArithmetic(true);
         } else if (logicalNames.containsValue(name)) {
             contents.getScalarCapabilities().setLogicalOperators(true);
@@ -410,9 +395,9 @@ public class Capabilities {
     /**
      * Determines if the filter and all its sub filters and expressions are supported.
      *
-     * <p>Is most important for logic filters, as they are the only ones with subFilters. The geoapi
-     * FilterVisitor and ExpressionVisitors allow for the handling of null, even so care should be
-     * taken to use Filter.INCLUDE and Expression.NIL where you can.
+     * <p>Is most important for logic filters, as they are the only ones with subFilters. The geoapi FilterVisitor and
+     * ExpressionVisitors allow for the handling of null, even so care should be taken to use Filter.INCLUDE and
+     * Expression.NIL where you can.
      *
      * <p>
      *
@@ -432,8 +417,8 @@ public class Capabilities {
     /**
      * Determines if the expression and all its sub expressions is supported.
      *
-     * <p>The Expression visitor used for this work can handle null, even so care should be taken to
-     * useExpression.NIL where you can.
+     * <p>The Expression visitor used for this work can handle null, even so care should be taken to useExpression.NIL
+     * where you can.
      *
      * <p>
      *
@@ -452,8 +437,8 @@ public class Capabilities {
     }
 
     /**
-     * Quickly look at the filter and determine the OperationName we need to check for in the
-     * FilterCapabilities data structure.
+     * Quickly look at the filter and determine the OperationName we need to check for in the FilterCapabilities data
+     * structure.
      *
      * @return Operation name
      */
@@ -465,8 +450,8 @@ public class Capabilities {
     /**
      * Figure out the OperationName for the provided filterType.
      *
-     * <p>The returned name can be used to check the FilterCapabilities to see if it type is
-     * supported in this execution context.
+     * <p>The returned name can be used to check the FilterCapabilities to see if it type is supported in this execution
+     * context.
      *
      * <p>This approach is not applicable for Functions.
      *

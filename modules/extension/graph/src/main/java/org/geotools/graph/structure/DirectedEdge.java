@@ -17,9 +17,9 @@
 package org.geotools.graph.structure;
 
 /**
- * Represents an edge in a directed graph. A directed edge catagorizes its nodes as originating (in
- * node), and terminating (out node). The edge is an <B>out edge</B> of its <B>in node</B> and an
- * <B>in edge</B> to its <B>out node</B>.
+ * Represents an edge in a directed graph. A directed edge catagorizes its nodes as originating (in node), and
+ * terminating (out node). The edge is an <B>out edge</B> of its <B>in node</B> and an <B>in edge</B> to its <B>out
+ * node</B>.
  *
  * @see DirectedGraph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

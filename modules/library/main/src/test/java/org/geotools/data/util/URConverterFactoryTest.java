@@ -56,8 +56,7 @@ public class URConverterFactoryTest {
         Converter c = f.createConverter(URL.class, URI.class, null);
         Assert.assertNotNull(c);
 
-        Assert.assertEquals(
-                new URI("http://foo.com"), c.convert(new URL("http://foo.com"), URI.class));
+        Assert.assertEquals(new URI("http://foo.com"), c.convert(new URL("http://foo.com"), URI.class));
     }
 
     @Test
@@ -65,8 +64,7 @@ public class URConverterFactoryTest {
         Converter c = f.createConverter(URI.class, URL.class, null);
         Assert.assertNotNull(c);
 
-        Assert.assertEquals(
-                new URL("http://foo.com"), c.convert(new URI("http://foo.com"), URL.class));
+        Assert.assertEquals(new URL("http://foo.com"), c.convert(new URI("http://foo.com"), URL.class));
     }
     // JD: enable when factory registered
     //    public void testRegistered() throws Exception {

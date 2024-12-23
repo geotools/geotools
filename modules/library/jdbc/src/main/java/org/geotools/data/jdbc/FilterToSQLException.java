@@ -17,8 +17,8 @@
 package org.geotools.data.jdbc;
 
 /**
- * Indicates a client class has attempted to encode a filter not supported by the SQLEncoder being
- * used, or that there were io problems.
+ * Indicates a client class has attempted to encode a filter not supported by the SQLEncoder being used, or that there
+ * were io problems.
  *
  * @author Chris Holmes, TOPP
  */

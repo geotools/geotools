@@ -103,9 +103,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
         Position timePosition = (Position) object;
 
         if (timePosition == null) {
-            value.appendChild(
-                    document.createElementNS(
-                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         } else {
             value.appendChild(document.createTextNode(timePosition.getDateTime().toString()));
         }

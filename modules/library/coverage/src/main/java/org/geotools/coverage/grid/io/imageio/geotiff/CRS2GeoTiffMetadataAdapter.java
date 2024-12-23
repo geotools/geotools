@@ -71,12 +71,12 @@ import systems.uom.common.USCustomary;
 import tech.units.indriya.AbstractUnit;
 
 /**
- * This class implements a simple reusable adapter to adapt a {@link CoordinateReferenceSystem} into
- * useful Geotiff metadata by mean of {@link GeoTiffIIOMetadataEncoder}.
+ * This class implements a simple reusable adapter to adapt a {@link CoordinateReferenceSystem} into useful Geotiff
+ * metadata by mean of {@link GeoTiffIIOMetadataEncoder}.
  *
- * <p>Since {@link CoordinateReferenceSystem} are essentially immutable this class implements a
- * static pool of {@link CRS2GeoTiffMetadataAdapter} objects that would allow to avoid parsing the
- * same {@link CoordinateReferenceSystem} more than once.
+ * <p>Since {@link CoordinateReferenceSystem} are essentially immutable this class implements a static pool of
+ * {@link CRS2GeoTiffMetadataAdapter} objects that would allow to avoid parsing the same
+ * {@link CoordinateReferenceSystem} more than once.
  *
  * @author Simone Giannecchini
  * @since 2.2
@@ -94,8 +94,8 @@ public final class CRS2GeoTiffMetadataAdapter {
     /**
      * Searches for an EPSG code inside this <code>IdentifiedObject</code>.
      *
-     * <p>It is important to remark that this function should be seen as an hack hence it may change
-     * in the near future. DO not rely on it!
+     * <p>It is important to remark that this function should be seen as an hack hence it may change in the near future.
+     * DO not rely on it!
      *
      * @param obj An <code>IdentifiedObject</code> to look for an EPSG code into.
      * @return An EPSG numeric code, if one is found, -1 otherwise.
@@ -127,8 +127,8 @@ public final class CRS2GeoTiffMetadataAdapter {
     /**
      * Parses a coordinate reference system.
      *
-     * <p>For the moment we can only encode geographic and projected coordinate reference systems,
-     * we cannot encode the other types like vertical coordinate reference systems.
+     * <p>For the moment we can only encode geographic and projected coordinate reference systems, we cannot encode the
+     * other types like vertical coordinate reference systems.
      */
     public GeoTiffIIOMetadataEncoder parseCoordinateReferenceSystem() throws GeoTiffException {
         final GeoTiffIIOMetadataEncoder metadata = new GeoTiffIIOMetadataEncoder();
@@ -212,12 +212,12 @@ public final class CRS2GeoTiffMetadataAdapter {
 
         // user defined projected coordinate reference system.
         // key 3072
-        metadata.addGeoShortParam(
-                GeoTiffPCSCodes.ProjectedCSTypeGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+        metadata.addGeoShortParam(GeoTiffPCSCodes.ProjectedCSTypeGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
         // name of the user defined projected crs
         // key 3073
-        metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, projectedCRS.getName().getCode());
+        metadata.addGeoAscii(
+                GeoTiffPCSCodes.PCSCitationGeoKey, projectedCRS.getName().getCode());
 
         // projection
         parseProjection(projectedCRS, metadata);
@@ -231,8 +231,7 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @param projectedCRS The <code>ProjectedCRS</code> to parse.
      */
-    private void parseProjection(
-            final ProjectedCRS projectedCRS, final GeoTiffIIOMetadataEncoder metadata) {
+    private void parseProjection(final ProjectedCRS projectedCRS, final GeoTiffIIOMetadataEncoder metadata) {
         // getting the conversion
         final Conversion conversion = projectedCRS.getConversionFromBase();
         final int code = getEPSGCode(conversion);
@@ -243,8 +242,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
         // user defined projection
         // key 3074
-        metadata.addGeoShortParam(
-                GeoTiffPCSCodes.ProjectionGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+        metadata.addGeoShortParam(GeoTiffPCSCodes.ProjectionGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
         final OperationMethod method = conversion.getMethod();
         // looking for the parameters
@@ -273,44 +271,37 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @todo complete the list of linear unit of measures and clean the exception
      */
-    private void parseLinearUnit(
-            final ProjectedCRS projectedCRS, GeoTiffIIOMetadataEncoder metadata) {
+    private void parseLinearUnit(final ProjectedCRS projectedCRS, GeoTiffIIOMetadataEncoder metadata) {
 
         // getting the linear unit
         final Unit<?> unit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
         @SuppressWarnings("unchecked")
         Unit<Length> linearUnit = (Unit<Length>) unit;
         if (SI.METRE.equals(linearUnit)) {
-            metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Meter);
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Meter);
             metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, 1.0);
         } else if (USCustomary.NAUTICAL_MILE.equals(linearUnit)) {
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
-                    GeoTiffUoMCodes.Linear_Mile_International_Nautical);
+                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Mile_International_Nautical);
             metadata.addGeoDoubleParam(
                     GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
                     linearUnit.getConverterTo(SI.METRE).convert(1));
         } else if (USCustomary.FOOT.equals(linearUnit)) {
-            metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Foot);
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Foot);
             metadata.addGeoDoubleParam(
                     GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
                     linearUnit.getConverterTo(SI.METRE).convert(1));
         } else if (USCustomary.YARD.equals(linearUnit)) {
-            metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Yard_Sears); // ??
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Yard_Sears); // ??
             metadata.addGeoDoubleParam(
                     GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
                     linearUnit.getConverterTo(SI.METRE).convert(1));
         } else if (USCustomary.FOOT_SURVEY.equals(linearUnit)) {
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
-                    GeoTiffUoMCodes.Linear_Foot_US_Survey); // ??
+                    GeoTiffPCSCodes.ProjLinearUnitsGeoKey, GeoTiffUoMCodes.Linear_Foot_US_Survey); // ??
             metadata.addGeoDoubleParam(
                     GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
                     linearUnit.getConverterTo(SI.METRE).convert(1));
@@ -328,12 +319,10 @@ public final class CRS2GeoTiffMetadataAdapter {
         // Transverse Mercator
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof TransverseMercator
-                && name.equalsIgnoreCase("transverse_mercator")) {
+        if (projTransf instanceof TransverseMercator && name.equalsIgnoreCase("transverse_mercator")) {
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_TransverseMercator);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_TransverseMercator);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -362,12 +351,10 @@ public final class CRS2GeoTiffMetadataAdapter {
         //
         // /////////////////////////////////////////////////////////////////////
         if (projTransf instanceof Mercator
-                && (name.equalsIgnoreCase("mercator_1SP")
-                        || name.equalsIgnoreCase("Mercator_2SP"))) {
+                && (name.equalsIgnoreCase("mercator_1SP") || name.equalsIgnoreCase("Mercator_2SP"))) {
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_Mercator);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_Mercator);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -375,33 +362,19 @@ public final class CRS2GeoTiffMetadataAdapter {
             for (GeneralParameterValue value : values) {
                 if (value instanceof ParameterValue) {
                     ParameterValue<?> paramValue = (ParameterValue<?>) value;
-                    if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "latitude_of_origin")) {
+                    if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "latitude_of_origin")) {
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLatGeoKey, (paramValue).doubleValue());
+                    } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "central_meridian")) {
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLongGeoKey, (paramValue).doubleValue());
+                    } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "scale_factor")) {
                         metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjNatOriginLatGeoKey, (paramValue).doubleValue());
-                    } else if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "central_meridian")) {
-                        metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjNatOriginLongGeoKey,
-                                (paramValue).doubleValue());
-                    } else if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "scale_factor")) {
-                        metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjScaleAtNatOriginGeoKey,
-                                (paramValue).doubleValue());
-                    } else if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "standard_parallel_1")) {
-                        metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjStdParallel1GeoKey, (paramValue).doubleValue());
-                    } else if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "false_easting")) {
-                        metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjFalseEastingGeoKey, (paramValue).doubleValue());
-                    } else if (AbstractIdentifiedObject.nameMatches(
-                            value.getDescriptor(), "false_northing")) {
-                        metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjFalseNorthingGeoKey,
-                                (paramValue).doubleValue());
+                                GeoTiffPCSCodes.ProjScaleAtNatOriginGeoKey, (paramValue).doubleValue());
+                    } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "standard_parallel_1")) {
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjStdParallel1GeoKey, (paramValue).doubleValue());
+                    } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "false_easting")) {
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey, (paramValue).doubleValue());
+                    } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "false_northing")) {
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey, (paramValue).doubleValue());
                     }
                 }
             }
@@ -511,8 +484,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_Stereographic);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_Stereographic);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -539,12 +511,10 @@ public final class CRS2GeoTiffMetadataAdapter {
         // polar_stereographic
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof PolarStereographic
-                && name.equalsIgnoreCase("polar_stereographic")) {
+        if (projTransf instanceof PolarStereographic && name.equalsIgnoreCase("polar_stereographic")) {
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_PolarStereographic);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_PolarStereographic);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -571,8 +541,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // Oblique_Stereographic
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof ObliqueStereographic
-                && name.equalsIgnoreCase("Oblique_Stereographic")) {
+        if (projTransf instanceof ObliqueStereographic && name.equalsIgnoreCase("Oblique_Stereographic")) {
             metadata.addGeoShortParam(
                     GeoTiffPCSCodes.ProjCoordTransGeoKey,
                     GeoTiffCoordinateTransformationsCodes.CT_ObliqueStereographic);
@@ -603,13 +572,11 @@ public final class CRS2GeoTiffMetadataAdapter {
         //
         // /////////////////////////////////////////////////////////////////////
         if (projTransf instanceof ObliqueMercator
-                && (name.equalsIgnoreCase("oblique_mercator")
-                        || name.equalsIgnoreCase("hotine_oblique_mercator"))) {
+                && (name.equalsIgnoreCase("oblique_mercator") || name.equalsIgnoreCase("hotine_oblique_mercator"))) {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_ObliqueMercator);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_ObliqueMercator);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -639,13 +606,11 @@ public final class CRS2GeoTiffMetadataAdapter {
         // albers_Conic_Equal_Area
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof AlbersEqualArea
-                && name.equalsIgnoreCase("albers_Conic_Equal_Area")) {
+        if (projTransf instanceof AlbersEqualArea && name.equalsIgnoreCase("albers_Conic_Equal_Area")) {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_AlbersEqualArea);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_AlbersEqualArea);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -680,8 +645,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_Orthographic);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_Orthographic);
             //			metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -705,8 +669,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // Lambert Azimuthal Equal Area
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof LambertAzimuthalEqualArea
-                && name.equalsIgnoreCase("Lambert_Azimuthal_Equal_Area")) {
+        if (projTransf instanceof LambertAzimuthalEqualArea && name.equalsIgnoreCase("Lambert_Azimuthal_Equal_Area")) {
 
             // key 3075
             metadata.addGeoShortParam(
@@ -735,8 +698,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // Azimuthal Equidistant
         //
         ///////////////////////////////////////////
-        if (projTransf instanceof AzimuthalEquidistant.Abstract
-                && name.equalsIgnoreCase("Azimuthal_Equidistant")) {
+        if (projTransf instanceof AzimuthalEquidistant.Abstract && name.equalsIgnoreCase("Azimuthal_Equidistant")) {
             metadata.addGeoShortParam(
                     GeoTiffPCSCodes.ProjCoordTransGeoKey,
                     GeoTiffCoordinateTransformationsCodes.CT_AzimuthalEquidistant);
@@ -760,13 +722,11 @@ public final class CRS2GeoTiffMetadataAdapter {
         // Van der Grinten
         //
         // /////////////////////////////////////////////////////////////////////
-        if (projTransf instanceof WorldVanDerGrintenI
-                && name.equalsIgnoreCase("World_Van_der_Grinten_I")) {
+        if (projTransf instanceof WorldVanDerGrintenI && name.equalsIgnoreCase("World_Van_der_Grinten_I")) {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_VanDerGrinten);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_VanDerGrinten);
             //                    metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, name);
 
             // params
@@ -791,8 +751,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
             // key 3075
             metadata.addGeoShortParam(
-                    GeoTiffPCSCodes.ProjCoordTransGeoKey,
-                    GeoTiffCoordinateTransformationsCodes.CT_Sinusoidal);
+                    GeoTiffPCSCodes.ProjCoordTransGeoKey, GeoTiffCoordinateTransformationsCodes.CT_Sinusoidal);
 
             // params
             metadata.addGeoDoubleParam(
@@ -823,8 +782,7 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @param geographicCRS The parent element.
      */
-    private void parseGeoGCS(
-            DefaultGeographicCRS geographicCRS, GeoTiffIIOMetadataEncoder metadata) {
+    private void parseGeoGCS(DefaultGeographicCRS geographicCRS, GeoTiffIIOMetadataEncoder metadata) {
 
         // is it one of the EPSG standard GCS?
         final int code = getEPSGCode(geographicCRS);
@@ -837,8 +795,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // User defined GCRS
         //
         // user defined geographic coordinate reference system.
-        metadata.addGeoShortParam(
-                GeoTiffGCSCodes.GeographicTypeGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+        metadata.addGeoShortParam(GeoTiffGCSCodes.GeographicTypeGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
         // get the name of the gcs which will become a citation for the user
         // define crs
@@ -851,7 +808,8 @@ public final class CRS2GeoTiffMetadataAdapter {
         parseDatum(datum, metadata);
 
         // angular unit
-        final Unit<?> angularUnit = (geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
+        final Unit<?> angularUnit =
+                (geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
         parseUnit(angularUnit, 0, metadata);
 
         // prime meridian
@@ -886,8 +844,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
         /** user defined datum */
         // set the datum as user defined
-        metadata.addGeoShortParam(
-                GeoTiffGCSCodes.GeogGeodeticDatumGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+        metadata.addGeoShortParam(GeoTiffGCSCodes.GeogGeodeticDatumGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
         // set the name
         metadata.addGeoAscii(
@@ -907,8 +864,7 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * </blockquote>
      */
-    private void parseSpheroid(
-            final DefaultEllipsoid ellipsoid, GeoTiffIIOMetadataEncoder metadata) {
+    private void parseSpheroid(final DefaultEllipsoid ellipsoid, GeoTiffIIOMetadataEncoder metadata) {
 
         final int code = getEPSGCode(ellipsoid);
         if (GeoTiffIIOMetadataEncoder.isTiffUShort(code)) {
@@ -917,19 +873,17 @@ public final class CRS2GeoTiffMetadataAdapter {
         }
 
         // user defined ellipsoid
-        metadata.addGeoShortParam(
-                GeoTiffGCSCodes.GeogEllipsoidGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+        metadata.addGeoShortParam(GeoTiffGCSCodes.GeogEllipsoidGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
         // setting the name
         metadata.addGeoAscii(
-                GeoTiffGCSCodes.GeogCitationGeoKey, "Ellipsoid = " + ellipsoid.getName().getCode());
+                GeoTiffGCSCodes.GeogCitationGeoKey,
+                "Ellipsoid = " + ellipsoid.getName().getCode());
 
         // setting semimajor axis
-        metadata.addGeoDoubleParam(
-                GeoTiffGCSCodes.GeogSemiMajorAxisGeoKey, ellipsoid.getSemiMajorAxis());
+        metadata.addGeoDoubleParam(GeoTiffGCSCodes.GeogSemiMajorAxisGeoKey, ellipsoid.getSemiMajorAxis());
 
         // setting inverse flattening
-        metadata.addGeoDoubleParam(
-                GeoTiffGCSCodes.GeogInvFlatteningGeoKey, ellipsoid.getInverseFlattening());
+        metadata.addGeoDoubleParam(GeoTiffGCSCodes.GeogInvFlatteningGeoKey, ellipsoid.getInverseFlattening());
     }
 
     /**
@@ -950,16 +904,15 @@ public final class CRS2GeoTiffMetadataAdapter {
             metadata.addGeoShortParam(GeoTiffGCSCodes.GeogPrimeMeridianGeoKey, code);
         else {
             // user defined
-            metadata.addGeoShortParam(
-                    GeoTiffGCSCodes.GeogPrimeMeridianGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
+            metadata.addGeoShortParam(GeoTiffGCSCodes.GeogPrimeMeridianGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
             // citation
             metadata.addGeoAscii(
-                    GeoTiffGCSCodes.GeogCitationGeoKey, "Primem = " + pm.getName().getCode());
+                    GeoTiffGCSCodes.GeogCitationGeoKey,
+                    "Primem = " + pm.getName().getCode());
 
             // longitude
-            metadata.addGeoDoubleParam(
-                    GeoTiffGCSCodes.GeogPrimeMeridianLongGeoKey, pm.getGreenwichLongitude());
+            metadata.addGeoDoubleParam(GeoTiffGCSCodes.GeogPrimeMeridianLongGeoKey, pm.getGreenwichLongitude());
         }
     }
 
@@ -1020,9 +973,7 @@ public final class CRS2GeoTiffMetadataAdapter {
             // preparing the string to write here
 
             // citation
-            metadata.addGeoAscii(
-                    GeoTiffGCSCodes.GeogCitationGeoKey,
-                    unit.toString()); // unitFormat.labelFor(unit)
+            metadata.addGeoAscii(GeoTiffGCSCodes.GeogCitationGeoKey, unit.toString()); // unitFormat.labelFor(unit)
 
             // Size with respect to base UoM
             UnitConverter converter = getUnitConverter(unit);

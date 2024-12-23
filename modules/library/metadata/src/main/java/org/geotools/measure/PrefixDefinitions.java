@@ -44,60 +44,53 @@ import java.util.List;
 /** This class holds definitions of common metric unit prefixes for use in unit definitions. */
 public final class PrefixDefinitions {
 
-    /**
-     * A list of metric prefix definitions from YOTTA (10<sup>24</sup>) to YOCTO (10<sup>-24</sup>).
-     */
-    public static List<PrefixDefinition> STANDARD =
-            unmodifiableList(
-                    asList(
-                            PrefixDefinition.of(YOTTA),
-                            PrefixDefinition.of(ZETTA),
-                            PrefixDefinition.of(EXA),
-                            PrefixDefinition.of(PETA),
-                            PrefixDefinition.of(TERA),
-                            PrefixDefinition.of(GIGA),
-                            PrefixDefinition.of(MEGA),
-                            PrefixDefinition.of(KILO),
-                            PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
-                            PrefixDefinition.of(DECI),
-                            PrefixDefinition.of(CENTI),
-                            PrefixDefinition.of(MILLI),
-                            PrefixDefinition.of(MICRO, "\u03BC"),
-                            PrefixDefinition.of(NANO),
-                            PrefixDefinition.of(PICO),
-                            PrefixDefinition.of(FEMTO),
-                            PrefixDefinition.of(ATTO),
-                            PrefixDefinition.of(ZEPTO),
-                            PrefixDefinition.of(YOCTO)));
+    /** A list of metric prefix definitions from YOTTA (10<sup>24</sup>) to YOCTO (10<sup>-24</sup>). */
+    public static List<PrefixDefinition> STANDARD = unmodifiableList(asList(
+            PrefixDefinition.of(YOTTA),
+            PrefixDefinition.of(ZETTA),
+            PrefixDefinition.of(EXA),
+            PrefixDefinition.of(PETA),
+            PrefixDefinition.of(TERA),
+            PrefixDefinition.of(GIGA),
+            PrefixDefinition.of(MEGA),
+            PrefixDefinition.of(KILO),
+            PrefixDefinition.of(HECTO),
+            PrefixDefinition.of(DEKA),
+            PrefixDefinition.of(DECI),
+            PrefixDefinition.of(CENTI),
+            PrefixDefinition.of(MILLI),
+            PrefixDefinition.of(MICRO, "\u03BC"),
+            PrefixDefinition.of(NANO),
+            PrefixDefinition.of(PICO),
+            PrefixDefinition.of(FEMTO),
+            PrefixDefinition.of(ATTO),
+            PrefixDefinition.of(ZEPTO),
+            PrefixDefinition.of(YOCTO)));
 
     /**
-     * A prefix definition that leaves out KILO, which is used for the definition of units of mass:
-     * As the base unit of mass is kilogram, adding prefixes to that unit would result in µkg, kkg,
-     * nkg etc. which is not desired. Instead we define kilogram as a unit without any prefixes, and
-     * then define gram, with all prefixes but KIL0.
+     * A prefix definition that leaves out KILO, which is used for the definition of units of mass: As the base unit of
+     * mass is kilogram, adding prefixes to that unit would result in µkg, kkg, nkg etc. which is not desired. Instead
+     * we define kilogram as a unit without any prefixes, and then define gram, with all prefixes but KIL0.
      */
-    static List<PrefixDefinition> GRAM =
-            unmodifiableList(
-                    asList(
-                            PrefixDefinition.of(YOTTA),
-                            PrefixDefinition.of(ZETTA),
-                            PrefixDefinition.of(EXA),
-                            PrefixDefinition.of(PETA),
-                            PrefixDefinition.of(TERA),
-                            PrefixDefinition.of(GIGA),
-                            PrefixDefinition.of(MEGA),
-                            // no kilo
-                            PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
-                            PrefixDefinition.of(DECI),
-                            PrefixDefinition.of(CENTI),
-                            PrefixDefinition.of(MILLI),
-                            PrefixDefinition.of(MICRO, "\u03BC"),
-                            PrefixDefinition.of(NANO),
-                            PrefixDefinition.of(PICO),
-                            PrefixDefinition.of(FEMTO),
-                            PrefixDefinition.of(ATTO),
-                            PrefixDefinition.of(ZEPTO),
-                            PrefixDefinition.of(YOCTO)));
+    static List<PrefixDefinition> GRAM = unmodifiableList(asList(
+            PrefixDefinition.of(YOTTA),
+            PrefixDefinition.of(ZETTA),
+            PrefixDefinition.of(EXA),
+            PrefixDefinition.of(PETA),
+            PrefixDefinition.of(TERA),
+            PrefixDefinition.of(GIGA),
+            PrefixDefinition.of(MEGA),
+            // no kilo
+            PrefixDefinition.of(HECTO),
+            PrefixDefinition.of(DEKA),
+            PrefixDefinition.of(DECI),
+            PrefixDefinition.of(CENTI),
+            PrefixDefinition.of(MILLI),
+            PrefixDefinition.of(MICRO, "\u03BC"),
+            PrefixDefinition.of(NANO),
+            PrefixDefinition.of(PICO),
+            PrefixDefinition.of(FEMTO),
+            PrefixDefinition.of(ATTO),
+            PrefixDefinition.of(ZEPTO),
+            PrefixDefinition.of(YOCTO)));
 }

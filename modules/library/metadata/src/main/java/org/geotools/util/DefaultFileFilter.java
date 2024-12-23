@@ -28,8 +28,7 @@ import java.util.regex.Pattern;
  * @author Martin Desruisseaux (IRD)
  * @since 2.0
  */
-public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
-        implements FileFilter, FilenameFilter {
+public class DefaultFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, FilenameFilter {
     /** The description of this filter, usually for graphical user interfaces. */
     private final String description;
 
@@ -37,8 +36,8 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     private final Pattern pattern;
 
     /**
-     * Constructs a file filter for the specified pattern. The pattern can contains the {@code "*"}
-     * and {@code "?"} wildcards.
+     * Constructs a file filter for the specified pattern. The pattern can contains the {@code "*"} and {@code "?"}
+     * wildcards.
      *
      * @param pattern The pattern (e.g. {@code "*.png"}).
      */
@@ -47,8 +46,8 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     }
 
     /**
-     * Constructs a file filter for the specified pattern and description. The pattern can contains
-     * the {@code "*"} and {@code "?"} wildcards.
+     * Constructs a file filter for the specified pattern and description. The pattern can contains the {@code "*"} and
+     * {@code "?"} wildcards.
      *
      * @param pattern The pattern (e.g. {@code "*.png"}).
      * @param description The description of this filter, usually for graphical user interfaces.

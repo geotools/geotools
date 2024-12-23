@@ -26,8 +26,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Handles xml parse events for CssParameter and SvgParameter. These get converted to YSLD elements
- * like stroke-width or stroke-color.
+ * Handles xml parse events for CssParameter and SvgParameter. These get converted to YSLD elements like stroke-width or
+ * stroke-color.
  */
 public class ParameterHandler extends SldTransformHandler {
 
@@ -52,8 +52,7 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             String parameter = xml.getAttributeValue(null, "name");
@@ -78,8 +77,7 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.pop();

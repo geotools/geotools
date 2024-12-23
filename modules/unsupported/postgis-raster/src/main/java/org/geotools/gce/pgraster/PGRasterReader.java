@@ -78,8 +78,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
 
     ExecutorService exec;
 
-    public PGRasterReader(PGRasterConfig config, PGRasterFormat format, Hints hints)
-            throws IOException {
+    public PGRasterReader(PGRasterConfig config, PGRasterFormat format, Hints hints) throws IOException {
         super(config, hints);
 
         this.config = config;
@@ -99,10 +98,8 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         originalEnvelope = GeneralBounds.toGeneralEnvelope(raster.bounds());
         if (raster.scale != null) {
             originalGridRange =
-                    new GridEnvelope2D(
-                            new Rectangle(
-                                    (int) (originalEnvelope.getSpan(0) / raster.scale.x),
-                                    (int) (originalEnvelope.getSpan(1) / raster.scale.y)));
+                    new GridEnvelope2D(new Rectangle((int) (originalEnvelope.getSpan(0) / raster.scale.x), (int)
+                            (originalEnvelope.getSpan(1) / raster.scale.y)));
         }
 
         if (raster.scale != null) {
@@ -116,8 +113,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                 overViewResolutions = new double[numOverviews][2];
                 for (int i = 0; i < numOverviews; i++) {
                     RasterOverview ov = raster.overviews.get(i);
-                    overViewResolutions[i] =
-                            new double[] {raster.scale.x * ov.factor, raster.scale.y * ov.factor};
+                    overViewResolutions[i] = new double[] {raster.scale.x * ov.factor, raster.scale.y * ov.factor};
                 }
             } else {
                 numOverviews = 0;
@@ -142,9 +138,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
     @Override
     public String[] getMetadataNames() {
         if (raster.time != null) {
-            return new String[] {
-                HAS_TIME_DOMAIN, TIME_DOMAIN, TIME_DOMAIN_MINIMUM, TIME_DOMAIN_MAXIMUM
-            };
+            return new String[] {HAS_TIME_DOMAIN, TIME_DOMAIN, TIME_DOMAIN_MINIMUM, TIME_DOMAIN_MAXIMUM};
         }
         return null;
     }
@@ -160,39 +154,35 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                 switch (name) {
                     case HAS_TIME_DOMAIN:
                         return String.valueOf(true);
-                    case TIME_DOMAIN:
-                        {
-                            SQL sql = new SQL().append("SELECT DISTINCT to_char(").name(t.name);
+                    case TIME_DOMAIN: {
+                        SQL sql = new SQL().append("SELECT DISTINCT to_char(").name(t.name);
 
-                            if (t.isTimestamp()) {
-                                sql.append(" AT TIME ZONE 'UTC'");
-                            }
+                        if (t.isTimestamp()) {
+                            sql.append(" AT TIME ZONE 'UTC'");
+                        }
 
-                            sql.append(", 'YYYY-MM-DD\"T\"HH24:MI:SS.MS+00'), ").append(t.name);
-                            sql.append(" FROM ")
-                                    .table(raster)
-                                    .append(" ORDER BY ")
-                                    .name(t.name)
-                                    .append(" DESC");
+                        sql.append(", 'YYYY-MM-DD\"T\"HH24:MI:SS.MS+00'), ").append(t.name);
+                        sql.append(" FROM ")
+                                .table(raster)
+                                .append(" ORDER BY ")
+                                .name(t.name)
+                                .append(" DESC");
 
-                            try (Connection cx = newConnection()) {
-                                try (PreparedStatement ps =
-                                        cx.prepareStatement(sql.logAndGet(LOG))) {
-                                    try (ResultSet rs = ps.executeQuery()) {
-                                        List<Date> times = new ArrayList<>();
-                                        while (rs.next()) {
-                                            String s = rs.getString(1);
-                                            if (s != null) {
-                                                times.add(in.parse(s));
-                                            }
+                        try (Connection cx = newConnection()) {
+                            try (PreparedStatement ps = cx.prepareStatement(sql.logAndGet(LOG))) {
+                                try (ResultSet rs = ps.executeQuery()) {
+                                    List<Date> times = new ArrayList<>();
+                                    while (rs.next()) {
+                                        String s = rs.getString(1);
+                                        if (s != null) {
+                                            times.add(in.parse(s));
                                         }
-                                        return times.stream()
-                                                .map(out::format)
-                                                .collect(Collectors.joining(","));
                                     }
+                                    return times.stream().map(out::format).collect(Collectors.joining(","));
                                 }
                             }
                         }
+                    }
                     case TIME_DOMAIN_MINIMUM:
                     case TIME_DOMAIN_MAXIMUM:
                         String fn = TIME_DOMAIN_MINIMUM.equals(name) ? "min" : "max";
@@ -210,8 +200,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params)
-            throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
 
         ReadRequest req = new ReadRequest(this);
 
@@ -227,11 +216,14 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                     req.region = gg.toCanonical().getGridRange2D().getBounds();
                 } else if (code.equals(AbstractGridFormat.TIME.getName().toString())) {
                     req.times = (List<?>) param.getValue();
-                } else if (code.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
+                } else if (code.equals(
+                        AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
                     req.overviewPolicy = (OverviewPolicy) param.getValue();
-                } else if (code.equals(AbstractGridFormat.INTERPOLATION.getName().toString())) {
+                } else if (code.equals(
+                        AbstractGridFormat.INTERPOLATION.getName().toString())) {
                     req.interpolation = (Interpolation) param.getValue();
-                } else if (code.equals(AbstractGridFormat.BACKGROUND_COLOR.getName().toString())) {
+                } else if (code.equals(
+                        AbstractGridFormat.BACKGROUND_COLOR.getName().toString())) {
                     req.backgroundColor = (Color) param.getValue();
                 }
             }
@@ -261,8 +253,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         // transform it if need be
         if (!CRS.equalsIgnoreMetadata(nativeBounds.getCoordinateReferenceSystem(), raster.crs)) {
             if (raster.crs == null) {
-                throw new IllegalStateException(
-                        "Raster crs is unknown, unable to transform from request crs");
+                throw new IllegalStateException("Raster crs is unknown, unable to transform from request crs");
             }
 
             try {
@@ -274,10 +265,8 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         req.nativeBounds = nativeBounds;
 
         if (req.region != null) {
-            req.resolution =
-                    new Point2D.Double(
-                            nativeBounds.getWidth() / req.region.width,
-                            nativeBounds.getHeight() / req.region.height);
+            req.resolution = new Point2D.Double(
+                    nativeBounds.getWidth() / req.region.width, nativeBounds.getHeight() / req.region.height);
         }
 
         // figure out which overview to load
@@ -297,20 +286,19 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         req.raster = col;
 
         // load the tiles
-        SQL sql =
-                new SQL()
-                        .append("SELECT ST_AsBinary(ST_Envelope(")
-                        .name(col.name)
-                        .append(")) AS extent")
-                        .append(", ST_AsTiff(")
-                        .name(col.name)
-                        .append(") AS tile")
-                        .append(" FROM ")
-                        .table(col)
-                        .append(" WHERE ST_Intersects(")
-                        .name(col.name)
-                        .append(",")
-                        .append(" ST_GeomFromWKB(?,?))");
+        SQL sql = new SQL()
+                .append("SELECT ST_AsBinary(ST_Envelope(")
+                .name(col.name)
+                .append(")) AS extent")
+                .append(", ST_AsTiff(")
+                .name(col.name)
+                .append(") AS tile")
+                .append(" FROM ")
+                .table(col)
+                .append(" WHERE ST_Intersects(")
+                .name(col.name)
+                .append(",")
+                .append(" ST_GeomFromWKB(?,?))");
 
         // add the time constraint
         if (col.time != null) {
@@ -385,38 +373,36 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                     ps.setInt(2, col.srid != null ? col.srid : -1);
 
                     try (ResultSet rs = ps.executeQuery()) {
-                        Iterator<TileData> tiles =
-                                new AbstractIterator<TileData>() {
-                                    WKBReader wkb = new WKBReader(GEOMS);
+                        Iterator<TileData> tiles = new AbstractIterator<TileData>() {
+                            WKBReader wkb = new WKBReader(GEOMS);
 
-                                    @Override
-                                    protected TileData computeNext() {
-                                        try {
-                                            if (rs.next()) {
-                                                return new TileData(
-                                                        rs.getBytes(2),
-                                                        wkb.read(rs.getBytes(1))
-                                                                .getEnvelopeInternal());
-                                            }
-                                        } catch (Exception e) {
-                                            Throwables.throwIfInstanceOf(e, RuntimeException.class);
-                                            throw new RuntimeException(e);
-                                        }
-
-                                        try {
-                                            rs.close();
-                                        } catch (SQLException e) {
-                                            LOG.log(Level.FINE, "Error closing result set", e);
-                                        }
-                                        try {
-                                            ps.close();
-                                        } catch (SQLException e) {
-                                            LOG.log(Level.FINE, "Error closing statement", e);
-                                        }
-
-                                        return endOfData();
+                            @Override
+                            protected TileData computeNext() {
+                                try {
+                                    if (rs.next()) {
+                                        return new TileData(
+                                                rs.getBytes(2),
+                                                wkb.read(rs.getBytes(1)).getEnvelopeInternal());
                                     }
-                                };
+                                } catch (Exception e) {
+                                    Throwables.throwIfInstanceOf(e, RuntimeException.class);
+                                    throw new RuntimeException(e);
+                                }
+
+                                try {
+                                    rs.close();
+                                } catch (SQLException e) {
+                                    LOG.log(Level.FINE, "Error closing result set", e);
+                                }
+                                try {
+                                    ps.close();
+                                } catch (SQLException e) {
+                                    LOG.log(Level.FINE, "Error closing statement", e);
+                                }
+
+                                return endOfData();
+                            }
+                        };
 
                         if (exec == null) {
                             return compose(tiles, req);
@@ -449,8 +435,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         return mosaic.coverage();
     }
 
-    GridCoverage2D compose(Iterator<TileData> tiles, ReadRequest read, ExecutorService exec)
-            throws IOException {
+    GridCoverage2D compose(Iterator<TileData> tiles, ReadRequest read, ExecutorService exec) throws IOException {
         CompletionService<Tile> work = new ExecutorCompletionService<>(exec);
 
         int count = 0;
@@ -475,18 +460,16 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
     }
 
     Polygon toPolygon(Envelope e) {
-        return GEOMS.createPolygon(
-                new Coordinate[] {
-                    new Coordinate(e.getMinX(), e.getMinY()),
-                    new Coordinate(e.getMinX(), e.getMaxY()),
-                    new Coordinate(e.getMaxX(), e.getMaxY()),
-                    new Coordinate(e.getMaxX(), e.getMinY()),
-                    new Coordinate(e.getMinX(), e.getMinY())
-                });
+        return GEOMS.createPolygon(new Coordinate[] {
+            new Coordinate(e.getMinX(), e.getMinY()),
+            new Coordinate(e.getMinX(), e.getMaxY()),
+            new Coordinate(e.getMaxX(), e.getMaxY()),
+            new Coordinate(e.getMaxX(), e.getMinY()),
+            new Coordinate(e.getMinX(), e.getMinY())
+        });
     }
 
-    Date queryDateExtreme(String minOrMax, RasterColumn raster)
-            throws SQLException, ParseException {
+    Date queryDateExtreme(String minOrMax, RasterColumn raster) throws SQLException, ParseException {
         SQL sql = new SQL("SELECT ");
         raster.time.select(minOrMax, sql).append(" FROM ").table(raster);
 
@@ -515,9 +498,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         Connection cx = config.dataSource.getConnection();
         if (config.enableDrivers != null) {
             try (Statement st = cx.createStatement()) {
-                st.execute(
-                        String.format(
-                                "SET postgis.gdal_enabled_drivers = '%s'", config.enableDrivers));
+                st.execute(String.format("SET postgis.gdal_enabled_drivers = '%s'", config.enableDrivers));
             }
         }
 

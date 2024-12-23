@@ -75,8 +75,7 @@ public class ContourProcessTest {
 
     private static final double TOL = 1.0e-6;
 
-    private static final GridCoverageFactory covFactory =
-            CoverageFactoryFinder.getGridCoverageFactory(null);
+    private static final GridCoverageFactory covFactory = CoverageFactoryFinder.getGridCoverageFactory(null);
     private ContourProcess process;
 
     @Before
@@ -86,8 +85,8 @@ public class ContourProcessTest {
     }
 
     /**
-     * Creates a coverage with just two rows where values are constant within rows and differ
-     * between rows, then checks for correctly generated single contour between rows.
+     * Creates a coverage with just two rows where values are constant within rows and differ between rows, then checks
+     * for correctly generated single contour between rows.
      */
     @Test
     public void singleContourInVerticalGradient() {
@@ -96,24 +95,17 @@ public class ContourProcessTest {
 
         final double CELL_SIZE = 100;
 
-        final ReferencedEnvelope WORLD =
-                new ReferencedEnvelope(
-                        1000,
-                        1000 + COVERAGE_COLS * CELL_SIZE,
-                        5000,
-                        5000 + COVERAGE_ROWS * CELL_SIZE,
-                        null);
+        final ReferencedEnvelope WORLD = new ReferencedEnvelope(
+                1000, 1000 + COVERAGE_COLS * CELL_SIZE, 5000, 5000 + COVERAGE_ROWS * CELL_SIZE, null);
 
         final float DATA_MIN = 100;
         final float DATA_MAX = 200;
 
-        GridCoverage2D cov =
-                createVerticalGradient(COVERAGE_ROWS, COVERAGE_COLS, WORLD, DATA_MIN, DATA_MAX);
+        GridCoverage2D cov = createVerticalGradient(COVERAGE_ROWS, COVERAGE_COLS, WORLD, DATA_MIN, DATA_MAX);
 
         final double levelValue = (DATA_MIN + DATA_MAX) / 2;
 
-        SimpleFeatureCollection fc =
-                process.execute(cov, 0, new double[] {levelValue}, null, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, new double[] {levelValue}, null, null, null, null, null);
 
         // Should be a single contour
         assertEquals(1, fc.size());
@@ -151,19 +143,15 @@ public class ContourProcessTest {
         GridCoverage2D cov = createVerticalGradient(10, 10, null, 0, 10);
 
         // Run process asking for contours at level = 20
-        SimpleFeatureCollection fc =
-                process.execute(cov, 0, new double[] {20}, null, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, new double[] {20}, null, null, null, null, null);
         assertNotNull(fc);
         assertTrue(fc.isEmpty());
     }
 
-    /**
-     * Tests that the process doesn't blow up when the contour process provides invalid lineStrings
-     */
+    /** Tests that the process doesn't blow up when the contour process provides invalid lineStrings */
     @Test
     public void invalidLinestrings()
-            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException, FactoryException {
         File input = TestData.file(ContourProcessTest.class, "contoursample.tif");
         AbstractGridFormat format = GridFormatFinder.findFormat(input);
         AbstractGridCoverage2DReader reader = null;
@@ -181,8 +169,7 @@ public class ContourProcessTest {
                 levels[i] = start + (0.2 * i);
             }
 
-            SimpleFeatureCollection fc =
-                    process.execute(coverage, 0, levels, null, null, null, null, null);
+            SimpleFeatureCollection fc = process.execute(coverage, 0, levels, null, null, null, null, null);
             try (SimpleFeatureIterator features = fc.features()) {
                 while (features.hasNext()) {
                     // Apply a set of transformations to the feature geometries to make sure
@@ -190,8 +177,7 @@ public class ContourProcessTest {
                     // lineStrings, resulting into IllegalArgumentException)
                     SimpleFeature feature = features.next();
                     Geometry geometry = (Geometry) feature.getDefaultGeometry();
-                    ReferencedEnvelope ge =
-                            new ReferencedEnvelope(geometry.getEnvelopeInternal(), wgs84);
+                    ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), wgs84);
                     JTS.toGeometry((Envelope) ge);
                 }
             }
@@ -323,16 +309,9 @@ public class ContourProcessTest {
         GridCoverage2D cov = covFactory.create("coverage", matrix, envelope);
         Map<Object, Object> properties = new HashMap<>();
         properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(9999));
-        cov =
-                covFactory.create(
-                        cov.getName(),
-                        cov.getRenderedImage(),
-                        cov.getEnvelope(),
-                        cov.getSampleDimensions(),
-                        null,
-                        properties);
-        SimpleFeatureCollection fc =
-                process.execute(cov, 0, new double[] {20}, null, null, null, null, null);
+        cov = covFactory.create(
+                cov.getName(), cov.getRenderedImage(), cov.getEnvelope(), cov.getSampleDimensions(), null, properties);
+        SimpleFeatureCollection fc = process.execute(cov, 0, new double[] {20}, null, null, null, null, null);
         // Before fix, the NoData value will be interpolated and create a contour.
         // After fix, the NoData value will be ignored so there will be no contours.
         assertNotNull(fc);
@@ -365,20 +344,17 @@ public class ContourProcessTest {
         ReferencedEnvelope nativeEnv = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
         double padX = nativeEnv.getWidth() / 20;
         double padY = nativeEnv.getHeight() / 20;
-        ReferencedEnvelope renderingEnvelope =
-                new ReferencedEnvelope(
-                        nativeEnv.getCenterX() - padX,
-                        nativeEnv.getCenterX() + padX,
-                        nativeEnv.getCenterY() - padY,
-                        nativeEnv.getCenterY() + padY,
-                        nativeEnv.getCoordinateReferenceSystem());
-        renderer.paint(
-                graphics, new Rectangle(image.getWidth(), image.getHeight()), renderingEnvelope);
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(
+                nativeEnv.getCenterX() - padX,
+                nativeEnv.getCenterX() + padX,
+                nativeEnv.getCenterY() - padY,
+                nativeEnv.getCenterY() + padY,
+                nativeEnv.getCoordinateReferenceSystem());
+        renderer.paint(graphics, new Rectangle(image.getWidth(), image.getHeight()), renderingEnvelope);
         graphics.dispose();
 
         File expected =
-                new File(
-                        "src/test/resources/org/geotools/process/raster/test-data/contour-oversample-expected.png");
+                new File("src/test/resources/org/geotools/process/raster/test-data/contour-oversample-expected.png");
         ImageAssert.assertEquals(expected, image, 0);
     }
 }

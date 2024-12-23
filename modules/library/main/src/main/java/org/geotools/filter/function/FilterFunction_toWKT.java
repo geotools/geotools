@@ -28,8 +28,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_toWKT extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "toWKT", parameter("wkt", String.class), parameter("geometry", Geometry.class));
+            new FunctionNameImpl("toWKT", parameter("wkt", String.class), parameter("geometry", Geometry.class));
 
     public FilterFunction_toWKT() {
         super(NAME);

@@ -20,13 +20,12 @@ package org.geotools.process.vector;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * Computes a Heat Map surface from a set of irregular data points, each containing a positive
- * height value. The nature of the surface is determined by a kernelRadius value, which indicates
- * how far out each data points "spreads".
+ * Computes a Heat Map surface from a set of irregular data points, each containing a positive height value. The nature
+ * of the surface is determined by a kernelRadius value, which indicates how far out each data points "spreads".
  *
- * <p>The Heatmap surface is computed as a grid (raster) of values representing the surface. For
- * stability, the compute grid is expanded by the kernel radius on all four sides. This avoids "edge
- * effects" from distorting the surface within the requested envelope.
+ * <p>The Heatmap surface is computed as a grid (raster) of values representing the surface. For stability, the compute
+ * grid is expanded by the kernel radius on all four sides. This avoids "edge effects" from distorting the surface
+ * within the requested envelope.
  *
  * <p>The values in the output surface are normalized to lie in the range [0, 1].
  *
@@ -70,9 +69,8 @@ public class HeatmapSurface {
     private void init() {
         gridTrans = new GridTransform(srcEnv, xSize, ySize);
         /**
-         * Do NOT clamp transform output, since the actual target grid is larger than the source
-         * Envelope, due to the required buffering. This means that transform outputs MUST be
-         * checked for validity.
+         * Do NOT clamp transform output, since the actual target grid is larger than the source Envelope, due to the
+         * required buffering. This means that transform outputs MUST be checked for validity.
          */
         gridTrans.setClamp(false);
 
@@ -102,8 +100,8 @@ public class HeatmapSurface {
     }
 
     /**
-     * Computes a grid representing the heatmap surface. The grid is structured as an XY matrix,
-     * with (0,0) being the bottom left corner of the data space
+     * Computes a grid representing the heatmap surface. The grid is structured as an XY matrix, with (0,0) being the
+     * bottom left corner of the data space
      *
      * @return a grid representing the surface
      */
@@ -134,9 +132,9 @@ public class HeatmapSurface {
         int radiusIncBreak = kernelRadius - baseBoxKernelRadius * GAUSSIAN_APPROX_ITER;
 
         /**
-         * Since Box Blur is linearly separable, can implement it by doing 2 1-D box blurs in
-         * different directions. Using a flipped buffer grid allows the same code to compute each
-         * direction, as well as preserving input grid values.
+         * Since Box Blur is linearly separable, can implement it by doing 2 1-D box blurs in different directions.
+         * Using a flipped buffer grid allows the same code to compute each direction, as well as preserving input grid
+         * values.
          */
         // holds flipped copy of first box blur pass
         float[][] grid2 = new float[ySize][xSize];

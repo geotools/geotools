@@ -133,9 +133,7 @@ public class Ysld {
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(
-            Object ysld,
-            @Nullable List<ZoomContextFinder> zCtxtFinders,
-            @Nullable ResourceLocator locator)
+            Object ysld, @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator)
             throws IOException {
         return parse(ysld, zCtxtFinders, locator, new UomMapper());
     }
@@ -197,8 +195,7 @@ public class Ysld {
      * @param sld The sld to encode.
      * @param output The output object, anything accepted by {@link #writer(Object)}
      */
-    public static void encode(StyledLayerDescriptor sld, Object output, UomMapper uomMapper)
-            throws IOException {
+    public static void encode(StyledLayerDescriptor sld, Object output, UomMapper uomMapper) throws IOException {
         YsldEncoder e = new YsldEncoder(writer(output), uomMapper);
         e.encode(sld);
     }
@@ -247,8 +244,7 @@ public class Ysld {
      * @return List of marked exceptions corresponding to validation errors.
      */
     public static List<MarkedYAMLException> validate(
-            Object ysld, List<ZoomContextFinder> zContextFinders, UomMapper uomMapper)
-            throws IOException {
+            Object ysld, List<ZoomContextFinder> zContextFinders, UomMapper uomMapper) throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldValidator validator = new YsldValidator();

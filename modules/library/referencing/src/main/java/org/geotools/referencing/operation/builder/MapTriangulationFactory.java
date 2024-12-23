@@ -22,8 +22,8 @@ import org.geotools.api.geometry.Position;
 import org.geotools.geometry.Position2D;
 
 /**
- * Implements methods for triangulation for {@linkplain
- * org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheeting} transformation.
+ * Implements methods for triangulation for {@linkplain org.geotools.referencing.operation.builder.RubberSheetBuilder
+ * RubberSheeting} transformation.
  *
  * @since 2.4
  * @version $Id$
@@ -38,8 +38,7 @@ class MapTriangulationFactory {
      * @param vectors represents pairs of identical points.
      * @throws TriangulationException thrown when the source points are outside the quad.
      */
-    public MapTriangulationFactory(Quadrilateral quad, List<MappedPosition> vectors)
-            throws TriangulationException {
+    public MapTriangulationFactory(Quadrilateral quad, List<MappedPosition> vectors) throws TriangulationException {
         this.quad = quad;
         this.vectors = vectors;
     }
@@ -57,8 +56,8 @@ class MapTriangulationFactory {
 
         // converts MappedPosition to ExtendedPosition
         for (int i = 0; i < vectors.size(); i++) {
-            vertices[i] =
-                    new ExtendedPosition(vectors.get(i).getSource(), vectors.get(i).getTarget());
+            vertices[i] = new ExtendedPosition(
+                    vectors.get(i).getSource(), vectors.get(i).getTarget());
         }
 
         TriangulationFactory triangulator = new TriangulationFactory(mQuad, vertices);
@@ -79,8 +78,8 @@ class MapTriangulationFactory {
     }
 
     /**
-     * Generates mapped quad from destination quad and source quad. The vertices of destination quad
-     * are calculated from source quad and difference of nearest pair of identical points.
+     * Generates mapped quad from destination quad and source quad. The vertices of destination quad are calculated from
+     * source quad and difference of nearest pair of identical points.
      *
      * @param sourceQuad the quad that defines the area for triangulating.
      * @param vectors of identical points (MappedCoordinates).
@@ -106,29 +105,24 @@ class MapTriangulationFactory {
     }
 
     /**
-     * Calculate the destination position for the quad vertex as source position using the
-     * difference between nearest source and destination point pair.
+     * Calculate the destination position for the quad vertex as source position using the difference between nearest
+     * source and destination point pair.
      *
      * @param x the original coordinate.
      * @param vertices List of the MappedPosition.
-     * @return MappedPosition from the original and new coordinate, so the difference between them
-     *     is the same as for the nearest one MappedPosition. It is used for calculating destination
-     *     quad.
+     * @return MappedPosition from the original and new coordinate, so the difference between them is the same as for
+     *     the nearest one MappedPosition. It is used for calculating destination quad.
      */
-    protected MappedPosition generateCoordFromNearestOne(
-            Position x, List<MappedPosition> vertices) {
+    protected MappedPosition generateCoordFromNearestOne(Position x, List<MappedPosition> vertices) {
         MappedPosition nearestOne = nearestMappedCoordinate(x, vertices);
 
-        double dstX =
-                x.getCoordinate()[0]
-                        + (nearestOne.getTarget().getCoordinate()[0]
-                                - nearestOne.getSource().getCoordinate()[0]);
-        double dstY =
-                x.getCoordinate()[1]
-                        + (nearestOne.getTarget().getCoordinate()[1]
-                                - nearestOne.getSource().getCoordinate()[1]);
-        Position dst =
-                new Position2D(nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
+        double dstX = x.getCoordinate()[0]
+                + (nearestOne.getTarget().getCoordinate()[0]
+                        - nearestOne.getSource().getCoordinate()[0]);
+        double dstY = x.getCoordinate()[1]
+                + (nearestOne.getTarget().getCoordinate()[1]
+                        - nearestOne.getSource().getCoordinate()[1]);
+        Position dst = new Position2D(nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
 
         return new MappedPosition(x, dst);
     }

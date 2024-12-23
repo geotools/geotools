@@ -148,13 +148,13 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain
- * #ImageWorker(RenderedImage) creation time}. Successive operations can be applied by invoking the
- * methods defined in this class, and the final image can be obtained by invoking {@link
- * #getRenderedImage} at the end of the process.
+ * Helper methods for applying JAI operations on an image. The image is specified at
+ * {@linkplain #ImageWorker(RenderedImage) creation time}. Successive operations can be applied by invoking the methods
+ * defined in this class, and the final image can be obtained by invoking {@link #getRenderedImage} at the end of the
+ * process.
  *
- * <p>If an exception is thrown during a method invocation, then this {@code ImageWorker} is left in
- * an undetermined state and should not be used anymore.
+ * <p>If an exception is thrown during a method invocation, then this {@code ImageWorker} is left in an undetermined
+ * state and should not be used anymore.
  *
  * @since 2.3
  * @version $Id$
@@ -274,9 +274,7 @@ public class ImageWorker {
         ImageWriterSpi temp = null;
         try {
             if (PackageUtil.isCodecLibAvailable()) {
-                temp =
-                        getImageWriterSpi(
-                                "com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
+                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
             } else {
                 temp = null;
             }
@@ -312,9 +310,7 @@ public class ImageWorker {
         ImageWriterSpi temp = null;
         try {
             if (PackageUtil.isCodecLibAvailable()) {
-                temp =
-                        getImageWriterSpi(
-                                "com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
+                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
             } else {
                 temp = null;
             }
@@ -329,8 +325,7 @@ public class ImageWorker {
     }
 
     static ImageWriterSpi getImageWriterSpi(String className) throws Exception {
-        Iterator<ImageWriterSpi> serviceProviders =
-                IIORegistry.lookupProviders(ImageWriterSpi.class);
+        Iterator<ImageWriterSpi> serviceProviders = IIORegistry.lookupProviders(ImageWriterSpi.class);
         while (serviceProviders.hasNext()) {
             ImageWriterSpi serviceProvider = serviceProviders.next();
             if (serviceProvider.getClass().getName() == className) {
@@ -352,9 +347,8 @@ public class ImageWorker {
     /**
      * Workaround class for compressing PNG using the default PNGImageEncoder shipped with the JDK.
      *
-     * <p>{@link PNGImageWriter} does not support {@link ImageWriteParam#setCompressionMode(int)}
-     * set to {@link ImageWriteParam#MODE_EXPLICIT}, it only allows {@link
-     * ImageWriteParam#MODE_DEFAULT}.
+     * <p>{@link PNGImageWriter} does not support {@link ImageWriteParam#setCompressionMode(int)} set to
+     * {@link ImageWriteParam#MODE_EXPLICIT}, it only allows {@link ImageWriteParam#MODE_DEFAULT}.
      *
      * @author Simone Giannecchini
      * @todo Consider moving to {@link org.geotools.image.io} package.
@@ -395,8 +389,7 @@ public class ImageWorker {
         }
     }
 
-    protected static OperationDescriptor getOperationDescriptor(final String name)
-            throws OperationNotFoundException {
+    protected static OperationDescriptor getOperationDescriptor(final String name) throws OperationNotFoundException {
         final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
         OperationDescriptor operation =
                 (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, name);
@@ -404,22 +397,19 @@ public class ImageWorker {
             return operation;
         }
 
-        throw new OperationNotFoundException(
-                MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+        throw new OperationNotFoundException(MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
     }
 
     /**
-     * If {@link Boolean#FALSE FALSE}, image operators are not allowed to produce tiled images. The
-     * default is {@link Boolean#TRUE TRUE}. The {@code FALSE} value is sometime useful for
-     * exporting images to some formats that doesn't support tiling (e.g. GIF).
+     * If {@link Boolean#FALSE FALSE}, image operators are not allowed to produce tiled images. The default is
+     * {@link Boolean#TRUE TRUE}. The {@code FALSE} value is sometime useful for exporting images to some formats that
+     * doesn't support tiling (e.g. GIF).
      *
      * @see #setRenderingHint
      */
     public static final Hints.Key TILING_ALLOWED = new Hints.Key(Boolean.class);
 
-    /**
-     * Specify whether to set a ROI property when doing a mosaic, even when background is specified
-     */
+    /** Specify whether to set a ROI property when doing a mosaic, even when background is specified */
     public static final Hints.Key FORCE_MOSAIC_ROI_PROPERTY = new Hints.Key(Boolean.class);
 
     /** Specify whether to preserve chained affines instead of collapsing them */
@@ -444,9 +434,8 @@ public class ImageWorker {
     }
 
     /**
-     * The image specified by the user at construction time, or last time {@link
-     * #invalidateStatistics} were invoked. The {@link #getComputedProperty} method will not search
-     * a property pass this point.
+     * The image specified by the user at construction time, or last time {@link #invalidateStatistics} were invoked.
+     * The {@link #getComputedProperty} method will not search a property pass this point.
      */
     private RenderedImage inheritanceStopPoint;
 
@@ -463,15 +452,14 @@ public class ImageWorker {
     private double[] background;
 
     /**
-     * The rendering hints to provides to all image operators. Additional hints may be set (in a
-     * separated {@link RenderingHints} object) for particular images.
+     * The rendering hints to provides to all image operators. Additional hints may be set (in a separated
+     * {@link RenderingHints} object) for particular images.
      */
     private RenderingHints commonHints;
 
     /**
      * 0 if tile cache is enabled, any other value otherwise. This counter is incremented everytime
-     * {@code tileCacheEnabled(false)} is invoked, and decremented every time {@code
-     * tileCacheEnabled(true)} is invoked.
+     * {@code tileCacheEnabled(false)} is invoked, and decremented every time {@code tileCacheEnabled(true)} is invoked.
      */
     private int tileCacheDisabled = 0;
 
@@ -482,8 +470,8 @@ public class ImageWorker {
     private int yPeriod = ONE;
 
     /**
-     * Creates a new uninitialized builder for an {@linkplain #load image read} or a {@linkplain
-     * #mosaic mosaic operation}
+     * Creates a new uninitialized builder for an {@linkplain #load image read} or a {@linkplain #mosaic mosaic
+     * operation}
      *
      * @see #load(String, int, boolean)
      * @see #mosaic(RenderedImage[], MosaicType, PlanarImage[], ROI[], double[][], Range[])
@@ -493,8 +481,7 @@ public class ImageWorker {
     }
 
     /**
-     * Creates a new uninitialized worker with RenderingHints for a {@linkplain #mosaic mosaic
-     * operation}
+     * Creates a new uninitialized worker with RenderingHints for a {@linkplain #mosaic mosaic operation}
      *
      * @see #mosaic(RenderedImage[], MosaicType, PlanarImage[], ROI[], double[][], Range[])
      */
@@ -514,8 +501,8 @@ public class ImageWorker {
     }
 
     /**
-     * Creates a new builder for the specified image. The images to be computed (if any) will save
-     * their tiles in the default {@linkplain TileCache tile cache}.
+     * Creates a new builder for the specified image. The images to be computed (if any) will save their tiles in the
+     * default {@linkplain TileCache tile cache}.
      *
      * @param image The source image.
      */
@@ -523,34 +510,28 @@ public class ImageWorker {
         setImage(image);
     }
 
-    /**
-     * The x-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
-     */
+    /** The x-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1. */
     public int getXPeriod() {
         return xPeriod;
     }
 
     /**
-     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g.,
-     * setting it to 2 wil make the statistical operations read one pixel and skip one pixel, and so
-     * on.
+     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g., setting it to 2 wil make
+     * the statistical operations read one pixel and skip one pixel, and so on.
      */
     public ImageWorker setXPeriod(int xPeriod) {
         this.xPeriod = xPeriod;
         return this;
     }
 
-    /**
-     * The y-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
-     */
+    /** The y-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1. */
     public int getYPeriod() {
         return yPeriod;
     }
 
     /**
-     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g.,
-     * setting it to 2 wil make the statistical operations read one pixel and skip one pixel, and so
-     * on.
+     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g., setting it to 2 wil make
+     * the statistical operations read one pixel and skip one pixel, and so on.
      */
     public ImageWorker setYPeriod(int yPeriod) {
         this.yPeriod = yPeriod;
@@ -570,8 +551,8 @@ public class ImageWorker {
     }
 
     /**
-     * Prepare this builder for the specified image. The images to be computed (if any) will save
-     * their tiles in the default {@linkplain TileCache tile cache}.
+     * Prepare this builder for the specified image. The images to be computed (if any) will save their tiles in the
+     * default {@linkplain TileCache tile cache}.
      *
      * @param image The source image.
      */
@@ -593,8 +574,8 @@ public class ImageWorker {
     }
 
     /**
-     * Loads an image using the provided file name and the {@linkplain #getRenderingHints current
-     * hints}, which are used to control caching and layout.
+     * Loads an image using the provided file name and the {@linkplain #getRenderingHints current hints}, which are used
+     * to control caching and layout.
      *
      * @param source Filename of the source image to read.
      * @param imageChoice Image index in multipage images.
@@ -679,8 +660,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the {@linkplain #getRenderedImage rendered image} after null operation. This
-     * operation may be used for setting new ImageProperties or for applying new RenderingHints.
+     * Returns the {@linkplain #getRenderedImage rendered image} after null operation. This operation may be used for
+     * setting new ImageProperties or for applying new RenderingHints.
      *
      * @return The rendered operation.
      * @see #getRenderedImage
@@ -697,10 +678,9 @@ public class ImageWorker {
     }
 
     /**
-     * Returns a {@linkplain ROI Region Of Interest} built from the current {@linkplain
-     * #getRenderedImage image}. If the image is multi-bands, then this method first computes an
-     * estimation of its {@linkplain #intensity intensity}. Next, this method {@linkplain
-     * #binarize() binarize} the image and constructs a {@link ROI} from the result.
+     * Returns a {@linkplain ROI Region Of Interest} built from the current {@linkplain #getRenderedImage image}. If the
+     * image is multi-bands, then this method first computes an estimation of its {@linkplain #intensity intensity}.
+     * Next, this method {@linkplain #binarize() binarize} the image and constructs a {@link ROI} from the result.
      *
      * @return The image as a region of interest.
      * @see #getRenderedImage
@@ -713,8 +693,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the <cite>region of interest</cite> currently set, or {@code null} if none. The
-     * default value is {@code null}.
+     * Returns the <cite>region of interest</cite> currently set, or {@code null} if none. The default value is
+     * {@code null}.
      *
      * @return The current region of interest.
      * @see #getMinimums
@@ -725,8 +705,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the <cite>NoData Range</cite> currently set, or {@code null} if none. The default
-     * value is {@code null}.
+     * Returns the <cite>NoData Range</cite> currently set, or {@code null} if none. The default value is {@code null}.
      *
      * @return The current NoData Range.
      */
@@ -735,8 +714,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the <cite>NoData Range</cite> currently set, or {@code null} if none. The default
-     * value is {@code null}.
+     * Returns the <cite>NoData Range</cite> currently set, or {@code null} if none. The default value is {@code null}.
      *
      * @return The current NoData Range.
      */
@@ -744,17 +722,14 @@ public class ImageWorker {
         return background;
     }
 
-    /**
-     * Returns true if destination NoData values must be set and they must be used in computation
-     */
+    /** Returns true if destination NoData values must be set and they must be used in computation */
     public boolean isNoDataNeeded() {
         return roi != null || nodata != null;
     }
 
     /**
-     * Set the <cite>region of interest</cite> (ROI). A {@code null} set the ROI to the whole
-     * {@linkplain #image}. The ROI is used by statistical methods like {@link #getMinimums} and
-     * {@link #getMaximums}.
+     * Set the <cite>region of interest</cite> (ROI). A {@code null} set the ROI to the whole {@linkplain #image}. The
+     * ROI is used by statistical methods like {@link #getMinimums} and {@link #getMaximums}.
      *
      * @param roi The new region of interest.
      * @return This ImageWorker
@@ -789,13 +764,8 @@ public class ImageWorker {
                 // a ROIGeometry from a rectangle is a good substitute in this case
                 pl.setProperty(
                         "ROI",
-                        new ROIGeometry(
-                                JTS.toPolygon(
-                                        new Rectangle(
-                                                image.getMinX(),
-                                                image.getMinY(),
-                                                image.getWidth(),
-                                                image.getHeight()))));
+                        new ROIGeometry(JTS.toPolygon(
+                                new Rectangle(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight()))));
             }
         } else {
             pl.setProperty("ROI", roi);
@@ -850,19 +820,17 @@ public class ImageWorker {
     }
 
     /**
-     * Sets a rendering hint tile to use for all images to be computed by this class. This method
-     * applies only to the next images to be computed; images already computed before this method
-     * call (if any) will not be affected.
+     * Sets a rendering hint tile to use for all images to be computed by this class. This method applies only to the
+     * next images to be computed; images already computed before this method call (if any) will not be affected.
      *
      * <p>Some common examples:
      *
      * <p>
      *
      * <ul>
-     *   <li><code>setRenderingHint({@linkplain JAI#KEY_TILE_CACHE}, null)</code> disables completly
-     *       the tile cache.
-     *   <li><code>setRenderingHint({@linkplain #TILING_ALLOWED}, Boolean.FALSE)</code> forces all
-     *       operators to produce untiled images.
+     *   <li><code>setRenderingHint({@linkplain JAI#KEY_TILE_CACHE}, null)</code> disables completly the tile cache.
+     *   <li><code>setRenderingHint({@linkplain #TILING_ALLOWED}, Boolean.FALSE)</code> forces all operators to produce
+     *       untiled images.
      * </ul>
      *
      * @return This ImageWorker
@@ -876,9 +844,8 @@ public class ImageWorker {
     }
 
     /**
-     * Set a map of rendering hints to use for all images to be computed by this class. This method
-     * applies only to the next images to be computed; images already computed before this method
-     * call (if any) will not be affected.
+     * Set a map of rendering hints to use for all images to be computed by this class. This method applies only to the
+     * next images to be computed; images already computed before this method call (if any) will not be affected.
      *
      * <p>If <code>hints</code> is null we won't modify this list.
      *
@@ -903,19 +870,19 @@ public class ImageWorker {
     }
 
     /**
-     * Removes a rendering hint. Note that invoking this method is <strong>not</strong> the same
-     * than invoking <code>{@linkplain #setRenderingHint setRenderingHint}(key, null)</code>. This
-     * is especially true for the {@linkplain javax.media.jai.TileCache tile cache} hint:
+     * Removes a rendering hint. Note that invoking this method is <strong>not</strong> the same than invoking <code>
+     * {@linkplain #setRenderingHint setRenderingHint}(key, null)</code>. This is especially true for the
+     * {@linkplain javax.media.jai.TileCache tile cache} hint:
      *
      * <p>
      *
      * <ul>
      *   <li><code>{@linkplain #setRenderingHint setRenderingHint}({@linkplain JAI#KEY_TILE_CACHE},
-     *       null)</code> disables the use of any tile cache. In other words, this method call do
-     *       request a tile cache, which happen to be the "null" cache.
-     *   <li><code>removeRenderingHint({@linkplain JAI#KEY_TILE_CACHE})</code> unsets any tile cache
-     *       specified by a previous rendering hint. All images to be computed after this method
-     *       call will save their tiles in the {@linkplain JAI#getTileCache JAI default tile cache}.
+     *       null)</code> disables the use of any tile cache. In other words, this method call do request a tile cache,
+     *       which happen to be the "null" cache.
+     *   <li><code>removeRenderingHint({@linkplain JAI#KEY_TILE_CACHE})</code> unsets any tile cache specified by a
+     *       previous rendering hint. All images to be computed after this method call will save their tiles in the
+     *       {@linkplain JAI#getTileCache JAI default tile cache}.
      * </ul>
      *
      * @return This ImageWorker
@@ -928,17 +895,17 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the rendering hints for an image to be computed by this class. The default
-     * implementation returns the following hints:
+     * Returns the rendering hints for an image to be computed by this class. The default implementation returns the
+     * following hints:
      *
      * <p>
      *
      * <ul>
-     *   <li>An {@linkplain ImageLayout image layout} with tiles size computed automatically from
-     *       the current {@linkplain #image} size.
-     *   <li>Any additional hints specified through the {@link #setRenderingHint} method. If the
-     *       user provided explicitly a {@link JAI#KEY_IMAGE_LAYOUT} , then the user layout has
-     *       precedence over the automatic layout computed in previous step.
+     *   <li>An {@linkplain ImageLayout image layout} with tiles size computed automatically from the current
+     *       {@linkplain #image} size.
+     *   <li>Any additional hints specified through the {@link #setRenderingHint} method. If the user provided
+     *       explicitly a {@link JAI#KEY_IMAGE_LAYOUT} , then the user layout has precedence over the automatic layout
+     *       computed in previous step.
      * </ul>
      *
      * @return The rendering hints to use for image computation (never {@code null}).
@@ -964,18 +931,16 @@ public class ImageWorker {
                 hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
         }
-        if (tileCacheDisabled != 0
-                && (commonHints != null && !commonHints.containsKey(JAI.KEY_TILE_CACHE))) {
+        if (tileCacheDisabled != 0 && (commonHints != null && !commonHints.containsKey(JAI.KEY_TILE_CACHE))) {
             hints.add(new RenderingHints(JAI.KEY_TILE_CACHE, null));
         }
         return hints;
     }
 
     /**
-     * Returns the {@linkplain #getRenderingHints rendering hints}, but with a {@linkplain
-     * ComponentColorModel component color model} of the specified data type. The data type is
-     * changed only if no color model was explicitly specified by the user through {@link
-     * #getRenderingHints()}.
+     * Returns the {@linkplain #getRenderingHints rendering hints}, but with a {@linkplain ComponentColorModel component
+     * color model} of the specified data type. The data type is changed only if no color model was explicitly specified
+     * by the user through {@link #getRenderingHints()}.
      *
      * @param type The data type (typically {@link DataBuffer#TYPE_BYTE}).
      */
@@ -994,43 +959,39 @@ public class ImageWorker {
          */
         final ColorModel oldCm = image.getColorModel();
         if (oldCm != null) {
-            final ColorModel newCm =
-                    new ComponentColorModel(
-                            oldCm.getColorSpace(),
-                            oldCm.hasAlpha(), // If true, supports transparency.
-                            oldCm.isAlphaPremultiplied(), // If true, alpha is premultiplied.
-                            oldCm.getTransparency(), // What alpha values can be represented.
-                            type); // Type of primitive array used to represent pixel.
+            final ColorModel newCm = new ComponentColorModel(
+                    oldCm.getColorSpace(),
+                    oldCm.hasAlpha(), // If true, supports transparency.
+                    oldCm.isAlphaPremultiplied(), // If true, alpha is premultiplied.
+                    oldCm.getTransparency(), // What alpha values can be represented.
+                    type); // Type of primitive array used to represent pixel.
             /*
              * Creating the final image layout which should allow us to change color model.
              */
             layout.setColorModel(newCm);
-            layout.setSampleModel(
-                    newCm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
+            layout.setSampleModel(newCm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
         } else {
             final int numBands = image.getSampleModel().getNumBands();
-            final ColorModel newCm =
-                    new ComponentColorModel(
-                            new BogusColorSpace(numBands),
-                            false, // If true, supports transparency.
-                            false, // If true, alpha is premultiplied.
-                            Transparency.OPAQUE, // What alpha values can be represented.
-                            type); // Type of primitive array used to represent pixel.
+            final ColorModel newCm = new ComponentColorModel(
+                    new BogusColorSpace(numBands),
+                    false, // If true, supports transparency.
+                    false, // If true, alpha is premultiplied.
+                    Transparency.OPAQUE, // What alpha values can be represented.
+                    type); // Type of primitive array used to represent pixel.
             /*
              * Creating the final image layout which should allow us to change color model.
              */
             layout.setColorModel(newCm);
-            layout.setSampleModel(
-                    newCm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
+            layout.setSampleModel(newCm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
         }
         hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
         return hints;
     }
 
     /**
-     * Gets the image layout from the specified rendering hints, creating a new one if needed. This
-     * method do not modify the specified hints. If the caller modifies the image layout, it should
-     * invoke {@code hints.put(JAI.KEY_IMAGE_LAYOUT, layout)} explicitly.
+     * Gets the image layout from the specified rendering hints, creating a new one if needed. This method do not modify
+     * the specified hints. If the caller modifies the image layout, it should invoke
+     * {@code hints.put(JAI.KEY_IMAGE_LAYOUT, layout)} explicitly.
      */
     private static ImageLayout getImageLayout(final RenderingHints hints) {
         final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
@@ -1041,13 +1002,12 @@ public class ImageWorker {
     }
 
     /**
-     * If {@code false}, disables the tile cache. Invoking this method with value {@code true}
-     * cancel the last invocation with value {@code false}. If this method was invoking many time
-     * with value {@code false}, then this method must be invoked the same amount of time with the
-     * value {@code true} for reenabling the cache.
+     * If {@code false}, disables the tile cache. Invoking this method with value {@code true} cancel the last
+     * invocation with value {@code false}. If this method was invoking many time with value {@code false}, then this
+     * method must be invoked the same amount of time with the value {@code true} for reenabling the cache.
      *
-     * <p><strong>Note:</strong> This method name doesn't contain the usual {@code set} prefix
-     * because it doesn't really set a flag. Instead it increments or decrements a counter.
+     * <p><strong>Note:</strong> This method name doesn't contain the usual {@code set} prefix because it doesn't really
+     * set a flag. Instead it increments or decrements a counter.
      *
      * @return This ImageWorker
      */
@@ -1082,11 +1042,10 @@ public class ImageWorker {
     }
 
     /**
-     * Gets a property from the property set of the {@linkplain #image}. If the property name is not
-     * recognized, then {@link Image#UndefinedProperty} will be returned. This method do
-     * <strong>not</strong> inherits properties from the image specified at {@linkplain
-     * #ImageWorker(RenderedImage) construction time} - only properties generated by this class are
-     * returned.
+     * Gets a property from the property set of the {@linkplain #image}. If the property name is not recognized, then
+     * {@link Image#UndefinedProperty} will be returned. This method do <strong>not</strong> inherits properties from
+     * the image specified at {@linkplain #ImageWorker(RenderedImage) construction time} - only properties generated by
+     * this class are returned.
      */
     private Object getComputedProperty(final String name) {
         final Object value = image.getProperty(name);
@@ -1094,8 +1053,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the minimums and maximums values found in the image. Those extremas are returned as
-     * an array of the form {@code double[2][#bands]}.
+     * Returns the minimums and maximums values found in the image. Those extremas are returned as an array of the form
+     * {@code double[2][#bands]}.
      */
     private double[][] getExtremas() {
         Object extrema = getComputedProperty(EXTREMA);
@@ -1121,8 +1080,7 @@ public class ImageWorker {
                 pb.set(stats, 6); // statistic operation
                 image = JAI.create("Stats", pb, getRenderingHints());
                 // Retrieving the statistics
-                Statistics[][] results =
-                        (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+                Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
                 double[][] ext = new double[2][numBands];
                 for (int i = 0; i < numBands; i++) {
                     double[] extBand = (double[]) results[i][0].getResult();
@@ -1188,8 +1146,7 @@ public class ImageWorker {
             pb.set(highValues, 8); // Higher values per band.
             image = JAI.create("Stats", pb, getRenderingHints());
             // Retrieving the statistics
-            Statistics[][] results =
-                    (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+            Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
             int[][] bins = new int[numBands][];
 
             // Cycle on the bands
@@ -1234,8 +1191,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the minimums and maximums values found in the image. Those extremas are returned as
-     * an array of the form {@code double[2][#bands]}.
+     * Returns the minimums and maximums values found in the image. Those extremas are returned as an array of the form
+     * {@code double[2][#bands]}.
      */
     public double[] getMean() {
         Object mean = getComputedProperty(MEAN);
@@ -1261,8 +1218,7 @@ public class ImageWorker {
                 pb.set(stats, 6); // statistic operation
                 image = JAI.create("Stats", pb, getRenderingHints());
                 // Retrieving the statistics
-                Statistics[][] results =
-                        (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+                Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
                 double[] meanBands = new double[numBands];
                 for (int i = 0; i < numBands; i++) {
                     meanBands[i] = (double) results[i][0].getResult();
@@ -1287,9 +1243,9 @@ public class ImageWorker {
     }
 
     /**
-     * Tells this builder that all statistics on pixel values (e.g. the "extrema" property in the
-     * {@linkplain #image}) should not be inherited from the source images (if any). This method
-     * should be invoked every time an operation changed the pixel values.
+     * Tells this builder that all statistics on pixel values (e.g. the "extrema" property in the {@linkplain #image})
+     * should not be inherited from the source images (if any). This method should be invoked every time an operation
+     * changed the pixel values.
      *
      * @return This ImageWorker
      */
@@ -1299,8 +1255,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the minimal values found in every {@linkplain #image} bands. If a {@linkplain #getROI
-     * region of interest} is defined, then the statistics will be computed only over that region.
+     * Returns the minimal values found in every {@linkplain #image} bands. If a {@linkplain #getROI region of interest}
+     * is defined, then the statistics will be computed only over that region.
      *
      * @see #getMaximums
      * @see #setROI
@@ -1310,8 +1266,8 @@ public class ImageWorker {
     }
 
     /**
-     * Returns the maximal values found in every {@linkplain #image} bands. If a {@linkplain #getROI
-     * region of interest} is defined, then the statistics will be computed only over that region.
+     * Returns the maximal values found in every {@linkplain #image} bands. If a {@linkplain #getROI region of interest}
+     * is defined, then the statistics will be computed only over that region.
      *
      * @see #getMinimums
      * @see #setROI
@@ -1339,8 +1295,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} is binary. Such image usually contains only
-     * two values: 0 and 1.
+     * Returns {@code true} if the {@linkplain #image} is binary. Such image usually contains only two values: 0 and 1.
      *
      * @see #binarize()
      * @see #binarize(double)
@@ -1351,8 +1306,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} uses an {@linkplain IndexColorModel index
-     * color model}.
+     * Returns {@code true} if the {@linkplain #image} uses an {@linkplain IndexColorModel index color model}.
      *
      * @see #forceIndexColorModel
      * @see #forceBitmaskIndexColorModel
@@ -1363,9 +1317,9 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} uses a RGB {@linkplain ColorSpace color
-     * space}. Note that a RGB color space doesn't mean that pixel values are directly stored as RGB
-     * components. The image may be {@linkplain #isIndexed indexed} as well.
+     * Returns {@code true} if the {@linkplain #image} uses a RGB {@linkplain ColorSpace color space}. Note that a RGB
+     * color space doesn't mean that pixel values are directly stored as RGB components. The image may be
+     * {@linkplain #isIndexed indexed} as well.
      *
      * @see #forceColorSpaceRGB
      */
@@ -1378,8 +1332,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} uses a YCbCr {@linkplain ColorSpace color
-     * space}.
+     * Returns {@code true} if the {@linkplain #image} uses a YCbCr {@linkplain ColorSpace color space}.
      *
      * @see #forceColorSpaceYCbCr()
      */
@@ -1399,8 +1352,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} uses a IHA {@linkplain ColorSpace color
-     * space}.
+     * Returns {@code true} if the {@linkplain #image} uses a IHA {@linkplain ColorSpace color space}.
      *
      * @see #forceColorSpaceIHS()
      */
@@ -1409,14 +1361,13 @@ public class ImageWorker {
         if (cm == null) {
             return false;
         }
-        return cm.getColorSpace() instanceof IHSColorSpace
-                || cm.getColorSpace() instanceof IHSColorSpaceJAIExt;
+        return cm.getColorSpace() instanceof IHSColorSpace || cm.getColorSpace() instanceof IHSColorSpaceJAIExt;
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} uses a GrayScale {@linkplain ColorSpace color
-     * space}. Note that a GrayScale color space doesn't mean that pixel values are directly stored
-     * as GrayScale component. The image may be {@linkplain #isIndexed indexed} as well.
+     * Returns {@code true} if the {@linkplain #image} uses a GrayScale {@linkplain ColorSpace color space}. Note that a
+     * GrayScale color space doesn't mean that pixel values are directly stored as GrayScale component. The image may be
+     * {@linkplain #isIndexed indexed} as well.
      *
      * @see #forceColorSpaceGRAYScale
      */
@@ -1427,8 +1378,7 @@ public class ImageWorker {
     }
 
     /**
-     * Returns {@code true} if the {@linkplain #image} is {@linkplain Transparency#TRANSLUCENT
-     * translucent}.
+     * Returns {@code true} if the {@linkplain #image} is {@linkplain Transparency#TRANSLUCENT translucent}.
      *
      * @see #forceBitmaskIndexColorModel
      */
@@ -1443,10 +1393,10 @@ public class ImageWorker {
     // /////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Rescales the {@linkplain #image} such that it uses 8 bits. If the image already uses 8 bits,
-     * then this method does nothing. Otherwise this method computes the minimum and maximum values
-     * for each band, {@linkplain RescaleDescriptor rescale} them in the range {@code [0 .. 255]}
-     * and force the resulting image to {@link DataBuffer#TYPE_BYTE TYPE_BYTE}.
+     * Rescales the {@linkplain #image} such that it uses 8 bits. If the image already uses 8 bits, then this method
+     * does nothing. Otherwise this method computes the minimum and maximum values for each band,
+     * {@linkplain RescaleDescriptor rescale} them in the range {@code [0 .. 255]} and force the resulting image to
+     * {@link DataBuffer#TYPE_BYTE TYPE_BYTE}.
      *
      * @return This ImageWorker
      * @see #isBytes
@@ -1472,10 +1422,9 @@ public class ImageWorker {
         final int length = extrema[0].length;
         final double[] scale = new double[length];
         final double[] offset = new double[length];
-        final double destNodata =
-                (background != null && background.length > 0)
-                        ? background[0]
-                        : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
+        final double destNodata = (background != null && background.length > 0)
+                ? background[0]
+                : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
 
         // If setting noData to zero, make sure the rescale doesn't map good values to zero.
         double offsetAdjustment = nodata != null || Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
@@ -1532,18 +1481,18 @@ public class ImageWorker {
     }
 
     /**
-     * Reduces the color model to {@linkplain IndexColorModel index color model}. If the current
-     * {@linkplain #image} already uses an {@linkplain IndexColorModel index color model}, then this
-     * method do nothing. Otherwise, the current implementation performs a ditering on the original
-     * color model. Note that this operation loose the alpha channel.
+     * Reduces the color model to {@linkplain IndexColorModel index color model}. If the current {@linkplain #image}
+     * already uses an {@linkplain IndexColorModel index color model}, then this method do nothing. Otherwise, the
+     * current implementation performs a ditering on the original color model. Note that this operation loose the alpha
+     * channel.
      *
-     * <p>This for the moment should work only with opaque images, with non opaque images we just
-     * remove the alpha band in order to build an {@link IndexColorModel}. This is one because in
-     * general it could be very difficult to decide the final transparency for each pixel given the
-     * complexity if the algorithms for obtaining an {@link IndexColorModel}.
+     * <p>This for the moment should work only with opaque images, with non opaque images we just remove the alpha band
+     * in order to build an {@link IndexColorModel}. This is one because in general it could be very difficult to decide
+     * the final transparency for each pixel given the complexity if the algorithms for obtaining an
+     * {@link IndexColorModel}.
      *
-     * <p>If an {@link IndexColorModel} with a single transparency index is enough for you, we
-     * advise you to take a look at {@link #forceIndexColorModelForGIF(boolean)} methdo.
+     * <p>If an {@link IndexColorModel} with a single transparency index is enough for you, we advise you to take a look
+     * at {@link #forceIndexColorModelForGIF(boolean)} methdo.
      *
      * @see #isIndexed
      * @see #forceBitmaskIndexColorModel
@@ -1614,9 +1563,9 @@ public class ImageWorker {
     }
 
     /**
-     * Reduces the color model to {@linkplain IndexColorModel index color model} with {@linkplain
-     * Transparency#OPAQUE opaque} or {@linkplain Transparency#BITMASK bitmask} transparency. If the
-     * current {@linkplain #image} already uses a suitable color model, then this method do nothing.
+     * Reduces the color model to {@linkplain IndexColorModel index color model} with {@linkplain Transparency#OPAQUE
+     * opaque} or {@linkplain Transparency#BITMASK bitmask} transparency. If the current {@linkplain #image} already
+     * uses a suitable color model, then this method do nothing.
      *
      * @return this {@link ImageWorker}.
      * @see #isIndexed
@@ -1630,42 +1579,38 @@ public class ImageWorker {
     }
 
     /**
-     * Reduces the color model to {@linkplain IndexColorModel index color model} with {@linkplain
-     * Transparency#OPAQUE opaque} or {@linkplain Transparency#BITMASK bitmask} transparency. If the
-     * current {@linkplain #image} already uses a suitable color model, then this method do nothing.
+     * Reduces the color model to {@linkplain IndexColorModel index color model} with {@linkplain Transparency#OPAQUE
+     * opaque} or {@linkplain Transparency#BITMASK bitmask} transparency. If the current {@linkplain #image} already
+     * uses a suitable color model, then this method do nothing.
      *
      * @param suggestedTransparent A suggested pixel index to define as the transparent pixel. *
-     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link
-     *     OrderedDitherDescriptor} JAi operations. errorDiffusion
+     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link OrderedDitherDescriptor}
+     *     JAi operations. errorDiffusion
      * @return this {@link ImageWorker}.
      * @see #isIndexed
      * @see #isTranslucent
      * @see #forceIndexColorModel
      * @see #forceIndexColorModelForGIF
      */
-    public final ImageWorker forceBitmaskIndexColorModel(
-            int suggestedTransparent, final boolean errorDiffusion) {
+    public final ImageWorker forceBitmaskIndexColorModel(int suggestedTransparent, final boolean errorDiffusion) {
         final ColorModel cm = image.getColorModel();
         if (cm instanceof IndexColorModel) {
             final IndexColorModel oldCM = (IndexColorModel) cm;
             switch (oldCM.getTransparency()) {
-                case Transparency.OPAQUE:
-                    {
+                case Transparency.OPAQUE: {
+                    // Suitable color model. There is nothing to do.
+                    return this;
+                }
+                case Transparency.BITMASK: {
+                    if (oldCM.getTransparentPixel() == suggestedTransparent) {
                         // Suitable color model. There is nothing to do.
                         return this;
                     }
-                case Transparency.BITMASK:
-                    {
-                        if (oldCM.getTransparentPixel() == suggestedTransparent) {
-                            // Suitable color model. There is nothing to do.
-                            return this;
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
 
             // check if we already have a pixel fully transparent
@@ -1677,14 +1622,12 @@ public class ImageWorker {
              */
             final int mapSize = oldCM.getMapSize();
             if (transparentPixel < 0)
-                suggestedTransparent =
-                        suggestedTransparent <= mapSize ? mapSize + 1 : suggestedTransparent;
+                suggestedTransparent = suggestedTransparent <= mapSize ? mapSize + 1 : suggestedTransparent;
             else suggestedTransparent = transparentPixel;
             final int newSize = Math.max(mapSize, suggestedTransparent);
             final int newPixelSize = ColorUtilities.getBitCount(newSize);
             if (newPixelSize > 16)
-                throw new IllegalArgumentException(
-                        "Unable to create index color model with more than 65536 elements");
+                throw new IllegalArgumentException("Unable to create index color model with more than 65536 elements");
             final LookupTable lookupTable;
             if (newPixelSize <= 8) {
                 final byte[] table = new byte[mapSize];
@@ -1709,8 +1652,7 @@ public class ImageWorker {
             oldCM.getGreens(rgb[1]);
             oldCM.getBlues(rgb[2]);
             final IndexColorModel newCM =
-                    new IndexColorModel(
-                            newPixelSize, newSize, rgb[0], rgb[1], rgb[2], suggestedTransparent);
+                    new IndexColorModel(newPixelSize, newSize, rgb[0], rgb[1], rgb[2], suggestedTransparent);
             final RenderingHints hints = getRenderingHints();
             final ImageLayout layout = getImageLayout(hints);
             layout.setColorModel(newCM);
@@ -1764,8 +1706,7 @@ public class ImageWorker {
                  * Adding transparency if needed, which means using the alpha channel to build a new color model. The method call below implies
                  * 'forceColorSpaceRGB()' and 'forceIndexColorModel()' method calls.
                  */
-                addTransparencyToIndexColorModel(
-                        alphaChannel, false, suggestedTransparent, errorDiffusion);
+                addTransparencyToIndexColorModel(alphaChannel, false, suggestedTransparent, errorDiffusion);
             } else forceIndexColorModel(errorDiffusion);
         }
         // All post conditions for this method contract.
@@ -1775,22 +1716,20 @@ public class ImageWorker {
     }
 
     /**
-     * Converts the image to a GIF-compliant image. This method has been created in order to convert
-     * the input image to a form that is compatible with the GIF model. It first remove the
-     * information about transparency since the error diffusion and the error dither operations are
-     * unable to process images with more than 3 bands. Afterwards the image is processed with an
-     * error diffusion operator in order to reduce the number of bands from 3 to 1 and the number of
-     * color to 216. A suitable layout is used for the final image via the {@linkplain
-     * #getRenderingHints rendering hints} in order to take into account the different layout model
-     * for the final image.
+     * Converts the image to a GIF-compliant image. This method has been created in order to convert the input image to
+     * a form that is compatible with the GIF model. It first remove the information about transparency since the error
+     * diffusion and the error dither operations are unable to process images with more than 3 bands. Afterwards the
+     * image is processed with an error diffusion operator in order to reduce the number of bands from 3 to 1 and the
+     * number of color to 216. A suitable layout is used for the final image via the {@linkplain #getRenderingHints
+     * rendering hints} in order to take into account the different layout model for the final image.
      *
-     * <p><strong>Tip:</strong> For optimizing writing GIF, we need to create the image untiled.
-     * This can be done by invoking <code>
+     * <p><strong>Tip:</strong> For optimizing writing GIF, we need to create the image untiled. This can be done by
+     * invoking <code>
      * {@linkplain #setRenderingHint setRenderingHint}({@linkplain
      * #TILING_ALLOWED}, Boolean.FALSE)</code> first.
      *
-     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link
-     *     OrderedDitherDescriptor} JAi operations.
+     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link OrderedDitherDescriptor}
+     *     JAi operations.
      * @return this {@link ImageWorker}.
      * @see #isIndexed
      * @see #forceIndexColorModel
@@ -1825,10 +1764,9 @@ public class ImageWorker {
     }
 
     /**
-     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
-     * component color model} preserving transparency. This is used especially in order to go from
-     * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
-     * {@code PNGEncoder} and {@code TIFFEncoder}.
+     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel component color model}
+     * preserving transparency. This is used especially in order to go from {@link PackedColorModel} to
+     * {@link ComponentColorModel}, which seems to be well accepted from {@code PNGEncoder} and {@code TIFFEncoder}.
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
@@ -1840,15 +1778,14 @@ public class ImageWorker {
     }
 
     /**
-     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
-     * component color model} preserving transparency. This is used especially in order to go from
-     * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
-     * {@code PNGEncoder} and {@code TIFFEncoder}. The omitAlphaOnExpand param allows to explicity
-     * avoid producing an alpha band when expanding an {@link IndexColorModel} to {@link
-     * ComponentColorModel}. This may be useful when preparing an Image for JPEG encoding which do
-     * not support alpha band, avoiding the need of a BandSelect right after the color expansion.
-     * Note that this flag has only effect when expanding from {@link IndexColorModel} so alpha is
-     * preserved if input colorModel is already a ComponentColorModel.
+     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel component color model}
+     * preserving transparency. This is used especially in order to go from {@link PackedColorModel} to
+     * {@link ComponentColorModel}, which seems to be well accepted from {@code PNGEncoder} and {@code TIFFEncoder}. The
+     * omitAlphaOnExpand param allows to explicity avoid producing an alpha band when expanding an
+     * {@link IndexColorModel} to {@link ComponentColorModel}. This may be useful when preparing an Image for JPEG
+     * encoding which do not support alpha band, avoiding the need of a BandSelect right after the color expansion. Note
+     * that this flag has only effect when expanding from {@link IndexColorModel} so alpha is preserved if input
+     * colorModel is already a ComponentColorModel.
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
@@ -1868,10 +1805,7 @@ public class ImageWorker {
             final SampleModel sm = this.image.getSampleModel();
             final int datatype = sm.getDataType();
             Range noData = getNoData();
-            final boolean gray =
-                    ColorUtilities.isGrayPalette(icm, checkTransparent)
-                            && optimizeGray
-                            && noData == null;
+            final boolean gray = ColorUtilities.isGrayPalette(icm, checkTransparent) && optimizeGray && noData == null;
             final boolean alpha = (icm.hasAlpha() || noData != null) && !omitAlphaOnExpand;
             /*
              * If the image is grayscale, retain only the needed bands.
@@ -1919,8 +1853,7 @@ public class ImageWorker {
                                 }
                             }
                         }
-                        if (noData != null
-                                && (numDestinationBands == 2 || numDestinationBands == 4)) {
+                        if (noData != null && (numDestinationBands == 2 || numDestinationBands == 4)) {
                             int noDataValue = noData.getMin().intValue();
                             for (int i = 0; i < 256; i++) {
                                 if (i == noDataValue) {
@@ -1937,22 +1870,18 @@ public class ImageWorker {
                     break;
 
                 case DataBuffer.TYPE_USHORT:
-                    lut =
-                            gray
-                                    ? createGrayLookupTable(icm, numDestinationBands)
-                                    : createRGBLookupTable(icm, numDestinationBands);
+                    lut = gray
+                            ? createGrayLookupTable(icm, numDestinationBands)
+                            : createRGBLookupTable(icm, numDestinationBands);
                     break;
 
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", datatype));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", datatype));
             }
 
             // did we initialized the LUT?
-            if (lut == null)
-                throw new IllegalStateException(
-                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "lut"));
+            if (lut == null) throw new IllegalStateException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "lut"));
             /*
              * Get the default hints, which usually contains only information about tiling.
              * If the user override the rendering hints with an explicit color model,
@@ -1975,19 +1904,17 @@ public class ImageWorker {
                 // (might be 16 bits)
                 bits[i] = numDestinationBands >= 3 ? 8 : sm.getSampleSize(i);
             }
-            final ComponentColorModel destinationColorModel =
-                    new ComponentColorModel(
-                            numDestinationBands >= 3
-                                    ? ColorSpace.getInstance(ColorSpace.CS_sRGB)
-                                    : ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                            bits,
-                            alpha,
-                            cm.isAlphaPremultiplied(),
-                            alpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE,
-                            datatype);
+            final ComponentColorModel destinationColorModel = new ComponentColorModel(
+                    numDestinationBands >= 3
+                            ? ColorSpace.getInstance(ColorSpace.CS_sRGB)
+                            : ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                    bits,
+                    alpha,
+                    cm.isAlphaPremultiplied(),
+                    alpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE,
+                    datatype);
             final SampleModel destinationSampleModel =
-                    destinationColorModel.createCompatibleSampleModel(
-                            image.getWidth(), image.getHeight());
+                    destinationColorModel.createCompatibleSampleModel(image.getWidth(), image.getHeight());
             layout.setColorModel(destinationColorModel);
             layout.setSampleModel(destinationSampleModel);
 
@@ -2007,10 +1934,9 @@ public class ImageWorker {
 
         } else {
             // Most of the code adapted from jai-interests is in 'getRenderingHints(int)'.
-            final int type =
-                    (cm instanceof DirectColorModel)
-                            ? DataBuffer.TYPE_BYTE
-                            : image.getSampleModel().getTransferType();
+            final int type = (cm instanceof DirectColorModel)
+                    ? DataBuffer.TYPE_BYTE
+                    : image.getSampleModel().getTransferType();
             final RenderingHints hints = getRenderingHints(type);
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0); // The source image.
@@ -2052,9 +1978,8 @@ public class ImageWorker {
     }
 
     /**
-     * If the image has an indexed color model, removes it, and replaces it with a component color
-     * model. can be useful before a band-merge if the image in question is not meant to be color
-     * expanded.
+     * If the image has an indexed color model, removes it, and replaces it with a component color model. can be useful
+     * before a band-merge if the image in question is not meant to be color expanded.
      */
     public final ImageWorker removeIndexColorModel() {
         if (image.getColorModel() instanceof IndexColorModel) {
@@ -2073,21 +1998,14 @@ public class ImageWorker {
 
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", dataType));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", dataType));
             }
 
             // prepare color model and sample model
-            final ComponentColorModel destinationColorModel =
-                    new ComponentColorModel(
-                            ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                            false,
-                            false,
-                            Transparency.OPAQUE,
-                            dataType);
+            final ComponentColorModel destinationColorModel = new ComponentColorModel(
+                    ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, dataType);
             final SampleModel destinationSampleModel =
-                    destinationColorModel.createCompatibleSampleModel(
-                            sampleModel.getWidth(), sampleModel.getHeight());
+                    destinationColorModel.createCompatibleSampleModel(sampleModel.getWidth(), sampleModel.getHeight());
             ImageLayout layout = new ImageLayout(image);
             layout.setColorModel(destinationColorModel);
             layout.setSampleModel(destinationSampleModel);
@@ -2109,15 +2027,14 @@ public class ImageWorker {
     }
 
     /**
-     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
-     * component color model} preserving transparency. This is used especially in order to go from
-     * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
-     * {@code PNGEncoder} and {@code TIFFEncoder}.
+     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel component color model}
+     * preserving transparency. This is used especially in order to go from {@link PackedColorModel} to
+     * {@link ComponentColorModel}, which seems to be well accepted from {@code PNGEncoder} and {@code TIFFEncoder}.
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
-     * @param checkTransparent tells this method to not consider fully transparent pixels when
-     *     optimizing grayscale palettes.
+     * @param checkTransparent tells this method to not consider fully transparent pixels when optimizing grayscale
+     *     palettes.
      * @return this {@link ImageWorker}.
      * @see FormatDescriptor
      */
@@ -2126,27 +2043,25 @@ public class ImageWorker {
     }
 
     /**
-     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
-     * component color model} preserving transparency. This is used especially in order to go from
-     * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
-     * {@code PNGEncoder} and {@code TIFFEncoder}.
+     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel component color model}
+     * preserving transparency. This is used especially in order to go from {@link PackedColorModel} to
+     * {@link ComponentColorModel}, which seems to be well accepted from {@code PNGEncoder} and {@code TIFFEncoder}.
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
-     * @param checkTransparent tells this method to not consider fully transparent pixels when
-     *     optimizing grayscale palettes.
+     * @param checkTransparent tells this method to not consider fully transparent pixels when optimizing grayscale
+     *     palettes.
      * @return this {@link ImageWorker}.
      * @see FormatDescriptor
      */
-    public final ImageWorker forceComponentColorModel(
-            boolean checkTransparent, boolean optimizeGray) {
+    public final ImageWorker forceComponentColorModel(boolean checkTransparent, boolean optimizeGray) {
         return forceComponentColorModel(checkTransparent, optimizeGray, false);
     }
 
     /**
-     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_sRGB RGB color
-     * space}. If the current color space is already of {@linkplain ColorSpace#TYPE_RGB RGB type},
-     * then this method does nothing. This operation may loose the alpha channel.
+     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_sRGB RGB color space}. If the current
+     * color space is already of {@linkplain ColorSpace#TYPE_RGB RGB type}, then this method does nothing. This
+     * operation may loose the alpha channel.
      *
      * @return this {@link ImageWorker}.
      * @see #isColorSpaceRGB
@@ -2154,13 +2069,12 @@ public class ImageWorker {
      */
     public final ImageWorker forceColorSpaceRGB() {
         if (!isColorSpaceRGB()) {
-            final ColorModel cm =
-                    new ComponentColorModel(
-                            ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                            false,
-                            false,
-                            Transparency.OPAQUE,
-                            image.getSampleModel().getDataType());
+            final ColorModel cm = new ComponentColorModel(
+                    ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                    false,
+                    false,
+                    Transparency.OPAQUE,
+                    image.getSampleModel().getDataType());
 
             // force computation of the new colormodel
             forceColorModel(cm);
@@ -2171,9 +2085,8 @@ public class ImageWorker {
     }
 
     /**
-     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_PYCC YCbCr color
-     * space}. If the current color space is already of {@linkplain ColorSpace#CS_PYCC YCbCr}, then
-     * this method does nothing.
+     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_PYCC YCbCr color space}. If the
+     * current color space is already of {@linkplain ColorSpace#CS_PYCC YCbCr}, then this method does nothing.
      *
      * @return this {@link ImageWorker}.
      * @see #isColorSpaceRGB
@@ -2185,13 +2098,12 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to YCbCr.
-            final ColorModel cm =
-                    new ComponentColorModel(
-                            CS_PYCC,
-                            false,
-                            false,
-                            Transparency.OPAQUE,
-                            this.image.getSampleModel().getDataType());
+            final ColorModel cm = new ComponentColorModel(
+                    CS_PYCC,
+                    false,
+                    false,
+                    Transparency.OPAQUE,
+                    this.image.getSampleModel().getDataType());
 
             // force computation of the new colormodel
             forceColorModel(cm);
@@ -2202,9 +2114,8 @@ public class ImageWorker {
     }
 
     /**
-     * Forces the {@linkplain #image} color model to the IHS color space. If the current color space
-     * is already of IHS type, then this method does nothing. This operation may loose the alpha
-     * channel.
+     * Forces the {@linkplain #image} color model to the IHS color space. If the current color space is already of IHS
+     * type, then this method does nothing. This operation may loose the alpha channel.
      *
      * @return this {@link ImageWorker}.
      * @see ColorConvertDescriptor
@@ -2214,19 +2125,15 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to IHS.
-            final ColorSpace ihs =
-                    isJaiExtEnabled()
-                            ? IHSColorSpaceJAIExt.getInstance()
-                            : IHSColorSpace.getInstance();
+            final ColorSpace ihs = isJaiExtEnabled() ? IHSColorSpaceJAIExt.getInstance() : IHSColorSpace.getInstance();
             final int numBits = image.getColorModel().getComponentSize(0);
-            final ColorModel ihsColorModel =
-                    new ComponentColorModel(
-                            ihs,
-                            new int[] {numBits, numBits, numBits},
-                            false,
-                            false,
-                            Transparency.OPAQUE,
-                            image.getSampleModel().getDataType());
+            final ColorModel ihsColorModel = new ComponentColorModel(
+                    ihs,
+                    new int[] {numBits, numBits, numBits},
+                    false,
+                    false,
+                    Transparency.OPAQUE,
+                    image.getSampleModel().getDataType());
 
             // compute
             forceColorModel(ihsColorModel);
@@ -2337,8 +2244,7 @@ public class ImageWorker {
      *     </code> otherwise.
      * @return this {@link ImageWorker}.
      */
-    public final ImageWorker addBand(
-            RenderedImage image, boolean before, boolean addAlpha, Range nodata2) {
+    public final ImageWorker addBand(RenderedImage image, boolean before, boolean addAlpha, Range nodata2) {
         ParameterBlock pb = new ParameterBlock();
         if (before) {
             pb.setSource(image, 0);
@@ -2382,15 +2288,12 @@ public class ImageWorker {
      * @param bands images to merge with the underlying one.
      * @param addAlpha <code>true</code> if we want to set the last image as alpha, <code>false
      *     </code> otherwise.
-     * @param transformationList List of AffineTransformation that can be applied to the input
-     *     rasters in order to repoject them to the same CRS.
+     * @param transformationList List of AffineTransformation that can be applied to the input rasters in order to
+     *     repoject them to the same CRS.
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker addBands(
-            RenderedImage[] bands,
-            boolean addAlpha,
-            Range[] nodata2,
-            List<AffineTransform> transformationList) {
+            RenderedImage[] bands, boolean addAlpha, Range[] nodata2, List<AffineTransform> transformationList) {
         ParameterBlock pb = new ParameterBlock();
         for (RenderedImage band : bands) {
             pb.addSource(band);
@@ -2419,9 +2322,8 @@ public class ImageWorker {
     }
 
     /**
-     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_GRAY GRAYScale
-     * color space}. If the current color space is already of {@linkplain ColorSpace#TYPE_GRAY
-     * type}, then this method does nothing.
+     * Forces the {@linkplain #image} color model to the {@linkplain ColorSpace#CS_GRAY GRAYScale color space}. If the
+     * current color space is already of {@linkplain ColorSpace#TYPE_GRAY type}, then this method does nothing.
      *
      * @return this {@link ImageWorker}.
      * @see #isColorSpaceGRAYScale
@@ -2429,13 +2331,12 @@ public class ImageWorker {
      */
     public final ImageWorker forceColorSpaceGRAYScale() {
         if (!isColorSpaceRGB()) {
-            final ColorModel cm =
-                    new ComponentColorModel(
-                            ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                            false,
-                            false,
-                            Transparency.OPAQUE,
-                            DataBuffer.TYPE_BYTE);
+            final ColorModel cm = new ComponentColorModel(
+                    ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                    false,
+                    false,
+                    Transparency.OPAQUE,
+                    DataBuffer.TYPE_BYTE);
             forceColorModel(cm);
             invalidateStatistics();
         }
@@ -2445,13 +2346,12 @@ public class ImageWorker {
     }
 
     /**
-     * Creates an image which represents approximatively the intensity of {@linkplain #image}. The
-     * result is always a single-banded image. If the image uses an {@linkplain IHSColorSpace IHS
-     * color space}, then this method just {@linkplain #retainFirstBand retain the first band}
-     * without any further processing. Otherwise, this method performs a simple {@linkplain
-     * BandCombineDescriptor band combine} operation on the {@linkplain #image} in order to come up
-     * with a simple estimation of the intensity of the image based on the average value of the
-     * color components. It is worthwhile to note that the alpha band is stripped from the image.
+     * Creates an image which represents approximatively the intensity of {@linkplain #image}. The result is always a
+     * single-banded image. If the image uses an {@linkplain IHSColorSpace IHS color space}, then this method just
+     * {@linkplain #retainFirstBand retain the first band} without any further processing. Otherwise, this method
+     * performs a simple {@linkplain BandCombineDescriptor band combine} operation on the {@linkplain #image} in order
+     * to come up with a simple estimation of the intensity of the image based on the average value of the color
+     * components. It is worthwhile to note that the alpha band is stripped from the image.
      *
      * @return this {@link ImageWorker}.
      * @see BandCombineDescriptor
@@ -2518,8 +2418,8 @@ public class ImageWorker {
     }
 
     /**
-     * Retains inconditionnaly the first band of {@linkplain #image}. All other bands (if any) are
-     * discarted without any further processing.
+     * Retains inconditionnaly the first band of {@linkplain #image}. All other bands (if any) are discarted without any
+     * further processing.
      *
      * @return this {@link ImageWorker}.
      * @see #getNumBands
@@ -2535,13 +2435,12 @@ public class ImageWorker {
     }
 
     /**
-     * Retains unconditionally the last band of {@linkplain #image}. All other bands (if any) are
-     * discarded without any further processing.
+     * Retains unconditionally the last band of {@linkplain #image}. All other bands (if any) are discarded without any
+     * further processing.
      *
-     * <p>It is worth to point out that we use the true number of bands rather than the number of
-     * color components. This means that if we apply this method on a colormapped image we get back
-     * the image itself untouched since it originally contains 1 band although the color components
-     * are 3 or 4 as per the attached colormap.
+     * <p>It is worth to point out that we use the true number of bands rather than the number of color components. This
+     * means that if we apply this method on a colormapped image we get back the image itself untouched since it
+     * originally contains 1 band although the color components are 3 or 4 as per the attached colormap.
      *
      * @return this {@link ImageWorker}.
      * @see #getNumBands
@@ -2559,9 +2458,9 @@ public class ImageWorker {
     }
 
     /**
-     * Retains inconditionnaly the first {@code numBands} of {@linkplain #image}. All other bands
-     * (if any) are discarted without any further processing. This method does nothing if the
-     * current {@linkplain #image} does not have a greater amount of bands than {@code numBands}.
+     * Retains inconditionnaly the first {@code numBands} of {@linkplain #image}. All other bands (if any) are discarted
+     * without any further processing. This method does nothing if the current {@linkplain #image} does not have a
+     * greater amount of bands than {@code numBands}.
      *
      * @param numBands the number of bands to retain.
      * @return this {@link ImageWorker}.
@@ -2592,8 +2491,8 @@ public class ImageWorker {
     }
 
     /**
-     * Retains inconditionnaly certain bands of {@linkplain #image}. All other bands (if any) are
-     * discarded without any further processing.
+     * Retains inconditionnaly certain bands of {@linkplain #image}. All other bands (if any) are discarded without any
+     * further processing.
      *
      * @param bands the bands to retain.
      * @return this {@link ImageWorker}.
@@ -2630,9 +2529,9 @@ public class ImageWorker {
     }
 
     /**
-     * Binarizes the {@linkplain #image}. If the image is multi-bands, then this method first
-     * computes an estimation of its {@linkplain #intensity intensity}. Then, the threshold value is
-     * set halfway between the minimal and maximal values found in the image.
+     * Binarizes the {@linkplain #image}. If the image is multi-bands, then this method first computes an estimation of
+     * its {@linkplain #intensity intensity}. Then, the threshold value is set halfway between the minimal and maximal
+     * values found in the image.
      *
      * @return this {@link ImageWorker}.
      * @see #isBinary
@@ -2649,8 +2548,7 @@ public class ImageWorker {
     }
 
     /**
-     * Binarizes the {@linkplain #image}. If the image is already binarized, then this method does
-     * nothing.
+     * Binarizes the {@linkplain #image}. If the image is already binarized, then this method does nothing.
      *
      * @param threshold The threshold value.
      * @return this {@link ImageWorker}.
@@ -2690,10 +2588,9 @@ public class ImageWorker {
     }
 
     /**
-     * Binarizes the {@linkplain #image} (if not already done) and replace all 0 values by {@code
-     * value0} and all 1 values by {@code value1}. If the image should be binarized using a custom
-     * threshold value (instead of the automatic one), invoke {@link #binarize(double)} explicitly
-     * before this method.
+     * Binarizes the {@linkplain #image} (if not already done) and replace all 0 values by {@code value0} and all 1
+     * values by {@code value1}. If the image should be binarized using a custom threshold value (instead of the
+     * automatic one), invoke {@link #binarize(double)} explicitly before this method.
      *
      * @return this {@link ImageWorker}.
      * @see #isBinary
@@ -2711,13 +2608,9 @@ public class ImageWorker {
         if (min >= 0) {
             final int max = Math.max(value0, value1);
             if (max < 256) {
-                table =
-                        LookupTableFactory.create(
-                                new byte[] {(byte) value0, (byte) value1}, DataBuffer.TYPE_BYTE);
+                table = LookupTableFactory.create(new byte[] {(byte) value0, (byte) value1}, DataBuffer.TYPE_BYTE);
             } else if (max < 65536) {
-                table =
-                        LookupTableFactory.create(
-                                new short[] {(short) value0, (short) value1}, true);
+                table = LookupTableFactory.create(new short[] {(short) value0, (short) value1}, true);
             } else {
                 table = LookupTableFactory.create(new int[] {value0, value1});
             }
@@ -2742,31 +2635,26 @@ public class ImageWorker {
     }
 
     /**
-     * Replaces all occurences of the given color (usually opaque) by a fully transparent color.
-     * Currents implementation supports image backed by any {@link IndexColorModel}, or by {@link
-     * ComponentColorModel} with {@link DataBuffer#TYPE_BYTE TYPE_BYTE}. More types may be added in
-     * future GeoTools versions.
+     * Replaces all occurences of the given color (usually opaque) by a fully transparent color. Currents implementation
+     * supports image backed by any {@link IndexColorModel}, or by {@link ComponentColorModel} with
+     * {@link DataBuffer#TYPE_BYTE TYPE_BYTE}. More types may be added in future GeoTools versions.
      *
      * @param transparentColor The color to make transparent.
      * @return this image worker.
-     * @throws IllegalStateException if the current {@linkplain #image} has an unsupported color
-     *     model.
+     * @throws IllegalStateException if the current {@linkplain #image} has an unsupported color model.
      */
-    public final ImageWorker makeColorTransparent(final Color transparentColor)
-            throws IllegalStateException {
+    public final ImageWorker makeColorTransparent(final Color transparentColor) throws IllegalStateException {
         if (transparentColor == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transparentColor"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transparentColor"));
         }
         final ColorModel cm = image.getColorModel();
         if (cm instanceof IndexColorModel) {
             return maskIndexColorModel(transparentColor);
         } else if (cm instanceof ComponentColorModel) {
             switch (image.getSampleModel().getDataType()) {
-                case DataBuffer.TYPE_BYTE:
-                    {
-                        return maskComponentColorModelByte(transparentColor);
-                    }
+                case DataBuffer.TYPE_BYTE: {
+                    return maskComponentColorModelByte(transparentColor);
+                }
                     // Add other types here if we support them...
             }
         }
@@ -2774,8 +2662,8 @@ public class ImageWorker {
     }
 
     /**
-     * For an image backed by an {@link IndexColorModel}, replaces all occurences of the given color
-     * (usually opaque) by a fully transparent color.
+     * For an image backed by an {@link IndexColorModel}, replaces all occurences of the given color (usually opaque) by
+     * a fully transparent color.
      *
      * @param transparentColor The color to make transparent.
      * @return this image worker.
@@ -2839,9 +2727,7 @@ public class ImageWorker {
             Arrays.fill(rgb[3], (byte) 255);
         }
         if (transparency != Transparency.TRANSLUCENT) {
-            cm =
-                    new IndexColorModel(
-                            cm.getPixelSize(), mapSize, rgb[0], rgb[1], rgb[2], transparencyIndex);
+            cm = new IndexColorModel(cm.getPixelSize(), mapSize, rgb[0], rgb[1], rgb[2], transparencyIndex);
         } else {
             for (Integer transparentPixelsIndex : transparentPixelsIndexes) {
                 rgb[3][transparentPixelsIndex] = (byte) 0;
@@ -2867,19 +2753,18 @@ public class ImageWorker {
     }
 
     /**
-     * For an image backed by an {@link ComponentColorModel}, replaces all occurences of the given
-     * color (usually opaque) by a fully transparent color.
+     * For an image backed by an {@link ComponentColorModel}, replaces all occurences of the given color (usually
+     * opaque) by a fully transparent color.
      *
      * @param transparentColor The color to make transparent.
      * @return this image worker.
      *     <p>Current implementation invokes a lot of JAI operations:
-     *     <p>"BandSelect" --> "Lookup" --> "BandCombine" --> "Extrema" --> "Binarize" --> "Format"
-     *     --> "BandSelect" (one more time) --> "Multiply" --> "BandMerge".
-     *     <p>I would expect more speed and memory efficiency by writing our own JAI operation
-     *     (PointOp subclass) doing that in one step. It would also be more deterministic (our
-     *     "binarize" method depends on statistics on pixel values) and avoid unwanted side-effect
-     *     like turning black color (RGB = 0,0,0) to transparent one. It would also be easier to
-     *     maintain I believe.
+     *     <p>"BandSelect" --> "Lookup" --> "BandCombine" --> "Extrema" --> "Binarize" --> "Format" --> "BandSelect"
+     *     (one more time) --> "Multiply" --> "BandMerge".
+     *     <p>I would expect more speed and memory efficiency by writing our own JAI operation (PointOp subclass) doing
+     *     that in one step. It would also be more deterministic (our "binarize" method depends on statistics on pixel
+     *     values) and avoid unwanted side-effect like turning black color (RGB = 0,0,0) to transparent one. It would
+     *     also be easier to maintain I believe.
      */
     private final ImageWorker maskComponentColorModelByte(final Color transparentColor) {
         assert image.getColorModel() instanceof ComponentColorModel;
@@ -3046,21 +2931,20 @@ public class ImageWorker {
     }
 
     /**
-     * Applies the specified mask over the current {@linkplain #image}. The mask should be
-     * {@linkplain #binarize() binarized} - if it is not, this method will do it itself. Then, for
-     * every pixels in the mask with value equals to {@code maskValue}, the corresponding pixel in
-     * the {@linkplain #image} will be set to the specified {@code newValue}.
+     * Applies the specified mask over the current {@linkplain #image}. The mask should be {@linkplain #binarize()
+     * binarized} - if it is not, this method will do it itself. Then, for every pixels in the mask with value equals to
+     * {@code maskValue}, the corresponding pixel in the {@linkplain #image} will be set to the specified
+     * {@code newValue}.
      *
-     * <p><strong>Note:</strong> current implementation force the color model to an {@linkplain
-     * IndexColorModel indexed} one. Future versions may avoid this change.
+     * <p><strong>Note:</strong> current implementation force the color model to an {@linkplain IndexColorModel indexed}
+     * one. Future versions may avoid this change.
      *
      * @param mask The mask to apply, as a {@linkplain #binarize() binarized} image.
      * @param maskValue The mask value to search for ({@code false} for 0 or {@code true} for 1).
-     * @param newValue The new value for every pixels in {@linkplain #image} corresponding to {@code
-     *     maskValue} in the mask.
+     * @param newValue The new value for every pixels in {@linkplain #image} corresponding to {@code maskValue} in the
+     *     mask.
      * @return this {@link ImageWorker}.
-     * @todo This now should work only if {@code newValue} is 255 and {@code maskValue} is {@code
-     *     false}.
+     * @todo This now should work only if {@code newValue} is 255 and {@code maskValue} is {@code false}.
      */
     public final ImageWorker mask(RenderedImage mask, final boolean maskValue, int newValue) {
 
@@ -3127,8 +3011,7 @@ public class ImageWorker {
 
             ParameterBlock pb;
             // now if we mask with 1 we have to invert the mask
-            RenderingHints renderingHints =
-                    new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            RenderingHints renderingHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
             if (maskValue) {
                 pb = new ParameterBlock();
                 pb.setSource(mask, 0);
@@ -3156,8 +3039,7 @@ public class ImageWorker {
             pb = new ParameterBlock();
             pb.setSource(mask, 0);
             if (opConstJAIExt) {
-                prepareOpConstOperation(
-                        Operator.SUM, new double[] {newValue}, pb, roi, null, false);
+                prepareOpConstOperation(Operator.SUM, new double[] {newValue}, pb, roi, null, false);
                 image = JAI.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
             } else {
                 image = JAI.create("AddConst", pb, renderingHints);
@@ -3182,8 +3064,8 @@ public class ImageWorker {
     }
 
     /**
-     * Copmputes a pixel-by-pixel maximum value from all the provided sources. The images must share
-     * the same raster space.
+     * Copmputes a pixel-by-pixel maximum value from all the provided sources. The images must share the same raster
+     * space.
      */
     public ImageWorker max(RenderedImage[] sources) {
         ParameterBlock pb = new ParameterBlock();
@@ -3196,8 +3078,8 @@ public class ImageWorker {
     }
 
     /**
-     * Copmputes a pixel-by-pixel minimum value from all the provided sources. The images must share
-     * the same raster space.
+     * Copmputes a pixel-by-pixel minimum value from all the provided sources. The images must share the same raster
+     * space.
      */
     public ImageWorker min(RenderedImage[] sources) {
         ParameterBlock pb = new ParameterBlock();
@@ -3224,12 +3106,7 @@ public class ImageWorker {
     }
 
     private void prepareOpConstOperation(
-            Operator op,
-            double[] values,
-            ParameterBlock pb,
-            ROI roi,
-            Range nodata,
-            boolean setDestNoData) {
+            Operator op, double[] values, ParameterBlock pb, ROI roi, Range nodata, boolean setDestNoData) {
         pb.set(op, 1);
         pb.set(values, 0);
         pb.set(roi, 2);
@@ -3244,9 +3121,8 @@ public class ImageWorker {
     }
 
     /**
-     * Takes two rendered or renderable source images, and adds every pair of pixels, one from each
-     * source image of the corresponding position and band. See JAI {@link AddDescriptor} for
-     * details.
+     * Takes two rendered or renderable source images, and adds every pair of pixels, one from each source image of the
+     * corresponding position and band. See JAI {@link AddDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be added to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3268,9 +3144,9 @@ public class ImageWorker {
     }
 
     /**
-     * Takes one rendered or renderable image and an array of double constants, and multiplies every
-     * pixel of the same band of the source by the constant from the corresponding array entry. See
-     * JAI {@link MultiplyConstDescriptor} for details.
+     * Takes one rendered or renderable image and an array of double constants, and multiplies every pixel of the same
+     * band of the source by the constant from the corresponding array entry. See JAI {@link MultiplyConstDescriptor}
+     * for details.
      *
      * @param inValues The constants to be multiplied.
      * @return this {@link ImageWorker}.
@@ -3291,9 +3167,9 @@ public class ImageWorker {
     }
 
     /**
-     * Takes two rendered or renderable source images, and myltiply form each pixel the related
-     * value of the second image, each one from each source image of the corresponding position and
-     * band. See JAI {@link MultiplyDescriptor} for details.
+     * Takes two rendered or renderable source images, and myltiply form each pixel the related value of the second
+     * image, each one from each source image of the corresponding position and band. See JAI {@link MultiplyDescriptor}
+     * for details.
      *
      * @param renderedImage the {@link RenderedImage} to be multiplied to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3314,9 +3190,9 @@ public class ImageWorker {
     }
 
     /**
-     * Takes one rendered or renderable image and an array of integer constants, and performs a
-     * bit-wise logical "xor" between every pixel in the same band of the source and the constant
-     * from the corresponding array entry. See JAI {@link XorConstDescriptor} for details.
+     * Takes one rendered or renderable image and an array of integer constants, and performs a bit-wise logical "xor"
+     * between every pixel in the same band of the source and the constant from the corresponding array entry. See JAI
+     * {@link XorConstDescriptor} for details.
      *
      * @see XorConstDescriptor
      */
@@ -3339,9 +3215,9 @@ public class ImageWorker {
     }
 
     /**
-     * Takes two rendered or renderable source images, and subtract form each pixel the related
-     * value of the second image, each one from each source image of the corresponding position and
-     * band. See JAI {@link AddDescriptor} for details.
+     * Takes two rendered or renderable source images, and subtract form each pixel the related value of the second
+     * image, each one from each source image of the corresponding position and band. See JAI {@link AddDescriptor} for
+     * details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3362,9 +3238,8 @@ public class ImageWorker {
     }
 
     /**
-     * Takes two rendered or renderable source images, and do an OR for each pixel images, each one
-     * from each source image of the corresponding position and band. See JAI {@link AddDescriptor}
-     * for details.
+     * Takes two rendered or renderable source images, and do an OR for each pixel images, each one from each source
+     * image of the corresponding position and band. See JAI {@link AddDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3397,14 +3272,13 @@ public class ImageWorker {
     }
 
     /**
-     * Adds transparency to a preexisting image whose color model is {@linkplain IndexColorModel
-     * index color model}. For all pixels with the value {@code false} in the specified transparency
-     * mask, the corresponding pixel in the {@linkplain #image} is set to the transparent pixel
-     * value. All other pixels are left unchanged.
+     * Adds transparency to a preexisting image whose color model is {@linkplain IndexColorModel index color model}. For
+     * all pixels with the value {@code false} in the specified transparency mask, the corresponding pixel in the
+     * {@linkplain #image} is set to the transparent pixel value. All other pixels are left unchanged.
      *
      * @param alphaChannel The mask to apply as a {@linkplain #binarize() binarized} image.
-     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link
-     *     OrderedDitherDescriptor} JAi operations.
+     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link OrderedDitherDescriptor}
+     *     JAi operations.
      * @return this {@link ImageWorker}.
      * @see #isTranslucent
      * @see #forceBitmaskIndexColorModel
@@ -3416,23 +3290,20 @@ public class ImageWorker {
     }
 
     /**
-     * Adds transparency to a preexisting image whose color model is {@linkplain IndexColorModel
-     * index color model}. First, this method creates a new index color model with the specified
-     * {@code transparent} pixel, if needed (this method may skip this step if the specified pixel
-     * is already transparent. Then for all pixels with the value {@code false} in the specified
-     * transparency mask, the corresponding pixel in the {@linkplain #image} is set to that
-     * transparent value. All other pixels are left unchanged.
+     * Adds transparency to a preexisting image whose color model is {@linkplain IndexColorModel index color model}.
+     * First, this method creates a new index color model with the specified {@code transparent} pixel, if needed (this
+     * method may skip this step if the specified pixel is already transparent. Then for all pixels with the value
+     * {@code false} in the specified transparency mask, the corresponding pixel in the {@linkplain #image} is set to
+     * that transparent value. All other pixels are left unchanged.
      *
      * @param alphaChannel The mask to apply as a {@linkplain #binarize() binarized} image.
-     * @param translucent {@code true} if {@linkplain Transparency#TRANSLUCENT translucent} images
-     *     are allowed, or {@code false} if the resulting images must be a {@linkplain
-     *     Transparency#BITMASK bitmask}.
-     * @param transparent The value for transparent pixels, to be given to every pixels in the
-     *     {@linkplain #image} corresponding to {@code false} in the mask. The special value {@code
-     *     -1} maps to the last pixel value allowed for the {@linkplain IndexedColorModel indexed
-     *     color model}.
-     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link
-     *     OrderedDitherDescriptor} JAi operations.
+     * @param translucent {@code true} if {@linkplain Transparency#TRANSLUCENT translucent} images are allowed, or
+     *     {@code false} if the resulting images must be a {@linkplain Transparency#BITMASK bitmask}.
+     * @param transparent The value for transparent pixels, to be given to every pixels in the {@linkplain #image}
+     *     corresponding to {@code false} in the mask. The special value {@code -1} maps to the last pixel value allowed
+     *     for the {@linkplain IndexedColorModel indexed color model}.
+     * @param errorDiffusion Tells if I should use {@link ErrorDiffusionDescriptor} or {@link OrderedDitherDescriptor}
+     *     JAi operations.
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker addTransparencyToIndexColorModel(
@@ -3457,8 +3328,7 @@ public class ImageWorker {
         final IndexColorModel oldCM = (IndexColorModel) image.getColorModel();
         final int pixelSize = oldCM.getPixelSize();
         transparent &= (1 << pixelSize) - 1;
-        final boolean forceBitmask =
-                !translucent && oldCM.getTransparency() == Transparency.TRANSLUCENT;
+        final boolean forceBitmask = !translucent && oldCM.getTransparency() == Transparency.TRANSLUCENT;
         if (forceBitmask || oldCM.getTransparentPixel() != transparent) {
             final int mapSize = Math.max(oldCM.getMapSize(), transparent + 1);
             final byte[][] RGBA = new byte[translucent ? 4 : 3][mapSize];
@@ -3472,9 +3342,7 @@ public class ImageWorker {
                 RGBA[3][transparent] = 0;
                 newCM = new IndexColorModel(pixelSize, mapSize, RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
             } else {
-                newCM =
-                        new IndexColorModel(
-                                pixelSize, mapSize, RGBA[0], RGBA[1], RGBA[2], transparent);
+                newCM = new IndexColorModel(pixelSize, mapSize, RGBA[0], RGBA[1], RGBA[2], transparent);
             }
             /*
              * Set the color model hint.
@@ -3499,17 +3367,15 @@ public class ImageWorker {
     }
 
     /**
-     * If the was not already tiled, tile it. Note that no tiling will be done if
-     * 'getRenderingHints()' failed to suggest a tile size. This method is for internal use by
-     * {@link #write} methods only.
+     * If the was not already tiled, tile it. Note that no tiling will be done if 'getRenderingHints()' failed to
+     * suggest a tile size. This method is for internal use by {@link #write} methods only.
      *
      * @return this {@link ImageWorker}.
      */
     public final ImageWorker tile() {
         final RenderingHints hints = getRenderingHints();
         final ImageLayout layout = getImageLayout(hints);
-        if (layout.isValid(ImageLayout.TILE_WIDTH_MASK)
-                || layout.isValid(ImageLayout.TILE_HEIGHT_MASK)) {
+        if (layout.isValid(ImageLayout.TILE_WIDTH_MASK) || layout.isValid(ImageLayout.TILE_HEIGHT_MASK)) {
             final int type = image.getSampleModel().getDataType();
             // ParameterBlock definition
             ParameterBlock pb = new ParameterBlock();
@@ -3523,8 +3389,8 @@ public class ImageWorker {
     }
 
     /**
-     * Applies the specified opacity to the image by either adding an alpha band, or modifying the
-     * existing one by multiplication
+     * Applies the specified opacity to the image by either adding an alpha band, or modifying the existing one by
+     * multiplication
      *
      * @param opacity The opacity to be applied, between 0 and 1
      * @return this {@link ImageWorker}.
@@ -3558,8 +3424,7 @@ public class ImageWorker {
 
             // build a new palette
             IndexColorModel newColorModel =
-                    new IndexColorModel(
-                            index.getPixelSize(), index.getMapSize(), reds, greens, blues, alphas);
+                    new IndexColorModel(index.getPixelSize(), index.getMapSize(), reds, greens, blues, alphas);
             LookupTable table =
                     buildOpacityLookupTable(0, 1, -1, image.getSampleModel().getDataType());
             ImageLayout layout = new ImageLayout(image);
@@ -3597,27 +3462,17 @@ public class ImageWorker {
                 // as the original image
                 byte alpha = (byte) Math.round(255 * opacity);
                 ImageLayout layout =
-                        new ImageLayout(
-                                image.getMinX(),
-                                image.getMinY(),
-                                image.getWidth(),
-                                image.getHeight());
-                RenderedOp alphaBand =
-                        ConstantDescriptor.create(
-                                (float) image.getWidth(),
-                                (float) image.getHeight(),
-                                new Byte[] {Byte.valueOf(alpha)},
-                                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                        new ImageLayout(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+                RenderedOp alphaBand = ConstantDescriptor.create(
+                        (float) image.getWidth(),
+                        (float) image.getHeight(),
+                        new Byte[] {Byte.valueOf(alpha)},
+                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
                 ParameterBlock pb = new ParameterBlock();
                 pb.setSource(expanded, 0);
                 pb.setSource(alphaBand, 1);
-                pb.set(
-                        new Range[] {
-                            nodata,
-                            nodata == null ? null : RangeFactory.create(alpha - 1, alpha - 1)
-                        },
-                        0);
+                pb.set(new Range[] {nodata, nodata == null ? null : RangeFactory.create(alpha - 1, alpha - 1)}, 0);
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         double dest = background[0];
@@ -3635,9 +3490,8 @@ public class ImageWorker {
                 // ParameterBlock definition
                 ParameterBlock pb = new ParameterBlock();
                 pb.setSource(expanded, 0);
-                LookupTable table =
-                        buildOpacityLookupTable(
-                                opacity, bands, alphaBand, expanded.getSampleModel().getDataType());
+                LookupTable table = buildOpacityLookupTable(
+                        opacity, bands, alphaBand, expanded.getSampleModel().getDataType());
                 pb.set(table, 0);
                 pb.set(roi, 2);
                 pb.set(nodata, 3);
@@ -3657,12 +3511,8 @@ public class ImageWorker {
         return this;
     }
 
-    /**
-     * Builds a lookup table that is the identity on all bands but the alpha one, where the opacity
-     * is applied
-     */
-    LookupTable buildOpacityLookupTable(
-            float opacity, final int bands, int alphaBand, int dataType) {
+    /** Builds a lookup table that is the identity on all bands but the alpha one, where the opacity is applied */
+    LookupTable buildOpacityLookupTable(float opacity, final int bands, int alphaBand, int dataType) {
         byte[][] matrix = new byte[bands][256];
         for (int band = 0; band < matrix.length; band++) {
             if (band == alphaBand) {
@@ -3680,19 +3530,19 @@ public class ImageWorker {
     }
 
     /**
-     * Writes the {@linkplain #image} to the specified file. This method differs from {@link
-     * ImageIO#write(String,File)} in a number of ways:
+     * Writes the {@linkplain #image} to the specified file. This method differs from {@link ImageIO#write(String,File)}
+     * in a number of ways:
      *
      * <p>
      *
      * <ul>
      *   <li>The {@linkplain ImageWriter image writer} to use is inferred from the file extension.
-     *   <li>If the image writer accepts {@link File} objects as input, then the {@code file}
-     *       argument is given directly without creating an {@link ImageOutputStream} object. This
-     *       is important for some formats like HDF, which work <em>only</em> with files.
+     *   <li>If the image writer accepts {@link File} objects as input, then the {@code file} argument is given directly
+     *       without creating an {@link ImageOutputStream} object. This is important for some formats like HDF, which
+     *       work <em>only</em> with files.
      *   <li>If the {@linkplain #image} is not tiled, then it is tiled prior to be written.
-     *   <li>If some special processing is needed for a given format, then the corresponding method
-     *       is invoked. Example: {@link #forceIndexColorModelForGIF}.
+     *   <li>If some special processing is needed for a given format, then the corresponding method is invoked. Example:
+     *       {@link #forceIndexColorModelForGIF}.
      * </ul>
      *
      * @return this {@link ImageWorker}.
@@ -3709,19 +3559,19 @@ public class ImageWorker {
     }
 
     /**
-     * Writes outs the image contained into this {@link ImageWorker} as a PNG using the provided
-     * destination, compression and compression rate.
+     * Writes outs the image contained into this {@link ImageWorker} as a PNG using the provided destination,
+     * compression and compression rate.
      *
-     * <p>The destination object can be anything providing that we have an {@link
-     * ImageOutputStreamSpi} that recognizes it.
+     * <p>The destination object can be anything providing that we have an {@link ImageOutputStreamSpi} that recognizes
+     * it.
      *
      * @param destination where to write the internal {@link #image} as a PNG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
      * @param nativeAcc should we use native acceleration.
      * @param paletted should we write the png as 8 bits?
-     * @throws IOException In case an error occurs during the search for an {@link
-     *     ImageOutputStream} or during the eoncding process.
+     * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
+     *     eoncding process.
      */
     // Current code doesn't check if the writer already accepts the provided destination. It
     // wraps it in a ImageOutputStream inconditionnaly.
@@ -3734,16 +3584,14 @@ public class ImageWorker {
             throws IOException {
         // Reformatting this image for PNG.
         final boolean hasPalette = image.getColorModel() instanceof IndexColorModel;
-        final boolean hasColorModel =
-                hasPalette ? false : image.getColorModel() instanceof ComponentColorModel;
+        final boolean hasColorModel = hasPalette ? false : image.getColorModel() instanceof ComponentColorModel;
         if (paletted && !hasPalette) {
             // we have to reduce colors
             forceIndexColorModelForGIF(true);
         } else {
             if (!hasColorModel && !hasPalette) {
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.fine(
-                            "Forcing input image to be compatible with PNG: No palette, no component color model");
+                    LOGGER.fine("Forcing input image to be compatible with PNG: No palette, no component color model");
                 }
                 // png supports gray, rgb, rgba and paletted 8 bit, but not, for example, double and
                 // float values, or 16 bits palettes
@@ -3798,8 +3646,7 @@ public class ImageWorker {
         // move on with the writer quest
         if (!nativeAcc || writer == null) {
 
-            final Iterator<ImageWriter> it =
-                    ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
+            final Iterator<ImageWriter> it = ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
             if (!it.hasNext()) {
                 throw new IllegalStateException(ErrorKeys.NO_IMAGE_WRITER);
             }
@@ -3808,9 +3655,7 @@ public class ImageWorker {
                 originatingProvider = writer.getOriginatingProvider();
                 // check that this is not the native one
                 if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                        && originatingProvider
-                                .getClass()
-                                .equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
+                        && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
                     if (it.hasNext()) {
                         writer = it.next();
                         originatingProvider = writer.getOriginatingProvider();
@@ -3833,9 +3678,8 @@ public class ImageWorker {
 
         // ok, last resort use the JDK one and reformat the image
         if (writer == null) {
-            List providers =
-                    com.sun.media.imageioimpl.common.ImageUtil.getJDKImageReaderWriterSPI(
-                            IIORegistry.getDefaultInstance(), "PNG", false);
+            List providers = com.sun.media.imageioimpl.common.ImageUtil.getJDKImageReaderWriterSPI(
+                    IIORegistry.getDefaultInstance(), "PNG", false);
             if (providers == null || providers.isEmpty()) {
                 throw new IllegalStateException("Unable to find JDK Png encoder!");
             }
@@ -3851,23 +3695,19 @@ public class ImageWorker {
             }
         }
 
-        LOGGER.fine(
-                "Using ImageIO Writer with SPI: "
-                        + originatingProvider.getClass().getCanonicalName());
+        LOGGER.fine("Using ImageIO Writer with SPI: "
+                + originatingProvider.getClass().getCanonicalName());
 
         // Getting a stream.
         LOGGER.fine("Setting write parameters for this writer");
 
         ImageWriteParam iwp = null;
-        try (ImageOutputStream memOutStream =
-                ImageIOExt.createImageOutputStream(image, destination)) {
+        try (ImageOutputStream memOutStream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (memOutStream == null) {
                 throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
             if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                    && originatingProvider
-                            .getClass()
-                            .equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
+                    && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
                 // Compressing with native.
                 LOGGER.fine("Writer is native");
                 iwp = writer.getDefaultWriteParam();
@@ -3878,8 +3718,7 @@ public class ImageWorker {
                 // we can control quality here
                 iwp.setCompressionQuality(compressionRate);
                 // destination image type
-                iwp.setDestinationType(
-                        new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
+                iwp.setDestinationType(new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
             } else {
                 // Compressing with pure Java.
                 LOGGER.fine("Writer is NOT native");
@@ -3897,34 +3736,31 @@ public class ImageWorker {
                 try {
                     writer.dispose();
                 } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
                 }
             }
         }
     }
 
     /**
-     * Writes outs the image contained into this {@link ImageWorker} as a GIF using the provided
-     * destination, compression and compression rate.
+     * Writes outs the image contained into this {@link ImageWorker} as a GIF using the provided destination,
+     * compression and compression rate.
      *
-     * <p>It is worth to point out that the only compressions algorithm available with the jdk
-     * {@link GIFImageWriter} is "LZW" while the compression rates have to be confined between 0 and
-     * 1. AN acceptable values is usally 0.75f.
+     * <p>It is worth to point out that the only compressions algorithm available with the jdk {@link GIFImageWriter} is
+     * "LZW" while the compression rates have to be confined between 0 and 1. AN acceptable values is usally 0.75f.
      *
-     * <p>The destination object can be anything providing that we have an {@link
-     * ImageOutputStreamSpi} that recognizes it.
+     * <p>The destination object can be anything providing that we have an {@link ImageOutputStreamSpi} that recognizes
+     * it.
      *
      * @param destination where to write the internal {@link #image} as a gif.
      * @param compression The name of compression algorithm.
      * @param compressionRate percentage of compression, as a number between 0 and 1.
      * @return this {@link ImageWorker}.
-     * @throws IOException In case an error occurs during the search for an {@link
-     *     ImageOutputStream} or during the eoncding process.
+     * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
+     *     eoncding process.
      * @see #forceIndexColorModelForGIF(boolean)
      */
-    public final ImageWorker writeGIF(
-            final Object destination, final String compression, final float compressionRate)
+    public final ImageWorker writeGIF(final Object destination, final String compression, final float compressionRate)
             throws IOException {
         forceIndexColorModelForGIF(true);
 
@@ -3932,8 +3768,7 @@ public class ImageWorker {
             throw new IIOException(ErrorKeys.NO_IMAGE_WRITER);
         }
         try (ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination)) {
-            if (stream == null)
-                throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+            if (stream == null) throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             final ImageWriter writer = IMAGEIO_GIF_IMAGE_WRITER_SPI.createWriterInstance();
             final ImageWriteParam param = writer.getDefaultWriteParam();
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -3947,24 +3782,21 @@ public class ImageWorker {
     }
 
     /**
-     * Writes outs the image contained into this {@link ImageWorker} as a JPEG using the provided
-     * destination , compression and compression rate.
+     * Writes outs the image contained into this {@link ImageWorker} as a JPEG using the provided destination ,
+     * compression and compression rate.
      *
-     * <p>The destination object can be anything providing that we have an {@link
-     * ImageOutputStreamSpi} that recognizes it.
+     * <p>The destination object can be anything providing that we have an {@link ImageOutputStreamSpi} that recognizes
+     * it.
      *
      * @param destination where to write the internal {@link #image} as a JPEG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
      * @param nativeAcc should we use native acceleration.
-     * @throws IOException In case an error occurs during the search for an {@link
-     *     ImageOutputStream} or during the eoncding process.
+     * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
+     *     eoncding process.
      */
     public final void writeJPEG(
-            final Object destination,
-            final String compression,
-            final float compressionRate,
-            final boolean nativeAcc)
+            final Object destination, final String compression, final float compressionRate, final boolean nativeAcc)
             throws IOException {
         // Reformatting this image for jpeg.
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -4006,8 +3838,7 @@ public class ImageWorker {
         if (writer == null) {
             if (JDK_JPEG_IMAGE_WRITER_SPI == null) {
                 throw new IllegalStateException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2, "Unable to find JDK JPEG Writer"));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, "Unable to find JDK JPEG Writer"));
             }
             writer = JDK_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
         }
@@ -4044,13 +3875,11 @@ public class ImageWorker {
                 // while the clib writer has issues with tiled images
                 if ((!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0))
                         || (nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1))) {
-                    final BufferedImage finalImage =
-                            new BufferedImage(
-                                    image.getColorModel(),
-                                    ((WritableRaster) image.getData())
-                                            .createWritableTranslatedChild(0, 0),
-                                    image.getColorModel().isAlphaPremultiplied(),
-                                    null);
+                    final BufferedImage finalImage = new BufferedImage(
+                            image.getColorModel(),
+                            ((WritableRaster) image.getData()).createWritableTranslatedChild(0, 0),
+                            image.getColorModel().isAlphaPremultiplied(),
+                            null);
 
                     writer.write(null, new IIOImage(finalImage, null, null), iwp);
                 } else {
@@ -4060,8 +3889,7 @@ public class ImageWorker {
                 try {
                     writer.dispose();
                 } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
                 }
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Writing out... Done!");
@@ -4071,19 +3899,19 @@ public class ImageWorker {
     }
 
     /**
-     * Writes outs the image contained into this {@link ImageWorker} as a TIFF using the provided
-     * destination, compression and compression rate and basic tiling information
+     * Writes outs the image contained into this {@link ImageWorker} as a TIFF using the provided destination,
+     * compression and compression rate and basic tiling information
      *
-     * <p>The destination object can be anything providing that we have an {@link
-     * ImageOutputStreamSpi} that recognizes it.
+     * <p>The destination object can be anything providing that we have an {@link ImageOutputStreamSpi} that recognizes
+     * it.
      *
      * @param destination where to write the internal {@link #image} as a TIFF.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
      * @param tileSizeX tile size x direction (or -1 if tiling is not desired)
      * @param tileSizeY tile size y direction (or -1 if tiling is not desired)
-     * @throws IOException In case an error occurs during the search for an {@link
-     *     ImageOutputStream} or during the eoncding process.
+     * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
+     *     eoncding process.
      */
     public final void writeTIFF(
             final Object destination,
@@ -4093,12 +3921,10 @@ public class ImageWorker {
             final int tileSizeY)
             throws IOException {
         // Reformatting this image for jpeg.
-        if (LOGGER.isLoggable(Level.FINER))
-            LOGGER.finer("Encoding input image to write out as TIFF.");
+        if (LOGGER.isLoggable(Level.FINER)) LOGGER.finer("Encoding input image to write out as TIFF.");
 
         // Getting a writer.
-        if (LOGGER.isLoggable(Level.FINER))
-            LOGGER.finer("Getting a TIFF writer and configuring it.");
+        if (LOGGER.isLoggable(Level.FINER)) LOGGER.finer("Getting a TIFF writer and configuring it.");
         ImageWriter writer = null;
         if (IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI == null) {
             // our own is not there, strange... this should not happen
@@ -4147,17 +3973,16 @@ public class ImageWorker {
                 try {
                     writer.dispose();
                 } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
                 }
             }
         }
     }
 
     /**
-     * Performs an affine transform on the image, applying optimization such as affine removal in
-     * case the affine is an identity, affine merging if the affine is applied on top of another
-     * affine, and using optimized operations for integer translates
+     * Performs an affine transform on the image, applying optimization such as affine removal in case the affine is an
+     * identity, affine merging if the affine is applied on top of another affine, and using optimized operations for
+     * integer translates
      */
     public ImageWorker affine(AffineTransform tx, Interpolation interpolation, double[] bgValues) {
         // identity elimination -> check the tx params against the image size to see if
@@ -4169,19 +3994,13 @@ public class ImageWorker {
         boolean hasShearY = Math.abs(tx.getShearY()) * size > RS_EPS;
         boolean hasTranslateX = Math.abs(tx.getTranslateX()) > RS_EPS;
         boolean hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
-        if (!hasScaleX
-                && !hasScaleY
-                && !hasShearX
-                && !hasShearY
-                && !hasTranslateX
-                && !hasTranslateY) {
+        if (!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX && !hasTranslateY) {
             return this;
         }
 
         // apply defaults to allow for comparisong
         ParameterListDescriptor pld =
-                getOperationDescriptor("affine")
-                        .getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
+                getOperationDescriptor("affine").getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
         if (interpolation == null) {
             interpolation = (Interpolation) pld.getParamDefaultValue("interpolation");
         }
@@ -4256,13 +4075,11 @@ public class ImageWorker {
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
-                        hasSameNodata =
-                                nodata == null
-                                        || (sBgValues != null
-                                                && this.nodata != null
-                                                && sBgValues.length > 0
-                                                && sBgValues[0]
-                                                        == this.nodata.getMin().doubleValue());
+                        hasSameNodata = nodata == null
+                                || (sBgValues != null
+                                        && this.nodata != null
+                                        && sBgValues.length > 0
+                                        && sBgValues[0] == this.nodata.getMin().doubleValue());
                     }
                 }
 
@@ -4286,8 +4103,7 @@ public class ImageWorker {
                         setNoData(nodata);
                     }
                 }
-            } else if ((SCALE_NAME.equals(opName) || SCALE2_NAME.equals(opName))
-                    && !preserveChainedAffines) {
+            } else if ((SCALE_NAME.equals(opName) || SCALE2_NAME.equals(opName)) && !preserveChainedAffines) {
                 boolean isScale2 = SCALE2_NAME.equals(opName);
                 ParameterBlock paramBlock = sourceParamBlock;
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
@@ -4305,8 +4121,7 @@ public class ImageWorker {
                     r = (ROI) paramBlock.getObjectParameter(5);
                     nodata = numParameters > 7 ? (Range) paramBlock.getObjectParameter(7) : null;
                     // The background may haven't been set
-                    double[] sBgValues =
-                            numParameters > 8 ? (double[]) paramBlock.getObjectParameter(8) : null;
+                    double[] sBgValues = numParameters > 8 ? (double[]) paramBlock.getObjectParameter(8) : null;
                     if (r != null) {
                         try {
                             ROI newROI = computeScaledROI(scalingParams);
@@ -4315,26 +4130,18 @@ public class ImageWorker {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
                     }
-                    hasSameNodata =
-                            nodata == null
-                                    || (sBgValues != null
-                                            && this.nodata != null
-                                            && sBgValues.length > 0
-                                            && sBgValues[0] == this.nodata.getMin().doubleValue());
+                    hasSameNodata = nodata == null
+                            || (sBgValues != null
+                                    && this.nodata != null
+                                    && sBgValues.length > 0
+                                    && sBgValues[0] == this.nodata.getMin().doubleValue());
                 }
 
-                if (sInterp == interpolation
-                        && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
+                if (sInterp == interpolation && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
-                    concat.concatenate(
-                            new AffineTransform(
-                                    scalingParams[0],
-                                    0,
-                                    0,
-                                    scalingParams[1],
-                                    scalingParams[2],
-                                    scalingParams[3]));
+                    concat.concatenate(new AffineTransform(
+                            scalingParams[0], 0, 0, scalingParams[1], scalingParams[2], scalingParams[3]));
                     tx = concat;
                     source = sSource;
                     if (similarROI && r != null) {
@@ -4359,20 +4166,13 @@ public class ImageWorker {
         hasShearY = Math.abs(tx.getShearY()) * size > RS_EPS;
         hasTranslateX = Math.abs(tx.getTranslateX()) > RS_EPS;
         hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
-        boolean intTranslateX =
-                Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
-        boolean intTranslateY =
-                Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
+        boolean intTranslateX = Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
+        boolean intTranslateY = Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
         boolean nonNegativeScaleX = tx.getScaleX() >= 0;
         boolean nonNegativeScaleY = tx.getScaleY() >= 0;
 
         // did it become a identity after the combination?
-        if (!hasScaleX
-                && !hasScaleY
-                && !hasShearX
-                && !hasShearY
-                && !hasTranslateX
-                && !hasTranslateY) {
+        if (!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX && !hasTranslateY) {
             this.image = source;
             return this;
         }
@@ -4384,17 +4184,13 @@ public class ImageWorker {
                 // layout
                 Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-                double[] scalingParams = {
-                    1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())
-                };
+                double[] scalingParams = {1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())};
                 scale(pb, scalingParams, interpolation, localHints);
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
             } else {
                 // generic scale
-                double[] scalingParams = {
-                    tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()
-                };
+                double[] scalingParams = {tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()};
                 scale(pb, scalingParams, interpolation, getRenderingHints());
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
@@ -4414,11 +4210,7 @@ public class ImageWorker {
     }
 
     /** Perform scaling */
-    private void scale(
-            ParameterBlock pb,
-            double[] scalingParams,
-            Interpolation interpolation,
-            RenderingHints hints) {
+    private void scale(ParameterBlock pb, double[] scalingParams, Interpolation interpolation, RenderingHints hints) {
         for (int i = 0; i < 4; i++) {
             if (USE_JAI_SCALE2) {
                 pb.set(scalingParams[i], i);
@@ -4436,17 +4228,15 @@ public class ImageWorker {
         // as normal bands to avoid partial transparencies
         if (cm.hasAlpha()
                 && (numBands == 2 || numBands == 4)
-                && (interpolation != null
-                        && (interpolation.getWidth() > 1 || interpolation.getHeight() > 1))) {
+                && (interpolation != null && (interpolation.getWidth() > 1 || interpolation.getHeight() > 1))) {
 
             // Extract Alpha for future re-attach
             ImageWorker noAlpha =
                     new ImageWorker(sourceImage).setRenderingHints(hints).retainBands(numBands - 1);
-            alphaChannel =
-                    new ImageWorker(sourceImage)
-                            .setRenderingHints(hints)
-                            .retainLastBand()
-                            .getRenderedImage();
+            alphaChannel = new ImageWorker(sourceImage)
+                    .setRenderingHints(hints)
+                    .retainLastBand()
+                    .getRenderedImage();
             pb.setSource(noAlpha.getRenderedImage(), 0);
         }
 
@@ -4490,14 +4280,13 @@ public class ImageWorker {
         if (candidate instanceof ImageLayout) {
             ImageLayout layout = (ImageLayout) candidate;
             if (layout.getTileWidth(null) > 0 && layout.getTileHeight(null) > 0) {
-                ImageLayout layout2 =
-                        new ImageLayout2(
-                                layout.getTileGridXOffset(null),
-                                layout.getTileGridYOffset(null),
-                                layout.getTileWidth(null),
-                                layout.getTileHeight(null),
-                                sm,
-                                cm);
+                ImageLayout layout2 = new ImageLayout2(
+                        layout.getTileGridXOffset(null),
+                        layout.getTileGridYOffset(null),
+                        layout.getTileWidth(null),
+                        layout.getTileHeight(null),
+                        sm,
+                        cm);
                 merged.setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout2));
             }
         }
@@ -4505,8 +4294,7 @@ public class ImageWorker {
     }
 
     /**
-     * Update the ROI by extracting it from the current image using the underlying property
-     * generator (when specified)
+     * Update the ROI by extracting it from the current image using the underlying property generator (when specified)
      *
      * @param forceUpdate update the ROI no matter if the original roi was is null.
      * @param opName if not null, get the property from the underlying property generator
@@ -4530,8 +4318,7 @@ public class ImageWorker {
             if (opName != null) {
                 // Extract the roi using a property generator
                 PropertyGenerator gen =
-                        getOperationDescriptor(opName)
-                                .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                        getOperationDescriptor(opName).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                 prop = gen.getProperty("roi", localImage);
             } else {
                 // extract the roi from the image
@@ -4550,10 +4337,8 @@ public class ImageWorker {
     private ROI computeScaledROI(double[] scalingParams) throws NoninvertibleTransformException {
         ROI newRoi = null;
         if (roi != null) {
-            AffineTransform sTx =
-                    AffineTransform.getScaleInstance(scalingParams[0], scalingParams[1]);
-            sTx.concatenate(
-                    AffineTransform.getTranslateInstance(scalingParams[2], scalingParams[3]));
+            AffineTransform sTx = AffineTransform.getScaleInstance(scalingParams[0], scalingParams[1]);
+            sTx.concatenate(AffineTransform.getTranslateInstance(scalingParams[2], scalingParams[3]));
             newRoi = roi.transform(sTx.createInverse());
         }
         return newRoi;
@@ -4565,8 +4350,7 @@ public class ImageWorker {
         double[] scalingParams = new double[4];
         for (int i = 0; i < 4; i++) {
             // Use proper datatype parameter getter depending on the type of operation
-            scalingParams[i] =
-                    isScale2 ? paramBlock.getDoubleParameter(i) : paramBlock.getFloatParameter(i);
+            scalingParams[i] = isScale2 ? paramBlock.getDoubleParameter(i) : paramBlock.getFloatParameter(i);
         }
         return scalingParams;
     }
@@ -4581,16 +4365,13 @@ public class ImageWorker {
     }
 
     /**
-     * Crops the image to the specified bounds. Will use an internal operation that ensures the tile
-     * cache and tile scheduler hints are used, and will perform operation elimination in case the
-     * crop is doing nothing, or in case the crop is performed over another crop
+     * Crops the image to the specified bounds. Will use an internal operation that ensures the tile cache and tile
+     * scheduler hints are used, and will perform operation elimination in case the crop is doing nothing, or in case
+     * the crop is performed over another crop
      */
     public ImageWorker crop(float x, float y, float width, float height) {
         // no op elimination
-        if (image.getMinX() == x
-                && image.getMinY() == y
-                && image.getWidth() == width
-                && image.getHeight() == height) {
+        if (image.getMinX() == x && image.getMinY() == y && image.getWidth() == width && image.getHeight() == height) {
             return this;
         }
 
@@ -4627,12 +4408,9 @@ public class ImageWorker {
         pb.set(roi, 4);
         pb.set(nodata, 5);
         if (isNoDataNeeded()) {
-            double destinationNoData =
-                    nodata != null
-                            ? nodata.getMin().doubleValue()
-                            : (background != null && background.length > 0)
-                                    ? background[0]
-                                    : Double.NaN;
+            double destinationNoData = nodata != null
+                    ? nodata.getMin().doubleValue()
+                    : (background != null && background.length > 0) ? background[0] : Double.NaN;
             pb.set(new double[] {destinationNoData}, 6);
         }
 
@@ -4642,18 +4420,10 @@ public class ImageWorker {
     }
 
     public ImageWorker function(
-            ImageFunction function,
-            int w,
-            int h,
-            float xScale,
-            float yScale,
-            float xTrans,
-            float yTrans) {
+            ImageFunction function, int w, int h, float xScale, float yScale, float xTrans, float yTrans) {
         if (image != null) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                        Level.FINE,
-                        "Input image already present but will be replaced by ImageFunction");
+                LOGGER.log(Level.FINE, "Input image already present but will be replaced by ImageFunction");
             }
         }
         // Create a new parameter block
@@ -4678,10 +4448,7 @@ public class ImageWorker {
         return this;
     }
 
-    /**
-     * Returns the background colors as a value, if at all possible (3 or 4 values in the right
-     * range)
-     */
+    /** Returns the background colors as a value, if at all possible (3 or 4 values in the right range) */
     private Color getBackgroundColor() {
         if (background == null || background.length < 3 || background.length > 4) {
             return null;
@@ -4697,11 +4464,7 @@ public class ImageWorker {
             return new Color((int) background[0], (int) background[1], (int) background[2]);
         } else {
             // as per initial exit condition, here we can only have background.length == 4
-            return new Color(
-                    (int) background[0],
-                    (int) background[1],
-                    (int) background[2],
-                    (int) background[3]);
+            return new Color((int) background[0], (int) background[1], (int) background[2], (int) background[3]);
         }
     }
 
@@ -4728,22 +4491,16 @@ public class ImageWorker {
                 if (icm.hasAlpha()) {
                     color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index));
                 } else {
-                    color =
-                            new Color(
-                                    icm.getRed(index),
-                                    icm.getGreen(index),
-                                    icm.getBlue(index),
-                                    icm.getAlpha(index));
+                    color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index), icm.getAlpha(index));
                 }
                 if (color.equals(backgroundColor)) {
                     background = new double[] {index};
                 } else {
                     // we have to expand to RGB to apply that value
                     for (int i = 0; i < images.length; i++) {
-                        images[i] =
-                                new ImageWorker(images[i])
-                                        .forceComponentColorModel()
-                                        .getRenderedImage();
+                        images[i] = new ImageWorker(images[i])
+                                .forceComponentColorModel()
+                                .getRenderedImage();
                     }
                 }
             }
@@ -4898,9 +4655,7 @@ public class ImageWorker {
         pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
         pb.add(ROI_THRESHOLDS);
         pb.add(ROI_BACKGROUND);
-        pb.add(
-                handleMosaicThresholds(
-                        ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
+        pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
         RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
     }
@@ -4911,8 +4666,7 @@ public class ImageWorker {
         final int maxX = minX + image.getWidth();
         final int maxY = minY + image.getHeight();
         LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(
-                        minX, minY, maxX, minY, maxX, maxY, minX, maxY, minX, minY);
+                new LiteCoordinateSequence(minX, minY, maxX, minY, maxX, maxY, minX, maxY, minX, minY);
         Geometry footprint = new GeometryFactory().createPolygon(cs);
         return new ROIGeometry(footprint);
     }
@@ -4941,8 +4695,7 @@ public class ImageWorker {
         return nodata;
     }
 
-    public ImageWorker border(
-            int leftPad, int rightPad, int topPad, int bottomPad, BorderExtender ext) {
+    public ImageWorker border(int leftPad, int rightPad, int topPad, int bottomPad, BorderExtender ext) {
         ParameterBlock pb = new ParameterBlock();
         pb.addSource(image);
         pb.add(leftPad);
@@ -4986,8 +4739,7 @@ public class ImageWorker {
     }
 
     /** Scales the underlying raster using the provided parameters. */
-    public ImageWorker scale(
-            double xScale, double yScale, double xTrans, double yTrans, Interpolation interp) {
+    public ImageWorker scale(double xScale, double yScale, double xTrans, double yTrans, Interpolation interp) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0); // The source image.
         double[] scalingParams = {xScale, yScale, xTrans, yTrans};
@@ -5047,9 +4799,7 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (domain1D.hasGaps()) {
                 // We must set the new NoData value
-                setNoData(
-                        RangeFactory.create(
-                                domain1D.getDefaultValue(), domain1D.getDefaultValue()));
+                setNoData(RangeFactory.create(domain1D.getDefaultValue(), domain1D.getDefaultValue()));
             }
         }
         image = JAI.create("RasterClassifier", pb, getRenderingHints());
@@ -5068,9 +4818,7 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (transform.hasGaps()) {
                 // We must set the new NoData value
-                setNoData(
-                        RangeFactory.create(
-                                transform.getDefaultValue(), transform.getDefaultValue()));
+                setNoData(RangeFactory.create(transform.getDefaultValue(), transform.getDefaultValue()));
             }
         }
         image = JAI.create("GenericPiecewise", pb, getRenderingHints());
@@ -5149,9 +4897,8 @@ public class ImageWorker {
     }
 
     /**
-     * Forces all NODATA pixels, as well as those outside of the ROI, to be transparent (expanding
-     * the color model as needed in order to make it so). In case the image has no ROI or no nodata,
-     * the method won't perform any change
+     * Forces all NODATA pixels, as well as those outside of the ROI, to be transparent (expanding the color model as
+     * needed in order to make it so). In case the image has no ROI or no nodata, the method won't perform any change
      */
     public ImageWorker prepareForRendering() {
         // anything to do?
@@ -5236,19 +4983,17 @@ public class ImageWorker {
                         // get first band
                         final RenderedImage gray =
                                 new ImageWorker(image).retainFirstBand().getRenderedImage();
-                        image =
-                                new ImageWorker(gray)
-                                        .bandMerge(3)
-                                        .addBand(alpha, false)
-                                        .forceComponentColorModel()
-                                        .forceColorSpaceRGB()
-                                        .getRenderedImage();
+                        image = new ImageWorker(gray)
+                                .bandMerge(3)
+                                .addBand(alpha, false)
+                                .forceComponentColorModel()
+                                .forceColorSpaceRGB()
+                                .getRenderedImage();
                     } else {
-                        image =
-                                iw.bandMerge(3)
-                                        .forceComponentColorModel()
-                                        .forceColorSpaceRGB()
-                                        .getRenderedImage();
+                        image = iw.bandMerge(3)
+                                .forceComponentColorModel()
+                                .forceColorSpaceRGB()
+                                .getRenderedImage();
                     }
                 } else {
                     // has alpha channel, extract it
@@ -5275,8 +5020,7 @@ public class ImageWorker {
                 } else {
                     if (nodata != null) {
                         // must map nodata to alpha
-                        RangeLookupTable.Builder<Byte, Byte> builder =
-                                new RangeLookupTable.Builder<>();
+                        RangeLookupTable.Builder<Byte, Byte> builder = new RangeLookupTable.Builder<>();
                         if (nodata.getMin().doubleValue() != Double.NEGATIVE_INFINITY) {
                             builder.add(
                                     RangeFactory.create(
@@ -5300,10 +5044,9 @@ public class ImageWorker {
                         final RenderedImage alpha;
                         final int numBands = this.image.getSampleModel().getNumBands();
                         if (numBands == 1) {
-                            alpha =
-                                    new ImageWorker(this.image)
-                                            .rangeLookup(lookupTable)
-                                            .getRenderedImage();
+                            alpha = new ImageWorker(this.image)
+                                    .rangeLookup(lookupTable)
+                                    .getRenderedImage();
                         } else {
                             // need to combine all bands to extract alpha based on nodata.
                             // we may want to setup a custom jai operation for that.
@@ -5316,18 +5059,16 @@ public class ImageWorker {
                             }
 
                             // Final lookup table to assign fully transparent (0) to all zero pixels
-                            alpha =
-                                    new ImageWorker(this.image)
-                                            .setROI(roi)
-                                            .rangeLookup(lookupTable)
-                                            .bandCombine(matrix)
-                                            .lookup(LookupTableFactory.create(ALPHA_LUT))
-                                            .getRenderedImage();
+                            alpha = new ImageWorker(this.image)
+                                    .setROI(roi)
+                                    .rangeLookup(lookupTable)
+                                    .bandCombine(matrix)
+                                    .lookup(LookupTableFactory.create(ALPHA_LUT))
+                                    .getRenderedImage();
                         }
-                        image =
-                                new ImageWorker(image)
-                                        .addBand(alpha, false, true, null)
-                                        .getRenderedImage();
+                        image = new ImageWorker(image)
+                                .addBand(alpha, false, true, null)
+                                .getRenderedImage();
                     } else {
                         image = new ImageWorker(image).addAlphaChannel().getRenderedImage();
                     }
@@ -5363,33 +5104,29 @@ public class ImageWorker {
     }
 
     /**
-     * Adds an extra channel to the image, with a value of 255 (not public yet because it won't work
-     * with all image types)
+     * Adds an extra channel to the image, with a value of 255 (not public yet because it won't work with all image
+     * types)
      */
     private ImageWorker addAlphaChannel() {
         final ImageLayout tempLayout = new ImageLayout(image);
-        tempLayout
-                .unsetValid(ImageLayout.COLOR_MODEL_MASK)
-                .unsetValid(ImageLayout.SAMPLE_MODEL_MASK);
-        RenderedImage alpha =
-                ConstantDescriptor.create(
-                        Float.valueOf(image.getWidth()),
-                        Float.valueOf(image.getHeight()),
-                        new Byte[] {Byte.valueOf((byte) 255)},
-                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, tempLayout));
+        tempLayout.unsetValid(ImageLayout.COLOR_MODEL_MASK).unsetValid(ImageLayout.SAMPLE_MODEL_MASK);
+        RenderedImage alpha = ConstantDescriptor.create(
+                Float.valueOf(image.getWidth()),
+                Float.valueOf(image.getHeight()),
+                new Byte[] {Byte.valueOf((byte) 255)},
+                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, tempLayout));
         addBand(alpha, false, true, null);
         return this;
     }
 
     /**
-     * Writes the {@linkplain #image} to the specified output, trying all encoders in the specified
-     * iterator in the iteration order.
+     * Writes the {@linkplain #image} to the specified output, trying all encoders in the specified iterator in the
+     * iteration order.
      *
      * @return this {@link ImageWorker}.
      */
     @SuppressWarnings("PMD.UseTryWithResources") // resource might be null
-    private ImageWorker write(final Object output, final Iterator<? extends ImageWriter> encoders)
-            throws IOException {
+    private ImageWorker write(final Object output, final Iterator<? extends ImageWriter> encoders) throws IOException {
         if (encoders != null) {
             while (encoders.hasNext()) {
                 final ImageWriter writer = encoders.next();
@@ -5473,11 +5210,11 @@ public class ImageWorker {
 
     /**
      * Shows the current {@linkplain #image} in a window together with the operation chain as a
-     * {@linkplain javax.swing.JTree tree}. This method is provided mostly for debugging purpose.
-     * This method requires the {@code gt2-widgets-swing.jar} file in the classpath.
+     * {@linkplain javax.swing.JTree tree}. This method is provided mostly for debugging purpose. This method requires
+     * the {@code gt2-widgets-swing.jar} file in the classpath.
      *
-     * @throws HeadlessException if {@code gt2-widgets-swing.jar} is not on the classpath, or if AWT
-     *     can't create the window components.
+     * @throws HeadlessException if {@code gt2-widgets-swing.jar} is not on the classpath, or if AWT can't create the
+     *     window components.
      * @return this {@link ImageWorker}.
      * @see org.geotools.gui.swing.image.OperationTreeBrowser#show(RenderedImage)
      */
@@ -5495,14 +5232,12 @@ public class ImageWorker {
         try {
             c = Class.forName("org.geotools.gui.swing.image.OperationTreeBrowser");
         } catch (ClassNotFoundException cause) {
-            final HeadlessException e =
-                    new HeadlessException("The \"gt2-widgets-swing.jar\" file" + " is required.");
+            final HeadlessException e = new HeadlessException("The \"gt2-widgets-swing.jar\" file" + " is required.");
             e.initCause(cause);
             throw e;
         }
         try {
-            c.getMethod("show", new Class[] {RenderedImage.class})
-                    .invoke(null, new Object[] {image});
+            c.getMethod("show", new Class[] {RenderedImage.class}).invoke(null, new Object[] {image});
         } catch (InvocationTargetException e) {
             final Throwable cause = e.getCause();
             if (cause instanceof RuntimeException) {
@@ -5522,19 +5257,16 @@ public class ImageWorker {
     }
 
     /**
-     * Provides a hint that this {@link ImageWorker} will no longer be accessed from a reference in
-     * user space. The results are equivalent to those that occur when the program loses its last
-     * reference to this image, the garbage collector discovers this, and finalize is called. This
-     * can be used as a hint in situations where waiting for garbage collection would be overly
-     * conservative.
+     * Provides a hint that this {@link ImageWorker} will no longer be accessed from a reference in user space. The
+     * results are equivalent to those that occur when the program loses its last reference to this image, the garbage
+     * collector discovers this, and finalize is called. This can be used as a hint in situations where waiting for
+     * garbage collection would be overly conservative.
      *
-     * <p>Mind, this also results in disposing the JAI Image chain attached to the image the worker
-     * is applied to, so don't call this method on image changes (full/partial) that you want to
-     * use.
+     * <p>Mind, this also results in disposing the JAI Image chain attached to the image the worker is applied to, so
+     * don't call this method on image changes (full/partial) that you want to use.
      *
-     * <p>{@link ImageWorker} defines this method to remove the image being disposed from the list
-     * of sinks in all of its source images. The results of referencing an {@link ImageWorker} after
-     * a call to dispose() are undefined.
+     * <p>{@link ImageWorker} defines this method to remove the image being disposed from the list of sinks in all of
+     * its source images. The results of referencing an {@link ImageWorker} after a call to dispose() are undefined.
      */
     public final void dispose() {
         if (commonHints != null) {
@@ -5551,11 +5283,10 @@ public class ImageWorker {
     }
 
     /**
-     * Loads the image from the specified file, and {@linkplain #show display} it in a window. This
-     * method is mostly as a convenient way to test operation chains. This method can be invoked
-     * from the command line. If an optional {@code -operation} argument is provided, the Java
-     * method (one of the image operations provided in this class) immediately following it is
-     * executed. Example:
+     * Loads the image from the specified file, and {@linkplain #show display} it in a window. This method is mostly as
+     * a convenient way to test operation chains. This method can be invoked from the command line. If an optional
+     * {@code -operation} argument is provided, the Java method (one of the image operations provided in this class)
+     * immediately following it is executed. Example:
      *
      * <blockquote>
      *
@@ -5576,9 +5307,7 @@ public class ImageWorker {
                 worker.setRenderingHint(
                         JAI.KEY_TILE_CACHE, JAI.getDefaultInstance().getTileCache());
                 if (operation != null) {
-                    worker.getClass()
-                            .getMethod(operation, (Class[]) null)
-                            .invoke(worker, (Object[]) null);
+                    worker.getClass().getMethod(operation, (Class[]) null).invoke(worker, (Object[]) null);
                 }
                 /*
                  * TIP: Tests operations here (before the call to 'show()'), if wanted.
@@ -5598,8 +5327,7 @@ public class ImageWorker {
         private double[] bgValues;
         private RenderedOp op;
 
-        public WarpAffineReducer(
-                AffineTransform tx, Interpolation interpolation, double[] bgValues, RenderedOp op) {
+        public WarpAffineReducer(AffineTransform tx, Interpolation interpolation, double[] bgValues, RenderedOp op) {
             this.tx = tx;
             this.interpolation = interpolation;
             this.bgValues = bgValues;
@@ -5620,12 +5348,9 @@ public class ImageWorker {
             ParameterBlock sourceParamBlock = op.getParameterBlock();
             MathTransformFactory factory = ReferencingFactoryFinder.getMathTransformFactory(null);
             MathTransform affineMT =
-                    factory.createAffineTransform(
-                            new org.geotools.referencing.operation.matrix.AffineTransform2D(tx));
+                    factory.createAffineTransform(new org.geotools.referencing.operation.matrix.AffineTransform2D(tx));
             MathTransform2D chained =
-                    (MathTransform2D)
-                            factory.createConcatenatedTransform(
-                                    affineMT.inverse(), originalTransform);
+                    (MathTransform2D) factory.createConcatenatedTransform(affineMT.inverse(), originalTransform);
 
             // setup the warp builder
             Double tolerance = (Double) getRenderingHint(Hints.RESAMPLE_TOLERANCE);
@@ -5698,19 +5423,11 @@ public class ImageWorker {
                 boolean canProcessROI = true;
                 // Boolean indicating if NoData are the same as for the source operation or
                 // are not present
-                Range oldNoData =
-                        (Range)
-                                (sourceParamBlock.getNumParameters() > 3
-                                        ? sourceParamBlock.getObjectParameter(4)
-                                        : null);
-                boolean hasSameNodata =
-                        (oldNoData == null && nodata == null)
-                                || (oldNoData != null
-                                        && nodata != null
-                                        && oldNoData.equals(nodata));
-                if (((property == null)
-                        || property.equals(Image.UndefinedProperty)
-                        || !(property instanceof ROI))) {
+                Range oldNoData = (Range)
+                        (sourceParamBlock.getNumParameters() > 3 ? sourceParamBlock.getObjectParameter(4) : null);
+                boolean hasSameNodata = (oldNoData == null && nodata == null)
+                        || (oldNoData != null && nodata != null && oldNoData.equals(nodata));
+                if (((property == null) || property.equals(Image.UndefinedProperty) || !(property instanceof ROI))) {
                     paramBlk.add(warp).add(interpolation).add(bgValues);
                     if (oldNoData != null) {
                         paramBlk.set(oldNoData, 4);
@@ -5727,10 +5444,7 @@ public class ImageWorker {
                             }
                         } catch (Exception e) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(
-                                        Level.WARNING,
-                                        "Unable to compute the inverse of the new ROI provided",
-                                        e);
+                                LOGGER.log(Level.WARNING, "Unable to compute the inverse of the new ROI provided", e);
                             }
                             // Skip Warp Affine reduction
                             canProcessROI = false;
@@ -5756,10 +5470,7 @@ public class ImageWorker {
                             }
                         } catch (Exception e) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(
-                                        Level.WARNING,
-                                        "Unable to compute the inverse of the new ROI provided",
-                                        e);
+                                LOGGER.log(Level.WARNING, "Unable to compute the inverse of the new ROI provided", e);
                             }
                             // Skip Warp Affine reduction
                             canProcessROI = false;

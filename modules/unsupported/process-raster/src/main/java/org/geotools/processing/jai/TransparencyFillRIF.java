@@ -36,8 +36,8 @@ public class TransparencyFillRIF implements RenderedImageFactory {
     public TransparencyFillRIF() {}
 
     /**
-     * Create a new instance of TransparencyFillOpImage in the rendered layer. This method satisfies
-     * the implementation of RIF.
+     * Create a new instance of TransparencyFillOpImage in the rendered layer. This method satisfies the implementation
+     * of RIF.
      *
      * @param paramBlock The source image and the dilation kernel.
      */
@@ -65,7 +65,6 @@ public class TransparencyFillRIF implements RenderedImageFactory {
         if (param2 != null) width = param2;
 
         RenderedImage source = paramBlock.getRenderedSource(0);
-        return new TransparencyFillOpImage(
-                source, extender, type, renderHints, layout, noData, width);
+        return new TransparencyFillOpImage(source, extender, type, renderHints, layout, noData, width);
     }
 }

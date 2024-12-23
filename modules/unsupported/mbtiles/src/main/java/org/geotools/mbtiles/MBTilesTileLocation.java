@@ -19,8 +19,8 @@ package org.geotools.mbtiles;
 import java.util.Objects;
 
 /**
- * Location of a tile in the MBTiles package. Mind, the axis order is the TMS one, row starts at the
- * bottom, south, and goes up towards north.
+ * Location of a tile in the MBTiles package. Mind, the axis order is the TMS one, row starts at the bottom, south, and
+ * goes up towards north.
  */
 class MBTilesTileLocation {
     // the ordinates
@@ -63,9 +63,7 @@ class MBTilesTileLocation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MBTilesTileLocation that = (MBTilesTileLocation) o;
-        return zoomLevel == that.zoomLevel
-                && tileColumn == that.tileColumn
-                && tileRow == that.tileRow;
+        return zoomLevel == that.zoomLevel && tileColumn == that.tileColumn && tileRow == that.tileRow;
     }
 
     @Override

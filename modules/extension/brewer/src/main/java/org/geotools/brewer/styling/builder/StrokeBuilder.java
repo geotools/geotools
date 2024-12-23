@@ -112,8 +112,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     public StrokeBuilder colorHex(String hex) {
         Color color = Converters.convert(hex, Color.class);
         if (color == null) {
-            throw new IllegalArgumentException(
-                    "The provided expression could not be turned into a color: " + hex);
+            throw new IllegalArgumentException("The provided expression could not be turned into a color: " + hex);
         }
         return color(color);
     }
@@ -213,17 +212,16 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         if (unset) {
             return null;
         }
-        Stroke stroke =
-                sf.createStroke(
-                        color,
-                        width,
-                        opacity,
-                        lineJoin,
-                        lineCap,
-                        dashArray,
-                        dashOffset,
-                        graphicFill.build(),
-                        this.graphicStroke.build());
+        Stroke stroke = sf.createStroke(
+                color,
+                width,
+                opacity,
+                lineJoin,
+                lineCap,
+                dashArray,
+                dashOffset,
+                graphicFill.build(),
+                this.graphicStroke.build());
         if (dashArrayExpressions != null && !dashArrayExpressions.isEmpty()) {
             stroke.setDashArray(dashArrayExpressions);
         }

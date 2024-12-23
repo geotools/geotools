@@ -21,10 +21,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Data model class that will be used to retrieve from a XML file the Apache Solr index schema
- * fields definitions.
- */
+/** Data model class that will be used to retrieve from a XML file the Apache Solr index schema fields definitions. */
 public final class SchemaField implements Serializable {
 
     private static final long serialVersionUID = 1L;

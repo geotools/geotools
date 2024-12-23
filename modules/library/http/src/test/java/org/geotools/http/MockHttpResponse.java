@@ -52,9 +52,8 @@ public class MockHttpResponse implements HTTPResponse {
 
         if (headers != null) {
             if (headers.length % 2 != 0) {
-                throw new IllegalArgumentException(
-                        "The headers must be a alternated sequence of keys "
-                                + "and values, should have an even number of entries");
+                throw new IllegalArgumentException("The headers must be a alternated sequence of keys "
+                        + "and values, should have an even number of entries");
             }
 
             for (int i = 0; i < headers.length; i += 2) {
@@ -81,19 +80,16 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
-    public MockHttpResponse(
-            InputStream stream, String contentType, Charset charset, String... headers) {
+    public MockHttpResponse(InputStream stream, String contentType, Charset charset, String... headers) {
         this(stream, contentType, headers);
         this.charset = charset;
     }
 
-    public MockHttpResponse(File responseFile, String contentType, String... headers)
-            throws FileNotFoundException {
+    public MockHttpResponse(File responseFile, String contentType, String... headers) throws FileNotFoundException {
         this(new FileInputStream(responseFile), contentType, headers);
     }
 
-    public MockHttpResponse(
-            File responseFile, String contentType, Charset charset, String... headers)
+    public MockHttpResponse(File responseFile, String contentType, Charset charset, String... headers)
             throws FileNotFoundException {
         this(responseFile, contentType, headers);
         this.charset = charset;
@@ -107,13 +103,11 @@ public class MockHttpResponse implements HTTPResponse {
      * @param headers
      * @throws IOException
      */
-    public MockHttpResponse(URL response, String contentType, String... headers)
-            throws IOException {
+    public MockHttpResponse(URL response, String contentType, String... headers) throws IOException {
         this(response.openStream(), contentType, headers);
     }
 
-    public MockHttpResponse(URL response, String contentType, Charset charset, String... headers)
-            throws IOException {
+    public MockHttpResponse(URL response, String contentType, Charset charset, String... headers) throws IOException {
         this(response, contentType, headers);
         this.charset = charset;
     }
@@ -122,8 +116,7 @@ public class MockHttpResponse implements HTTPResponse {
         this(response.getBytes(), contentType, headers);
     }
 
-    public MockHttpResponse(
-            String response, String contentType, Charset charset, String... headers) {
+    public MockHttpResponse(String response, String contentType, Charset charset, String... headers) {
         this(response.getBytes(charset), contentType);
         this.charset = charset;
     }

@@ -85,8 +85,7 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
         if (object instanceof DefaultPeriod) {
             final DefaultPeriod that = (DefaultPeriod) object;
 
-            return Utilities.equals(this.begining, that.begining)
-                    && Utilities.equals(this.ending, that.ending);
+            return Utilities.equals(this.begining, that.begining) && Utilities.equals(this.ending, that.ending);
         }
         return false;
     }

@@ -32,19 +32,18 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
 
 /**
- * Connection to the EPSG database in PostgreSQL database engine using JDBC. The EPSG database can
- * be downloaded from <A HREF="http://www.epsg.org">http://www.epsg.org</A>. It should have been
- * imported into a PostgreSQL database, which doesn't need to be on the local machine.
+ * Connection to the EPSG database in PostgreSQL database engine using JDBC. The EPSG database can be downloaded from <A
+ * HREF="http://www.epsg.org">http://www.epsg.org</A>. It should have been imported into a PostgreSQL database, which
+ * doesn't need to be on the local machine.
  *
  * <p>
  *
  * <h3>Connection parameters</h3>
  *
- * The preferred way to specify connection parameters is through the JNDI interface. However, this
- * datasource provides the following alternative as a convenience: if a {@value #CONFIGURATION_FILE}
- * file is found in current directory or in the user's home directory, then the following properties
- * are fetch. Note that the default value may change in a future version if a public server become
- * available.
+ * The preferred way to specify connection parameters is through the JNDI interface. However, this datasource provides
+ * the following alternative as a convenience: if a {@value #CONFIGURATION_FILE} file is found in current directory or
+ * in the user's home directory, then the following properties are fetch. Note that the default value may change in a
+ * future version if a public server become available.
  *
  * <p>
  *
@@ -92,15 +91,14 @@ import org.postgresql.ds.common.BaseDataSource;
  *   <TD>{@code GeoTools}</TD></TR>
  * </TABLE>
  *
- * <p>The database version is given in the {@linkplain
- * org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
- * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL database
- * should be read only.
+ * <p>The database version is given in the {@linkplain org.geotools.api.metadata.citation.Citation#getEdition edition
+ * attribute} of the {@linkplain org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL
+ * database should be read only.
  *
  * <p>Just having this class accessible in the classpath, together with the registration in the
- * {@code META-INF/services/} directory, is sufficient to get a working EPSG authority factory
- * backed by this database. Vendors can create a copy of this class, modify it and bundle it with
- * their own distribution if they want to connect their users to an other database.
+ * {@code META-INF/services/} directory, is sufficient to get a working EPSG authority factory backed by this database.
+ * Vendors can create a copy of this class, modify it and bundle it with their own distribution if they want to connect
+ * their users to an other database.
  *
  * @since 2.4
  * @author Didier Richard
@@ -108,8 +106,7 @@ import org.postgresql.ds.common.BaseDataSource;
  */
 public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
     /**
-     * The user configuration file. This class search first for the first file found in the
-     * following directories:
+     * The user configuration file. This class search first for the first file found in the following directories:
      *
      * <ul>
      *   <li>The current directory
@@ -127,9 +124,9 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
     }
 
     /**
-     * Creates a new instance of this factory with the specified hints. The priority is set to a
-     * lower value than the {@linkplain FactoryOnAccess}'s one in order to give the priority to any
-     * "official" database installed locally by the user, when available.
+     * Creates a new instance of this factory with the specified hints. The priority is set to a lower value than the
+     * {@linkplain FactoryOnAccess}'s one in order to give the priority to any "official" database installed locally by
+     * the user, when available.
      */
     public ThreadedPostgreSQLEpsgFactory(final Hints hints) {
         super(hints, PRIORITY + 5);

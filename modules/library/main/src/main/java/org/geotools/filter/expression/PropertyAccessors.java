@@ -38,10 +38,9 @@ public class PropertyAccessors {
         cache.add(new SimpleFeaturePropertyAccessorFactory());
         cache.add(new DirectPropertyAccessorFactory());
         for (PropertyAccessorFactory factory : ServiceLoader.load(PropertyAccessorFactory.class)) {
-            boolean nonCached =
-                    factory instanceof SimpleFeaturePropertyAccessorFactory
-                            || factory instanceof DirectPropertyAccessorFactory
-                            || factory instanceof NullPropertyAccessorFactory;
+            boolean nonCached = factory instanceof SimpleFeaturePropertyAccessorFactory
+                    || factory instanceof DirectPropertyAccessorFactory
+                    || factory instanceof NullPropertyAccessorFactory;
             if (!nonCached) {
                 cache.add(factory);
             }
@@ -55,23 +54,21 @@ public class PropertyAccessors {
     /**
      * Looks up a list of {@link PropertyAccessor} for a particular object.
      *
-     * <p>This method will return all accessors that is capable of handling the object and xpath
-     * expression provided, no order is guaranteed.
+     * <p>This method will return all accessors that is capable of handling the object and xpath expression provided, no
+     * order is guaranteed.
      *
      * @param object The target object.
      * @param xpath An xpath expression denoting a property of the target object.
      * @param hints Hints to pass on to factories.
      * @return List of Property accessors, or <code>null</code> if object is null
      */
-    public static List<PropertyAccessor> findPropertyAccessors(
-            Object object, String xpath, Class target, Hints hints) {
+    public static List<PropertyAccessor> findPropertyAccessors(Object object, String xpath, Class target, Hints hints) {
         if (object == null) return null;
 
         List<PropertyAccessor> list = new ArrayList<>();
 
         for (PropertyAccessorFactory factory : FACTORY_CACHE) {
-            PropertyAccessor accessor =
-                    factory.createPropertyAccessor(object.getClass(), xpath, target, hints);
+            PropertyAccessor accessor = factory.createPropertyAccessor(object.getClass(), xpath, target, hints);
             if (accessor != null && accessor.canHandle(object, xpath, target)) {
                 list.add(accessor);
             }

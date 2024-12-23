@@ -34,8 +34,8 @@ import org.geotools.util.factory.Hints;
  *
  * <p>You will eventually need to write out the differences, later.
  *
- * <p>The API has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to
- * make explicit that no Features are written out by this Class.
+ * <p>The API has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make explicit that no
+ * Features are written out by this Class.
  *
  * @author Jody Garnett (Refractions Research)
  * @see DiffContentState
@@ -59,9 +59,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
     /** DiffFeatureWriter construction. */
     public DiffContentFeatureWriter(
-            ContentFeatureStore store,
-            Diff diff,
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+            ContentFeatureStore store, Diff diff, FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
         this(store, diff, reader, new SimpleFeatureBuilder(reader.getFeatureType()));
     }
 
@@ -113,9 +111,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
             // (The real writer will supply a FID later)
             live = null;
             next = null;
-            current =
-                    builder.buildFeature(
-                            "new" + diff.nextFID, new Object[type.getAttributeCount()]);
+            current = builder.buildFeature("new" + diff.nextFID, new Object[type.getAttributeCount()]);
             diff.nextFID++;
             return current;
         }
@@ -163,9 +159,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
                 if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                     fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                     Map<Object, Object> userData = current.getUserData();
-                    current =
-                            SimpleFeatureBuilder.build(
-                                    current.getFeatureType(), current.getAttributes(), fid);
+                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid);
                     current.getUserData().putAll(userData);
                 }
             }
@@ -211,8 +205,8 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
     /**
      * Clean up resources associated with this writer.
      *
-     * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and
-     * may yet be written out.
+     * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and may yet be written
+     * out.
      *
      * @see FeatureWriter#close()
      */

@@ -34,24 +34,22 @@ public interface Attribute {
     public static final int REQUIRED = 2;
 
     /**
-     * This is intended to imitate the default value option provided in the declaration of an XML
-     * Schema attribute.
+     * This is intended to imitate the default value option provided in the declaration of an XML Schema attribute.
      *
      * @return Default Value as a String or Null
      */
     public String getDefault();
 
     /**
-     * This is intended to imitate the fixed value option provided in the declaration of an XML
-     * Schema attribute.
+     * This is intended to imitate the fixed value option provided in the declaration of an XML Schema attribute.
      *
      * @return Fixed Value as a String or Null
      */
     public String getFixed();
 
     /**
-     * Intended to represent the form of an XML attribute. This method should return True when the
-     * attribute is "qualified".
+     * Intended to represent the form of an XML attribute. This method should return True when the attribute is
+     * "qualified".
      */
     public boolean isForm();
 
@@ -64,8 +62,8 @@ public interface Attribute {
     public URI getNamespace();
 
     /**
-     * Attributes only have three options for the number or occurences: none, once, optionally once.
-     * This method returns the mask which represents the use of this attribute.
+     * Attributes only have three options for the number or occurences: none, once, optionally once. This method returns
+     * the mask which represents the use of this attribute.
      */
     public int getUse();
 

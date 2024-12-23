@@ -19,9 +19,8 @@ package org.geotools.geometry.jts;
 import java.awt.geom.PathIterator;
 
 /**
- * Subclass that provides a convenient efficient currentSegment(float[] coords) implementation that
- * reuses always the same double array. This class and the associated subclasses are not thread
- * safe.
+ * Subclass that provides a convenient efficient currentSegment(float[] coords) implementation that reuses always the
+ * same double array. This class and the associated subclasses are not thread safe.
  *
  * @author Andrea Aime
  */

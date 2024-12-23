@@ -21,8 +21,8 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
- * GeoTools code uses the empty string to mean the default geometry, but a STAC API won't know about
- * this convention, this filter switches it to the "geometry" property of STAC items.
+ * GeoTools code uses the empty string to mean the default geometry, but a STAC API won't know about this convention,
+ * this filter switches it to the "geometry" property of STAC items.
  */
 public class GeometryDefaulter extends DuplicatingFilterVisitor {
 

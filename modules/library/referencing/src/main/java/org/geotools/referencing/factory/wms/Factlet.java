@@ -41,16 +41,13 @@ abstract class Factlet {
     /** Returns the name for the CRS to be created by this plugin. */
     public abstract String getName();
 
-    /**
-     * Returns the classification of projection method. For example {@code "Transverse_Mercator"}.
-     */
+    /** Returns the classification of projection method. For example {@code "Transverse_Mercator"}. */
     public abstract String getClassification();
 
     /**
-     * Creates a coordinate reference system from the specified code. The default implementation
-     * creates a {@linkplain ParameterValueGroup parameter group} for the {@linkplain
-     * #getClassification projection classification}, and then invokes {@link
-     * #setProjectionParameters} in order to fill the parameter values.
+     * Creates a coordinate reference system from the specified code. The default implementation creates a
+     * {@linkplain ParameterValueGroup parameter group} for the {@linkplain #getClassification projection
+     * classification}, and then invokes {@link #setProjectionParameters} in order to fill the parameter values.
      */
     public final ProjectedCRS create(final Code code, final ReferencingFactoryContainer factories)
             throws FactoryException {

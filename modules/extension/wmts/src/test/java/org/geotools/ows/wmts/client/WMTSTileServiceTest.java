@@ -47,8 +47,8 @@ import org.locationtech.jts.geom.Point;
 public class WMTSTileServiceTest {
 
     /**
-     * Test's the usage of WebMapTileServer for downloading the images. Will use the MockHttpClient
-     * served to WebMapTileServer for all http calls.
+     * Test's the usage of WebMapTileServer for downloading the images. Will use the MockHttpClient served to
+     * WebMapTileServer for all http calls.
      */
     @Test
     public void loadImagesUsingWebMapTileServerKVP() throws Exception {
@@ -61,8 +61,7 @@ public class WMTSTileServiceTest {
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         WebMapTileServer tileServer =
-                new WebMapTileServer(
-                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"), client, caps);
+                new WebMapTileServer(new URL("http://localhost:8080/geoserver/gwc/service/wmts"), client, caps);
         WMTSLayer layer = caps.getLayer("spearfish");
         TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:4326"));
 
@@ -77,16 +76,11 @@ public class WMTSTileServiceTest {
         WMTSCapabilities caps = WMTSTestUtils.createCapabilities("noaa-tileserver.xml");
         MockHttpClient client = new MockHttpClient();
         client.expectGet(
-                new URL(
-                        "http://tileservice.charts.noaa.gov/tiles/wmts/11006_1/GoogleMapsCompatible/2/3/0.png"),
+                new URL("http://tileservice.charts.noaa.gov/tiles/wmts/11006_1/GoogleMapsCompatible/2/3/0.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
-        WebMapTileServer tileServer =
-                new WebMapTileServer(
-                        new URL(
-                                "http://tileservice.charts.noaa.gov/tiles/wmts/1.0.0/WMTSCapabilities.xml"),
-                        client,
-                        caps);
+        WebMapTileServer tileServer = new WebMapTileServer(
+                new URL("http://tileservice.charts.noaa.gov/tiles/wmts/1.0.0/WMTSCapabilities.xml"), client, caps);
 
         WMTSLayer layer = caps.getLayer("11006_1");
         TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:3857"));
@@ -99,9 +93,8 @@ public class WMTSTileServiceTest {
     }
 
     /**
-     * What's differentiates WMTS tile service from other is the usage of limits. Some of the global
-     * tileset might not be available for a given layer, and should not be returned through a call
-     * to findTilesInExtent.
+     * What's differentiates WMTS tile service from other is the usage of limits. Some of the global tileset might not
+     * be available for a given layer, and should not be returned through a call to findTilesInExtent.
      */
     @Test
     public void findTilesInExtentUsingLimits() throws Exception {
@@ -142,46 +135,23 @@ public class WMTSTileServiceTest {
         tileMatrixSet.setIdentifier(tileMatrixSetIdentifier);
         tileMatrixSet.setCRS("EPSG:32633");
         tileMatrixSet.setBbox(new CRSEnvelope("EPSG:32633", -300000, 6400000, 1300000, 8000000));
-        tileMatrixSet.setMatrices(
-                Arrays.asList(
-                        createMatrix(
-                                tileMatrixSetIdentifier + ":0",
-                                tileMatrixSet,
-                                topLeft,
-                                denominator,
-                                1,
-                                1),
-                        createMatrix(
-                                tileMatrixSetIdentifier + ":1",
-                                tileMatrixSet,
-                                topLeft,
-                                denominator / 2,
-                                2,
-                                2),
-                        createMatrix(
-                                tileMatrixSetIdentifier + ":2",
-                                tileMatrixSet,
-                                topLeft,
-                                denominator / 4,
-                                4,
-                                4)));
+        tileMatrixSet.setMatrices(Arrays.asList(
+                createMatrix(tileMatrixSetIdentifier + ":0", tileMatrixSet, topLeft, denominator, 1, 1),
+                createMatrix(tileMatrixSetIdentifier + ":1", tileMatrixSet, topLeft, denominator / 2, 2, 2),
+                createMatrix(tileMatrixSetIdentifier + ":2", tileMatrixSet, topLeft, denominator / 4, 4, 4)));
 
         TileMatrixSetLink limits = new TileMatrixSetLink();
         limits.setIdentifier(tileMatrixSetIdentifier);
-        limits.setLimits(
-                Arrays.asList(
-                        createMatrixLimits(tileMatrixSetIdentifier + ":0", 0, 0, 0, 0),
-                        createMatrixLimits(tileMatrixSetIdentifier + ":1", 0, 0, 1, 1),
-                        createMatrixLimits(tileMatrixSetIdentifier + ":2", 0, 1, 2, 3)));
+        limits.setLimits(Arrays.asList(
+                createMatrixLimits(tileMatrixSetIdentifier + ":0", 0, 0, 0, 0),
+                createMatrixLimits(tileMatrixSetIdentifier + ":1", 0, 0, 1, 1),
+                createMatrixLimits(tileMatrixSetIdentifier + ":2", 0, 1, 2, 3)));
 
         return new WMTSTileService(
                 templateUrl,
                 WMTSServiceType.KVP,
                 createLayerWithLimits(
-                        limits,
-                        new CRSEnvelope(
-                                new ReferencedEnvelope(
-                                        4.4, 14.7, 57.8, 65.3, CRS.decode("CRS:84")))),
+                        limits, new CRSEnvelope(new ReferencedEnvelope(4.4, 14.7, 57.8, 65.3, CRS.decode("CRS:84")))),
                 "default",
                 tileMatrixSet,
                 new MockHttpClient());
@@ -196,8 +166,7 @@ public class WMTSTileServiceTest {
         return tileSetSize / pixelWidth / tileSize;
     }
 
-    private TileMatrixLimits createMatrixLimits(
-            String identifier, long mincol, long maxcol, long minrow, long maxrow) {
+    private TileMatrixLimits createMatrixLimits(String identifier, long mincol, long maxcol, long minrow, long maxrow) {
         TileMatrixLimits limits = new TileMatrixLimits();
         limits.setTileMatix(identifier);
         limits.setMinCol(mincol);
@@ -208,12 +177,7 @@ public class WMTSTileServiceTest {
     }
 
     private TileMatrix createMatrix(
-            String identifier,
-            TileMatrixSet parentSet,
-            Point topLeft,
-            double denominator,
-            int width,
-            int height) {
+            String identifier, TileMatrixSet parentSet, Point topLeft, double denominator, int width, int height) {
         TileMatrix matrix = new TileMatrix();
         matrix.setIdentifier(identifier);
         matrix.setParent(parentSet);

@@ -25,10 +25,9 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.util.TableWriter;
 
 /**
- * A console for running test scripts. Most of the work is already done by the subclass. {@code
- * ScriptRunner} mostly add statistics about the test executed. This class is used by {@link
- * ScriptTest}. It can also be run from the command line for executing all files specified in
- * argument.
+ * A console for running test scripts. Most of the work is already done by the subclass. {@code ScriptRunner} mostly add
+ * statistics about the test executed. This class is used by {@link ScriptTest}. It can also be run from the command
+ * line for executing all files specified in argument.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

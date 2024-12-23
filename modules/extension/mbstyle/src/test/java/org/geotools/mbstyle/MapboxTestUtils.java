@@ -64,11 +64,7 @@ public class MapboxTestUtils {
     }
 
     public static BufferedImage showRender(
-            String testName,
-            GTRenderer renderer,
-            long timeOut,
-            ReferencedEnvelope[] bounds,
-            RenderListener listener)
+            String testName, GTRenderer renderer, long timeOut, ReferencedEnvelope[] bounds, RenderListener listener)
             throws Exception {
         return showRender(testName, renderer, timeOut, bounds, listener, 300, 300);
     }
@@ -116,8 +112,8 @@ public class MapboxTestUtils {
     }
 
     /**
-     * Returns the first style associated to the layer at <code>layerIndex</code>. An exception will
-     * be thrown if the layer is neither a {@link UserLayer} nor a {@link NamedLayer}.
+     * Returns the first style associated to the layer at <code>layerIndex</code>. An exception will be thrown if the
+     * layer is neither a {@link UserLayer} nor a {@link NamedLayer}.
      *
      * @param sld The full SLD style
      * @param layerIndex The layer to be considered for style extraction

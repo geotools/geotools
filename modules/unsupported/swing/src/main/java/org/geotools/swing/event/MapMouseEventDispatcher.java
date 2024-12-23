@@ -24,16 +24,15 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 /**
- * Takes Java AWT mouse events received by a map pane and converts them to {@code MapMouseEvents}
- * which add world location data. The resulting events are then dispatched to {@code
- * MapMouseListeners} by the methods overriden from the AWT listener interfaces.
+ * Takes Java AWT mouse events received by a map pane and converts them to {@code MapMouseEvents} which add world
+ * location data. The resulting events are then dispatched to {@code MapMouseListeners} by the methods overriden from
+ * the AWT listener interfaces.
  *
  * @author Michael Bedward
  * @since 8.0
  * @version $Id$
  */
-public interface MapMouseEventDispatcher
-        extends MouseListener, MouseMotionListener, MouseWheelListener {
+public interface MapMouseEventDispatcher extends MouseListener, MouseMotionListener, MouseWheelListener {
 
     /**
      * Adds a listener for map pane mouse events.

@@ -68,8 +68,7 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
                     String line = null;
 
                     try (BufferedReader bufferedReader =
-                            new BufferedReader(
-                                    new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                            new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                         while ((line = bufferedReader.readLine()) != null) {
                             stringBuilder.append(line + "\n");
                         }
@@ -77,15 +76,12 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
                     String string = stringBuilder.toString();
                     LOGGER.finest(string);
 
-                    object =
-                            parser.parse(
-                                    new InputSource(new ByteArrayInputStream(string.getBytes())));
+                    object = parser.parse(new InputSource(new ByteArrayInputStream(string.getBytes())));
                 } else {
                     object = parser.parse(inputStream);
                 }
             } catch (SAXException | ParserConfigurationException e) {
-                throw (ServiceException)
-                        new ServiceException("Error while parsing XML.").initCause(e);
+                throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
             }
 
             if (object instanceof ServiceException) {

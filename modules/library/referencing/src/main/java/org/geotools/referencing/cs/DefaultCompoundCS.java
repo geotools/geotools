@@ -50,8 +50,8 @@ public class DefaultCompoundCS extends AbstractCS {
     private transient List<CoordinateSystem> asList;
 
     /**
-     * Constructs a compound coordinate system. A name for this CS will be automatically constructed
-     * from the name of all specified CS.
+     * Constructs a compound coordinate system. A name for this CS will be automatically constructed from the name of
+     * all specified CS.
      *
      * @param cs The set of coordinate syztem.
      */
@@ -61,8 +61,8 @@ public class DefaultCompoundCS extends AbstractCS {
     }
 
     /**
-     * Returns a clone of the specified array. This method would be bundle right into the
-     * constructor if RFE #4093999 was fixed.
+     * Returns a clone of the specified array. This method would be bundle right into the constructor if RFE #4093999
+     * was fixed.
      */
     private static CoordinateSystem[] clone(CoordinateSystem... cs) {
         ensureNonNull("cs", cs);
@@ -119,8 +119,8 @@ public class DefaultCompoundCS extends AbstractCS {
      * Compares this coordinate system with the specified object for equality.
      *
      * @param object The object to compare to {@code this}.
-     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
-     *     comparing only properties relevant to transformations.
+     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for comparing only
+     *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
     @Override

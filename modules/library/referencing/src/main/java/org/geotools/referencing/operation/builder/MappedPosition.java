@@ -31,8 +31,8 @@ import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
 
 /**
- * An association between a {@linkplain #getSource source} and {@linkplain #getTarget target} direct
- * positions. Accuracy information and comments can optionnaly be attached.
+ * An association between a {@linkplain #getSource source} and {@linkplain #getTarget target} direct positions. Accuracy
+ * information and comments can optionnaly be attached.
  *
  * @since 2.4
  * @version $Id$
@@ -49,18 +49,15 @@ public class MappedPosition implements Serializable {
     /** The target position. */
     private final Position target;
 
-    /**
-     * An estimation of mapping accuracy in units of target CRS axis, or {@link Double#NaN} if
-     * unknow.
-     */
+    /** An estimation of mapping accuracy in units of target CRS axis, or {@link Double#NaN} if unknow. */
     private double accuracy = Double.NaN;
 
     /** Optionnal comments attached to this mapping, or {@code null} if none. */
     private String comments;
 
     /**
-     * Creates a mapped position with {@linkplain #getSource source} and {@linkplain #getTarget
-     * target} position of the specified dimension. The initial coordinate values are 0.
+     * Creates a mapped position with {@linkplain #getSource source} and {@linkplain #getTarget target} position of the
+     * specified dimension. The initial coordinate values are 0.
      */
     public MappedPosition(final int dimension) {
         if (dimension == 2) {
@@ -92,18 +89,16 @@ public class MappedPosition implements Serializable {
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /**
-     * Returns the source direct position. For performance reasons, the current implementation
-     * returns a reference to the internal object. However users should avoid to modify directly the
-     * returned position and use {@link #setSource} instead.
+     * Returns the source direct position. For performance reasons, the current implementation returns a reference to
+     * the internal object. However users should avoid to modify directly the returned position and use
+     * {@link #setSource} instead.
      */
     public Position getSource() {
         return source;
@@ -119,9 +114,9 @@ public class MappedPosition implements Serializable {
     }
 
     /**
-     * Returns the target direct position. For performance reasons, the current implementation
-     * returns a reference to the internal object. However users should avoid to modify directly the
-     * returned position and use {@link #setTarget} instead.
+     * Returns the target direct position. For performance reasons, the current implementation returns a reference to
+     * the internal object. However users should avoid to modify directly the returned position and use
+     * {@link #setTarget} instead.
      */
     public Position getTarget() {
         return target;
@@ -146,10 +141,7 @@ public class MappedPosition implements Serializable {
         this.comments = comments;
     }
 
-    /**
-     * Returns an estimation of mapping accuracy in units of target CRS axis, or {@link Double#NaN}
-     * if unknow.
-     */
+    /** Returns an estimation of mapping accuracy in units of target CRS axis, or {@link Double#NaN} if unknow. */
     public double getAccuracy() {
         return accuracy;
     }
@@ -160,16 +152,15 @@ public class MappedPosition implements Serializable {
     }
 
     /**
-     * Computes the distance between the {@linkplain #getSource source point} transformed by the
-     * supplied math transform, and the {@linkplain #getTarget target point}.
+     * Computes the distance between the {@linkplain #getSource source point} transformed by the supplied math
+     * transform, and the {@linkplain #getTarget target point}.
      *
      * @param transform The transform to use for computing the error.
-     * @param buffer An optionnaly pre-computed direct position to use as a buffer, or {@code null}
-     *     if none. The content of this buffer will be overwritten.
+     * @param buffer An optionnaly pre-computed direct position to use as a buffer, or {@code null} if none. The content
+     *     of this buffer will be overwritten.
      * @return The distance in units of the target CRS axis.
      */
-    final double getError(final MathTransform transform, final Position buffer)
-            throws TransformException {
+    final double getError(final MathTransform transform, final Position buffer) throws TransformException {
         return distance(transform.transform(source, buffer), target);
     }
 

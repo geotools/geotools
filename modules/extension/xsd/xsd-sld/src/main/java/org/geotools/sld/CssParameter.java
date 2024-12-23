@@ -21,8 +21,8 @@ import org.geotools.api.filter.expression.Expression;
 /**
  * A Cascading Style Sheet parameter.
  *
- * <p>This class is internal to the sld binding project. It should be replaced with a geotools
- * styling model object if one becomes available.
+ * <p>This class is internal to the sld binding project. It should be replaced with a geotools styling model object if
+ * one becomes available.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

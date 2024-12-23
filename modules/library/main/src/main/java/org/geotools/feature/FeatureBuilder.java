@@ -25,14 +25,14 @@ import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.util.Converters;
 
 /**
- * This class provides some common functionality for builders and defines an abstraction for Feature
- * builders' public interfaces.
+ * This class provides some common functionality for builders and defines an abstraction for Feature builders' public
+ * interfaces.
  *
  * @author Adam Brown (Curtin University of Technology)
- * @param <FT> The kind of FeatureType whose feature the builder will build. Allows you to enforce a
- *     stricter specialist type; eg. SimpleFeatureType.
- * @param <F> The kind of Feature that the builder will build. Allows you to enforce a stricter
- *     specialist type; eg. SimpleFeature.
+ * @param <FT> The kind of FeatureType whose feature the builder will build. Allows you to enforce a stricter specialist
+ *     type; eg. SimpleFeatureType.
+ * @param <F> The kind of Feature that the builder will build. Allows you to enforce a stricter specialist type; eg.
+ *     SimpleFeature.
  */
 public abstract class FeatureBuilder<FT extends FeatureType, F extends Feature> {
     /** the feature type */

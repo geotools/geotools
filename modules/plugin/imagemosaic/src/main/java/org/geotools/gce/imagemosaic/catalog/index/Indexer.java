@@ -139,7 +139,8 @@ public class Indexer {
 
     protected ParametersType parameters;
 
-    @XmlTransient private File indexerFile;
+    @XmlTransient
+    private File indexerFile;
 
     /**
      * Gets the value of the schemas property.
@@ -309,9 +310,9 @@ public class Indexer {
         /**
          * Gets the value of the collector property.
          *
-         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore
-         * any modification you make to the returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the collector property.
+         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the collector property.
          *
          * <p>For example, to add a new item, do as follows:
          *
@@ -319,8 +320,7 @@ public class Indexer {
          * getCollector().add(newItem);
          * </pre>
          *
-         * <p>Objects of the following type(s) are allowed in the list {@link
-         * Indexer.Collectors.Collector }
+         * <p>Objects of the following type(s) are allowed in the list {@link Indexer.Collectors.Collector }
          */
         public List<Indexer.Collectors.Collector> getCollector() {
             if (collector == null) {
@@ -332,8 +332,7 @@ public class Indexer {
         /**
          * Java class for anonymous complex type.
          *
-         * <p>The following schema fragment specifies the expected content contained within this
-         * class.
+         * <p>The following schema fragment specifies the expected content contained within this class.
          *
          * <pre>
          * &lt;complexType>
@@ -509,9 +508,9 @@ public class Indexer {
         /**
          * Gets the value of the coverage property.
          *
-         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore
-         * any modification you make to the returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the coverage property.
+         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the coverage property.
          *
          * <p>For example, to add a new item, do as follows:
          *
@@ -519,8 +518,7 @@ public class Indexer {
          * getCoverage().add(newItem);
          * </pre>
          *
-         * <p>Objects of the following type(s) are allowed in the list {@link
-         * Indexer.Coverages.Coverage }
+         * <p>Objects of the following type(s) are allowed in the list {@link Indexer.Coverages.Coverage }
          */
         public List<Indexer.Coverages.Coverage> getCoverage() {
             if (coverage == null) {
@@ -532,8 +530,7 @@ public class Indexer {
         /**
          * Java class for anonymous complex type.
          *
-         * <p>The following schema fragment specifies the expected content contained within this
-         * class.
+         * <p>The following schema fragment specifies the expected content contained within this class.
          *
          * <pre>
          * &lt;complexType>
@@ -556,14 +553,7 @@ public class Indexer {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
                 name = "",
-                propOrder = {
-                    "schema",
-                    "origName",
-                    "domains",
-                    "name",
-                    "nameCollector",
-                    "parameters"
-                })
+                propOrder = {"schema", "origName", "domains", "name", "nameCollector", "parameters"})
         public static class Coverage {
 
             @XmlElement(required = true)
@@ -791,16 +781,14 @@ public class Indexer {
     public static class MultipleBandsDimensions {
 
         @XmlElement(required = true)
-        protected List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
-                multipleBandsDimension;
+        protected List<Indexer.MultipleBandsDimensions.MultipleBandsDimension> multipleBandsDimension;
 
         /**
          * Gets the value of the multipleBandsDimension property.
          *
-         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore
-         * any modification you make to the returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the multipleBandsDimension
-         * property.
+         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the multipleBandsDimension property.
          *
          * <p>For example, to add a new item, do as follows:
          *
@@ -808,11 +796,10 @@ public class Indexer {
          *    getMultipleBandsDimension().add(newItem);
          * </pre>
          *
-         * <p>Objects of the following type(s) are allowed in the list {@link
-         * Indexer.MultipleBandsDimensions.MultipleBandsDimension }
+         * <p>Objects of the following type(s) are allowed in the list
+         * {@link Indexer.MultipleBandsDimensions.MultipleBandsDimension }
          */
-        public List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
-                getMultipleBandsDimension() {
+        public List<Indexer.MultipleBandsDimensions.MultipleBandsDimension> getMultipleBandsDimension() {
             if (multipleBandsDimension == null) {
                 multipleBandsDimension = new ArrayList<>();
             }
@@ -822,8 +809,7 @@ public class Indexer {
         /**
          * Java class for anonymous complex type.
          *
-         * <p>The following schema fragment specifies the expected content contained within this
-         * class.
+         * <p>The following schema fragment specifies the expected content contained within this class.
          *
          * <pre>
          * &lt;complexType&gt;

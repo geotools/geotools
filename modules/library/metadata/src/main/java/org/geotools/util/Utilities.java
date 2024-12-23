@@ -40,8 +40,8 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.factory.Hints;
 
 /**
- * Miscellaneous methods, including cnvenience methods for {@link Object#equals equals} and {@link
- * Object#hashCode hashCode} implementations. Example use case in a class called {@code Car}:
+ * Miscellaneous methods, including cnvenience methods for {@link Object#equals equals} and {@link Object#hashCode
+ * hashCode} implementations. Example use case in a class called {@code Car}:
  *
  * <pre>
  * public boolean equals(Object other) {
@@ -62,13 +62,11 @@ import org.geotools.util.factory.Hints;
  *
  * Note the usage of {@link Arrays} method for comparing arrays.
  *
- * <p>This class also provides convenience methods for computing {@linkplain Object#hashCode hash
- * code} values. All those methods expect a {@code seed} argument, which is the hash code value
- * computed for previous fields in a class. For the initial seed (the one for the field for which to
- * compute an hash code), an arbitrary value must be provided. We suggest a different number for
- * different class in order to reduce the risk of collision between "empty" instances of different
- * classes. {@linkplain java.io.Serializable} classes can use {@code (int) serialVersionUID} for
- * example.
+ * <p>This class also provides convenience methods for computing {@linkplain Object#hashCode hash code} values. All
+ * those methods expect a {@code seed} argument, which is the hash code value computed for previous fields in a class.
+ * For the initial seed (the one for the field for which to compute an hash code), an arbitrary value must be provided.
+ * We suggest a different number for different class in order to reduce the risk of collision between "empty" instances
+ * of different classes. {@linkplain java.io.Serializable} classes can use {@code (int) serialVersionUID} for example.
  *
  * @since 2.5
  * @version $Id$
@@ -76,9 +74,9 @@ import org.geotools.util.factory.Hints;
  */
 public final class Utilities {
     /**
-     * An array of strings containing only white spaces. Strings' lengths are equal to their index
-     * in the {@code spaces} array. For example, {@code spaces[4]}œcontains a string of length 4.
-     * Strings are constructed only when first needed.
+     * An array of strings containing only white spaces. Strings' lengths are equal to their index in the {@code spaces}
+     * array. For example, {@code spaces[4]}œcontains a string of length 4. Strings are constructed only when first
+     * needed.
      */
     private static final String[] spaces = new String[21];
 
@@ -96,8 +94,8 @@ public final class Utilities {
     private static final Queue<?> EMPTY_QUEUE = new EmptyQueue<>();
 
     /**
-     * The class for the {@link #EMPTY_QUEUE} instance. Defined as a named class rather than
-     * anonymous in order to avoid serialization issue.
+     * The class for the {@link #EMPTY_QUEUE} instance. Defined as a named class rather than anonymous in order to avoid
+     * serialization issue.
      */
     private static final class EmptyQueue<E> extends AbstractQueue<E> implements Serializable {
         /** For cross-version compatibility. * */
@@ -154,9 +152,8 @@ public final class Utilities {
     private Utilities() {}
 
     /**
-     * Returns {@code true} if the given booleans are equals. This overloaded flavor is provided
-     * only for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given booleans are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -168,9 +165,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given characters are equals. This overloaded flavor is provided
-     * only for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given characters are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -182,9 +178,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given bytes are equals. This overloaded flavor is provided only
-     * for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given bytes are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -196,9 +191,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given shorts are equals. This overloaded flavor is provided only
-     * for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given shorts are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -210,9 +204,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given integers are equals. This overloaded flavor is provided
-     * only for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given integers are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -224,9 +217,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given longs are equals. This overloaded flavor is provided only
-     * for allowing developper to invoke {@code equals} methods without consideration for the
-     * argument type.
+     * Returns {@code true} if the given longs are equals. This overloaded flavor is provided only for allowing
+     * developper to invoke {@code equals} methods without consideration for the argument type.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -238,8 +230,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given floats are equals. Positive and negative zero are
-     * considered different, while a NaN value is considered equal to other NaN values.
+     * Returns {@code true} if the given floats are equals. Positive and negative zero are considered different, while a
+     * NaN value is considered equal to other NaN values.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -256,8 +248,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns {@code true} if the given doubles are equals. Positive and negative zero are
-     * considered different, while a NaN value is considered equal to other NaN values.
+     * Returns {@code true} if the given doubles are equals. Positive and negative zero are considered different, while
+     * a NaN value is considered equal to other NaN values.
      *
      * @param o1 The first value to compare.
      * @param o2 The second value to compare.
@@ -285,23 +277,21 @@ public final class Utilities {
     }
 
     /**
-     * Convenience method for testing two objects for equality. One or both objects may be null.
-     * This method do <strong>not</strong> iterates recursively in array elements. If array needs to
-     * be compared, use one of {@link Arrays} method or {@link #deepEquals deepEquals} instead.
+     * Convenience method for testing two objects for equality. One or both objects may be null. This method do
+     * <strong>not</strong> iterates recursively in array elements. If array needs to be compared, use one of
+     * {@link Arrays} method or {@link #deepEquals deepEquals} instead.
      *
-     * <p><b>Note on assertions:</b> There is no way to ensure at compile time that this method is
-     * not invoked with array arguments, while doing so would usually be a program error. Performing
-     * a systematic argument check would impose a useless overhead for correctly implemented {@link
-     * Object#equals} methods. As a compromise we perform this check at runtime only if assertions
-     * are enabled. Using assertions for argument check in a public API is usually a deprecated
-     * practice, but we make an exception for this particular method.
+     * <p><b>Note on assertions:</b> There is no way to ensure at compile time that this method is not invoked with
+     * array arguments, while doing so would usually be a program error. Performing a systematic argument check would
+     * impose a useless overhead for correctly implemented {@link Object#equals} methods. As a compromise we perform
+     * this check at runtime only if assertions are enabled. Using assertions for argument check in a public API is
+     * usually a deprecated practice, but we make an exception for this particular method.
      *
-     * <p><b>Note on method overloading:</b> This method could be selected by the compiler for
-     * comparing primitive types, because the compiler could perform an auto-boxing and get a result
-     * assignable to {@code Object}. However it should not occur in practice because overloaded (and
-     * more efficient) methods are provided for every primitive types. This is true even when the
-     * two arguments are different primitive type because of widening conversions. The only
-     * exception is when a {@code boolean} argument is mixed with a different primitive type.
+     * <p><b>Note on method overloading:</b> This method could be selected by the compiler for comparing primitive
+     * types, because the compiler could perform an auto-boxing and get a result assignable to {@code Object}. However
+     * it should not occur in practice because overloaded (and more efficient) methods are provided for every primitive
+     * types. This is true even when the two arguments are different primitive type because of widening conversions. The
+     * only exception is when a {@code boolean} argument is mixed with a different primitive type.
      *
      * @param object1 The first object to compare, or {@code null}.
      * @param object2 The second object to compare, or {@code null}.
@@ -315,31 +305,28 @@ public final class Utilities {
     }
 
     /**
-     * Convenience method for testing two objects for equality. One or both objects may be null. If
-     * both are non-null and are arrays, then every array elements will be compared.
+     * Convenience method for testing two objects for equality. One or both objects may be null. If both are non-null
+     * and are arrays, then every array elements will be compared.
      *
-     * <p>This method may be useful when the objects may or may not be array. If they are known to
-     * be arrays, consider using {@link Arrays#deepEquals(Object[],Object[])} or one of its
-     * primitive counter-part instead.
+     * <p>This method may be useful when the objects may or may not be array. If they are known to be arrays, consider
+     * using {@link Arrays#deepEquals(Object[],Object[])} or one of its primitive counter-part instead.
      *
      * <p><strong>Rules for choosing an {@code equals} or {@code deepEquals} method</strong>
      *
      * <ul>
-     *   <li>If <em>both</em> objects are declared as {@code Object[]} (not anything else like
-     *       {@code String[]}), consider using {@link Arrays#deepEquals(Object[],Object[])} except
-     *       if it is known that the array elements can never be other arrays.
-     *   <li>Otherwise if both objects are arrays (e.g. {@code Expression[]}, {@code String[]},
-     *       {@code int[]}, <cite>etc.</cite>), use {@link Arrays#equals(Object[],Object[])}. This
-     *       rule is applicable to arrays of primitive type too, since {@code Arrays.equals} is
-     *       overriden with primitive counter-parts.
-     *   <li>Otherwise if at least one object is anything else than {@code Object} (e.g. {@code
-     *       String}, {@code Expression}, <cite>etc.</cite>), use {@link #equals(Object,Object)}.
-     *       Using this {@code deepEquals} method would be an overkill since there is no chance that
-     *       {@code String} or {@code Expression} could be an array.
-     *   <li>Otherwise if <em>both</em> objects are declared exactly as {@code Object} type and it
-     *       is known that they could be arrays, only then invoke this {@code deepEquals} method. In
-     *       such case, make sure that the hash code is computed using {@link #deepHashCode} for
-     *       consistency.
+     *   <li>If <em>both</em> objects are declared as {@code Object[]} (not anything else like {@code String[]}),
+     *       consider using {@link Arrays#deepEquals(Object[],Object[])} except if it is known that the array elements
+     *       can never be other arrays.
+     *   <li>Otherwise if both objects are arrays (e.g. {@code Expression[]}, {@code String[]}, {@code int[]},
+     *       <cite>etc.</cite>), use {@link Arrays#equals(Object[],Object[])}. This rule is applicable to arrays of
+     *       primitive type too, since {@code Arrays.equals} is overriden with primitive counter-parts.
+     *   <li>Otherwise if at least one object is anything else than {@code Object} (e.g. {@code String},
+     *       {@code Expression}, <cite>etc.</cite>), use {@link #equals(Object,Object)}. Using this {@code deepEquals}
+     *       method would be an overkill since there is no chance that {@code String} or {@code Expression} could be an
+     *       array.
+     *   <li>Otherwise if <em>both</em> objects are declared exactly as {@code Object} type and it is known that they
+     *       could be arrays, only then invoke this {@code deepEquals} method. In such case, make sure that the hash
+     *       code is computed using {@link #deepHashCode} for consistency.
      * </ul>
      *
      * @param object1 The first object to compare, or {@code null}.
@@ -354,16 +341,13 @@ public final class Utilities {
             return false;
         }
         if (object1 instanceof Object[]) {
-            return (object2 instanceof Object[])
-                    && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
+            return (object2 instanceof Object[]) && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
         }
         if (object1 instanceof double[]) {
-            return (object2 instanceof double[])
-                    && Arrays.equals((double[]) object1, (double[]) object2);
+            return (object2 instanceof double[]) && Arrays.equals((double[]) object1, (double[]) object2);
         }
         if (object1 instanceof float[]) {
-            return (object2 instanceof float[])
-                    && Arrays.equals((float[]) object1, (float[]) object2);
+            return (object2 instanceof float[]) && Arrays.equals((float[]) object1, (float[]) object2);
         }
         if (object1 instanceof long[]) {
             return (object2 instanceof long[]) && Arrays.equals((long[]) object1, (long[]) object2);
@@ -372,8 +356,7 @@ public final class Utilities {
             return (object2 instanceof int[]) && Arrays.equals((int[]) object1, (int[]) object2);
         }
         if (object1 instanceof short[]) {
-            return (object2 instanceof short[])
-                    && Arrays.equals((short[]) object1, (short[]) object2);
+            return (object2 instanceof short[]) && Arrays.equals((short[]) object1, (short[]) object2);
         }
         if (object1 instanceof byte[]) {
             return (object2 instanceof byte[]) && Arrays.equals((byte[]) object1, (byte[]) object2);
@@ -382,8 +365,7 @@ public final class Utilities {
             return (object2 instanceof char[]) && Arrays.equals((char[]) object1, (char[]) object2);
         }
         if (object1 instanceof boolean[]) {
-            return (object2 instanceof boolean[])
-                    && Arrays.equals((boolean[]) object1, (boolean[]) object2);
+            return (object2 instanceof boolean[]) && Arrays.equals((boolean[]) object1, (boolean[]) object2);
         }
         return object1.equals(object2);
     }
@@ -392,8 +374,8 @@ public final class Utilities {
      * Alters the given seed with the hash code value computed from the given value.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferrably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferrably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(boolean value, int seed) {
@@ -405,8 +387,8 @@ public final class Utilities {
      * Alters the given seed with the hash code value computed from the given value.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(char value, int seed) {
@@ -414,13 +396,12 @@ public final class Utilities {
     }
 
     /**
-     * Alters the given seed with the hash code value computed from the given value. {@code byte}
-     * and {@code short} primitive types are handled by this method as well through implicit
-     * widening conversion.
+     * Alters the given seed with the hash code value computed from the given value. {@code byte} and {@code short}
+     * primitive types are handled by this method as well through implicit widening conversion.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(int value, int seed) {
@@ -428,13 +409,12 @@ public final class Utilities {
     }
 
     /**
-     * Alters the given seed with the hash code value computed from the given value. {@code byte}
-     * and {@code short} primitive types are handled by this method as well through implicit
-     * widening conversion.
+     * Alters the given seed with the hash code value computed from the given value. {@code byte} and {@code short}
+     * primitive types are handled by this method as well through implicit widening conversion.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(long value, int seed) {
@@ -445,8 +425,8 @@ public final class Utilities {
      * Alters the given seed with the hash code value computed from the given value.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(float value, int seed) {
@@ -457,8 +437,8 @@ public final class Utilities {
      * Alters the given seed with the hash code value computed from the given value.
      *
      * @param value The value whose hash code to compute.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      */
     public static int hash(double value, int seed) {
@@ -466,21 +446,19 @@ public final class Utilities {
     }
 
     /**
-     * Alters the given seed with the hash code value computed from the given value. The givan
-     * object may be null. This method do <strong>not</strong> iterates recursively in array
-     * elements. If array needs to be hashed, use one of {@link Arrays} method or {@link
-     * #deepHashCode deepHashCode} instead.
+     * Alters the given seed with the hash code value computed from the given value. The givan object may be null. This
+     * method do <strong>not</strong> iterates recursively in array elements. If array needs to be hashed, use one of
+     * {@link Arrays} method or {@link #deepHashCode deepHashCode} instead.
      *
-     * <p><b>Note on assertions:</b> There is no way to ensure at compile time that this method is
-     * not invoked with an array argument, while doing so would usually be a program error.
-     * Performing a systematic argument check would impose a useless overhead for correctly
-     * implemented {@link Object#hashCode} methods. As a compromise we perform this check at runtime
-     * only if assertions are enabled. Using assertions for argument check in a public API is
+     * <p><b>Note on assertions:</b> There is no way to ensure at compile time that this method is not invoked with an
+     * array argument, while doing so would usually be a program error. Performing a systematic argument check would
+     * impose a useless overhead for correctly implemented {@link Object#hashCode} methods. As a compromise we perform
+     * this check at runtime only if assertions are enabled. Using assertions for argument check in a public API is
      * usually a deprecated practice, but we make an exception for this particular method.
      *
      * @param value The value whose hash code to compute, or {@code null}.
-     * @param seed The hash code value computed so far. If this method is invoked for the first
-     *     field, then any arbitrary value (preferably different for each class) is okay.
+     * @param seed The hash code value computed so far. If this method is invoked for the first field, then any
+     *     arbitrary value (preferably different for each class) is okay.
      * @return An updated hash code value.
      * @throws AssertionError If assertions are enabled and the given value is an array.
      */
@@ -494,24 +472,23 @@ public final class Utilities {
     }
 
     /**
-     * Returns a hash code for the specified object, which may be an array. This method returns one
-     * of the following values:
+     * Returns a hash code for the specified object, which may be an array. This method returns one of the following
+     * values:
      *
      * <p>
      *
      * <ul>
      *   <li>If the supplied object is {@code null}, then this method returns 0.
-     *   <li>Otherwise if the object is an array of objects, then {@link
-     *       Arrays#deepHashCode(Object[])} is invoked.
-     *   <li>Otherwise if the object is an array of primitive type, then the corresponding {@link
-     *       Arrays#hashCode(double[]) Arrays.hashCode(...)} method is invoked.
+     *   <li>Otherwise if the object is an array of objects, then {@link Arrays#deepHashCode(Object[])} is invoked.
+     *   <li>Otherwise if the object is an array of primitive type, then the corresponding
+     *       {@link Arrays#hashCode(double[]) Arrays.hashCode(...)} method is invoked.
      *   <li>Otherwise {@link Object#hashCode()} is invoked.
      *   <li>
      * </ul>
      *
-     * <p>This method should be invoked <strong>only</strong> if the object type is declared exactly
-     * as {@code Object}, not as some subtype like {@code Object[]}, {@code String} or {@code
-     * float[]}. In the later cases, use the appropriate {@link Arrays} method instead.
+     * <p>This method should be invoked <strong>only</strong> if the object type is declared exactly as {@code Object},
+     * not as some subtype like {@code Object[]}, {@code String} or {@code float[]}. In the later cases, use the
+     * appropriate {@link Arrays} method instead.
      *
      * @param object The object to compute hash code. May be {@code null}.
      * @return The hash code of the given object.
@@ -551,23 +528,22 @@ public final class Utilities {
     }
 
     /**
-     * Returns a string representation of the specified object, which may be an array. This method
-     * returns one of the following values:
+     * Returns a string representation of the specified object, which may be an array. This method returns one of the
+     * following values:
      *
      * <p>
      *
      * <ul>
-     *   <li>If the object is an array of objects, then {@link Arrays#deepToString(Object[])} is
-     *       invoked.
-     *   <li>Otherwise if the object is an array of primitive type, then the corresponding {@link
-     *       Arrays#toString(double[]) Arrays.toString(...)} method is invoked.
+     *   <li>If the object is an array of objects, then {@link Arrays#deepToString(Object[])} is invoked.
+     *   <li>Otherwise if the object is an array of primitive type, then the corresponding
+     *       {@link Arrays#toString(double[]) Arrays.toString(...)} method is invoked.
      *   <li>Otherwise {@link String#valueOf(Object)} is invoked.
      *   <li>
      * </ul>
      *
-     * <p>This method should be invoked <strong>only</strong> if the object type is declared exactly
-     * as {@code Object}, not as some subtype like {@code Object[]}, {@code Number} or {@code
-     * float[]}. In the later cases, use the appropriate {@link Arrays} method instead.
+     * <p>This method should be invoked <strong>only</strong> if the object type is declared exactly as {@code Object},
+     * not as some subtype like {@code Object[]}, {@code Number} or {@code float[]}. In the later cases, use the
+     * appropriate {@link Arrays} method instead.
      *
      * @param object The object to format as a string. May be {@code null}.
      * @return A string representation of the given object.
@@ -617,8 +593,8 @@ public final class Utilities {
     }
 
     /**
-     * Returns a string of the specified length filled with white spaces. This method tries to
-     * return a pre-allocated string if possible.
+     * Returns a string of the specified length filled with white spaces. This method tries to return a pre-allocated
+     * string if possible.
      *
      * @param length The string length. Negative values are clamped to 0.
      * @return A string of length {@code length} filled with white spaces.
@@ -654,34 +630,29 @@ public final class Utilities {
      * @param object User argument.
      * @throws NullPointerException if {@code object} is null.
      */
-    public static void ensureNonNull(final String name, final Object object)
-            throws NullPointerException {
+    public static void ensureNonNull(final String name, final Object object) throws NullPointerException {
         if (object == null) {
             throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /**
-     * Makes sure that an argument is non-null and throws an {@link IllegalArgumentException} if it
-     * is.
+     * Makes sure that an argument is non-null and throws an {@link IllegalArgumentException} if it is.
      *
      * @param name argument name
      * @param object argument
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    public static void ensureArgumentNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    public static void ensureArgumentNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /**
      * Creates a stream over the specified {@link Iterable}'s elements.
      *
-     * <p>This operation is lazy in the sense that it does not iterate over the elements until the
-     * Stream is consumed.
+     * <p>This operation is lazy in the sense that it does not iterate over the elements until the Stream is consumed.
      *
      * @param iterable the iterable to stream over
      * @param <T> the type of elements contained in the iterable
@@ -694,8 +665,7 @@ public final class Utilities {
     /**
      * Creates a stream over the specified {@link Iterator}'s elements.
      *
-     * <p>This operation is lazy in the sense that it does not iterate over the elements until the
-     * Stream is consumed.
+     * <p>This operation is lazy in the sense that it does not iterate over the elements until the Stream is consumed.
      *
      * @param iterator the iterator to stream over
      * @param <T> the type of elements contained in the iterator
@@ -706,8 +676,7 @@ public final class Utilities {
     }
 
     /**
-     * Creates a stream with zero or one element, depending on whether the specified {@link
-     * Optional} is empty or not.
+     * Creates a stream with zero or one element, depending on whether the specified {@link Optional} is empty or not.
      *
      * @param optional the optional to stream over
      * @param <T> the type of the element contained in the optional
@@ -718,12 +687,11 @@ public final class Utilities {
     }
 
     /**
-     * Creates a stream with zero or one elements, depending on whether the specified {@code
-     * supertype} is actually a supertype of the specified {@code type} (according to {@code
-     * supertype.isAssignableFrom(type)}).
+     * Creates a stream with zero or one elements, depending on whether the specified {@code supertype} is actually a
+     * supertype of the specified {@code type} (according to {@code supertype.isAssignableFrom(type)}).
      *
-     * <p>If the test is {@code true}, {@code type} is cast to a subclass of {@code supertype} and
-     * returned in the stream; otherwise the stream is empty.
+     * <p>If the test is {@code true}, {@code type} is cast to a subclass of {@code supertype} and returned in the
+     * stream; otherwise the stream is empty.
      *
      * @param type the type to cast
      * @param supertype the surmised supertype of {@code type}
@@ -731,11 +699,8 @@ public final class Utilities {
      * @param <U> the type of {@code supertype}
      * @return a stream over {@code type} cast to a subclass of {@code supertype} or empty
      */
-    public static <T, U> Stream<Class<? extends U>> streamIfSubtype(
-            Class<T> type, Class<U> supertype) {
-        return supertype.isAssignableFrom(type)
-                ? Stream.of(type.asSubclass(supertype))
-                : Stream.empty();
+    public static <T, U> Stream<Class<? extends U>> streamIfSubtype(Class<T> type, Class<U> supertype) {
+        return supertype.isAssignableFrom(type) ? Stream.of(type.asSubclass(supertype)) : Stream.empty();
     }
 
     /**
@@ -747,40 +712,33 @@ public final class Utilities {
     }
 
     /**
-     * Collects stream elements into a {@code Map} whose values are the stream elements and whose
-     * keys are those elements' fully qualified class names.
+     * Collects stream elements into a {@code Map} whose values are the stream elements and whose keys are those
+     * elements' fully qualified class names.
      *
-     * <p>If the stream contains several instances of the same class, only one of them will be
-     * present in the map. If the stream has an iteration order, the later elements win over earlier
-     * ones.
+     * <p>If the stream contains several instances of the same class, only one of them will be present in the map. If
+     * the stream has an iteration order, the later elements win over earlier ones.
      *
      * @param <T> the type of elements in the stream
-     * @return a {@code Collector} which collects elements into a {@code Map} whose keys are class
-     *     names and whose values are stream elements
+     * @return a {@code Collector} which collects elements into a {@code Map} whose keys are class names and whose
+     *     values are stream elements
      */
     public static <T> Collector<T, ?, Map<String, T>> toInstanceByClassNameMap() {
         return Collectors.toMap(
-                element -> element.getClass().getName(),
-                Function.identity(),
-                (first, second) -> second);
+                element -> element.getClass().getName(), Function.identity(), (first, second) -> second);
     }
 
     /**
-     * Checks if the given filename exposes a zip slip vulnerability when it would be extracted to
-     * the given path.
+     * Checks if the given filename exposes a zip slip vulnerability when it would be extracted to the given path.
      *
      * @param file name of the destination file to check, this should include the directories
      * @param destinationDir directory that the file would be unzipped to
-     * @throws java.io.IOException if the given {@code fileName} is found to be vulnerable to zip
-     *     slip with respect to the {@code destinationDir}
+     * @throws java.io.IOException if the given {@code fileName} is found to be vulnerable to zip slip with respect to
+     *     the {@code destinationDir}
      */
-    public static final void assertNotZipSlipVulnarable(File file, Path destinationDir)
-            throws IOException {
+    public static final void assertNotZipSlipVulnarable(File file, Path destinationDir) throws IOException {
 
         if (!file.toPath().normalize().startsWith(destinationDir)) {
-            throw new IOException(
-                    String.format(
-                            "Bad zip entry: ZipSlip extracting %s to %s", file, destinationDir));
+            throw new IOException(String.format("Bad zip entry: ZipSlip extracting %s to %s", file, destinationDir));
         }
     }
 }

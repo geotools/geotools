@@ -22,8 +22,8 @@ public interface CalendarEra {
     InternationalString getName();
 
     /**
-     * Provides the name or description of a mythical or historic event which fixes the position of
-     * the base scale of the calendar era.
+     * Provides the name or description of a mythical or historic event which fixes the position of the base scale of
+     * the calendar era.
      */
     InternationalString getReferenceEvent();
 
@@ -34,11 +34,10 @@ public interface CalendarEra {
     JulianDate getJulianReference();
 
     /**
-     * Identifies the {@linkplain Period period} for which the calendar era was used as a reference
-     * fro dating.
+     * Identifies the {@linkplain Period period} for which the calendar era was used as a reference fro dating.
      *
-     * @return The period, where the data type for {@linkplain Period#getBegin begin} and {@link
-     *     Period#getEnd end} is {@link JulianDate}.
+     * @return The period, where the data type for {@linkplain Period#getBegin begin} and {@link Period#getEnd end} is
+     *     {@link JulianDate}.
      */
     Period getEpochOfUse();
 }

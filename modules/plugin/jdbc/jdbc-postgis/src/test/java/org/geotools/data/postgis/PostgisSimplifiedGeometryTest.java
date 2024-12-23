@@ -81,8 +81,7 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
     public void testCollection() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_collection", 20);
         // line part simplified, but won't use TWKB
-        assertGeometryEquals(
-                geom, "GEOMETRYCOLLECTION (POINT (-120 40), LINESTRING (-120 40, -140 50))");
+        assertGeometryEquals(geom, "GEOMETRYCOLLECTION (POINT (-120 40), LINESTRING (-120 40, -140 50))");
     }
 
     @Test
@@ -97,8 +96,7 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
         assertTrue("Expected " + expectedWKT + " but got " + actual, actual.equalsExact(expected));
     }
 
-    private Geometry getFirstGeometry(String tableName, double simplificationDistance)
-            throws IOException {
+    private Geometry getFirstGeometry(String tableName, double simplificationDistance) throws IOException {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(tableName));
         Query q = new Query(tname(tableName));
         q.setHints(new Hints(Hints.GEOMETRY_SIMPLIFICATION, simplificationDistance));

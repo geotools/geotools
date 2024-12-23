@@ -39,68 +39,59 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 
 /**
- * Stereographic Projection. The directions starting from the central point are true, but the areas
- * and the lengths become increasingly deformed as one moves away from the center. This projection
- * is used to represent polar areas. It can be adapted for other areas having a circular form.
+ * Stereographic Projection. The directions starting from the central point are true, but the areas and the lengths
+ * become increasingly deformed as one moves away from the center. This projection is used to represent polar areas. It
+ * can be adapted for other areas having a circular form.
  *
- * <p>This implementation, and its subclasses, provides transforms for six cases of the
- * stereographic projection:
+ * <p>This implementation, and its subclasses, provides transforms for six cases of the stereographic projection:
  *
  * <ul>
- *   <li>{@code "Oblique_Stereographic"} (EPSG code 9809), alias {@code "Double_Stereographic"} in
- *       ESRI software
+ *   <li>{@code "Oblique_Stereographic"} (EPSG code 9809), alias {@code "Double_Stereographic"} in ESRI software
  *   <li>{@code "Stereographic"} in ESRI software (<strong>NOT</strong> EPSG code 9809)
  *   <li>{@code "Polar_Stereographic"} (EPSG code 9810, uses a series calculation for the inverse)
- *   <li>{@code "Polar_Stereographic (variant B)"} (EPSG code 9829, uses a series calculation for
- *       the inverse)
+ *   <li>{@code "Polar_Stereographic (variant B)"} (EPSG code 9829, uses a series calculation for the inverse)
  *   <li>{@code "Stereographic_North_Pole"} in ESRI software (uses iteration for the inverse)
  *   <li>{@code "Stereographic_South_Pole"} in ESRI software (uses iteration for the inverse)
  * </ul>
  *
- * <p>Both the {@code "Oblique_Stereographic"} and {@code "Stereographic"} projections are "double"
- * projections involving two parts: 1) a conformal transformation of the geographic coordinates to a
- * sphere and 2) a spherical Stereographic projection. The EPSG considers both methods to be valid,
- * but considers them to be a different coordinate operation methods.
+ * <p>Both the {@code "Oblique_Stereographic"} and {@code "Stereographic"} projections are "double" projections
+ * involving two parts: 1) a conformal transformation of the geographic coordinates to a sphere and 2) a spherical
+ * Stereographic projection. The EPSG considers both methods to be valid, but considers them to be a different
+ * coordinate operation methods.
  *
- * <p>The {@code "Stereographic"} case uses the USGS equations of Snyder. This employs a simplified
- * conversion to the conformal sphere that computes the conformal latitude of each point on the
- * sphere.
+ * <p>The {@code "Stereographic"} case uses the USGS equations of Snyder. This employs a simplified conversion to the
+ * conformal sphere that computes the conformal latitude of each point on the sphere.
  *
- * <p>The {@code "Oblique_Stereographic"} case uses equations from the EPSG. This uses a more
- * generalized form of the conversion to the conformal sphere; using only a single conformal sphere
- * at the origin point. Since this is a "double" projection, it is sometimes called the "Double
- * Stereographic". The {@code "Oblique_Stereographic"} is used in New Brunswick (Canada) and the
- * Netherlands.
+ * <p>The {@code "Oblique_Stereographic"} case uses equations from the EPSG. This uses a more generalized form of the
+ * conversion to the conformal sphere; using only a single conformal sphere at the origin point. Since this is a
+ * "double" projection, it is sometimes called the "Double Stereographic". The {@code "Oblique_Stereographic"} is used
+ * in New Brunswick (Canada) and the Netherlands.
  *
- * <p>The {@code "Stereographic"} and {@code "Double_Stereographic"} names are used in ESRI's ArcGIS
- * 8.x product. The {@code "Oblique_Stereographic"} name is the EPSG name for the later only.
+ * <p>The {@code "Stereographic"} and {@code "Double_Stereographic"} names are used in ESRI's ArcGIS 8.x product. The
+ * {@code "Oblique_Stereographic"} name is the EPSG name for the later only.
  *
- * <p><strong>WARNING:</strong> Tests points calculated with ArcGIS's {@code "Double_Stereographic"}
- * are not always equal to points calculated with the {@code "Oblique_Stereographic"}. However,
- * where there are differences, two different implementations of these equations (EPSG guidence note
- * 7 and {@code libproj}) calculate the same values as we do. Until these differences are resolved,
- * please be careful when using this projection.
+ * <p><strong>WARNING:</strong> Tests points calculated with ArcGIS's {@code "Double_Stereographic"} are not always
+ * equal to points calculated with the {@code "Oblique_Stereographic"}. However, where there are differences, two
+ * different implementations of these equations (EPSG guidence note 7 and {@code libproj}) calculate the same values as
+ * we do. Until these differences are resolved, please be careful when using this projection.
  *
- * <p>If a {@link Stereographic.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} parameter is
- * supplied and is not consistent with the projection classification (for example a latitude
- * different from &plusmn;90° for the polar case), then the oblique or polar case will be
- * automatically inferred from the latitude. In other words, the latitude of origin has precedence
- * on the projection classification. If ommited, then the default value is 90°N for {@code
- * "Polar_Stereographic"} and 0° for {@code "Oblique_Stereographic"}.
+ * <p>If a {@link Stereographic.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} parameter is supplied and is not
+ * consistent with the projection classification (for example a latitude different from &plusmn;90° for the polar case),
+ * then the oblique or polar case will be automatically inferred from the latitude. In other words, the latitude of
+ * origin has precedence on the projection classification. If ommited, then the default value is 90°N for
+ * {@code "Polar_Stereographic"} and 0° for {@code "Oblique_Stereographic"}.
  *
- * <p>Polar projections that use the series equations for the inverse calculation will be little bit
- * faster, but may be a little bit less accurate. If a polar {@link
- * Stereographic.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} is used for the {@code
- * "Oblique_Stereographic"} or {@code "Stereographic"}, the iterative equations will be used for
- * inverse polar calculations.
+ * <p>Polar projections that use the series equations for the inverse calculation will be little bit faster, but may be
+ * a little bit less accurate. If a polar {@link Stereographic.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} is used
+ * for the {@code "Oblique_Stereographic"} or {@code "Stereographic"}, the iterative equations will be used for inverse
+ * polar calculations.
  *
- * <p>The {@code "Polar Stereographic (variant B)"}, {@code "Stereographic_North_Pole"}, and {@code
- * "Stereographic_South_Pole"} cases include a {@link StereographicPole.ProviderB#STANDARD_PARALLEL
- * "standard_parallel_1"} parameter. This parameter sets the latitude with a scale factor equal to
- * the supplied scale factor. The {@code "Polar Stereographic (variant A)"} receives its {@code
- * "latitude_of_origin"} parameter value from the hemisphere of the {@link
- * StereographicPole.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} value (i.e. the value is
- * forced to &plusmn;90°).
+ * <p>The {@code "Polar Stereographic (variant B)"}, {@code "Stereographic_North_Pole"}, and
+ * {@code "Stereographic_South_Pole"} cases include a {@link StereographicPole.ProviderB#STANDARD_PARALLEL
+ * "standard_parallel_1"} parameter. This parameter sets the latitude with a scale factor equal to the supplied scale
+ * factor. The {@code "Polar Stereographic (variant A)"} receives its {@code "latitude_of_origin"} parameter value from
+ * the hemisphere of the {@link StereographicPole.Provider#LATITUDE_OF_ORIGIN "latitude_of_origin"} value (i.e. the
+ * value is forced to &plusmn;90°).
  *
  * <p><b>References:</b>
  *
@@ -109,26 +100,20 @@ import org.geotools.util.Utilities;
  *       U.S. Geological Survey Professional Paper 1395, 1987)
  *   <li>"Coordinate Conversions and Transformations including Formulas",<br>
  *       EPSG Guidence Note Number 7, Version 19.
- *   <li>Gerald Evenden. <A HREF="http://members.bellatlantic.net/~vze2hc4d/proj4/sterea.pdf">
- *       "Supplementary PROJ.4 Notes - Oblique Stereographic Alternative"</A>
- *   <li>Krakiwsky, E.J., D.B. Thomson, and R.R. Steeves. 1977. A Manual For Geodetic Coordinate
- *       Transformations in the Maritimes. Geodesy and Geomatics Engineering, UNB. Technical Report
- *       No. 48.
- *   <li>Thomson, D.B., M.P. Mepham and R.R. Steeves. 1977. The Stereographic Double Projection.
- *       Geodesy and Geomatics Engineereng, UNB. Technical Report No. 46.
+ *   <li>Gerald Evenden. <A HREF="http://members.bellatlantic.net/~vze2hc4d/proj4/sterea.pdf"> "Supplementary PROJ.4
+ *       Notes - Oblique Stereographic Alternative"</A>
+ *   <li>Krakiwsky, E.J., D.B. Thomson, and R.R. Steeves. 1977. A Manual For Geodetic Coordinate Transformations in the
+ *       Maritimes. Geodesy and Geomatics Engineering, UNB. Technical Report No. 48.
+ *   <li>Thomson, D.B., M.P. Mepham and R.R. Steeves. 1977. The Stereographic Double Projection. Geodesy and Geomatics
+ *       Engineereng, UNB. Technical Report No. 46.
  * </ul>
  *
- * @see <A HREF="http://mathworld.wolfram.com/StereographicProjection.html">Stereographic projection
- *     on MathWorld</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/polar_stereographic.html">Polar_Stereographic</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/oblique_stereographic.html">Oblique_Stereographic</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/stereographic.html">Stereographic</A>
- * @see <A
- *     HREF="http://www.remotesensing.org/geotiff/proj_list/random_issues.html#stereographic">Some
- *     Random Stereographic Issues</A>
+ * @see <A HREF="http://mathworld.wolfram.com/StereographicProjection.html">Stereographic projection on MathWorld</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polar_stereographic.html">Polar_Stereographic</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/oblique_stereographic.html">Oblique_Stereographic</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/stereographic.html">Stereographic</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/random_issues.html#stereographic">Some Random
+ *     Stereographic Issues</A>
  * @since 2.1
  * @version $Id$
  * @author André Gosselin
@@ -200,10 +185,9 @@ public abstract class Stereographic extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for a {@linkplain Stereographic Stereographic} projections using USGS equations.
-     * This is <strong>not</strong> the provider for EPSG 9809. For the later, use {@link
-     * ObliqueStereographic.Provider} instead.
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for a
+     * {@linkplain Stereographic Stereographic} projections using USGS equations. This is <strong>not</strong> the
+     * provider for EPSG 9809. For the later, use {@link ObliqueStereographic.Provider} instead.
      *
      * @since 2.4
      * @version $Id$
@@ -215,26 +199,24 @@ public abstract class Stereographic extends MapProjection {
         private static final long serialVersionUID = 1243300263948365065L;
 
         /** The localized name for stereographic projection. */
-        static final InternationalString NAME =
-                Vocabulary.formatInternational(VocabularyKeys.STEREOGRAPHIC_PROJECTION);
+        static final InternationalString NAME = Vocabulary.formatInternational(VocabularyKeys.STEREOGRAPHIC_PROJECTION);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Stereographic"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Stereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Stereographic"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Stereographic"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider with default parameters for EPSG stereographic oblique. */
         public Provider() {
@@ -242,8 +224,8 @@ public abstract class Stereographic extends MapProjection {
         }
 
         /**
-         * Constructs a math transform provider from a set of parameters. The provider {@linkplain
-         * #getIdentifiers identifiers} will be the same than the parameter ones.
+         * Constructs a math transform provider from a set of parameters. The provider {@linkplain #getIdentifiers
+         * identifiers} will be the same than the parameter ones.
          *
          * @param parameters The set of parameters (never {@code null}).
          */
@@ -268,8 +250,7 @@ public abstract class Stereographic extends MapProjection {
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             // Values here are in radians (the standard units for the map projection package)
-            final double latitudeOfOrigin =
-                    abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
+            final double latitudeOfOrigin = abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
             final boolean isSpherical = isSpherical(parameters);
             final ParameterDescriptorGroup descriptor = getParameters();
             // Polar case.

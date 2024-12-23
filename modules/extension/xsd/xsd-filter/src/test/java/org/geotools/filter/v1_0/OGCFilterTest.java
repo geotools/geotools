@@ -57,13 +57,12 @@ public class OGCFilterTest {
 
     @Test
     public void testLax() throws Exception {
-        String xml =
-                "<Filter>"
-                        + "  <PropertyIsEqualTo>"
-                        + "    <PropertyName>foo</PropertyName>"
-                        + "    <Literal>bar</Literal>"
-                        + "  </PropertyIsEqualTo>"
-                        + "</Filter>";
+        String xml = "<Filter>"
+                + "  <PropertyIsEqualTo>"
+                + "    <PropertyName>foo</PropertyName>"
+                + "    <Literal>bar</Literal>"
+                + "  </PropertyIsEqualTo>"
+                + "</Filter>";
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
@@ -73,13 +72,12 @@ public class OGCFilterTest {
 
     @Test
     public void testLiteralWithEntity() throws Exception {
-        String xml =
-                "<Filter>"
-                        + "  <PropertyIsEqualTo>"
-                        + "    <PropertyName>foo</PropertyName>"
-                        + "    <Literal>bar &gt; 10 and &lt; 20</Literal>"
-                        + "  </PropertyIsEqualTo>"
-                        + "</Filter>";
+        String xml = "<Filter>"
+                + "  <PropertyIsEqualTo>"
+                + "    <PropertyName>foo</PropertyName>"
+                + "    <Literal>bar &gt; 10 and &lt; 20</Literal>"
+                + "  </PropertyIsEqualTo>"
+                + "</Filter>";
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
@@ -95,16 +93,15 @@ public class OGCFilterTest {
     @Test
     public void testDWithinParse() throws Exception {
 
-        String xml =
-                "<Filter>"
-                        + "<DWithin>"
-                        + "<PropertyName>the_geom</PropertyName>"
-                        + "<Point>"
-                        + "<coordinates>-74.817265,40.5296504</coordinates>"
-                        + "</Point>"
-                        + "<Distance units=\"km\">200</Distance>"
-                        + "</DWithin>"
-                        + "</Filter>";
+        String xml = "<Filter>"
+                + "<DWithin>"
+                + "<PropertyName>the_geom</PropertyName>"
+                + "<Point>"
+                + "<coordinates>-74.817265,40.5296504</coordinates>"
+                + "</Point>"
+                + "<Distance units=\"km\">200</Distance>"
+                + "</DWithin>"
+                + "</Filter>";
 
         OGCConfiguration configuration = new OGCConfiguration();
 

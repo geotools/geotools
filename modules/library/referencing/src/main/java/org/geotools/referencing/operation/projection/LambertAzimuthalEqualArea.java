@@ -49,12 +49,11 @@ import org.geotools.referencing.NamedIdentifier;
  *
  * <ul>
  *   <li>A. Annoni, C. Luzet, E.Gubler and J. Ihde - Map Projections for Europe
- *   <li>John P. Snyder (Map Projections - A Working Manual, U.S. Geological Survey Professional
- *       Paper 1395)
+ *   <li>John P. Snyder (Map Projections - A Working Manual, U.S. Geological Survey Professional Paper 1395)
  * </ul>
  *
- * @see <A HREF="http://mathworld.wolfram.com/LambertAzimuthalEqual-AreaProjection.html">Lambert
- *     Azimuthal Equal-Area Projection on MathWorld</A>
+ * @see <A HREF="http://mathworld.wolfram.com/LambertAzimuthalEqual-AreaProjection.html">Lambert Azimuthal Equal-Area
+ *     Projection on MathWorld</A>
  * @see <A
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/lambert_azimuthal_equal_area.html">"Lambert_Azimuthal_Equal_Area"
  *     on RemoteSensing.org</A>
@@ -103,8 +102,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected LambertAzimuthalEqualArea(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected LambertAzimuthalEqualArea(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         // Fetch parameters
         super(parameters);
         final Collection<GeneralParameterDescriptor> expected =
@@ -146,34 +144,26 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         }
         switch (mode) {
             case NORTH_POLE: // Fall through
-            case SOUTH_POLE:
-                {
-                    dd = 1.0;
-                    xmf = ymf = rq;
-                    break;
-                }
-            case EQUATORIAL:
-                {
-                    dd = 1.0 / rq;
-                    xmf = 1.0;
-                    ymf = 0.5 * qp;
-                    break;
-                }
-            case OBLIQUE:
-                {
-                    dd =
-                            cos(latitudeOfOrigin)
-                                    / (sqrt(1.0 - excentricitySquared * sinphi * sinphi)
-                                            * rq
-                                            * cosb1);
-                    xmf = rq * dd;
-                    ymf = rq / dd;
-                    break;
-                }
-            default:
-                {
-                    throw new AssertionError(mode);
-                }
+            case SOUTH_POLE: {
+                dd = 1.0;
+                xmf = ymf = rq;
+                break;
+            }
+            case EQUATORIAL: {
+                dd = 1.0 / rq;
+                xmf = 1.0;
+                ymf = 0.5 * qp;
+                break;
+            }
+            case OBLIQUE: {
+                dd = cos(latitudeOfOrigin) / (sqrt(1.0 - excentricitySquared * sinphi * sinphi) * rq * cosb1);
+                xmf = rq * dd;
+                ymf = rq / dd;
+                break;
+            }
+            default: {
+                throw new AssertionError(mode);
+            }
         }
     }
 
@@ -195,8 +185,8 @@ public class LambertAzimuthalEqualArea extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
     protected Point2D transformNormalized(final double lambda, final double phi, Point2D ptDst)
@@ -207,56 +197,51 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         double q = qsfn(sinphi);
         final double sinb, cosb, b, c, x, y;
         switch (mode) {
-            case OBLIQUE:
-                {
-                    sinb = q / qp;
-                    cosb = sqrt(1.0 - sinb * sinb);
-                    c = 1.0 + sinb1 * sinb + cosb1 * cosb * coslam;
-                    b = sqrt(2.0 / c);
-                    y = ymf * b * (cosb1 * sinb - sinb1 * cosb * coslam);
-                    x = xmf * b * cosb * sinlam;
-                    break;
+            case OBLIQUE: {
+                sinb = q / qp;
+                cosb = sqrt(1.0 - sinb * sinb);
+                c = 1.0 + sinb1 * sinb + cosb1 * cosb * coslam;
+                b = sqrt(2.0 / c);
+                y = ymf * b * (cosb1 * sinb - sinb1 * cosb * coslam);
+                x = xmf * b * cosb * sinlam;
+                break;
+            }
+            case EQUATORIAL: {
+                sinb = q / qp;
+                cosb = sqrt(1.0 - sinb * sinb);
+                c = 1.0 + cosb * coslam;
+                b = sqrt(2.0 / c);
+                y = ymf * b * sinb;
+                x = xmf * b * cosb * sinlam;
+                break;
+            }
+            case NORTH_POLE: {
+                c = (PI / 2) + phi;
+                q = qp - q;
+                if (q >= 0.0) {
+                    b = sqrt(q);
+                    x = b * sinlam;
+                    y = coslam * -b;
+                } else {
+                    x = y = 0.;
                 }
-            case EQUATORIAL:
-                {
-                    sinb = q / qp;
-                    cosb = sqrt(1.0 - sinb * sinb);
-                    c = 1.0 + cosb * coslam;
-                    b = sqrt(2.0 / c);
-                    y = ymf * b * sinb;
-                    x = xmf * b * cosb * sinlam;
-                    break;
+                break;
+            }
+            case SOUTH_POLE: {
+                c = phi - (PI / 2);
+                q = qp + q;
+                if (q >= 0.0) {
+                    b = sqrt(q);
+                    x = b * sinlam;
+                    y = coslam * +b;
+                } else {
+                    x = y = 0.;
                 }
-            case NORTH_POLE:
-                {
-                    c = (PI / 2) + phi;
-                    q = qp - q;
-                    if (q >= 0.0) {
-                        b = sqrt(q);
-                        x = b * sinlam;
-                        y = coslam * -b;
-                    } else {
-                        x = y = 0.;
-                    }
-                    break;
-                }
-            case SOUTH_POLE:
-                {
-                    c = phi - (PI / 2);
-                    q = qp + q;
-                    if (q >= 0.0) {
-                        b = sqrt(q);
-                        x = b * sinlam;
-                        y = coslam * +b;
-                    } else {
-                        x = y = 0.;
-                    }
-                    break;
-                }
-            default:
-                {
-                    throw new AssertionError(mode);
-                }
+                break;
+            }
+            default: {
+                throw new AssertionError(mode);
+            }
         }
         if (abs(c) < EPSILON_LATITUDE) {
             throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
@@ -268,68 +253,60 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         return new Point2D.Double(x, y);
     }
 
-    /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in
-     * {@code ptDst}.
-     */
+    /** Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in {@code ptDst}. */
     @Override
     @SuppressWarnings("fallthrough")
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         final double lambda, phi;
         switch (mode) {
             case EQUATORIAL: // Fall through
-            case OBLIQUE:
-                {
-                    x /= dd;
-                    y *= dd;
-                    final double rho = hypot(x, y);
-                    if (rho < FINE_EPSILON) {
-                        lambda = 0.0;
-                        phi = latitudeOfOrigin;
+            case OBLIQUE: {
+                x /= dd;
+                y *= dd;
+                final double rho = hypot(x, y);
+                if (rho < FINE_EPSILON) {
+                    lambda = 0.0;
+                    phi = latitudeOfOrigin;
+                } else {
+                    double ab;
+                    double sCe = 2.0 * asin(0.5 * rho / rq);
+                    double cCe = cos(sCe);
+                    sCe = sin(sCe);
+                    x *= sCe;
+                    if (mode == OBLIQUE) {
+                        ab = cCe * sinb1 + y * sCe * cosb1 / rho;
+                        y = rho * cosb1 * cCe - y * sinb1 * sCe;
                     } else {
-                        double ab;
-                        double sCe = 2.0 * asin(0.5 * rho / rq);
-                        double cCe = cos(sCe);
-                        sCe = sin(sCe);
-                        x *= sCe;
-                        if (mode == OBLIQUE) {
-                            ab = cCe * sinb1 + y * sCe * cosb1 / rho;
-                            y = rho * cosb1 * cCe - y * sinb1 * sCe;
-                        } else {
-                            ab = y * sCe / rho;
-                            y = rho * cCe;
-                        }
-                        lambda = atan2(x, y);
-                        phi = authlat(asin(ab));
+                        ab = y * sCe / rho;
+                        y = rho * cCe;
                     }
-                    break;
+                    lambda = atan2(x, y);
+                    phi = authlat(asin(ab));
                 }
-            case NORTH_POLE:
-                {
-                    y = -y;
-                    // Fall through
-                }
-            case SOUTH_POLE:
-                {
-                    final double q = x * x + y * y;
-                    if (q == 0) {
-                        lambda = 0.;
-                        phi = latitudeOfOrigin;
-                    } else {
-                        double ab = 1.0 - q / qp;
-                        if (mode == SOUTH_POLE) {
-                            ab = -ab;
-                        }
-                        lambda = atan2(x, y);
-                        phi = authlat(asin(ab));
+                break;
+            }
+            case NORTH_POLE: {
+                y = -y;
+                // Fall through
+            }
+            case SOUTH_POLE: {
+                final double q = x * x + y * y;
+                if (q == 0) {
+                    lambda = 0.;
+                    phi = latitudeOfOrigin;
+                } else {
+                    double ab = 1.0 - q / qp;
+                    if (mode == SOUTH_POLE) {
+                        ab = -ab;
                     }
-                    break;
+                    lambda = atan2(x, y);
+                    phi = authlat(asin(ab));
                 }
-            default:
-                {
-                    throw new AssertionError(mode);
-                }
+                break;
+            }
+            default: {
+                throw new AssertionError(mode);
+            }
         }
         if (ptDst != null) {
             ptDst.setLocation(lambda, phi);
@@ -354,15 +331,14 @@ public class LambertAzimuthalEqualArea extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
 
         /**
-         * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-         * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+         * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+         * result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
         protected Point2D transformNormalized(final double lambda, final double phi, Point2D ptDst)
@@ -375,54 +351,49 @@ public class LambertAzimuthalEqualArea extends MapProjection {
             final double coslam = cos(lambda);
             double x, y;
             switch (mode) {
-                case EQUATORIAL:
-                    {
-                        y = 1.0 + cosphi * coslam;
-                        if (y <= FINE_EPSILON) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
-                        }
-                        y = sqrt(2.0 / y);
-                        x = y * cosphi * sin(lambda);
-                        y *= sinphi;
-                        break;
+                case EQUATORIAL: {
+                    y = 1.0 + cosphi * coslam;
+                    if (y <= FINE_EPSILON) {
+                        throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                case OBLIQUE:
-                    {
-                        y = 1.0 + sinb1 * sinphi + cosb1 * cosphi * coslam;
-                        if (y <= FINE_EPSILON) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
-                        }
-                        y = sqrt(2.0 / y);
-                        x = y * cosphi * sin(lambda);
-                        y *= cosb1 * sinphi - sinb1 * cosphi * coslam;
-                        break;
+                    y = sqrt(2.0 / y);
+                    x = y * cosphi * sin(lambda);
+                    y *= sinphi;
+                    break;
+                }
+                case OBLIQUE: {
+                    y = 1.0 + sinb1 * sinphi + cosb1 * cosphi * coslam;
+                    if (y <= FINE_EPSILON) {
+                        throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                case NORTH_POLE:
-                    {
-                        if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
-                        }
-                        y = (PI / 4) - phi * 0.5;
-                        y = 2.0 * sin(y);
-                        x = y * sin(lambda);
-                        y *= -coslam;
-                        break;
+                    y = sqrt(2.0 / y);
+                    x = y * cosphi * sin(lambda);
+                    y *= cosb1 * sinphi - sinb1 * cosphi * coslam;
+                    break;
+                }
+                case NORTH_POLE: {
+                    if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
+                        throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                case SOUTH_POLE:
-                    {
-                        if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
-                        }
-                        y = (PI / 4) - phi * 0.5;
-                        y = 2.0 * cos(y);
-                        x = y * sin(lambda);
-                        y *= +coslam;
-                        break;
+                    y = (PI / 4) - phi * 0.5;
+                    y = 2.0 * sin(y);
+                    x = y * sin(lambda);
+                    y *= -coslam;
+                    break;
+                }
+                case SOUTH_POLE: {
+                    if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
+                        throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                default:
-                    {
-                        throw new AssertionError(mode);
-                    }
+                    y = (PI / 4) - phi * 0.5;
+                    y = 2.0 * cos(y);
+                    x = y * sin(lambda);
+                    y *= +coslam;
+                    break;
+                }
+                default: {
+                    throw new AssertionError(mode);
+                }
             }
             assert checkTransform(x, y, ptDst);
             if (ptDst != null) {
@@ -433,12 +404,11 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         }
 
         /**
-         * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in
-         * {@code ptDst} using equations for a sphere.
+         * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in {@code ptDst} using
+         * equations for a sphere.
          */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 
@@ -450,45 +420,37 @@ public class LambertAzimuthalEqualArea extends MapProjection {
             }
             phi = 2.0 * asin(phi);
             switch (mode) {
-                case EQUATORIAL:
-                    {
-                        final double sinz = sin(phi);
-                        final double cosz = cos(phi);
-                        phi = abs(rh) <= FINE_EPSILON ? 0.0 : asin(y * sinz / rh);
-                        x *= sinz;
-                        y = cosz * rh;
-                        lambda = (y == 0) ? 0.0 : atan2(x, y);
-                        break;
-                    }
-                case OBLIQUE:
-                    {
-                        final double sinz = sin(phi);
-                        final double cosz = cos(phi);
-                        phi =
-                                abs(rh) <= FINE_EPSILON
-                                        ? latitudeOfOrigin
-                                        : asin(cosz * sinb1 + y * sinz * cosb1 / rh);
-                        x *= sinz * cosb1;
-                        y = (cosz - sin(phi) * sinb1) * rh;
-                        lambda = (y == 0) ? 0.0 : atan2(x, y);
-                        break;
-                    }
-                case NORTH_POLE:
-                    {
-                        phi = (PI / 2) - phi;
-                        lambda = atan2(x, -y);
-                        break;
-                    }
-                case SOUTH_POLE:
-                    {
-                        phi -= (PI / 2);
-                        lambda = atan2(x, y);
-                        break;
-                    }
-                default:
-                    {
-                        throw new AssertionError(mode);
-                    }
+                case EQUATORIAL: {
+                    final double sinz = sin(phi);
+                    final double cosz = cos(phi);
+                    phi = abs(rh) <= FINE_EPSILON ? 0.0 : asin(y * sinz / rh);
+                    x *= sinz;
+                    y = cosz * rh;
+                    lambda = (y == 0) ? 0.0 : atan2(x, y);
+                    break;
+                }
+                case OBLIQUE: {
+                    final double sinz = sin(phi);
+                    final double cosz = cos(phi);
+                    phi = abs(rh) <= FINE_EPSILON ? latitudeOfOrigin : asin(cosz * sinb1 + y * sinz * cosb1 / rh);
+                    x *= sinz * cosb1;
+                    y = (cosz - sin(phi) * sinb1) * rh;
+                    lambda = (y == 0) ? 0.0 : atan2(x, y);
+                    break;
+                }
+                case NORTH_POLE: {
+                    phi = (PI / 2) - phi;
+                    lambda = atan2(x, -y);
+                    break;
+                }
+                case SOUTH_POLE: {
+                    phi -= (PI / 2);
+                    lambda = atan2(x, y);
+                    break;
+                }
+                default: {
+                    throw new AssertionError(mode);
+                }
             }
             assert checkInverseTransform(lambda, phi, ptDst);
             if (ptDst != null) {
@@ -509,8 +471,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         if (excentricity >= EPSILON) {
             final double con = excentricity * sinphi;
             return ((1.0 - excentricitySquared)
-                    * (sinphi / (1.0 - con * con)
-                            - (0.5 / excentricity) * log((1.0 - con) / (1.0 + con))));
+                    * (sinphi / (1.0 - con * con) - (0.5 / excentricity) * log((1.0 - con) / (1.0 + con))));
         } else {
             return sinphi + sinphi;
         }
@@ -531,9 +492,8 @@ public class LambertAzimuthalEqualArea extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for an {@linkplain LambertAzimuthalEqualArea Lambert Equal Area} projection (EPSG
-     * code 9820).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for an
+     * {@linkplain LambertAzimuthalEqualArea Lambert Equal Area} projection (EPSG code 9820).
      *
      * @since 2.4
      * @version $Id$
@@ -545,21 +505,19 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         private static final long serialVersionUID = 3877793025552244132L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Lambert_Azimuthal_Equal_Area"),
-                            new NamedIdentifier(Citations.EPSG, "Lambert Azimuthal Equal Area"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Lambert Azimuthal Equal Area (Spherical)"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_LambertAzimEqualArea"),
-                            new NamedIdentifier(Citations.EPSG, "9820"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            LATITUDE_OF_CENTRE, LONGITUDE_OF_CENTRE,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Lambert_Azimuthal_Equal_Area"),
+                    new NamedIdentifier(Citations.EPSG, "Lambert Azimuthal Equal Area"),
+                    new NamedIdentifier(Citations.EPSG, "Lambert Azimuthal Equal Area (Spherical)"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_LambertAzimEqualArea"),
+                    new NamedIdentifier(Citations.EPSG, "9820"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    LATITUDE_OF_CENTRE, LONGITUDE_OF_CENTRE,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -576,9 +534,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         @Override
         public MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
-            return isSpherical(parameters)
-                    ? new Spherical(parameters)
-                    : new LambertAzimuthalEqualArea(parameters);
+            return isSpherical(parameters) ? new Spherical(parameters) : new LambertAzimuthalEqualArea(parameters);
         }
     }
 }

@@ -40,13 +40,10 @@ public class DbaseFileReaderTest {
     */
     @Test
     public void test() throws Exception {
-        try (InputStream dbf =
-                        getClass()
-                                .getResourceAsStream(
-                                        "/org/geotools/data/shapefile/test-data/dbase-file-reader/nulls.dbf");
+        try (InputStream dbf = getClass()
+                        .getResourceAsStream("/org/geotools/data/shapefile/test-data/dbase-file-reader/nulls.dbf");
                 DbaseFileReader dbfReader =
-                        new DbaseFileReader(
-                                Channels.newChannel(dbf), false, StandardCharsets.UTF_8)) {
+                        new DbaseFileReader(Channels.newChannel(dbf), false, StandardCharsets.UTF_8)) {
 
             Map<Long, Double> records = new HashMap<>();
             while (dbfReader.hasNext()) {

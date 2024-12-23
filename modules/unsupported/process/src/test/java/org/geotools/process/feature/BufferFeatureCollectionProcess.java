@@ -40,8 +40,7 @@ public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
     }
 
     @Override
-    protected void processFeature(SimpleFeature feature, Map<String, Object> input)
-            throws Exception {
+    protected void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception {
         Double buffer = (Double) input.get(BufferFeatureCollectionFactory.BUFFER.key);
 
         Geometry g = (Geometry) feature.getDefaultGeometry();
@@ -55,16 +54,12 @@ public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
     }
 
     @Override
-    protected SimpleFeatureType getTargetSchema(
-            SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         for (AttributeDescriptor ad : sourceSchema.getAttributeDescriptors()) {
             GeometryDescriptor defaultGeometry = sourceSchema.getGeometryDescriptor();
             if (ad == defaultGeometry) {
-                tb.add(
-                        ad.getName().getLocalPart(),
-                        MultiPolygon.class,
-                        defaultGeometry.getCoordinateReferenceSystem());
+                tb.add(ad.getName().getLocalPart(), MultiPolygon.class, defaultGeometry.getCoordinateReferenceSystem());
             } else {
                 tb.add(ad);
             }

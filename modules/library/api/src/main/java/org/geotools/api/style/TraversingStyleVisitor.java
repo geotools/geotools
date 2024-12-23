@@ -12,20 +12,20 @@ package org.geotools.api.style;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 
 /**
- * An interface for classes that want to perform operations on a Style hierarchy. It forms part of a
- * GoF Visitor Pattern implementation.
+ * An interface for classes that want to perform operations on a Style hierarchy. It forms part of a GoF Visitor Pattern
+ * implementation.
  *
- * <p>A call to style.accept(StyleVisitor) will result in a call to one of the methods in this
- * interface. The responsibility for traversing sub filters is intended to lie with the visitor
- * (this is unusual, but permitted under the Visitor pattern).
+ * <p>A call to style.accept(StyleVisitor) will result in a call to one of the methods in this interface. The
+ * responsibility for traversing sub filters is intended to lie with the visitor (this is unusual, but permitted under
+ * the Visitor pattern).
  *
- * <p>A typical use would be to transcribe a style into a specific format, e.g. XML or SQL.
- * Alternatively it may be to extract specific information from the Style structure, for example a
- * list of all fills. Finally a a style visitor is often used (in conjunction with a factory) in the
- * production of a copy; or slightly modified copy of the original style.
+ * <p>A typical use would be to transcribe a style into a specific format, e.g. XML or SQL. Alternatively it may be to
+ * extract specific information from the Style structure, for example a list of all fills. Finally a a style visitor is
+ * often used (in conjunction with a factory) in the production of a copy; or slightly modified copy of the original
+ * style.
  *
- * <p>It is common practice for a StyleVisitor to also implement an ExpressionVisitor in order to
- * traverse both data structures.
+ * <p>It is common practice for a StyleVisitor to also implement an ExpressionVisitor in order to traverse both data
+ * structures.
  *
  * @see ExpressionVisitor
  * @see StyleFactory

@@ -32,28 +32,26 @@ public class DB2GroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
     protected void createBuildingsTable() throws Exception {
         // last_update_date is an extra column used to test datedifference translation to SQL
         // against date fields, as opposed to timestamp fields
-        run(
-                "CREATE TABLE "
-                        + SCHEMA_QUOTED
-                        + ".\"buildings_group_by_tests\" (\"id\" int PRIMARY KEY not null, \"building_id\" varchar(255), "
-                        + "\"building_type\" varchar(255), \"energy_type\" varchar(255), \"fuel_consumption\" double, "
-                        + "\"energy_consumption\" double, \"last_update\" timestamp, \"last_update_date\" date)");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"buildings_group_by_tests\" VALUES "
-                        + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
-                        + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
-                        + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
-                        + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
-                        + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
-                        + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
-                        + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
-                        + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
-                        + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
-                        + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
-                        + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
-                        + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
+        run("CREATE TABLE "
+                + SCHEMA_QUOTED
+                + ".\"buildings_group_by_tests\" (\"id\" int PRIMARY KEY not null, \"building_id\" varchar(255), "
+                + "\"building_type\" varchar(255), \"energy_type\" varchar(255), \"fuel_consumption\" double, "
+                + "\"energy_consumption\" double, \"last_update\" timestamp, \"last_update_date\" date)");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"buildings_group_by_tests\" VALUES "
+                + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
+                + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
+                + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
+                + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
+                + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
+                + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
+                + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
+                + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
+                + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
+                + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
+                + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
+                + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
     }
 
     @Override
@@ -63,75 +61,64 @@ public class DB2GroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
 
     @Override
     protected void createFt1GroupByTable() throws Exception {
-        run(
-                "CREATE TABLE "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\"(" //
-                        + "\"id\" int primary key not null, " //
-                        + "\"geometry\" db2gse.ST_POINT, " //
-                        + "\"intProperty\" int," //
-                        + "\"doubleProperty\" double, " //
-                        + "\"stringProperty\" varchar(255))");
+        run("CREATE TABLE "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\"(" //
+                + "\"id\" int primary key not null, " //
+                + "\"geometry\" db2gse.ST_POINT, " //
+                + "\"intProperty\" int," //
+                + "\"doubleProperty\" double, " //
+                + "\"stringProperty\" varchar(255))");
 
         try (Connection cx = getConnection()) {
-            DB2Util.executeRegister(
-                    DB2TestUtil.SCHEMA, "ft1_group_by", "geometry", DB2TestUtil.SRSNAME, cx);
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "ft1_group_by", "geometry", DB2TestUtil.SRSNAME, cx);
         }
 
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(0, db2gse.st_PointFromText('POINT(0 0)', "
-                        + SRID
-                        + "), 0, 0.0, 'aa')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(1, db2gse.st_PointFromText('POINT(0 0)', "
-                        + SRID
-                        + "), 1, 1.0, 'ba')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(2, db2gse.st_PointFromText('POINT(0 0)', "
-                        + SRID
-                        + "), 2, 2.0, 'ca')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(3, db2gse.st_PointFromText('POINT(1 1)', "
-                        + SRID
-                        + "), 10, 10.0, 'ab')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(4, db2gse.st_PointFromText('POINT(1 1)', "
-                        + SRID
-                        + "), 11, 11.0, 'bb')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(5, db2gse.st_PointFromText('POINT(1 1)', "
-                        + SRID
-                        + "), 12, 12.0, 'cb')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(6, db2gse.st_PointFromText('POINT(2 2)', "
-                        + SRID
-                        + "), 20, 20.0, 'ac')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(7, db2gse.st_PointFromText('POINT(2 2)', "
-                        + SRID
-                        + "), 21, 21.0, 'bc')");
-        run(
-                "INSERT INTO "
-                        + SCHEMA_QUOTED
-                        + ".\"ft1_group_by\" VALUES(8, db2gse.st_PointFromText('POINT(2 2)', "
-                        + SRID
-                        + "), 22, 22.0, 'cc')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(0, db2gse.st_PointFromText('POINT(0 0)', "
+                + SRID
+                + "), 0, 0.0, 'aa')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(1, db2gse.st_PointFromText('POINT(0 0)', "
+                + SRID
+                + "), 1, 1.0, 'ba')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(2, db2gse.st_PointFromText('POINT(0 0)', "
+                + SRID
+                + "), 2, 2.0, 'ca')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(3, db2gse.st_PointFromText('POINT(1 1)', "
+                + SRID
+                + "), 10, 10.0, 'ab')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(4, db2gse.st_PointFromText('POINT(1 1)', "
+                + SRID
+                + "), 11, 11.0, 'bb')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(5, db2gse.st_PointFromText('POINT(1 1)', "
+                + SRID
+                + "), 12, 12.0, 'cb')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(6, db2gse.st_PointFromText('POINT(2 2)', "
+                + SRID
+                + "), 20, 20.0, 'ac')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(7, db2gse.st_PointFromText('POINT(2 2)', "
+                + SRID
+                + "), 21, 21.0, 'bc')");
+        run("INSERT INTO "
+                + SCHEMA_QUOTED
+                + ".\"ft1_group_by\" VALUES(8, db2gse.st_PointFromText('POINT(2 2)', "
+                + SRID
+                + "), 22, 22.0, 'cc')");
     }
 
     @Override

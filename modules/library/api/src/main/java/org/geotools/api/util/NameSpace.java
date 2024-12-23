@@ -18,20 +18,19 @@ package org.geotools.api.util;
  */
 public interface NameSpace {
     /**
-     * Indicates whether this namespace is a "top level" namespace. Global, or top-level namespaces
-     * are not contained within another namespace. There is no namespace called "global" or "root"
-     * which contains all of the top-level namespaces. Hence, this flag indicates whether the
-     * namespace has a parent.
+     * Indicates whether this namespace is a "top level" namespace. Global, or top-level namespaces are not contained
+     * within another namespace. There is no namespace called "global" or "root" which contains all of the top-level
+     * namespaces. Hence, this flag indicates whether the namespace has a parent.
      *
      * @return {@code true} if this namespace has no parent.
      */
     boolean isGlobal();
 
     /**
-     * Represents the identifier of this namespace. If the {@linkplain #isGlobal global} attribute
-     * is {@code true}, indicating that this is a top level {@code NameSpace}, then the name should
-     * be a {@linkplain LocalName local name}. If {@code false}, name should be a fully-qualified
-     * name where <code>name.{@linkplain GenericName#scope() scope()}.{@linkplain #isGlobal} == true
+     * Represents the identifier of this namespace. If the {@linkplain #isGlobal global} attribute is {@code true},
+     * indicating that this is a top level {@code NameSpace}, then the name should be a {@linkplain LocalName local
+     * name}. If {@code false}, name should be a fully-qualified name where <code>
+     * name.{@linkplain GenericName#scope() scope()}.{@linkplain #isGlobal} == true
      * </code>.
      *
      * @return The identifier of this namespace.

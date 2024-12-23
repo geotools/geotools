@@ -64,9 +64,9 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * A VPF feature class. Note that feature classes may contain one or more feature types. However,
- * all of the feature types of a feature class share the same schema. A feature type will therefore
- * delegate its schema related operations to its feature class.
+ * A VPF feature class. Note that feature classes may contain one or more feature types. However, all of the feature
+ * types of a feature class share the same schema. A feature type will therefore delegate its schema related operations
+ * to its feature class.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$
@@ -122,8 +122,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * @param cDirectoryName the directory containing the class
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFFeatureClass(VPFCoverage cCoverage, String cName, String cDirectoryName)
-            throws SchemaException {
+    public VPFFeatureClass(VPFCoverage cCoverage, String cName, String cDirectoryName) throws SchemaException {
         this(cCoverage, cName, cDirectoryName, null);
     }
 
@@ -133,12 +132,11 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * @param cCoverage the owning coverage
      * @param cName the name of the class
      * @param cDirectoryName the directory containing the class
-     * @param cNamespace the namespace to create features with. If null then a default from
-     *     VPFLibrary.DEFAULTNAMESPACE is assigned.
+     * @param cNamespace the namespace to create features with. If null then a default from VPFLibrary.DEFAULTNAMESPACE
+     *     is assigned.
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFFeatureClass(
-            VPFCoverage cCoverage, String cName, String cDirectoryName, URI cNamespace)
+    public VPFFeatureClass(VPFCoverage cCoverage, String cName, String cDirectoryName, URI cNamespace)
             throws SchemaException {
         coverage = cCoverage;
         directoryName = cDirectoryName;
@@ -169,7 +167,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
-                String featureClassName = feature.getAttribute("feature_class").toString().trim();
+                String featureClassName =
+                        feature.getAttribute("feature_class").toString().trim();
 
                 if (typeName.equals(featureClassName)) {
                     if (this.debug) {
@@ -243,9 +242,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
         }
 
         try {
-            VPFFile vpfFile1 =
-                    VPFFileFactory.getInstance()
-                            .getFile(directoryName.concat(File.separator).concat(table1));
+            VPFFile vpfFile1 = VPFFileFactory.getInstance()
+                    .getFile(directoryName.concat(File.separator).concat(table1));
             // addFileToTable(vpfFile1);
 
             if (!columnSet.containsKey(table1)) {
@@ -269,9 +267,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
                     joinColumn2 = null;
                     isGeometryTable = true;
                 } else {
-                    vpfFile2 =
-                            VPFFileFactory.getInstance()
-                                    .getFile(directoryName.concat(File.separator).concat(table2));
+                    vpfFile2 = VPFFileFactory.getInstance()
+                            .getFile(directoryName.concat(File.separator).concat(table2));
                     // addFileToTable(vpfFile2);
                     joinColumn2 = vpfFile2.getColumn(table2Key);
                 }
@@ -380,8 +377,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return rootTable.hasNext();
     }
 
-    public synchronized List<SimpleFeature> readAllRows(SimpleFeatureType featureType)
-            throws IOException {
+    public synchronized List<SimpleFeature> readAllRows(SimpleFeatureType featureType) throws IOException {
 
         this.enableFeatureCache = true;
         this.featureCache.clear();
@@ -532,8 +528,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return combineColumnSets(featureId, featureType);
     }
 
-    private synchronized SimpleFeature combineColumnSets(
-            String featureId, SimpleFeatureType featureType) {
+    private synchronized SimpleFeature combineColumnSets(String featureId, SimpleFeatureType featureType) {
 
         Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
 
@@ -575,8 +570,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     }
 
     /**
-     * Create a geometry column (usually for feature classes that make use of tiles so simple joins
-     * can not be used)
+     * Create a geometry column (usually for feature classes that make use of tiles so simple joins can not be used)
      *
      * @param table The name of the table containing the geometric primitives
      * @return An <code>AttributeType</code> for the geometry column which is actually a <code>
@@ -592,19 +586,17 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         CoordinateReferenceSystem crs = getCoverage().getLibrary().getCoordinateReferenceSystem();
         if (crs != null) {
-            descriptor =
-                    new AttributeTypeBuilder()
-                            .binding(Geometry.class)
-                            .nillable(true)
-                            .length(-1)
-                            .crs(crs)
-                            .buildDescriptor("GEOMETRY");
+            descriptor = new AttributeTypeBuilder()
+                    .binding(Geometry.class)
+                    .nillable(true)
+                    .length(-1)
+                    .crs(crs)
+                    .buildDescriptor("GEOMETRY");
         } else {
-            descriptor =
-                    new AttributeTypeBuilder()
-                            .binding(Geometry.class)
-                            .nillable(true)
-                            .buildDescriptor("GEOMETRY");
+            descriptor = new AttributeTypeBuilder()
+                    .binding(Geometry.class)
+                    .nillable(true)
+                    .buildDescriptor("GEOMETRY");
         }
 
         VPFColumn result = new VPFColumn("GEOMETRY", descriptor); // how to construct
@@ -613,8 +605,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return result;
     }
     /**
-     * Identifies the type of geometry factory to use based on the name of the table containing the
-     * geometry, then constructs the appropriate geometry factory object.
+     * Identifies the type of geometry factory to use based on the name of the table containing the geometry, then
+     * constructs the appropriate geometry factory object.
      *
      * @param table The name of the geometry table
      */

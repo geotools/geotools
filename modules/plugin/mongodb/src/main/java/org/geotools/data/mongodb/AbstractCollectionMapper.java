@@ -54,9 +54,8 @@ public abstract class AbstractCollectionMapper implements CollectionMapper {
                                 : Converters.convert(o, descriptor.getType().getBinding()));
             }
         }
-        SimpleFeature feature =
-                new MongoFeature(
-                        rootDBO, values.toArray(), featureType, rootDBO.get("_id").toString());
+        SimpleFeature feature = new MongoFeature(
+                rootDBO, values.toArray(), featureType, rootDBO.get("_id").toString());
         // we store a reference to the original feature in the user data
         feature.getUserData().put(MONGO_OBJECT_FEATURE_KEY, feature);
         return feature;

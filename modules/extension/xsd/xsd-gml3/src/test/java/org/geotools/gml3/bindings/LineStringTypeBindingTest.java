@@ -72,10 +72,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(3d, 4d, 20d).equals3D(line.getPointN(1).getCoordinate()));
     }
 
-    /**
-     * Tests encoding using a CoordinateArraySequence (which requires special logic to get the
-     * dimension correct)
-     */
+    /** Tests encoding using a CoordinateArraySequence (which requires special logic to get the dimension correct) */
     @Test
     public void testEncodeLineString() throws Exception {
         LineString line = GML3MockData.lineString();
@@ -106,9 +103,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
-    /**
-     * Test a long LineString to catch problems that only show up with large numbers of ordinates
-     */
+    /** Test a long LineString to catch problems that only show up with large numbers of ordinates */
     @Test
     public void testEncode2DLong() throws Exception {
         LineString line = GML3MockData.lineStringLite2D(10);

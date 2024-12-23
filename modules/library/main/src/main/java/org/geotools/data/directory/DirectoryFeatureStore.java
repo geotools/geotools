@@ -44,8 +44,7 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
     }
 
     @Override
-    public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
-            throws IOException {
+    public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter) throws IOException {
         fstore.modifyFeatures(attributeName, attributeValue, filter);
     }
 
@@ -75,8 +74,7 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
     }
 
     @Override
-    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         fstore.setFeatures(reader);
     }
 
@@ -86,8 +84,8 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
     }
 
     @Override
-    public List<FeatureId> addFeatures(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
+    public List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType, SimpleFeature> collection)
+            throws IOException {
         return fstore.addFeatures(collection);
     }
 

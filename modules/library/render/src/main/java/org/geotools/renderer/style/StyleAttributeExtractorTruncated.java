@@ -24,25 +24,22 @@ import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.style.TextSymbolizer;
 
 /**
- * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
- * those that the Style expects to find in order to work properly
+ * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is, those that the Style
+ * expects to find in order to work properly
  *
- * <p>This is very similiar to StyleAttributeExtractor, but with these differences: a) it doesnt the
- * count the <PropertyName> tag in the <Geometry> b) it doesnt count anything in the
- * <TextSymbolizer>'s <Priority> tag c) it doesnt count anything in the <TextSymbolizer>'s <Label>
- * tag
+ * <p>This is very similiar to StyleAttributeExtractor, but with these differences: a) it doesnt the count the
+ * <PropertyName> tag in the <Geometry> b) it doesnt count anything in the <TextSymbolizer>'s <Priority> tag c) it
+ * doesnt count anything in the <TextSymbolizer>'s <Label> tag
  *
- * <p>The reasons for this are because these fields are ALWAYS taken directly from the feature, not
- * from the style.
+ * <p>The reasons for this are because these fields are ALWAYS taken directly from the feature, not from the style.
  *
  * <p>So, for making queries (knowing any property that might be possibily be used in the SLD), use
- * StyleAttributeExtractor. If you want to know what a symbolizer actually needs to cache, then use
- * this (StyleAttributeExtractorTruncated).
+ * StyleAttributeExtractor. If you want to know what a symbolizer actually needs to cache, then use this
+ * (StyleAttributeExtractorTruncated).
  *
  * @author dblasby
  */
-public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
-        implements StyleVisitor {
+public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor implements StyleVisitor {
 
     boolean usingVolatileFunctions = false;
 
@@ -64,7 +61,8 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
     public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
         usingVolatileFunctions |= (expression instanceof VolatileFunction);
         return super.visit(expression, data);
-    };
+    }
+    ;
 
     /** @see StyleVisitor#visit(org.geotools.api.style.TextSymbolizer) */
     @Override

@@ -20,10 +20,10 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * The TileIdentifier implementation for the BingMaps family. This identifier follows the grid logic
- * of similar implementations. The different characteristic of a BingTileIdentifier is the use of
- * quadkey to locate a tile in the grid space. Please refer to <a
- * href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps Tile System</a>.
+ * The TileIdentifier implementation for the BingMaps family. This identifier follows the grid logic of similar
+ * implementations. The different characteristic of a BingTileIdentifier is the use of quadkey to locate a tile in the
+ * grid space. Please refer to <a href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps Tile
+ * System</a>.
  *
  * @author Ugo Taddei
  * @since 12

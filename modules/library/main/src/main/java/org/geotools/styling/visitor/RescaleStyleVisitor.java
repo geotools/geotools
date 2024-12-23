@@ -44,18 +44,17 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 
 /**
- * This is a style visitor that will produce a copy of the provided style rescaled by a provided
- * factor.
+ * This is a style visitor that will produce a copy of the provided style rescaled by a provided factor.
  *
- * <p>The provided scale will be use to modify all line widths, font sizes and so forth. We may need
- * to go the extra distance and play with the min/max scale on rules, and if there is any DPI
- * specific madness going on we are going to cry.
+ * <p>The provided scale will be use to modify all line widths, font sizes and so forth. We may need to go the extra
+ * distance and play with the min/max scale on rules, and if there is any DPI specific madness going on we are going to
+ * cry.
  *
- * <p>According to the specification we are supposed to use environmental variables to make our
- * styles render in a resolution independent manner. The current GeoTools environment variable
- * visitor only does processing for <b>mapscale</b> but does not have a dpi substitution. On the
- * plus side this visitor accepts a general Expression and you are free to use an environmental
- * variable expression in order to make sure a normal base style is tweaked in all the right spots.
+ * <p>According to the specification we are supposed to use environmental variables to make our styles render in a
+ * resolution independent manner. The current GeoTools environment variable visitor only does processing for
+ * <b>mapscale</b> but does not have a dpi substitution. On the plus side this visitor accepts a general Expression and
+ * you are free to use an environmental variable expression in order to make sure a normal base style is tweaked in all
+ * the right spots.
  *
  * <p>
  *
@@ -87,8 +86,8 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     /**
      * Used to rescale the provided expr.
      *
-     * <p>We do optimize the case where the provided expression is a literal; no sense doing a
-     * calculation each time if we don't have to.
+     * <p>We do optimize the case where the provided expression is a literal; no sense doing a calculation each time if
+     * we don't have to.
      *
      * @return expr multiplied by the provided scale
      */
@@ -125,9 +124,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         Expression rescaleToExpression = rescale(ff.literal(1));
         // How to test, if it is a measure with a unit or not?
         String data = ((Literal) rescaleToExpression).getValue().toString();
-        boolean evaluate =
-                rescaleToExpression instanceof Literal
-                        && Character.isDigit(data.charAt(data.length() - 1));
+        boolean evaluate = rescaleToExpression instanceof Literal && Character.isDigit(data.charAt(data.length() - 1));
 
         List<Expression> rescaled = new ArrayList<>(expressions.size());
         for (Expression expression : expressions) {
@@ -241,8 +238,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                 LinePlacement linePlacement = (LinePlacement) placement;
                 linePlacement.setGap(rescale(linePlacement.getGap()));
                 linePlacement.setInitialGap(rescale(linePlacement.getInitialGap()));
-                linePlacement.setPerpendicularOffset(
-                        rescale(linePlacement.getPerpendicularOffset()));
+                linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset()));
             }
             copy.setLabelPlacement(placement);
 
@@ -273,8 +269,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                     options,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
                     org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
-            rescaleArrayOption(
-                    options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
+            rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }
@@ -319,10 +314,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             super.visit(sym);
 
             PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
-            rescaleArrayOption(
-                    copy.getOptions(),
-                    org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY,
-                    0);
+            rescaleArrayOption(copy.getOptions(), org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }
@@ -347,22 +339,20 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf(defaultValue * scaleFactor));
         }
-    };
+    }
+    ;
 
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
-            int rescaled =
-                    (int)
-                            Math.round(
-                                    Converters.convert(options.get(key), Double.class)
-                                            * scaleFactor);
+            int rescaled = (int) Math.round(Converters.convert(options.get(key), Double.class) * scaleFactor);
             options.put(key, String.valueOf(rescaled));
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
-    };
+    }
+    ;
 
     /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
@@ -380,5 +370,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
-    };
+    }
+    ;
 }

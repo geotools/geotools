@@ -42,7 +42,8 @@ public class CacheManagementTest {
 
     @Test
     public void testLoadExternalFileWithDefaultCache() throws Exception {
-        File cacheConfigFile = new File(getClass().getResource("ehcache-defaultcache.xml").toURI());
+        File cacheConfigFile =
+                new File(getClass().getResource("ehcache-defaultcache.xml").toURI());
         assertTrue(cacheConfigFile.exists());
         String configurationPath = cacheConfigFile.getAbsolutePath();
         System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
@@ -82,7 +83,8 @@ public class CacheManagementTest {
 
     @Test
     public void testDoesntFailIfExternalFileIsUnparseable() throws Exception {
-        File cacheConfigFile = new File(getClass().getResource("ehcache-malformed.xml").toURI());
+        File cacheConfigFile =
+                new File(getClass().getResource("ehcache-malformed.xml").toURI());
         assertTrue(cacheConfigFile.exists());
         String configurationPath = cacheConfigFile.getAbsolutePath();
         System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
@@ -93,8 +95,8 @@ public class CacheManagementTest {
 
     @Test
     public void testCacheFileGivenButNoCacheDefined() throws Exception {
-        File cacheConfigFile =
-                new File(getClass().getResource("ehcache-no-s3cache-defined.xml").toURI());
+        File cacheConfigFile = new File(
+                getClass().getResource("ehcache-no-s3cache-defined.xml").toURI());
         assertTrue(cacheConfigFile.exists());
         String configurationPath = cacheConfigFile.getAbsolutePath();
         System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);

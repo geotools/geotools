@@ -47,23 +47,21 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * This {@link CoverageProcessingNode} is responsible for visiting the supplied {@link
- * ColorMapTransform} and applying it to the source {@link GridCoverage2D} .
+ * This {@link CoverageProcessingNode} is responsible for visiting the supplied {@link ColorMapTransform} and applying
+ * it to the source {@link GridCoverage2D} .
  *
  * <p><strong>What we support and how do we implement it</strong>
  *
- * <p>A ColorMapTransform is created in order to map categories to colors on a single band coverage
- * (or on the visible band of multiband coverage).
+ * <p>A ColorMapTransform is created in order to map categories to colors on a single band coverage (or on the visible
+ * band of multiband coverage).
  *
- * <p>In this implementation we allow users to use either 256 or 65536 colors via the creation of a
- * paletted image with s suitable palette derived from the single {@link ColorMapEntry} that make up
- * the {@link ColorMapTransform} .
+ * <p>In this implementation we allow users to use either 256 or 65536 colors via the creation of a paletted image with
+ * s suitable palette derived from the single {@link ColorMapEntry} that make up the {@link ColorMapTransform} .
  *
  * @author Simone Giannecchini, GeoSolutions
  * @see ColorMapTransform
  */
-class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
-        implements StyleVisitor, CoverageProcessingNode {
+class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements StyleVisitor, CoverageProcessingNode {
 
     public static int TYPE_NONE = -1;
     /*
@@ -89,9 +87,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
     private int type = TYPE_NONE;
 
     /**
-     * The {@link Domain1D} that we build while parsing the various {@link ColorMapEntry}s provided
-     * by the {@link ColorMapTransform} we visit. This {@link LinearColorMap} we'll help us buld the
-     * colormapped image.
+     * The {@link Domain1D} that we build while parsing the various {@link ColorMapEntry}s provided by the
+     * {@link ColorMapTransform} we visit. This {@link LinearColorMap} we'll help us buld the colormapped image.
      */
     private LinearColorMap colorMapTransform;
 
@@ -103,8 +100,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
     private boolean extendedColors;
 
     /**
-     * Visits the provided {@link ColorMapTransform} and build up a {@link Domain1D} for later
-     * creation of a palette rendering for this coverage.
+     * Visits the provided {@link ColorMapTransform} and build up a {@link Domain1D} for later creation of a palette
+     * rendering for this coverage.
      */
     @Override
     public void visit(ColorMap colorMap) {
@@ -148,8 +145,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
                     // let's check, it might
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                            MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
                 }
             }
             // /////////////////////////////////////////////////////////////////////
@@ -205,8 +201,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
     }
 
     /** */
-    private static double[] preparaNoDataValues(final GridSampleDimension candidateSD)
-            throws IllegalStateException {
+    private static double[] preparaNoDataValues(final GridSampleDimension candidateSD) throws IllegalStateException {
         double[] candidateNoDataValues = candidateSD.getNoDataValues();
         // if no nodata categories are ready we'll add a fictitious one
         // @todo TODO make this code configurable
@@ -247,13 +242,12 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 1,
                 hints,
                 SimpleInternationalString.wrap("ColorMapNode"),
-                SimpleInternationalString.wrap(
-                        "Node which applies a ColorMapTransform following SLD 1.0 spec."));
+                SimpleInternationalString.wrap("Node which applies a ColorMapTransform following SLD 1.0 spec."));
     }
 
     /**
-     * Note that the color map can be applied only to a single band hence, in principle, applying
-     * the {@link ColorMapTransform} element to a coverage with more than one band is an error.
+     * Note that the color map can be applied only to a single band hence, in principle, applying the
+     * {@link ColorMapTransform} element to a coverage with more than one band is an error.
      */
     @Override
     protected GridCoverage2D execute() {
@@ -263,7 +257,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
         //
         ///////////////////////////////////////////////////////////////////
         final CoverageProcessingNode sourceNode = getSource(0);
-        GridCoverageRendererUtilities.ensureSourceNotNull(sourceNode, this.getName().toString());
+        GridCoverageRendererUtilities.ensureSourceNotNull(
+                sourceNode, this.getName().toString());
         final GridCoverage2D sourceCoverage = (GridCoverage2D) sourceNode.getOutput();
         GridCoverageRendererUtilities.ensureSourceNotNull(
                 sourceCoverage, this.getName().toString());
@@ -288,8 +283,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             w.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
             w.classify(colorMapTransform, null);
             final RenderedOp classified =
-                    w
-                            .getRenderedOperation(); // JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
+                    w.getRenderedOperation(); // JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
 
             ////
             //
@@ -301,10 +295,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             assert outputChannels == 1 || outputChannels == 3 || outputChannels == 4;
             final GridSampleDimension[] sd = new GridSampleDimension[numBands];
             for (int i = 0; i < numBands; i++)
-                sd[i] =
-                        new GridSampleDimension(
-                                TypeMap.getColorInterpretation(classified.getColorModel(), i)
-                                        .name());
+                sd[i] = new GridSampleDimension(TypeMap.getColorInterpretation(classified.getColorModel(), i)
+                        .name());
 
             ////
             //

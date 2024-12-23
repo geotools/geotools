@@ -32,8 +32,7 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 
 public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttribute {
 
-    public ComplexAttributeImpl(
-            Collection<Property> properties, AttributeDescriptor descriptor, Identifier id) {
+    public ComplexAttributeImpl(Collection<Property> properties, AttributeDescriptor descriptor, Identifier id) {
         super(cloneProperties(properties), descriptor, id);
     }
 
@@ -60,10 +59,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return FeatureImplUtils.unmodifiable(cast);
     }
 
-    /**
-     * Internal helper method for getting at the properties without wrapping in unmodifiable
-     * collection.
-     */
+    /** Internal helper method for getting at the properties without wrapping in unmodifiable collection. */
     @SuppressWarnings("unchecked")
     protected List<Property> properties() {
         return (List<Property>) super.getValue();
@@ -82,8 +78,8 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     /**
-     * @return the first property in {@link #getProperties()} reverse order whose {@link
-     *     Property#getName() name} equals the given {@code name}
+     * @return the first property in {@link #getProperties()} reverse order whose {@link Property#getName() name} equals
+     *     the given {@code name}
      */
     public Optional<Property> findLast(Name name) {
         List<Property> properties = properties();
@@ -96,16 +92,12 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return Optional.empty();
     }
 
-    /**
-     * @return all properties that match the provided predicate, may be empty, never {@code null}
-     */
+    /** @return all properties that match the provided predicate, may be empty, never {@code null} */
     public Stream<Property> findAll(Predicate<? super Property> predicate) {
         return properties().stream().filter(predicate);
     }
 
-    /**
-     * @return the first property that matches the provided predicate, or {@code Optional.empty()}
-     */
+    /** @return the first property that matches the provided predicate, or {@code Optional.empty()} */
     public Optional<Property> find(Predicate<? super Property> predicate) {
         return properties().stream().filter(predicate).findFirst();
     }
@@ -158,8 +150,8 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     /**
-     * Appends a property to this attribute's property list without incurring in unnecessary object
-     * allocation such as safe-copying the values list as in {@link #setValue(Collection)}
+     * Appends a property to this attribute's property list without incurring in unnecessary object allocation such as
+     * safe-copying the values list as in {@link #setValue(Collection)}
      */
     public void addValue(Property value) {
         properties().add(value);

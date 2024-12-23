@@ -49,24 +49,21 @@ public final class IndexesConfig {
     private final List<String> indexesNames = new ArrayList<>();
 
     /**
-     * Adds the specification of a geometry attribute of the index to the current index
-     * configuration.
+     * Adds the specification of a geometry attribute of the index to the current index configuration.
      *
      * @param attributeName the index attribute name
      * @param srid the SIRD of the geometry, e.g. EPSG:4326
      * @param type the type of the geometry, e.g. POINT
-     * @param isDefault TRUE fi this attribute contains the default geometry of the feature type,
-     *     otherwise FALSE
+     * @param isDefault TRUE fi this attribute contains the default geometry of the feature type, otherwise FALSE
      */
-    public void addGeometry(
-            String indexName, String attributeName, String srid, String type, String isDefault) {
+    public void addGeometry(String indexName, String attributeName, String srid, String type, String isDefault) {
         GeometryConfig geometry = GeometryConfig.create(attributeName, srid, type, isDefault);
         getIndexConfig(indexName).addGeometry(geometry);
     }
 
     /**
-     * Add the list of attributes that should be considered when querying the Apache Solr index
-     * identified byt the provided index name.
+     * Add the list of attributes that should be considered when querying the Apache Solr index identified byt the
+     * provided index name.
      *
      * @param indexName the Apache Solr index name
      * @param attributes the list of attributes names
@@ -77,17 +74,15 @@ public final class IndexesConfig {
     }
 
     /**
-     * Build a simple feature type based on the Apache Solr index configuration and on the provided
-     * Apache Solr schema attributes. Note that if no configuration existing for the requested
-     * Apache Solr index, all attributes will be used to build the simple feature type and no
-     * geometries fields will be identified.
+     * Build a simple feature type based on the Apache Solr index configuration and on the provided Apache Solr schema
+     * attributes. Note that if no configuration existing for the requested Apache Solr index, all attributes will be
+     * used to build the simple feature type and no geometries fields will be identified.
      *
      * @param indexName the Apache Solr index name
      * @param solrAttributes Apache Solr schema attributes associated with the index
      * @return the built simple feature type
      */
-    public SimpleFeatureType buildFeatureType(
-            String indexName, List<SolrAttribute> solrAttributes) {
+    public SimpleFeatureType buildFeatureType(String indexName, List<SolrAttribute> solrAttributes) {
         return getIndexConfig(indexName).buildFeatureType(solrAttributes);
     }
 
@@ -101,8 +96,8 @@ public final class IndexesConfig {
     }
 
     /**
-     * Returns the configuration associated with the provided apache Solr index name. If not
-     * configuration is available a new one will be created and associated with the index.
+     * Returns the configuration associated with the provided apache Solr index name. If not configuration is available
+     * a new one will be created and associated with the index.
      */
     public IndexConfig getIndexConfig(String indexName) {
         IndexConfig indexConfig = indexesConfig.get(indexName);
@@ -142,9 +137,7 @@ public final class IndexesConfig {
         }
 
         GeometryConfig searchGeometry(String attributeName) {
-            return search(
-                    geometries,
-                    geometry -> Objects.equals(geometry.getAttributeName(), attributeName));
+            return search(geometries, geometry -> Objects.equals(geometry.getAttributeName(), attributeName));
         }
 
         GeometryConfig searchDefaultGeometry() {
@@ -157,8 +150,7 @@ public final class IndexesConfig {
             if (!denormalizedIndexMode) {
                 // normal attributes build
                 for (String attributeName : attributes) {
-                    AttributeDescriptor attribute =
-                            buildAttributeDescriptor(attributeName, solrAttributes);
+                    AttributeDescriptor attribute = buildAttributeDescriptor(attributeName, solrAttributes);
                     if (attribute == null) {
                         continue;
                     }
@@ -167,8 +159,7 @@ public final class IndexesConfig {
             } else {
                 // denormalized index build
                 for (SolrAttribute sa : solrAttributes) {
-                    AttributeDescriptor attribute =
-                            buildAttributeDescriptor(sa.getName(), solrAttributes);
+                    AttributeDescriptor attribute = buildAttributeDescriptor(sa.getName(), solrAttributes);
                     if (attribute == null) {
                         continue;
                     }
@@ -182,46 +173,35 @@ public final class IndexesConfig {
             return featureTypeBuilder.buildFeatureType();
         }
 
-        private AttributeDescriptor buildAttributeDescriptor(
-                String attributeName, List<SolrAttribute> solrAttributes) {
+        private AttributeDescriptor buildAttributeDescriptor(String attributeName, List<SolrAttribute> solrAttributes) {
             SolrAttribute solrAttribute = searchAttribute(attributeName, solrAttributes);
             if (solrAttribute == null) {
                 LOGGER.log(
                         Level.WARNING,
                         String.format(
-                                "Could not find attribute '%s' in Solar index '%s' schema.",
-                                attributeName, indexName));
+                                "Could not find attribute '%s' in Solar index '%s' schema.", attributeName, indexName));
                 return null;
             }
-            AttributeDescriptor attribute =
-                    buildAttributeDescriptor(solrAttribute, searchGeometry(attributeName));
-            attribute
-                    .getUserData()
-                    .put(SolrFeatureSource.KEY_SOLR_TYPE, solrAttribute.getSolrType());
+            AttributeDescriptor attribute = buildAttributeDescriptor(solrAttribute, searchGeometry(attributeName));
+            attribute.getUserData().put(SolrFeatureSource.KEY_SOLR_TYPE, solrAttribute.getSolrType());
             return attribute;
         }
 
-        private AttributeDescriptor buildAttributeDescriptor(
-                SolrAttribute solrAttribute, GeometryConfig geometry) {
+        private AttributeDescriptor buildAttributeDescriptor(SolrAttribute solrAttribute, GeometryConfig geometry) {
             AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
             if (geometry == null) {
                 attributeBuilder.setName(solrAttribute.getName());
                 attributeBuilder.setBinding(solrAttribute.getType());
-                return attributeBuilder.buildDescriptor(
-                        solrAttribute.getName(), attributeBuilder.buildType());
+                return attributeBuilder.buildDescriptor(solrAttribute.getName(), attributeBuilder.buildType());
             }
             attributeBuilder.setCRS(geometry.getCrs());
             attributeBuilder.setName(geometry.getAttributeName());
             attributeBuilder.setBinding(geometry.getType());
-            return attributeBuilder.buildDescriptor(
-                    geometry.getAttributeName(), attributeBuilder.buildGeometryType());
+            return attributeBuilder.buildDescriptor(geometry.getAttributeName(), attributeBuilder.buildGeometryType());
         }
 
-        private static SolrAttribute searchAttribute(
-                String attributeName, List<SolrAttribute> solrAttributes) {
-            return search(
-                    solrAttributes,
-                    solrAttribute -> Objects.equals(solrAttribute.getName(), attributeName));
+        private static SolrAttribute searchAttribute(String attributeName, List<SolrAttribute> solrAttributes) {
+            return search(solrAttributes, solrAttribute -> Objects.equals(solrAttribute.getName(), attributeName));
         }
 
         private static <T> T search(List<T> objects, Function<T, Boolean> predicate) {
@@ -283,11 +263,9 @@ public final class IndexesConfig {
             try {
                 crs = CRS.decode("EPSG:" + srid);
             } catch (Exception exception) {
-                throw new RuntimeException(
-                        String.format("Error decoding CRS 'EPSG:%s'.", srid), exception);
+                throw new RuntimeException(String.format("Error decoding CRS 'EPSG:%s'.", srid), exception);
             }
-            return new GeometryConfig(
-                    attributeName, crs, matchGeometryType(type), Boolean.parseBoolean(isDefault));
+            return new GeometryConfig(attributeName, crs, matchGeometryType(type), Boolean.parseBoolean(isDefault));
         }
 
         private static Class<? extends Geometry> matchGeometryType(String geometryTypeName) {

@@ -25,17 +25,16 @@ import org.junit.Assume;
 import org.junit.Before;
 
 /**
- * JUnit 4 test support for test cases that require an "online" resource, such as an external server
- * or database.
+ * JUnit 4 test support for test cases that require an "online" resource, such as an external server or database.
  *
  * <p>See {@link OnlineTestCase} for details of behaviour and test fixture configuration.
  *
  * <p>Subclass names should end with "OnlineTest" to allow Maven to treat them specially.
  *
- * <p>This class contains an adapter to {@link OnlineTestCase} that allows its use with JUnit 4.
- * Delegation is used to recycle the behaviour of {@link OnlineTestCase} without extending {@link
- * TestCase}. This is necessary because {@link TestRunner}s appear to give priority to JUnit 3
- * behaviour, ignoring JUnit 4 annotations in suites that extend {@link TestCase}.
+ * <p>This class contains an adapter to {@link OnlineTestCase} that allows its use with JUnit 4. Delegation is used to
+ * recycle the behaviour of {@link OnlineTestCase} without extending {@link TestCase}. This is necessary because
+ * {@link TestRunner}s appear to give priority to JUnit 3 behaviour, ignoring JUnit 4 annotations in suites that extend
+ * {@link TestCase}.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see OnlineTestCase
@@ -70,8 +69,8 @@ public abstract class OnlineTestSupport {
     /**
      * Override this method to connect to an online resource. Throw an exception on failure.
      *
-     * <p>Subclasses do not have to override this method, but doing so allows builders to choose to
-     * have this test disable itself when the online resource is not available.
+     * <p>Subclasses do not have to override this method, but doing so allows builders to choose to have this test
+     * disable itself when the online resource is not available.
      *
      * @see OnlineTestCase#connect()
      */
@@ -85,8 +84,8 @@ public abstract class OnlineTestSupport {
     protected void disconnect() throws Exception {}
 
     /**
-     * Override this method to return false if you can detect that an online resource required for
-     * this test is not available,
+     * Override this method to return false if you can detect that an online resource required for this test is not
+     * available,
      *
      * @return false if a required resource is not online
      * @see OnlineTestCase#isOnline()
@@ -110,12 +109,12 @@ public abstract class OnlineTestSupport {
     protected void tearDownInternal() throws Exception {}
 
     /**
-     * Allows tests to create an offline fixture in cases where the user has not specified an
-     * explicit fixture for the test.
+     * Allows tests to create an offline fixture in cases where the user has not specified an explicit fixture for the
+     * test.
      *
-     * <p>Note, that this should method should on be implemented if the test case is created of
-     * creating a fixture which relies solely on embedded or offline resources. It should not
-     * reference any external or online resources as it prevents the user from running offline.
+     * <p>Note, that this should method should on be implemented if the test case is created of creating a fixture which
+     * relies solely on embedded or offline resources. It should not reference any external or online resources as it
+     * prevents the user from running offline.
      *
      * @see OnlineTestCase#createOfflineFixture()
      */
@@ -126,8 +125,8 @@ public abstract class OnlineTestSupport {
     /**
      * Allows test to create a sample fixture for users.
      *
-     * <p>If this method returns a value the first time a fixture is looked up and not found this
-     * method will be called to create a fixture file with the same id, but suffixed with .template.
+     * <p>If this method returns a value the first time a fixture is looked up and not found this method will be called
+     * to create a fixture file with the same id, but suffixed with .template.
      *
      * @see OnlineTestCase#createExampleFixture()
      */

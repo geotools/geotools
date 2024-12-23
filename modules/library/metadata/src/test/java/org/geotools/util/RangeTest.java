@@ -58,9 +58,7 @@ public final class RangeTest {
     /** [B,C) */
     private final Range<String> B = new Range<>(String.class, "B", true, "C", false);
 
-    /**
-     * The {@link Range} class has a number of assertions that are valuable for our testing purpose.
-     */
+    /** The {@link Range} class has a number of assertions that are valuable for our testing purpose. */
     @Test
     public void testAssertionEnabled() {
         assertTrue(Range.class.desiredAssertionStatus());
@@ -150,10 +148,8 @@ public final class RangeTest {
 
     @Test
     public void testIntersects() {
-        assertEquals(
-                "(0,1]", new Range<>(Integer.class, 0, false, 1, true), UNIT.intersect(POSITIVE));
-        assertEquals(
-                "[-1,0)", new Range<>(Integer.class, -1, true, 0, false), UNIT.intersect(NEGATIVE));
+        assertEquals("(0,1]", new Range<>(Integer.class, 0, false, 1, true), UNIT.intersect(POSITIVE));
+        assertEquals("[-1,0)", new Range<>(Integer.class, -1, true, 0, false), UNIT.intersect(NEGATIVE));
         assertEquals(EMPTY, POSITIVE.intersect(NEGATIVE));
 
         assertEquals("0+", ZERO, ZERO.intersect(NON_NEGATIVE));

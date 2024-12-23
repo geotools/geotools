@@ -12,15 +12,13 @@ package org.geotools.api.coverage.grid;
 import java.awt.Rectangle;
 
 /**
- * Provides the {@linkplain GridCoordinates grid coordinate} values for the diametrically opposed
- * corners of the {@linkplain Grid grid}.
+ * Provides the {@linkplain GridCoordinates grid coordinate} values for the diametrically opposed corners of the
+ * {@linkplain Grid grid}.
  *
- * <p>Remark that both corners are inclusive. Thus the number of elements in the direction of the
- * first axis is <code>
- * {@linkplain #getHigh(int) getHigh}(0) - {@linkplain #getLow(int) getLow}(0) + 1</code>. This is
- * the opposite of Java2D usage where maximal values in {@link Rectangle} (as computed by
- * {@linkplain Rectangle#getMaxX getMaxX()} and {@linkplain Rectangle#getMinY getMaxY()}) are
- * exclusive.
+ * <p>Remark that both corners are inclusive. Thus the number of elements in the direction of the first axis is <code>
+ * {@linkplain #getHigh(int) getHigh}(0) - {@linkplain #getLow(int) getLow}(0) + 1</code>. This is the opposite of
+ * Java2D usage where maximal values in {@link Rectangle} (as computed by {@linkplain Rectangle#getMaxX getMaxX()} and
+ * {@linkplain Rectangle#getMinY getMaxY()}) are exclusive.
  *
  * @version ISO 19123:2004
  * @author Wim Koolhoven
@@ -30,8 +28,8 @@ import java.awt.Rectangle;
  */
 public interface GridEnvelope {
     /**
-     * Returns the number of dimensions. It must be equals to the number of dimensions of
-     * {@linkplain #getLow low} and {@linkplain #getHigh high} grid coordinates.
+     * Returns the number of dimensions. It must be equals to the number of dimensions of {@linkplain #getLow low} and
+     * {@linkplain #getHigh high} grid coordinates.
      *
      * @return The number of dimensions.
      * @since GeoAPI 2.2
@@ -53,9 +51,8 @@ public interface GridEnvelope {
     GridCoordinates getHigh();
 
     /**
-     * Returns the valid minimum inclusive grid coordinate along the specified dimension. This is a
-     * shortcut for the following without the cost of creating a temporary {@link GridCoordinates}
-     * object:
+     * Returns the valid minimum inclusive grid coordinate along the specified dimension. This is a shortcut for the
+     * following without the cost of creating a temporary {@link GridCoordinates} object:
      *
      * <blockquote>
      *
@@ -67,8 +64,8 @@ public interface GridEnvelope {
      *
      * @param dimension The dimension for which to obtain the coordinate value.
      * @return The coordinate value at the given dimension, inclusive.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
-     *     the {@linkplain #getDimension grid dimension}.
+     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than the
+     *     {@linkplain #getDimension grid dimension}.
      * @see Rectangle#x
      * @see Rectangle#y
      * @since GeoAPI 2.2
@@ -76,9 +73,8 @@ public interface GridEnvelope {
     int getLow(int dimension) throws IndexOutOfBoundsException;
 
     /**
-     * Returns the valid maximum inclusive grid coordinate along the specified dimension. This is a
-     * shortcut for the following without the cost of creating a temporary {@link GridCoordinates}
-     * object:
+     * Returns the valid maximum inclusive grid coordinate along the specified dimension. This is a shortcut for the
+     * following without the cost of creating a temporary {@link GridCoordinates} object:
      *
      * <blockquote>
      *
@@ -90,15 +86,14 @@ public interface GridEnvelope {
      *
      * @param dimension The dimension for which to obtain the coordinate value.
      * @return The coordinate value at the given dimension, <strong>inclusive</strong>.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
-     *     the {@linkplain #getDimension grid dimension}.
+     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than the
+     *     {@linkplain #getDimension grid dimension}.
      * @since GeoAPI 2.2
      */
     int getHigh(int dimension) throws IndexOutOfBoundsException;
 
     /**
-     * Returns the number of integer grid coordinates along the specified dimension. This is equals
-     * to:
+     * Returns the number of integer grid coordinates along the specified dimension. This is equals to:
      *
      * <blockquote>
      *
@@ -110,8 +105,8 @@ public interface GridEnvelope {
      *
      * @param dimension The dimension for which to obtain the coordinate value.
      * @return The coordinate value at the given dimension.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
-     *     the {@linkplain #getDimension grid dimension}.
+     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than the
+     *     {@linkplain #getDimension grid dimension}.
      * @see Rectangle#width
      * @see Rectangle#height
      * @since GeoAPI 2.2

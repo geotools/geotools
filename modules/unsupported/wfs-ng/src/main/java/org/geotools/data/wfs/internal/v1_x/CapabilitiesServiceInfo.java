@@ -40,8 +40,7 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
 
     private final URI getCapsUrl;
 
-    public CapabilitiesServiceInfo(
-            String schemaUri, URL getCapsUrl, WFSCapabilitiesType capabilities) {
+    public CapabilitiesServiceInfo(String schemaUri, URL getCapsUrl, WFSCapabilitiesType capabilities) {
         try {
             this.getCapsUrl = getCapsUrl.toURI();
             this.schemaUri = new URI(schemaUri);

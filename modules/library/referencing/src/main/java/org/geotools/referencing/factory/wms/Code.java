@@ -23,8 +23,8 @@ import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code
- * AUTO:code,unit,lon0,lat0} where {@code AUTO} is optional.
+ * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code AUTO:code,unit,lon0,lat0} where
+ * {@code AUTO} is optional.
  *
  * @version $Id$
  * @author Jody Garnett
@@ -44,18 +44,18 @@ final class Code {
     public final double latitude;
 
     /**
-     * The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used only in case
-     * of failure for constructing an error message.
+     * The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used only in case of failure for
+     * constructing an error message.
      */
     final Class type;
 
     /**
-     * Parse the code string to retrive the code number and central longitude / latitude. Assumed
-     * format is {@code AUTO:code,lon0,lat0} where {@code AUTO} is optional.
+     * Parse the code string to retrive the code number and central longitude / latitude. Assumed format is
+     * {@code AUTO:code,lon0,lat0} where {@code AUTO} is optional.
      *
      * @param text The code in the {@code AUTO:code,lon0,lat0} format.
-     * @param type The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used
-     *     only in case of failure for constructing an error message.
+     * @param type The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used only in case of
+     *     failure for constructing an error message.
      * @throws NoSuchAuthorityCodeException if the specified code can't be parsed.
      */
     public Code(final String text, final Class type) throws NoSuchAuthorityCodeException {
@@ -121,13 +121,10 @@ final class Code {
      * @param code The unknow authority code.
      * @return An exception initialized with an error message built from the specified informations.
      */
-    private static NoSuchAuthorityCodeException noSuchAuthorityCode(
-            final Class type, final String code) {
+    private static NoSuchAuthorityCodeException noSuchAuthorityCode(final Class type, final String code) {
         final String authority = "AUTO";
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
-                authority,
-                code);
+                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type), authority, code);
     }
 
     /** Returns a string representation of this code. */

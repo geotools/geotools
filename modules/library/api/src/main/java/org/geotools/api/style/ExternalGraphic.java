@@ -19,8 +19,8 @@ import org.geotools.api.metadata.citation.OnLineResource;
 /**
  * Points to an external file that contains an image of some kind, such as a CGM, JPG, or SVG.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Chris Dillard (SYS Technologies)
@@ -31,17 +31,16 @@ public interface ExternalGraphic extends GraphicalSymbol, Symbol {
     ExternalGraphic[] EXTERNAL_GRAPHICS_EMPTY = new ExternalGraphic[0];
 
     /**
-     * Returns a OnlineResource to a file (perhaps a local file) that contains an image. This can be
-     * null if the image is already loaded locally and the {@link #getInlineContent InlineContent}
-     * property is set.
+     * Returns a OnlineResource to a file (perhaps a local file) that contains an image. This can be null if the image
+     * is already loaded locally and the {@link #getInlineContent InlineContent} property is set.
      *
      * @return OnlineResource
      */
     OnLineResource getOnlineResource();
 
     /**
-     * Returns the InlineContent that comprise the image. This overrides the {@link
-     * #getOnlineResource OnlineResource} property, if it is set.
+     * Returns the InlineContent that comprise the image. This overrides the {@link #getOnlineResource OnlineResource}
+     * property, if it is set.
      */
     Icon getInlineContent();
 
@@ -53,9 +52,9 @@ public interface ExternalGraphic extends GraphicalSymbol, Symbol {
     String getFormat();
 
     /**
-     * The ColorReplacement element, which may occur multiple times, allows to replace a color in
-     * the ExternalGraphic, the color specified in the OriginalColor sub-element, by another color
-     * as a result of a recode function as defined in {@link Interpolate} .
+     * The ColorReplacement element, which may occur multiple times, allows to replace a color in the ExternalGraphic,
+     * the color specified in the OriginalColor sub-element, by another color as a result of a recode function as
+     * defined in {@link Interpolate} .
      */
     Collection<ColorReplacement> getColorReplacements();
 
@@ -73,10 +72,7 @@ public interface ExternalGraphic extends GraphicalSymbol, Symbol {
      */
     void setURI(String uri);
 
-    /**
-     * Returns the un-parsed URI for the mark (useful if the uri is using transformations or
-     * relative locations)
-     */
+    /** Returns the un-parsed URI for the mark (useful if the uri is using transformations or relative locations) */
     String getURI();
 
     /**
@@ -99,8 +95,7 @@ public interface ExternalGraphic extends GraphicalSymbol, Symbol {
     /**
      * Provides the format of the external graphic.
      *
-     * @param format The format of the external graphic. Reported as its MIME type in a String
-     *     object.
+     * @param format The format of the external graphic. Reported as its MIME type in a String object.
      */
     void setFormat(String format);
 

@@ -88,9 +88,7 @@ public class WFSOnlineTestSupport {
         assertNotNull("CRS missing ", geometryDescriptor.getCoordinateReferenceSystem());
 
         assertTrue(
-                "POST "
-                        + typeName
-                        + " must have 1 geom and atleast 1 other attribute -- fair assumption",
+                "POST " + typeName + " must have 1 geom and atleast 1 other attribute -- fair assumption",
                 geometryDescriptor != null && attributeDescriptors != null && attributeCount > 0);
     }
 
@@ -139,8 +137,7 @@ public class WFSOnlineTestSupport {
                         1,
                         featureType.getAttributeCount());
             }
-            assertTrue(
-                    "must have 1 feature -- fair assumption", fr.hasNext() && featureType != null);
+            assertTrue("must have 1 feature -- fair assumption", fr.hasNext() && featureType != null);
             SimpleFeature feature = fr.next();
             featureType = feature.getFeatureType();
             if (ft.getAttributeCount() > 1) {
@@ -173,8 +170,7 @@ public class WFSOnlineTestSupport {
     }
 
     public static void doFeatureReaderWithBBox(
-            DataStore wfs, String typeName, String geometryName, ReferencedEnvelope bbox)
-            throws Exception {
+            DataStore wfs, String typeName, String geometryName, ReferencedEnvelope bbox) throws Exception {
         SimpleFeatureType featureType = wfs.getSchema(typeName);
 
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
@@ -205,8 +201,7 @@ public class WFSOnlineTestSupport {
         }
     }
 
-    public static Id doInsert(DataStore ds, SimpleFeatureType ft, SimpleFeatureCollection insert)
-            throws Exception {
+    public static Id doInsert(DataStore ds, SimpleFeatureType ft, SimpleFeatureCollection insert) throws Exception {
         int count2 = 0;
         try (Transaction t = new DefaultTransaction()) {
             ContentFeatureStore fs = (ContentFeatureStore) ds.getFeatureSource(ft.getTypeName());
@@ -328,8 +323,7 @@ public class WFSOnlineTestSupport {
         }
     }
 
-    public static void doUpdate(
-            DataStore ds, SimpleFeatureType ft, String attributeToChange, Object newValue)
+    public static void doUpdate(DataStore ds, SimpleFeatureType ft, String attributeToChange, Object newValue)
             throws Exception {
         try (Transaction t = new DefaultTransaction()) {
             SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
@@ -339,10 +333,7 @@ public class WFSOnlineTestSupport {
             assertNotNull("Attribute " + attributeToChange + " does not exist", at);
 
             FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
-            Filter f =
-                    filterFactory.equals(
-                            filterFactory.property(at.getLocalName()),
-                            filterFactory.literal(newValue));
+            Filter f = filterFactory.equals(filterFactory.property(at.getLocalName()), filterFactory.literal(newValue));
 
             // System.out.println("Update Read 1");
             int count1 = 0;

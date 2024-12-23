@@ -19,21 +19,18 @@ package org.geotools.api.data;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Used in conjuction with {@link FeatureLocking} to lock features during a transaction. This class
- * is responsible for supplying a unique Authorization ID and expiry period.
+ * Used in conjuction with {@link FeatureLocking} to lock features during a transaction. This class is responsible for
+ * supplying a unique Authorization ID and expiry period.
  *
- * <p>A FeatureLock representing the current transaction has been provided as a static constant:
- * {@link #TRANSACTION}.
+ * <p>A FeatureLock representing the current transaction has been provided as a static constant: {@link #TRANSACTION}.
  *
- * <p>Lock duration is measured in milliseconds, although you shoudl take into account the abilities
- * of different databases and servers. WFS 1.1 measures lock expiry time in minuets, WFS 2.0
- * measures lick expiry time in seconds..
+ * <p>Lock duration is measured in milliseconds, although you shoudl take into account the abilities of different
+ * databases and servers. WFS 1.1 measures lock expiry time in minuets, WFS 2.0 measures lick expiry time in seconds..
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @version $Id$
  * @see <a href="http://vwfs.refractions.net/docs/Database_Research.pdf">Database Reseach</a>
- * @see <a href="http://vwfs.refractions.net/docs/Transactional_WFS_Design.pdf">Transactional WFS
- *     Design</a>
+ * @see <a href="http://vwfs.refractions.net/docs/Transactional_WFS_Design.pdf">Transactional WFS Design</a>
  * @see <a href="http://vwfs.refractions.net/docs/Design_Implications.pdf">Design Implications</a>
  */
 public class FeatureLock {

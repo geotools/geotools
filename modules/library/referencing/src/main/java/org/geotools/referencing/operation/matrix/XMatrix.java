@@ -19,9 +19,9 @@ package org.geotools.referencing.operation.matrix;
 import org.geotools.api.referencing.operation.Matrix;
 
 /**
- * A matrix capable of some matrix operations. The basic {@link Matrix} interface is basically just
- * a two dimensional array of numbers. The {@code XMatrix} interface add {@linkplain #invert
- * inversion} and {@linkplain #multiply multiplication} capabilities.
+ * A matrix capable of some matrix operations. The basic {@link Matrix} interface is basically just a two dimensional
+ * array of numbers. The {@code XMatrix} interface add {@linkplain #invert inversion} and {@linkplain #multiply
+ * multiplication} capabilities.
  *
  * @since 2.2
  * @version 14
@@ -61,14 +61,12 @@ public interface XMatrix extends Matrix {
     void setIdentity();
 
     /**
-     * Returns {@code true} if this matrix is an identity matrix using the provided tolerance. This
-     * method is equivalent to computing the difference between this matrix and an identity matrix
-     * of identical size, and returning {@code true} if and only if all differences are smaller than
-     * or equal to {@code tolerance}.
+     * Returns {@code true} if this matrix is an identity matrix using the provided tolerance. This method is equivalent
+     * to computing the difference between this matrix and an identity matrix of identical size, and returning
+     * {@code true} if and only if all differences are smaller than or equal to {@code tolerance}.
      *
      * @param tolerance The tolerance value.
-     * @return {@code true} if this matrix is close enough to the identity matrix given the
-     *     tolerance value.
+     * @return {@code true} if this matrix is close enough to the identity matrix given the tolerance value.
      * @since 2.4
      */
     boolean isIdentity(double tolerance);
@@ -78,16 +76,14 @@ public interface XMatrix extends Matrix {
      *
      * @param matrix The matrix to compare.
      * @param tolerance The tolerance value.
-     * @return {@code true} if this matrix is close enough to the given matrix given the tolerance
-     *     value.
+     * @return {@code true} if this matrix is close enough to the given matrix given the tolerance value.
      * @since 2.5
      */
     boolean equals(Matrix matrix, double tolerance);
 
     /**
-     * Returns {@code true} if this matrix is an affine transform. A transform is affine if the
-     * matrix is square and last row contains only zeros, except in the last column which contains
-     * 1.
+     * Returns {@code true} if this matrix is an affine transform. A transform is affine if the matrix is square and
+     * last row contains only zeros, except in the last column which contains 1.
      *
      * @return {@code true} if this matrix is affine.
      */
@@ -162,12 +158,11 @@ public interface XMatrix extends Matrix {
     double determinate();
 
     /**
-     * Sets the value of this matrix to the result of multiplying itself with the specified matrix.
-     * In other words, performs {@code this} = {@code this} &times; {@code matrix}. In the context
-     * of coordinate transformations, this is equivalent to <code>
-     * {@linkplain java.awt.geom.AffineTransform#concatenate AffineTransform.concatenate}</code>:
-     * first transforms by the supplied transform and then transform the result by the original
-     * transform.
+     * Sets the value of this matrix to the result of multiplying itself with the specified matrix. In other words,
+     * performs {@code this} = {@code this} &times; {@code matrix}. In the context of coordinate transformations, this
+     * is equivalent to <code>
+     * {@linkplain java.awt.geom.AffineTransform#concatenate AffineTransform.concatenate}</code>: first transforms by
+     * the supplied transform and then transform the result by the original transform.
      *
      * @param matrix The matrix to multiply to this matrix.
      */
@@ -176,18 +171,15 @@ public interface XMatrix extends Matrix {
     /** Sets this matrix to the result of multiplying itself with the provided scalar. */
     void mul(double scalar);
 
-    /**
-     * Sets the value of this matrix to the result of multiplying the provided scalar and matrix.
-     */
+    /** Sets the value of this matrix to the result of multiplying the provided scalar and matrix. */
     void mul(double scalar, Matrix matrix);
 
     /**
-     * Sets the value of this matrix to the result of multiplying itself with the specified matrix.
-     * In other words, performs {@code this} = {@code this} &times; {@code matrix}. In the context
-     * of coordinate transformations, this is equivalent to <code>
-     * {@linkplain java.awt.geom.AffineTransform#concatenate AffineTransform.concatenate}</code>:
-     * first transforms by the supplied transform and then transform the result by the original
-     * transform.
+     * Sets the value of this matrix to the result of multiplying itself with the specified matrix. In other words,
+     * performs {@code this} = {@code this} &times; {@code matrix}. In the context of coordinate transformations, this
+     * is equivalent to <code>
+     * {@linkplain java.awt.geom.AffineTransform#concatenate AffineTransform.concatenate}</code>: first transforms by
+     * the supplied transform and then transform the result by the original transform.
      *
      * @param matrix The matrix to multiply to this matrix.
      */

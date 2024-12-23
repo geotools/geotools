@@ -56,11 +56,11 @@ public class S3Connector {
     }
 
     /**
-     * Create an S3 connector from a URI-ish S3:// string. Notably, this constructor supports
-     * awsRegion and useAnon as query parameters to control these settings.
+     * Create an S3 connector from a URI-ish S3:// string. Notably, this constructor supports awsRegion and useAnon as
+     * query parameters to control these settings.
      *
-     * <p>Also of note, this URL is largely ignored outside of the query parameters. Mainly this is
-     * used to control authentication options
+     * <p>Also of note, this URL is largely ignored outside of the query parameters. Mainly this is used to control
+     * authentication options
      *
      * @param input an s3:// style URL.
      */
@@ -69,8 +69,7 @@ public class S3Connector {
         // Parse region and anon from URL
         try {
             URI s3Uri = new URI(input);
-            List<NameValuePair> nameValuePairs =
-                    URLEncodedUtils.parse(s3Uri, StandardCharsets.UTF_8);
+            List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(s3Uri, StandardCharsets.UTF_8);
 
             for (NameValuePair nvPair : nameValuePairs) {
                 if ("awsRegion".equals(nvPair.getName())) {
@@ -95,9 +94,8 @@ public class S3Connector {
             } catch (IllegalArgumentException e) {
                 // probably not great to have a default, but we can't just blow up if this
                 // property isn't set
-                LOGGER.warning(
-                        "AWS_REGION property is set, but not set correctly. "
-                                + "Check that the AWS_REGION property matches the Regions enum");
+                LOGGER.warning("AWS_REGION property is set, but not set correctly. "
+                        + "Check that the AWS_REGION property matches the Regions enum");
                 region = Regions.US_EAST_1;
             }
         } else {
@@ -109,8 +107,7 @@ public class S3Connector {
         // custom endpoint
         if (url != null && !url.startsWith("s3://")) {
             if (!url.contains("://")) {
-                throw new IllegalArgumentException(
-                        "Following this style: s3Alias://bucket/filename");
+                throw new IllegalArgumentException("Following this style: s3Alias://bucket/filename");
             }
             String s3Alias = url.split("://")[0];
 
@@ -120,25 +117,19 @@ public class S3Connector {
             AwsClientBuilder.EndpointConfiguration endpointConfiguration =
                     new AwsClientBuilder.EndpointConfiguration(endpoint, region.getName());
 
-            s3 =
-                    AmazonS3ClientBuilder.standard()
-                            .withCredentials(
-                                    new AWSStaticCredentialsProvider(
-                                            new BasicAWSCredentials(
-                                                    prop.getProperty(s3Alias + ".s3.user"),
-                                                    prop.getProperty(s3Alias + ".s3.password"))))
-                            .withEndpointConfiguration(endpointConfiguration)
-                            .withPathStyleAccessEnabled(true)
-                            .build();
+            s3 = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(
+                            prop.getProperty(s3Alias + ".s3.user"), prop.getProperty(s3Alias + ".s3.password"))))
+                    .withEndpointConfiguration(endpointConfiguration)
+                    .withPathStyleAccessEnabled(true)
+                    .build();
 
             // aws cli client
         } else if (useAnon) {
-            s3 =
-                    AmazonS3ClientBuilder.standard()
-                            .withCredentials(
-                                    new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
-                            .withRegion(region)
-                            .build();
+            s3 = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+                    .withRegion(region)
+                    .build();
         } else {
             s3 = AmazonS3ClientBuilder.standard().withRegion(region).build();
         }
@@ -174,10 +165,9 @@ public class S3Connector {
                         prop.load(resourceAsStream);
                     }
                 } else {
-                    throw new IOException(
-                            "Properties are missing! "
-                                    + "The system property 's3.properties.location' should be set "
-                                    + "and contain the path to the s3.properties file.");
+                    throw new IOException("Properties are missing! "
+                            + "The system property 's3.properties.location' should be set "
+                            + "and contain the path to the s3.properties file.");
                 }
             }
             // check if the properties are not null.
@@ -187,15 +177,11 @@ public class S3Connector {
             }
             if (prop.getProperty(s3Alias + ".s3.password") == null) {
                 throw new IllegalArgumentException(
-                        "s3.properties file does not contains value for:"
-                                + s3Alias
-                                + ".s3.password");
+                        "s3.properties file does not contains value for:" + s3Alias + ".s3.password");
             }
             if (prop.getProperty(s3Alias + ".s3.endpoint") == null) {
                 throw new IllegalArgumentException(
-                        "s3.properties file does not contains value for:"
-                                + s3Alias
-                                + ".s3.endpoint");
+                        "s3.properties file does not contains value for:" + s3Alias + ".s3.endpoint");
             }
         } catch (IOException ex) {
             LOGGER.severe(ex.getMessage());

@@ -25,11 +25,10 @@ import org.geotools.api.referencing.operation.OperationNotFoundException; // For
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Thrown when a transformation can't be performed because no path from {@linkplain
- * CoordinateOperation#getSourceCRS source CRS} to {@linkplain CoordinateOperation#getTargetCRS
- * target CRS} has been found. This exception usually wraps an {@link OperationNotFoundException}
- * thrown by an {@linkplain CoordinateOperationFactory coordinate operation factory}. This exception
- * is sometime used in order to collapse a
+ * Thrown when a transformation can't be performed because no path from {@linkplain CoordinateOperation#getSourceCRS
+ * source CRS} to {@linkplain CoordinateOperation#getTargetCRS target CRS} has been found. This exception usually wraps
+ * an {@link OperationNotFoundException} thrown by an {@linkplain CoordinateOperationFactory coordinate operation
+ * factory}. This exception is sometime used in order to collapse a
  *
  * <blockquote>
  *
@@ -49,8 +48,8 @@ import org.geotools.api.referencing.operation.TransformException;
  *
  * </blockquote>
  *
- * clause, i.e. in order to hide the factory step into a more general transformation processus from
- * the API point of view.
+ * clause, i.e. in order to hide the factory step into a more general transformation processus from the API point of
+ * view.
  *
  * @since 2.2
  * @version $Id$
@@ -66,8 +65,8 @@ public class TransformPathNotFoundException extends TransformException {
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public TransformPathNotFoundException(FactoryException cause) {
         super(cause.getLocalizedMessage(), cause);
@@ -76,8 +75,8 @@ public class TransformPathNotFoundException extends TransformException {
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public TransformPathNotFoundException(String message) {
         super(message);
@@ -86,10 +85,10 @@ public class TransformPathNotFoundException extends TransformException {
     /**
      * Constructs an exception with the specified detail message and cause.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public TransformPathNotFoundException(String message, FactoryException cause) {
         super(message, cause);

@@ -86,8 +86,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         targetType = TestData.createComplexWaterSampleType();
         FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
         AttributeDescriptor targetFeature =
-                tf.createAttributeDescriptor(
-                        targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
+                tf.createAttributeDescriptor(targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
         targetName = targetFeature.getName();
         List<AttributeMapping> mappings = TestData.createMappingsColumnsAndValues(targetFeature);
 
@@ -256,18 +255,13 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         FeatureCollection<FeatureType, Feature> features = complexSource.getFeatures(filter);
 
         try (FeatureIterator<Feature> reader = features.features()) {
-            PropertyIsEqualTo equivalentSourceFilter =
-                    ff.equals(ff.property("ph"), ff.literal(Integer.valueOf(3)));
-            FeatureCollection<?, ?> collection =
-                    mapping.getSource().getFeatures(equivalentSourceFilter);
+            PropertyIsEqualTo equivalentSourceFilter = ff.equals(ff.property("ph"), ff.literal(Integer.valueOf(3)));
+            FeatureCollection<?, ?> collection = mapping.getSource().getFeatures(equivalentSourceFilter);
 
             int count = 0;
             int expectedCount = collection.size();
 
-            Filter badFilter =
-                    ff.greater(
-                            ff.property("sample/measurement[1]/value"),
-                            ff.literal(Integer.valueOf(3)));
+            Filter badFilter = ff.greater(ff.property("sample/measurement[1]/value"), ff.literal(Integer.valueOf(3)));
 
             while (reader.hasNext()) {
                 Feature f = reader.next();
@@ -280,9 +274,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         }
     }
 
-    /**
-     * Loads config from an xml config file which uses a property datastore as source of features.
-     */
+    /** Loads config from an xml config file which uses a property datastore as source of features. */
     @Test
     public void testWithConfig() throws Exception {
         final String nsUri = "http://online.socialchange.net.au";
@@ -300,8 +292,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         FeatureType type = source.getSchema();
 
-        AttributeDescriptor node =
-                (AttributeDescriptor) Types.descriptor(type, Types.typeName(nsUri, "the_geom"));
+        AttributeDescriptor node = (AttributeDescriptor) Types.descriptor(type, Types.typeName(nsUri, "the_geom"));
         assertNotNull(node);
         assertEquals("LineStringPropertyType", node.getType().getName().getLocalPart());
 
@@ -318,13 +309,11 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         assertTrue(fromToNodes.isIdentified());
 
         Name fromNodeName = Types.typeName(nsUri, "fromNode");
-        AttributeDescriptor fromNode =
-                (AttributeDescriptor) Types.descriptor(fromToNodes, fromNodeName);
+        AttributeDescriptor fromNode = (AttributeDescriptor) Types.descriptor(fromToNodes, fromNodeName);
         assertNotNull(fromNode);
 
         Name toNodeName = Types.typeName(nsUri, "toNode");
-        AttributeDescriptor toNode =
-                (AttributeDescriptor) Types.descriptor(fromToNodes, toNodeName);
+        AttributeDescriptor toNode = (AttributeDescriptor) Types.descriptor(fromToNodes, toNodeName);
         assertNotNull(fromNode);
 
         assertEquals(Point.class, fromNode.getType().getBinding());
@@ -346,8 +335,8 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Creates a MemoryDataStore contaning a simple FeatureType with test data for the "Multiple
-     * columns could be mapped to a multi-value property" mapping case.
+     * Creates a MemoryDataStore contaning a simple FeatureType with test data for the "Multiple columns could be mapped
+     * to a multi-value property" mapping case.
      *
      * <p>The structure of the "WaterSample" FeatureType is as follows:
      *

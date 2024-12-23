@@ -17,8 +17,7 @@ import org.geotools.api.annotation.UML;
 import org.geotools.api.util.CodeList;
 
 /**
- * Values for relative temporal position based on the 13 temporal relationships identified by Allen
- * (1993).
+ * Values for relative temporal position based on the 13 temporal relationships identified by Allen (1993).
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
@@ -48,8 +47,8 @@ public final class RelativePosition extends CodeList<RelativePosition> {
     public static final RelativePosition ENDED_BY = new RelativePosition("ENDED_BY");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -75,8 +74,7 @@ public final class RelativePosition extends CodeList<RelativePosition> {
     }
 
     /**
-     * Returns the relative position that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the relative position that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

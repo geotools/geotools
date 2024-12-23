@@ -29,50 +29,31 @@ import org.geotools.http.HTTPClientFinder;
 
 public class MongoDataStoreFactory implements DataStoreFactorySpi {
 
-    public static final Param NAMESPACE =
-            new Param("namespace", String.class, "Namespace prefix", false);
+    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix", false);
     public static final Param DATASTORE_URI =
-            new Param(
-                    "data_store",
-                    String.class,
-                    "MongoDB URI",
-                    true,
-                    "mongodb://localhost/<database name>");
-    public static final Param SCHEMASTORE_URI =
-            new Param(
-                    "schema_store",
-                    String.class,
-                    "Schema Store URI or URL",
-                    true,
-                    "file://<absolute path> or http://www.hosting.com/files.json");
+            new Param("data_store", String.class, "MongoDB URI", true, "mongodb://localhost/<database name>");
+    public static final Param SCHEMASTORE_URI = new Param(
+            "schema_store",
+            String.class,
+            "Schema Store URI or URL",
+            true,
+            "file://<absolute path> or http://www.hosting.com/files.json");
     public static final Param MAX_OBJECTS_FOR_SCHEMA =
-            new Param(
-                    "max_objs_schema",
-                    Integer.class,
-                    "Max objects for schema generation",
-                    false,
-                    1);
-    public static final Param OBJECTS_IDS_FOR_SCHEMA =
-            new Param(
-                    "objs_id_schema",
-                    String.class,
-                    "Objects IDs for schema generation (comma separated)",
-                    false,
-                    null);
-    public static final Param HTTP_USER =
-            new Param(
-                    "http_user",
-                    String.class,
-                    "(Optional)If Schema file is hosted behind a password protected URL",
-                    false,
-                    null);
-    public static final Param HTTP_PASSWORD =
-            new Param(
-                    "http_pass",
-                    String.class,
-                    "(Optional)If Schema file is hosted behind a password protected URL",
-                    false,
-                    null);
+            new Param("max_objs_schema", Integer.class, "Max objects for schema generation", false, 1);
+    public static final Param OBJECTS_IDS_FOR_SCHEMA = new Param(
+            "objs_id_schema", String.class, "Objects IDs for schema generation (comma separated)", false, null);
+    public static final Param HTTP_USER = new Param(
+            "http_user",
+            String.class,
+            "(Optional)If Schema file is hosted behind a password protected URL",
+            false,
+            null);
+    public static final Param HTTP_PASSWORD = new Param(
+            "http_pass",
+            String.class,
+            "(Optional)If Schema file is hosted behind a password protected URL",
+            false,
+            null);
 
     @Override
     public String getDisplayName() {
@@ -107,19 +88,17 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
         // retrieve schema generation parameters
         final List<String> ids = getIds(params);
         final Integer maxObjects = (Integer) MAX_OBJECTS_FOR_SCHEMA.lookUp(params);
-        final MongoSchemaInitParams schemaParams =
-                MongoSchemaInitParams.builder()
-                        .ids(ids.toArray(new String[] {}))
-                        .maxObjects(maxObjects != null ? maxObjects : 1)
-                        .build();
+        final MongoSchemaInitParams schemaParams = MongoSchemaInitParams.builder()
+                .ids(ids.toArray(new String[] {}))
+                .maxObjects(maxObjects != null ? maxObjects : 1)
+                .build();
         // instance datastore
-        MongoDataStore dataStore =
-                new MongoDataStore(
-                        (String) DATASTORE_URI.lookUp(params),
-                        (String) SCHEMASTORE_URI.lookUp(params),
-                        true,
-                        schemaParams,
-                        getHTTPClient(params));
+        MongoDataStore dataStore = new MongoDataStore(
+                (String) DATASTORE_URI.lookUp(params),
+                (String) SCHEMASTORE_URI.lookUp(params),
+                true,
+                schemaParams,
+                getHTTPClient(params));
         String uri = (String) NAMESPACE.lookUp(params);
         if (uri != null) {
             dataStore.setNamespaceURI(uri);
@@ -152,8 +131,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
 
         HTTPClient simpleHttpClient = HTTPClientFinder.createClient();
         // check for credentials
-        if (HTTP_USER.lookUp(params) == null || HTTP_PASSWORD.lookUp(params) == null)
-            return simpleHttpClient;
+        if (HTTP_USER.lookUp(params) == null || HTTP_PASSWORD.lookUp(params) == null) return simpleHttpClient;
 
         simpleHttpClient.setUser((String) HTTP_USER.lookUp(params));
         simpleHttpClient.setPassword((String) HTTP_PASSWORD.lookUp(params));

@@ -48,7 +48,8 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testRead() throws Exception {
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("udt")).getFeatures();
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("udt")).getFeatures();
         try (SimpleFeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());
             assertEquals("12ab", fi.next().getAttribute(aname("ut")));
@@ -60,8 +61,7 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
     public void testWrite() throws Exception {
         int count = dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL);
 
-        try (FeatureWriter w =
-                dataStore.getFeatureWriterAppend(tname("udt"), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter w = dataStore.getFeatureWriterAppend(tname("udt"), Transaction.AUTO_COMMIT)) {
             w.hasNext();
 
             SimpleFeature f = (SimpleFeature) w.next();

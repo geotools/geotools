@@ -70,8 +70,7 @@ public class XSNameBinding extends AbstractSimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding simply delegates to its parent binding which returns an object of type {@link
-     * String}.
+     * This binding simply delegates to its parent binding which returns an object of type {@link String}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
@@ -84,8 +83,7 @@ public class XSNameBinding extends AbstractSimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding simply delegates to its parent binding which returns an object of type {@link
-     * String}.
+     * This binding simply delegates to its parent binding which returns an object of type {@link String}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

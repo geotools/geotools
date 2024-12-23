@@ -34,8 +34,8 @@ public interface GraphReaderWriter {
     public void setProperty(String name, Object obj);
 
     /**
-     * Returns a property for the reader/writer. This method will return null if the property has
-     * not been set with a call to setProperty(String,Object).
+     * Returns a property for the reader/writer. This method will return null if the property has not been set with a
+     * call to setProperty(String,Object).
      *
      * @param name Name of the property.
      * @return Value of the property or null if the property is undefined.

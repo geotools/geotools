@@ -63,8 +63,7 @@ public class WMSComplexTypesTest {
         Assert.assertNull(capabilities.getService().getOnlineResource());
 
         Assert.assertEquals(
-                capabilities.getRequest().getGetCapabilities().getFormats().get(0),
-                "application/vnd.ogc.wms_xml");
+                capabilities.getRequest().getGetCapabilities().getFormats().get(0), "application/vnd.ogc.wms_xml");
 
         Layer topLayer = capabilities.getLayerList().get(0);
         Assert.assertNotNull(topLayer);

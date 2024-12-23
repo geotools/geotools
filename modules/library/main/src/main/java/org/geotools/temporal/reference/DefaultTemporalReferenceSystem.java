@@ -36,8 +36,7 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
     private InternationalString scope;
 
     /**
-     * Creates a new instance of TemporalReferenceSystem by passing a ReferenceIdentifier name and a
-     * domain of validity.
+     * Creates a new instance of TemporalReferenceSystem by passing a ReferenceIdentifier name and a domain of validity.
      */
     public DefaultTemporalReferenceSystem(ReferenceIdentifier name, Extent domainOfValidity) {
         this.name = name;

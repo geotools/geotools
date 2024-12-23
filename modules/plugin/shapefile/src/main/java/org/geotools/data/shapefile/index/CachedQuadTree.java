@@ -38,7 +38,8 @@ public class CachedQuadTree {
     static {
         DATA_DEFINITION.addField(Integer.class);
         DATA_DEFINITION.addField(Long.class);
-    };
+    }
+    ;
 
     MemoryNode root;
     Indices offsets;

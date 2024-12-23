@@ -48,8 +48,7 @@ public class ClippedFeatureCollectionTest {
         SimpleFeatureType featureType = tb.buildFeatureType();
         delegatePolygonZ = new DefaultFeatureCollection(null, featureType);
         SimpleFeatureBuilder bPoly = new SimpleFeatureBuilder(featureType);
-        Geometry poly1 =
-                reader.read("POLYGON((0 0 0, 0 10000 2, 10000 10000 2, 10000 0 0, 0 0 0))");
+        Geometry poly1 = reader.read("POLYGON((0 0 0, 0 10000 2, 10000 10000 2, 10000 0 0, 0 0 0))");
         bPoly.add(poly1);
         bPoly.add("one");
         delegatePolygonZ.add(bPoly.buildFeature("fid.1"));
@@ -68,9 +67,8 @@ public class ClippedFeatureCollectionTest {
         SimpleFeatureType featureTypeML = tbML.buildFeatureType();
         delegateMultiLineZ = new DefaultFeatureCollection(null, featureTypeML);
         SimpleFeatureBuilder bML = new SimpleFeatureBuilder(featureTypeML);
-        Geometry multiline =
-                reader.read(
-                        "MULTILINESTRING((1000 0 0, 1000 1000 1, 2000 1000 2, 2000 0 3), (1000 3000 0, 1000 2000 1, 2000 2000 2, 2000 3000 3))");
+        Geometry multiline = reader.read(
+                "MULTILINESTRING((1000 0 0, 1000 1000 1, 2000 1000 2, 2000 0 3), (1000 3000 0, 1000 2000 1, 2000 2000 2, 2000 3000 3))");
         bML.add(multiline);
         bML.add("one");
         delegateMultiLineZ.add(bML.buildFeature("fid.1"));
@@ -109,12 +107,9 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipPolygon() throws ParseException {
-        Geometry clip =
-                new WKTReader()
-                        .read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))");
+        Geometry clip = new WKTReader().read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))");
 
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegatePolygonZ, clip, true);
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegatePolygonZ, clip, true);
         assertSquaresMetersIdentical(collection);
     }
 
@@ -128,8 +123,7 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipPoly3DNewVertices() throws Exception {
-        Geometry clip =
-                new WKTReader().read("POLYGON((0 5000, 0 10000, 10000 10000, 10000 5000, 0 5000))");
+        Geometry clip = new WKTReader().read("POLYGON((0 5000, 0 10000, 10000 10000, 10000 5000, 0 5000))");
         SimpleFeatureCollection result = new ClippedFeatureCollection(delegatePolygonZ, clip, true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
@@ -154,9 +148,7 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipPoly3DFullyInside() throws Exception {
-        Geometry clip =
-                new WKTReader()
-                        .read("POLYGON((2500 2500, 2500 7500, 7500 7500, 7500 2500, 2500 2500))");
+        Geometry clip = new WKTReader().read("POLYGON((2500 2500, 2500 7500, 7500 7500, 7500 2500, 2500 2500))");
         SimpleFeatureCollection result = new ClippedFeatureCollection(delegatePolygonZ, clip, true);
         assertEquals(2, result.size());
         // check the first polygon
@@ -177,11 +169,9 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipMultiLine() throws ParseException {
-        Geometry clip =
-                new WKTReader().read("POLYGON((900 900, 900 2100, 2100 2100, 2100 900, 900 900))");
+        Geometry clip = new WKTReader().read("POLYGON((900 900, 900 2100, 2100 2100, 2100 900, 900 900))");
 
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateMultiLineZ, clip, true);
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateMultiLineZ, clip, true);
         assertEquals(1, collection.size());
         // check the first polygon
         SimpleFeature f = DataUtilities.first(collection);
@@ -205,11 +195,8 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipLine3DIncluded() throws Exception {
-        Geometry clip =
-                new WKTReader()
-                        .read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))");
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateLineZ, clip, true);
+        Geometry clip = new WKTReader().read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))");
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateLineZ, clip, true);
         assertEquals(1, collection.size());
         try (SimpleFeatureIterator fi = collection.features()) {
             // check the first polygon
@@ -227,10 +214,8 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipLine3DMidFirstSegment() throws Exception {
-        Geometry clip =
-                new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))");
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateLineZ, clip, true);
+        Geometry clip = new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))");
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateLineZ, clip, true);
         assertEquals(1, collection.size());
         try (SimpleFeatureIterator fi = collection.features()) {
             // check the first polygon
@@ -247,11 +232,8 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipExtractBend() throws Exception {
-        Geometry clip =
-                new WKTReader()
-                        .read("POLYGON((5000 -10, 5000 5000, 11000 5000, 11000 -10, 5000 -10))");
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateLineZ, clip, true);
+        Geometry clip = new WKTReader().read("POLYGON((5000 -10, 5000 5000, 11000 5000, 11000 -10, 5000 -10))");
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateLineZ, clip, true);
         assertEquals(1, collection.size());
         try (SimpleFeatureIterator fi = collection.features()) {
             // check the first polygon
@@ -269,13 +251,10 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipExtractSeparateBitsLowLine() throws Exception {
-        Geometry clip =
-                new WKTReader()
-                        .read(
-                                "POLYGON((1000 -10, 1000 10, 9000 10, 9000 -10, 8000 -10, 8000 5, 2000 5, 2000 -10, 1000 -10))");
+        Geometry clip = new WKTReader()
+                .read("POLYGON((1000 -10, 1000 10, 9000 10, 9000 -10, 8000 -10, 8000 5, 2000 5, 2000 -10, 1000 -10))");
 
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateLineZ, clip, true);
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateLineZ, clip, true);
         assertEquals(1, collection.size());
         try (SimpleFeatureIterator fi = collection.features()) {
             // check the first polygon
@@ -297,12 +276,9 @@ public class ClippedFeatureCollectionTest {
 
     @Test
     public void testClipExtractSeparateBitsBothLines() throws Exception {
-        Geometry clip =
-                new WKTReader()
-                        .read(
-                                "POLYGON((1000 -10, 1000 5000, 11000 5000, 11000 4000, 2000 4000, 2000 -10, 1000 -10))");
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateLineZ, clip, true);
+        Geometry clip = new WKTReader()
+                .read("POLYGON((1000 -10, 1000 5000, 11000 5000, 11000 4000, 2000 4000, 2000 -10, 1000 -10))");
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateLineZ, clip, true);
         assertEquals(1, collection.size());
         SimpleFeature f = DataUtilities.first(collection);
         MultiLineString ml = (MultiLineString) f.getDefaultGeometry();
@@ -357,8 +333,7 @@ public class ClippedFeatureCollectionTest {
     public void testClipGeometry() throws Exception {
         WKTReader reader = new WKTReader();
         Geometry clip = reader.read("POLYGON((0 0, 0 2500, 2500 2500, 2500 0, 0 0))");
-        ClippedFeatureCollection collection =
-                new ClippedFeatureCollection(delegateGeom, clip, false);
+        ClippedFeatureCollection collection = new ClippedFeatureCollection(delegateGeom, clip, false);
         assertEquals(3, collection.size());
         List<SimpleFeature> features = DataUtilities.list(collection);
 
@@ -371,9 +346,8 @@ public class ClippedFeatureCollectionTest {
         SimpleFeature f1 = features.get(1);
         assertEquals("two", f1.getAttribute("name"));
         Geometry expectedMultiLine =
-                reader.read(
-                        "MULTILINESTRING((1000 0, 1000 1000, 2000 1000, 2000 0), (1000 2500, 1000 2000, "
-                                + "2000 2000, 2000 2500))");
+                reader.read("MULTILINESTRING((1000 0, 1000 1000, 2000 1000, 2000 0), (1000 2500, 1000 2000, "
+                        + "2000 2000, 2000 2500))");
         assertEquals(expectedMultiLine, f1.getDefaultGeometry());
 
         // third, also cut

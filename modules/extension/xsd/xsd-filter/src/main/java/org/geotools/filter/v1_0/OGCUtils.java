@@ -38,8 +38,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class OGCUtils {
     /**
-     * Implementation of getProperty for {@link BinarySpatialOpTypeBinding} and {@link
-     * DistanceBufferTypeBinding}
+     * Implementation of getProperty for {@link BinarySpatialOpTypeBinding} and {@link DistanceBufferTypeBinding}
      *
      * @param e1 First expression
      * @param e2 Second expression
@@ -113,17 +112,15 @@ public class OGCUtils {
             // JD: creating an envelope here would break a lot of our code, for instance alot of
             // code that encodes a filter into sql will choke on this
             Envelope envelope = node.getChildValue(Envelope.class);
-            Polygon polygon =
-                    gf.createPolygon(
-                            gf.createLinearRing(
-                                    new Coordinate[] {
-                                        new Coordinate(envelope.getMinX(), envelope.getMinY()),
-                                        new Coordinate(envelope.getMaxX(), envelope.getMinY()),
-                                        new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
-                                        new Coordinate(envelope.getMinX(), envelope.getMaxY()),
-                                        new Coordinate(envelope.getMinX(), envelope.getMinY())
-                                    }),
-                            null);
+            Polygon polygon = gf.createPolygon(
+                    gf.createLinearRing(new Coordinate[] {
+                        new Coordinate(envelope.getMinX(), envelope.getMinY()),
+                        new Coordinate(envelope.getMaxX(), envelope.getMinY()),
+                        new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
+                        new Coordinate(envelope.getMinX(), envelope.getMaxY()),
+                        new Coordinate(envelope.getMinX(), envelope.getMinY())
+                    }),
+                    null);
 
             if (envelope instanceof ReferencedEnvelope) {
                 polygon.setUserData(((ReferencedEnvelope) envelope).getCoordinateReferenceSystem());

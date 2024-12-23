@@ -39,15 +39,13 @@ public final class JDBC {
     private JDBC() {}
 
     /**
-     * Attempts to load the specified JDBC driver, if not already done. If this method has already
-     * been invoked for the specified driver, then it does nothing and returns {@code null}.
-     * Otherwise, it attempts to load the specified driver and returns a log record initialized with
-     * a message at the {@link Level#CONFIG CONFIG} level on success, or at the {@link Level#WARNING
-     * WARNING} level on failure.
+     * Attempts to load the specified JDBC driver, if not already done. If this method has already been invoked for the
+     * specified driver, then it does nothing and returns {@code null}. Otherwise, it attempts to load the specified
+     * driver and returns a log record initialized with a message at the {@link Level#CONFIG CONFIG} level on success,
+     * or at the {@link Level#WARNING WARNING} level on failure.
      *
      * @param driver The JDBC driver to load, as a fully qualified Java class name.
-     * @return A log message with driver information, or {@code null} if the driver was already
-     *     loaded.
+     * @return A log message with driver information, or {@code null} if the driver was already loaded.
      * @todo Remember to invoke {@link LogRecord#setLoggerName}.
      */
     public static LogRecord loadDriver(final String driver) {
@@ -56,18 +54,14 @@ public final class JDBC {
             synchronized (DRIVERS) {
                 if (!DRIVERS.contains(driver)) {
                     try {
-                        final Driver d =
-                                (Driver)
-                                        Class.forName(driver)
-                                                .getDeclaredConstructor()
-                                                .newInstance();
-                        log =
-                                Loggings.format(
-                                        Level.CONFIG,
-                                        LoggingKeys.LOADED_JDBC_DRIVER_$3,
-                                        driver,
-                                        d.getMajorVersion(),
-                                        d.getMinorVersion());
+                        final Driver d = (Driver)
+                                Class.forName(driver).getDeclaredConstructor().newInstance();
+                        log = Loggings.format(
+                                Level.CONFIG,
+                                LoggingKeys.LOADED_JDBC_DRIVER_$3,
+                                driver,
+                                d.getMajorVersion(),
+                                d.getMinorVersion());
                         DRIVERS.add(driver);
                     } catch (Exception exception) {
                         log = new LogRecord(Level.WARNING, exception.toString());

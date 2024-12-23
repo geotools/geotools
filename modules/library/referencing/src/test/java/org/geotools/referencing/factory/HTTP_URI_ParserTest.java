@@ -35,8 +35,7 @@ public final class HTTP_URI_ParserTest {
     /** Test that an unversioned HTTP URI can be parsed. */
     @Test
     public void testParseUnversioned() throws NoSuchAuthorityCodeException {
-        URI_Parser parser =
-                HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/0/4326");
+        URI_Parser parser = HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/0/4326");
         assertEquals("crs", parser.type.name);
         assertEquals("EPSG", parser.authority);
         assertNull(parser.version);
@@ -47,8 +46,7 @@ public final class HTTP_URI_ParserTest {
     /** Test that an versioned HTTP URI can be parsed. */
     @Test
     public void testParseVersioned() throws NoSuchAuthorityCodeException {
-        URI_Parser parser =
-                HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/6.11.2/4326");
+        URI_Parser parser = HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/6.11.2/4326");
         assertEquals("crs", parser.type.name);
         assertEquals("EPSG", parser.authority);
         assertEquals("6.11.2", parser.version.toString());

@@ -27,9 +27,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * For two inputs, returns the result of subtracting the second input from the first. For a
-     * single input, returns the result of subtracting it from 0. Example: ["-", number, number]:
-     * number ["-", number]: number
+     * For two inputs, returns the result of subtracting the second input from the first. For a single input, returns
+     * the result of subtracting it from 0. Example: ["-", number, number]: number ["-", number]: number
      *
      * @return subtract expression
      */
@@ -56,8 +55,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the result of floating point division of the first input by the second. Example:
-     * ["/", number, number]: number
+     * Returns the result of floating point division of the first input by the second. Example: ["/", number, number]:
+     * number
      *
      * @return divide expression
      */
@@ -68,8 +67,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the remainder after integer division of the first input by the second. Example: ["%",
-     * number, number]: number
+     * Returns the remainder after integer division of the first input by the second. Example: ["%", number, number]:
+     * number
      *
      * @return remainder expression
      */
@@ -80,8 +79,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the result of raising the first input to the power specified by the second. Example:
-     * ["^", number, number]: number
+     * Returns the result of raising the first input to the power specified by the second. Example: ["^", number,
+     * number]: number
      *
      * @return exponent expression
      */

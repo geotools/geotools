@@ -38,15 +38,10 @@ public class CoverageNameCollectorSpiFinder {
                 .collect(toInstanceByClassNameMap());
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {CoverageNameCollectorSPI.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {CoverageNameCollectorSPI.class}));
         }
         return registry;
     }

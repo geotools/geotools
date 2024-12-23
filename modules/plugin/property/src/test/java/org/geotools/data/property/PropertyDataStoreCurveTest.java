@@ -66,8 +66,7 @@ public class PropertyDataStoreCurveTest {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("_=geom:LineString:4326,name:String");
             writer.newLine();
-            writer.write(
-                    "cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
+            writer.write("cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
             writer.newLine();
             writer.write("cp.2=CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)|Circle ");
             writer.newLine();
@@ -126,17 +125,12 @@ public class PropertyDataStoreCurveTest {
         SimpleFeatureType schema = fs.getSchema();
         WKTReader reader = new WKTReader2();
         Geometry compoundGeometry =
-                reader.read(
-                        "COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
-        SimpleFeature cp1 =
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {compoundGeometry, "Compound"}, "cp.1");
+                reader.read("COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
+        SimpleFeature cp1 = SimpleFeatureBuilder.build(schema, new Object[] {compoundGeometry, "Compound"}, "cp.1");
         Geometry circleGeometry = reader.read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
-        SimpleFeature cp2 =
-                SimpleFeatureBuilder.build(schema, new Object[] {circleGeometry, "Circle"}, "cp.2");
+        SimpleFeature cp2 = SimpleFeatureBuilder.build(schema, new Object[] {circleGeometry, "Circle"}, "cp.2");
         Geometry waveGeometry = reader.read("CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -1 -10, 1 -8))");
-        SimpleFeature cp3 =
-                SimpleFeatureBuilder.build(schema, new Object[] {waveGeometry, "Wave"}, "cp.3");
+        SimpleFeature cp3 = SimpleFeatureBuilder.build(schema, new Object[] {waveGeometry, "Wave"}, "cp.3");
 
         // write them out
         ListFeatureCollection fc = new ListFeatureCollection(schema);

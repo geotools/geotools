@@ -26,15 +26,14 @@ import org.geotools.util.NIOUtilities;
  * Utility class to create and release the internal byte buffers of a {@link FlatBufferBuilder}.
  *
  * <p>In order to either release or return to the cache the used buffers as soon as possible, use
- * {@link #newBuilder(int)} and {@link #release(FlatBufferBuilder)} as soon as possible, instead of
- * expecting the GC to do it.
+ * {@link #newBuilder(int)} and {@link #release(FlatBufferBuilder)} as soon as possible, instead of expecting the GC to
+ * do it.
  *
- * @implNote Currently, the returned {@link FlatBufferBuilder builders} use a {@link
- *     ByteBufferFactory} that uses GeoTools {@link NIOUtilities} cached buffers. This means that
- *     the buffers will be reused, but also that they'll be direct or heap buffers depending on
- *     {@link NIOUtilities#isDirectBuffersEnabled()}, hence the importance of calling {@link
- *     #release(FlatBufferBuilder)} as soon as the builder is to be disposed, to the GeoTools
- *     utility can take care of cleaning up the direct buffers when needed.
+ * @implNote Currently, the returned {@link FlatBufferBuilder builders} use a {@link ByteBufferFactory} that uses
+ *     GeoTools {@link NIOUtilities} cached buffers. This means that the buffers will be reused, but also that they'll
+ *     be direct or heap buffers depending on {@link NIOUtilities#isDirectBuffersEnabled()}, hence the importance of
+ *     calling {@link #release(FlatBufferBuilder)} as soon as the builder is to be disposed, to the GeoTools utility can
+ *     take care of cleaning up the direct buffers when needed.
  */
 public class FlatBuffers {
 
@@ -61,7 +60,8 @@ public class FlatBuffers {
                 lastBuffer = null;
             }
         }
-    };
+    }
+    ;
 
     private static class ReleasingFlatBufferBuilder extends FlatBufferBuilder {
 

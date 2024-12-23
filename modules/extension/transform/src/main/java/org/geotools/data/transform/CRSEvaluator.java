@@ -79,8 +79,7 @@ class CRSEvaluator implements ExpressionVisitor {
 
         if (ad == null) {
             throw new IllegalArgumentException(
-                    "Original feature type does not have a property named "
-                            + expression.getPropertyName());
+                    "Original feature type does not have a property named " + expression.getPropertyName());
         } else if (ad instanceof GeometryDescriptor) {
             return ((GeometryDescriptor) ad).getCoordinateReferenceSystem();
         }

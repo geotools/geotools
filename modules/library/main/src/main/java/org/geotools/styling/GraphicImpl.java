@@ -55,77 +55,74 @@ public class GraphicImpl
     /**
      * A default Graphic instance.
      *
-     * <p>For some attributes the standard does not define a default, so a reasonable value is
-     * supplied.
+     * <p>For some attributes the standard does not define a default, so a reasonable value is supplied.
      */
-    public static final Graphic DEFAULT =
-            new ConstantGraphic() {
+    public static final Graphic DEFAULT = new ConstantGraphic() {
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
+        @Override
+        public List<GraphicalSymbol> graphicalSymbols() {
+            return Collections.emptyList();
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.ONE;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.ONE;
+        }
 
-                @Override
-                public Expression getSize() {
-                    // default size is unknown, it depends on the target
-                    return Expression.NIL;
-                }
+        @Override
+        public Expression getSize() {
+            // default size is unknown, it depends on the target
+            return Expression.NIL;
+        }
 
-                @Override
-                public Displacement getDisplacement() {
-                    return DisplacementImpl.DEFAULT;
-                }
+        @Override
+        public Displacement getDisplacement() {
+            return DisplacementImpl.DEFAULT;
+        }
 
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.ZERO;
-                }
-            };
+        @Override
+        public Expression getRotation() {
+            return ConstantExpression.ZERO;
+        }
+    };
     /**
      * Indicates an absense of graphic.
      *
-     * <p>This value is used to indicate that the Graphics based opperation should be skipped. Aka
-     * this is used by Stroke.Stroke as place holders for GRAPHIC_FILL and GRAPHIC_STROKE.
+     * <p>This value is used to indicate that the Graphics based opperation should be skipped. Aka this is used by
+     * Stroke.Stroke as place holders for GRAPHIC_FILL and GRAPHIC_STROKE.
      */
-    public static final Graphic NULL =
-            new ConstantGraphic() {
+    public static final Graphic NULL = new ConstantGraphic() {
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
+        @Override
+        public List<GraphicalSymbol> graphicalSymbols() {
+            return Collections.emptyList();
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getSize() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getSize() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Displacement getDisplacement() {
-                    return DisplacementImpl.NULL;
-                }
+        @Override
+        public Displacement getDisplacement() {
+            return DisplacementImpl.NULL;
+        }
 
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getRotation() {
+            return ConstantExpression.NULL;
+        }
 
-                //            public String getGeometryPropertyName() {
-                //                return "";
-                //            }
+        //            public String getGeometryPropertyName() {
+        //                return "";
+        //            }
 
-            };
+    };
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
@@ -150,8 +147,7 @@ public class GraphicImpl
         this(factory, null, null, null);
     }
 
-    public GraphicImpl(
-            FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
+    public GraphicImpl(FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
         this.anchor = AnchorPointImpl.cast(anchor);
 
         if (gap == null) this.gap = ConstantExpression.constant(0);
@@ -177,13 +173,11 @@ public class GraphicImpl
 
     /**
      * This specifies the level of translucency to use when rendering the graphic.<br>
-     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
-     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
-     * for intermediate values.<br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing totally transparent and
+     * 1.0 representing totally opaque, with a linear scale of translucency for intermediate values.<br>
      * For example, "0.65" would represent 65% opacity. The default value is 1.0 (opaque).
      *
-     * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
-     *     opaque.
+     * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely opaque.
      */
     @Override
     public Expression getOpacity() {
@@ -191,11 +185,11 @@ public class GraphicImpl
     }
 
     /**
-     * This parameter defines the rotation of a graphic in the clockwise direction about its centre
-     * point in decimal degrees. The value encoded as a floating point number.
+     * This parameter defines the rotation of a graphic in the clockwise direction about its centre point in decimal
+     * degrees. The value encoded as a floating point number.
      *
-     * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
-     *     rotation. The default is 0.0 (no rotation).
+     * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise rotation. The
+     *     default is 0.0 (no rotation).
      */
     @Override
     public Expression getRotation() {
@@ -203,16 +197,14 @@ public class GraphicImpl
     }
 
     /**
-     * This paramteter gives the absolute size of the graphic in pixels encoded as a floating point
-     * number.
+     * This paramteter gives the absolute size of the graphic in pixels encoded as a floating point number.
      *
-     * <p>The default size of an image format (such as GIFD) is the inherent size of the image. The
-     * default size of a format without an inherent size (such as SVG) is defined to be 16 pixels in
-     * height and the corresponding aspect in width. If a size is specified, the height of the
-     * graphic will be scaled to that size and the corresponding aspect will be used for the width.
+     * <p>The default size of an image format (such as GIFD) is the inherent size of the image. The default size of a
+     * format without an inherent size (such as SVG) is defined to be 16 pixels in height and the corresponding aspect
+     * in width. If a size is specified, the height of the graphic will be scaled to that size and the corresponding
+     * aspect will be used for the width.
      *
-     * @return The size of the graphic, the default is context specific. Negative values are not
-     *     possible.
+     * @return The size of the graphic, the default is context specific. Negative values are not possible.
      */
     @Override
     public Expression getSize() {
@@ -345,8 +337,8 @@ public class GraphicImpl
     /**
      * Compares this GraphicImpl with another for equality.
      *
-     * <p>Two graphics are equal if and only if they both have the same geometry property name and
-     * the same list of symbols and the same rotation, size and opacity.
+     * <p>Two graphics are equal if and only if they both have the same geometry property name and the same list of
+     * symbols and the same rotation, size and opacity.
      *
      * @param oth The other GraphicsImpl to compare with.
      * @return True if this is equal to oth according to the above conditions.

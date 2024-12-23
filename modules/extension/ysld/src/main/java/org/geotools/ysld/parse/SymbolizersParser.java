@@ -23,8 +23,8 @@ import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
 /**
- * Handles parsing a Ysld "symbolizers" property into {@link Symbolizer} objects, delegating to
- * {@link SymbolizerParser} and its subclasses.
+ * Handles parsing a Ysld "symbolizers" property into {@link Symbolizer} objects, delegating to {@link SymbolizerParser}
+ * and its subclasses.
  */
 public class SymbolizersParser extends YsldParseHandler {
 

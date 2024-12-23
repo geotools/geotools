@@ -45,12 +45,11 @@ import org.geotools.gml.SubHandlerLinearRing;
 import org.geotools.util.logging.Logging;
 
 /**
- * Swing does not provide a wizard construct (boo hiss) so this is a quick dialog that can step us
- * through a series of pages.
+ * Swing does not provide a wizard construct (boo hiss) so this is a quick dialog that can step us through a series of
+ * pages.
  *
- * <p>This code is based on <a
- * href="http://java.sun.com/developer/technicalArticles/GUI/swing/wizard/">Creating Wizard Dialogs
- * with Java</a>.
+ * <p>This code is based on <a href="http://java.sun.com/developer/technicalArticles/GUI/swing/wizard/">Creating Wizard
+ * Dialogs with Java</a>.
  *
  * @author Jody, gdavis
  */
@@ -64,8 +63,8 @@ public class JWizard extends JDialog {
     public static final int FINISH = 0;
 
     /**
-     * Indicates that the 'Cancel' button was pressed to close the dialog, or the user pressed the
-     * close box in the corner of the window.
+     * Indicates that the 'Cancel' button was pressed to close the dialog, or the user pressed the close box in the
+     * corner of the window.
      */
     public static final int CANCEL = 1;
 
@@ -212,16 +211,15 @@ public class JWizard extends JDialog {
     /**
      * Retrieves the last return code set by the dialog.
      *
-     * @return An integer that identifies how the dialog was closed. See the *_RETURN_CODE constants
-     *     of this class for possible values.
+     * @return An integer that identifies how the dialog was closed. See the *_RETURN_CODE constants of this class for
+     *     possible values.
      */
     public int getReturnCode() {
         return returnCode;
     }
 
     /**
-     * Convenience method that displays a modal wizard dialog and blocks until the dialog has
-     * completed.
+     * Convenience method that displays a modal wizard dialog and blocks until the dialog has completed.
      *
      * @return Indicates how the dialog was closed one of CANCEL, ERROR, FINISH
      */
@@ -281,9 +279,8 @@ public class JWizard extends JDialog {
         page.postDisplayPanel();
     }
     /**
-     * Registers the page with this JWizard. The page is stored by its identifier (so other pages
-     * can look it up). The page.setJWizard() method is also called so the page can refer to its
-     * containing wizard at runtime.
+     * Registers the page with this JWizard. The page is stored by its identifier (so other pages can look it up). The
+     * page.setJWizard() method is also called so the page can refer to its containing wizard at runtime.
      */
     public void registerWizardPanel(JPage page) {
         page.setJWizard(this);
@@ -295,8 +292,8 @@ public class JWizard extends JDialog {
     }
 
     /**
-     * The controller can be hooked up to your own fields or lists; it will call syncWizardButtons()
-     * which will use validate to update the buttons in response to user input.
+     * The controller can be hooked up to your own fields or lists; it will call syncWizardButtons() which will use
+     * validate to update the buttons in response to user input.
      *
      * @return Controller
      */
@@ -305,8 +302,7 @@ public class JWizard extends JDialog {
     }
 
     /** The controller listens to everything and updates the buttons */
-    public class Controller
-            implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
+    public class Controller implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
         public boolean listen = true;
 
         @Override
@@ -372,9 +368,7 @@ public class JWizard extends JDialog {
             String backId = current.getBackPageIdentifier();
             setCurrentPanel(backId);
         }
-        /**
-         * Set listen to false to update a field without the controller passing on a notification.
-         */
+        /** Set listen to false to update a field without the controller passing on a notification. */
         public void setListen(boolean listen) {
             this.listen = listen;
         }

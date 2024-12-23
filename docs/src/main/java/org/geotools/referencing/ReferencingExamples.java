@@ -53,8 +53,8 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * The following examples are taken from CTSTutorial provided by Rueben Schulz. The examples were
- * constructed for a wiki page and have been repurposed for our sphinx documentation.
+ * The following examples are taken from CTSTutorial provided by Rueben Schulz. The examples were constructed for a wiki
+ * page and have been repurposed for our sphinx documentation.
  *
  * @author Jody Garnett
  */
@@ -138,11 +138,9 @@ public class ReferencingExamples {
         // premadeObjects start
         GeographicCRS geoCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
         GeodeticDatum wgs84Datum = org.geotools.referencing.datum.DefaultGeodeticDatum.WGS84;
-        PrimeMeridian greenwichMeridian =
-                org.geotools.referencing.datum.DefaultPrimeMeridian.GREENWICH;
+        PrimeMeridian greenwichMeridian = org.geotools.referencing.datum.DefaultPrimeMeridian.GREENWICH;
         CartesianCS cartCS = org.geotools.referencing.cs.DefaultCartesianCS.GENERIC_2D;
-        CoordinateSystemAxis latAxis =
-                org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LATITUDE;
+        CoordinateSystemAxis latAxis = org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LATITUDE;
         // premadeObjects end
     }
 
@@ -156,26 +154,25 @@ public class ReferencingExamples {
         System.out.println("Creating a CRS from a WKT string:");
         // creatCRSFromWKT start
         CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-        String wkt =
-                "PROJCS[\"UTM_Zone_10N\", "
-                        + "GEOGCS[\"WGS84\", "
-                        + "DATUM[\"WGS84\", "
-                        + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]], "
-                        + "PRIMEM[\"Greenwich\", 0.0], "
-                        + "UNIT[\"degree\",0.017453292519943295], "
-                        + "AXIS[\"Longitude\",EAST], "
-                        + "AXIS[\"Latitude\",NORTH]], "
-                        + "PROJECTION[\"Transverse_Mercator\"], "
-                        + "PARAMETER[\"semi_major\", 6378137.0], "
-                        + "PARAMETER[\"semi_minor\", 6356752.314245179], "
-                        + "PARAMETER[\"central_meridian\", -123.0], "
-                        + "PARAMETER[\"latitude_of_origin\", 0.0], "
-                        + "PARAMETER[\"scale_factor\", 0.9996], "
-                        + "PARAMETER[\"false_easting\", 500000.0], "
-                        + "PARAMETER[\"false_northing\", 0.0], "
-                        + "UNIT[\"metre\",1.0], "
-                        + "AXIS[\"x\",EAST], "
-                        + "AXIS[\"y\",NORTH]]";
+        String wkt = "PROJCS[\"UTM_Zone_10N\", "
+                + "GEOGCS[\"WGS84\", "
+                + "DATUM[\"WGS84\", "
+                + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]], "
+                + "PRIMEM[\"Greenwich\", 0.0], "
+                + "UNIT[\"degree\",0.017453292519943295], "
+                + "AXIS[\"Longitude\",EAST], "
+                + "AXIS[\"Latitude\",NORTH]], "
+                + "PROJECTION[\"Transverse_Mercator\"], "
+                + "PARAMETER[\"semi_major\", 6378137.0], "
+                + "PARAMETER[\"semi_minor\", 6356752.314245179], "
+                + "PARAMETER[\"central_meridian\", -123.0], "
+                + "PARAMETER[\"latitude_of_origin\", 0.0], "
+                + "PARAMETER[\"scale_factor\", 0.9996], "
+                + "PARAMETER[\"false_easting\", 500000.0], "
+                + "PARAMETER[\"false_northing\", 0.0], "
+                + "UNIT[\"metre\",1.0], "
+                + "AXIS[\"x\",EAST], "
+                + "AXIS[\"y\",NORTH]]";
 
         CoordinateReferenceSystem crs = crsFactory.createFromWKT(wkt);
         // creatCRSFromWKT end
@@ -188,36 +185,33 @@ public class ReferencingExamples {
     }
 
     /**
-     * Creates a CRS from an EPSG code. There are a few different EPSG authority factories in
-     * geotools that do roughly the same thing:
+     * Creates a CRS from an EPSG code. There are a few different EPSG authority factories in geotools that do roughly
+     * the same thing:
      *
      * <ul>
-     *   <li>gt2-epsg-access.jar is backed by the official EPSG MS Access database (only works on MS
-     *       Windows, therefore I have not shown how to configure it here).
-     *   <li>gt2-epsg-hsql.jar provides an embeded hsql database created from the EPSG SQL scripts.
-     *       This contains the same information as the MS Arcess database.
-     *   <li>other factories allow the EPSG information to be in an external database (postgresql,
-     *       mysql, oracle)
-     *   <li>gt2-epsg-wkt.jar is a simple properties file with WKT descriptions for EPSG defined CRS
-     *       codes. This file does not derive directly from the official EPSG database, so its
-     *       should be used with caution. It provides a very simple method of creating a new
-     *       authority factory and named objects.
+     *   <li>gt2-epsg-access.jar is backed by the official EPSG MS Access database (only works on MS Windows, therefore
+     *       I have not shown how to configure it here).
+     *   <li>gt2-epsg-hsql.jar provides an embeded hsql database created from the EPSG SQL scripts. This contains the
+     *       same information as the MS Arcess database.
+     *   <li>other factories allow the EPSG information to be in an external database (postgresql, mysql, oracle)
+     *   <li>gt2-epsg-wkt.jar is a simple properties file with WKT descriptions for EPSG defined CRS codes. This file
+     *       does not derive directly from the official EPSG database, so its should be used with caution. It provides a
+     *       very simple method of creating a new authority factory and named objects.
      * </ul>
      *
-     * The specific authority factory returned by getCRSAuthorityFactory is dependent on the
-     * different factories on your classpath (ie WKT or Access or HSQL) and the hints you provide.
-     * By default the "better" authority factory should be used if more than one is available.
+     * The specific authority factory returned by getCRSAuthorityFactory is dependent on the different factories on your
+     * classpath (ie WKT or Access or HSQL) and the hints you provide. By default the "better" authority factory should
+     * be used if more than one is available.
      *
-     * <p>TODO check on the use of hints TODO expand on how to use EPSG data in a postgres db (this
-     * may be a 2.2 feature, but FactoryUsingANSISQL may work)
+     * <p>TODO check on the use of hints TODO expand on how to use EPSG data in a postgres db (this may be a 2.2
+     * feature, but FactoryUsingANSISQL may work)
      */
     void createFromEPSGCode2() throws Exception {
         System.out.println("------------------------------------------");
         System.out.println("Creating a CRS from an authority factory:");
         // createFromEPSGCode2 start
         String code = "26910";
-        CRSAuthorityFactory crsAuthorityFactory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        CRSAuthorityFactory crsAuthorityFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
         CoordinateReferenceSystem crs = crsAuthorityFactory.createCoordinateReferenceSystem(code);
         // createFromEPSGCode2 end
         System.out.println("  CRS: " + crs.toWKT());
@@ -240,8 +234,8 @@ public class ReferencingExamples {
     }
 
     /**
-     * Creates a WGS 84/UTM Zone 10N CRS mostly (uses some premade objects) by hand. Uses the higher
-     * level FactoryGroup instead of the lower level MathTransformFactory (commented out).
+     * Creates a WGS 84/UTM Zone 10N CRS mostly (uses some premade objects) by hand. Uses the higher level FactoryGroup
+     * instead of the lower level MathTransformFactory (commented out).
      */
     void createCRSByHand1() throws Exception {
         System.out.println("------------------------------------------");
@@ -262,8 +256,7 @@ public class ReferencingExamples {
         Conversion conversion = new DefiningConversion("Transverse_Mercator", parameters);
 
         Map<String, ?> properties = Collections.singletonMap("name", "WGS 84 / UTM Zone 12N");
-        ProjectedCRS projCRS =
-                crsFactory.createProjectedCRS(properties, geoCRS, conversion, cartCS);
+        ProjectedCRS projCRS = crsFactory.createProjectedCRS(properties, geoCRS, conversion, cartCS);
         // createCRSByHand1 end
 
         // parameters.parameter("semi_major").setValue(((GeodeticDatum)geoCRS.getDatum()).getEllipsoid().getSemiMajorAxis());
@@ -282,10 +275,10 @@ public class ReferencingExamples {
     }
 
     /**
-     * Creates a NAD 27 geographic CRS. Notice that the datum factory automatically adds aliase
-     * names to the datum (because "North American Datum 1927" has an entry in
-     * module/referencing/src/org/geotools/referencing/factory/DatumAliasesTable.txt ). Also notice
-     * that toWGS84 information (used in a datum transform) was also added to the datum.
+     * Creates a NAD 27 geographic CRS. Notice that the datum factory automatically adds aliase names to the datum
+     * (because "North American Datum 1927" has an entry in
+     * module/referencing/src/org/geotools/referencing/factory/DatumAliasesTable.txt ). Also notice that toWGS84
+     * information (used in a datum transform) was also added to the datum.
      */
     void createCRSByHand2() throws Exception {
         System.out.println("------------------------------------------");
@@ -298,11 +291,9 @@ public class ReferencingExamples {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Clarke 1866");
 
-        Ellipsoid clark1866ellipse =
-                datumFactory.createFlattenedSphere(map, 6378206.4, 294.978698213901, SI.METRE);
+        Ellipsoid clark1866ellipse = datumFactory.createFlattenedSphere(map, 6378206.4, 294.978698213901, SI.METRE);
 
-        PrimeMeridian greenwichMeridian =
-                org.geotools.referencing.datum.DefaultPrimeMeridian.GREENWICH;
+        PrimeMeridian greenwichMeridian = org.geotools.referencing.datum.DefaultPrimeMeridian.GREENWICH;
 
         final BursaWolfParameters toWGS84 = new BursaWolfParameters(DefaultGeodeticDatum.WGS84);
         toWGS84.dx = -3.0;
@@ -313,8 +304,7 @@ public class ReferencingExamples {
         map.put("name", "North American Datum 1927");
         map.put(DefaultGeodeticDatum.BURSA_WOLF_KEY, toWGS84);
 
-        GeodeticDatum clark1866datum =
-                datumFactory.createGeodeticDatum(map, clark1866ellipse, greenwichMeridian);
+        GeodeticDatum clark1866datum = datumFactory.createGeodeticDatum(map, clark1866ellipse, greenwichMeridian);
         System.out.println(clark1866datum.toWKT());
         // notice all of the lovely datum aliases (used to determine if two
         // datums are the same)
@@ -323,10 +313,8 @@ public class ReferencingExamples {
 
         map.clear();
         map.put("name", "<lat>, <long>");
-        CoordinateSystemAxis latAxis =
-                org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LATITUDE;
-        CoordinateSystemAxis longAxis =
-                org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE;
+        CoordinateSystemAxis latAxis = org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LATITUDE;
+        CoordinateSystemAxis longAxis = org.geotools.referencing.cs.DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE;
         EllipsoidalCS ellipsCS = csFactory.createEllipsoidalCS(map, latAxis, longAxis);
 
         map.clear();
@@ -346,11 +334,10 @@ public class ReferencingExamples {
     }
 
     /**
-     * Creates two coordinate reference system by hand without using any of the GT2 APIs (except
-     * FactoryFinder to get things started). It does not use any of the static objects available in
-     * geotools implementations. The following example creates a CRS to represent the Airy 1830
-     * ellipsoid with the incoming data in the order of (long,lat,height) and a geocentric CRS with
-     * (x,y,z) axises.
+     * Creates two coordinate reference system by hand without using any of the GT2 APIs (except FactoryFinder to get
+     * things started). It does not use any of the static objects available in geotools implementations. The following
+     * example creates a CRS to represent the Airy 1830 ellipsoid with the incoming data in the order of
+     * (long,lat,height) and a geocentric CRS with (x,y,z) axises.
      *
      * <p>TODO the Airy CRS described below is actually wgs84, FIX this.
      */
@@ -369,18 +356,15 @@ public class ReferencingExamples {
         //
         map.clear();
         map.put("name", "Greenwich Meridian");
-        PrimeMeridian greenwichMeridian =
-                datumFactory.createPrimeMeridian(map, 0, NonSI.DEGREE_ANGLE);
+        PrimeMeridian greenwichMeridian = datumFactory.createPrimeMeridian(map, 0, NonSI.DEGREE_ANGLE);
 
         map.clear();
         map.put("name", "WGS 84 Ellipsoid Datum");
-        Ellipsoid wgs84Ellipsoid =
-                datumFactory.createFlattenedSphere(map, 6378137, 298.257223563, SI.METRE);
+        Ellipsoid wgs84Ellipsoid = datumFactory.createFlattenedSphere(map, 6378137, 298.257223563, SI.METRE);
 
         map.clear();
         map.put("name", "WGS84 Height Datum");
-        GeodeticDatum wgs84Datum =
-                datumFactory.createGeodeticDatum(map, wgs84Ellipsoid, greenwichMeridian);
+        GeodeticDatum wgs84Datum = datumFactory.createGeodeticDatum(map, wgs84Ellipsoid, greenwichMeridian);
 
         //
         // Create a geocentric CRS
@@ -389,20 +373,17 @@ public class ReferencingExamples {
         map.clear();
         map.put("name", "Cartesian X axis");
         CoordinateSystemAxis xAxis =
-                csFactory.createCoordinateSystemAxis(
-                        map, "X", AxisDirection.GEOCENTRIC_X, SI.METRE);
+                csFactory.createCoordinateSystemAxis(map, "X", AxisDirection.GEOCENTRIC_X, SI.METRE);
 
         map.clear();
         map.put("name", "Cartesian Y axis");
         CoordinateSystemAxis yAxis =
-                csFactory.createCoordinateSystemAxis(
-                        map, "Y", AxisDirection.GEOCENTRIC_Y, SI.METRE);
+                csFactory.createCoordinateSystemAxis(map, "Y", AxisDirection.GEOCENTRIC_Y, SI.METRE);
 
         map.clear();
         map.put("name", "Cartesian Z axis");
         CoordinateSystemAxis zAxis =
-                csFactory.createCoordinateSystemAxis(
-                        map, "Z", AxisDirection.GEOCENTRIC_Z, SI.METRE);
+                csFactory.createCoordinateSystemAxis(map, "Z", AxisDirection.GEOCENTRIC_Z, SI.METRE);
 
         map.clear();
         map.put("name", "Rendered Cartesian CS");
@@ -412,8 +393,7 @@ public class ReferencingExamples {
         // renderer
         map.clear();
         map.put("name", "Output Cartesian CS");
-        CoordinateReferenceSystem geocentricCRS =
-                crsFactory.createGeocentricCRS(map, wgs84Datum, worldCS);
+        CoordinateReferenceSystem geocentricCRS = crsFactory.createGeocentricCRS(map, wgs84Datum, worldCS);
         System.out.println("Geocentric CRS: " + geocentricCRS.toWKT());
 
         //
@@ -426,19 +406,16 @@ public class ReferencingExamples {
         map.clear();
         map.put("name", "Geodetic North axis");
         CoordinateSystemAxis northAxis =
-                csFactory.createCoordinateSystemAxis(
-                        map, "N", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
+                csFactory.createCoordinateSystemAxis(map, "N", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
 
         map.clear();
         map.put("name", "Geodetic East axis");
         CoordinateSystemAxis eastAxis =
-                csFactory.createCoordinateSystemAxis(
-                        map, "E", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
+                csFactory.createCoordinateSystemAxis(map, "E", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
 
         map.clear();
         map.put("name", "Geodetic Height axis");
-        CoordinateSystemAxis heightAxis =
-                csFactory.createCoordinateSystemAxis(map, "Up", AxisDirection.UP, SI.METRE);
+        CoordinateSystemAxis heightAxis = csFactory.createCoordinateSystemAxis(map, "Up", AxisDirection.UP, SI.METRE);
 
         map.clear();
         map.put("name", "<long>,<lat> Airy 1830 geodetic");
@@ -488,8 +465,7 @@ public class ReferencingExamples {
             for (int i = 0; idents.hasNext(); i++) {
                 Identifier ident = idents.next();
                 System.out.println("    identifier(" + i + ").getCode() - " + ident.getCode());
-                System.out.println(
-                        "    identifier(" + i + ").getAuthority() - " + ident.getAuthority());
+                System.out.println("    identifier(" + i + ").getAuthority() - " + ident.getAuthority());
             }
         }
     }

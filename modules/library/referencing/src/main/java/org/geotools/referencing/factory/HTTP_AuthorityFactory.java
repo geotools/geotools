@@ -31,20 +31,16 @@ import org.geotools.util.GenericName;
 import org.geotools.util.factory.Hints;
 
 /**
- * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "http://www.opengis.net/"}
- * name space. An exemple of complete URL is {@code "http://www.opengis.net/gml/srs/epsg.xml#4326"}.
+ * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "http://www.opengis.net/"} name space. An exemple
+ * of complete URL is {@code "http://www.opengis.net/gml/srs/epsg.xml#4326"}.
  *
- * <p>Implementation note: this class requires some cooperation from the {@link
- * AllAuthoritiesFactory#getSeparator} method, since the separator is not the usual {@value
- * org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
+ * <p>Implementation note: this class requires some cooperation from the {@link AllAuthoritiesFactory#getSeparator}
+ * method, since the separator is not the usual {@value org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
  *
  * @author Martin Desruisseaux
  */
 public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                DatumAuthorityFactory,
-                CoordinateOperationAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
     /** The base URL, which is {@value}. */
     public static final String BASE_URL = "http://www.opengis.net/gml/srs/";
 
@@ -54,10 +50,9 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
     }
 
     /**
-     * Creates a wrapper using the specified hints. For strict compliance with OGC definition of CRS
-     * defined by URL, the supplied hints should contains at least the {@link
-     * Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint with value
-     * {@link Boolean#FALSE FALSE}.
+     * Creates a wrapper using the specified hints. For strict compliance with OGC definition of CRS defined by URL, the
+     * supplied hints should contains at least the {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
+     * FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint with value {@link Boolean#FALSE FALSE}.
      *
      * @param userHints The hints to be given to backing factories.
      */
@@ -66,18 +61,16 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
     }
 
     /**
-     * Creates a wrapper around the specified factory. The supplied factory is given unchanged to
-     * the {@linkplain AuthorityFactoryAdapter#AuthorityFactoryAdapter(AuthorityFactory) super class
-     * constructor}.
+     * Creates a wrapper around the specified factory. The supplied factory is given unchanged to the
+     * {@linkplain AuthorityFactoryAdapter#AuthorityFactoryAdapter(AuthorityFactory) super class constructor}.
      */
     public HTTP_AuthorityFactory(final AllAuthoritiesFactory factory) {
         super(factory);
     }
 
     /**
-     * Returns {@code false} if {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} should be set to
-     * {@link Boolean#FALSE}. This method compares {@link Hints#FORCE_AXIS_ORDER_HONORING} with the
-     * specified authority.
+     * Returns {@code false} if {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} should be set to {@link Boolean#FALSE}.
+     * This method compares {@link Hints#FORCE_AXIS_ORDER_HONORING} with the specified authority.
      *
      * @param hints The hints to use (may be {@code null}).
      * @param authority The authority factory under creation.
@@ -108,10 +101,7 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
         return false;
     }
 
-    /**
-     * Returns a factory from the specified hints. Used by {@link URN_AuthorityFactory} constructor
-     * as well.
-     */
+    /** Returns a factory from the specified hints. Used by {@link URN_AuthorityFactory} constructor as well. */
     static AllAuthoritiesFactory getFactory(Hints hints, final String authority) {
         if (!defaultAxisOrderHints(hints, authority)) {
             hints = new Hints(hints);
@@ -127,8 +117,7 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
     }
 
     /**
-     * Removes the URL base ({@value #BASE_URL}) from the specified code before to pass it to the
-     * wrapped factories.
+     * Removes the URL base ({@value #BASE_URL}) from the specified code before to pass it to the wrapped factories.
      *
      * @param code The code given to this factory.
      * @return The code to give to the underlying factories.

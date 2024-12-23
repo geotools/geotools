@@ -30,15 +30,15 @@ import javax.media.jai.ImageLayout;
 import org.geotools.util.logging.Logging;
 
 /**
- * This class implements the octree quantization method as it is described in the "Graphics Gems"
- * (ISBN 0-12-286166-3, Chapter 4, pages 297-293)
+ * This class implements the octree quantization method as it is described in the "Graphics Gems" (ISBN 0-12-286166-3,
+ * Chapter 4, pages 297-293)
  *
  * @author Simone Giannecchini - GeoSolutions
  */
 public final class CustomPaletteBuilder {
     /**
-     * Default value for the threshold to decide whether a pixel is opaque (>=) or transparent (<).
-     * Default is 1 to try to preserve antialising
+     * Default value for the threshold to decide whether a pixel is opaque (>=) or transparent (<). Default is 1 to try
+     * to preserve antialising
      */
     public static final int DEFAULT_ALPHA_TH = 1;
 
@@ -84,8 +84,8 @@ public final class CustomPaletteBuilder {
      * Returns <code>true</code> if PaletteBuilder is able to create palette for given image type.
      *
      * @param type an instance of <code>ImageTypeSpecifier</code> to be indexed.
-     * @return <code>true</code> if the <code>PaletteBuilder</code> is likely to be able to create
-     *     palette for this image type.
+     * @return <code>true</code> if the <code>PaletteBuilder</code> is likely to be able to create palette for this
+     *     image type.
      * @exception IllegalArgumentException if <code>type</code> is <code>null</code>.
      */
     public static boolean canCreatePalette(ImageTypeSpecifier type) {
@@ -97,12 +97,11 @@ public final class CustomPaletteBuilder {
     }
 
     /**
-     * Returns <code>true</code> if PaletteBuilder is able to create palette for given rendered
-     * image.
+     * Returns <code>true</code> if PaletteBuilder is able to create palette for given rendered image.
      *
      * @param image an instance of <code>RenderedImage</code> to be indexed.
-     * @return <code>true</code> if the <code>PaletteBuilder</code> is likely to be able to create
-     *     palette for this image type.
+     * @return <code>true</code> if the <code>PaletteBuilder</code> is likely to be able to create palette for this
+     *     image type.
      * @exception IllegalArgumentException if <code>image</code> is <code>null</code>.
      */
     public static boolean canCreatePalette(RenderedImage image) {
@@ -122,8 +121,7 @@ public final class CustomPaletteBuilder {
         //
         // //
         final IndexColorModel icm = getIndexColorModel();
-        final WritableRaster destWr =
-                icm.createCompatibleWritableRaster(src.getWidth(), src.getHeight());
+        final WritableRaster destWr = icm.createCompatibleWritableRaster(src.getWidth(), src.getHeight());
         final BufferedImage dst = new BufferedImage(icm, destWr, false, null);
 
         // //
@@ -528,8 +526,7 @@ public final class CustomPaletteBuilder {
         return new IndexColorModel(8, currSize, red, green, blue);
     }
 
-    protected int findPaletteEntry(
-            ColorNode aNode, int index, byte[] red, byte[] green, byte[] blue) {
+    protected int findPaletteEntry(ColorNode aNode, int index, byte[] red, byte[] green, byte[] blue) {
         if (aNode == null) {
             return index;
         }

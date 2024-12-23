@@ -21,8 +21,8 @@ import org.picocontainer.MutablePicoContainer;
 /**
  * Used to configure an instance of {@link org.geotools.xml.Writer}.
  *
- * <p>Implementations supply a series of {@link Encoder} implementations (typically one for each
- * type of object in your model that must be encoded.
+ * <p>Implementations supply a series of {@link Encoder} implementations (typically one for each type of object in your
+ * model that must be encoded.
  *
  * <p>Encoder implementations are supplied by registering them with the supplied container.
  *

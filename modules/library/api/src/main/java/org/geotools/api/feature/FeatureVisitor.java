@@ -13,12 +13,11 @@ package org.geotools.api.feature;
 /**
  * FeatureVisitor interface to allow for container optimised traversal.
  *
- * <p>The iterator construct from the Collections api is well understood and loved, but breaks down
- * for working with large GIS data volumes. By using a visitor we allow the implementor of a Feature
- * Collection to make use of additional resources (such as multiple processors or tiled data)
- * concurrently. This interface is most often used for calculations and data transformations and an
- * implementations may intercept known visitors (such as "bounds" or reprojection) and engage an
- * alternate work flow.
+ * <p>The iterator construct from the Collections api is well understood and loved, but breaks down for working with
+ * large GIS data volumes. By using a visitor we allow the implementor of a Feature Collection to make use of additional
+ * resources (such as multiple processors or tiled data) concurrently. This interface is most often used for
+ * calculations and data transformations and an implementations may intercept known visitors (such as "bounds" or
+ * reprojection) and engage an alternate work flow.
  *
  * @author Cory Horner (Refractions Research, Inc)
  */
@@ -26,8 +25,8 @@ public interface FeatureVisitor {
     /**
      * Visit the provided feature.
      *
-     * <p>Please consult the documentation for the FeatureCollection you are visiting to learn more
-     * - the provided feature may be invalid, or read only.
+     * <p>Please consult the documentation for the FeatureCollection you are visiting to learn more - the provided
+     * feature may be invalid, or read only.
      */
     void visit(Feature feature);
 }

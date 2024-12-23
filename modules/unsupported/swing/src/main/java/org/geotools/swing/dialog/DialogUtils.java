@@ -49,8 +49,8 @@ public class DialogUtils {
     }
 
     /**
-     * Shows a dialog centred on its parent. May be called safely from any thread. If {@code parent}
-     * is {@code null} the dialog is centred on the screen.
+     * Shows a dialog centred on its parent. May be called safely from any thread. If {@code parent} is {@code null} the
+     * dialog is centred on the screen.
      *
      * @param parent the parent component
      * @param dialog the dialog
@@ -65,9 +65,8 @@ public class DialogUtils {
     }
 
     /**
-     * Gets all child components that are, or derive from, the given class. This method is adapted
-     * from the SwingUtils class written by Darryl Burke. (Accessed from:
-     * http://tips4java.wordpress.com/2008/11/13/swing-utils/).
+     * Gets all child components that are, or derive from, the given class. This method is adapted from the SwingUtils
+     * class written by Darryl Burke. (Accessed from: http://tips4java.wordpress.com/2008/11/13/swing-utils/).
      *
      * @param <T> Swing type derived from JComponent
      * @param clazz the component class
@@ -94,14 +93,12 @@ public class DialogUtils {
     }
 
     /**
-     * Returns {@code input} if not {@code null} or empty, otherwise returns {@code fallback}. This
-     * is handy for setting dialog titles etc. Note that the input string is considered empty if
-     * {@code input.trim().length() == 0}.
+     * Returns {@code input} if not {@code null} or empty, otherwise returns {@code fallback}. This is handy for setting
+     * dialog titles etc. Note that the input string is considered empty if {@code input.trim().length() == 0}.
      *
      * @param input input string
      * @param fallback fallback string (may be {@code null})
-     * @return {@code input} unless it is {@code null} or empty, in which case {@code fallback} is
-     *     returned
+     * @return {@code input} unless it is {@code null} or empty, in which case {@code fallback} is returned
      */
     public static String getString(String input, String fallback) {
         if (input == null || input.trim().length() == 0) {
@@ -128,8 +125,7 @@ public class DialogUtils {
     }
 
     /**
-     * Calculates the dimensions that a given text string requires when rendered as HTML text in a
-     * label component.
+     * Calculates the dimensions that a given text string requires when rendered as HTML text in a label component.
      *
      * <p>The method used is adapted from that described in a blog post by Morten Nobel:
      *
@@ -153,8 +149,7 @@ public class DialogUtils {
             result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width);
         } else {
             try {
-                SwingUtilities.invokeAndWait(
-                        () -> result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width));
+                SwingUtilities.invokeAndWait(() -> result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width));
 
             } catch (Exception ex) {
                 // Either an InterruptedException or an InvocationTargetException
@@ -167,18 +162,16 @@ public class DialogUtils {
     }
 
     /**
-     * Helper method for {@linkplain #getHtmlLabelTextExtent(java.lang.String, int, boolean)}. This
-     * is required because we are creating and invisibly rendering a {@code JLabel} object in this
-     * method, and being virtuous in our Swing usage we should only do that on the event dispatch
-     * thread.
+     * Helper method for {@linkplain #getHtmlLabelTextExtent(java.lang.String, int, boolean)}. This is required because
+     * we are creating and invisibly rendering a {@code JLabel} object in this method, and being virtuous in our Swing
+     * usage we should only do that on the event dispatch thread.
      *
      * @param labelText the text to render, optionally enclosed in {@code <html>...</html>} tags
      * @param fixedDimSize the size of the fixed dimension (either width or height
      * @param width {@code true} if the fixed dimension is width; {@code false} for height
      * @return the rendered label text extent
      */
-    private static Dimension doGetHtmlTextExtent(
-            String labelText, int fixedDimSize, boolean width) {
+    private static Dimension doGetHtmlTextExtent(String labelText, int fixedDimSize, boolean width) {
         final JLabel label = new JLabel();
         if (labelText.startsWith("<html>")) {
             label.setText(labelText);

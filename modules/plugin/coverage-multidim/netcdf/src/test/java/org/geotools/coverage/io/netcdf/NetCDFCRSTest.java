@@ -70,7 +70,8 @@ import org.junit.rules.TemporaryFolder;
  */
 public class NetCDFCRSTest {
 
-    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     private static final String CUSTOM_EPSG_KM = "970917";
     private static final String CUSTOM_EPSG_M = "970916";
@@ -84,11 +85,9 @@ public class NetCDFCRSTest {
     /** Sets up the custom definitions */
     @BeforeClass
     public static void setUpClass() throws Exception {
-        String netcdfPropertiesPath =
-                TestData.file(NetCDFCRSTest.class, "netcdf.projections.properties")
-                        .getCanonicalPath();
-        System.setProperty(
-                NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
+        String netcdfPropertiesPath = TestData.file(NetCDFCRSTest.class, "netcdf.projections.properties")
+                .getCanonicalPath();
+        System.setProperty(NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
         CRS.reset("all");
         UTM32611 = CRS.decode("EPSG:32611");
     }
@@ -143,12 +142,9 @@ public class NetCDFCRSTest {
             assertTrue(transform instanceof TransverseMercator);
 
             // Check the proper CRS Type has been recognized
-            NetCDFCoordinateReferenceSystemType crsType =
-                    NetCDFCoordinateReferenceSystemType.parseCRS(crs);
+            NetCDFCoordinateReferenceSystemType crsType = NetCDFCoordinateReferenceSystemType.parseCRS(crs);
             assertSame(NetCDFCoordinateReferenceSystemType.TRANSVERSE_MERCATOR, crsType);
-            assertSame(
-                    NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.YX_COORDS,
-                    crsType.getCoordinates());
+            assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.YX_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.TRANSVERSE_MERCATOR, crsType.getNetCDFProjection());
         } finally {
             if (reader != null) {
@@ -198,12 +194,9 @@ public class NetCDFCRSTest {
             assertTrue(transform instanceof AlbersEqualArea);
 
             // Check the proper CRS Type has been recognized
-            NetCDFCoordinateReferenceSystemType crsType =
-                    NetCDFCoordinateReferenceSystemType.parseCRS(crs);
+            NetCDFCoordinateReferenceSystemType crsType = NetCDFCoordinateReferenceSystemType.parseCRS(crs);
             assertSame(NetCDFCoordinateReferenceSystemType.ALBERS_EQUAL_AREA, crsType);
-            assertSame(
-                    NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.YX_COORDS,
-                    crsType.getCoordinates());
+            assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.YX_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.ALBERS_EQUAL_AREA, crsType.getNetCDFProjection());
         } finally {
             if (reader != null) {
@@ -224,12 +217,9 @@ public class NetCDFCRSTest {
             reader = new NetCDFReader(file, null);
             String[] coverages = reader.getGridCoverageNames();
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
-            NetCDFCoordinateReferenceSystemType crsType =
-                    NetCDFCoordinateReferenceSystemType.parseCRS(crs);
+            NetCDFCoordinateReferenceSystemType crsType = NetCDFCoordinateReferenceSystemType.parseCRS(crs);
             assertSame(NetCDFCoordinateReferenceSystemType.ROTATED_POLE, crsType);
-            assertSame(
-                    NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
-                    crsType.getCoordinates());
+            assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
             assertTrue(crs instanceof DerivedCRS);
             DerivedCRS derivedCRS = ((DerivedCRS) crs);
@@ -238,32 +228,27 @@ public class NetCDFCRSTest {
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();
             assertEquals(
-                    -106.0,
-                    values.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).doubleValue(),
-                    DELTA);
+                    -106.0, values.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).doubleValue(), DELTA);
             assertEquals(
-                    54.0,
-                    values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(),
-                    DELTA);
+                    54.0, values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(), DELTA);
 
-            String wkt =
-                    "FITTED_CS[\"rotated_latitude_longitude\", \n"
-                            + "  INVERSE_MT[PARAM_MT[\"Rotated_Pole\", \n"
-                            + "      PARAMETER[\"semi_major\", 6371229.0], \n"
-                            + "      PARAMETER[\"semi_minor\", 6371229.0], \n"
-                            + "      PARAMETER[\"central_meridian\", -106.0], \n"
-                            + "      PARAMETER[\"latitude_of_origin\", 54.0], \n"
-                            + "      PARAMETER[\"scale_factor\", 1.0], \n"
-                            + "      PARAMETER[\"false_easting\", 0.0], \n"
-                            + "      PARAMETER[\"false_northing\", 0.0]]], \n"
-                            + "  GEOGCS[\"unknown\", \n"
-                            + "    DATUM[\"unknown\", \n"
-                            + "      SPHEROID[\"unknown\", 6371229.0, 0.0]], \n"
-                            + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                            + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                            + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                            + "    AXIS[\"Geodetic latitude\", NORTH]], \n"
-                            + "  AUTHORITY[\"EPSG\",\"971806\"]]";
+            String wkt = "FITTED_CS[\"rotated_latitude_longitude\", \n"
+                    + "  INVERSE_MT[PARAM_MT[\"Rotated_Pole\", \n"
+                    + "      PARAMETER[\"semi_major\", 6371229.0], \n"
+                    + "      PARAMETER[\"semi_minor\", 6371229.0], \n"
+                    + "      PARAMETER[\"central_meridian\", -106.0], \n"
+                    + "      PARAMETER[\"latitude_of_origin\", 54.0], \n"
+                    + "      PARAMETER[\"scale_factor\", 1.0], \n"
+                    + "      PARAMETER[\"false_easting\", 0.0], \n"
+                    + "      PARAMETER[\"false_northing\", 0.0]]], \n"
+                    + "  GEOGCS[\"unknown\", \n"
+                    + "    DATUM[\"unknown\", \n"
+                    + "      SPHEROID[\"unknown\", 6371229.0, 0.0]], \n"
+                    + "    PRIMEM[\"Greenwich\", 0.0], \n"
+                    + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                    + "    AXIS[\"Geodetic longitude\", EAST], \n"
+                    + "    AXIS[\"Geodetic latitude\", NORTH]], \n"
+                    + "  AUTHORITY[\"EPSG\",\"971806\"]]";
             CoordinateReferenceSystem wktCRS = CRS.parseWKT(wkt);
             assertTrue(CRS.equalsIgnoreMetadata(wktCRS, crs));
         } finally {
@@ -305,8 +290,7 @@ public class NetCDFCRSTest {
     @Test
     public void testProjectionSetup() throws Exception {
         ParameterValueGroup params =
-                ProjectionBuilder.getProjectionParameters(
-                        NetCDFProjection.LAMBERT_CONFORMAL_CONIC_1SP.getOGCName());
+                ProjectionBuilder.getProjectionParameters(NetCDFProjection.LAMBERT_CONFORMAL_CONIC_1SP.getOGCName());
         params.parameter("central_meridian").setValue(-95.0);
         params.parameter("latitude_of_origin").setValue(25.0);
         params.parameter("scale_factor").setValue(1.0);
@@ -323,15 +307,13 @@ public class NetCDFCRSTest {
         GeographicCRS geoCRS = ProjectionBuilder.createGeographicCRS("WGS 84", datum);
         MathTransform transform = ProjectionBuilder.createTransform(params);
         DefiningConversion conversionFromBase =
-                ProjectionBuilder.createConversionFromBase(
-                        "lambert_conformal_mercator_1sp", transform);
+                ProjectionBuilder.createConversionFromBase("lambert_conformal_mercator_1sp", transform);
 
-        CoordinateReferenceSystem crs =
-                ProjectionBuilder.createProjectedCRS(
-                        Collections.singletonMap("name", "custom_lambert_conformal_conic_1sp"),
-                        geoCRS,
-                        conversionFromBase,
-                        transform);
+        CoordinateReferenceSystem crs = ProjectionBuilder.createProjectedCRS(
+                Collections.singletonMap("name", "custom_lambert_conformal_conic_1sp"),
+                geoCRS,
+                conversionFromBase,
+                transform);
 
         assertTrue(crs instanceof ProjectedCRS);
         ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
@@ -344,8 +326,7 @@ public class NetCDFCRSTest {
     @Test
     public void testDefaultDatumSetup() throws Exception {
         ParameterValueGroup params =
-                ProjectionBuilder.getProjectionParameters(
-                        NetCDFProjection.LAMBERT_CONFORMAL_CONIC_1SP.getOGCName());
+                ProjectionBuilder.getProjectionParameters(NetCDFProjection.LAMBERT_CONFORMAL_CONIC_1SP.getOGCName());
         params.parameter("central_meridian").setValue(-95.0);
         params.parameter("latitude_of_origin").setValue(25.0);
         params.parameter("scale_factor").setValue(1.0);
@@ -417,8 +398,7 @@ public class NetCDFCRSTest {
     }
 
     @Test
-    public void testMultipleBoundingBoxesAuxiliaryCoordinatesSupport()
-            throws IOException, FactoryException {
+    public void testMultipleBoundingBoxesAuxiliaryCoordinatesSupport() throws IOException, FactoryException {
         final File testURL = TestData.file(this, "dualbboxAuxiliaryCoordinates.nc");
 
         final NetCDFReader reader = new NetCDFReader(testURL, null);
@@ -477,12 +457,8 @@ public class NetCDFCRSTest {
         File file = TestData.file(this, "unsupported-grid-mapping-name.nc");
         NetCDFReader reader = new NetCDFReader(file, null);
         assertNotNull(reader);
-        assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
-        assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        reader.getCoordinateReferenceSystem("foo"), DefaultGeographicCRS.WGS84));
+        assertTrue(CRS.equalsIgnoreMetadata(reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
+        assertTrue(CRS.equalsIgnoreMetadata(reader.getCoordinateReferenceSystem("foo"), DefaultGeographicCRS.WGS84));
         reader.dispose();
     }
 
@@ -495,13 +471,11 @@ public class NetCDFCRSTest {
         FileUtils.copyFileToDirectory(nc1, converted);
         File km = new File(converted, fileName);
         NetCDFReader reader = new NetCDFReader(km, null);
-        CoordinateReferenceSystem crs =
-                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
         assertEquals(CUSTOM_EPSG_KM, crs.getIdentifiers().iterator().next().getCode());
-        assertTrue(
-                "km".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
-        GeneralBounds originalEnvelope =
-                reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
+        assertTrue("km"
+                .equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
+        GeneralBounds originalEnvelope = reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
         assertEquals(COORDINATE_IN_KM, originalEnvelope.getMaximum(0), DELTA);
     }
 
@@ -514,12 +488,11 @@ public class NetCDFCRSTest {
         FileUtils.copyFileToDirectory(nc1, converted);
         File m = new File(converted, fileName);
         NetCDFReader reader = new NetCDFReader(m, null);
-        CoordinateReferenceSystem crs =
-                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
         assertEquals(CUSTOM_EPSG_M, crs.getIdentifiers().iterator().next().getCode());
-        assertTrue("m".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
-        GeneralBounds originalEnvelope =
-                reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
+        assertTrue("m"
+                .equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
+        GeneralBounds originalEnvelope = reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
         assertEquals(COORDINATE_IN_METERS, originalEnvelope.getMaximum(0), DELTA);
     }
 

@@ -23,9 +23,8 @@ import org.geotools.api.feature.type.Schema;
 import org.geotools.xsd.Configuration;
 
 /**
- * Configuration for a Complex Feature Type Registry (see gt-complex module), - tells the registry
- * which schemas and configurations to use - tells the registry when to create a Feature Type, a
- * Geometry Type or set Identifiable
+ * Configuration for a Complex Feature Type Registry (see gt-complex module), - tells the registry which schemas and
+ * configurations to use - tells the registry when to create a Feature Type, a Geometry Type or set Identifiable
  *
  * @author Niels Charlier
  */

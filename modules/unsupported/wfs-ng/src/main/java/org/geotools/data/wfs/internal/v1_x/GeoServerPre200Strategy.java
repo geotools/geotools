@@ -26,8 +26,8 @@ import org.geotools.xsd.Configuration;
  * <p>
  *
  * <ul>
- *   <li>State {@code text/gml; subtype=gml/3.1.1} instead of {@code text/xml; subtype=gml/3.1.1} as
- *       default output format.
+ *   <li>State {@code text/gml; subtype=gml/3.1.1} instead of {@code text/xml; subtype=gml/3.1.1} as default output
+ *       format.
  *   <li>Can only reliably parse Filter 1.0
  */
 public class GeoServerPre200Strategy extends StrictWFS_1_x_Strategy {
@@ -35,8 +35,8 @@ public class GeoServerPre200Strategy extends StrictWFS_1_x_Strategy {
     private static final String GEOSERVER_WRONG_FORMAT_NAME = "text/gml; subtype=gml/3.1.1";
 
     /**
-     * GeoServer versions prior to 2.0 state {@code text/gml; subtype=gml/3.1.1} instead of {@code
-     * text/xml; subtype=gml/3.1.1}
+     * GeoServer versions prior to 2.0 state {@code text/gml; subtype=gml/3.1.1} instead of {@code text/xml;
+     * subtype=gml/3.1.1}
      */
     @Override
     public String getDefaultOutputFormat(WFSOperationType op) {
@@ -48,8 +48,7 @@ public class GeoServerPre200Strategy extends StrictWFS_1_x_Strategy {
                 return "text/xml; subtype=gml/3.1.1";
             }
             throw new IllegalArgumentException(
-                    "Server does not support 'text/gml; subtype=gml/3.1.1' output format: "
-                            + supportedOutputFormats);
+                    "Server does not support 'text/gml; subtype=gml/3.1.1' output format: " + supportedOutputFormats);
         }
     }
 

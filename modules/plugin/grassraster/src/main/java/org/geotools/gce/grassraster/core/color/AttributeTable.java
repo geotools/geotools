@@ -121,8 +121,8 @@ public class AttributeTable {
         }
 
         /**
-         * Compare a value to the range of values in this attribute If the cat is below the renage
-         * then return -1, if it is aboove the ramge then return +1, if it is equal return 0
+         * Compare a value to the range of values in this attribute If the cat is below the renage then return -1, if it
+         * is aboove the ramge then return +1, if it is equal return 0
          */
         public int compare(float cat) {
             float diff = cat - low;
@@ -147,12 +147,7 @@ public class AttributeTable {
         @Override
         public String toString() {
             if (range == 0f) return String.valueOf(low) + ":" + catText; // $NON-NLS-1$
-            else
-                return String.valueOf(low)
-                        + "-"
-                        + String.valueOf(low + range)
-                        + ":"
-                        + catText; // $NON-NLS-1$
+            else return String.valueOf(low) + "-" + String.valueOf(low + range) + ":" + catText; // $NON-NLS-1$
         }
     }
 }

@@ -50,9 +50,9 @@ import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
 
 /**
- * Utility methods for choosing a {@linkplain SampleModel sample model} or a {@linkplain ColorModel
- * color model} on the basis of a range of values. This class provides also some methods for mapping
- * {@link SampleDimensionType} to {@link DataBuffer} types.
+ * Utility methods for choosing a {@linkplain SampleModel sample model} or a {@linkplain ColorModel color model} on the
+ * basis of a range of values. This class provides also some methods for mapping {@link SampleDimensionType} to
+ * {@link DataBuffer} types.
  *
  * @since 2.1
  * @version $Id$
@@ -80,18 +80,19 @@ public final class TypeMap {
         new TypeMap(SIGNED_32BITS, DataBuffer.TYPE_INT, (byte) 32, true, false, pool);
         new TypeMap(REAL_32BITS, DataBuffer.TYPE_FLOAT, (byte) 32, true, true, M1, P1, pool);
         new TypeMap(REAL_64BITS, DataBuffer.TYPE_DOUBLE, (byte) 64, true, true, M2, P2, pool);
-    };
+    }
+    ;
 
     /**
-     * The {@link DataBuffer} type. Must be one of the following constants: {@link
-     * DataBuffer#TYPE_BYTE}, {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT}, {@link
-     * DataBuffer#TYPE_INT}, {@link DataBuffer#TYPE_FLOAT}, {@link DataBuffer#TYPE_DOUBLE}.
+     * The {@link DataBuffer} type. Must be one of the following constants: {@link DataBuffer#TYPE_BYTE},
+     * {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT}, {@link DataBuffer#TYPE_INT},
+     * {@link DataBuffer#TYPE_FLOAT}, {@link DataBuffer#TYPE_DOUBLE}.
      */
     private final int type;
 
     /**
-     * The size in bits. The value range from 1 to 64. This is different than {@link
-     * DataBuffer#getDataTypeSize}, which have values ranging from 8 to 64.
+     * The size in bits. The value range from 1 to 64. This is different than {@link DataBuffer#getDataTypeSize}, which
+     * have values ranging from 8 to 64.
      */
     private final byte size;
 
@@ -105,24 +106,19 @@ public final class TypeMap {
     private final NumberRange<? extends Number> range;
 
     /**
-     * The range of positive sample values (excluding 0). This range is non-null only for unsigned
-     * type. A range excluding 0 is sometime usefull when the 0 value is reserved for a "no data"
-     * category.
+     * The range of positive sample values (excluding 0). This range is non-null only for unsigned type. A range
+     * excluding 0 is sometime usefull when the 0 value is reserved for a "no data" category.
      */
     private final NumberRange<? extends Number> positiveRange;
 
     /** The name as an international string. */
-    private final InternationalString name =
-            new AbstractInternationalString() {
-                @Override
-                public String toString(final Locale locale) {
-                    return Vocabulary.getResources(locale)
-                            .getString(
-                                    VocabularyKeys.DATA_TYPE_$2,
-                                    Integer.valueOf(real ? 2 : signed ? 1 : 0),
-                                    size);
-                }
-            };
+    private final InternationalString name = new AbstractInternationalString() {
+        @Override
+        public String toString(final Locale locale) {
+            return Vocabulary.getResources(locale)
+                    .getString(VocabularyKeys.DATA_TYPE_$2, Integer.valueOf(real ? 2 : signed ? 1 : 0), size);
+        }
+    };
 
     /** Constructs a new mapping with the specified value. */
     private TypeMap(
@@ -219,8 +215,8 @@ public final class TypeMap {
     }
 
     /**
-     * Returns the smallest sample dimension type capable to hold the specified range of values. An
-     * heuristic approach is used for non-integer values.
+     * Returns the smallest sample dimension type capable to hold the specified range of values. An heuristic approach
+     * is used for non-integer values.
      *
      * @param min The lower value, inclusive.
      * @param max The upper value, <strong>inclusive</strong> as well.
@@ -266,8 +262,8 @@ public final class TypeMap {
     }
 
     /**
-     * Returns the sample dimension type for the specified sample model and band number. If the
-     * sample model use an undefined data type, then this method returns {@code null}.
+     * Returns the sample dimension type for the specified sample model and band number. If the sample model use an
+     * undefined data type, then this method returns {@code null}.
      *
      * @param model The sample model.
      * @param band The band to query.
@@ -275,11 +271,10 @@ public final class TypeMap {
      * @throws IllegalArgumentException if the band number is not in the valid range.
      */
     @SuppressWarnings("fallthrough")
-    public static SampleDimensionType getSampleDimensionType(
-            final SampleModel model, final int band) throws IllegalArgumentException {
+    public static SampleDimensionType getSampleDimensionType(final SampleModel model, final int band)
+            throws IllegalArgumentException {
         if (band < 0 || band >= model.getNumBands()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         boolean signed = true;
         switch (model.getDataType()) {
@@ -291,34 +286,33 @@ public final class TypeMap {
             case DataBuffer.TYPE_BYTE:
                 signed = false; // Fall through
             case DataBuffer.TYPE_INT:
-            case DataBuffer.TYPE_SHORT:
-                {
-                    switch (model.getSampleSize(band)) {
-                        case 1:
-                            return UNSIGNED_1BIT;
-                        case 2:
-                            return UNSIGNED_2BITS;
-                        case 4:
-                            return UNSIGNED_4BITS;
-                        case 5:
-                            return UNSIGNED_8BITS; // for BufferedImages TYPE_USHORT_555_RGB
-                            // TYPE_USHORT_565_RGB
-                        case 8:
-                            return signed ? SIGNED_8BITS : UNSIGNED_8BITS;
-                        case 16:
-                            return signed ? SIGNED_16BITS : UNSIGNED_16BITS;
-                        case 32:
-                            return signed ? SIGNED_32BITS : UNSIGNED_32BITS;
-                    }
+            case DataBuffer.TYPE_SHORT: {
+                switch (model.getSampleSize(band)) {
+                    case 1:
+                        return UNSIGNED_1BIT;
+                    case 2:
+                        return UNSIGNED_2BITS;
+                    case 4:
+                        return UNSIGNED_4BITS;
+                    case 5:
+                        return UNSIGNED_8BITS; // for BufferedImages TYPE_USHORT_555_RGB
+                        // TYPE_USHORT_565_RGB
+                    case 8:
+                        return signed ? SIGNED_8BITS : UNSIGNED_8BITS;
+                    case 16:
+                        return signed ? SIGNED_16BITS : UNSIGNED_16BITS;
+                    case 32:
+                        return signed ? SIGNED_32BITS : UNSIGNED_32BITS;
                 }
+            }
         }
         return null;
     }
 
     /**
-     * Returns the sample dimension type name as an international string. For example, the localized
-     * name for {@link SampleDimensionType#UNSIGNED_16BITS} is "<cite>16 bits unsigned
-     * integer</cite>" in English and "<cite>Entier non-signé sur 16 bits</cite>" in French.
+     * Returns the sample dimension type name as an international string. For example, the localized name for
+     * {@link SampleDimensionType#UNSIGNED_16BITS} is "<cite>16 bits unsigned integer</cite>" in English and
+     * "<cite>Entier non-signé sur 16 bits</cite>" in French.
      */
     public static InternationalString getName(final SampleDimensionType type) {
         final int ordinal = type.ordinal();
@@ -329,11 +323,10 @@ public final class TypeMap {
     }
 
     /**
-     * Returns the {@link DataBuffer} type. This is one of the following constants: {@link
-     * DataBuffer#TYPE_BYTE TYPE_BYTE}, {@link DataBuffer#TYPE_USHORT TYPE_USHORT}, {@link
-     * DataBuffer#TYPE_SHORT TYPE_SHORT}, {@link DataBuffer#TYPE_INT TYPE_INT}, {@link
-     * DataBuffer#TYPE_FLOAT TYPE_FLOAT}, {@link DataBuffer#TYPE_DOUBLE TYPE_DOUBLE} or {@link
-     * DataBuffer#TYPE_UNDEFINED} if the type is unrecognized.
+     * Returns the {@link DataBuffer} type. This is one of the following constants: {@link DataBuffer#TYPE_BYTE
+     * TYPE_BYTE}, {@link DataBuffer#TYPE_USHORT TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT TYPE_SHORT},
+     * {@link DataBuffer#TYPE_INT TYPE_INT}, {@link DataBuffer#TYPE_FLOAT TYPE_FLOAT}, {@link DataBuffer#TYPE_DOUBLE
+     * TYPE_DOUBLE} or {@link DataBuffer#TYPE_UNDEFINED} if the type is unrecognized.
      */
     public static int getDataBufferType(final SampleDimensionType type) {
         if (type != null) {
@@ -375,9 +368,8 @@ public final class TypeMap {
     }
 
     /**
-     * Returns the range of positive sample values (excluding 0). This range is non-null only for
-     * unsigned type. A range excluding 0 is sometime usefull when the 0 value is reserved for a "no
-     * data" category.
+     * Returns the range of positive sample values (excluding 0). This range is non-null only for unsigned type. A range
+     * excluding 0 is sometime usefull when the 0 value is reserved for a "no data" category.
      */
     public static NumberRange<? extends Number> getPositiveRange(final SampleDimensionType type) {
         if (type != null) {
@@ -390,8 +382,8 @@ public final class TypeMap {
     }
 
     /**
-     * Returns the mapper for the specified sample dimension type. If no map is found for the
-     * specified sample dimension type, then an exception is thrown.
+     * Returns the mapper for the specified sample dimension type. If no map is found for the specified sample dimension
+     * type, then an exception is thrown.
      */
     private static TypeMap map(final SampleDimensionType type) throws IllegalArgumentException {
         if (type != null) {
@@ -403,27 +395,24 @@ public final class TypeMap {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
     }
 
     /**
-     * Wraps the specified value into a number of the specified data type. If the value can't fit in
-     * the specified type, then a wider type is choosen unless {@code allowWidening} is {@code
-     * false}.
+     * Wraps the specified value into a number of the specified data type. If the value can't fit in the specified type,
+     * then a wider type is choosen unless {@code allowWidening} is {@code false}.
      *
      * @param value The value to wrap in a {@link Number} object.
      * @param type A constant from the {@link SampleDimensionType} code list.
-     * @param allowWidening {@code true} if this method is allowed to returns a wider type than the
-     *     usual one for the specified {@code type}.
+     * @param allowWidening {@code true} if this method is allowed to returns a wider type than the usual one for the
+     *     specified {@code type}.
      * @return The value as a {@link Number}.
      * @throws IllegalArgumentException if {@code type} is not a recognized constant.
-     * @throws IllegalArgumentException if {@code allowWidening} is {@code false} and the specified
-     *     {@code value} can't fit in the specified sample type.
+     * @throws IllegalArgumentException if {@code allowWidening} is {@code false} and the specified {@code value} can't
+     *     fit in the specified sample type.
      */
     @SuppressWarnings("fallthrough")
-    public static Number wrapSample(
-            final double value, final SampleDimensionType type, final boolean allowWidening)
+    public static Number wrapSample(final double value, final SampleDimensionType type, final boolean allowWidening)
             throws IllegalArgumentException {
         /*
          * Note about 'ordinal' computation: We would like to switch on SampleDimensionType
@@ -443,63 +432,54 @@ public final class TypeMap {
             case 1: // Fall through
             case 2: // Fall through
             case 4: // Fall through
-            case -8:
-                {
-                    final byte candidate = (byte) value;
-                    if (candidate == value) {
-                        return Byte.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -8: {
+                final byte candidate = (byte) value;
+                if (candidate == value) {
+                    return Byte.valueOf(candidate);
                 }
+                if (!allowWidening) break;
+                // Fall through
+            }
             case 8: // Fall through
-            case -16:
-                {
-                    final short candidate = (short) value;
-                    if (candidate == value) {
-                        return Short.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -16: {
+                final short candidate = (short) value;
+                if (candidate == value) {
+                    return Short.valueOf(candidate);
                 }
+                if (!allowWidening) break;
+                // Fall through
+            }
             case 16: // Fall through
-            case -32:
-                {
-                    final int candidate = (int) value;
-                    if (candidate == value) {
-                        return Integer.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -32: {
+                final int candidate = (int) value;
+                if (candidate == value) {
+                    return Integer.valueOf(candidate);
                 }
-            case 32:
-                {
-                    final long candidate = (long) value;
-                    if (candidate == value) {
-                        return Long.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+                if (!allowWidening) break;
+                // Fall through
+            }
+            case 32: {
+                final long candidate = (long) value;
+                if (candidate == value) {
+                    return Long.valueOf(candidate);
                 }
-            case (32 << 16):
-                {
-                    if (!allowWidening || Math.abs(value) <= Float.MAX_VALUE) {
-                        return Float.valueOf((float) value);
-                    }
-                    // Fall through
+                if (!allowWidening) break;
+                // Fall through
+            }
+            case (32 << 16): {
+                if (!allowWidening || Math.abs(value) <= Float.MAX_VALUE) {
+                    return Float.valueOf((float) value);
                 }
-            case (64 << 16):
-                {
-                    return Double.valueOf(value);
-                }
-            default:
-                {
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
-                }
+                // Fall through
+            }
+            case (64 << 16): {
+                return Double.valueOf(value);
+            }
+            default: {
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+            }
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
     }
 
     /**
@@ -516,66 +496,61 @@ public final class TypeMap {
             return ColorInterpretation.UNDEFINED;
         }
         if (band < 0 || band >= ColorUtilities.getNumBands(model)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         if (model instanceof IndexColorModel) {
             return ColorInterpretation.PALETTE_INDEX;
         }
         switch (model.getColorSpace().getType()) {
-            case ColorSpace.TYPE_GRAY:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.GRAY_INDEX;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            case ColorSpace.TYPE_GRAY: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.GRAY_INDEX;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
-            case ColorSpace.TYPE_RGB:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.RED_BAND;
-                        case 1:
-                            return ColorInterpretation.GREEN_BAND;
-                        case 2:
-                            return ColorInterpretation.BLUE_BAND;
-                        case 3:
-                            return ColorInterpretation.ALPHA_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            }
+            case ColorSpace.TYPE_RGB: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.RED_BAND;
+                    case 1:
+                        return ColorInterpretation.GREEN_BAND;
+                    case 2:
+                        return ColorInterpretation.BLUE_BAND;
+                    case 3:
+                        return ColorInterpretation.ALPHA_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
-            case ColorSpace.TYPE_HSV:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.HUE_BAND;
-                        case 1:
-                            return ColorInterpretation.SATURATION_BAND;
-                        case 2:
-                            return ColorInterpretation.LIGHTNESS_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            }
+            case ColorSpace.TYPE_HSV: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.HUE_BAND;
+                    case 1:
+                        return ColorInterpretation.SATURATION_BAND;
+                    case 2:
+                        return ColorInterpretation.LIGHTNESS_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
+            }
             case ColorSpace.TYPE_CMY:
-            case ColorSpace.TYPE_CMYK:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.CYAN_BAND;
-                        case 1:
-                            return ColorInterpretation.MAGENTA_BAND;
-                        case 2:
-                            return ColorInterpretation.YELLOW_BAND;
-                        case 3:
-                            return ColorInterpretation.BLACK_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            case ColorSpace.TYPE_CMYK: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.CYAN_BAND;
+                    case 1:
+                        return ColorInterpretation.MAGENTA_BAND;
+                    case 2:
+                        return ColorInterpretation.YELLOW_BAND;
+                    case 3:
+                        return ColorInterpretation.BLACK_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
+            }
             default:
                 return ColorInterpretation.UNDEFINED;
         }

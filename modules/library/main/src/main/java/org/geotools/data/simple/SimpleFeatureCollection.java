@@ -25,15 +25,15 @@ import org.geotools.feature.FeatureCollection;
 /**
  * Access to "simple" Feature content where each feature has the same SimpleFeatureType.
  *
- * <p>Please keep in mind that a SimpleFeatureCollection is similar to a result set; and may not
- * necessarily load everything in to memory. Treat each iterator as a forward only cursor in the
- * JDBC sense; and take care to FeatureIterator.close() after use.
+ * <p>Please keep in mind that a SimpleFeatureCollection is similar to a result set; and may not necessarily load
+ * everything in to memory. Treat each iterator as a forward only cursor in the JDBC sense; and take care to
+ * FeatureIterator.close() after use.
  *
  * <h3>SimpleFeatureIterator close</h3>
  *
  * <p>SimpleFeatureCollection provides streaming access with the following restrictions on use of
- * {@link SimpleFeatureIterator}: You must call {@link SimpleFeatureIterator#close()}. This allows
- * FeatureCollection to clean up any operating system resources used to access information.
+ * {@link SimpleFeatureIterator}: You must call {@link SimpleFeatureIterator#close()}. This allows FeatureCollection to
+ * clean up any operating system resources used to access information.
  *
  * <p>Example (safe) use:
  *
@@ -63,13 +63,12 @@ import org.geotools.feature.FeatureCollection;
  *
  * <p>
  */
-public interface SimpleFeatureCollection
-        extends FeatureCollection<SimpleFeatureType, SimpleFeature> {
+public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType, SimpleFeature> {
     /**
      * Obtain a SimpleFeatureIterator of the Features within this SimpleFeatureCollection.
      *
-     * <p>The implementation of FeatureIterator must adhere to the rules of fail-fast concurrent
-     * modification. In addition (to allow for resource backed collections) the <code>
+     * <p>The implementation of FeatureIterator must adhere to the rules of fail-fast concurrent modification. In
+     * addition (to allow for resource backed collections) the <code>
      * SimpleFeatureIterator.close()</code> method must be called.
      *
      * <p>Example use:

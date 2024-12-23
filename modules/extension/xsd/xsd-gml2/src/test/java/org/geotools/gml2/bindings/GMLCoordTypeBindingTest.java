@@ -56,16 +56,10 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
     @Test
     public void testParse1D() throws Exception {
         Node node =
-                createNode(
-                        coordinate,
-                        new ElementInstance[] {x},
-                        new Object[] {BigDecimal.valueOf(12.34)},
-                        null,
-                        null);
+                createNode(coordinate, new ElementInstance[] {x}, new Object[] {BigDecimal.valueOf(12.34)}, null, null);
 
         GMLCoordTypeBinding strategy =
-                (GMLCoordTypeBinding)
-                        container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
+                (GMLCoordTypeBinding) container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
 
         Coordinate c = (Coordinate) strategy.parse(coordinate, node, null);
         assertNotNull(c);
@@ -74,17 +68,15 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testParse2D() throws Exception {
-        Node node =
-                createNode(
-                        coordinate,
-                        new ElementInstance[] {x, y},
-                        new Object[] {BigDecimal.valueOf(12.34), BigDecimal.valueOf(56.78)},
-                        null,
-                        null);
+        Node node = createNode(
+                coordinate,
+                new ElementInstance[] {x, y},
+                new Object[] {BigDecimal.valueOf(12.34), BigDecimal.valueOf(56.78)},
+                null,
+                null);
 
         GMLCoordTypeBinding strategy =
-                (GMLCoordTypeBinding)
-                        container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
+                (GMLCoordTypeBinding) container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
 
         Coordinate c = (Coordinate) strategy.parse(coordinate, node, null);
         assertNotNull(c);
@@ -94,20 +86,14 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testParse3D() throws Exception {
-        Node node =
-                createNode(
-                        coordinate,
-                        new ElementInstance[] {x, y, z},
-                        new Object[] {
-                            BigDecimal.valueOf(12.34),
-                            BigDecimal.valueOf(56.78),
-                            BigDecimal.valueOf(910.11)
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                coordinate,
+                new ElementInstance[] {x, y, z},
+                new Object[] {BigDecimal.valueOf(12.34), BigDecimal.valueOf(56.78), BigDecimal.valueOf(910.11)},
+                null,
+                null);
         GMLCoordTypeBinding strategy =
-                (GMLCoordTypeBinding)
-                        container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
+                (GMLCoordTypeBinding) container.getComponentInstanceOfType(GMLCoordTypeBinding.class);
 
         Coordinate c = (Coordinate) strategy.parse(coordinate, node, null);
         assertNotNull(c);

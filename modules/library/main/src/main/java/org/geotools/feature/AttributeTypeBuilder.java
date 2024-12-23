@@ -122,29 +122,24 @@ public class AttributeTypeBuilder {
     // AttributeDescriptor
     //
     /**
-     * Minimum number of occurrences allowed. See minOccurs() function for the default value based
-     * on nillable if not explicitly set.
+     * Minimum number of occurrences allowed. See minOccurs() function for the default value based on nillable if not
+     * explicitly set.
      */
     protected Integer minOccurs = null;
 
-    /**
-     * Maximum number of occurrences allowed. See maxOccurs() function for the default value (of 1).
-     */
+    /** Maximum number of occurrences allowed. See maxOccurs() function for the default value (of 1). */
     protected Integer maxOccurs = null;
 
     /**
      * True if value is allowed to be null.
      *
-     * <p>Depending on this value minOccurs, maxOccurs and defaultValue() will return different
-     * results.
+     * <p>Depending on this value minOccurs, maxOccurs and defaultValue() will return different results.
      *
      * <p>The default value is <code>true</code>.
      */
     protected boolean isNillable = true;
 
-    /**
-     * If this value is set an additional restriction will be added based on the length function.
-     */
+    /** If this value is set an additional restriction will be added based on the length function. */
     protected Integer length = null;
 
     /** User data for the attribute. */
@@ -177,8 +172,7 @@ public class AttributeTypeBuilder {
     /**
      * Resets all builder state used to build the attribute type.
      *
-     * <p>This method is called automatically after {@link #buildType()} and {@link
-     * #buildGeometryType()}.
+     * <p>This method is called automatically after {@link #buildType()} and {@link #buildGeometryType()}.
      */
     protected void resetTypeState() {
         name = null;
@@ -355,8 +349,8 @@ public class AttributeTypeBuilder {
     }
 
     /**
-     * Sets a list of possible valid values for the attribute type being built, and returns a
-     * reference to the builder itself
+     * Sets a list of possible valid values for the attribute type being built, and returns a reference to the builder
+     * itself
      */
     public AttributeTypeBuilder options(List<?> options) {
         setOptions(options);
@@ -425,15 +419,8 @@ public class AttributeTypeBuilder {
             restrictions().add(optionsRestriction);
         }
 
-        AttributeType type =
-                factory.createAttributeType(
-                        name(),
-                        binding,
-                        isIdentifiable,
-                        isAbstract,
-                        restrictions(),
-                        superType,
-                        description());
+        AttributeType type = factory.createAttributeType(
+                name(), binding, isIdentifiable, isAbstract, restrictions(), superType, description());
         resetTypeState();
 
         return type;
@@ -445,16 +432,8 @@ public class AttributeTypeBuilder {
      * <p>This method resets all state after the attribute is built.
      */
     public GeometryType buildGeometryType() {
-        GeometryType type =
-                factory.createGeometryType(
-                        name(),
-                        binding,
-                        crs,
-                        isIdentifiable,
-                        isAbstract,
-                        restrictions(),
-                        superType,
-                        description());
+        GeometryType type = factory.createGeometryType(
+                name(), binding, crs, isIdentifiable, isAbstract, restrictions(), superType, description());
 
         resetTypeState();
 
@@ -465,9 +444,7 @@ public class AttributeTypeBuilder {
         if (name == null) {
             name = Classes.getShortName(binding);
         }
-        return separator == null
-                ? new NameImpl(namespaceURI, name)
-                : new NameImpl(namespaceURI, separator, name);
+        return separator == null ? new NameImpl(namespaceURI, name) : new NameImpl(namespaceURI, separator, name);
     }
 
     private InternationalString description() {
@@ -477,12 +454,12 @@ public class AttributeTypeBuilder {
     /**
      * Builds an attribute descriptor first building an attribute type from internal state.
      *
-     * <p>If {@link #crs} has been set via {@link #setCRS(CoordinateReferenceSystem)}, or {@link
-     * #binding} is of Geometry. The internal attribute type will be built via {@link
-     * #buildGeometryType()}, and {@link #buildDescriptor(String, GeometryType)} will be called.
+     * <p>If {@link #crs} has been set via {@link #setCRS(CoordinateReferenceSystem)}, or {@link #binding} is of
+     * Geometry. The internal attribute type will be built via {@link #buildGeometryType()}, and
+     * {@link #buildDescriptor(String, GeometryType)} will be called.
      *
-     * <p>Otherwise it will be built via {@link #buildType()}, and {@link #buildDescriptor(String,
-     * AttributeType)} will be called.
+     * <p>Otherwise it will be built via {@link #buildType()}, and {@link #buildDescriptor(String, AttributeType)} will
+     * be called.
      *
      * @param name The name of the descriptor.
      * @see #buildDescriptor(String, AttributeType)
@@ -527,8 +504,7 @@ public class AttributeTypeBuilder {
 
         // build the descriptor
         AttributeDescriptor descriptor =
-                factory.createAttributeDescriptor(
-                        type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
+                factory.createAttributeDescriptor(type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
 
         // set the user data
         descriptor.getUserData().putAll(userData);
@@ -538,8 +514,7 @@ public class AttributeTypeBuilder {
 
     public GeometryDescriptor buildDescriptor(Name name, GeometryType type) {
         GeometryDescriptor descriptor =
-                factory.createGeometryDescriptor(
-                        type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
+                factory.createGeometryDescriptor(type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
 
         // set the user data
         descriptor.getUserData().putAll(userData);

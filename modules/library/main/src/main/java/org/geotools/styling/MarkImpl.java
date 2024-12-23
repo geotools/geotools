@@ -39,8 +39,7 @@ import org.geotools.util.factory.GeoTools;
 public class MarkImpl implements Mark, Cloneable, Symbol {
 
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
+    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
 
     private final FilterFactory filterFactory;
     private FillImpl fill;
@@ -77,8 +76,7 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
     }
 
     /** Convenience method for logging a message with an exception. */
-    private static void severe(
-            final String method, final String message, final Exception exception) {
+    private static void severe(final String method, final String message, final Exception exception) {
         final java.util.logging.LogRecord record =
                 new java.util.logging.LogRecord(java.util.logging.Level.SEVERE, message);
         record.setSourceMethodName(method);
@@ -108,9 +106,8 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
 
     /**
      * This parameter gives the well-known name of the shape of the mark.<br>
-     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though
-     * renderers may draw a different symbol instead if they don't have a shape for all of these.
-     * <br>
+     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though renderers may draw
+     * a different symbol instead if they don't have a shape for all of these. <br>
      *
      * @return The well-known name of a shape. The default value is "square".
      */
@@ -222,8 +219,8 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
     /**
      * Compares this MarkImpl with another for equality.
      *
-     * <p>Two MarkImpls are equal if they have the same well Known Name, the same size and rotation
-     * and the same stroke and fill.
+     * <p>Two MarkImpls are equal if they have the same well Known Name, the same size and rotation and the same stroke
+     * and fill.
      *
      * @param oth The Other MarkImpl to compare with.
      * @return True if this and oth are equal.

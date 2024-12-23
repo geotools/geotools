@@ -22,9 +22,8 @@ import javax.imageio.event.IIOWriteWarningListener;
 import org.geotools.api.util.ProgressListener;
 
 /**
- * This class provide a means to wrap a GeoTools {@link ProgressListener} and have it control an
- * {@link ImageWriter} while it is actually doing a {@link
- * ImageWriter#write(javax.imageio.IIOImage)} operation.
+ * This class provide a means to wrap a GeoTools {@link ProgressListener} and have it control an {@link ImageWriter}
+ * while it is actually doing a {@link ImageWriter#write(javax.imageio.IIOImage)} operation.
  *
  * <p>We also give user the ability to cancel the writing process
  *
@@ -43,8 +42,7 @@ public class GridCoverageWriterProgressAdapter extends BaseGridCoverageProgressA
 
     @Override
     public void warningOccurred(ImageWriter source, int imageIndex, String warning) {
-        monitor.warningOccurred(
-                source.getOutput().toString(), "Warning writing image:" + imageIndex, warning);
+        monitor.warningOccurred(source.getOutput().toString(), "Warning writing image:" + imageIndex, warning);
     }
 
     @Override

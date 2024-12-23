@@ -19,10 +19,10 @@ public class SQLServer3DOnlineTest extends JDBC3DOnlineTest {
     }
 
     /**
-     * Override to disable because it does not work. In the actual query sent to the database the
-     * {@code bbox} is reduced to 2 dimensions: {@code SELECT count(*) FROM "line3d" WHERE
-     * "geom".Filter(geometry::STGeomFromText('POLYGON ((2 1, 2 2, 3 2, 3 1, 2 1))', 4326)) = 1 } so
-     * the test will always fail.
+     * Override to disable because it does not work. In the actual query sent to the database the {@code bbox} is
+     * reduced to 2 dimensions: {@code SELECT count(*) FROM "line3d" WHERE
+     * "geom".Filter(geometry::STGeomFromText('POLYGON ((2 1, 2 2, 3 2, 3 1, 2 1))', 4326)) = 1 } so the test will
+     * always fail.
      *
      * <p>see GEOT-6555.
      */

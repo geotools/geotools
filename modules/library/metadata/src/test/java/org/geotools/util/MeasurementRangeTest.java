@@ -125,8 +125,7 @@ public final class MeasurementRangeTest {
     /** Tests {@link MeasurementRange#toString()} method. */
     @Test
     public void testToString() {
-        final MeasurementRange<Float> range =
-                MeasurementRange.create(10f, 20f, MetricPrefix.KILO(SI.METRE));
+        final MeasurementRange<Float> range = MeasurementRange.create(10f, 20f, MetricPrefix.KILO(SI.METRE));
         assertEquals("[10.0, 20.0] km", range.toString());
     }
 }

@@ -34,10 +34,9 @@ import org.geotools.metadata.math.XMath;
  *   <li>
  *       <p>A set of public static methods working on any {@link AffineTransform}.
  *   <li>
- *       <p>An abstract base class that override all mutable {@link AffineTransform} methods in
- *       order to check for permission before changing the transform's state. If {@link
- *       #checkPermission} is defined to always throw an exception, then {@code XAffineTransform} is
- *       immutable.
+ *       <p>An abstract base class that override all mutable {@link AffineTransform} methods in order to check for
+ *       permission before changing the transform's state. If {@link #checkPermission} is defined to always throw an
+ *       exception, then {@code XAffineTransform} is immutable.
  * </ul>
  *
  * @since 2.3
@@ -49,34 +48,27 @@ public class XAffineTransform extends AffineTransform {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 5215291166450556451L;
 
-    /**
-     * Constructs a new {@code XAffineTransform} that is a copy of the specified {@code
-     * AffineTransform} object.
-     */
+    /** Constructs a new {@code XAffineTransform} that is a copy of the specified {@code AffineTransform} object. */
     public XAffineTransform(final AffineTransform tr) {
         super(tr);
     }
 
     /**
-     * Constructs a new {@code XAffineTransform} from 6 values representing the 6 specifiable
-     * entries of the 3&times;3 transformation matrix. Those values are given unchanged to the
-     * {@link AffineTransform#AffineTransform(double,double,double,double,double,double) super class
-     * constructor}.
+     * Constructs a new {@code XAffineTransform} from 6 values representing the 6 specifiable entries of the 3&times;3
+     * transformation matrix. Those values are given unchanged to the
+     * {@link AffineTransform#AffineTransform(double,double,double,double,double,double) super class constructor}.
      *
      * @since 2.5
      */
-    public XAffineTransform(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public XAffineTransform(double m00, double m10, double m01, double m11, double m02, double m12) {
         super(m00, m10, m01, m11, m02, m12);
     }
 
     /**
-     * Checks if the caller is allowed to change this {@code XAffineTransform} state. If this method
-     * is defined to thrown an exception in all case, then this {@code XAffineTransform} is
-     * immutable.
+     * Checks if the caller is allowed to change this {@code XAffineTransform} state. If this method is defined to
+     * thrown an exception in all case, then this {@code XAffineTransform} is immutable.
      *
-     * <p>The default implementation throws the exception in all case, thus making this instance
-     * immutable.
+     * <p>The default implementation throws the exception in all case, thus making this instance immutable.
      *
      * @throws UnsupportedOperationException if this affine transform is immutable.
      */
@@ -170,8 +162,7 @@ public class XAffineTransform extends AffineTransform {
 
     /** Checks for {@linkplain #checkPermission permission} before setting this transform. */
     @Override
-    public void setTransform(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public void setTransform(double m00, double m10, double m01, double m11, double m02, double m12) {
         checkPermission();
         super.setTransform(m00, m10, m01, m11, m02, m12);
     }
@@ -191,8 +182,7 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Checks whether or not this {@code XAffineTransform} is the identity by using the provided
-     * {@code tolerance}.
+     * Checks whether or not this {@code XAffineTransform} is the identity by using the provided {@code tolerance}.
      *
      * @param tolerance The tolerance to use for this check.
      * @return {@code true} if the transform is identity, {@code false} otherwise.
@@ -203,14 +193,13 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns {@code true} if the specified affine transform is an identity transform up to the
-     * specified tolerance. This method is equivalent to computing the difference between this
-     * matrix and an identity matrix (as created by {@link AffineTransform#AffineTransform() new
-     * AffineTransform()}) and returning {@code true} if and only if all differences are smaller
-     * than or equal to {@code tolerance}.
+     * Returns {@code true} if the specified affine transform is an identity transform up to the specified tolerance.
+     * This method is equivalent to computing the difference between this matrix and an identity matrix (as created by
+     * {@link AffineTransform#AffineTransform() new AffineTransform()}) and returning {@code true} if and only if all
+     * differences are smaller than or equal to {@code tolerance}.
      *
-     * <p>This method is used for working around rounding error in affine transforms resulting from
-     * a computation, as in the example below:
+     * <p>This method is used for working around rounding error in affine transforms resulting from a computation, as in
+     * the example below:
      *
      * <blockquote>
      *
@@ -223,8 +212,8 @@ public class XAffineTransform extends AffineTransform {
      * </blockquote>
      *
      * @param tr The affine transform to be checked for identity.
-     * @param tolerance The tolerance value to use when checking for identity. return {@code true}
-     *     if this tranformation is close enough to the identity, {@code false} otherwise.
+     * @param tolerance The tolerance value to use when checking for identity. return {@code true} if this tranformation
+     *     is close enough to the identity, {@code false} otherwise.
      * @since 2.3.1
      */
     public static boolean isIdentity(final AffineTransform tr, double tolerance) {
@@ -241,24 +230,23 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Transforms the given shape. This method is similar to {@link #createTransformedShape
-     * createTransformedShape} except that:
+     * Transforms the given shape. This method is similar to {@link #createTransformedShape createTransformedShape}
+     * except that:
      *
      * <p>
      *
      * <ul>
-     *   <li>It tries to preserve the shape kind when possible. For example if the given shape is an
-     *       instance of {@link RectangularShape} and the given transform do not involve rotation,
-     *       then the returned shape may be some instance of the same class.
+     *   <li>It tries to preserve the shape kind when possible. For example if the given shape is an instance of
+     *       {@link RectangularShape} and the given transform do not involve rotation, then the returned shape may be
+     *       some instance of the same class.
      *   <li>It tries to recycle the given object if {@code overwrite} is {@code true}.
      * </ul>
      *
      * @param transform Affine transform to use.
      * @param shape The shape to transform.
-     * @param overwrite If {@code true}, this method is allowed to overwrite {@code shape} with the
-     *     transform result. If {@code false}, then {@code shape} is never modified.
-     * @return The direct transform of the given shape. May or may not be the same instance than the
-     *     given shape.
+     * @param overwrite If {@code true}, this method is allowed to overwrite {@code shape} with the transform result. If
+     *     {@code false}, then {@code shape} is never modified.
+     * @return The direct transform of the given shape. May or may not be the same instance than the given shape.
      * @see #createTransformedShape
      * @since 2.5
      */
@@ -317,8 +305,8 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns a rectangle which entirely contains the direct transform of {@code bounds}. This
-     * operation is equivalent to:
+     * Returns a rectangle which entirely contains the direct transform of {@code bounds}. This operation is equivalent
+     * to:
      *
      * <blockquote>
      *
@@ -330,12 +318,12 @@ public class XAffineTransform extends AffineTransform {
      * </blockquote>
      *
      * @param transform Affine transform to use.
-     * @param bounds Rectangle to transform. This rectangle will not be modified except if {@code
-     *     dest} is the same reference.
+     * @param bounds Rectangle to transform. This rectangle will not be modified except if {@code dest} is the same
+     *     reference.
      * @param dest Rectangle in which to place the result. If null, a new rectangle will be created.
      * @return The direct transform of the {@code bounds} rectangle.
-     * @see org.geotools.referencing.CRS#transform(
-     *     org.geotools.api.referencing.operation.MathTransform2D, Rectangle2D, Rectangle2D)
+     * @see org.geotools.referencing.CRS#transform( org.geotools.api.referencing.operation.MathTransform2D, Rectangle2D,
+     *     Rectangle2D)
      */
     public static Rectangle2D transform(
             final AffineTransform transform, final Rectangle2D bounds, final Rectangle2D dest) {
@@ -361,8 +349,8 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns a rectangle which entirely contains the inverse transform of {@code bounds}. This
-     * operation is equivalent to:
+     * Returns a rectangle which entirely contains the inverse transform of {@code bounds}. This operation is equivalent
+     * to:
      *
      * <blockquote>
      *
@@ -405,8 +393,7 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Calculates the inverse affine transform of a point without without applying the translation
-     * components.
+     * Calculates the inverse affine transform of a point without without applying the translation components.
      *
      * @param transform Affine transform to use.
      * @param source Point to transform. This rectangle will not be modified.
@@ -437,12 +424,11 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns an estimation about whatever the specified transform swaps <var>x</var> and
-     * <var>y</var> axis. This method assumes that the specified affine transform is built from
-     * arbitrary translations, scales or rotations, but no shear. It returns {@code +1} if the
-     * (<var>x</var>, <var>y</var>) axis order seems to be preserved, {@code -1} if the transform
-     * seems to swap axis to the (<var>y</var>, <var>x</var>) axis order, or {@code 0} if this
-     * method can not make a decision.
+     * Returns an estimation about whatever the specified transform swaps <var>x</var> and <var>y</var> axis. This
+     * method assumes that the specified affine transform is built from arbitrary translations, scales or rotations, but
+     * no shear. It returns {@code +1} if the (<var>x</var>, <var>y</var>) axis order seems to be preserved, {@code -1}
+     * if the transform seems to swap axis to the (<var>y</var>, <var>x</var>) axis order, or {@code 0} if this method
+     * can not make a decision.
      */
     public static int getSwapXY(final AffineTransform tr) {
         final int flip = getFlip(tr);
@@ -459,15 +445,14 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns an estimation of the rotation angle in radians. This method assumes that the
-     * specified affine transform is built from arbitrary translations, scales or rotations, but no
-     * shear. If a flip has been applied, then this method assumes that the flipped axis is the
-     * <var>y</var> one in <cite>source CRS</cite> space. For a <cite>grid to world CRS</cite>
-     * transform, this is the row number in grid coordinates.
+     * Returns an estimation of the rotation angle in radians. This method assumes that the specified affine transform
+     * is built from arbitrary translations, scales or rotations, but no shear. If a flip has been applied, then this
+     * method assumes that the flipped axis is the <var>y</var> one in <cite>source CRS</cite> space. For a <cite>grid
+     * to world CRS</cite> transform, this is the row number in grid coordinates.
      *
      * @param tr The affine transform to inspect.
-     * @return An estimation of the rotation angle in radians, or {@link Double#NaN NaN} if the
-     *     angle can not be estimated.
+     * @return An estimation of the rotation angle in radians, or {@link Double#NaN NaN} if the angle can not be
+     *     estimated.
      */
     public static double getRotation(final AffineTransform tr) {
         final int flip = getFlip(tr);
@@ -482,15 +467,13 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns {@code -1} if one axis has been flipped, {@code +1} if no axis has been flipped, or 0
-     * if unknown. A flipped axis in an axis with direction reversed (typically the <var>y</var>
-     * axis). This method assumes that the specified affine transform is built from arbitrary
-     * translations, scales or rotations, but no shear. Note that it is not possible to determine
-     * which of the <var>x</var> or <var>y</var> axis has been flipped.
+     * Returns {@code -1} if one axis has been flipped, {@code +1} if no axis has been flipped, or 0 if unknown. A
+     * flipped axis in an axis with direction reversed (typically the <var>y</var> axis). This method assumes that the
+     * specified affine transform is built from arbitrary translations, scales or rotations, but no shear. Note that it
+     * is not possible to determine which of the <var>x</var> or <var>y</var> axis has been flipped.
      *
-     * <p>This method can be used in order to set the sign of a scale according the flipping state.
-     * The example below choose to apply the sign on the <var>y</var> scale, but this is an
-     * arbitrary (while common) choice:
+     * <p>This method can be used in order to set the sign of a scale according the flipping state. The example below
+     * choose to apply the sign on the <var>y</var> scale, but this is an arbitrary (while common) choice:
      *
      * <blockquote>
      *
@@ -506,8 +489,8 @@ public class XAffineTransform extends AffineTransform {
      *
      * </blockquote>
      *
-     * This method is similar to the following code, except that this method distinguish between
-     * "unflipped" and "unknow" states.
+     * This method is similar to the following code, except that this method distinguish between "unflipped" and
+     * "unknow" states.
      *
      * <blockquote>
      *
@@ -528,9 +511,8 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns the magnitude of scale factor <var>x</var> by cancelling the effect of eventual flip
-     * and rotation. This factor is calculated by <IMG
-     * src="{@docRoot}/org/geotools/display/canvas/doc-files/scaleX0.png">.
+     * Returns the magnitude of scale factor <var>x</var> by cancelling the effect of eventual flip and rotation. This
+     * factor is calculated by <IMG src="{@docRoot}/org/geotools/display/canvas/doc-files/scaleX0.png">.
      */
     public static double getScaleX0(final AffineTransform tr) {
         final double scale = tr.getScaleX();
@@ -541,9 +523,8 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns the magnitude of scale factor <var>y</var> by cancelling the effect of eventual flip
-     * and rotation. This factor is calculated by <IMG
-     * src="{@docRoot}/org/geotools/display/canvas/doc-files/scaleY0.png">.
+     * Returns the magnitude of scale factor <var>y</var> by cancelling the effect of eventual flip and rotation. This
+     * factor is calculated by <IMG src="{@docRoot}/org/geotools/display/canvas/doc-files/scaleY0.png">.
      */
     public static double getScaleY0(final AffineTransform tr) {
         final double scale = tr.getScaleY();
@@ -554,40 +535,37 @@ public class XAffineTransform extends AffineTransform {
     }
 
     /**
-     * Returns a global scale factor for the specified affine transform. This scale factor will
-     * combines {@link #getScaleX0} and {@link #getScaleY0}. The way to compute such a "global"
-     * scale is somewhat arbitrary and may change in a future version.
+     * Returns a global scale factor for the specified affine transform. This scale factor will combines
+     * {@link #getScaleX0} and {@link #getScaleY0}. The way to compute such a "global" scale is somewhat arbitrary and
+     * may change in a future version.
      */
     public static double getScale(final AffineTransform tr) {
         return 0.5 * (getScaleX0(tr) + getScaleY0(tr));
     }
 
     /**
-     * Returns an affine transform representing a zoom carried out around a central point
-     * (<var>x</var>, <var>y</var>). The transforms will leave the specified (<var>x</var>,
-     * <var>y</var>) coordinate unchanged.
+     * Returns an affine transform representing a zoom carried out around a central point (<var>x</var>, <var>y</var>).
+     * The transforms will leave the specified (<var>x</var>, <var>y</var>) coordinate unchanged.
      *
      * @param sx Scale along <var>x</var> axis.
      * @param sy Scale along <var>y</var> axis.
      * @param x <var>x</var> coordinates of the central point.
      * @param y <var>y</var> coordinates of the central point.
-     * @return Affine transform of a zoom which leaves the (<var>x</var>,<var>y</var>) coordinate
-     *     unchanged.
+     * @return Affine transform of a zoom which leaves the (<var>x</var>,<var>y</var>) coordinate unchanged.
      */
-    public static AffineTransform getScaleInstance(
-            final double sx, final double sy, final double x, final double y) {
+    public static AffineTransform getScaleInstance(final double sx, final double sy, final double x, final double y) {
         return new AffineTransform(sx, 0, 0, sy, (1 - sx) * x, (1 - sy) * y);
     }
 
     /**
-     * Checks whether the matrix coefficients are close to whole numbers. If this is the case, these
-     * coefficients will be rounded up to the nearest whole numbers. This rounding up is useful, for
-     * example, for speeding up image displays. Above all, it is efficient when we know that a
-     * matrix has a chance of being close to the similarity matrix.
+     * Checks whether the matrix coefficients are close to whole numbers. If this is the case, these coefficients will
+     * be rounded up to the nearest whole numbers. This rounding up is useful, for example, for speeding up image
+     * displays. Above all, it is efficient when we know that a matrix has a chance of being close to the similarity
+     * matrix.
      *
      * @param tr The matrix to round. Rounding will be applied in place.
-     * @param tolerance The maximal departure from integers in order to allow rounding. It is
-     *     typically a small number like {@code 1E-6}.
+     * @param tolerance The maximal departure from integers in order to allow rounding. It is typically a small number
+     *     like {@code 1E-6}.
      * @since 2.3.1
      */
     public static void round(final AffineTransform tr, final double tolerance) {

@@ -23,8 +23,8 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 
 /**
- * Represents the input raster element for a mosaic operation, source {@link RenderedImage}, {@link
- * ROI} and alpha channel.
+ * Represents the input raster element for a mosaic operation, source {@link RenderedImage}, {@link ROI} and alpha
+ * channel.
  *
  * <p>This class is just a simple bean that holds a single element for the mosaic.
  *
@@ -40,8 +40,7 @@ public class MosaicElement {
 
     PAMDataset pamDataset;
 
-    public MosaicElement(
-            PlanarImage alphaChannel, ROI roi, RenderedImage source, PAMDataset pamDataset) {
+    public MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source, PAMDataset pamDataset) {
         this.alphaChannel = alphaChannel;
         this.roi = roi;
         this.source = source;

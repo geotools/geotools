@@ -22,8 +22,8 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
- * Provides a base class for Responses from an OWS. Checks the incoming content for a
- * ServiceException and parses it if it encounters one.
+ * Provides a base class for Responses from an OWS. Checks the incoming content for a ServiceException and parses it if
+ * it encounters one.
  *
  * @author rgould
  */
@@ -42,7 +42,8 @@ public abstract class Response {
             // be using a deflate input stream, which holds onto native resources
             httpResponse.getResponseStream().close();
             httpResponse.dispose();
-            throw new NullPointerException("Content type is required for " + getClass().getName());
+            throw new NullPointerException(
+                    "Content type is required for " + getClass().getName());
         }
         this.httpResponse = httpResponse;
         /*
@@ -66,12 +67,11 @@ public abstract class Response {
     }
 
     /**
-     * Returns the InputStream that contains the response from the server. The contents of this
-     * stream vary according to the type of request that was made, and whether it was successful or
-     * not.
+     * Returns the InputStream that contains the response from the server. The contents of this stream vary according to
+     * the type of request that was made, and whether it was successful or not.
      *
-     * <p><B>NOTE:</B> Note that clients using this code are responsible for closing the InputStream
-     * when they are finished with it.
+     * <p><B>NOTE:</B> Note that clients using this code are responsible for closing the InputStream when they are
+     * finished with it.
      *
      * @return the input stream containing the response from the server
      */

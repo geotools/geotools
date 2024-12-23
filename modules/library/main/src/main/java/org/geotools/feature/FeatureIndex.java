@@ -19,14 +19,14 @@ package org.geotools.feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
- * An Index is built up around a FeatureCollection, using one of the attributes in the
- * SimpleFeatureCollection as a comparable reference.
+ * An Index is built up around a FeatureCollection, using one of the attributes in the SimpleFeatureCollection as a
+ * comparable reference.
  *
- * <p>An object in a column can be any object, but must either be a java base-type Object (Integer,
- * String, Character, etc.) or implement Comparable.
+ * <p>An object in a column can be any object, but must either be a java base-type Object (Integer, String, Character,
+ * etc.) or implement Comparable.
  *
- * <p>An Index built on such a column will sort its array of object references using
- * FeatureComparator. Implement this to perform more complex Index building.
+ * <p>An Index built on such a column will sort its array of object references using FeatureComparator. Implement this
+ * to perform more complex Index building.
  *
  * @author Ray Gallagher
  * @author Ian Schneider

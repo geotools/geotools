@@ -72,8 +72,8 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Construct an MemoryDataStore around an empty collection of the provided SimpleFeatureType
      *
-     * @param featureType The initial feature type for the memory data store, an empty feature
-     *     collection of this type will be made available
+     * @param featureType The initial feature type for the memory data store, an empty feature collection of this type
+     *     will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
         try {
@@ -96,8 +96,7 @@ public class MemoryDataStore extends ContentDataStore {
         addFeatures(array);
     }
 
-    public MemoryDataStore(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public MemoryDataStore(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         addFeatures(reader);
     }
 
@@ -112,8 +111,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If problems are encountered while adding
      * @throws DataSourceException See IOException
      */
-    public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         try {
             SimpleFeature feature = reader.next();
 
@@ -213,8 +211,7 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Adds a single Feature to the correct typeName entry.
      *
-     * <p>This is an internal operation used for setting up MemoryDataStore - please use
-     * FeatureWriter for general use.
+     * <p>This is an internal operation used for setting up MemoryDataStore - please use FeatureWriter for general use.
      *
      * <p>This method is willing to create new FeatureTypes for MemoryDataStore.
      *
@@ -242,8 +239,8 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Access MemoryState for typeName.
      *
-     * <p>Technically this is accessing the MemoryState for {@link Transaction#AUTO_COMMIT}, which
-     * is the definitive storage for the feature content.
+     * <p>Technically this is accessing the MemoryState for {@link Transaction#AUTO_COMMIT}, which is the definitive
+     * storage for the feature content.
      *
      * @return MemoryState storing feature (by FeatureID)
      * @throws IOException If typeName cannot be found
@@ -276,12 +273,7 @@ public class MemoryDataStore extends ContentDataStore {
                     return entry;
                 } else {
                     throw new IOException(
-                            "Entry "
-                                    + typeName
-                                    + " schema "
-                                    + entry.schema
-                                    + " incompatible with provided "
-                                    + schema);
+                            "Entry " + typeName + " schema " + entry.schema + " incompatible with provided " + schema);
                 }
             } else {
                 MemoryEntry entry = new MemoryEntry(this, schema);
@@ -316,8 +308,8 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Adds support for a new featureType to MemoryDataStore.
      *
-     * <p>FeatureTypes are stored by typeName, an IOException will be thrown if the requested
-     * typeName is already in use.
+     * <p>FeatureTypes are stored by typeName, an IOException will be thrown if the requested typeName is already in
+     * use.
      *
      * @param featureType SimpleFeatureType to be added
      * @throws IOException If featureType already exists

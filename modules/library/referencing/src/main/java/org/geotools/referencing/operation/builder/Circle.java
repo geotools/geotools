@@ -107,10 +107,9 @@ class Circle {
     }
 
     /**
-     * The contains test whether the coordinate p is within the circle. Triangle contains coordinate
-     * if the distance between center and p is smaller then the radius that is reduced by tolerance.
-     * This is used for triangulation when there are four points on one circle to avoid neverending
-     * loop.
+     * The contains test whether the coordinate p is within the circle. Triangle contains coordinate if the distance
+     * between center and p is smaller then the radius that is reduced by tolerance. This is used for triangulation when
+     * there are four points on one circle to avoid neverending loop.
      *
      * @param p - the point to be tested
      * @return True if the circle contais p, False if not.

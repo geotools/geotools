@@ -19,8 +19,7 @@ package org.geotools.api.style;
 import java.net.URL;
 
 /**
- * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by
- * parser implementers.
+ * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by parser implementers.
  */
 public interface ResourceLocator {
 

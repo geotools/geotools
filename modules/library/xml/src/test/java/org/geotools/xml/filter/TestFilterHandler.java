@@ -26,9 +26,9 @@ import org.xml.sax.SAXException;
 /**
  * Uses SAX to extact a GetFeature query from and incoming GetFeature request XML stream.
  *
- * <p>Note that this Handler extension ignores Filters completely and must be chained as a parent to
- * the PredicateFilter method in order to recognize them. If it is not chained, it will still
- * generate valid queries, but with no filtering whatsoever.
+ * <p>Note that this Handler extension ignores Filters completely and must be chained as a parent to the PredicateFilter
+ * method in order to recognize them. If it is not chained, it will still generate valid queries, but with no filtering
+ * whatsoever.
  *
  * @author Rob Hranac, Vision for New York
  * @version 0.9 beta, 11/01/01
@@ -36,12 +36,11 @@ import org.xml.sax.SAXException;
 public class TestFilterHandler implements ContentHandler, FilterHandler {
 
     /** Standard logging class */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestFilterHandler.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TestFilterHandler.class);
 
     /**
-     * ****************************************************** Local tracking methods to deal with
-     * incoming XML stream ******************************************************
+     * ****************************************************** Local tracking methods to deal with incoming XML stream
+     * ******************************************************
      */
 
     /** Tracks tag we are currently inside */
@@ -50,9 +49,8 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
     public TestFilterHandler() {}
 
     /**
-     * ****************************************** Start of SAX Content Handler Methods most of these
-     * are unused at the moment no namespace awareness, yet
-     * ******************************************
+     * ****************************************** Start of SAX Content Handler Methods most of these are unused at the
+     * moment no namespace awareness, yet ******************************************
      */
 
     /** Notes the document locator. */
@@ -103,8 +101,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param rawName Raw name of element.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String rawName)
-            throws SAXException {}
+    public void endElement(String namespaceURI, String localName, String rawName) throws SAXException {}
 
     /**
      * Checks if inside parsed element and adds its contents to the appropriate variable.

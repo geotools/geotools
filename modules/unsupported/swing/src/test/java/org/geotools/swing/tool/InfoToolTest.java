@@ -60,16 +60,15 @@ public class InfoToolTest extends CursorToolTestBase {
     public void setup() {
         // We override onReporterUpdated to give tests access to
         // the reporter text
-        tool =
-                new InfoTool() {
-                    @Override
-                    public void onReporterUpdated() {
-                        reporterText = getTextReporterConnection().getText();
-                        if (latch != null) {
-                            latch.countDown();
-                        }
-                    }
-                };
+        tool = new InfoTool() {
+            @Override
+            public void onReporterUpdated() {
+                reporterText = getTextReporterConnection().getText();
+                if (latch != null) {
+                    latch.countDown();
+                }
+            }
+        };
     }
 
     @Test
@@ -96,8 +95,7 @@ public class InfoToolTest extends CursorToolTestBase {
         Point2D p2d = mapPane.getWorldToScreenTransform().transform(queryPos, null);
 
         Point windowOrigin = mapPaneFixture.target().getLocationOnScreen();
-        Point screenQueryPos =
-                new Point(windowOrigin.x + (int) p2d.getX(), windowOrigin.y + (int) p2d.getY());
+        Point screenQueryPos = new Point(windowOrigin.x + (int) p2d.getX(), windowOrigin.y + (int) p2d.getY());
 
         mapPane.setCursorTool(tool);
         latch = new CountDownLatch(1);

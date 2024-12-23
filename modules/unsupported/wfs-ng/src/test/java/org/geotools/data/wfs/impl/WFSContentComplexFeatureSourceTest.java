@@ -42,9 +42,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * WFS returning complex feature source
  *
- * <p>The responses from calling GetConfiguration and GetFeatures is mocked, but some schemas
- * defined within that response are downloaded using ordinary download. Therefore we're using a
- * cached version of those schemas.
+ * <p>The responses from calling GetConfiguration and GetFeatures is mocked, but some schemas defined within that
+ * response are downloaded using ordinary download. Therefore we're using a cached version of those schemas.
  *
  * @author Roar Brænden
  */
@@ -67,8 +66,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
-    private static final Filter FILTER =
-            ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
+    private static final Filter FILTER = ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
 
     @Test
     public void testGetFeaturesWithoutArgument() throws Exception {
@@ -123,7 +121,8 @@ public class WFSContentComplexFeatureSourceTest {
         }
 
         Filter wrongFilter = ff.equal(ff.property("app:stedsnummer", ns), ff.literal(2));
-        try (FeatureIterator<Feature> features = collection.subCollection(wrongFilter).features()) {
+        try (FeatureIterator<Feature> features =
+                collection.subCollection(wrongFilter).features()) {
             Assert.assertFalse(features.hasNext());
         }
 
@@ -160,8 +159,7 @@ public class WFSContentComplexFeatureSourceTest {
         ReferencedEnvelope envelope = dataAccess.getFeatureSource(STED_NAME).getBounds();
         Assert.assertNotNull(envelope);
         ReferencedEnvelope actual =
-                new ReferencedEnvelope(
-                        58.111523, 70.671561, 6.034809, 30.528068, CRS.decode(DEFAULT_SRS));
+                new ReferencedEnvelope(58.111523, 70.671561, 6.034809, 30.528068, CRS.decode(DEFAULT_SRS));
         assertEnvelope(actual, envelope);
 
         CoordinateReferenceSystem utm33 = CRS.decode("EPSG:32633");
@@ -174,8 +172,7 @@ public class WFSContentComplexFeatureSourceTest {
         assertEnvelope(actualReprojected, envelopeReprojected);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Query filteredQuery =
-                new Query(STED, ff.bbox("posisjon", 60.0, 20.0, 61.0, 21.0, DEFAULT_SRS));
+        Query filteredQuery = new Query(STED, ff.bbox("posisjon", 60.0, 20.0, 61.0, 21.0, DEFAULT_SRS));
         ReferencedEnvelope envelopeFilter =
                 dataAccess.getFeatureSource(STED_NAME).getBounds(filteredQuery);
         Assert.assertNull("We're assuming a null when using a filter.", envelopeFilter);
@@ -183,9 +180,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     private void assertEnvelope(ReferencedEnvelope actual, ReferencedEnvelope test) {
         Assert.assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        actual.getCoordinateReferenceSystem(),
-                        test.getCoordinateReferenceSystem()));
+                CRS.equalsIgnoreMetadata(actual.getCoordinateReferenceSystem(), test.getCoordinateReferenceSystem()));
         Assert.assertEquals(actual.getMinX(), test.getMinX(), 0.1);
         Assert.assertEquals(actual.getMaxX(), test.getMaxX(), 0.1);
         Assert.assertEquals(actual.getMinY(), test.getMinY(), 0.1);
@@ -197,11 +192,9 @@ public class WFSContentComplexFeatureSourceTest {
 
         TestHttpClient mockHttp = new TestHttpClient();
         mockHttp.expectGet(
-                new URL(
-                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
-                        "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"), "text/xml"));
 
         TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
         if (usingGet) {
@@ -212,8 +205,7 @@ public class WFSContentComplexFeatureSourceTest {
                 new URL(
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
-                        "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"), "text/xml"));
 
         GetFeatureRequest request = client.createGetFeatureRequest();
         request.setTypeName(REMOTE_STED_NAME);
@@ -221,15 +213,15 @@ public class WFSContentComplexFeatureSourceTest {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         request.performPostOutput(out);
-        String postContent = out.toString(client.getConfig().getDefaultEncoding().name());
+        String postContent =
+                out.toString(client.getConfig().getDefaultEncoding().name());
 
         mockHttp.expectPost(
                 new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn"),
                 postContent,
                 "text/xml",
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
-                        "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"), "text/xml"));
 
         return client;
     }

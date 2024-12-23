@@ -100,8 +100,8 @@ public interface FilterType {
     public static final short COMPARE_NOT_EQUALS = 23;
 
     /**
-     * Defines a between filter, which is implemented by FilterBetween. Note that this filter is
-     * defined as a math filter.
+     * Defines a between filter, which is implemented by FilterBetween. Note that this filter is defined as a math
+     * filter.
      */
     public static final short BETWEEN = 19;
 

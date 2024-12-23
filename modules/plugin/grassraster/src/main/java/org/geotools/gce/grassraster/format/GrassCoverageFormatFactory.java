@@ -24,16 +24,15 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
- * The GrassCoverageFormatFactory will be discovered by the GridFormatFinder. Use the standard
- * Geotools method of discovering a factory in order to create a format.
+ * The GrassCoverageFormatFactory will be discovered by the GridFormatFinder. Use the standard Geotools method of
+ * discovering a factory in order to create a format.
  *
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GrassCoverageFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GrassCoverageFormatFactory.class);
 
     /**
      * Creates a new instance of GrassCoverageFormat

@@ -43,13 +43,12 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
 
     private static final Logger logger = Logging.getLogger(JenksNaturalBreaksFunction.class);
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Jenks",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Jenks",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public JenksNaturalBreaksFunction() {
         super(NAME);
@@ -94,20 +93,18 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         Collections.sort(data);
 
         if (data.size() == 1 || data.get(0).equals(data.get(data.size() - 1))) {
-            return new RangedClassifier(
-                    new Comparable[] {data.get(0)}, new Comparable[] {data.get(0)});
+            return new RangedClassifier(new Comparable[] {data.get(0)}, new Comparable[] {data.get(0)});
         }
 
         final int k = getClasses();
         final int m = data.size();
         if (k == m) {
-            logger.info(
-                    "Number of classes ("
-                            + k
-                            + ") is equal to number of data points ("
-                            + m
-                            + ") "
-                            + "unique classification returned");
+            logger.info("Number of classes ("
+                    + k
+                    + ") is equal to number of data points ("
+                    + m
+                    + ") "
+                    + "unique classification returned");
             Comparable[] localMin = new Comparable[k];
             Comparable[] localMax = new Comparable[k];
 
@@ -233,7 +230,8 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         if (max == min) {
             result = data.stream().filter(d -> d == max).count();
         } else {
-            if (currentIdx == 0) result = data.stream().filter(d -> d >= min && d <= max).count();
+            if (currentIdx == 0)
+                result = data.stream().filter(d -> d >= min && d <= max).count();
             else result = data.stream().filter(d -> d > min && d <= max).count();
         }
         return result;

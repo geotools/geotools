@@ -71,8 +71,7 @@ public abstract class JDBCIAUOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Override this method if the database for some reason cannot recognize and reuse a SRID for
-     * the same CRS
+     * Override this method if the database for some reason cannot recognize and reuse a SRID for the same CRS
      *
      * @return
      */
@@ -81,13 +80,10 @@ public abstract class JDBCIAUOnlineTest extends JDBCTestSupport {
     }
 
     /** Allow sub-classes to reuse and perfom more checks */
-    protected SimpleFeatureType createGeology(String typename)
-            throws IOException, FactoryException {
+    protected SimpleFeatureType createGeology(String typename) throws IOException, FactoryException {
         dataStore.createSchema(buildGeologyType(typename));
         SimpleFeatureType marsGeology = dataStore.getSchema(typename);
-        assertEquals(
-                "IAU:49901",
-                CRS.lookupIdentifier(marsGeology.getCoordinateReferenceSystem(), true));
+        assertEquals("IAU:49901", CRS.lookupIdentifier(marsGeology.getCoordinateReferenceSystem(), true));
 
         return marsGeology;
     }

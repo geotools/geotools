@@ -48,8 +48,7 @@ public class ConvertToDomHandler extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attrs)
-            throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
         // start a new namespace context and declare prefixes from this node
         nsContext.pushContext();
 

@@ -38,9 +38,9 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 
 /**
- * A data store for VPF files. Any file can be retrieved from here. If you want joins (for example
- * features with their geometries), you will have to look elsewhere. Hopefully some one will take
- * advantage of this class to provide the full functionality.
+ * A data store for VPF files. Any file can be retrieved from here. If you want joins (for example features with their
+ * geometries), you will have to look elsewhere. Hopefully some one will take advantage of this class to provide the
+ * full functionality.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$
@@ -133,8 +133,7 @@ public class VPFFileStore extends ContentDataStore {
                 VPFFile file = findFile(pathName);
                 result = file.getFeatureType();
             } catch (SchemaException exc) {
-                throw new IOException(
-                        "Schema error in path: " + pathName + "\n" + exc.getMessage());
+                throw new IOException("Schema error in path: " + pathName + "\n" + exc.getMessage());
             }
 
             files.put(pathName, result);
@@ -168,9 +167,9 @@ public class VPFFileStore extends ContentDataStore {
     }
 
     /**
-     * This does basically a case independent file search through the pathName to try to find the
-     * file. This is necessary due to many problems seen with VPF data disks where the file names
-     * specified in the VPF files do not match the case of the files on disk.
+     * This does basically a case independent file search through the pathName to try to find the file. This is
+     * necessary due to many problems seen with VPF data disks where the file names specified in the VPF files do not
+     * match the case of the files on disk.
      */
     private VPFFile findFile(String pathName) throws IOException, SchemaException {
 

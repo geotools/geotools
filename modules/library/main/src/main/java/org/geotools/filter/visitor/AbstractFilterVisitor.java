@@ -69,14 +69,13 @@ import org.geotools.api.filter.temporal.TOverlaps;
 /**
  * Base implementation of the FilterVisitor used for inorder traversal of expressions.
  *
- * <p>This class implements the full FilterVisitor interface and will visit every member of a Filter
- * object. This class performs no actions and is not intended to be used directly, instead extend it
- * and overide the methods for the expression types you are interested in. Remember to call the
- * super method if you want to ensure that the entire filter tree is still visited.
+ * <p>This class implements the full FilterVisitor interface and will visit every member of a Filter object. This class
+ * performs no actions and is not intended to be used directly, instead extend it and overide the methods for the
+ * expression types you are interested in. Remember to call the super method if you want to ensure that the entire
+ * filter tree is still visited.
  *
- * <p>You may still need to implement FilterVisitor directly if the visit order set out in this
- * class does not meet your needs. This class visits in sequence i.e. Left - Middle - Right for all
- * expressions which have sub-expressions.
+ * <p>You may still need to implement FilterVisitor directly if the visit order set out in this class does not meet your
+ * needs. This class visits in sequence i.e. Left - Middle - Right for all expressions which have sub-expressions.
  *
  * @author James Macgill, Penn State
  * @author Justin Deoliveira, The Open Planning Project
@@ -119,8 +118,8 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /**
-     * Visits filter.getLowerBoundary(),filter.getExpression(),filter.getUpperBoundary() if an
-     * expression visitor was set.
+     * Visits filter.getLowerBoundary(),filter.getExpression(),filter.getUpperBoundary() if an expression visitor was
+     * set.
      */
     @Override
     public Object visit(PropertyIsBetween filter, Object data) {
@@ -136,9 +135,7 @@ public class AbstractFilterVisitor implements FilterVisitor {
         return filter;
     }
 
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     protected Object visit(BinaryComparisonOperator filter, Object data) {
         if (expressionVisitor != null) {
             if (filter.getExpression1() != null) {
@@ -151,44 +148,32 @@ public class AbstractFilterVisitor implements FilterVisitor {
         return filter;
     }
 
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsNotEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsLessThan filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsGreaterThan filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
-     */
+    /** Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set. */
     @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
@@ -200,9 +185,7 @@ public class AbstractFilterVisitor implements FilterVisitor {
         return visit((BinarySpatialOperator) filter, data);
     }
 
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     protected Object visit(BinarySpatialOperator filter, Object data) {
         if (expressionVisitor != null) {
             if (filter.getExpression1() != null) {
@@ -215,72 +198,52 @@ public class AbstractFilterVisitor implements FilterVisitor {
         return filter;
     }
 
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Beyond filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Contains filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Crosses filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Disjoint filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(DWithin filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Equals filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Intersects filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Overlaps filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Touches filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
-    /**
-     * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
-     */
+    /** Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set. */
     @Override
     public Object visit(Within filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);

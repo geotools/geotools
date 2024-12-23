@@ -33,8 +33,7 @@ import org.junit.Test;
  * <ul>
  *   <li>Deprecated syntax no longer supported (eq/neq/lte/gte/gt/lt/!)
  *   <li>Brackets are used for arrays (currently unsupported) should not be allowed for expressions
- *   <li>Date literals use a function like expression in CQL2, rather than an un-quoted literal as
- *       in CQL and ECQL
+ *   <li>Date literals use a function like expression in CQL2, rather than an un-quoted literal as in CQL and ECQL
  * </ul>
  */
 public class CQL2ComparisonPredicateTest extends ECQLComparisonPredicateTest {
@@ -62,8 +61,7 @@ public class CQL2ComparisonPredicateTest extends ECQLComparisonPredicateTest {
     }
 
     /**
-     * Brackets are used for array literals now, trying to use them as alternative to parenthesis
-     * should fail.
+     * Brackets are used for array literals now, trying to use them as alternative to parenthesis should fail.
      *
      * @throws Exception
      */
@@ -87,56 +85,48 @@ public class CQL2ComparisonPredicateTest extends ECQLComparisonPredicateTest {
     @Test
     public void dateLiteralTimeZoneUTC() throws Exception {
         Filter f = parseFilter("X = DATE('2012-02-01Z')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
     }
 
     @Override
     @Test
     public void dateLiteralTimeZonePlusMinus() throws Exception {
         Filter f = parseFilter("X = DATE('2012-02-01-0800')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
 
         f = parseFilter("X = DATE('2012-02-01+08:00')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
     @Override
     @Test
     public void dateTimeLiteral() throws Exception {
         Filter f = parseFilter("X = TIMESTAMP('2012-02-01T12:10:13Z')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("UTC")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("UTC")));
     }
 
     @Override
     @Test
     public void dateTimeLiteralMilliseconds() throws Exception {
         Filter f = parseFilter("X = TIMESTAMP('2012-02-01T12:10:13.123Z')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("UTC")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("UTC")));
     }
 
     @Override
     @Test
     public void dateTimeLiteralTimeZoneUTC() throws Exception {
         Filter f = parseFilter("X = TIMESTAMP('2012-02-01T12:10:13.123Z')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
     }
 
     @Override
     @Test
     public void dateTimeLiteralTimeZonePlusMinus() throws Exception {
         Filter f = parseFilter("X = TIMESTAMP('2012-02-01T12:10:13.123-0800')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
 
         f = parseFilter("X = TIMESTAMP('2012-02-01T12:10:13+08:00')");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
     private void ensureFail(String filter) {

@@ -156,8 +156,7 @@ public class DataAccessFinderTest {
 
     @Test
     public void testGetAvailableDataStores() {
-        Iterator<DataStoreFactorySpi> availableDataStores =
-                DataStoreFinder.getAvailableDataStores();
+        Iterator<DataStoreFactorySpi> availableDataStores = DataStoreFinder.getAvailableDataStores();
 
         Assert.assertNotNull(availableDataStores);
         Assert.assertTrue(availableDataStores.hasNext());
@@ -169,10 +168,7 @@ public class DataAccessFinderTest {
         Assert.assertTrue(dsf instanceof MockDataStoreFactory);
     }
 
-    /**
-     * Does DataAccessFinder.getAvailableDataStores() return both the available DataStore and
-     * DataAccess factories?
-     */
+    /** Does DataAccessFinder.getAvailableDataStores() return both the available DataStore and DataAccess factories? */
     @Test
     public void testGetAvailableDataAccess() {
         Iterator<DataAccessFactory> availableDataAccess = DataAccessFinder.getAvailableDataStores();
@@ -209,8 +205,7 @@ public class DataAccessFinderTest {
         }
 
         /**
-         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
-         * this class as value
+         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains this class as value
          */
         @Override
         public boolean canProcess(Map<String, ?> params) {
@@ -219,8 +214,7 @@ public class DataAccessFinderTest {
 
         /** @return {@link DataAccessFinderTest#MOCK_DATAACCESS} */
         @Override
-        public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
-                throws IOException {
+        public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params) throws IOException {
             return MOCK_DATAACCESS;
         }
 
@@ -259,8 +253,7 @@ public class DataAccessFinderTest {
         }
 
         /**
-         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
-         * this class as value
+         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains this class as value
          */
         @Override
         public boolean canProcess(Map<String, ?> params) {
@@ -315,131 +308,124 @@ public class DataAccessFinderTest {
     }
 
     /** Fake DataAccess returned by {@link MockDataAccessFactory} */
-    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS =
-            new DataAccess<FeatureType, Feature>() {
+    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS = new DataAccess<FeatureType, Feature>() {
 
-                @Override
-                public void createSchema(FeatureType featureType) throws IOException {}
+        @Override
+        public void createSchema(FeatureType featureType) throws IOException {}
 
-                @Override
-                public void dispose() {}
+        @Override
+        public void dispose() {}
 
-                @Override
-                public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName)
-                        throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
+            return null;
+        }
 
-                @Override
-                public ServiceInfo getInfo() {
-                    return null;
-                }
+        @Override
+        public ServiceInfo getInfo() {
+            return null;
+        }
 
-                @Override
-                public List<Name> getNames() throws IOException {
-                    return null;
-                }
+        @Override
+        public List<Name> getNames() throws IOException {
+            return null;
+        }
 
-                @Override
-                public FeatureType getSchema(Name name) throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureType getSchema(Name name) throws IOException {
+            return null;
+        }
 
-                @Override
-                public void updateSchema(Name typeName, FeatureType featureType)
-                        throws IOException {}
+        @Override
+        public void updateSchema(Name typeName, FeatureType featureType) throws IOException {}
 
-                @Override
-                public void removeSchema(Name typeName) throws IOException {}
-            };
+        @Override
+        public void removeSchema(Name typeName) throws IOException {}
+    };
 
     /** Fake datastore returned by {@link MockDataStoreFactory} */
-    private static final DataStore MOCK_DATASTORE =
-            new DataStore() {
+    private static final DataStore MOCK_DATASTORE = new DataStore() {
 
-                @Override
-                public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-                        Query query, Transaction transaction) throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+                throws IOException {
+            return null;
+        }
 
-                @Override
-                public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
+            return null;
+        }
 
-                @Override
-                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-                        String typeName, Filter filter, Transaction transaction)
-                        throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+                String typeName, Filter filter, Transaction transaction) throws IOException {
+            return null;
+        }
 
-                @Override
-                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-                        String typeName, Transaction transaction) throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+                String typeName, Transaction transaction) throws IOException {
+            return null;
+        }
 
-                @Override
-                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-                        String typeName, Transaction transaction) throws IOException {
-                    return null;
-                }
+        @Override
+        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+                String typeName, Transaction transaction) throws IOException {
+            return null;
+        }
 
-                @Override
-                public LockingManager getLockingManager() {
-                    return null;
-                }
+        @Override
+        public LockingManager getLockingManager() {
+            return null;
+        }
 
-                @Override
-                public SimpleFeatureType getSchema(String typeName) throws IOException {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureType getSchema(String typeName) throws IOException {
+            return null;
+        }
 
-                @Override
-                public String[] getTypeNames() throws IOException {
-                    return null;
-                }
+        @Override
+        public String[] getTypeNames() throws IOException {
+            return null;
+        }
 
-                @Override
-                public void updateSchema(String typeName, SimpleFeatureType featureType)
-                        throws IOException {}
+        @Override
+        public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {}
 
-                @Override
-                public void removeSchema(String typeName) throws IOException {}
+        @Override
+        public void removeSchema(String typeName) throws IOException {}
 
-                @Override
-                public void createSchema(SimpleFeatureType featureType) throws IOException {}
+        @Override
+        public void createSchema(SimpleFeatureType featureType) throws IOException {}
 
-                @Override
-                public void dispose() {}
+        @Override
+        public void dispose() {}
 
-                @Override
-                public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
+            return null;
+        }
 
-                @Override
-                public ServiceInfo getInfo() {
-                    return null;
-                }
+        @Override
+        public ServiceInfo getInfo() {
+            return null;
+        }
 
-                @Override
-                public List<Name> getNames() throws IOException {
-                    return null;
-                }
+        @Override
+        public List<Name> getNames() throws IOException {
+            return null;
+        }
 
-                @Override
-                public SimpleFeatureType getSchema(Name name) throws IOException {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureType getSchema(Name name) throws IOException {
+            return null;
+        }
 
-                @Override
-                public void updateSchema(Name typeName, SimpleFeatureType featureType)
-                        throws IOException {}
+        @Override
+        public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {}
 
-                @Override
-                public void removeSchema(Name typeName) throws IOException {}
-            };
+        @Override
+        public void removeSchema(Name typeName) throws IOException {}
+    };
 }

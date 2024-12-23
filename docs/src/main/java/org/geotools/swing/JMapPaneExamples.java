@@ -20,29 +20,28 @@ public class JMapPaneExamples {
 
     void listenForClicks(JMapPane myMapPane) {
         // mouselistener start
-        myMapPane.addMouseListener(
-                new MapMouseAdapter() {
+        myMapPane.addMouseListener(new MapMouseAdapter() {
 
-                    @Override
-                    public void onMouseClicked(MapMouseEvent ev) {
-                        // print the screen and world position of the mouse
-                        System.out.println("mouse click at");
-                        System.out.printf("  screen: x=%d y=%d \n", ev.getX(), ev.getY());
+            @Override
+            public void onMouseClicked(MapMouseEvent ev) {
+                // print the screen and world position of the mouse
+                System.out.println("mouse click at");
+                System.out.printf("  screen: x=%d y=%d \n", ev.getX(), ev.getY());
 
-                        Position2D pos = ev.getWorldPos();
-                        System.out.printf("  world: x=%.2f y=%.2f \n", pos.x, pos.y);
-                    }
+                Position2D pos = ev.getWorldPos();
+                System.out.printf("  world: x=%.2f y=%.2f \n", pos.x, pos.y);
+            }
 
-                    @Override
-                    public void onMouseEntered(MapMouseEvent ev) {
-                        System.out.println("mouse entered map pane");
-                    }
+            @Override
+            public void onMouseEntered(MapMouseEvent ev) {
+                System.out.println("mouse entered map pane");
+            }
 
-                    @Override
-                    public void onMouseExited(MapMouseEvent ev) {
-                        System.out.println("mouse left map pane");
-                    }
-                });
+            @Override
+            public void onMouseExited(MapMouseEvent ev) {
+                System.out.println("mouse left map pane");
+            }
+        });
         // mouselistener end
     }
 }

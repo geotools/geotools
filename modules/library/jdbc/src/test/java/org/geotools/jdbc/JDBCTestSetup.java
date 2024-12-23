@@ -46,10 +46,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
-@SuppressWarnings({
-    "PMD.JUnit4TestShouldUseAfterAnnotation",
-    "PMD.JUnit4TestShouldUseBeforeAnnotation"
-})
+@SuppressWarnings({"PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public abstract class JDBCTestSetup {
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCTestSetup.class);
     protected Properties fixture = null;
@@ -70,11 +67,10 @@ public abstract class JDBCTestSetup {
     }
 
     /**
-     * If this test setup is used as a delegate, the return value controls whether the delegate's
-     * data source or the delegator's data source.
+     * If this test setup is used as a delegate, the return value controls whether the delegate's data source or the
+     * delegator's data source.
      *
-     * @return True if the delegate's data source should be used, false if the delegator's data
-     *     source should be used.
+     * @return True if the delegate's data source should be used, false if the delegator's data source should be used.
      */
     protected boolean useDelegateDataSource() {
         return false;
@@ -96,9 +92,8 @@ public abstract class JDBCTestSetup {
     protected void setUpDataStore(JDBCDataStore dataStore) {}
 
     public void tearDown() throws Exception {
-        final String leakMessage =
-                "Expected no active connection, either there is a connection leak "
-                        + "or you forgot to close some object holding onto connections in the tests (e.g., a reader, an iterator)";
+        final String leakMessage = "Expected no active connection, either there is a connection leak "
+                + "or you forgot to close some object holding onto connections in the tests (e.g., a reader, an iterator)";
         if (dataSource instanceof BasicDataSource) {
             BasicDataSource bds = (BasicDataSource) dataSource;
             assertEquals(leakMessage, 0, bds.getNumActive());
@@ -171,8 +166,8 @@ public abstract class JDBCTestSetup {
     /**
      * This method is used whenever referencing the name of a feature type / table name.
      *
-     * <p>Subclasses should override this is in case where databases can not respect case properly
-     * and need to force either upper or lower case.
+     * <p>Subclasses should override this is in case where databases can not respect case properly and need to force
+     * either upper or lower case.
      */
     protected String typeName(String raw) {
         return raw;
@@ -181,16 +176,16 @@ public abstract class JDBCTestSetup {
     /**
      * This method is used whenever referencing the name of an attribute / column name.
      *
-     * <p>Subclasses should override this is in case where databases can not respect case properly
-     * and need to force either upper or lower case.
+     * <p>Subclasses should override this is in case where databases can not respect case properly and need to force
+     * either upper or lower case.
      */
     protected String attributeName(String raw) {
         return raw;
     }
 
     /**
-     * Creates a data source by reading properties from a file called 'db.properties', located
-     * paralell to the test setup instance.
+     * Creates a data source by reading properties from a file called 'db.properties', located paralell to the test
+     * setup instance.
      */
     protected DataSource createDataSource() throws IOException {
         Properties db = fixture;
@@ -234,17 +229,16 @@ public abstract class JDBCTestSetup {
     /**
      * Called after a test case has determined that a connection to the data source can be obtained.
      *
-     * <p>This method is used for subclasses to make additional checks that determine if the test
-     * case should be run or not. This method is only called if a connection can successfully be
-     * made to the database.
+     * <p>This method is used for subclasses to make additional checks that determine if the test case should be run or
+     * not. This method is only called if a connection can successfully be made to the database.
      */
     public boolean shouldRunTests(Connection cx) throws SQLException {
         return true;
     }
 
     /**
-     * Returns true if making the test run without a target schema is safe (normally is, but for
-     * Oracle Enterprise for example, it is not)
+     * Returns true if making the test run without a target schema is safe (normally is, but for Oracle Enterprise for
+     * example, it is not)
      */
     public boolean canResetSchema() {
         return true;

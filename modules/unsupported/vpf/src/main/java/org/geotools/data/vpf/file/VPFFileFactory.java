@@ -26,9 +26,8 @@ import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
- * A factory for VPFFileStore. The file store is a singleton and the factory acts as the container.
- * This class does not do anything special at all and could easily be circumvented, but is here for
- * completeness.
+ * A factory for VPFFileStore. The file store is a singleton and the factory acts as the container. This class does not
+ * do anything special at all and could easily be circumvented, but is here for completeness.
  *
  * @author jeff yutzler
  * @source $URL$
@@ -86,12 +85,11 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     }
 
     /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM =
-            new Param(
-                    "file", File.class, "VPF file", true, null
-                    // ,(KVP)null
-                    /* new KVP(Param.EXT, "") */
-                    );
+    public static final Param FILE_PARAM = new Param(
+            "file", File.class, "VPF file", true, null
+            // ,(KVP)null
+            /* new KVP(Param.EXT, "") */
+            );
 
     /* (non-Javadoc)
      * @see org.geotools.api.data.DataStoreFactorySpi#getParametersInfo()

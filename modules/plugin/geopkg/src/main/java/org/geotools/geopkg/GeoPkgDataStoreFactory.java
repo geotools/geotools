@@ -39,24 +39,12 @@ import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "geopkg",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "geopkg", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database instance */
     public static final Param DATABASE =
-            new Param(
-                    "database",
-                    File.class,
-                    "Database",
-                    true,
-                    null,
-                    Collections.singletonMap(Param.EXT, "gpkg"));
+            new Param("database", File.class, "Database", true, null, Collections.singletonMap(Param.EXT, "gpkg"));
 
     public static final Param READ_ONLY = new Param("read_only", Boolean.class, "Read only", false);
 
@@ -65,12 +53,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     /** Maximum mapped memory, defaults to null */
     public static final Param MEMORY_MAP_SIZE =
-            new Param(
-                    "memory map size",
-                    Integer.class,
-                    "Max memory SQlite will memory map, in megabytes",
-                    false,
-                    null);
+            new Param("memory map size", Integer.class, "Max memory SQlite will memory map, in megabytes", false, null);
 
     /** base location to store database files */
     File baseDirectory = null;
@@ -179,8 +162,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /**
-     * This is left for public API compatibility but it's not as efficient as using the GeoPackage
-     * internal pool
+     * This is left for public API compatibility but it's not as efficient as using the GeoPackage internal pool
      *
      * @param params Map of connection parameter.
      */
@@ -204,8 +186,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         SQLiteConfig config = setupSQLiteConfig(params);
 
         // use native "pool", which is actually not pooling anything (that's fast and
@@ -234,8 +215,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return config;
     }
 
-    static void addConnectionProperties(BasicDataSource dataSource, Map<String, ?> configuration)
-            throws IOException {
+    static void addConnectionProperties(BasicDataSource dataSource, Map<String, ?> configuration) throws IOException {
         SQLiteConfig config = setupSQLiteConfig(configuration);
 
         for (Map.Entry<Object, Object> e : config.toProperties().entrySet()) {
@@ -244,8 +224,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         dataStore.setDatabaseSchema(null);
         return dataStore;
     }

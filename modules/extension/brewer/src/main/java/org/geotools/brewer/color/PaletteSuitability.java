@@ -55,8 +55,8 @@ public class PaletteSuitability {
     public static final int VIEWER_PRINT = 5;
 
     /**
-     * Contains the suitability data for this palette. First index is the number of colors - 2.
-     * Second index is the viewer type. Values are the suitability value.
+     * Contains the suitability data for this palette. First index is the number of colors - 2. Second index is the
+     * viewer type. Values are the suitability value.
      *
      * <p>Viewer Types: PaletteSuitability.COLORBLIND, PHOTOCOPY, PROJECTOR, LCD, CRT, or PRINT
      *
@@ -70,25 +70,25 @@ public class PaletteSuitability {
     public PaletteSuitability() {}
 
     /**
-     * Indexed getter for property paletteSuitability. For this palette, this returns an array
-     * containing the integer values for all 6 suitabilities.
+     * Indexed getter for property paletteSuitability. For this palette, this returns an array containing the integer
+     * values for all 6 suitabilities.
      *
      * @param numClasses The number of colors to determine the suitability for
-     * @return int array; index = PaletteSuitability.VIEWER_COLORBLIND, VIEWER_PHOTOCOPY,
-     *     VIEWER_PROJECTOR, VIEWER_LCD, VIEWER_CRT, or VIEWER_PRINT; values =
-     *     PaletteSuitability.QUALITY_GOOD, QUALITY_UNKNOWN, QUALITY_DOUBTFUL, or QUALITY_BAD.
+     * @return int array; index = PaletteSuitability.VIEWER_COLORBLIND, VIEWER_PHOTOCOPY, VIEWER_PROJECTOR, VIEWER_LCD,
+     *     VIEWER_CRT, or VIEWER_PRINT; values = PaletteSuitability.QUALITY_GOOD, QUALITY_UNKNOWN, QUALITY_DOUBTFUL, or
+     *     QUALITY_BAD.
      */
     public int[] getSuitability(int numClasses) {
         return paletteSuitability[numClasses - 2];
     }
 
     /**
-     * Indexed getter for the property paletteSuitability. For the selected palette and viewerType,
-     * this returns the integer value of the
+     * Indexed getter for the property paletteSuitability. For the selected palette and viewerType, this returns the
+     * integer value of the
      *
      * @param numClasses number of colours in this palette
-     * @param viewerType PaletteSuitability.VIEWER_COLORBLIND, VIEWER_PHOTOCOPY, VIEWER_PROJECTOR,
-     *     VIEWER_LCD, VIEWER_CRT, or VIEWER_PRINT.
+     * @param viewerType PaletteSuitability.VIEWER_COLORBLIND, VIEWER_PHOTOCOPY, VIEWER_PROJECTOR, VIEWER_LCD,
+     *     VIEWER_CRT, or VIEWER_PRINT.
      * @return PaletteSuitability.QUALITY_GOOD, QUALITY_UNKNOWN, QUALITY_DOUBTFUL, or QUALITY_BAD.
      */
     public int getSuitability(int numClasses, int viewerType) {

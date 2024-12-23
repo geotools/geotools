@@ -16,10 +16,7 @@ public class DB2ViewOnlineTest extends JDBCViewOnlineTest {
         dataStore.setDatabaseSchema("geotools");
     }
 
-    /**
-     * Whether the pk field in a view is nillable or not (it is for most databases, but not for
-     * Oracle for example).
-     */
+    /** Whether the pk field in a view is nillable or not (it is for most databases, but not for Oracle for example). */
     @Override
     protected boolean isPkNillable() {
         return false;

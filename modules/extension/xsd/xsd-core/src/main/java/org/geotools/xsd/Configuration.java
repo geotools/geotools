@@ -52,9 +52,9 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * <h3>Dependencies</h3>
  *
- * <p>Configurations have dependencies on one another, that results from the fact that one schema
- * imports another. Configuration dependencies are transitive. Each configuration should declare all
- * dependencies in the constructor using the {@link #addDependency(Configuration)} method. <code>
+ * <p>Configurations have dependencies on one another, that results from the fact that one schema imports another.
+ * Configuration dependencies are transitive. Each configuration should declare all dependencies in the constructor
+ * using the {@link #addDependency(Configuration)} method. <code>
  *         <pre>
  *         class MyConfiguration extends Configuration {
  *     public MyConfiguration() {
@@ -70,9 +70,9 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * <h3>Binding Configuration</h3>
  *
- * <p>To enable a particular binding to be found during a parse, the configuration must first
- * populate a container with said binding. This can be done by returning the appropriate instance of
- * {@link org.geotools.xml.BindingConfiguration} in {@link #getBindingConfiguration()}:
+ * <p>To enable a particular binding to be found during a parse, the configuration must first populate a container with
+ * said binding. This can be done by returning the appropriate instance of {@link org.geotools.xml.BindingConfiguration}
+ * in {@link #getBindingConfiguration()}:
  *
  * <pre>
  *          <code>
@@ -82,15 +82,14 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *          </code>
  *  </pre>
  *
- * Instances of type {@link org.geotools.xml.BindingConfiguration} are used to populate a container
- * with all the bindings from a particular schema.
+ * Instances of type {@link org.geotools.xml.BindingConfiguration} are used to populate a container with all the
+ * bindings from a particular schema.
  *
  * <h3>Context Configuration</h3>
  *
- * <p>Many bindings have dependencies on other types of objects. The pattern used to satisfy these
- * dependencies is known as <b>Constructor Injection</b>. Which means that any dependencies a
- * binding has is passed to it in its constructor. For instance, the following binding has a
- * dependency on java.util.List.
+ * <p>Many bindings have dependencies on other types of objects. The pattern used to satisfy these dependencies is known
+ * as <b>Constructor Injection</b>. Which means that any dependencies a binding has is passed to it in its constructor.
+ * For instance, the following binding has a dependency on java.util.List.
  *
  * <pre>
  *         <code>
@@ -105,10 +104,9 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *         </code>
  * </pre>
  *
- * Before a binding can be created, the container in which it is housed in must be able to satisfy
- * all of its dependencies. It is the responsibility of the configuration to satisfy this criteria.
- * This is known as configuring the binding context. The following is a suitable configuration for
- * the above binding.
+ * Before a binding can be created, the container in which it is housed in must be able to satisfy all of its
+ * dependencies. It is the responsibility of the configuration to satisfy this criteria. This is known as configuring
+ * the binding context. The following is a suitable configuration for the above binding.
  *
  * <pre>
  *         <code>
@@ -123,19 +121,17 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * <h3>Schema Resolution</h3>
  *
- * <p>XML instance documents often contain schema uri references that are invalid with respect to
- * the parser, or non-existent. A configuration can supply specialized look up classes to prevent
- * the parser from following an invalid uri and prevent any errors that may occur as a result.
+ * <p>XML instance documents often contain schema uri references that are invalid with respect to the parser, or
+ * non-existent. A configuration can supply specialized look up classes to prevent the parser from following an invalid
+ * uri and prevent any errors that may occur as a result.
  *
- * <p>An instance of {@link org.eclipse.xsd.util.XSDSchemaLocationResolver} can be used to override
- * a schemaLocation referencing another schema. This can be useful when the entity parsing an
- * instance document stores schemas in a location unknown to the entity providing the instance
- * document.
+ * <p>An instance of {@link org.eclipse.xsd.util.XSDSchemaLocationResolver} can be used to override a schemaLocation
+ * referencing another schema. This can be useful when the entity parsing an instance document stores schemas in a
+ * location unknown to the entity providing the instance document.
  *
- * <p>An instance of {@link org.eclipse.xsd.util.XSDSchemaLocator} can be used to provide an
- * pre-parsed schema and prevent the parser from parsing a schemaLocation manually. This can be
- * useful when an instance document does not supply a schemaLocation for the targetNamespace of the
- * document.
+ * <p>An instance of {@link org.eclipse.xsd.util.XSDSchemaLocator} can be used to provide an pre-parsed schema and
+ * prevent the parser from parsing a schemaLocation manually. This can be useful when an instance document does not
+ * supply a schemaLocation for the targetNamespace of the document.
  *
  * <pre>
  *         <code>
@@ -152,9 +148,9 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *         </code>
  * </pre>
  *
- * <p>The XSDSchemaLocator and XSDSchemaLocationResolver implementations are used in a couple of
- * scenarios. The first is when the <b>schemaLocation</b> attribute of the root element of the
- * instance document is being parsed. The schemaLocation attribute has the form:
+ * <p>The XSDSchemaLocator and XSDSchemaLocationResolver implementations are used in a couple of scenarios. The first is
+ * when the <b>schemaLocation</b> attribute of the root element of the instance document is being parsed. The
+ * schemaLocation attribute has the form:
  *
  * <pre>
  * <code>
@@ -162,12 +158,12 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  * </code>
  * </pre>
  *
- * In which (namespace,location) tuples are listed. For each each namespace encountered when parsing
- * the schemaLocation attribute, an appropriate resolver / locator is looked up. If an override is
- * not available, the framework attempts to resolve the location part of the tuple into a schema.
+ * In which (namespace,location) tuples are listed. For each each namespace encountered when parsing the schemaLocation
+ * attribute, an appropriate resolver / locator is looked up. If an override is not available, the framework attempts to
+ * resolve the location part of the tuple into a schema.
  *
- * <p>The second scenario occurs when the parsing of a schema encounters an <b>import</b> or an
- * <b>include</b> element. These elements have the form:
+ * <p>The second scenario occurs when the parsing of a schema encounters an <b>import</b> or an <b>include</b> element.
+ * These elements have the form:
  *
  * <pre>
  *  <code>
@@ -183,8 +179,8 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *  </code>
  *        </pre>
  *
- * respectively. Similar to above, the schemaLocation (and namespace in the case of an import) are
- * used to find an override. If not found they are resolved directly.
+ * respectively. Similar to above, the schemaLocation (and namespace in the case of an import) are used to find an
+ * override. If not found they are resolved directly.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  * @see org.geotools.xml.BindingConfiguration
@@ -205,8 +201,8 @@ public abstract class Configuration {
     /**
      * Creates a new configuration.
      *
-     * <p>Any dependent schemas should be added in subclass constructor. The xml schema dependency
-     * does not have to be added.
+     * <p>Any dependent schemas should be added in subclass constructor. The xml schema dependency does not have to be
+     * added.
      */
     public Configuration(XSD xsd) {
         this.xsd = xsd;
@@ -241,8 +237,8 @@ public abstract class Configuration {
      * configuration.getProperties().add( Parser.Properties.... );
      * </pre>
      *
-     * <p>Beware this class is not thread safe so take the needed precautions when using the list
-     * returned by this method.
+     * <p>Beware this class is not thread safe so take the needed precautions when using the list returned by this
+     * method.
      *
      * @return A list of hte set parser properties.
      */
@@ -295,12 +291,9 @@ public abstract class Configuration {
             }
         }
 
-        PriorityQueue<DepNode> q =
-                new PriorityQueue<>(
-                        g.nodes.size(),
-                        (o1, o2) ->
-                                Integer.valueOf(o1.outgoing().size())
-                                        .compareTo(o2.outgoing().size()));
+        PriorityQueue<DepNode> q = new PriorityQueue<>(
+                g.nodes.size(), (o1, o2) -> Integer.valueOf(o1.outgoing().size())
+                        .compareTo(o2.outgoing().size()));
         for (DepNode n : g.nodes.values()) {
             q.add(n);
         }
@@ -336,12 +329,10 @@ public abstract class Configuration {
     public <C extends Configuration> C getDependency(Class<C> clazz) {
         List dependencies = allDependencies();
         @SuppressWarnings("unchecked")
-        C cast =
-                (C)
-                        dependencies.stream()
-                                .filter(dep -> clazz.isInstance(dep))
-                                .findFirst()
-                                .orElse(null);
+        C cast = (C) dependencies.stream()
+                .filter(dep -> clazz.isInstance(dep))
+                .findFirst()
+                .orElse(null);
         return cast;
     }
 
@@ -366,8 +357,7 @@ public abstract class Configuration {
     /**
      * Returns an internal context which is copied into the runtime context while parsing.
      *
-     * <p>This context is provided to allow for placing values in the parsing context without having
-     * to subclass.
+     * <p>This context is provided to allow for placing values in the parsing context without having to subclass.
      *
      * @return The context.
      */
@@ -376,8 +366,8 @@ public abstract class Configuration {
     }
 
     /**
-     * Creates the map of QName to Binding which is used during parsing to attach bindings to an
-     * element,attribute, or type.
+     * Creates the map of QName to Binding which is used during parsing to attach bindings to an element,attribute, or
+     * type.
      *
      * @return A map of Qname,[Class|Object]
      */
@@ -406,8 +396,7 @@ public abstract class Configuration {
     }
 
     /**
-     * Prepares a parser instance for use with this Configuration instance and all of its
-     * dependencies.
+     * Prepares a parser instance for use with this Configuration instance and all of its dependencies.
      *
      * @since 2.7
      */
@@ -418,8 +407,7 @@ public abstract class Configuration {
     }
 
     /**
-     * Prepares a encoder instance for use with this Configuration instance and all of its
-     * dependencies.
+     * Prepares a encoder instance for use with this Configuration instance and all of its dependencies.
      *
      * @since 2.7
      */
@@ -432,10 +420,9 @@ public abstract class Configuration {
     /**
      * Registers the bindings for the configuration.
      *
-     * <p>This method is intended to provide the default bindings for a configuration and is
-     * intended to be subclassed by client code. Client code should use {@link
-     * #configureBindings(MutablePicoContainer)} . Subclasses should mark this method as final after
-     * implementing.
+     * <p>This method is intended to provide the default bindings for a configuration and is intended to be subclassed
+     * by client code. Client code should use {@link #configureBindings(MutablePicoContainer)} . Subclasses should mark
+     * this method as final after implementing.
      *
      * @param container Container containing all bindings, keyed by {@link QName}.
      */
@@ -448,13 +435,13 @@ public abstract class Configuration {
     /**
      * Registers the bindings for the configuration.
      *
-     * <p>This method is intended to provide the "default" bindings for a configuration and is not
-     * intended to be subclassed by client code. Client code should use {@link
-     * #configureBindings(MutablePicoContainer)} to override/remove/add new bindings on the fly.
+     * <p>This method is intended to provide the "default" bindings for a configuration and is not intended to be
+     * subclassed by client code. Client code should use {@link #configureBindings(MutablePicoContainer)} to
+     * override/remove/add new bindings on the fly.
      *
-     * <p>The key of the <tt>bindings</tt> map is of type {@link QName}. The value can be class, or
-     * an instance. In the case of a class, the binding will be instantiated by the parser at
-     * runtime. In the instance case the binding will be used as is.
+     * <p>The key of the <tt>bindings</tt> map is of type {@link QName}. The value can be class, or an instance. In the
+     * case of a class, the binding will be instantiated by the parser at runtime. In the instance case the binding will
+     * be used as is.
      */
     protected void registerBindings(Map<QName, Object> bindings) {}
 
@@ -537,8 +524,7 @@ public abstract class Configuration {
     /**
      * Configures the root context to be used when parsing elements.
      *
-     * <p>The context satisfies any dependencies needed by a binding. This is often a factory used
-     * to create something.
+     * <p>The context satisfies any dependencies needed by a binding. This is often a factory used to create something.
      *
      * <p>This method should be overridden. The default implementation does nothing.
      *
@@ -549,16 +535,16 @@ public abstract class Configuration {
     /**
      * Configures the parser to be used with this configuration.
      *
-     * <p>This method provides a callback for Configuration instances to configure the parser with
-     * whatever options they require.
+     * <p>This method provides a callback for Configuration instances to configure the parser with whatever options they
+     * require.
      */
     protected void configureParser(Parser parser) {}
 
     /**
      * Configures the encoder to be used with this configuration.
      *
-     * <p>This method provides a callback for Configuration instances to configure the encoder with
-     * whatever options they require.
+     * <p>This method provides a callback for Configuration instances to configure the encoder with whatever options
+     * they require.
      */
     protected void configureEncoder(Encoder encoder) {}
 

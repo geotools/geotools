@@ -29,9 +29,8 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
 
 /**
- * Helper class used to reduce a {@link Coverage} {@link GridGeometry2D} to be completely inside a
- * given valid area, assuming the coverage is already cut to it, but might have portions of pixel
- * going beyond the valid area limits
+ * Helper class used to reduce a {@link Coverage} {@link GridGeometry2D} to be completely inside a given valid area,
+ * assuming the coverage is already cut to it, but might have portions of pixel going beyond the valid area limits
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -39,9 +38,8 @@ class GridGeometryReducer {
     static final Logger LOGGER = Logging.getLogger(GridGeometryReducer.class);
 
     /**
-     * The side of the valid area we are inspecting, or the side of the grid geometry range that we
-     * are reducing (if the grid to world does not contain rotation, they are the same, otherwise
-     * not)
+     * The side of the valid area we are inspecting, or the side of the grid geometry range that we are reducing (if the
+     * grid to world does not contain rotation, they are the same, otherwise not)
      *
      * @author Andrea Aime - GeoSolutions
      */
@@ -71,10 +69,7 @@ class GridGeometryReducer {
         this.validArea = validArea;
     }
 
-    /**
-     * Reduces the given grid geometry by at most one pixel on each side, in an attempt to make it
-     * fit the
-     */
+    /** Reduces the given grid geometry by at most one pixel on each side, in an attempt to make it fit the */
     public GridGeometry2D reduce(GridGeometry2D gg) {
         if (gg.getEnvelope().getMaximum(1) > validArea.getMaximum(1)) {
             gg = reduceGridGeometrySide(gg, Side.TOP);
@@ -102,28 +97,23 @@ class GridGeometryReducer {
                 GridEnvelope2D reducedRange = new GridEnvelope2D(gridRange);
                 switch (curr) {
                     case TOP:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y + step, bounds.width, bounds.height - step);
+                        reducedRange.setBounds(bounds.x, bounds.y + step, bounds.width, bounds.height - step);
                         break;
                     case RIGHT:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y, bounds.width - step, bounds.height);
+                        reducedRange.setBounds(bounds.x, bounds.y, bounds.width - step, bounds.height);
                         break;
                     case BOTTOM:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y, bounds.width, bounds.height - step);
+                        reducedRange.setBounds(bounds.x, bounds.y, bounds.width, bounds.height - step);
                         break;
                     case LEFT:
-                        reducedRange.setBounds(
-                                bounds.x + step, bounds.y, bounds.width - step, bounds.height);
+                        reducedRange.setBounds(bounds.x + step, bounds.y, bounds.width - step, bounds.height);
                         break;
                     default:
                         throw new RuntimeException("Unexpected side " + side);
                 }
 
                 GridGeometry2D reducedGeometry =
-                        new GridGeometry2D(
-                                reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
+                        new GridGeometry2D(reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
 
                 // see if we actually reduced the grid geometry on the side we needed it to
                 Bounds reducedEnvelope = reducedGeometry.getEnvelope();
@@ -161,17 +151,16 @@ class GridGeometryReducer {
         }
 
         // if we got here, we could not perform the reduction, might not be fatal, so let's just log
-        LOGGER.warning(
-                "Could not reduce the grid geometry inside the valid area bounds: "
-                        + validArea
-                        + "\nGrid geometry is"
-                        + gg);
+        LOGGER.warning("Could not reduce the grid geometry inside the valid area bounds: "
+                + validArea
+                + "\nGrid geometry is"
+                + gg);
         return gg;
     }
 
     /**
-     * Builds a cut envelope for the Crop operation. Since the crop internals will add back the
-     * pixels we just removed due to numerical issues, we keep the envelope a bit on the safe side
+     * Builds a cut envelope for the Crop operation. Since the crop internals will add back the pixels we just removed
+     * due to numerical issues, we keep the envelope a bit on the safe side
      */
     public GeneralBounds getCutEnvelope(GridGeometry2D reduced) {
         GeneralBounds result;

@@ -37,8 +37,8 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
     /**
      * Performs an operation on a single feature in the collection.
      *
-     * <p>This method should do some work based on the feature and then set any attributes on the
-     * feature as necessary. Example of a simple buffering operation:
+     * <p>This method should do some work based on the feature and then set any attributes on the feature as necessary.
+     * Example of a simple buffering operation:
      *
      * <pre>
      * protected void processFeature(SimpleFeature feature, Map&lt;String, Object&gt; input) throws Exception {
@@ -54,6 +54,5 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
      * @param feature the feature being processed
      * @param input a Map of input parameters
      */
-    protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input)
-            throws Exception;
+    protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception;
 }

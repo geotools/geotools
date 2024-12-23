@@ -28,13 +28,11 @@ import org.geotools.util.factory.Hints;
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions.
  */
-public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class EnviHdrReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     private static final String worldFileExt = ".wld";
     /** Logger. */
     @SuppressWarnings("unused")
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EnviHdrReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(EnviHdrReader.class);
 
     /**
      * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about file extension.

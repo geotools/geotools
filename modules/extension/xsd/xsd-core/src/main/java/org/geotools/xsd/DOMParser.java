@@ -32,8 +32,8 @@ import org.xml.sax.SAXException;
 /**
  * Parses a DOM (Document Object Model) using the geotools xml binding system.
  *
- * <p>This parser should be used if the source xml being parsed has already been parsed into a
- * {@link Document}. If not use one of {@link Parser} or {@link Parser}.
+ * <p>This parser should be used if the source xml being parsed has already been parsed into a {@link Document}. If not
+ * use one of {@link Parser} or {@link Parser}.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

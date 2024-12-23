@@ -37,20 +37,19 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
 
     public GeoJSONFeatureStore(ContentEntry entry, Query query) {
         super(entry, query);
-        delegate =
-                new GeoJSONFeatureSource(entry, query) {
-                    @Override
-                    public void setTransaction(Transaction transaction) {
-                        super.setTransaction(transaction);
-                        GeoJSONFeatureStore.this.setTransaction(transaction);
-                    }
-                };
+        delegate = new GeoJSONFeatureSource(entry, query) {
+            @Override
+            public void setTransaction(Transaction transaction) {
+                super.setTransaction(transaction);
+                GeoJSONFeatureStore.this.setTransaction(transaction);
+            }
+        };
         delegate.setQuick(((GeoJSONDataStore) entry.getDataStore()).isQuick());
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
         GeoJSONFeatureWriter writer = new GeoJSONFeatureWriter(entry, query);
         writer.setWriteBounds(writeBounds);
         return writer;
@@ -68,8 +67,7 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

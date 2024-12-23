@@ -63,23 +63,22 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKBWriter;
 
 /**
- * Reads a {@link Geometry}from a byte stream in Postgis Extended Well-Known Binary format. Supports
- * use of an {@link InStream}, which allows easy use with arbitrary byte stream sources.
+ * Reads a {@link Geometry}from a byte stream in Postgis Extended Well-Known Binary format. Supports use of an
+ * {@link InStream}, which allows easy use with arbitrary byte stream sources.
  *
- * <p>This class reads the format describe in {@link WKBWriter}. It also partially handles the
- * <b>Extended WKB</b> format used by PostGIS and SQLServer, by parsing and storing SRID values and
- * supporting . The reader repairs structurally-invalid input (specifically, LineStrings and
- * LinearRings which contain too few points have vertices added, and non-closed rings are closed).
+ * <p>This class reads the format describe in {@link WKBWriter}. It also partially handles the <b>Extended WKB</b>
+ * format used by PostGIS and SQLServer, by parsing and storing SRID values and supporting . The reader repairs
+ * structurally-invalid input (specifically, LineStrings and LinearRings which contain too few points have vertices
+ * added, and non-closed rings are closed).
  *
- * <p>This class is designed to support reuse of a single instance to read multiple geometries. This
- * class is not thread-safe; each thread should create its own instance.
+ * <p>This class is designed to support reuse of a single instance to read multiple geometries. This class is not
+ * thread-safe; each thread should create its own instance.
  *
  * @see WKBWriter for a formal format specification
  */
 public class WKBReader {
     /**
-     * Converts a hexadecimal string to a byte array. The hexadecimal digit symbols are
-     * case-insensitive.
+     * Converts a hexadecimal string to a byte array. The hexadecimal digit symbols are case-insensitive.
      *
      * @param hex a string containing hex digits
      * @return an array of bytes with the value of the hex string
@@ -90,8 +89,7 @@ public class WKBReader {
 
         for (int i = 0; i < hex.length() / 2; i++) {
             int i2 = 2 * i;
-            if (i2 + 1 > hex.length())
-                throw new IllegalArgumentException("Hex string has odd length");
+            if (i2 + 1 > hex.length()) throw new IllegalArgumentException("Hex string has odd length");
 
             int nib1 = hexToInt(hex.charAt(i2));
             int nib0 = hexToInt(hex.charAt(i2 + 1));
@@ -123,8 +121,8 @@ public class WKBReader {
     private boolean hasSRID = false;
 
     /**
-     * true if structurally invalid input should be reported rather than repaired. At some point
-     * this could be made client-controllable.
+     * true if structurally invalid input should be reported rather than repaired. At some point this could be made
+     * client-controllable.
      */
     private boolean isStrict = false;
 
@@ -176,9 +174,7 @@ public class WKBReader {
         byte byteOrderWKB = dis.readByte();
         // always set byte order, since it may change from geometry to geometry
         int byteOrder =
-                byteOrderWKB == WKBConstants.wkbNDR
-                        ? ByteOrderValues.LITTLE_ENDIAN
-                        : ByteOrderValues.BIG_ENDIAN;
+                byteOrderWKB == WKBConstants.wkbNDR ? ByteOrderValues.LITTLE_ENDIAN : ByteOrderValues.BIG_ENDIAN;
         dis.setOrder(byteOrder);
 
         int typeInt = dis.readInt();
@@ -288,8 +284,7 @@ public class WKBReader {
         List<LineString> geoms = new ArrayList<>();
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof LineString))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
+            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
             geoms.add((LineString) g);
         }
         return factory.createCurvedGeometry(geoms);
@@ -366,8 +361,7 @@ public class WKBReader {
         Point[] geoms = new Point[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof Point))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
+            if (!(g instanceof Point)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
             geoms[i] = (Point) g;
         }
         return factory.createMultiPoint(geoms);
@@ -378,8 +372,7 @@ public class WKBReader {
         LineString[] geoms = new LineString[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof LineString))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
+            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
             geoms[i] = (LineString) g;
         }
         return factory.createMultiLineString(geoms);
@@ -390,8 +383,7 @@ public class WKBReader {
         Polygon[] geoms = new Polygon[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof Polygon))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
+            if (!(g instanceof Polygon)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
             geoms[i] = (Polygon) g;
         }
         return factory.createMultiPolygon(geoms);
@@ -423,24 +415,21 @@ public class WKBReader {
         return seq;
     }
 
-    private CoordinateSequence readCoordinateSequenceCircularString(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceCircularString(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 3) return seq;
         return CoordinateSequences.extend(csFactory, seq, 3);
     }
 
-    private CoordinateSequence readCoordinateSequenceLineString(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceLineString(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 2) return seq;
         return CoordinateSequences.extend(csFactory, seq, 2);
     }
 
-    private CoordinateSequence readCoordinateSequenceRing(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceRing(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (CoordinateSequences.isRing(seq)) return seq;
@@ -448,8 +437,8 @@ public class WKBReader {
     }
 
     /**
-     * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates
-     * precise according to the precision model in use.
+     * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates precise according to the
+     * precision model in use.
      */
     private double readCoordinate(int i) throws IOException, ParseException {
         if (i <= 1) {
@@ -460,9 +449,8 @@ public class WKBReader {
     }
 
     /**
-     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
-     * infinite tolerance (the linearization will happen using the default base segments number set
-     * in {@link CircularArc}
+     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with infinite tolerance
+     * (the linearization will happen using the default base segments number set in {@link CircularArc}
      */
     private CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;

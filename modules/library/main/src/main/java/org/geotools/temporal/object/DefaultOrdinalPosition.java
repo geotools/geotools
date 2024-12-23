@@ -23,8 +23,7 @@ import org.geotools.api.temporal.TemporalReferenceSystem;
 import org.geotools.util.Utilities;
 
 /**
- * A data type that shall be used for identifying temporal position within an ordinal temporal
- * reference system.
+ * A data type that shall be used for identifying temporal position within an ordinal temporal reference system.
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
@@ -34,9 +33,7 @@ public class DefaultOrdinalPosition extends DefaultTemporalPosition implements O
     private OrdinalEra ordinalPosition;
 
     public DefaultOrdinalPosition(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            OrdinalEra ordinalPosition) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, OrdinalEra ordinalPosition) {
         super(frame, indeterminatePosition);
         this.ordinalPosition = ordinalPosition;
     }

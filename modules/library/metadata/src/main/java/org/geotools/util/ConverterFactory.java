@@ -27,10 +27,7 @@ import org.geotools.util.factory.Hints.Key;
  */
 public interface ConverterFactory {
 
-    /**
-     * Hint which specifies if only safe conversions should be atttemped by converter
-     * implementations.
-     */
+    /** Hint which specifies if only safe conversions should be atttemped by converter implementations. */
     static final Key SAFE_CONVERSION = new Key(Boolean.class);
 
     /**

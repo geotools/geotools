@@ -29,10 +29,7 @@ import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 
 public class StyleExamples {
 
-    /**
-     * This example is limited to just the gt-opengis style interfaces which are immutable once
-     * created.
-     */
+    /** This example is limited to just the gt-opengis style interfaces which are immutable once created. */
     private void styleFactoryExample() throws Exception {
         // styleFactoryExample start
         //
@@ -67,8 +64,7 @@ public class StyleExamples {
 
         // define a point symbolizer of a small circle
         Graphic circle = sf.graphic(symbols, opacity, size, rotation, anchor, displacement);
-        PointSymbolizer pointSymbolizer =
-                sf.pointSymbolizer("point", ff.property("the_geom"), null, null, circle);
+        PointSymbolizer pointSymbolizer = sf.pointSymbolizer("point", ff.property("the_geom"), null, null, circle);
         // styleFactoryExample end
     }
 }

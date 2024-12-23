@@ -50,17 +50,15 @@ class CompareImageDialog extends JDialog {
         this.setContentPane(content);
         this.setTitle("ImageAssert");
         String message;
-        if (expected.getWidth() != actual.getWidth()
-                || expected.getHeight() != actual.getHeight()) {
-            message =
-                    "Image sizes are different, expected "
-                            + expected.getWidth()
-                            + "x"
-                            + expected.getHeight()
-                            + " but actual is "
-                            + actual.getWidth()
-                            + "x"
-                            + actual.getHeight();
+        if (expected.getWidth() != actual.getWidth() || expected.getHeight() != actual.getHeight()) {
+            message = "Image sizes are different, expected "
+                    + expected.getWidth()
+                    + "x"
+                    + expected.getHeight()
+                    + " but actual is "
+                    + actual.getWidth()
+                    + "x"
+                    + actual.getHeight();
         } else {
             message = "The two images are perceptibly different.";
         }
@@ -75,50 +73,46 @@ class CompareImageDialog extends JDialog {
 
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton accept = new JButton("Overwrite reference");
-        accept.addActionListener(
-                e -> {
-                    this.accept = true;
-                    setVisible(false);
-                });
+        accept.addActionListener(e -> {
+            this.accept = true;
+            setVisible(false);
+        });
         JButton reject = new JButton("Images are different");
-        reject.addActionListener(
-                e -> {
-                    this.accept = false;
-                    setVisible(false);
-                });
+        reject.addActionListener(e -> {
+            this.accept = false;
+            setVisible(false);
+        });
         JButton save = new JButton(("Save comparison"));
-        save.addActionListener(
-                e -> {
-                    {
-                        // File location = getStartupLocation();
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                        chooser.setFileFilter(
-                                new FileFilter() {
+        save.addActionListener(e -> {
+            {
+                // File location = getStartupLocation();
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.setFileFilter(new FileFilter() {
 
-                                    @Override
-                                    public boolean accept(File file) {
-                                        return file.isDirectory();
-                                    }
+                    @Override
+                    public boolean accept(File file) {
+                        return file.isDirectory();
+                    }
 
-                                    @Override
-                                    public String getDescription() {
-                                        return "Directories (will save a expected.png and actual.png there)";
-                                    }
-                                });
-
-                        int result = chooser.showSaveDialog(this);
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            File selected = chooser.getSelectedFile();
-                            try {
-                                ImageIO.write(expected, "PNG", new File(selected, "expected.png"));
-                                ImageIO.write(actual, "PNG", new File(selected, "actual.png"));
-                            } catch (IOException e1) {
-                                LOGGER.log(Level.WARNING, "Failed to save images", e);
-                            }
-                        }
+                    @Override
+                    public String getDescription() {
+                        return "Directories (will save a expected.png and actual.png there)";
                     }
                 });
+
+                int result = chooser.showSaveDialog(this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selected = chooser.getSelectedFile();
+                    try {
+                        ImageIO.write(expected, "PNG", new File(selected, "expected.png"));
+                        ImageIO.write(actual, "PNG", new File(selected, "actual.png"));
+                    } catch (IOException e1) {
+                        LOGGER.log(Level.WARNING, "Failed to save images", e);
+                    }
+                }
+            }
+        });
         commands.add(accept);
         commands.add(reject);
         commands.add(save);
@@ -136,9 +130,7 @@ class CompareImageDialog extends JDialog {
         panel.add(title, BorderLayout.NORTH);
         panel.add(
                 new javax.media.jai.widget.ScrollingImagePanel(
-                        expected,
-                        Math.min(400, expected.getWidth()),
-                        Math.min(400, expected.getHeight())),
+                        expected, Math.min(400, expected.getWidth()), Math.min(400, expected.getHeight())),
                 BorderLayout.CENTER);
         return panel;
     }

@@ -12,12 +12,10 @@ package org.geotools.api.referencing.operation;
 import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
- * A parameterized mathematical operation on coordinates that transforms or converts coordinates to
- * another coordinate reference system. This coordinate operation thus uses an operation method,
- * usually with associated parameter values.
+ * A parameterized mathematical operation on coordinates that transforms or converts coordinates to another coordinate
+ * reference system. This coordinate operation thus uses an operation method, usually with associated parameter values.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see OperationMethod

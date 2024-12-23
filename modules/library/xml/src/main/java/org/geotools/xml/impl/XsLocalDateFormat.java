@@ -32,8 +32,8 @@
 package org.geotools.xml.impl;
 
 /**
- * An instance of {@link java.text.Format}, which may be used to parse <code>xs:dateTime</code>
- * values and format <code>xs:dateTime</code> as local date.
+ * An instance of {@link java.text.Format}, which may be used to parse <code>xs:dateTime</code> values and format <code>
+ * xs:dateTime</code> as local date.
  *
  * @author awaterme
  */

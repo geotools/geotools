@@ -49,21 +49,21 @@ import org.geotools.referencing.NamedIdentifier;
 /**
  * Equidistant Conic Projection.
  *
- * <p><b>NOTE:</b> formulae used below are from a port, to Java, of the {@code proj4} package of the
- * USGS survey. USGS work is acknowledged here.
+ * <p><b>NOTE:</b> formulae used below are from a port, to Java, of the {@code proj4} package of the USGS survey. USGS
+ * work is acknowledged here.
  *
  * <p><b>References:</b>
  *
  * <ul>
  *   <li>Proj-4.4.7 available at <A HREF="http://trac.osgeo.org/proj/">trac.osgeo.org/proj/</A>.<br>
- *       Relevant files are: {@code PJ_eqdc.c}, {@code pj_mlfn.c}, {@code pj_msfn.c}, {@code
- *       pj_fwd.c} and {@code pj_inv.c}.
+ *       Relevant files are: {@code PJ_eqdc.c}, {@code pj_mlfn.c}, {@code pj_msfn.c}, {@code pj_fwd.c} and
+ *       {@code pj_inv.c}.
  * </ul>
  *
- * @see <A HREF="http://mathworld.wolfram.com/ConicEquidistantProjection.html">Conic Equidistant
- *     projection on mathworld.wolfram.com</A>
- * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/equidistant_conic.html">"Equidistant
- *     Conic" on www.remotesensing.org</A>
+ * @see <A HREF="http://mathworld.wolfram.com/ConicEquidistantProjection.html">Conic Equidistant projection on
+ *     mathworld.wolfram.com</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/equidistant_conic.html">"Equidistant Conic" on
+ *     www.remotesensing.org</A>
  * @since 2.6.1
  * @version $Id$
  * @author Ivan Boldyrev
@@ -91,8 +91,7 @@ public class EquidistantConic extends MapProjection {
      * @throws ParameterNotFoundException if a required parameter was not found.
      * @since 2.4
      */
-    protected EquidistantConic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected EquidistantConic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
 
         /* Non-final placeholder for value of final this.n. */
@@ -113,8 +112,7 @@ public class EquidistantConic extends MapProjection {
         if (abs(phi1 + phi2) < EPSILON) {
             final Object arg0 = new Latitude(toDegrees(phi1));
             final Object arg1 = new Latitude(toDegrees(phi2));
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
         }
 
         double sinphi = n = sin(phi1);
@@ -161,12 +159,11 @@ public class EquidistantConic extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         final double cosphi = cos(y);
         final double sinphi = sin(y);
         final double rho = c - (this.isSpherical ? y : mlfn(y, sinphi, cosphi));
@@ -181,13 +178,9 @@ public class EquidistantConic extends MapProjection {
         return new Point2D.Double(x1, y1);
     }
 
-    /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
-     * {@code ptDst}.
-     */
+    /** Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in {@code ptDst}. */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         double rho = hypot(x, (y = this.rho0 - y));
         double phi, lam;
 
@@ -223,8 +216,8 @@ public class EquidistantConic extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for a {@linkplain EquidistantConic EquidistantConic} projection.
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for a
+     * {@linkplain EquidistantConic EquidistantConic} projection.
      *
      * @since 2.6.1
      * @version $Id$
@@ -236,22 +229,20 @@ public class EquidistantConic extends MapProjection {
         private static final long serialVersionUID = 1995516958029802849L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Equidistant_Conic"),
-                            new NamedIdentifier(Citations.ESRI, "Equidistant_Conic"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CONIC_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Equidistant_Conic"),
+                    new NamedIdentifier(Citations.ESRI, "Equidistant_Conic"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.EQUIDISTANT_CONIC_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

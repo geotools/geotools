@@ -37,11 +37,9 @@ class DB2TestUtil {
     protected static final String SCHEMA = "geotools";
     protected static final String SCHEMA_QUOTED = "\"" + SCHEMA + "\"";
 
-    static boolean existsTable(String schemaName, String tableName, Connection con)
-            throws SQLException {
+    static boolean existsTable(String schemaName, String tableName, Connection con) throws SQLException {
         try (PreparedStatement ps =
-                con.prepareStatement(
-                        "SELECT TABNAME FROM SYSCAT.TABLES WHERE TABSCHEMA = ? AND TABNAME = ?")) {
+                con.prepareStatement("SELECT TABNAME FROM SYSCAT.TABLES WHERE TABSCHEMA = ? AND TABNAME = ?")) {
             ps.setString(1, schemaName);
             ps.setString(2, tableName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -50,11 +48,9 @@ class DB2TestUtil {
         }
     }
 
-    static boolean existsTrigger(String schemaName, String triggerName, Connection con)
-            throws SQLException {
+    static boolean existsTrigger(String schemaName, String triggerName, Connection con) throws SQLException {
         try (PreparedStatement ps =
-                con.prepareStatement(
-                        "SELECT TRIGNAME FROM SYSCAT.TRIGGERS WHERE TRIGSCHEMA = ? AND TRIGNAME = ?")) {
+                con.prepareStatement("SELECT TRIGNAME FROM SYSCAT.TRIGGERS WHERE TRIGSCHEMA = ? AND TRIGNAME = ?")) {
             ps.setString(1, schemaName);
             ps.setString(2, triggerName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -63,11 +59,9 @@ class DB2TestUtil {
         }
     }
 
-    static boolean existsSequence(String schemaName, String seqName, Connection con)
-            throws SQLException {
-        try (PreparedStatement ps =
-                con.prepareStatement(
-                        "select seqschema,seqname from syscat.sequences where seqschema = ? and seqname = ?")) {
+    static boolean existsSequence(String schemaName, String seqName, Connection con) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement(
+                "select seqschema,seqname from syscat.sequences where seqschema = ? and seqname = ?")) {
             ps.setString(1, schemaName);
             ps.setString(2, seqName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -76,12 +70,10 @@ class DB2TestUtil {
         }
     }
 
-    static boolean existsIndex(String schemaName, String indexName, Connection con)
-            throws SQLException {
+    static boolean existsIndex(String schemaName, String indexName, Connection con) throws SQLException {
 
         try (PreparedStatement ps =
-                con.prepareStatement(
-                        "SELECT INDNAME FROM SYSCAT.INDEXES WHERE INDSCHEMA = ? AND INDNAME = ?")) {
+                con.prepareStatement("SELECT INDNAME FROM SYSCAT.INDEXES WHERE INDSCHEMA = ? AND INDNAME = ?")) {
             ps.setString(1, schemaName);
             ps.setString(2, indexName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -91,8 +83,7 @@ class DB2TestUtil {
     }
 
     static String getCurrrentSchemaName(Connection con) throws SQLException {
-        try (PreparedStatement ps =
-                        con.prepareStatement("select current schema from sysibm.sysdummy1");
+        try (PreparedStatement ps = con.prepareStatement("select current schema from sysibm.sysdummy1");
                 ResultSet rs = ps.executeQuery()) {
             String result = null;
             if (rs.next()) result = rs.getString(1);
@@ -102,43 +93,36 @@ class DB2TestUtil {
 
     static void dropTable(String schemaName, String tableName, Connection con) throws SQLException {
         if (existsTable(schemaName, tableName, con) == false) return;
-        try (PreparedStatement ps =
-                con.prepareStatement("drop table \"" + schemaName + "\".\"" + tableName + "\"")) {
+        try (PreparedStatement ps = con.prepareStatement("drop table \"" + schemaName + "\".\"" + tableName + "\"")) {
             ps.execute();
         }
     }
 
     static void dropView(String schemaName, String tableName, Connection con) throws SQLException {
         if (existsTable(schemaName, tableName, con) == false) return;
-        try (PreparedStatement ps =
-                con.prepareStatement("drop view \"" + schemaName + "\".\"" + tableName + "\"")) {
+        try (PreparedStatement ps = con.prepareStatement("drop view \"" + schemaName + "\".\"" + tableName + "\"")) {
             ps.execute();
         }
     }
 
     static void dropIndex(String schemaName, String indexName, Connection con) throws SQLException {
         if (existsIndex(schemaName, indexName, con) == false) return;
-        try (PreparedStatement ps =
-                con.prepareStatement("drop index \"" + schemaName + "\".\"" + indexName + "\"")) {
+        try (PreparedStatement ps = con.prepareStatement("drop index \"" + schemaName + "\".\"" + indexName + "\"")) {
             ps.execute();
         }
     }
 
-    static void dropTrigger(String schemaName, String triggerName, Connection con)
-            throws SQLException {
+    static void dropTrigger(String schemaName, String triggerName, Connection con) throws SQLException {
         if (existsTrigger(schemaName, triggerName, con) == false) return;
         try (PreparedStatement ps =
-                con.prepareStatement(
-                        "drop trigger \"" + schemaName + "\".\"" + triggerName + "\"")) {
+                con.prepareStatement("drop trigger \"" + schemaName + "\".\"" + triggerName + "\"")) {
             ps.execute();
         }
     }
 
-    static void dropSequence(String schemaName, String seqName, Connection con)
-            throws SQLException {
+    static void dropSequence(String schemaName, String seqName, Connection con) throws SQLException {
         if (existsSequence(schemaName, seqName, con) == false) return;
-        try (PreparedStatement ps =
-                con.prepareStatement("drop sequence \"" + schemaName + "\".\"" + seqName + "\"")) {
+        try (PreparedStatement ps = con.prepareStatement("drop sequence \"" + schemaName + "\".\"" + seqName + "\"")) {
             ps.execute();
         }
     }

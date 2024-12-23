@@ -29,8 +29,8 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.util.WeakValueHashMap;
 
 /**
- * A factory for {@link LookupTableJAI} objects built from an array of {@link MathTransform1D}. This
- * factory is used internally by {@link GridCoverageViews#create}.
+ * A factory for {@link LookupTableJAI} objects built from an array of {@link MathTransform1D}. This factory is used
+ * internally by {@link GridCoverageViews#create}.
  *
  * @since 2.1
  * @version $Id$
@@ -56,8 +56,7 @@ public final class LookupTableFactory {
      * @param targetType The target data type. Should be one of {@link DataBuffer} constants.
      * @param transforms The math transforms to apply.
      */
-    private LookupTableFactory(
-            final int sourceType, final int targetType, final MathTransform1D[] transforms) {
+    private LookupTableFactory(final int sourceType, final int targetType, final MathTransform1D[] transforms) {
         this.sourceType = sourceType;
         this.targetType = targetType;
         this.transforms = transforms;
@@ -69,12 +68,10 @@ public final class LookupTableFactory {
      * @param sourceType The source data type. Should be one of {@link DataBuffer} constants.
      * @param targetType The target data type. Should be one of {@link DataBuffer} constants.
      * @param transforms The math transforms to apply.
-     * @return The lookup table, or {@code null} if this method can't build a lookup table for the
-     *     supplied parameters.
+     * @return The lookup table, or {@code null} if this method can't build a lookup table for the supplied parameters.
      * @throws TransformException if a transformation failed.
      */
-    public static LookupTableJAI create(
-            final int sourceType, final int targetType, final MathTransform1D[] transforms)
+    public static LookupTableJAI create(final int sourceType, final int targetType, final MathTransform1D[] transforms)
             throws TransformException {
         /*
          * Argument check. Null values are legal but can't be processed by this method.
@@ -90,8 +87,7 @@ public final class LookupTableFactory {
              * Checks if a table is already available in the cache. Since tables may be 64 kb big,
              * sharing tables may save a significant amount of memory if there is many images.
              */
-            final LookupTableFactory key =
-                    new LookupTableFactory(sourceType, targetType, transforms);
+            final LookupTableFactory key = new LookupTableFactory(sourceType, targetType, transforms);
             LookupTableJAI table = pool.get(key);
             if (table != null) {
                 return table;
@@ -105,120 +101,110 @@ public final class LookupTableFactory {
             final int length;
             final int offset;
             switch (sourceType) {
-                default:
-                    {
+                default: {
+                    return null;
+                }
+                case DataBuffer.TYPE_BYTE: {
+                    length = 0x100;
+                    offset = 0;
+                    break;
+                }
+                case DataBuffer.TYPE_SHORT:
+                case DataBuffer.TYPE_USHORT: {
+                    if (targetType != DataBuffer.TYPE_BYTE) {
+                        // Avoid to use too much memory for the table.
                         return null;
                     }
-                case DataBuffer.TYPE_BYTE:
-                    {
-                        length = 0x100;
-                        offset = 0;
-                        break;
-                    }
-                case DataBuffer.TYPE_SHORT:
-                case DataBuffer.TYPE_USHORT:
-                    {
-                        if (targetType != DataBuffer.TYPE_BYTE) {
-                            // Avoid to use too much memory for the table.
-                            return null;
-                        }
-                        length = 0x10000;
-                        offset = (sourceType == DataBuffer.TYPE_SHORT) ? Short.MIN_VALUE : 0;
-                        break;
-                    }
+                    length = 0x10000;
+                    offset = (sourceType == DataBuffer.TYPE_SHORT) ? Short.MIN_VALUE : 0;
+                    break;
+                }
             }
             /*
              * Builds the table according the target datatype.
              */
             switch (targetType) {
-                default:
-                    {
-                        return null;
+                default: {
+                    return null;
+                }
+                case DataBuffer.TYPE_DOUBLE: {
+                    final double[][] data = new double[nbands][];
+                    final double[] buffer = new double[length];
+                    for (int i = length; --i >= 0; ) {
+                        buffer[i] = i;
                     }
-                case DataBuffer.TYPE_DOUBLE:
-                    {
-                        final double[][] data = new double[nbands][];
-                        final double[] buffer = new double[length];
-                        for (int i = length; --i >= 0; ) {
-                            buffer[i] = i;
-                        }
-                        for (int i = nbands; --i >= 0; ) {
-                            final double[] array = (i == 0) ? buffer : buffer.clone();
-                            transforms[i].transform(array, 0, array, 0, array.length);
-                            data[i] = array;
-                        }
-                        table = new LookupTableJAI(data, offset);
-                        break;
+                    for (int i = nbands; --i >= 0; ) {
+                        final double[] array = (i == 0) ? buffer : buffer.clone();
+                        transforms[i].transform(array, 0, array, 0, array.length);
+                        data[i] = array;
                     }
-                case DataBuffer.TYPE_FLOAT:
-                    {
-                        final float[][] data = new float[nbands][];
-                        final float[] buffer = new float[length];
-                        for (int i = length; --i >= 0; ) {
-                            buffer[i] = i;
-                        }
-                        for (int i = transforms.length; --i >= 0; ) {
-                            final float[] array = (i == 0) ? buffer : buffer.clone();
-                            transforms[i].transform(array, 0, array, 0, length);
-                            data[i] = array;
-                        }
-                        table = new LookupTableJAI(data, offset);
-                        break;
+                    table = new LookupTableJAI(data, offset);
+                    break;
+                }
+                case DataBuffer.TYPE_FLOAT: {
+                    final float[][] data = new float[nbands][];
+                    final float[] buffer = new float[length];
+                    for (int i = length; --i >= 0; ) {
+                        buffer[i] = i;
                     }
-                case DataBuffer.TYPE_INT:
-                    {
-                        final int[][] data = new int[nbands][];
-                        for (int i = nbands; --i >= 0; ) {
-                            final MathTransform1D tr = transforms[i];
-                            final int[] array = new int[length];
-                            for (int j = length; --j >= 0; ) {
-                                long v = round(tr.transform(j + offset));
-                                array[j] = (int) min(max(v, Integer.MIN_VALUE), Integer.MAX_VALUE);
-                            }
-                            data[i] = array;
-                        }
-                        table = new LookupTableJAI(data, offset);
-                        break;
+                    for (int i = transforms.length; --i >= 0; ) {
+                        final float[] array = (i == 0) ? buffer : buffer.clone();
+                        transforms[i].transform(array, 0, array, 0, length);
+                        data[i] = array;
                     }
+                    table = new LookupTableJAI(data, offset);
+                    break;
+                }
+                case DataBuffer.TYPE_INT: {
+                    final int[][] data = new int[nbands][];
+                    for (int i = nbands; --i >= 0; ) {
+                        final MathTransform1D tr = transforms[i];
+                        final int[] array = new int[length];
+                        for (int j = length; --j >= 0; ) {
+                            long v = round(tr.transform(j + offset));
+                            array[j] = (int) min(max(v, Integer.MIN_VALUE), Integer.MAX_VALUE);
+                        }
+                        data[i] = array;
+                    }
+                    table = new LookupTableJAI(data, offset);
+                    break;
+                }
                 case DataBuffer.TYPE_SHORT:
-                case DataBuffer.TYPE_USHORT:
-                    {
-                        final int minimum, maximum;
-                        if (targetType == DataBuffer.TYPE_SHORT) {
-                            minimum = Short.MIN_VALUE;
-                            maximum = Short.MAX_VALUE;
-                        } else {
-                            minimum = 0;
-                            maximum = 0xFFFF;
-                        }
-                        final short[][] data = new short[nbands][];
-                        for (int i = nbands; --i >= 0; ) {
-                            final MathTransform1D tr = transforms[i];
-                            final short[] array = new short[length];
-                            for (int j = length; --j >= 0; ) {
-                                long v = round(tr.transform(j + offset));
-                                array[j] = (short) min(max(v, minimum), maximum);
-                            }
-                            data[i] = array;
-                        }
-                        table = new LookupTableJAI(data, offset, minimum != 0);
-                        break;
+                case DataBuffer.TYPE_USHORT: {
+                    final int minimum, maximum;
+                    if (targetType == DataBuffer.TYPE_SHORT) {
+                        minimum = Short.MIN_VALUE;
+                        maximum = Short.MAX_VALUE;
+                    } else {
+                        minimum = 0;
+                        maximum = 0xFFFF;
                     }
-                case DataBuffer.TYPE_BYTE:
-                    {
-                        final byte[][] data = new byte[nbands][];
-                        for (int i = nbands; --i >= 0; ) {
-                            final MathTransform1D tr = transforms[i];
-                            final byte[] array = new byte[length];
-                            for (int j = length; --j >= 0; ) {
-                                array[j] =
-                                        (byte) min(max(round(tr.transform(j + offset)), 0), 0xFF);
-                            }
-                            data[i] = array;
+                    final short[][] data = new short[nbands][];
+                    for (int i = nbands; --i >= 0; ) {
+                        final MathTransform1D tr = transforms[i];
+                        final short[] array = new short[length];
+                        for (int j = length; --j >= 0; ) {
+                            long v = round(tr.transform(j + offset));
+                            array[j] = (short) min(max(v, minimum), maximum);
                         }
-                        table = new LookupTableJAI(data, offset);
-                        break;
+                        data[i] = array;
                     }
+                    table = new LookupTableJAI(data, offset, minimum != 0);
+                    break;
+                }
+                case DataBuffer.TYPE_BYTE: {
+                    final byte[][] data = new byte[nbands][];
+                    for (int i = nbands; --i >= 0; ) {
+                        final MathTransform1D tr = transforms[i];
+                        final byte[] array = new byte[length];
+                        for (int j = length; --j >= 0; ) {
+                            array[j] = (byte) min(max(round(tr.transform(j + offset)), 0), 0xFF);
+                        }
+                        data[i] = array;
+                    }
+                    table = new LookupTableJAI(data, offset);
+                    break;
+                }
             }
             pool.put(key, table);
             return table;
@@ -226,8 +212,8 @@ public final class LookupTableFactory {
     }
 
     /**
-     * Returns a hash code value for this key. This is for internal use by {@code
-     * LookupTableFactory} and is public only as an implementation side effect.
+     * Returns a hash code value for this key. This is for internal use by {@code LookupTableFactory} and is public only
+     * as an implementation side effect.
      */
     @Override
     public int hashCode() {
@@ -237,8 +223,8 @@ public final class LookupTableFactory {
     }
 
     /**
-     * Compares the specified object with this key for equality. This is for internal use by {@code
-     * LookupTableFactory} and is public only as an implementation side effect.
+     * Compares the specified object with this key for equality. This is for internal use by {@code LookupTableFactory}
+     * and is public only as an implementation side effect.
      */
     @Override
     public boolean equals(final Object other) {

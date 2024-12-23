@@ -30,15 +30,13 @@ import org.geotools.jdbc.JoinInfo.JoinPart;
  *
  * @author Justin Deoliveira, OpenGeo
  */
-public class JDBCJoiningFilteringFeatureReader
-        implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
+public class JDBCJoiningFilteringFeatureReader implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
     FeatureReader<SimpleFeatureType, SimpleFeature> delegate;
     JoinInfo join;
     SimpleFeature next;
 
-    public JDBCJoiningFilteringFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> delegate, JoinInfo join) {
+    public JDBCJoiningFilteringFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> delegate, JoinInfo join) {
         this.delegate = delegate;
         this.join = join;
     }
@@ -84,8 +82,7 @@ public class JDBCJoiningFilteringFeatureReader
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException("No more features");
         }

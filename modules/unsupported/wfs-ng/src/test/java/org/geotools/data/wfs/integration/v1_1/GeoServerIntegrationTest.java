@@ -97,30 +97,22 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         TestDataType testDataType = new TestDataType();
 
         testDataType.featureType =
-                DataUtilities.createType(
-                        "roadsType", "the_geom:MultiLineString,cat:java.lang.Long,label:String");
-        testDataType.featureType =
-                DataUtilities.createSubType(
-                        testDataType.featureType,
-                        null,
-                        CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713"));
+                DataUtilities.createType("roadsType", "the_geom:MultiLineString,cat:java.lang.Long,label:String");
+        testDataType.featureType = DataUtilities.createSubType(
+                testDataType.featureType, null, CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713"));
 
         testDataType.stringAttribute = "label";
         testDataType.numberOfFeatures = 3;
         testDataType.typeName = "sf_roads";
-        testDataType.newFeature =
-                SimpleFeatureBuilder.build(
-                        testDataType.featureType,
-                        new Object[] {
-                            new GeometryFactory()
-                                    .createLineString(
-                                            new Coordinate[] {
-                                                new Coordinate(1, 2), new Coordinate(2, 3)
-                                            }),
-                            Integer.valueOf(4),
-                            "somekindofroad"
-                        },
-                        "roads.4");
+        testDataType.newFeature = SimpleFeatureBuilder.build(
+                testDataType.featureType,
+                new Object[] {
+                    new GeometryFactory()
+                            .createLineString(new Coordinate[] {new Coordinate(1, 2), new Coordinate(2, 3)}),
+                    Integer.valueOf(4),
+                    "somekindofroad"
+                },
+                "roads.4");
 
         return testDataType;
     }
@@ -130,11 +122,9 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         TestDataType testDataType = new TestDataType();
 
         testDataType.featureType =
-                DataUtilities.createType(
-                        "archsitesType", "the_geom:Point,cat:java.lang.Long,str1:String");
+                DataUtilities.createType("archsitesType", "the_geom:Point,cat:java.lang.Long,str1:String");
         testDataType.featureType =
-                DataUtilities.createSubType(
-                        testDataType.featureType, null, CRS.decode("EPSG:26713", true));
+                DataUtilities.createSubType(testDataType.featureType, null, CRS.decode("EPSG:26713", true));
 
         testDataType.stringAttribute = "str1";
         testDataType.numberOfFeatures = 3;
@@ -167,10 +157,8 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void testTransactionInsertWithIdgenUseExisting()
             throws SAXException, IOException, ParserConfigurationException {
-        WFSDataStore dataStore =
-                new WFSDataStore(
-                        new IntegrationTestWFSClient(
-                                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
+        WFSDataStore dataStore = new WFSDataStore(
+                new IntegrationTestWFSClient("GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
 
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
@@ -185,17 +173,15 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         typeBuilder.setName(TYPE1.getLocalPart());
         typeBuilder.setNamespaceURI(sft.getName().getNamespaceURI());
 
-        SimpleFeature feat =
-                new SimpleFeatureImpl(
-                        Arrays.asList(new Object[] {myPoint}),
-                        typeBuilder.buildFeatureType(),
-                        new FeatureIdImpl(UUID.randomUUID().toString()));
+        SimpleFeature feat = new SimpleFeatureImpl(
+                Arrays.asList(new Object[] {myPoint}),
+                typeBuilder.buildFeatureType(),
+                new FeatureIdImpl(UUID.randomUUID().toString()));
 
         feat.getUserData().put(Hints.USE_PROVIDED_FID, true);
 
         TransactionRequest transactionRequest = dataStore.getWfsClient().createTransaction();
-        TransactionRequest.Insert insert =
-                transactionRequest.createInsert(dataStore.getRemoteTypeName(sft.getName()));
+        TransactionRequest.Insert insert = transactionRequest.createInsert(dataStore.getRemoteTypeName(sft.getName()));
         insert.add(feat);
         transactionRequest.add(insert);
 
@@ -210,8 +196,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
                 Document document = factory.newDocumentBuilder().parse(in);
 
                 Element root = document.getDocumentElement();
-                NodeList insertNodes =
-                        root.getElementsByTagNameNS("http://www.opengis.net/wfs", "Insert");
+                NodeList insertNodes = root.getElementsByTagNameNS("http://www.opengis.net/wfs", "Insert");
 
                 assertTrue(insertNodes.getLength() > 0);
 
@@ -223,8 +208,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
                 assertNotNull(idgenAttribute);
 
                 assertEquals(
-                        IdentifierGenerationOptionType.USE_EXISTING_LITERAL.getName(),
-                        idgenAttribute.getNodeValue());
+                        IdentifierGenerationOptionType.USE_EXISTING_LITERAL.getName(), idgenAttribute.getNodeValue());
             }
         }
     }

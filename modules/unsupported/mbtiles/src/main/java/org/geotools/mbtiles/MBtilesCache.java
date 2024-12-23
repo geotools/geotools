@@ -56,18 +56,15 @@ class MBtilesCache {
 
     static final Logger LOGGER = Logging.getLogger(MBtilesCache.class);
 
-    CanonicalSet<MBTilesTileLocation> canonicalizer =
-            CanonicalSet.newInstance(MBTilesTileLocation.class);
-    SoftValueHashMap<MBTilesTileLocation, Map<String, CollectionProvider>> cache =
-            new SoftValueHashMap<>(0);
+    CanonicalSet<MBTilesTileLocation> canonicalizer = CanonicalSet.newInstance(MBTilesTileLocation.class);
+    SoftValueHashMap<MBTilesTileLocation, Map<String, CollectionProvider>> cache = new SoftValueHashMap<>(0);
     Map<String, SimpleFeatureType> schemas = new HashMap<>();
 
     public MBtilesCache(Map<String, SimpleFeatureType> schemas) {
         this.schemas = schemas;
     }
 
-    public SimpleFeatureCollection getFeatures(MBTilesTile tile, String layerName)
-            throws IOException {
+    public SimpleFeatureCollection getFeatures(MBTilesTile tile, String layerName) throws IOException {
         MBTilesTileLocation location = canonicalizer.unique(tile.toLocation());
         Map<String, CollectionProvider> layers = cache.get(location);
         if (layers == null) {
@@ -75,9 +72,7 @@ class MBtilesCache {
                 layers = cache.get(location);
                 if (layers == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(
-                                Level.FINE,
-                                "Miss for " + tile + ", looking for layer " + layerName);
+                        LOGGER.log(Level.FINE, "Miss for " + tile + ", looking for layer " + layerName);
                     }
                     Map<String, List<VectorTileDecoder.Feature>> mvtFeaturesMap = fillCache(tile);
                     layers = mapToProviders(location, mvtFeaturesMap);
@@ -93,22 +88,15 @@ class MBtilesCache {
     }
 
     public Map<String, CollectionProvider> mapToProviders(
-            MBTilesTileLocation location,
-            Map<String, List<VectorTileDecoder.Feature>> mvtFeaturesMap) {
-        return mvtFeaturesMap.entrySet().stream()
-                .collect(
-                        toMap(
-                                e -> e.getKey(),
-                                e -> {
-                                    SimpleFeatureType schema = schemas.get(e.getKey());
-                                    LayerFeatureBuilder builder =
-                                            new LayerFeatureBuilder(location, schema);
-                                    return new CollectionProvider(e.getValue(), builder);
-                                }));
+            MBTilesTileLocation location, Map<String, List<VectorTileDecoder.Feature>> mvtFeaturesMap) {
+        return mvtFeaturesMap.entrySet().stream().collect(toMap(e -> e.getKey(), e -> {
+            SimpleFeatureType schema = schemas.get(e.getKey());
+            LayerFeatureBuilder builder = new LayerFeatureBuilder(location, schema);
+            return new CollectionProvider(e.getValue(), builder);
+        }));
     }
 
-    private Map<String, List<VectorTileDecoder.Feature>> fillCache(MBTilesTile tile)
-            throws IOException {
+    private Map<String, List<VectorTileDecoder.Feature>> fillCache(MBTilesTile tile) throws IOException {
         VectorTileDecoder decoder = new VectorTileDecoder();
         decoder.setAutoScale(false);
 
@@ -121,14 +109,11 @@ class MBtilesCache {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(
                             Level.FINE,
-                            "Skipping unknown layer "
-                                    + layer
-                                    + " (not described in the json metadata entry)");
+                            "Skipping unknown layer " + layer + " (not described in the json metadata entry)");
                 }
                 continue;
             }
-            List<VectorTileDecoder.Feature> features =
-                    result.computeIfAbsent(layer, l -> new ArrayList<>());
+            List<VectorTileDecoder.Feature> features = result.computeIfAbsent(layer, l -> new ArrayList<>());
             features.add(mvtFeature);
         }
 
@@ -156,32 +141,28 @@ class MBtilesCache {
             long z, RectangleLong tb, String layerName) {
         // using linked hash map to get consistent enumeration/rendering of tiles
         Map<MBTilesTileLocation, SimpleFeatureCollection> result = new LinkedHashMap<>();
-        tb.forEach(
-                (x, y) -> {
-                    MBTilesTileLocation loc = new MBTilesTileLocation(z, x, y);
-                    Map<String, CollectionProvider> tileContents = cache.get(loc);
-                    if (tileContents != null) {
-                        SimpleFeatureCollection features = null;
-                        if (tileContents.containsKey(layerName)) {
-                            features = tileContents.get(layerName).getGeoToolsFeatures();
-                        } else if (schemas.get(layerName) != null) {
-                            // mark that the features were just not present, as opposed to not read
-                            // otherwise this might trigger an uneeded extra read
-                            features = new EmptyFeatureCollection(schemas.get(layerName));
-                        }
+        tb.forEach((x, y) -> {
+            MBTilesTileLocation loc = new MBTilesTileLocation(z, x, y);
+            Map<String, CollectionProvider> tileContents = cache.get(loc);
+            if (tileContents != null) {
+                SimpleFeatureCollection features = null;
+                if (tileContents.containsKey(layerName)) {
+                    features = tileContents.get(layerName).getGeoToolsFeatures();
+                } else if (schemas.get(layerName) != null) {
+                    // mark that the features were just not present, as opposed to not read
+                    // otherwise this might trigger an uneeded extra read
+                    features = new EmptyFeatureCollection(schemas.get(layerName));
+                }
 
-                        if (features != null) {
-                            result.put(loc, features);
-                        }
-                    }
-                });
+                if (features != null) {
+                    result.put(loc, features);
+                }
+            }
+        });
         return result;
     }
 
-    /**
-     * Converts MVT screen features into GeoTools geograhic features, accumulating them in a feature
-     * collection
-     */
+    /** Converts MVT screen features into GeoTools geograhic features, accumulating them in a feature collection */
     private static class LayerFeatureBuilder {
 
         private final String featureIdPrefix;
@@ -207,14 +188,7 @@ class MBtilesCache {
         }
 
         private String getFeatureIdPrefix(MBTilesTileLocation tile, String typeName) {
-            return typeName
-                    + "_"
-                    + tile.getZoomLevel()
-                    + "_"
-                    + tile.getTileRow()
-                    + "_"
-                    + tile.getTileColumn()
-                    + ".";
+            return typeName + "_" + tile.getZoomLevel() + "_" + tile.getTileRow() + "_" + tile.getTileColumn() + ".";
         }
 
         void addFeature(VectorTileDecoder.Feature mvtFeature) {
@@ -250,8 +224,7 @@ class MBtilesCache {
             result.add(feature);
         }
 
-        private Geometry getGeometry(
-                MBTilesTileLocation tile, VectorTileDecoder.Feature mvtFeature) {
+        private Geometry getGeometry(MBTilesTileLocation tile, VectorTileDecoder.Feature mvtFeature) {
             Geometry screenGeometry = mvtFeature.getGeometry();
             int extent = mvtFeature.getExtent();
             if (this.processor == null || processor.extent != extent) {
@@ -263,8 +236,8 @@ class MBtilesCache {
     }
 
     /**
-     * Processes a screen space MBTiles geometry, clipping it to the tile boundaries, and turning it
-     * into a geographic space one.
+     * Processes a screen space MBTiles geometry, clipping it to the tile boundaries, and turning it into a geographic
+     * space one.
      */
     private static class GeometryProcessor {
         final AffineTransformation at;
@@ -285,11 +258,7 @@ class MBtilesCache {
             // The upper left corner of the tile (as displayed by default) is the origin of the
             // coordinate system.
             // The X axis is positive to the right, and the Y axis is positive downward.
-            long numberOfTiles =
-                    Math.round(
-                            Math.pow(
-                                    2,
-                                    tile.getZoomLevel())); // number of tile columns/rows for chosen
+            long numberOfTiles = Math.round(Math.pow(2, tile.getZoomLevel())); // number of tile columns/rows for chosen
             // zoom level
             double resX = WORLD_ENVELOPE.getSpan(0) / numberOfTiles; // points per tile
             double resY = WORLD_ENVELOPE.getSpan(1) / numberOfTiles; // points per tile
@@ -302,22 +271,21 @@ class MBtilesCache {
             double my = resY / extent;
 
             // affine transformation
-            this.at =
-                    new AffineTransformation() {
-                        @Override
-                        public void filter(CoordinateSequence seq, int i) {
-                            // java-vector-tile uses the exact same Coordinate object for first and
-                            // last
-                            // element of a ring, but we don't want to transform it twice
-                            if (seq instanceof CoordinateSequence
-                                    && i > 0 // don't consider points
-                                    && i == seq.size() - 1
-                                    && seq.getCoordinate(0) == seq.getCoordinate(i)) {
-                                return;
-                            }
-                            super.filter(seq, i);
-                        }
-                    };
+            this.at = new AffineTransformation() {
+                @Override
+                public void filter(CoordinateSequence seq, int i) {
+                    // java-vector-tile uses the exact same Coordinate object for first and
+                    // last
+                    // element of a ring, but we don't want to transform it twice
+                    if (seq instanceof CoordinateSequence
+                            && i > 0 // don't consider points
+                            && i == seq.size() - 1
+                            && seq.getCoordinate(0) == seq.getCoordinate(i)) {
+                        return;
+                    }
+                    super.filter(seq, i);
+                }
+            };
             at.setToScale(mx, -my);
             at.translate(tx, ty);
         }
@@ -326,8 +294,8 @@ class MBtilesCache {
          * Rescales the geometry to real world coordinates
          *
          * @param screenGeometry the input geometry
-         * @return the rescaled geometry, might have happened either in place, so the returned
-         *     geometry is the same object as the screen geometry, or could be a different object
+         * @return the rescaled geometry, might have happened either in place, so the returned geometry is the same
+         *     object as the screen geometry, or could be a different object
          */
         Geometry process(Geometry screenGeometry) {
             screenGeometry.apply(at);
@@ -341,8 +309,7 @@ class MBtilesCache {
         volatile SimpleFeatureCollection converted;
         LayerFeatureBuilder builder;
 
-        public CollectionProvider(
-                List<VectorTileDecoder.Feature> mvtFeatures, LayerFeatureBuilder builder) {
+        public CollectionProvider(List<VectorTileDecoder.Feature> mvtFeatures, LayerFeatureBuilder builder) {
             this.mvtFeatures = mvtFeatures;
             this.builder = builder;
         }

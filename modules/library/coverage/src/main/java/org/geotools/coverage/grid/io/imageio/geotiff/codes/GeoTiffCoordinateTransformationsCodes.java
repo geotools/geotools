@@ -21,9 +21,9 @@ package org.geotools.coverage.grid.io.imageio.geotiff.codes;
  * Key ID = 3075<br>
  * Type = SHORT (code)<br>
  * Values: Section 6.3.3.3 codes<br>
- * Allows specification of the coordinate transformation method used. Note: this does not include
- * the definition of the correspondingì Geographic Coordinate System to which the projected CS is
- * related; only the transformation method is defined here.<br>
+ * Allows specification of the coordinate transformation method used. Note: this does not include the definition of the
+ * correspondingì Geographic Coordinate System to which the projected CS is related; only the transformation method is
+ * defined here.<br>
  * <br>
  * <br>
  * <strong>GeoKeys Required for "user-defined" Coordinate Transformations</strong><br>

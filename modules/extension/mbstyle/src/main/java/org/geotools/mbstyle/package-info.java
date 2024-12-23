@@ -17,8 +17,7 @@
 /**
  * Support for MapBox Style generation for GeoTools.
  *
- * <p>This package contains the core data structures for MapBox Style, each implemented as a JSON
- * Wrapper.
+ * <p>This package contains the core data structures for MapBox Style, each implemented as a JSON Wrapper.
  *
  * @see org.geotools.api.style.StyledLayerDescriptor
  */

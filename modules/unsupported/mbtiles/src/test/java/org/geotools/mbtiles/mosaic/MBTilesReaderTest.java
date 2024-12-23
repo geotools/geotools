@@ -20,14 +20,12 @@ public class MBTilesReaderTest {
 
     @Test
     public void testZoomlevel2() throws IOException {
-        MBTilesReader reader =
-                new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
+        MBTilesReader reader = new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(500, 500)),
-                        new ReferencedEnvelope(0, 180.0, -85.0, 0, MBTilesReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(500, 500)),
+                new ReferencedEnvelope(0, 180.0, -85.0, 0, MBTilesReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -38,20 +36,17 @@ public class MBTilesReaderTest {
         assertEquals(512, img.getWidth());
         assertEquals(512, img.getHeight());
         // ImageIO.write(img, "png", URLs.urlToFile(getClass().getResource("world_lakes.png")));
-        ImageAssert.assertEquals(
-                URLs.urlToFile(getClass().getResource("world_lakes.png")), img, 250);
+        ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("world_lakes.png")), img, 250);
     }
 
     @Test
     public void testZoomlevel3() throws IOException {
-        MBTilesReader reader =
-                new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
+        MBTilesReader reader = new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(500, 500)),
-                        new ReferencedEnvelope(0, 90.0, -85.0, 0, MBTilesReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(500, 500)),
+                new ReferencedEnvelope(0, 90.0, -85.0, 0, MBTilesReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();
@@ -65,14 +60,12 @@ public class MBTilesReaderTest {
 
     @Test
     public void testZoomlevel4() throws IOException {
-        MBTilesReader reader =
-                new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
+        MBTilesReader reader = new MBTilesReader(getClass().getResource("world_lakes.mbtiles"), null);
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(500, 500)),
-                        new ReferencedEnvelope(0, 45.0, -85.0, 0, MBTilesReader.WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(500, 500)),
+                new ReferencedEnvelope(0, 45.0, -85.0, 0, MBTilesReader.WGS_84));
         parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read(parameters);
         RenderedImage img = gc.getRenderedImage();

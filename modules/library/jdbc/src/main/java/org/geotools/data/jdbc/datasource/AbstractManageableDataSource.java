@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 /**
- * An abstract wrapper created to ease the setup of a {@link ManageableDataSource}, you just have to
- * subclass and create a close method
+ * An abstract wrapper created to ease the setup of a {@link ManageableDataSource}, you just have to subclass and create
+ * a close method
  *
  * @author Andrea Aime - TOPP
  */

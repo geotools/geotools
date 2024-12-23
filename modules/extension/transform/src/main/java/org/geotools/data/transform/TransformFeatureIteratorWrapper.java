@@ -44,8 +44,8 @@ class TransformFeatureIteratorWrapper implements SimpleFeatureIterator {
 
     private SimpleFeatureType target;
 
-    public TransformFeatureIteratorWrapper(
-            FeatureIterator<SimpleFeature> wrapped, Transformer transformer) throws IOException {
+    public TransformFeatureIteratorWrapper(FeatureIterator<SimpleFeature> wrapped, Transformer transformer)
+            throws IOException {
         this.transformer = transformer;
         this.target = transformer.getSchema();
         this.wrapped = wrapped;

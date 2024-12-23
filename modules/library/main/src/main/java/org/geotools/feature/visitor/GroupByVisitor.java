@@ -65,10 +65,10 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * This method computes and returns the group by visitor result. If the computation was
-     * optimized the optimization result is returned otherwise the result is computed in memory. If
-     * for some reason an optimization result exists and there are visited features, an in memory
-     * computation is performed and is merged with the existing optimization results.
+     * This method computes and returns the group by visitor result. If the computation was optimized the optimization
+     * result is returned otherwise the result is computed in memory. If for some reason an optimization result exists
+     * and there are visited features, an in memory computation is performed and is merged with the existing
+     * optimization results.
      *
      * @return group by visitor result
      */
@@ -105,9 +105,8 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * Methods that allow optimizations to directly set the group by visitor result instead of
-     * computing it visiting all the features. Aggregate visitor results are wrapped with the
-     * appropriate feature calculation type.
+     * Methods that allow optimizations to directly set the group by visitor result instead of computing it visiting all
+     * the features. Aggregate visitor results are wrapped with the appropriate feature calculation type.
      *
      * @param value the group by visitor result
      */
@@ -115,9 +114,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         Map<List<Object>, CalcResult> results = new HashMap<>();
         for (GroupByRawResult groupByRawResult : value) {
             // wrap the aggregate visitor result with the appropriate feature calculation type
-            results.put(
-                    groupByRawResult.groupByValues,
-                    aggregate.wrap(expression, groupByRawResult.visitorValue));
+            results.put(groupByRawResult.groupByValues, aggregate.wrap(expression, groupByRawResult.visitorValue));
         }
         // create a new group by result using the raw values returned by the optimization
         GroupByResult newResult = new GroupByResult(results, aggregate, groupByAttributes);
@@ -155,10 +152,9 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
          */
         void index(SimpleFeature feature) {
             // list of group by attributes values
-            List<Object> groupByValues =
-                    groupByAttributes.stream()
-                            .map(expression -> expression.evaluate(feature))
-                            .collect(Collectors.toList());
+            List<Object> groupByValues = groupByAttributes.stream()
+                    .map(expression -> expression.evaluate(feature))
+                    .collect(Collectors.toList());
             // check if a feature collection already for the group by values (using a list
             // feature collection to allow duplicates)
             FeatureCalc calc = groupByIndexes.get(groupByValues);
@@ -192,9 +188,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         private final List<Expression> groupByAttributes;
 
         public GroupByResult(
-                Map<List<Object>, CalcResult> results,
-                Aggregate aggregateVisitor,
-                List<Expression> groupByAttributes) {
+                Map<List<Object>, CalcResult> results, Aggregate aggregateVisitor, List<Expression> groupByAttributes) {
             this.results = results;
             this.aggregateVisitor = aggregateVisitor;
             this.groupByAttributes = groupByAttributes;
@@ -233,11 +227,9 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         public CalcResult merge(CalcResult newResult) {
             if (!isCompatible(newResult)) {
                 // not compatible results
-                throw new IllegalArgumentException(
-                        String.format(
-                                "Feature calculation result '%s' is not compatible it this result '%s'.",
-                                newResult.getClass().getSimpleName(),
-                                GroupByResult.class.getSimpleName()));
+                throw new IllegalArgumentException(String.format(
+                        "Feature calculation result '%s' is not compatible it this result '%s'.",
+                        newResult.getClass().getSimpleName(), GroupByResult.class.getSimpleName()));
             }
             if (newResult == CalcResult.NULL_RESULT) {
                 // if the new result is a NULL result we simply return a copy of this result
@@ -322,10 +314,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return results.entrySet().stream().map(this::entryToArray).toArray();
         }
 
-        /**
-         * The keys of the map will be List instead of arrays, since arrays don't give a decent hash
-         * code.
-         */
+        /** The keys of the map will be List instead of arrays, since arrays don't give a decent hash code. */
         @Override
         public Map toMap() {
             Map<List<Object>, Object> result = new HashMap<>();
@@ -336,7 +325,8 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         private Object[] entryToArray(Map.Entry<List<Object>, CalcResult> entry) {
-            Object[] result = Arrays.copyOf(entry.getKey().toArray(), entry.getKey().size() + 1);
+            Object[] result =
+                    Arrays.copyOf(entry.getKey().toArray(), entry.getKey().size() + 1);
             result[entry.getKey().size()] = entry.getValue().getValue();
             return result;
         }
@@ -355,8 +345,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         // being computed onto
         int expectedInputCount = groupByAttributes.size() + 1;
         if (inputTypes == null || inputTypes.size() != expectedInputCount)
-            throw new IllegalArgumentException(
-                    "Expecting " + expectedInputCount + " types, get: " + inputTypes);
+            throw new IllegalArgumentException("Expecting " + expectedInputCount + " types, get: " + inputTypes);
 
         Class expressionType = inputTypes.get(expectedInputCount - 1);
         switch (aggregate) {

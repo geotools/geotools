@@ -26,9 +26,7 @@ import org.geotools.util.factory.Hints;
 public class ArrayConverterFactory implements ConverterFactory {
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
-        if (source.isArray()
-                && !target.isArray()
-                && source.getComponentType().isAssignableFrom(target)) {
+        if (source.isArray() && !target.isArray() && source.getComponentType().isAssignableFrom(target)) {
             return new ArrayToSingleConverter();
         } else if (target.isArray()
                 && !source.isArray()

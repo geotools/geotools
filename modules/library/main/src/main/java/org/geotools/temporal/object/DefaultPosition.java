@@ -32,17 +32,17 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 
 /**
- * A union class that consists of one of the data types listed as its attributes. Date, Time, and
- * DateTime are basic data types defined in ISO/TS 19103, and may be used for describing temporal
- * positions referenced to the Gregorian calendar and UTC.
+ * A union class that consists of one of the data types listed as its attributes. Date, Time, and DateTime are basic
+ * data types defined in ISO/TS 19103, and may be used for describing temporal positions referenced to the Gregorian
+ * calendar and UTC.
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
 public class DefaultPosition implements Position {
 
     /**
-     * this object represents one of the data types listed as : Date, Time, DateTime, and
-     * TemporalPosition with its subtypes
+     * this object represents one of the data types listed as : Date, Time, DateTime, and TemporalPosition with its
+     * subtypes
      */
     private final Object position;
 
@@ -51,9 +51,9 @@ public class DefaultPosition implements Position {
     }
 
     /**
-     * This constructor replace the constructor with further DateTime object which will be included
-     * in the futur version of jdk (jdk7). example of datetime argument: format specified by the
-     * ISO8601 yyyy-mm-DDTHH:MM:SSZ - example : 2003-02-13T12:28:00.000GMT-08:00.
+     * This constructor replace the constructor with further DateTime object which will be included in the futur version
+     * of jdk (jdk7). example of datetime argument: format specified by the ISO8601 yyyy-mm-DDTHH:MM:SSZ - example :
+     * 2003-02-13T12:28:00.000GMT-08:00.
      *
      * @throws java.text.ParseException
      */
@@ -67,9 +67,9 @@ public class DefaultPosition implements Position {
     }
 
     /**
-     * {@linkplain TemporalPosition} and its subtypes shall be used for describing temporal
-     * positions referenced to other reference systems, and may be used for temporal positions
-     * referenced to any calendar or clock, including the Gregorian calendar and UTC.
+     * {@linkplain TemporalPosition} and its subtypes shall be used for describing temporal positions referenced to
+     * other reference systems, and may be used for temporal positions referenced to any calendar or clock, including
+     * the Gregorian calendar and UTC.
      *
      * @return TemporalPosition
      */
@@ -79,11 +79,9 @@ public class DefaultPosition implements Position {
     }
 
     /**
-     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian
-     * calendar and UTC.
+     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian calendar and UTC.
      *
-     * @return {@linkplain InternationalString} @TODO all subtypes of TemporalPosition must be
-     *     implemented.
+     * @return {@linkplain InternationalString} @TODO all subtypes of TemporalPosition must be implemented.
      */
     @Override
     public Date getDate() {
@@ -111,8 +109,7 @@ public class DefaultPosition implements Position {
     }
 
     /**
-     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian
-     * calendar and UTC.
+     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian calendar and UTC.
      *
      * @return {@linkplain InternationalString}
      */
@@ -122,8 +119,7 @@ public class DefaultPosition implements Position {
     }
 
     /**
-     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian
-     * calendar and UTC.
+     * May be used for describing temporal positions in ISO8601 format referenced to the Gregorian calendar and UTC.
      *
      * @return {@linkplain InternationalString}
      */

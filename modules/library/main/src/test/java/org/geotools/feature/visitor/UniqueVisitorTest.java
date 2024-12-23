@@ -48,56 +48,33 @@ public class UniqueVisitorTest {
     @BeforeClass
     public static void setup() throws Exception {
         // the feature type that will be used during the tests
-        uniqueValuesCountTestType =
-                DataUtilities.createType(
-                        "uniqueValuesCount",
-                        "id:Integer,aStringValue:String,aDoubleValue:Double,aIntValue:Integer,geo:Geometry");
+        uniqueValuesCountTestType = DataUtilities.createType(
+                "uniqueValuesCount",
+                "id:Integer,aStringValue:String,aDoubleValue:Double,aIntValue:Integer,geo:Geometry");
         // the features that will be used during the tests
         SimpleFeature[] simpleFeatures = {
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {1, "A", 50.0, 3, wktParser.read("POINT(-5 -5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {1, "A", 50.0, 3, wktParser.read("POINT(-5 -5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {2, "B", 10.0, 4, wktParser.read("POINT(-5 -5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {2, "B", 10.0, 4, wktParser.read("POINT(-5 -5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {3, "C", 20.0, 1, wktParser.read("POINT(-5 -5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {3, "C", 20.0, 1, wktParser.read("POINT(-5 -5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {4, "D", 30.0, 5, wktParser.read("POINT(5 5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {4, "D", 30.0, 5, wktParser.read("POINT(5 5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {5, "E", 60.0, 6, wktParser.read("POINT(5 5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {5, "E", 60.0, 6, wktParser.read("POINT(5 5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {6, "E", 10.0, 7, wktParser.read("POINT(5 5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {6, "E", 10.0, 7, wktParser.read("POINT(5 5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {7, "C", 20.0, 10, wktParser.read("POINT(5 -5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {7, "C", 20.0, 10, wktParser.read("POINT(5 -5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {8, "C", 30.0, 11, wktParser.read("POINT(5 -5)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {8, "C", 30.0, 11, wktParser.read("POINT(5 -5)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {9, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {9, "A", 500.0, 12, wktParser.read("POINT(0 0)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {10, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {10, "A", 500.0, 12, wktParser.read("POINT(0 0)")}, null),
             SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {11, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
-                    null),
+                    uniqueValuesCountTestType, new Object[] {11, "A", 500.0, 12, wktParser.read("POINT(0 0)")}, null),
         };
         // creating the feature collection
         featureCollection = DataUtilities.collection(simpleFeatures);
@@ -148,8 +125,7 @@ public class UniqueVisitorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testMultipleAttributes2() throws IOException {
-        UniqueVisitor uniqueVisitor =
-                new UniqueVisitor("aStringValue", "aDoubleValue", "aIntValue");
+        UniqueVisitor uniqueVisitor = new UniqueVisitor("aStringValue", "aDoubleValue", "aIntValue");
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
 

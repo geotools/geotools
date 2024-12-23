@@ -34,9 +34,8 @@ import org.geotools.util.LineWriter;
 import org.geotools.util.Utilities;
 
 /**
- * A formatter writting log messages on a single line. Compared to {@link SimpleFormatter}, this
- * formatter uses only one line per message instead of two. For example a message formatted by
- * {@code MonolineFormatter} looks like:
+ * A formatter writting log messages on a single line. Compared to {@link SimpleFormatter}, this formatter uses only one
+ * line per message instead of two. For example a message formatted by {@code MonolineFormatter} looks like:
  *
  * <blockquote>
  *
@@ -46,10 +45,10 @@ import org.geotools.util.Utilities;
  *
  * </blockquote>
  *
- * By default, {@code MonolineFormatter} displays only the level and the message. Additional fields
- * can be formatted if {@link #setTimeFormat} or {@link #setSourceFormat} methods are invoked with a
- * non-null argument. The format can also be set from the {@code jre/lib/logging.properties} file.
- * For example, user can cut and paste the following properties into {@code logging.properties}:
+ * By default, {@code MonolineFormatter} displays only the level and the message. Additional fields can be formatted if
+ * {@link #setTimeFormat} or {@link #setSourceFormat} methods are invoked with a non-null argument. The format can also
+ * be set from the {@code jre/lib/logging.properties} file. For example, user can cut and paste the following properties
+ * into {@code logging.properties}:
  *
  * <blockquote>
  *
@@ -75,8 +74,8 @@ import org.geotools.util.Utilities;
  *
  * </blockquote>
  *
- * The example below set the {@code MonolineFormatter} for the whole system with level FINE and
- * "Cp850" page encoding (which is appropriate for some DOS command lines on Windows).
+ * The example below set the {@code MonolineFormatter} for the whole system with level FINE and "Cp850" page encoding
+ * (which is appropriate for some DOS command lines on Windows).
  *
  * <blockquote>
  *
@@ -97,8 +96,8 @@ public class MonolineFormatter extends Formatter {
     private static final String PREFIX = "";
 
     /**
-     * The string to write at the end of every log header (e.g. "[FINE core]"). It should includes
-     * the spaces between the header and the message body.
+     * The string to write at the end of every log header (e.g. "[FINE core]"). It should includes the spaces between
+     * the header and the message body.
      */
     private static final String SUFFIX = " - ";
 
@@ -130,48 +129,43 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * The line separator. This is the value of the "line.separator" property at the time the {@code
-     * MonolineFormatter} was created.
+     * The line separator. This is the value of the "line.separator" property at the time the {@code MonolineFormatter}
+     * was created.
      */
     private final String lineSeparator = System.getProperty("line.separator", "\n");
 
     /**
-     * The line separator for the message body. This line always begin with {@link #lineSeparator},
-     * followed by some amount of spaces in order to align the message.
+     * The line separator for the message body. This line always begin with {@link #lineSeparator}, followed by some
+     * amount of spaces in order to align the message.
      */
     private String bodyLineSeparator = lineSeparator;
 
     /**
-     * The minimum amount of spaces to use for writting level and module name before the message.
-     * For example if this value is 12, then a message from module "org.geotools.core" with level
-     * FINE would be formatted as "<code>[core&nbsp;&nbsp;FINE]</code> <cite>the message</cite>"
-     * (i.e. the whole <code>[&nbsp;]</code> part is 12 characters wide).
+     * The minimum amount of spaces to use for writting level and module name before the message. For example if this
+     * value is 12, then a message from module "org.geotools.core" with level FINE would be formatted as "<code>
+     * [core&nbsp;&nbsp;FINE]</code> <cite>the message</cite>" (i.e. the whole <code>[&nbsp;]</code> part is 12
+     * characters wide).
      */
     private final int margin;
 
-    /**
-     * Time of {@code MonolineFormatter} creation, in milliseconds ellapsed since January 1, 1970.
-     */
+    /** Time of {@code MonolineFormatter} creation, in milliseconds ellapsed since January 1, 1970. */
     private final long startMillis;
 
     /** The format to use for formatting ellapsed time, or {@code null} if there is none. */
     private SimpleDateFormat timeFormat = null;
 
     /**
-     * One of the following constants: {@link #NO_SOURCE}, {@link #LOGGER_SHORT}, {@link
-     * #LOGGER_LONG}, {@link #CLASS_SHORT} or {@link #CLASS_LONG}.
+     * One of the following constants: {@link #NO_SOURCE}, {@link #LOGGER_SHORT}, {@link #LOGGER_LONG},
+     * {@link #CLASS_SHORT} or {@link #CLASS_LONG}.
      */
     private int sourceFormat = NO_SOURCE;
 
-    /**
-     * Buffer for formatting messages. We will reuse this buffer in order to reduce memory
-     * allocations.
-     */
+    /** Buffer for formatting messages. We will reuse this buffer in order to reduce memory allocations. */
     private final StringBuffer buffer;
 
     /**
-     * The line writer. This object transform all "\r", "\n" or "\r\n" occurences into a single line
-     * separator. This line separator will include space for the marging, if needed.
+     * The line writer. This object transform all "\r", "\n" or "\r\n" occurences into a single line separator. This
+     * line separator will include space for the marging, if needed.
      */
     private final LineWriter writer;
 
@@ -203,9 +197,9 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * Sets the format for displaying ellapsed time. The pattern must matches the format specified
-     * in {@link SimpleDateFormat}. For example, the pattern <code>"HH:mm:ss.SSS"</code> will
-     * display the ellapsed time in hours, minutes, seconds and milliseconds.
+     * Sets the format for displaying ellapsed time. The pattern must matches the format specified in
+     * {@link SimpleDateFormat}. For example, the pattern <code>"HH:mm:ss.SSS"</code> will display the ellapsed time in
+     * hours, minutes, seconds and milliseconds.
      *
      * @param pattern The time patter, or {@code null} to disable time formatting.
      */
@@ -221,9 +215,9 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * Returns the format for displaying ellapsed time. This is the pattern specified to the last
-     * call to {@link #setTimeFormat}, or the patten specified in the {@code
-     * org.geotools.MonolineFormater.time} property in the {@code jre/lib/logging.properties} file.
+     * Returns the format for displaying ellapsed time. This is the pattern specified to the last call to
+     * {@link #setTimeFormat}, or the patten specified in the {@code org.geotools.MonolineFormater.time} property in the
+     * {@code jre/lib/logging.properties} file.
      *
      * @return The time pattern, or {@code null} if time is not formatted.
      */
@@ -236,9 +230,8 @@ public class MonolineFormatter extends Formatter {
      * "none"</code>, <code>"logger:short"</code>, <code>"class:short"</code>, <code>"logger:long"
      * </code> or <code>"class:long"</code>.
      *
-     * <p>The difference between a {@code null} and <code>"none"</code> is that {@code null} may be
-     * replaced by a default value, while <code>"none"</code> means that the user explicitly
-     * requested no source.
+     * <p>The difference between a {@code null} and <code>"none"</code> is that {@code null} may be replaced by a
+     * default value, while <code>"none"</code> means that the user explicitly requested no source.
      *
      * @param format The format for displaying the source.
      */
@@ -256,10 +249,9 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * Returns the format for displaying the source. This is the pattern specified to the last call
-     * to {@link #setSourceFormat}, or the patten specified in the {@code
-     * org.geotools.MonolineFormater.source} property in the {@code jre/lib/logging.properties}
-     * file.
+     * Returns the format for displaying the source. This is the pattern specified to the last call to
+     * {@link #setSourceFormat}, or the patten specified in the {@code org.geotools.MonolineFormater.source} property in
+     * the {@code jre/lib/logging.properties} file.
      *
      * @return The source pattern, or {@code null} if source is not formatted.
      */
@@ -302,35 +294,31 @@ public class MonolineFormatter extends Formatter {
         String logger = record.getLoggerName();
         String classname = record.getSourceClassName();
         switch (sourceFormat) {
-            case LOGGER_SHORT:
-                {
-                    int pos = logger.lastIndexOf('.');
-                    if (pos >= 0) {
-                        logger = logger.substring(pos);
-                    }
-                    // fall through
+            case LOGGER_SHORT: {
+                int pos = logger.lastIndexOf('.');
+                if (pos >= 0) {
+                    logger = logger.substring(pos);
                 }
-            case LOGGER_LONG:
-                {
-                    buffer.append(' ');
-                    buffer.append(logger);
-                    break;
+                // fall through
+            }
+            case LOGGER_LONG: {
+                buffer.append(' ');
+                buffer.append(logger);
+                break;
+            }
+            case CLASS_SHORT: {
+                int dot = classname.lastIndexOf('.');
+                if (dot >= 0) {
+                    classname = classname.substring(dot + 1);
                 }
-            case CLASS_SHORT:
-                {
-                    int dot = classname.lastIndexOf('.');
-                    if (dot >= 0) {
-                        classname = classname.substring(dot + 1);
-                    }
-                    classname = classname.replace('$', '.');
-                    // fall through
-                }
-            case CLASS_LONG:
-                {
-                    buffer.append(' ');
-                    buffer.append(classname);
-                    break;
-                }
+                classname = classname.replace('$', '.');
+                // fall through
+            }
+            case CLASS_LONG: {
+                buffer.append(' ');
+                buffer.append(classname);
+                break;
+            }
         }
         buffer.append(SUFFIX);
         /*
@@ -357,25 +345,22 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * Setup a {@code MonolineFormatter} for the specified logger and its children. This method
-     * search for all instances of {@link ConsoleHandler} using the {@link SimpleFormatter}. If such
-     * instances are found, they are replaced by a single instance of {@code MonolineFormatter}. If
-     * no such {@link ConsoleHandler} are found, then a new one is created with this {@code
-     * MonolineFormatter}.
+     * Setup a {@code MonolineFormatter} for the specified logger and its children. This method search for all instances
+     * of {@link ConsoleHandler} using the {@link SimpleFormatter}. If such instances are found, they are replaced by a
+     * single instance of {@code MonolineFormatter}. If no such {@link ConsoleHandler} are found, then a new one is
+     * created with this {@code MonolineFormatter}.
      *
-     * <p>In addition, this method can set the handler levels. If the level is non-null, then all
-     * {@link Handler}s using the monoline formatter will be set to the specified level. This is
-     * provided for convenience, but non-null {@code level} argument should be avoided as much as
-     * possible because it overrides user's level settings. A user trying to configure his logging
-     * properties file may find confusing to see his setting ignored.
+     * <p>In addition, this method can set the handler levels. If the level is non-null, then all {@link Handler}s using
+     * the monoline formatter will be set to the specified level. This is provided for convenience, but non-null
+     * {@code level} argument should be avoided as much as possible because it overrides user's level settings. A user
+     * trying to configure his logging properties file may find confusing to see his setting ignored.
      *
      * @param logger The base logger to apply the change on.
      * @param level The desired level, or {@code null} if no level should be set.
-     * @return The registered {@code MonolineFormatter} (never {@code null}). The formatter output
-     *     can be configured using the {@link #setTimeFormat} and {@link #setSourceFormat} methods.
+     * @return The registered {@code MonolineFormatter} (never {@code null}). The formatter output can be configured
+     *     using the {@link #setTimeFormat} and {@link #setSourceFormat} methods.
      */
-    public static MonolineFormatter configureConsoleHandler(
-            final Logger logger, final Level level) {
+    public static MonolineFormatter configureConsoleHandler(final Logger logger, final Level level) {
         MonolineFormatter monoline = null;
         boolean foundConsoleHandler = false;
         Handler[] handlers = logger.getHandlers();
@@ -451,8 +436,8 @@ public class MonolineFormatter extends Formatter {
     }
 
     /**
-     * Adds to the specified logger a {@link Handler} using a {@code MonolineFormatter} set at the
-     * specified level. The formatter is returned for convenience.
+     * Adds to the specified logger a {@link Handler} using a {@code MonolineFormatter} set at the specified level. The
+     * formatter is returned for convenience.
      */
     private static MonolineFormatter addHandler(final Logger logger, final Level level) {
         final MonolineFormatter monoline = new MonolineFormatter();

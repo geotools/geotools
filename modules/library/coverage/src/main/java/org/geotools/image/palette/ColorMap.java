@@ -27,11 +27,11 @@ import org.geotools.image.palette.ColorMap.ColorEntry;
 import org.geotools.util.logging.Logging;
 
 /**
- * A {@link HashMap} replacement especially designed to map an (eventually packed) color to a non
- * negative integer value, which can be in our use cases a count or a palette index.
+ * A {@link HashMap} replacement especially designed to map an (eventually packed) color to a non negative integer
+ * value, which can be in our use cases a count or a palette index.
  *
- * <p>It uses significant less resources than a normal {@link HashMap} as it avoids the usage of
- * object wrappers and other redundant information that we don't need in this particular application
+ * <p>It uses significant less resources than a normal {@link HashMap} as it avoids the usage of object wrappers and
+ * other redundant information that we don't need in this particular application
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -78,8 +78,8 @@ final class ColorMap implements Iterable<ColorEntry> {
     }
 
     /**
-     * Increments the counter associated to the specified color by one, or sets the count of such
-     * color to one if missing
+     * Increments the counter associated to the specified color by one, or sets the count of such color to one if
+     * missing
      */
     public void increment(int red, int green, int blue, int alpha) {
         increment(red, green, blue, alpha, 1);
@@ -226,8 +226,8 @@ final class ColorMap implements Iterable<ColorEntry> {
     }
 
     /**
-     * Reset its own status to the one of the other color map. The {@link ColorEntry} are shared, so
-     * the other color map should not be used anymore after this call
+     * Reset its own status to the one of the other color map. The {@link ColorEntry} are shared, so the other color map
+     * should not be used anymore after this call
      */
     public void reset(ColorMap other) {
         this.modificationCount = other.modificationCount;
@@ -237,9 +237,8 @@ final class ColorMap implements Iterable<ColorEntry> {
     }
 
     /**
-     * Prints out statistics about the color map, number of buckes, empty buckets count, number of
-     * entries per bucket, number of access operations and number of average color entries accessed
-     * each time
+     * Prints out statistics about the color map, number of buckes, empty buckets count, number of entries per bucket,
+     * number of access operations and number of average color entries accessed each time
      */
     public void printStats() {
         int empty = 0;
@@ -261,22 +260,20 @@ final class ColorMap implements Iterable<ColorEntry> {
                 sum += count;
             }
         }
-        LOGGER.info(
-                "Bins "
-                        + table.length
-                        + ", empty: "
-                        + empty
-                        + " largest: "
-                        + largest
-                        + " avg: "
-                        + sum * 1.0 / (table.length - empty));
-        LOGGER.info(
-                "Accesses: "
-                        + accessCount
-                        + ", scans: "
-                        + scanCount
-                        + ", scan per access: "
-                        + (scanCount * 1.0 / accessCount));
+        LOGGER.info("Bins "
+                + table.length
+                + ", empty: "
+                + empty
+                + " largest: "
+                + largest
+                + " avg: "
+                + sum * 1.0 / (table.length - empty));
+        LOGGER.info("Accesses: "
+                + accessCount
+                + ", scans: "
+                + scanCount
+                + ", scan per access: "
+                + (scanCount * 1.0 / accessCount));
         accessCount = 0;
         scanCount = 0;
     }
@@ -315,8 +312,7 @@ final class ColorMap implements Iterable<ColorEntry> {
         @Override
         public boolean hasNext() {
             if (reference != modificationCount) {
-                throw new ConcurrentModificationException(
-                        "The map entry count has been modified during the iteration");
+                throw new ConcurrentModificationException("The map entry count has been modified during the iteration");
             }
 
             if (current == null) {

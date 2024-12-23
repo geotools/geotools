@@ -21,8 +21,7 @@ import java.util.logging.Logger;
 
 public class VPFLogger {
     /** The logger for the vpf module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.vpf");
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.vpf");
 
     protected static Level loggerLevel = Level.INFO;
 

@@ -45,12 +45,11 @@ public abstract class DefaultCoverageSource implements CoverageSource {
     protected static final EnumSet<CoverageCapabilities> CAPABILITIES;
 
     static {
-        CAPABILITIES =
-                EnumSet.of(
-                        CoverageCapabilities.READ_HORIZONTAL_DOMAIN_SUBSAMBLING,
-                        CoverageCapabilities.READ_RANGE_SUBSETTING,
-                        CoverageCapabilities.READ_REPROJECTION,
-                        CoverageCapabilities.READ_SUBSAMPLING);
+        CAPABILITIES = EnumSet.of(
+                CoverageCapabilities.READ_HORIZONTAL_DOMAIN_SUBSAMBLING,
+                CoverageCapabilities.READ_RANGE_SUBSETTING,
+                CoverageCapabilities.READ_REPROJECTION,
+                CoverageCapabilities.READ_SUBSAMPLING);
     }
 
     protected final Name name;
@@ -81,8 +80,7 @@ public abstract class DefaultCoverageSource implements CoverageSource {
     }
 
     @Override
-    public List<? extends RasterLayout> getOverviewsLayouts(ProgressListener listener)
-            throws IOException {
+    public List<? extends RasterLayout> getOverviewsLayouts(ProgressListener listener) throws IOException {
         return Collections.emptyList();
     }
 

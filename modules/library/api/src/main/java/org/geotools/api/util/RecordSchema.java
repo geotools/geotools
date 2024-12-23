@@ -13,15 +13,14 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * A collection of {@linkplain RecordType record types}. All schemas possess an associated
- * {@linkplain NameSpace name space} within which the {@linkplain RecordType record type} names are
- * defined. A schema is a flat data structure, similar to a Java package.
+ * A collection of {@linkplain RecordType record types}. All schemas possess an associated {@linkplain NameSpace name
+ * space} within which the {@linkplain RecordType record type} names are defined. A schema is a flat data structure,
+ * similar to a Java package.
  *
- * <p>Record schemas do not provide a hierarchical framework within which data types may be
- * organized. {@linkplain NameSpace Name spaces}, however, do define a hierarchical framework for
- * arbitrary named items. Record schemas can participate in this framework by virtue of the fact
- * that they are all identified by {@linkplain LocalName local name} or some subclass. A schema's
- * location in the hierarchy can be communicated by <code>
+ * <p>Record schemas do not provide a hierarchical framework within which data types may be organized.
+ * {@linkplain NameSpace Name spaces}, however, do define a hierarchical framework for arbitrary named items. Record
+ * schemas can participate in this framework by virtue of the fact that they are all identified by {@linkplain LocalName
+ * local name} or some subclass. A schema's location in the hierarchy can be communicated by <code>
  * {@linkplain #getSchemaName()}.{@linkplain LocalName#scope scope()}.{@linkplain NameSpace#name name()}
  * </code>.
  *
@@ -31,15 +30,12 @@ import java.util.Map;
  */
 public interface RecordSchema {
     /**
-     * Returns the schema name. The {@linkplain LocalName#scope scope} of the schema name is
-     * associated with a {@linkplain NameSpace name space} which fixes this schema to a specific
-     * location in the type hierarchy.
+     * Returns the schema name. The {@linkplain LocalName#scope scope} of the schema name is associated with a
+     * {@linkplain NameSpace name space} which fixes this schema to a specific location in the type hierarchy.
      */
     LocalName getSchemaName();
 
-    /**
-     * Returns the dictionary of all (<var>name</var>, <var>record type</var>) pairs in this schema.
-     */
+    /** Returns the dictionary of all (<var>name</var>, <var>record type</var>) pairs in this schema. */
     Map<TypeName, RecordType> getDescription();
 
     /**
@@ -49,9 +45,9 @@ public interface RecordSchema {
     Collection<RecordType> getElements();
 
     /**
-     * Looks up the provided type name and returns the associated record type. If the type name is
-     * not defined within this schema, then this method returns {@code null}. This is functionnaly
-     * equivalent to <code>{@linkplain #getDescription()}.{@linkplain Map#get get}(name)</code>.
+     * Looks up the provided type name and returns the associated record type. If the type name is not defined within
+     * this schema, then this method returns {@code null}. This is functionnaly equivalent to <code>
+     * {@linkplain #getDescription()}.{@linkplain Map#get get}(name)</code>.
      */
     RecordType locate(TypeName name);
 }

@@ -67,8 +67,7 @@ public class URLEncodeFunctionTest {
         URLEncodeFunction f = new URLEncodeFunction();
 
         List<Expression> params =
-                Arrays.asList(
-                        filterFactory.literal("Value With Spaces"), filterFactory.literal(false));
+                Arrays.asList(filterFactory.literal("Value With Spaces"), filterFactory.literal(false));
         f.setParameters(params);
 
         assertEquals("Value%20With%20Spaces", f.evaluate(null));
@@ -80,8 +79,7 @@ public class URLEncodeFunctionTest {
         URLEncodeFunction f = new URLEncodeFunction();
 
         List<Expression> params =
-                Arrays.asList(
-                        filterFactory.literal("Value With Spaces"), filterFactory.literal(true));
+                Arrays.asList(filterFactory.literal("Value With Spaces"), filterFactory.literal(true));
         f.setParameters(params);
 
         assertEquals("Value+With+Spaces", f.evaluate(null));

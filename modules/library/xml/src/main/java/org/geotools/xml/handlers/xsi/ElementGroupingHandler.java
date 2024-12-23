@@ -27,8 +27,8 @@ import org.xml.sax.SAXException;
  */
 public abstract class ElementGroupingHandler extends XSIElementHandler {
     /**
-     * This will compress the given element based on it's type and the parent schema, allowing for
-     * references to be resolved.
+     * This will compress the given element based on it's type and the parent schema, allowing for references to be
+     * resolved.
      */
     protected abstract ElementGrouping compress(SchemaHandler parent) throws SAXException;
 }

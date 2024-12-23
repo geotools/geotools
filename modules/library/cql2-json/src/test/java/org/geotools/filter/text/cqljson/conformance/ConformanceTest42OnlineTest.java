@@ -28,8 +28,8 @@ import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 /**
- * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_42">table 15 from
- * section A.10.3 Conformance test 42.</a>
+ * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_42">table 15 from section A.10.3
+ * Conformance test 42.</a>
  */
 public class ConformanceTest42OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest42OnlineTest {
@@ -48,67 +48,49 @@ public class ConformanceTest42OnlineTest
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
     public static Collection<Object[]> params() {
-        return Arrays.asList(
-                new Object[][] {
-                    {
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
-                        1
-                    },
-                    {
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
-                        1
-                    },
-                    // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
-                    // comment in ConformanceUtils class
-                    {
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
-                        1
-                    },
-                    /* {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                    */
-                    {
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
-                        1
-                    },
-                    {
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
-                        1
-                    },
-                    // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
-                    // comment in ConformanceUtils class
-                    {
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
-                        1
-                    }, /*
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       {"{}", 0} // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
-                       */
-                });
+        return Arrays.asList(new Object[][] {
+            {"{\"op\":\"t_after\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}", 1},
+            {"{\"op\":\"t_before\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}", 1},
+            // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
+            // comment in ConformanceUtils class
+            {"{\"op\":\"t_equals\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}", 1},
+            /* {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+            */
+            {"{\"op\":\"t_after\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}", 1},
+            {"{\"op\":\"t_before\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}", 1},
+            // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
+            // comment in ConformanceUtils class
+            {"{\"op\":\"t_equals\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}", 1
+            }, /*
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 0}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 2}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               {"{}", 0} // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
+               */
+        });
     }
 
     @Test

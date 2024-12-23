@@ -28,8 +28,8 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * {@link RootNode} implements a {@link BaseCoverageProcessingNode} which act as the rot for a graph
- * of {@link CoverageProcessingNode} s
+ * {@link RootNode} implements a {@link BaseCoverageProcessingNode} which act as the rot for a graph of
+ * {@link CoverageProcessingNode} s
  *
  * @author Simone Giannecchini, GeoSolutions
  */
@@ -87,8 +87,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
     @Override
     public boolean addSource(CoverageProcessingNode source) {
         throw new UnsupportedOperationException(
-                MessageFormat.format(
-                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "addSource(CoverageProcessingNode)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "addSource(CoverageProcessingNode)"));
     }
 
     /*

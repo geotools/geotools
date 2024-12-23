@@ -35,12 +35,12 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.DefaultServiceInfo;
 
 /**
- * A data store wrapped around a {@link SimpleFeatureSource} object. The store per se cannot do any
- * kind of reads and writes, as the methods of the store are dealing with transactions per call,
- * while the SimpleFeatureSource/SimpleFeatureStore implementations are dealing with them using a
- * field, so in a stateful way, which means the Transaction provided in the parameters cannot be
- * honored in a multi-threaded context. As a result the store won't do any attempt do to reads and
- * writes, please use the source itself to do such operations, and treat transactions accordingly.
+ * A data store wrapped around a {@link SimpleFeatureSource} object. The store per se cannot do any kind of reads and
+ * writes, as the methods of the store are dealing with transactions per call, while the
+ * SimpleFeatureSource/SimpleFeatureStore implementations are dealing with them using a field, so in a stateful way,
+ * which means the Transaction provided in the parameters cannot be honored in a multi-threaded context. As a result the
+ * store won't do any attempt do to reads and writes, please use the source itself to do such operations, and treat
+ * transactions accordingly.
  */
 public class SingleFeatureSourceDataStore implements DataStore {
 
@@ -145,39 +145,35 @@ public class SingleFeatureSourceDataStore implements DataStore {
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
-        throw new UnsupportedOperationException(
-                "This store is wrapping a FeatureSource/FeatureStore, which handles "
-                        + "transactions in a stateful way as opposed to a per call way. "
-                        + "You should get the feature source and use that one instead");
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
+        throw new UnsupportedOperationException("This store is wrapping a FeatureSource/FeatureStore, which handles "
+                + "transactions in a stateful way as opposed to a per call way. "
+                + "You should get the feature source and use that one instead");
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Filter filter, Transaction transaction) throws IOException {
-        throw new UnsupportedOperationException(
-                "This store is wrapping a FeatureSource/FeatureStore, which handles "
-                        + "transactions in a stateful way as opposed to a per call way. "
-                        + "You should get the feature source and use that one instead");
+        throw new UnsupportedOperationException("This store is wrapping a FeatureSource/FeatureStore, which handles "
+                + "transactions in a stateful way as opposed to a per call way. "
+                + "You should get the feature source and use that one instead");
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
-        throw new UnsupportedOperationException(
-                "This store is wrapping a FeatureSource/FeatureStore, which handles "
-                        + "transactions in a stateful way as opposed to a per call way. "
-                        + "You should get the feature source and use that one instead");
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
+        throw new UnsupportedOperationException("This store is wrapping a FeatureSource/FeatureStore, which handles "
+                + "transactions in a stateful way as opposed to a per call way. "
+                + "You should get the feature source and use that one instead");
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             String typeName, Transaction transaction) throws IOException {
-        throw new UnsupportedOperationException(
-                "This store is wrapping a FeatureSource/FeatureStore, which handles "
-                        + "transactions in a stateful way as opposed to a per call way. "
-                        + "You should get the feature source and use that one instead");
+        throw new UnsupportedOperationException("This store is wrapping a FeatureSource/FeatureStore, which handles "
+                + "transactions in a stateful way as opposed to a per call way. "
+                + "You should get the feature source and use that one instead");
     }
 
     @Override

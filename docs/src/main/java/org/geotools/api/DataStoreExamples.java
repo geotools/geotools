@@ -54,8 +54,7 @@ public class DataStoreExamples {
 
     void exampleCreateSchema() throws Exception {
         // exampleCreateSchema start
-        SimpleFeatureType schema =
-                DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
+        SimpleFeatureType schema = DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
 
         dataStore.createSchema(schema);
         // exampleCreateSchema end

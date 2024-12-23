@@ -28,12 +28,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * <p>The "Source" for FeatureEvents is taken to be a <code>FeatureSource</code>, rather than <code>
  * DataStore</code>. The is due to SimpleFeatureSource having a hold of Transaction information.
  *
- * <p>DataStore implementations will actually keep the list listeners sorted by TypeName, and can
- * report FeatureWriter modifications as required (by filtering the Listener list by typeName and
- * Transaction).
+ * <p>DataStore implementations will actually keep the list listeners sorted by TypeName, and can report FeatureWriter
+ * modifications as required (by filtering the Listener list by typeName and Transaction).
  *
- * <p>The Transaction.commit() operation will also need to provide notification, this shows up as a
- * CHANGE event; with a bit more detail being available in the subclass BatchFeatureEvent.
+ * <p>The Transaction.commit() operation will also need to provide notification, this shows up as a CHANGE event; with a
+ * bit more detail being available in the subclass BatchFeatureEvent.
  *
  * @since GeoTools 2.0
  */
@@ -44,19 +43,17 @@ public class FeatureEvent extends EventObject {
      * FeatureWriter event type denoting the adding features.
      *
      * <p>This EventType is used when FeatureWriter.write() is called when <code>
-     * FeatureWriter.hasNext()</code> has previously returned <code>false</code>. This action
-     * represents a newly create Feature being passed to the DataStore.
+     * FeatureWriter.hasNext()</code> has previously returned <code>false</code>. This action represents a newly create
+     * Feature being passed to the DataStore.
      *
-     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it
-     * is modifing matches the <code>FeatureSource.getSchema().getTypeName()</code> before sending
-     * notification to any listeners on the FeatureSource.
+     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it is modifing matches
+     * the <code>FeatureSource.getSchema().getTypeName()</code> before sending notification to any listeners on the
+     * FeatureSource.
      *
-     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check
-     * the FeatureSource.getTransaction() for a match before sending notification to any listeners
-     * on the FeatureSource.
+     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check the
+     * FeatureSource.getTransaction() for a match before sending notification to any listeners on the FeatureSource.
      *
-     * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the newly created
-     * Features.
+     * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the newly created Features.
      */
     private static final int FEATURES_ADDED = 1;
 
@@ -64,39 +61,36 @@ public class FeatureEvent extends EventObject {
      * Event type constant denoting that features in the collection has been modified.
      *
      * <p>This EventType is used when a FeatureWriter.write() is called when <code>
-     * FeatureWriter.hasNext()</code> returns <code>true</code> and the current Feature has been
-     * changed. This EventType is also used when a Transaction <code>commit()</code> or <code>
+     * FeatureWriter.hasNext()</code> returns <code>true</code> and the current Feature has been changed. This EventType
+     * is also used when a Transaction <code>commit()</code> or <code>
      * rolledback</code> is called.
      *
-     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it
-     * is modifing matches the <code>FeatureSource.getSchema().getTypeName()</code> before sending
-     * notification to any listeners on the FeatureSource.
+     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it is modifing matches
+     * the <code>FeatureSource.getSchema().getTypeName()</code> before sending notification to any listeners on the
+     * FeatureSource.
      *
-     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check
-     * the FeatureSource.getTransaction() for a match before sending notification to any listeners
-     * on the FeatureSource. All FeatureSources of the same typename will need to be informed of a
-     * <code>commit</code>, except ones in the same Transaction, and only FeatureSources in the same
-     * Transaction will need to be informed of a rollback.
+     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check the
+     * FeatureSource.getTransaction() for a match before sending notification to any listeners on the FeatureSource. All
+     * FeatureSources of the same typename will need to be informed of a <code>commit</code>, except ones in the same
+     * Transaction, and only FeatureSources in the same Transaction will need to be informed of a rollback.
      *
-     * <p>FeatureEvent.getBounds() should reflect the the BoundingBox of the FeatureWriter modified
-     * Features. This may not be possible during a <code>commit()</code> or <code>rollback()</code>
-     * operation.
+     * <p>FeatureEvent.getBounds() should reflect the the BoundingBox of the FeatureWriter modified Features. This may
+     * not be possible during a <code>commit()</code> or <code>rollback()</code> operation.
      */
     private static final int FEATURES_CHANGED = 0;
 
     /**
      * Event type constant denoting the removal of a feature.
      *
-     * <p>This EventType is used when FeatureWriter.remove() is called. This action represents a
-     * Feature being removed from the DataStore.
+     * <p>This EventType is used when FeatureWriter.remove() is called. This action represents a Feature being removed
+     * from the DataStore.
      *
-     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it
-     * is modifing matches the <code>FeatureSource.getSchema().getTypeName()</code> before sending
-     * notification to any listeners on the FeatureSource.
+     * <p>The FeatureWriter making the modification will need to check that <code>typeName</code> it is modifing matches
+     * the <code>FeatureSource.getSchema().getTypeName()</code> before sending notification to any listeners on the
+     * FeatureSource.
      *
-     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check
-     * the FeatureSource.getTransaction() for a match before sending notification to any listeners
-     * on the FeatureSource.
+     * <p>If the FeatureWriter is opperating against a Transaction it will need ensure that to check the
+     * FeatureSource.getTransaction() for a match before sending notification to any listeners on the FeatureSource.
      *
      * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the removed Features.
      */
@@ -106,31 +100,29 @@ public class FeatureEvent extends EventObject {
         /**
          * Features have been added.
          *
-         * <p>FeatureEvent.getFilter() lists the FeatureIds of the newly created features; please
-         * note that these IDs may be changed during a commit.
+         * <p>FeatureEvent.getFilter() lists the FeatureIds of the newly created features; please note that these IDs
+         * may be changed during a commit.
          */
         ADDED(FEATURES_ADDED),
 
         /**
          * Features have been updated.
          *
-         * <p>The FeatureEvent.getFilter() can be used to identify the removed features; often this
-         * is a FidFilter. But it may be Filter.INCLUDES if we are unsure exactly what has been
-         * changed.
+         * <p>The FeatureEvent.getFilter() can be used to identify the removed features; often this is a FidFilter. But
+         * it may be Filter.INCLUDES if we are unsure exactly what has been changed.
          */
         CHANGED(FEATURES_CHANGED),
         /**
          * Features have been removed.
          *
-         * <p>The FeatureEvent.getFilter() can be used to identify the removed features; often this
-         * is a FidFilter.
+         * <p>The FeatureEvent.getFilter() can be used to identify the removed features; often this is a FidFilter.
          */
         REMOVED(FEATURES_REMOVED),
         /**
          * Changes have been committed.
          *
-         * <p>The BatchFeatureEvent.replaceFid method can be used to update any temporary FeatureIds
-         * with the actual FeatureId generated by the commit.
+         * <p>The BatchFeatureEvent.replaceFid method can be used to update any temporary FeatureIds with the actual
+         * FeatureId generated by the commit.
          *
          * <p>You can check BatchFeatureEvent getFilter() and getBounds() as well.
          */
@@ -176,8 +168,8 @@ public class FeatureEvent extends EventObject {
     /**
      * The FeatureSource broadcasting the event.
      *
-     * <p>Please note when several FeatureSources are operating on different Transactions this value
-     * will not always line up with original FeatureSource represented by Event.getSource().
+     * <p>Please note when several FeatureSources are operating on different Transactions this value will not always
+     * line up with original FeatureSource represented by Event.getSource().
      */
     protected FeatureSource featureSource;
 
@@ -238,8 +230,7 @@ public class FeatureEvent extends EventObject {
         source = featureSource;
     }
     /**
-     * Provides information on the type of change that has occured. Possible types are: add, remove,
-     * change
+     * Provides information on the type of change that has occured. Possible types are: add, remove, change
      *
      * @return an int which must be one of FEATURES_ADDED, FEATURES_REMOVED, FEATURES_CHANGED
      */
@@ -248,8 +239,7 @@ public class FeatureEvent extends EventObject {
     }
 
     /**
-     * Provides information on the type of change that has occurred. Possible types are: add,
-     * remove, change
+     * Provides information on the type of change that has occurred. Possible types are: add, remove, change
      *
      * @return Type
      */
@@ -269,8 +259,8 @@ public class FeatureEvent extends EventObject {
     /**
      * Filter describing the content that was changed.
      *
-     * @return A filter that can be used to check if any cached content you are keeping needs to be
-     *     updated, or Filter.INCLUDES if unknown.
+     * @return A filter that can be used to check if any cached content you are keeping needs to be updated, or
+     *     Filter.INCLUDES if unknown.
      */
     public Filter getFilter() {
         return filter;

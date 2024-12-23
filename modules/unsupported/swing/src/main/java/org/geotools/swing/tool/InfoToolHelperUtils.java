@@ -31,8 +31,7 @@ import org.geotools.geometry.Position2D;
 public class InfoToolHelperUtils {
 
     /**
-     * Transforms a position. If {@code transform} is {@code null} the original position is
-     * returned.
+     * Transforms a position. If {@code transform} is {@code null} the original position is returned.
      *
      * @param pos the position
      * @return the transformed position

@@ -56,9 +56,9 @@ import org.geotools.filter.capability.TemporalOperatorImpl;
 import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 
 /**
- * Custom {@link Capabilities} supporting temporal capabilities and operators. Uses a custom {@link
- * IsFullySupportedFilterVisitor} to enable support for {@link IncludeFilter}, {@link ExcludeFilter}
- * and {@link BegunBy}.
+ * Custom {@link Capabilities} supporting temporal capabilities and operators. Uses a custom
+ * {@link IsFullySupportedFilterVisitor} to enable support for {@link IncludeFilter}, {@link ExcludeFilter} and
+ * {@link BegunBy}.
  */
 class ElasticCapabilities extends Capabilities {
     private static final Map<Class<?>, String> temporalNames;

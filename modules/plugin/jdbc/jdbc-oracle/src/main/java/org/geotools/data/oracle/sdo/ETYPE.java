@@ -54,8 +54,7 @@ public interface ETYPE {
     /**
      * <code>ETYPE</code> code representing compound linestring
      *
-     * <p>A compound polygon represents its edges using a combination of sequence of straight and
-     * curved edges.
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and curved edges.
      *
      * <p>Compound LineString is not representatble as a JTS Geometry
      */
@@ -64,8 +63,7 @@ public interface ETYPE {
     /**
      * <code>ETYPE</code> code representing compound polygon.
      *
-     * <p>A compound polygon represents its edge using a combination of sequence of straight and
-     * curved edges.
+     * <p>A compound polygon represents its edge using a combination of sequence of straight and curved edges.
      *
      * <p>Compound Polygon is not representatble as a JTS Geometry
      */
@@ -74,8 +72,7 @@ public interface ETYPE {
     /**
      * <code>ETYPE</code> code representing compound exterior CCW polygon ring
      *
-     * <p>A compound polygon represents its edges using a combination of sequence of straight and
-     * curved edges.
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and curved edges.
      *
      * <p>Compound Polygon Interior is not representatble as a JTS Geometry
      */
@@ -84,8 +81,7 @@ public interface ETYPE {
     /**
      * <code>ETYPE</code> code representing compound interior CW polygon ring
      *
-     * <p>A compound polygon represents its edges using a combination of sequence of straight and
-     * curved edges.
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and curved edges.
      *
      * <p>Compound Polygon Exterior is not representatble as a JTS Geometry
      */

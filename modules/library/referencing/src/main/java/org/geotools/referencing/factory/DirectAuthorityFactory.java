@@ -29,10 +29,9 @@ import org.geotools.api.referencing.Factory;
 import org.geotools.util.factory.Hints;
 
 /**
- * The base class for authority factories that create referencing object directly. This is in
- * contrast with other factories like the {@linkplain AuthorityFactoryAdapter adapter} or
- * {@linkplain BufferedAuthorityFactory buffered} ones, which delegates their work to an other
- * factory.
+ * The base class for authority factories that create referencing object directly. This is in contrast with other
+ * factories like the {@linkplain AuthorityFactoryAdapter adapter} or {@linkplain BufferedAuthorityFactory buffered}
+ * ones, which delegates their work to an other factory.
  *
  * @since 2.3
  * @version $Id$
@@ -51,9 +50,8 @@ public abstract class DirectAuthorityFactory extends AbstractAuthorityFactory {
     protected final ReferencingFactoryContainer factories;
 
     /**
-     * Tells if {@link ReferencingFactoryContainer#hints} has been invoked. It must be invoked
-     * exactly once, but can't be invoked in the constructor because it causes a {@link
-     * StackOverflowError} in some situations.
+     * Tells if {@link ReferencingFactoryContainer#hints} has been invoked. It must be invoked exactly once, but can't
+     * be invoked in the constructor because it causes a {@link StackOverflowError} in some situations.
      */
     private boolean hintsInitialized;
 
@@ -61,24 +59,23 @@ public abstract class DirectAuthorityFactory extends AbstractAuthorityFactory {
      * Constructs an instance using the specified set of factories.
      *
      * @param factories The low-level factories to use.
-     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
-     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY MINIMUM_PRIORITY} and
+     *     {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
-    protected DirectAuthorityFactory(
-            final ReferencingFactoryContainer factories, final int priority) {
+    protected DirectAuthorityFactory(final ReferencingFactoryContainer factories, final int priority) {
         super(priority);
         this.factories = factories;
         ensureNonNull("factories", factories);
     }
 
     /**
-     * Constructs an instance using the specified hints. This constructor recognizes the {@link
-     * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
-     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
+     * Constructs an instance using the specified hints. This constructor recognizes the {@link Hints#CRS_FACTORY CRS},
+     * {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints.
      *
      * @param hints The hints, or {@code null} if none.
-     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
-     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY MINIMUM_PRIORITY} and
+     *     {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
     protected DirectAuthorityFactory(final Hints hints, final int priority) {
         super(priority);
@@ -88,10 +85,9 @@ public abstract class DirectAuthorityFactory extends AbstractAuthorityFactory {
     }
 
     /**
-     * Returns the implementation hints for this factory. The returned map contains values for
-     * {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM}
-     * and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints. Other values
-     * may be provided as well, at implementation choice.
+     * Returns the implementation hints for this factory. The returned map contains values for {@link Hints#CRS_FACTORY
+     * CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints. Other values may be provided as well, at implementation choice.
      */
     @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {

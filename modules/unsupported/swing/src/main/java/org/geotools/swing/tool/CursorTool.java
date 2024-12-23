@@ -56,8 +56,7 @@ public abstract class CursorTool extends MapMouseAdapter {
     }
 
     /**
-     * Get the cursor for this tool. Sub-classes should override this method to provide a custom
-     * cursor.
+     * Get the cursor for this tool. Sub-classes should override this method to provide a custom cursor.
      *
      * @return the default cursor
      */
@@ -66,8 +65,8 @@ public abstract class CursorTool extends MapMouseAdapter {
     }
 
     /**
-     * Query if the tool is one that draws a box on the map display when the mouse is being dragged
-     * (eg. to indicate a zoom area).
+     * Query if the tool is one that draws a box on the map display when the mouse is being dragged (eg. to indicate a
+     * zoom area).
      *
      * @return true if this tool supports drawing a drag-box on the map; false otherwise
      */

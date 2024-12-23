@@ -43,15 +43,14 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
  */
 public class LiteCoordinateSequence extends PackedCoordinateSequence implements Cloneable {
 
-    private static final GeometryFactory geomFac =
-            new GeometryFactory(new LiteCoordinateSequenceFactory());
+    private static final GeometryFactory geomFac = new GeometryFactory(new LiteCoordinateSequenceFactory());
 
     /** The packed coordinate array */
     private double[] coords;
 
     /**
-     * Cached size, getSize() gets called an incredible number of times during rendering (a profile
-     * shows 2 million calls when rendering 90.000 linear features)
+     * Cached size, getSize() gets called an incredible number of times during rendering (a profile shows 2 million
+     * calls when rendering 90.000 linear features)
      */
     private int size;
 
@@ -69,11 +68,9 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     /** Private initializer, allows sharing code between constructors */
     void init(double[] coords, int dimensions) {
         this.dimension = dimensions;
-        if (dimensions < 2)
-            throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
+        if (dimensions < 2) throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
         if (coords.length % dimension != 0) {
-            throw new IllegalArgumentException(
-                    "Packed array does not contain an integral number of coordinates");
+            throw new IllegalArgumentException("Packed array does not contain an integral number of coordinates");
         }
         this.coords = coords;
         this.size = coords.length / dimensions;
@@ -216,9 +213,8 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int) Beware, for
-     *     performace reasons the ordinate index is not checked, if it's over dimensions you may not
-     *     get an exception but a meaningless value.
+     * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int) Beware, for performace reasons the
+     *     ordinate index is not checked, if it's over dimensions you may not get an exception but a meaningless value.
      */
     @Override
     public double getOrdinate(int index, int ordinate) {
@@ -280,8 +276,8 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /**
-     * if this is a dimension=2 seq, then this is the same as getArray(). If its >2 dims this will
-     * make a new array with dim=2
+     * if this is a dimension=2 seq, then this is the same as getArray(). If its >2 dims this will make a new array with
+     * dim=2
      */
     public double[] getXYArray() {
         if (dimension == 2) {
@@ -334,8 +330,8 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /**
-     * Clones the specified geometry using {@link LiteCoordinateSequence} in the result, with the
-     * specified number of dimensions
+     * Clones the specified geometry using {@link LiteCoordinateSequence} in the result, with the specified number of
+     * dimensions
      */
     public static Geometry cloneGeometry(Geometry geom, int dimension) {
         if (dimension < 2) {
@@ -371,8 +367,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     private static final Geometry cloneGeometry(Point geom, int dimension) {
-        return geomFac.createPoint(
-                new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+        return geomFac.createPoint(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
     }
 
     private static final Geometry cloneGeometry(LineString geom, int dimension) {
@@ -393,8 +388,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             }
             return new CompoundCurve(clonedComponents, geomFac, dimension);
         } else {
-            return geomFac.createLineString(
-                    new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+            return geomFac.createLineString(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
         }
     }
 
@@ -416,8 +410,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             }
             return new CompoundRing(clonedComponents, geomFac, dimension);
         } else {
-            return geomFac.createLinearRing(
-                    new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+            return geomFac.createLinearRing(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
         }
     }
 

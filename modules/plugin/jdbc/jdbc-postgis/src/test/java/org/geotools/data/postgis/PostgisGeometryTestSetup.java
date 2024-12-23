@@ -31,18 +31,13 @@ public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
         super.setUpData();
 
         // create tables for dimension test
-        run(
-                "CREATE TABLE dim_point AS SELECT ST_GeomFromText('POINT(-120.0 40.0)',"
-                        + "4326) as geom;");
-        run(
-                "CREATE TABLE dim_line AS SELECT ST_GeomFromText('LINESTRING(-120.0 40.0,"
-                        + "-130.0 50.0)', 4326) as geom;");
-        run(
-                "CREATE TABLE dim_polygon AS SELECT ST_GeomFromText('POLYGON((-120.0 40.0,"
-                        + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326) as geom;");
-        run(
-                "CREATE TABLE dim_collection AS SELECT ST_GeomFromText('GEOMETRYCOLLECTION("
-                        + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0))',4326) as geom");
+        run("CREATE TABLE dim_point AS SELECT ST_GeomFromText('POINT(-120.0 40.0)'," + "4326) as geom;");
+        run("CREATE TABLE dim_line AS SELECT ST_GeomFromText('LINESTRING(-120.0 40.0,"
+                + "-130.0 50.0)', 4326) as geom;");
+        run("CREATE TABLE dim_polygon AS SELECT ST_GeomFromText('POLYGON((-120.0 40.0,"
+                + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326) as geom;");
+        run("CREATE TABLE dim_collection AS SELECT ST_GeomFromText('GEOMETRYCOLLECTION("
+                + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0))',4326) as geom");
     }
 
     @Override

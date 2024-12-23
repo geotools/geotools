@@ -38,9 +38,7 @@ public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        try (InputStream is =
-                WFS_2_0_0_ParsingTest.class.getResourceAsStream(
-                        "fmi-DescribeStoredQueries_2_0_0.xml")) {
+        try (InputStream is = WFS_2_0_0_ParsingTest.class.getResourceAsStream("fmi-DescribeStoredQueries_2_0_0.xml")) {
             document = docFactory.newDocumentBuilder().parse(is);
         }
 
@@ -76,8 +74,7 @@ public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
         String language = queryExpr.getLanguage();
 
         QName expectedReturnType =
-                new QName(
-                        "http://inspire.ec.europa.eu/schemas/omso/2.0rc3", "GridSeriesObservation");
+                new QName("http://inspire.ec.europa.eu/schemas/omso/2.0rc3", "GridSeriesObservation");
         String expectedLanguage = "urn:ogc:def:queryLanguage:OGC-WFS::WFS_QueryExpression";
 
         assertEquals(expectedReturnType, returnType);

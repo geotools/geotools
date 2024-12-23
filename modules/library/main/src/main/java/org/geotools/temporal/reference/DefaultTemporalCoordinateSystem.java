@@ -29,23 +29,16 @@ import org.geotools.util.Utilities;
 public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSystem
         implements TemporalCoordinateSystem {
 
-    /**
-     * The origin of the scale, it must be specified in the Gregorian calendar with time of day in
-     * UTC.
-     */
+    /** The origin of the scale, it must be specified in the Gregorian calendar with time of day in UTC. */
     private Date origin;
     /**
-     * The name of a single unit of measure used as the base interval for the scale. it shall be one
-     * of those units of measure for time specified by ISO 31-1, or a multiple of one of those
-     * units, as specified by ISO 1000.
+     * The name of a single unit of measure used as the base interval for the scale. it shall be one of those units of
+     * measure for time specified by ISO 31-1, or a multiple of one of those units, as specified by ISO 1000.
      */
     private InternationalString interval;
 
     public DefaultTemporalCoordinateSystem(
-            ReferenceIdentifier name,
-            Extent domainOfValidity,
-            Date origin,
-            InternationalString interval) {
+            ReferenceIdentifier name, Extent domainOfValidity, Date origin, InternationalString interval) {
         super(name, domainOfValidity);
         this.origin = origin;
         this.interval = interval;
@@ -70,8 +63,8 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
     }
 
     /**
-     * Returns the equivalent Date in the Gregorian calendar and UTC of a coordinate value defined
-     * in this temporal coordinate system.
+     * Returns the equivalent Date in the Gregorian calendar and UTC of a coordinate value defined in this temporal
+     * coordinate system.
      */
     @Override
     public Date transformCoord(TemporalCoordinate c_value) {
@@ -114,15 +107,11 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
                 return null;
             }
         } else {
-            throw new IllegalArgumentException(
-                    "The TemporalCoordinate argument must be a TemporalCoordinate ! ");
+            throw new IllegalArgumentException("The TemporalCoordinate argument must be a TemporalCoordinate ! ");
         }
     }
 
-    /**
-     * Returns the equivalent TemporalCoordinate of a Date in Gregorian Calendar. Default of unit is
-     * millisecond.
-     */
+    /** Returns the equivalent TemporalCoordinate of a Date in Gregorian Calendar. Default of unit is millisecond. */
     @Override
     public TemporalCoordinate transformDateTime(Date dateTime) {
         final long yearMS = 31536000000L;
@@ -160,11 +149,9 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
         }
         if (object instanceof DefaultTemporalCoordinateSystem && super.equals(object)) {
             if (object instanceof DefaultTemporalCoordinateSystem) {
-                final DefaultTemporalCoordinateSystem that =
-                        (DefaultTemporalCoordinateSystem) object;
+                final DefaultTemporalCoordinateSystem that = (DefaultTemporalCoordinateSystem) object;
 
-                return Utilities.equals(this.interval, that.interval)
-                        && Utilities.equals(this.origin, that.origin);
+                return Utilities.equals(this.interval, that.interval) && Utilities.equals(this.origin, that.origin);
             }
         }
         return false;

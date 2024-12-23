@@ -25,8 +25,7 @@ import org.geotools.ows.wms.Layer;
  *
  * @author Richard Gould
  */
-public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
-        implements GetStylesRequest {
+public abstract class AbstractGetStylesRequest extends AbstractWMSRequest implements GetStylesRequest {
 
     private Layer[] layers;
 

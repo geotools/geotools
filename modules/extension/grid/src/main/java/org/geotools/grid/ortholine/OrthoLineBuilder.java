@@ -55,15 +55,13 @@ public class OrthoLineBuilder {
     }
 
     /**
-     * Creates line features according to the provided {@code OrthoLineDef} objects and places them
-     * into the provided {@link ListFeatureCollection}. Densified lines (lines strings with
-     * additional vertices along their length) can be created by setting the value of {@code
-     * vertexSpacing} greater than zero; if so, any lines more than twice as long as this value will
-     * be densified.
+     * Creates line features according to the provided {@code OrthoLineDef} objects and places them into the provided
+     * {@link ListFeatureCollection}. Densified lines (lines strings with additional vertices along their length) can be
+     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any lines more than twice as long
+     * as this value will be densified.
      *
      * @param lineDefs line definitions specifying the orientation, spacing and level of lines
-     * @param lineFeatureBuilder the feature build to create {@code SimpleFeatures} from line
-     *     elements
+     * @param lineFeatureBuilder the feature build to create {@code SimpleFeatures} from line elements
      * @param vertexSpacing maximum distance between adjacent vertices along a line
      * @param fc the feature collection into which generated line features are placed
      */
@@ -90,15 +88,8 @@ public class OrthoLineBuilder {
             }
         }
 
-        doBuildLineFeatures(
-                horizontal,
-                LineOrientation.HORIZONTAL,
-                lineFeatureBuilder,
-                densify,
-                vertexSpacing,
-                fc);
-        doBuildLineFeatures(
-                vertical, LineOrientation.VERTICAL, lineFeatureBuilder, densify, vertexSpacing, fc);
+        doBuildLineFeatures(horizontal, LineOrientation.HORIZONTAL, lineFeatureBuilder, densify, vertexSpacing, fc);
+        doBuildLineFeatures(vertical, LineOrientation.VERTICAL, lineFeatureBuilder, densify, vertexSpacing, fc);
     }
 
     private void doBuildLineFeatures(
@@ -162,7 +153,8 @@ public class OrthoLineBuilder {
                     if (generate[i] && atCurPos[i]) {
                         for (int j = i + 1; j < NDEFS; j++) {
                             if (generate[j] && atCurPos[j]) {
-                                if (lineDefs.get(i).getLevel() >= lineDefs.get(j).getLevel()) {
+                                if (lineDefs.get(i).getLevel()
+                                        >= lineDefs.get(j).getLevel()) {
                                     generate[j] = false;
                                 } else {
                                     generate[i] = false;
@@ -180,19 +172,14 @@ public class OrthoLineBuilder {
                  */
                 for (int i = 0; i < NDEFS; i++) {
                     if (generate[i]) {
-                        OrthoLine element =
-                                new OrthoLine(
-                                        gridBounds,
-                                        orientation,
-                                        pos[i],
-                                        lineDefs.get(i).getLevel());
+                        OrthoLine element = new OrthoLine(
+                                gridBounds, orientation, pos[i], lineDefs.get(i).getLevel());
 
                         if (lineFeatureBuilder.getCreateFeature(element)) {
                             lineFeatureBuilder.setAttributes(element, attributes);
 
                             if (densify) {
-                                featureBuilder.set(
-                                        geomPropName, element.toDenseGeometry(vertexSpacing));
+                                featureBuilder.set(geomPropName, element.toDenseGeometry(vertexSpacing));
                             } else {
                                 featureBuilder.set(geomPropName, element.toGeometry());
                             }
@@ -240,10 +227,7 @@ public class OrthoLineBuilder {
         return v > 0 && v < minDim / 2;
     }
 
-    private void init(
-            Collection<OrthoLineDef> controls,
-            GridFeatureBuilder lineFeatureBuilder,
-            double vertexSpacing) {
+    private void init(Collection<OrthoLineDef> controls, GridFeatureBuilder lineFeatureBuilder, double vertexSpacing) {
 
         if (gridBounds == null || gridBounds.isEmpty()) {
             throw new IllegalArgumentException("gridBounds must not be null or empty");
@@ -258,8 +242,7 @@ public class OrthoLineBuilder {
             } else if (param.getOrientation() == LineOrientation.VERTICAL) {
                 hasVerticals = true;
             } else {
-                throw new IllegalArgumentException(
-                        "Only horizontal and vertical lines are supported");
+                throw new IllegalArgumentException("Only horizontal and vertical lines are supported");
             }
         }
 

@@ -27,8 +27,8 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
 /**
- * Defines static methods used to access the application's default {@linkplain GridCoverageFactory
- * factory} implementation.
+ * Defines static methods used to access the application's default {@linkplain GridCoverageFactory factory}
+ * implementation.
  *
  * @since 2.4
  * @version $Id$
@@ -43,23 +43,18 @@ public final class CoverageFactoryFinder extends FactoryFinder {
         // singleton
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CoverageFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {GridCoverageFactory.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GridCoverageFactory.class}));
         }
         return registry;
     }
 
     /**
-     * Returns the first implementation of {@link GridCoverageFactory} matching the specified hints.
-     * If no implementation matches, a new one is created if possible or an exception is thrown
-     * otherwise.
+     * Returns the first implementation of {@link GridCoverageFactory} matching the specified hints. If no
+     * implementation matches, a new one is created if possible or an exception is thrown otherwise.
      *
      * @param hints An optional map of hints, or {@code null} if none.
      * @return The first grid coverage factory that matches the supplied hints.
@@ -68,11 +63,9 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      * @see Hints#DEFAULT_COORDINATE_REFERENCE_SYSTEM
      * @see Hints#TILE_ENCODING
      */
-    public static GridCoverageFactory getGridCoverageFactory(Hints hints)
-            throws FactoryRegistryException {
+    public static GridCoverageFactory getGridCoverageFactory(Hints hints) throws FactoryRegistryException {
         if (hints != null && hints.containsKey(Hints.GRID_COVERAGE_FACTORY)) {
-            GridCoverageFactory coverageFactory =
-                    (GridCoverageFactory) hints.get(Hints.GRID_COVERAGE_FACTORY);
+            GridCoverageFactory coverageFactory = (GridCoverageFactory) hints.get(Hints.GRID_COVERAGE_FACTORY);
             if (coverageFactory != null) {
                 return coverageFactory;
             }
@@ -92,16 +85,14 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<GridCoverageFactory> getGridCoverageFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(GridCoverageFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(GridCoverageFactory.class, null, hints));
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {

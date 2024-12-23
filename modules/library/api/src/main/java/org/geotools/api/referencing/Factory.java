@@ -17,11 +17,10 @@ import org.geotools.api.metadata.citation.Citation;
  * <p>
  *
  * <UL>
- *   <LI>{@linkplain AuthorityFactory Authority factories} creates objects from a compact string
- *       defined by an authority.
- *   <LI>{@linkplain ObjectFactory Object factories} allows applications to make objects that cannot
- *       be created by an authority factory. This factory is very flexible, whereas the authority
- *       factory is easier to use.
+ *   <LI>{@linkplain AuthorityFactory Authority factories} creates objects from a compact string defined by an
+ *       authority.
+ *   <LI>{@linkplain ObjectFactory Object factories} allows applications to make objects that cannot be created by an
+ *       authority factory. This factory is very flexible, whereas the authority factory is easier to use.
  * </UL>
  *
  * @author Martin Desruisseaux (IRD)
@@ -29,8 +28,8 @@ import org.geotools.api.metadata.citation.Citation;
  */
 public interface Factory {
     /**
-     * Returns the vendor responsible for creating this factory implementation. Many implementations
-     * may be available for the same factory interface. Implementations are usually managed by a
+     * Returns the vendor responsible for creating this factory implementation. Many implementations may be available
+     * for the same factory interface. Implementations are usually managed by a
      * {@linkplain javax.imageio.spi.ServiceRegistry service registry}.
      *
      * @return The vendor for this factory implementation.

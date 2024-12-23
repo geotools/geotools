@@ -31,11 +31,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * PROJ supports more than 7400 EPSG CRS definitions. Some of them have specific fields that cannot
- * be easily inferred by the GeoTools referencing entities. This class refines the buffered PROJ
- * String built through a PROJFormatter based on Referencing IdentifiedObjects inspection, by
- * remapping keys, applying sorting, converting units, appending fixed constant strings to the
- * output.
+ * PROJ supports more than 7400 EPSG CRS definitions. Some of them have specific fields that cannot be easily inferred
+ * by the GeoTools referencing entities. This class refines the buffered PROJ String built through a PROJFormatter based
+ * on Referencing IdentifiedObjects inspection, by remapping keys, applying sorting, converting units, appending fixed
+ * constant strings to the output.
  *
  * <p>Check PROJRefinements.txt resource file for more details.
  */
@@ -96,9 +95,8 @@ class PROJRefiner {
 
     private void loadUnitRefinements() {
         /**
-         * Unit refinements are applied to any input proj String during refinement. A typical
-         * example is converting ft_survey_us to us-ft Another example is converting units=m*Value
-         * TO +units=m +to_meters=Value
+         * Unit refinements are applied to any input proj String during refinement. A typical example is converting
+         * ft_survey_us to us-ft Another example is converting units=m*Value TO +units=m +to_meters=Value
          */
         Map<String, String> regexMap = new HashMap<>();
         Map<String, String> replacementMap = new HashMap<>();

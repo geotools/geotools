@@ -54,10 +54,9 @@ import org.locationtech.jts.geom.Polygon;
  * ShapefileReader r = new ShapefileReader( in ) while (r.hasNext()) { Geometry
  * shape = (Geometry) r.nextRecord().shape() // do stuff } r.close();
  *
- * </PRE></CODE> You don't have to immediately ask for the shape from the record. The record will
- * contain the bounds of the shape and will only read the shape when the shape() method is called.
- * This ShapefileReader.Record is the same object every time, so if you need data from the Record,
- * be sure to copy it.
+ * </PRE></CODE> You don't have to immediately ask for the shape from the record. The record will contain the bounds of
+ * the shape and will only read the shape when the shape() method is called. This ShapefileReader.Record is the same
+ * object every time, so if you need data from the Record, be sure to copy it.
  *
  * @author jamesm
  * @author aaime
@@ -67,14 +66,13 @@ public class ShapefileReader implements FileReader, Closeable {
     private static final Logger LOGGER = Logging.getLogger(ShapefileReader.class);
 
     /**
-     * Used to mark the current shape is not known, either because someone moved the reader to a
-     * specific byte offset manually, or because the .shx could not be opened
+     * Used to mark the current shape is not known, either because someone moved the reader to a specific byte offset
+     * manually, or because the .shx could not be opened
      */
     private static final int UNKNOWN = Integer.MIN_VALUE;
 
     /**
-     * The reader returns only one Record instance in its lifetime. The record contains the current
-     * record information.
+     * The reader returns only one Record instance in its lifetime. The record contains the current record information.
      */
     public final class Record {
         int length;
@@ -124,18 +122,7 @@ public class ShapefileReader implements FileReader, Closeable {
         /** A summary of the record. */
         @Override
         public String toString() {
-            return "Record "
-                    + number
-                    + " length "
-                    + length
-                    + " bounds "
-                    + minX
-                    + ","
-                    + minY
-                    + " "
-                    + maxX
-                    + ","
-                    + maxY;
+            return "Record " + number + " length " + length + " bounds " + minX + "," + minY + " " + maxX + "," + maxY;
         }
 
         public Envelope envelope() {
@@ -148,16 +135,14 @@ public class ShapefileReader implements FileReader, Closeable {
                 CoordinateSequence cs = JTS.createCS(csf, 1, 2);
                 cs.setOrdinate(0, 0, (minX + maxX) / 2);
                 cs.setOrdinate(0, 1, (minY + maxY) / 2);
-                return geometryFactory.createMultiPoint(
-                        new Point[] {geometryFactory.createPoint(cs)});
+                return geometryFactory.createMultiPoint(new Point[] {geometryFactory.createPoint(cs)});
             } else if (type.isLineType()) {
                 CoordinateSequence cs = JTS.createCS(csf, 2, 2);
                 cs.setOrdinate(0, 0, minX);
                 cs.setOrdinate(0, 1, minY);
                 cs.setOrdinate(1, 0, maxX);
                 cs.setOrdinate(1, 1, maxY);
-                return geometryFactory.createMultiLineString(
-                        new LineString[] {geometryFactory.createLineString(cs)});
+                return geometryFactory.createMultiLineString(new LineString[] {geometryFactory.createLineString(cs)});
             } else if (type.isPolygonType()) {
                 CoordinateSequence cs = JTS.createCS(csf, 5, 2);
                 cs.setOrdinate(0, 0, minX);
@@ -171,8 +156,7 @@ public class ShapefileReader implements FileReader, Closeable {
                 cs.setOrdinate(4, 0, minX);
                 cs.setOrdinate(4, 1, minY);
                 LinearRing ring = geometryFactory.createLinearRing(cs);
-                return geometryFactory.createMultiPolygon(
-                        new Polygon[] {geometryFactory.createPolygon(ring, null)});
+                return geometryFactory.createMultiPolygon(new Polygon[] {geometryFactory.createPolygon(ring, null)});
             } else {
                 return shape();
             }
@@ -229,13 +213,11 @@ public class ShapefileReader implements FileReader, Closeable {
      * Creates a new instance of ShapeFile.
      *
      * @param shapefileFiles The ReadableByteChannel this reader will use.
-     * @param strict True to make the header parsing throw Exceptions if the version or magic number
-     *     are incorrect.
+     * @param strict True to make the header parsing throw Exceptions if the version or magic number are incorrect.
      * @throws IOException If problems arise.
      * @throws ShapefileException If for some reason the file contains invalid records.
      */
-    public ShapefileReader(
-            ShpFiles shapefileFiles, boolean strict, boolean useMemoryMapped, GeometryFactory gf)
+    public ShapefileReader(ShpFiles shapefileFiles, boolean strict, boolean useMemoryMapped, GeometryFactory gf)
             throws IOException, ShapefileException {
         this(shapefileFiles, strict, useMemoryMapped, gf, false);
     }
@@ -244,12 +226,11 @@ public class ShapefileReader implements FileReader, Closeable {
      * Creates a new instance of ShapeFile.
      *
      * @param shapefileFiles The ReadableByteChannel this reader will use.
-     * @param strict True to make the header parsing throw Exceptions if the version or magic number
-     *     are incorrect.
+     * @param strict True to make the header parsing throw Exceptions if the version or magic number are incorrect.
      * @param useMemoryMapped Wheter to enable memory mapping or not
      * @param gf The geometry factory used to build the geometries
-     * @param onlyRandomAccess When true sets up the reader to do exclusively read driven by goTo(x)
-     *     and thus avoids opening the .shx file
+     * @param onlyRandomAccess When true sets up the reader to do exclusively read driven by goTo(x) and thus avoids
+     *     opening the .shx file
      * @throws IOException If problems arise.
      * @throws ShapefileException If for some reason the file contains invalid records.
      */
@@ -292,8 +273,7 @@ public class ShapefileReader implements FileReader, Closeable {
             } catch (Exception e) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Could not open the .shx file, continuing "
-                                + "assuming the .shp file is not sparse",
+                        "Could not open the .shx file, continuing " + "assuming the .shp file is not sparse",
                         e);
                 currentShape = UNKNOWN;
             }
@@ -302,8 +282,8 @@ public class ShapefileReader implements FileReader, Closeable {
     }
 
     /**
-     * Disables .shx file usage. By doing so you drop support for sparse shapefiles, the .shp will
-     * have to be without holes, all the valid shapefile records will have to be contiguous.
+     * Disables .shx file usage. By doing so you drop support for sparse shapefiles, the .shp will have to be without
+     * holes, all the valid shapefile records will have to be contiguous.
      */
     public void disableShxUsage() throws IOException {
         if (shxReader != null) {
@@ -421,9 +401,8 @@ public class ShapefileReader implements FileReader, Closeable {
     }
 
     /**
-     * If there exists another record. Currently checks the stream for the presence of 8 more bytes,
-     * the length of a record. If this is true and the record indicates the next logical record
-     * number, there exists more records.
+     * If there exists another record. Currently checks the stream for the presence of 8 more bytes, the length of a
+     * record. If this is true and the record indicates the next logical record number, there exists more records.
      *
      * @return True if has next record, false otherwise.
      */
@@ -432,9 +411,9 @@ public class ShapefileReader implements FileReader, Closeable {
     }
 
     /**
-     * If there exists another record. Currently checks the stream for the presence of 8 more bytes,
-     * the length of a record. If this is true and the record indicates the next logical record
-     * number (if checkRecord == true), there exists more records.
+     * If there exists another record. Currently checks the stream for the presence of 8 more bytes, the length of a
+     * record. If this is true and the record indicates the next logical record number (if checkRecord == true), there
+     * exists more records.
      *
      * @param checkRecno If true then record number is checked
      * @return True if has next record, false otherwise.
@@ -484,8 +463,7 @@ public class ShapefileReader implements FileReader, Closeable {
      * @param bounds double array of length four for transfering the bounds into
      * @return The length of the record transfered in bytes
      */
-    public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds)
-            throws IOException {
+    public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds) throws IOException {
 
         ((Buffer) buffer).position(this.toBufferOffset(record.end));
         buffer.order(ByteOrder.BIG_ENDIAN);
@@ -606,8 +584,7 @@ public class ShapefileReader implements FileReader, Closeable {
         // this usually happens if the handler logic is bunk,
         // but bad files could exist as well...
         if (recordType != ShapeType.NULL && recordType != fileShapeType) {
-            throw new IllegalStateException(
-                    "ShapeType changed illegally from " + fileShapeType + " to " + recordType);
+            throw new IllegalStateException("ShapeType changed illegally from " + fileShapeType + " to " + recordType);
         }
 
         // peek at bounds, then reset for handler
@@ -644,10 +621,9 @@ public class ShapefileReader implements FileReader, Closeable {
      * Moves the reader to the specified byte offset in the file. Mind that:
      *
      * <ul>
-     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a
-     *       shape struct
-     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we
-     *       don't know anymore at which shape we are)
+     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a shape struct
+     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we don't know anymore at
+     *       which shape we are)
      * </ul>
      */
     public void goTo(int offset) throws IOException, UnsupportedOperationException {
@@ -672,10 +648,9 @@ public class ShapefileReader implements FileReader, Closeable {
      * Returns the shape at the specified byte distance from the beginning of the file. Mind that:
      *
      * <ul>
-     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a
-     *       shape struct
-     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we
-     *       don't know anymore at which shape we are)
+     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a shape struct
+     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we don't know anymore at
+     *       which shape we are)
      * </ul>
      */
     public Object shapeAt(int offset) throws IOException, UnsupportedOperationException {
@@ -688,14 +663,13 @@ public class ShapefileReader implements FileReader, Closeable {
     }
 
     /**
-     * Sets the current location of the byteStream to offset and returns the next record. Usually
-     * used in conjuctions with the shx file or some other index file. Mind that:
+     * Sets the current location of the byteStream to offset and returns the next record. Usually used in conjuctions
+     * with the shx file or some other index file. Mind that:
      *
      * <ul>
-     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a
-     *       shape struct
-     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we
-     *       don't know anymore at which shape we are)
+     *   <li>it's your responsibility to ensure the offset corresponds to the actual beginning of a shape struct
+     *   <li>once you call this, reading with hasNext/next on sparse shapefiles will be broken (we don't know anymore at
+     *       which shape we are)
      * </ul>
      *
      * @param offset If using an shx file the offset would be: 2 * (index.getOffset(i))

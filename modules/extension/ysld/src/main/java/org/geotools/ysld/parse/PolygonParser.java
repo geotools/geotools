@@ -37,20 +37,18 @@ public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(
-                new StrokeParser(factory) {
-                    @Override
-                    protected void stroke(Stroke stroke) {
-                        sym.setStroke(stroke);
-                    }
-                });
-        context.push(
-                new FillParser(factory) {
-                    @Override
-                    protected void fill(Fill fill) {
-                        sym.setFill(fill);
-                    }
-                });
+        context.push(new StrokeParser(factory) {
+            @Override
+            protected void stroke(Stroke stroke) {
+                sym.setStroke(stroke);
+            }
+        });
+        context.push(new FillParser(factory) {
+            @Override
+            protected void fill(Fill fill) {
+                sym.setFill(fill);
+            }
+        });
 
         if (map.has("offset")) {
             sym.setPerpendicularOffset(Util.expression(map.str("offset"), factory));

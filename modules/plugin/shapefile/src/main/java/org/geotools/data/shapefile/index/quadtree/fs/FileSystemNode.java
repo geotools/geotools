@@ -46,8 +46,7 @@ public class FileSystemNode extends Node {
 
     @Override
     public Node copy() throws IOException {
-        FileSystemNode copy =
-                new FileSystemNode(getBounds(), buffer, subNodeStartByte, subNodesLength);
+        FileSystemNode copy = new FileSystemNode(getBounds(), buffer, subNodeStartByte, subNodesLength);
         copy.numShapesId = numShapesId;
         copy.shapesId = new int[numShapesId];
         System.arraycopy(shapesId, 0, copy.shapesId, 0, numShapesId);
@@ -108,8 +107,7 @@ public class FileSystemNode extends Node {
 
     /** */
     public static FileSystemNode readNode(
-            int id, Node parent, FileChannel channel, ByteOrder order, boolean useMemoryMapping)
-            throws IOException {
+            int id, Node parent, FileChannel channel, ByteOrder order, boolean useMemoryMapping) throws IOException {
         ScrollingBuffer buffer = new ScrollingBuffer(channel, order, useMemoryMapping);
         return readNode(id, parent, buffer);
     }
@@ -149,8 +147,8 @@ public class FileSystemNode extends Node {
     }
 
     /**
-     * A utility class to access file contents by using a single scrolling buffer reading file
-     * contents with a minimum of 8kb per access
+     * A utility class to access file contents by using a single scrolling buffer reading file contents with a minimum
+     * of 8kb per access
      */
     private static class ScrollingBuffer {
         FileChannel channel;
@@ -162,19 +160,14 @@ public class FileSystemNode extends Node {
         double[] envelope = new double[4];
         boolean useMemoryMapping;
 
-        public ScrollingBuffer(FileChannel channel, ByteOrder order, boolean useMemoryMapping)
-                throws IOException {
+        public ScrollingBuffer(FileChannel channel, ByteOrder order, boolean useMemoryMapping) throws IOException {
             this.channel = channel;
             this.order = order;
             this.useMemoryMapping = useMemoryMapping;
 
             this.bufferStart = channel.position();
             if (useMemoryMapping) {
-                this.buffer =
-                        channel.map(
-                                MapMode.READ_ONLY,
-                                channel.position(),
-                                channel.size() - channel.position());
+                this.buffer = channel.map(MapMode.READ_ONLY, channel.position(), channel.size() - channel.position());
                 this.buffer.order(order);
             } else {
                 // start with an 8kb buffer
@@ -246,8 +239,7 @@ public class FileSystemNode extends Node {
             // if the new position is already in the buffer, just move the
             // buffer position
             // otherwise we have to reload it
-            if (useMemoryMapping
-                    || newPosition >= bufferStart && newPosition <= bufferStart + buffer.limit()) {
+            if (useMemoryMapping || newPosition >= bufferStart && newPosition <= bufferStart + buffer.limit()) {
                 buffer.position((int) (newPosition - bufferStart));
             } else {
                 readBuffer(newPosition);

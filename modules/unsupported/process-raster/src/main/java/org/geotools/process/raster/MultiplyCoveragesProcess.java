@@ -29,8 +29,8 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 
 /**
- * Multiply two coverages together (pixel by pixel). Output pixel[i][j] = source0CoveragePixel[i][j]
- * * source1CoveragePixel[i][j]
+ * Multiply two coverages together (pixel by pixel). Output pixel[i][j] = source0CoveragePixel[i][j] *
+ * source1CoveragePixel[i][j]
  *
  * <p>The two coverages need to have the same envelope and same resolution (same gridGeometry).
  *
@@ -46,10 +46,8 @@ public class MultiplyCoveragesProcess implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Computed raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverageA", description = "First input raster")
-                    GridCoverage2D coverageA,
-            @DescribeParameter(name = "coverageB", description = "Second input raster")
-                    GridCoverage2D coverageB,
+            @DescribeParameter(name = "coverageA", description = "First input raster") GridCoverage2D coverageA,
+            @DescribeParameter(name = "coverageB", description = "Second input raster") GridCoverage2D coverageB,
             ProgressListener progressListener)
             throws ProcessException {
 

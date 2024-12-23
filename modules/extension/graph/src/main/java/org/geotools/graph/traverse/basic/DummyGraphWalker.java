@@ -21,8 +21,7 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.GraphWalker;
 
 /**
- * A simple implementation of GraphWalker that does nothing but signal a graph traversal to
- * continue.
+ * A simple implementation of GraphWalker that does nothing but signal a graph traversal to continue.
  *
  * @see GraphTraversal
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

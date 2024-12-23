@@ -57,8 +57,7 @@ public class ComplexFeatureBuilderTest {
 
     /** @throws Exception */
     @Test(expected = IllegalArgumentException.class)
-    public void append_validNameInvalidValueClass_throwsIllegalArgumentException()
-            throws Exception {
+    public void append_validNameInvalidValueClass_throwsIllegalArgumentException() throws Exception {
         // Arrange
         ComplexFeatureBuilder builder = new ComplexFeatureBuilder(FakeTypes.Mine.MINETYPE_TYPE);
 
@@ -102,8 +101,7 @@ public class ComplexFeatureBuilderTest {
         // Act
         try {
             builder.append(
-                    FakeTypes.Mine.NAME_mineName,
-                    getAMineNameProperty("mine 4", false)); // Add it once too many times.
+                    FakeTypes.Mine.NAME_mineName, getAMineNameProperty("mine 4", false)); // Add it once too many times.
         } catch (IndexOutOfBoundsException ioobe) {
             ExceptionChecker.assertExceptionMessage(
                     ioobe,
@@ -134,8 +132,7 @@ public class ComplexFeatureBuilderTest {
         ComplexAttribute mineNameProperty = getAMineNameProperty("Sharlston Colliery", true);
 
         // Act
-        ComplexFeatureBuilder complexFeatureBuilder =
-                new ComplexFeatureBuilder(FakeTypes.Mine.MINETYPE_TYPE);
+        ComplexFeatureBuilder complexFeatureBuilder = new ComplexFeatureBuilder(FakeTypes.Mine.MINETYPE_TYPE);
 
         complexFeatureBuilder.append(FakeTypes.Mine.NAME_mineName, mineNameProperty);
 

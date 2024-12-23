@@ -72,8 +72,7 @@ public final class GeometryOperand implements Name, Serializable {
     public static final GeometryOperand ArcByCenterPoint = new GeometryOperand("ArcByCenterPoint");
 
     /** {@code "http://www.opengis.net/gml/CircleByCenterPoint"} */
-    public static final GeometryOperand CircleByCenterPoint =
-            new GeometryOperand("CircleByCenterPoint");
+    public static final GeometryOperand CircleByCenterPoint = new GeometryOperand("CircleByCenterPoint");
 
     /** {@code "http://www.opengis.net/gml/Arc"} */
     public static final GeometryOperand Arc = new GeometryOperand("Arc");
@@ -103,12 +102,10 @@ public final class GeometryOperand implements Name, Serializable {
     public static final GeometryOperand Triangle = new GeometryOperand("Triangle");
 
     /** {@code "http://www.opengis.net/gml/PolyhedralSurface"} */
-    public static final GeometryOperand PolyhedralSurface =
-            new GeometryOperand("PolyhedralSurface");
+    public static final GeometryOperand PolyhedralSurface = new GeometryOperand("PolyhedralSurface");
 
     /** {@code "http://www.opengis.net/gml/TriangulatedSurface"} */
-    public static final GeometryOperand TriangulatedSurface =
-            new GeometryOperand("TriangulatedSurface");
+    public static final GeometryOperand TriangulatedSurface = new GeometryOperand("TriangulatedSurface");
 
     /** {@code "http://www.opengis.net/gml/Tin"} */
     public static final GeometryOperand Tin = new GeometryOperand("Tin");

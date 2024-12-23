@@ -41,8 +41,7 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Sample use of SDO class for simple JTS Geometry.
  *
- * <p>If needed I can make a LRSGeometryConverter that allows JTS Geometries with additional
- * ordinates beyond xyz.
+ * <p>If needed I can make a LRSGeometryConverter that allows JTS Geometries with additional ordinates beyond xyz.
  *
  * @author jgarnett
  * @author Mark Prins, B3Partners
@@ -163,15 +162,8 @@ public class GeometryConverter {
                 int[] elemInfo = {1, 1003, 3};
                 double[] ordinates;
                 if (SDO.D(geom) == 2)
-                    ordinates =
-                            new double[] {
-                                env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()
-                            };
-                else
-                    ordinates =
-                            new double[] {
-                                env.getMinX(), env.getMinY(), 0, env.getMaxX(), env.getMaxY(), 0
-                            };
+                    ordinates = new double[] {env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()};
+                else ordinates = new double[] {env.getMinX(), env.getMinY(), 0, env.getMaxX(), env.getMaxY(), 0};
 
                 SDO_POINT = null;
                 SDO_ELEM_INFO = toARRAY(elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY");
@@ -264,8 +256,7 @@ public class GeometryConverter {
      * @param measures Per Coordinate Measures, {@code null} if not required
      * @param D Dimension of Coordinates (limited to 2d, 3d)
      */
-    protected final OracleArray toORDINATE(CoordinateList list, double[][] measures, final int D)
-            throws SQLException {
+    protected final OracleArray toORDINATE(CoordinateList list, double[][] measures, final int D) throws SQLException {
 
         final int LENGTH = measures != null ? measures.length : 0;
         final int LEN = D + LENGTH;
@@ -353,8 +344,7 @@ public class GeometryConverter {
         return datum.intValue();
     }
     /**
-     * Presents Number as an int with optional default value in case the {@code datum} argument is
-     * {@code null}.
+     * Presents Number as an int with optional default value in case the {@code datum} argument is {@code null}.
      *
      * @see #asInteger(Datum, int)
      */
@@ -368,8 +358,7 @@ public class GeometryConverter {
         return ((NUMBER) datum).doubleValue();
     }
     /**
-     * Presents Number as a double with optional default value in case the {@code datum} argument is
-     * {@code null}.
+     * Presents Number as a double with optional default value in case the {@code datum} argument is {@code null}.
      *
      * @see #asDouble(Datum, double)
      */
@@ -379,14 +368,11 @@ public class GeometryConverter {
     }
 
     /** Presents struct as a double[] */
-    protected double[] asDoubleArray(OracleStruct struct, final double DEFAULT)
-            throws SQLException {
+    protected double[] asDoubleArray(OracleStruct struct, final double DEFAULT) throws SQLException {
         if (struct == null) return null;
         // cannot cast Object[] to Number[]
         return asDoubleArray(
-                Arrays.copyOf(
-                        struct.getAttributes(), struct.getAttributes().length, Number[].class),
-                DEFAULT);
+                Arrays.copyOf(struct.getAttributes(), struct.getAttributes().length, Number[].class), DEFAULT);
     }
 
     /** Presents array as a double[] */
@@ -407,8 +393,7 @@ public class GeometryConverter {
         return array;
     }
     /**
-     * Presents Number[] as a double[] with optional default value in case an {@code data[n]}
-     * argument is {@code null}.
+     * Presents Number[] as a double[] with optional default value in case an {@code data[n]} argument is {@code null}.
      */
     private double[] asDoubleArray(Number[] data, final double DEFAULT) throws SQLException {
         if (data == null) return null;

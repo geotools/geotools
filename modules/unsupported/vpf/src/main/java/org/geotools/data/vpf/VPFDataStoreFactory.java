@@ -40,15 +40,14 @@ import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.feature.SchemaException;
 
 /**
- * Class VPFDataSourceFactory.java is responsible for constructing appropriate VPFDataStore
- * (actually VPFLibrary) objects. VPFDataStoreFactory - factory for VPFLibrary - factory for
- * VPFCoverage - factory for VPFFeatureClass - implements FeatureType by delegation to contained
- * DefaultFeatureType - contains VPFFiles - retrieves VPFColumns from VPFFiles for use in
- * constructing DefaultFeatureType - contains joins (column pairs) - factory for VPFFeatureType -
+ * Class VPFDataSourceFactory.java is responsible for constructing appropriate VPFDataStore (actually VPFLibrary)
+ * objects. VPFDataStoreFactory - factory for VPFLibrary - factory for VPFCoverage - factory for VPFFeatureClass -
+ * implements FeatureType by delegation to contained DefaultFeatureType - contains VPFFiles - retrieves VPFColumns from
+ * VPFFiles for use in constructing DefaultFeatureType - contains joins (column pairs) - factory for VPFFeatureType -
  * implements FeatureType by delegation to contained VPFFeatureClass
  *
- * <p>VPFFile - contains VPFInputStream - factory for VPFColumn - implements AttributeType by
- * delegation to contained DefaultFeatureType
+ * <p>VPFFile - contains VPFInputStream - factory for VPFColumn - implements AttributeType by delegation to contained
+ * DefaultFeatureType
  *
  * <p>Created: Fri Mar 28 15:54:32 2003
  *
@@ -140,8 +139,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         Path lhtParentPath = lhtRealPath.getParent();
 
         if (lhtParentPath == null) {
-            throw new IOException(
-                    "Fileparent either doesn't exist or is unreadable : " + lhtRealPath);
+            throw new IOException("Fileparent either doesn't exist or is unreadable : " + lhtRealPath);
         }
 
         String rootDir = lhtParentPath.toString();
@@ -184,8 +182,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         try {
             result = new VPFLibrary(libraryFeature, file, namespace);
         } catch (SchemaException exc) {
-            throw new IOException(
-                    "There was a problem making one of " + "the feature classes as a FeatureType.");
+            throw new IOException("There was a problem making one of " + "the feature classes as a FeatureType.");
         }
 
         return result;
@@ -234,8 +231,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         return create(params);
     }
     /** A parameter which is the directory containing the LHT file */
-    public static final Param DIR =
-            new Param("url", URL.class, "Directory containing lht file", true);
+    public static final Param DIR = new Param("url", URL.class, "Directory containing lht file", true);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required

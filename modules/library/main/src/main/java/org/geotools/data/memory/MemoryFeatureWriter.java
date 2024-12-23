@@ -118,9 +118,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                 String fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                 FeatureId id = new FeatureIdImpl(fid);
-                current =
-                        new SimpleFeatureImpl(
-                                current.getAttributes(), current.getFeatureType(), id);
+                current = new SimpleFeatureImpl(current.getAttributes(), current.getFeatureType(), id);
             }
         }
 
@@ -137,10 +135,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
                     live.setAttributes(current.getAttributes());
                 } catch (Exception e) {
                     throw new DataSourceException(
-                            "Unable to accept modifications to "
-                                    + live.getID()
-                                    + " on "
-                                    + typeName);
+                            "Unable to accept modifications to " + live.getID() + " on " + typeName);
                 }
 
                 ReferencedEnvelope bounds = new ReferencedEnvelope();

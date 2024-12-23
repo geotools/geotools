@@ -20,8 +20,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
- * The class decorates a SimpleFeatureCollection with one that returns features that intersect the
- * geometry passed with a Hints.GEOMETRY_CLIP
+ * The class decorates a SimpleFeatureCollection with one that returns features that intersect the geometry passed with
+ * a Hints.GEOMETRY_CLIP
  */
 public class ClippingFeatureCollection extends DecoratingSimpleFeatureCollection {
 

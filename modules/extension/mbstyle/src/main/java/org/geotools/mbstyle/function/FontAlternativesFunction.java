@@ -25,16 +25,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.renderer.style.FontCache;
 
 /**
- * Looks up all script specific alternatives for the given font name. See also {@link
- * FontCache#getAlternatives(String)} for a more in depth explanation.
+ * Looks up all script specific alternatives for the given font name. See also {@link FontCache#getAlternatives(String)}
+ * for a more in depth explanation.
  */
 public class FontAlternativesFunction extends FunctionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "fontAlternatives",
-                    parameter("fontList", List.class),
-                    parameter("baseName", Integer.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "fontAlternatives", parameter("fontList", List.class), parameter("baseName", Integer.class));
 
     public FontAlternativesFunction() {
         this.functionName = NAME;

@@ -21,9 +21,9 @@ package org.geotools.referencing.factory.wms;
 import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
- * Auto Mollweide ({@code AUTO:42005}). In the notation below, "<code>${var}</code>" denotes a
- * reference to the value of a variable "{@code var}". The variables "{@code lat0}" and "{@code
- * lon0}" are the central point of the projection appearing in the CRS parameter of the map request.
+ * Auto Mollweide ({@code AUTO:42005}). In the notation below, "<code>${var}</code>" denotes a reference to the value of
+ * a variable "{@code var}". The variables "{@code lat0}" and "{@code lon0}" are the central point of the projection
+ * appearing in the CRS parameter of the map request.
  *
  * <pre>
  * PROJCS["WGS 84 / Auto Mollweide",

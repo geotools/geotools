@@ -53,10 +53,9 @@ public class WKBAttributeIO {
     /**
      * This method will convert a Well Known Binary representation to a JTS Geometry object.
      *
-     * @return a JTS Geometry object that is equivalent to the WTB representation passed in by param
-     *     wkb
-     * @throws IOException if more than one geometry object was found in the WTB representation, or
-     *     if the parser could not parse the WKB representation.
+     * @return a JTS Geometry object that is equivalent to the WTB representation passed in by param wkb
+     * @throws IOException if more than one geometry object was found in the WTB representation, or if the parser could
+     *     not parse the WKB representation.
      */
     public Geometry wkb2Geometry(byte[] wkbBytes) throws IOException {
         if (wkbBytes == null) // DJB: null value from database --> null geometry
@@ -91,8 +90,7 @@ public class WKBAttributeIO {
         try {
             return read(rs, rs.findColumn(columnName));
         } catch (SQLException e) {
-            throw new IllegalArgumentException(
-                    "columnName " + e + " is not a column in result set");
+            throw new IllegalArgumentException("columnName " + e + " is not a column in result set");
         }
     }
 

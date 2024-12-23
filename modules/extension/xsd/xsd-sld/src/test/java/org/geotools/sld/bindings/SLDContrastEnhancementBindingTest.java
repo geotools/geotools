@@ -26,8 +26,7 @@ import org.junit.Test;
 public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
     @Test
     public void testType() throws Exception {
-        assertEquals(
-                ContrastEnhancement.class, new SLDContrastEnhancementBinding(null, null).getType());
+        assertEquals(ContrastEnhancement.class, new SLDContrastEnhancementBinding(null, null).getType());
     }
 
     @Test

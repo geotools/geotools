@@ -179,8 +179,7 @@ public class XsDateTimeFormat extends Format {
                         if (offset >= length) {
                             pString = pString + "T";
                         } else {
-                            pString =
-                                    pString.substring(0, offset) + "T" + pString.substring(offset);
+                            pString = pString.substring(0, offset) + "T" + pString.substring(offset);
                         }
                         ++offset;
                         length = pString.length();
@@ -286,10 +285,7 @@ public class XsDateTimeFormat extends Format {
                     if (millis > 999) {
                         // If lenient, add 000
                         if (lenient) {
-                            pString =
-                                    pString.substring(0, offsetBefore)
-                                            + "000"
-                                            + pString.substring(offset);
+                            pString = pString.substring(0, offsetBefore) + "000" + pString.substring(offset);
                             length = pString.length();
                         } else {
                             pParsePosition.setErrorIndex(offset);

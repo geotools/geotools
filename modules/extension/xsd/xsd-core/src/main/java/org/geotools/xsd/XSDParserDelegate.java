@@ -26,8 +26,8 @@ import org.xml.sax.SAXException;
 /**
  * Parser delegate which which uses the xsd framework to parse.
  *
- * <p>This is used to support the parsing of dynamically imported schemas, ie schemas that are
- * included on the fly in an instance document but not referenced by the schema itself.
+ * <p>This is used to support the parsing of dynamically imported schemas, ie schemas that are included on the fly in an
+ * instance document but not referenced by the schema itself.
  *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
@@ -41,13 +41,8 @@ public class XSDParserDelegate implements ParserDelegate {
     }
 
     @Override
-    public boolean canHandle(
-            QName elementName, Attributes attributes, Handler handler, Handler parent) {
-        return this.handler
-                .getConfiguration()
-                .getXSD()
-                .getNamespaceURI()
-                .equals(elementName.getNamespaceURI());
+    public boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent) {
+        return this.handler.getConfiguration().getXSD().getNamespaceURI().equals(elementName.getNamespaceURI());
     }
 
     @Override
@@ -81,8 +76,7 @@ public class XSDParserDelegate implements ParserDelegate {
     }
 
     @Override
-    public void startElement(String uri, String localName, String name, Attributes atts)
-            throws SAXException {
+    public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException {
         handler.startElement(uri, localName, name, atts);
     }
 

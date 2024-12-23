@@ -34,16 +34,16 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.factory.Hints;
 
 /**
- * Base class for grid processing tests. This class provides a few convenience methods performing
- * some operations on {@link GridCoverage2D}.
+ * Base class for grid processing tests. This class provides a few convenience methods performing some operations on
+ * {@link GridCoverage2D}.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class GridProcessingTestBase extends GridCoverageTestBase {
     /**
-     * Rotates the given coverage by the given angle. This method replaces the coverage CRS by a
-     * derived one containing the rotated axes.
+     * Rotates the given coverage by the given angle. This method replaces the coverage CRS by a derived one containing
+     * the rotated axes.
      *
      * @param coverage The coverage to rotate.
      * @param angle The rotation angle, in degrees.
@@ -132,8 +132,8 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
     }
 
     /**
-     * Projects the specified coverage to the specified CRS using the specified hints. The result
-     * will be displayed in a window if {@link #SHOW} is set to {@code true}.
+     * Projects the specified coverage to the specified CRS using the specified hints. The result will be displayed in a
+     * window if {@link #SHOW} is set to {@code true}.
      *
      * @param coverage The coverage to project.
      * @param targetCRS The target CRS, or {@code null} if the same.
@@ -168,15 +168,13 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
     }
 
     /**
-     * Performs an affine transformation on the provided coverage. The transformation is a
-     * translation by 5 units along x and y axes. The result will be displayed in a window if {@link
-     * #SHOW} is set to {@code true}.
+     * Performs an affine transformation on the provided coverage. The transformation is a translation by 5 units along
+     * x and y axes. The result will be displayed in a window if {@link #SHOW} is set to {@code true}.
      *
      * @param coverage The coverage to apply the operation on.
      * @param hints An optional set of hints, or {@code null} if none.
      * @param asCRS The expected operation name if the resampling is performed as a CRS change.
-     * @param asGG The expected operation name if the resampling is perofrmed as a Grid Geometry
-     *     change.
+     * @param asGG The expected operation name if the resampling is perofrmed as a Grid Geometry change.
      */
     protected static void showTranslated(
             GridCoverage2D coverage, final Hints hints, final String asCRS, final String asGG) {

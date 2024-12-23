@@ -65,15 +65,13 @@ public class FunctionFinder {
             List<FunctionName> functionNames = factory.getFunctionNames();
             allFunctionDescriptions.addAll(functionNames);
         }
-        Collections.sort(
-                allFunctionDescriptions,
-                (o1, o2) -> {
-                    if (o1 == null && o2 == null) return 0;
-                    if (o1 == null && o2 != null) return 1;
-                    if (o1 != null && o2 == null) return -1;
+        Collections.sort(allFunctionDescriptions, (o1, o2) -> {
+            if (o1 == null && o2 == null) return 0;
+            if (o1 == null && o2 != null) return 1;
+            if (o1 != null && o2 == null) return -1;
 
-                    return o1.getName().compareTo(o2.getName());
-                });
+            return o1.getName().compareTo(o2.getName());
+        });
         return Collections.unmodifiableList(allFunctionDescriptions);
     }
     /**
@@ -148,36 +146,30 @@ public class FunctionFinder {
     }
 
     /**
-     * Look up a function for the provided name, may return a FallbackFunction if an implementation
-     * could not be found.
+     * Look up a function for the provided name, may return a FallbackFunction if an implementation could not be found.
      *
-     * <p>You can create a function to represent an SQL function or a function hosted on an external
-     * service; the fallback value will be used if you evulate by a Java implementation on the
-     * classpath.
+     * <p>You can create a function to represent an SQL function or a function hosted on an external service; the
+     * fallback value will be used if you evulate by a Java implementation on the classpath.
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
      * @param fallback Literal to use if an implementation could not be found
-     * @return Function for the provided name, may be a FallbackFunction if an implementation could
-     *     not be found
+     * @return Function for the provided name, may be a FallbackFunction if an implementation could not be found
      */
     public Function findFunction(String name, List<Expression> parameters, Literal fallback) {
         return findFunction(new NameImpl(name), parameters, fallback);
     }
 
     /**
-     * Look up a function for the provided name, may return a FallbackFunction if an implementation
-     * could not be found.
+     * Look up a function for the provided name, may return a FallbackFunction if an implementation could not be found.
      *
-     * <p>You can create a function to represent an SQL function or a function hosted on an external
-     * service; the fallback value will be used if you evulate by a Java implementation on the
-     * classpath.
+     * <p>You can create a function to represent an SQL function or a function hosted on an external service; the
+     * fallback value will be used if you evulate by a Java implementation on the classpath.
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
      * @param fallback Literal to use if an implementation could not be found
-     * @return Function for the provided name, may be a FallbackFunction if an implementation could
-     *     not be found
+     * @return Function for the provided name, may be a FallbackFunction if an implementation could not be found
      */
     public Function findFunction(Name name, List<Expression> parameters, Literal fallback) {
         // try name as is

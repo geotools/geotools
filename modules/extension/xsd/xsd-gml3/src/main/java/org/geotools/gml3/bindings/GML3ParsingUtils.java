@@ -58,11 +58,7 @@ public class GML3ParsingUtils {
      * @return A feature.
      */
     public static SimpleFeature parseFeature(
-            ElementInstance instance,
-            Node node,
-            Object value,
-            FeatureTypeCache ftCache,
-            BindingWalkerFactory bwFactory)
+            ElementInstance instance, Node node, Object value, FeatureTypeCache ftCache, BindingWalkerFactory bwFactory)
             throws Exception {
         return GML2ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
     }
@@ -72,8 +68,8 @@ public class GML3ParsingUtils {
      *
      * @return The corresponding geotools feature type.
      */
-    public static SimpleFeatureType featureType(
-            XSDElementDeclaration element, BindingWalkerFactory bwFactory) throws Exception {
+    public static SimpleFeatureType featureType(XSDElementDeclaration element, BindingWalkerFactory bwFactory)
+            throws Exception {
         return GML2ParsingUtils.featureType(element, bwFactory);
     }
 
@@ -87,11 +83,10 @@ public class GML3ParsingUtils {
     }
 
     /**
-     * Returns the number of dimensions for the specified node, eventually recursing up to find the
-     * parent node that has the indication of the dimensions (normally the top-most geometry element
-     * has it, not the posList). If no srsDimension can be found, check the srsName the same way and
-     * return the srsDimensions instead. Returns 2 if no srsDimension or srsName attribute could be
-     * found.
+     * Returns the number of dimensions for the specified node, eventually recursing up to find the parent node that has
+     * the indication of the dimensions (normally the top-most geometry element has it, not the posList). If no
+     * srsDimension can be found, check the srsName the same way and return the srsDimensions instead. Returns 2 if no
+     * srsDimension or srsName attribute could be found.
      */
     public static int dimensions(Node node) {
         Node current = node;
@@ -122,8 +117,7 @@ public class GML3ParsingUtils {
         return (LinearRing) line(node, gf, csf, true);
     }
 
-    static LineString line(
-            Node node, GeometryFactory gf, CoordinateSequenceFactory csf, boolean ring) {
+    static LineString line(Node node, GeometryFactory gf, CoordinateSequenceFactory csf, boolean ring) {
         if (node.hasChild(Position.class)) {
             List dps = node.getChildValues(Position.class);
             Position dp = (Position) dps.get(0);
@@ -191,8 +185,8 @@ public class GML3ParsingUtils {
     }
 
     /**
-     * Returns a curved geometry factory given the linearization constraints, the original factory,
-     * and a coordinate sequence representing the control points of a curved geometry
+     * Returns a curved geometry factory given the linearization constraints, the original factory, and a coordinate
+     * sequence representing the control points of a curved geometry
      */
     public static CurvedGeometryFactory getCurvedGeometryFactory(
             ArcParameters arcParameters, GeometryFactory gFactory, CoordinateSequence cs) {

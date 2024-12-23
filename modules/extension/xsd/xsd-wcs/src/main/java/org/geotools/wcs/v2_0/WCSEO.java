@@ -53,15 +53,16 @@ public final class WCSEO extends XSD {
     /** Returns the location of 'wcsAll.xsd.'. */
     @Override
     public String getSchemaLocation() {
-        return getClass().getResource("wcseo/v1_0/wcsEODescribeEOCoverageSet.xsd").toString();
+        return getClass()
+                .getResource("wcseo/v1_0/wcsEODescribeEOCoverageSet.xsd")
+                .toString();
     }
 
     /** @generated */
     public static final String NAMESPACE = "http://www.opengis.net/wcseo/1.0";
 
     /** @generated */
-    public static final QName DescribeEOCoverageSetType =
-            new QName(NAMESPACE, "DescribeEOCoverageSetType");
+    public static final QName DescribeEOCoverageSetType = new QName(NAMESPACE, "DescribeEOCoverageSetType");
 
     /** @generated */
     public static final QName Sections = new QName(NAMESPACE, "Sections");

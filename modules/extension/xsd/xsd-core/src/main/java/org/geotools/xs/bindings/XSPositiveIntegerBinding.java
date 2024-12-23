@@ -80,8 +80,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
      * <!-- begin-user-doc -->
      * Restriction of integer to positive values.
      *
-     * <p>Please just treat this as a Number, actual value returned may be BigInteger or Long or
-     * Integer.
+     * <p>Please just treat this as a Number, actual value returned may be BigInteger or Long or Integer.
      *
      * @param instance with text to be parsed
      * @param value Number from parent XSNonNegativeIntegerStratagy
@@ -93,8 +92,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) value;
 
         if (number.longValue() < 1) {
-            throw new IllegalArgumentException(
-                    "positiveInteger value '" + number + "' must be positive.");
+            throw new IllegalArgumentException("positiveInteger value '" + number + "' must be positive.");
         }
 
         return BigInteger.valueOf(number.longValue());
@@ -112,8 +110,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) object;
 
         if (number.longValue() == 0) {
-            throw new IllegalArgumentException(
-                    "positiveInteger value '" + number + "' must be positive.");
+            throw new IllegalArgumentException("positiveInteger value '" + number + "' must be positive.");
         }
 
         return value;

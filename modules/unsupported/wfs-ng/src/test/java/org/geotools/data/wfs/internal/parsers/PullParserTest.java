@@ -74,10 +74,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
         // </gml:coordinates>
     }
 
-    /**
-     * We inject an HTTPClient that are used for fetching the schema specified in
-     * wfs_get_feature.xml
-     */
+    /** We inject an HTTPClient that are used for fetching the schema specified in wfs_get_feature.xml */
     @Test
     public void testUsingHttpClientForSchema() throws Exception {
         Configuration wfsConfiguration = new WFSConfiguration();
@@ -86,8 +83,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             String axisOrder = null;
             HTTPClient httpClient = createMjosovervakHttpClient();
             GetParser<SimpleFeature> parser =
-                    new PullParserFeatureReader(
-                            wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
+                    new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
             SimpleFeature first = parser.parse();
             Assert.assertNotNull(first);
             Assert.assertEquals("Svanfoss", first.getAttribute("STATION_NAME"));
@@ -110,8 +106,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             String axisOrder = null;
             HTTPClient httpClient = createFailingHttpClient();
             GetParser<SimpleFeature> parser =
-                    new PullParserFeatureReader(
-                            wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
+                    new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
             parser.parse();
         }
     }

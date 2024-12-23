@@ -39,8 +39,7 @@ public class VectorIdentityRTProcess {
     @DescribeResult(name = "result", description = "The result")
     public SimpleFeatureCollection execute(
             // process data
-            @DescribeParameter(name = "data", description = "Features to process")
-                    SimpleFeatureCollection data,
+            @DescribeParameter(name = "data", description = "Features to process") SimpleFeatureCollection data,
             @DescribeParameter(name = "value", description = "Value for testing") Integer value)
             throws ProcessException {
         if (value != invertQueryValue) {
@@ -61,8 +60,7 @@ public class VectorIdentityRTProcess {
     }
 
     public boolean clipOnRenderingArea(
-            @DescribeParameter(name = "data", description = "Features to process")
-                    SimpleFeatureCollection data,
+            @DescribeParameter(name = "data", description = "Features to process") SimpleFeatureCollection data,
             @DescribeParameter(name = "value", description = "Value for testing") Integer value) {
         // making sure inputs have been provided
         assertNotNull(data);

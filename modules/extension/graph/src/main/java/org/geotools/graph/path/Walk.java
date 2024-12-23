@@ -25,8 +25,8 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
 /**
- * Represents a walk in a graph. A <B>walk</B> W is defined as an ordered set of nodes that two
- * adjacenct nodes in the set share an edge. More precisley: <br>
+ * Represents a walk in a graph. A <B>walk</B> W is defined as an ordered set of nodes that two adjacenct nodes in the
+ * set share an edge. More precisley: <br>
  * <br>
  * G = {N,E} W = { n(i) in N | (n(i-1),n(i)) in E }
  *
@@ -42,9 +42,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
         super(nodes);
     }
 
-    /**
-     * A valid walk is one in which each pair of adjacent nodes in the sequence share an edge. Note,
-     */
+    /** A valid walk is one in which each pair of adjacent nodes in the sequence share an edge. Note, */
     @Override
     public boolean isValid() {
         // if edges were calculated successfly it is a valid walk
@@ -52,8 +50,8 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Calculates the edges in the walk. If the edges of the walk cannot be calculated (due to an
-     * invalid walk), null is returned, otherwise the list of edges is returned.
+     * Calculates the edges in the walk. If the edges of the walk cannot be calculated (due to an invalid walk), null is
+     * returned, otherwise the list of edges is returned.
      *
      * @return The edges of the walk, otherwise null if the edges cannot be calculated.
      */
@@ -67,8 +65,8 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Adds a node to the walk. Adding a node clears the edge list which will be recalculated on the
-     * next call to getEdges().
+     * Adds a node to the walk. Adding a node clears the edge list which will be recalculated on the next call to
+     * getEdges().
      *
      * @param node Node to add to the walk.
      */
@@ -138,8 +136,8 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Removes a node from the walk. Removing a node clears the edge list which will be recalculated
-     * on the next call to getEdges().
+     * Removes a node from the walk. Removing a node clears the edge list which will be recalculated on the next call to
+     * getEdges().
      *
      * @param node Node to remove from the walk.
      */
@@ -167,8 +165,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Determines if the walk is closed. A closed walk is one in which the first and last nodes are
-     * the same.
+     * Determines if the walk is closed. A closed walk is one in which the first and last nodes are the same.
      *
      * @return True if closed, otherwise false.
      */
@@ -190,11 +187,9 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Internal method for building the edge set of the walk. This method calculated the edges upon
-     * every call.
+     * Internal method for building the edge set of the walk. This method calculated the edges upon every call.
      *
-     * @return The list of edges for the walk, or null if the edge set could not be calculated due
-     *     to an invalid walk.
+     * @return The list of edges for the walk, or null if the edge set could not be calculated due to an invalid walk.
      */
     protected List<Edge> buildEdges() {
         List<Edge> edges = new ArrayList<>();
@@ -219,8 +214,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Truncates the path at the specified index. Nodes in the path whose index is >= the specified
-     * index are removed.
+     * Truncates the path at the specified index. Nodes in the path whose index is >= the specified index are removed.
      *
      * @param index The index of first node to be removed.
      */
@@ -230,8 +224,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     }
 
     /**
-     * Returns an iterator that iterates over the path in reverse. The iterator does not support the
-     * remove operation.
+     * Returns an iterator that iterates over the path in reverse. The iterator does not support the remove operation.
      *
      * @return the reverse iterator.
      */

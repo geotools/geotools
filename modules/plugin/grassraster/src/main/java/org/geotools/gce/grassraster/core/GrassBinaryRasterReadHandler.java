@@ -114,10 +114,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     /** the flag that, if true, describes that the current map is in an old integer format. */
     private boolean isOldIntegerMap = false;
 
-    /**
-     * the long array that keeps the addresses of the starting point (bytes in the file) of each
-     * raster row.
-     */
+    /** the long array that keeps the addresses of the starting point (bytes in the file) of each raster row. */
     private long[] addressesOfRows;
 
     private int rowCacheRow = -1;
@@ -137,8 +134,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     private JGrassRegion activeReadRegion;
 
     /**
-     * the constructor to build a {@link GrassBinaryRasterReadHandler} usable for reading grass
-     * rasters.
+     * the constructor to build a {@link GrassBinaryRasterReadHandler} usable for reading grass rasters.
      *
      * @param cellFile the file of the raw raster data.
      */
@@ -151,13 +147,12 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * Reads a grass raster, adding the possibility to override subsampling.
      *
      * @param param the {@linkplain ImageReadParam read parameters}.
-     * @param useSubSamplingAsRequestedRowcols a flag that gives the possibility to bypass the
-     *     imageio subsampling mechanism. With GRASS maps this is often more performing in some
-     *     boundary situations. In the case this flag is set to true, the subsampling values will be
-     *     handled as the requested columns and rows.
-     * @param castDoubleToFloating a flag that gives the possibility to force the reading of a map
-     *     as a floating point map. This is necessary right now because of a imageio bug:
-     *     https://jai-imageio-core.dev.java.net /issues/show_bug.cgi?id=180
+     * @param useSubSamplingAsRequestedRowcols a flag that gives the possibility to bypass the imageio subsampling
+     *     mechanism. With GRASS maps this is often more performing in some boundary situations. In the case this flag
+     *     is set to true, the subsampling values will be handled as the requested columns and rows.
+     * @param castDoubleToFloating a flag that gives the possibility to force the reading of a map as a floating point
+     *     map. This is necessary right now because of a imageio bug: https://jai-imageio-core.dev.java.net
+     *     /issues/show_bug.cgi?id=180
      * @return the read {@link WritableRaster raster}
      */
     public WritableRaster readRaster(
@@ -175,8 +170,8 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     /**
      * reads a grass raster, given the {@linkplain ImageReadParam read parameters}.
      *
-     * <p>The data are read into a single banded, floating point {@link WritableRaster}. A {@link
-     * RectIter} can be used to access the data afterwards.
+     * <p>The data are read into a single banded, floating point {@link WritableRaster}. A {@link RectIter} can be used
+     * to access the data afterwards.
      *
      * @param param the read parameters.
      * @return the read raster
@@ -207,13 +202,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             double newSouth = newNorth - srcRegion.height * yRes;
 
             activeReadRegion =
-                    new JGrassRegion(
-                            newWest,
-                            newEast,
-                            newSouth,
-                            newNorth,
-                            intRealRowsToRead,
-                            intRealColsToRead);
+                    new JGrassRegion(newWest, newEast, newSouth, newNorth, intRealRowsToRead, intRealColsToRead);
             int colsAtMaxRes = activeReadRegion.getCols();
             int rowsAtMaxRes = activeReadRegion.getRows();
 
@@ -240,22 +229,16 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         final WritableRaster raster;
         if (numberOfBytesPerValue == 8) {
             if (!castDoubleToFloating) {
-                raster =
-                        RasterFactory.createBandedRaster(
-                                DataBuffer.TYPE_DOUBLE, rasterMapWidth, rasterMapHeight, 1, null);
+                raster = RasterFactory.createBandedRaster(
+                        DataBuffer.TYPE_DOUBLE, rasterMapWidth, rasterMapHeight, 1, null);
             } else {
-                raster =
-                        RasterFactory.createBandedRaster(
-                                DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, null);
+                raster = RasterFactory.createBandedRaster(
+                        DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, null);
             }
         } else if (numberOfBytesPerValue == 4 && readerMapType < 0) {
-            raster =
-                    RasterFactory.createBandedRaster(
-                            DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, null);
+            raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, null);
         } else if (readerMapType > -1) {
-            raster =
-                    RasterFactory.createBandedRaster(
-                            DataBuffer.TYPE_INT, rasterMapWidth, rasterMapHeight, 1, null);
+            raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_INT, rasterMapWidth, rasterMapHeight, 1, null);
         } else {
             throw new IOException("Raster type not supported."); // $NON-NLS-1$
         }
@@ -280,8 +263,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         double datanorth = activeReadRegion.getNorth();
         double datansres = activeReadRegion.getNSResolution();
         monitor.started();
-        monitor.setTask(
-                new SimpleInternationalString("Read raster map: " + readerGrassEnv.getMapName()));
+        monitor.setTask(new SimpleInternationalString("Read raster map: " + readerGrassEnv.getMapName()));
         float progress = 0f;
         for (double row = 0; row < activeRows; row++) {
 
@@ -373,10 +355,9 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     /**
      * Determines the metadata of the raster map.
      *
-     * <p>Reads the map type given a file and its mapset, the information from the header file in
-     * the cellhd directory and determines the geographic limits, format of the data, etc from the
-     * file. <b>NOTE:</b> for further informations about cell header files, read the package
-     * description.
+     * <p>Reads the map type given a file and its mapset, the information from the header file in the cellhd directory
+     * and determines the geographic limits, format of the data, etc from the file. <b>NOTE:</b> for further
+     * informations about cell header files, read the package description.
      *
      * <p><b>INFO:</b> this is a reader method.
      */
@@ -398,31 +379,25 @@ public class GrassBinaryRasterReadHandler implements Closeable {
              * is then open the data file and continue as per usual.
              */
             if ((line = cellhead.readLine()) == null) {
-                throw new IOException(
-                        "The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
+                throw new IOException("The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
             }
             if (line.trim().equalsIgnoreCase("reclass")) { // $NON-NLS-1$
                 /* The next two lines hold the orginal map file amd mapset */
                 for (int i = 0; i < 2; i++) {
                     if ((line = cellhead.readLine()) == null) {
-                        throw new IOException(
-                                "The cellhead file seems to be corrupted: "
-                                        + cellhd.getAbsolutePath());
+                        throw new IOException("The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
                     }
                     String[] lineSplit = line.split(":");
                     if (lineSplit.length == 2) {
-                        if (lineSplit[0].trim().equalsIgnoreCase("name"))
-                            reclassedFile = lineSplit[1].trim();
-                        else if (lineSplit[0].trim().equalsIgnoreCase("mapset"))
-                            reclassedMapset = lineSplit[1].trim();
+                        if (lineSplit[0].trim().equalsIgnoreCase("name")) reclassedFile = lineSplit[1].trim();
+                        else if (lineSplit[0].trim().equalsIgnoreCase("mapset")) reclassedMapset = lineSplit[1].trim();
                     }
                 }
                 /* Instantiate the reclass table */
                 reclassTable = new ArrayList<>();
                 /* The next line holds the start value for categories */
                 if ((line = cellhead.readLine()) == null) {
-                    throw new IOException(
-                            "The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
+                    throw new IOException("The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
                 }
                 if (line.charAt(0) == '#') {
                     int reclassFirstCategory = Integer.parseInt(line.trim().substring(1));
@@ -442,8 +417,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                 readerGrassEnv.setReclassed(reclassedMapset, reclassedFile);
                 if (!cellhd.exists()) {
                     throw new IOException(
-                            "The reclassed cellhead file doesn't seems to exist: "
-                                    + cellhd.getAbsolutePath());
+                            "The reclassed cellhead file doesn't seems to exist: " + cellhd.getAbsolutePath());
                 }
                 cellhead = new BufferedReader(new FileReader(cellhd));
             } else {
@@ -456,8 +430,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     String key = lineSplit[0].trim();
                     String value = lineSplit[1].trim();
                     /* If key is 'ew resol' or 'ns resol' then store 'xx res' */
-                    if (key.indexOf("resol") != -1)
-                        readerFileHeaderMap.put(key.replaceAll("resol", "res"), value);
+                    if (key.indexOf("resol") != -1) readerFileHeaderMap.put(key.replaceAll("resol", "res"), value);
                     else readerFileHeaderMap.put(key, value);
                 } else {
                     // probably that means lat/long, i.e. something like
@@ -502,8 +475,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     }
 
                     if (key.indexOf("resol") != -1)
-                        readerFileHeaderMap.put(
-                                key.replaceAll("resol", "res"), String.valueOf(value));
+                        readerFileHeaderMap.put(key.replaceAll("resol", "res"), String.valueOf(value));
                     else readerFileHeaderMap.put(key, String.valueOf(value));
                 }
             }
@@ -513,27 +485,24 @@ public class GrassBinaryRasterReadHandler implements Closeable {
              * file data.
              */
             if (readerFileHeaderMap.containsKey("n-s res")) {
-                nativeRasterRegion =
-                        new JGrassRegion(
-                                Double.parseDouble(readerFileHeaderMap.get("west")),
-                                Double.parseDouble(readerFileHeaderMap.get("east")),
-                                Double.parseDouble(readerFileHeaderMap.get("south")),
-                                Double.parseDouble(readerFileHeaderMap.get("north")),
-                                Double.parseDouble(readerFileHeaderMap.get("e-w res")),
-                                Double.parseDouble(readerFileHeaderMap.get("n-s res")));
+                nativeRasterRegion = new JGrassRegion(
+                        Double.parseDouble(readerFileHeaderMap.get("west")),
+                        Double.parseDouble(readerFileHeaderMap.get("east")),
+                        Double.parseDouble(readerFileHeaderMap.get("south")),
+                        Double.parseDouble(readerFileHeaderMap.get("north")),
+                        Double.parseDouble(readerFileHeaderMap.get("e-w res")),
+                        Double.parseDouble(readerFileHeaderMap.get("n-s res")));
             } else if (readerFileHeaderMap.containsKey("cols")) {
-                nativeRasterRegion =
-                        new JGrassRegion(
-                                Double.parseDouble(readerFileHeaderMap.get("west")),
-                                Double.parseDouble(readerFileHeaderMap.get("east")),
-                                Double.parseDouble(readerFileHeaderMap.get("south")),
-                                Double.parseDouble(readerFileHeaderMap.get("north")),
-                                Integer.parseInt(readerFileHeaderMap.get("rows")),
-                                Integer.parseInt(readerFileHeaderMap.get("cols")));
+                nativeRasterRegion = new JGrassRegion(
+                        Double.parseDouble(readerFileHeaderMap.get("west")),
+                        Double.parseDouble(readerFileHeaderMap.get("east")),
+                        Double.parseDouble(readerFileHeaderMap.get("south")),
+                        Double.parseDouble(readerFileHeaderMap.get("north")),
+                        Integer.parseInt(readerFileHeaderMap.get("rows")),
+                        Integer.parseInt(readerFileHeaderMap.get("cols")));
             } else {
-                throw new IOException(
-                        "The map window file seems to be corrupted. Unable to read file region: "
-                                + cellhd.getAbsolutePath());
+                throw new IOException("The map window file seems to be corrupted. Unable to read file region: "
+                        + cellhd.getAbsolutePath());
             }
 
             if (!readerFileHeaderMap.get("format").equals("")) {
@@ -552,8 +521,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     /* Check if null file exists. */
                     imageNullFileIS = null;
                     if (readerGrassEnv.getCELLMISC_NULL().exists()) {
-                        imageNullFileIS =
-                                ImageIO.createImageInputStream(readerGrassEnv.getCELLMISC_NULL());
+                        imageNullFileIS = ImageIO.createImageInputStream(readerGrassEnv.getCELLMISC_NULL());
                         if (imageNullFileIS == null) {
                             isOldIntegerMap = false;
                         } else {
@@ -571,8 +539,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                          * about floating maps
                          */
                         BufferedReader cellmiscformat =
-                                new BufferedReader(
-                                        new FileReader(readerGrassEnv.getCELLMISC_FORMAT()));
+                                new BufferedReader(new FileReader(readerGrassEnv.getCELLMISC_FORMAT()));
                         while ((line = cellmiscformat.readLine()) != null) {
                             StringTokenizer tokk = new StringTokenizer(line, ":");
                             if (tokk.countTokens() == 2) {
@@ -586,42 +553,32 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                             if ((readerFileHeaderMap.get("type")).equalsIgnoreCase("double")) {
                                 readerMapType = -2;
                                 numberOfBytesPerValue = 8;
-                            } else if ((readerFileHeaderMap.get("type"))
-                                    .equalsIgnoreCase("float")) {
+                            } else if ((readerFileHeaderMap.get("type")).equalsIgnoreCase("float")) {
                                 readerMapType = -1;
                                 numberOfBytesPerValue = 4;
                             } else {
-                                throw new IOException(
-                                        "Wrong number type in format file: "
-                                                + readerGrassEnv
-                                                        .getCELLMISC_FORMAT()
-                                                        .getAbsolutePath());
+                                throw new IOException("Wrong number type in format file: "
+                                        + readerGrassEnv.getCELLMISC_FORMAT().getAbsolutePath());
                             }
                         } else {
-                            throw new IOException(
-                                    "Wrong number type in format file: "
-                                            + readerGrassEnv
-                                                    .getCELLMISC_FORMAT()
-                                                    .getAbsolutePath());
+                            throw new IOException("Wrong number type in format file: "
+                                    + readerGrassEnv.getCELLMISC_FORMAT().getAbsolutePath());
                         }
                         cellmiscformat.close();
                     } else {
-                        throw new IOException(
-                                "Missing required format file: "
-                                        + readerGrassEnv.getCELLMISC_FORMAT().getAbsolutePath());
+                        throw new IOException("Missing required format file: "
+                                + readerGrassEnv.getCELLMISC_FORMAT().getAbsolutePath());
                     }
                     isOldIntegerMap = false;
                     /* Instantiate cell file and null file objects */
                     imageIS = ImageIO.createImageInputStream(readerGrassEnv.getFCELL());
                     imageNullFileIS = null;
                     if (readerGrassEnv.getCELLMISC_NULL().exists()) {
-                        imageNullFileIS =
-                                ImageIO.createImageInputStream(readerGrassEnv.getCELLMISC_NULL());
+                        imageNullFileIS = ImageIO.createImageInputStream(readerGrassEnv.getCELLMISC_NULL());
                     }
                 }
             } else {
-                throw new IOException(
-                        "The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
+                throw new IOException("The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
             }
 
             if (!readerFileHeaderMap.get("compressed").equals("")) {
@@ -629,8 +586,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                 int cmpr = Integer.parseInt(readerFileHeaderMap.get("compressed"));
                 compressed = cmpr == 1 ? true : false;
             } else {
-                throw new IOException(
-                        "The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
+                throw new IOException("The cellhead file seems to be corrupted: " + cellhd.getAbsolutePath());
             }
 
             cellhead.close();
@@ -682,9 +638,8 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                 addressesOfRows[i] = fileHeader.getLong();
             }
         } else {
-            throw new IOException(
-                    "The first byte of the GRASS file header is not 4 and not 8. Unknown case for file: "
-                            + readerGrassEnv.getCELL().getAbsolutePath());
+            throw new IOException("The first byte of the GRASS file header is not 4 and not 8. Unknown case for file: "
+                    + readerGrassEnv.getCELL().getAbsolutePath());
         }
     }
 
@@ -698,8 +653,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * @param activeReadRegion the region defining the portion of raster to be read
      * @return boolean TRUE for success, FALSE for failure.
      */
-    private boolean readRasterRow(
-            int currentfilerow, byte[] rowDataCache, JGrassRegion activeReadRegion)
+    private boolean readRasterRow(int currentfilerow, byte[] rowDataCache, JGrassRegion activeReadRegion)
             throws IOException, DataFormatException {
         ByteBuffer rowBuffer = ByteBuffer.wrap(rowDataCache);
         /*
@@ -720,8 +674,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         // fileWindow.getRows()="+fileWindow.getRows());
 
         /* Reset row cache and read new row data */
-        ByteBuffer rowCache =
-                ByteBuffer.allocate(nativeRasterRegion.getCols() * ((readerMapType == -2) ? 8 : 4));
+        ByteBuffer rowCache = ByteBuffer.allocate(nativeRasterRegion.getCols() * ((readerMapType == -2) ? 8 : 4));
         // rowCache.rewind();
         getMapRow(currentfilerow, rowCache);
         // rowCacheRow = currentfilerow;
@@ -835,8 +788,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * @param currentrow the index of the row to read.
      * @param rowdata the buffer to hold the read row.
      */
-    private void getMapRow(int currentrow, ByteBuffer rowdata)
-            throws IOException, DataFormatException {
+    private void getMapRow(int currentrow, ByteBuffer rowdata) throws IOException, DataFormatException {
         if (compressed) {
             /* Compressed maps */
             if (readerMapType == -2) {
@@ -1057,8 +1009,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     /**
      * read the null value from the null file (if it exists).
      *
-     * <p>Return the information about the particular cell (true if it is novalue, false if it is
-     * not a novalue.
+     * <p>Return the information about the particular cell (true if it is novalue, false if it is not a novalue.
      *
      * <p><b>INFO:</b> this is a reader method.
      *
@@ -1066,8 +1017,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * @param currentfilecol index of the column.
      * @return true if it is a novalue.
      */
-    private boolean readNullValueAtRowCol(int currentfilerow, int currentfilecol)
-            throws IOException {
+    private boolean readNullValueAtRowCol(int currentfilerow, int currentfilecol) throws IOException {
         /*
          * If the null file doesn't exist and the map is an integer, than it is
          * an old integer-map format, where the novalues are the cells that
@@ -1242,9 +1192,9 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     /**
      * Reads the crs definition for the map.
      *
-     * <p>The definition for grass maps is held in the location. Grass projection definitions are
-     * usually in a non parsable internal format. In JGrass we ask the user to choose the CRS. If
-     * the user doesn't do so, the CRS will result to be undefined.
+     * <p>The definition for grass maps is held in the location. Grass projection definitions are usually in a non
+     * parsable internal format. In JGrass we ask the user to choose the CRS. If the user doesn't do so, the CRS will
+     * result to be undefined.
      *
      * @return the {@link CoordinateReferenceSystem} for the map. Null if it is not defined.
      * @throws IOException if there were problems in parsing the CRS file.
@@ -1252,12 +1202,11 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     public CoordinateReferenceSystem getCrs() throws IOException {
         String locationPath = readerGrassEnv.getLOCATION().getAbsolutePath();
         CoordinateReferenceSystem readCrs = null;
-        String projWtkFilePath =
-                locationPath
-                        + File.separator
-                        + JGrassConstants.PERMANENT_MAPSET
-                        + File.separator
-                        + JGrassConstants.PROJ_WKT;
+        String projWtkFilePath = locationPath
+                + File.separator
+                + JGrassConstants.PERMANENT_MAPSET
+                + File.separator
+                + JGrassConstants.PROJ_WKT;
         File projWtkFile = new File(projWtkFilePath);
         if (projWtkFile.exists()) {
 
@@ -1292,46 +1241,30 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         if (sampleModel == null) {
             if (numberOfBytesPerValue == 8) {
                 if (!castDoubleToFloating) {
-                    sampleModel =
-                            new ComponentSampleModelJAI(
-                                    DataBuffer.TYPE_DOUBLE,
-                                    rasterMapWidth,
-                                    rasterMapHeight,
-                                    1,
-                                    rasterMapWidth,
-                                    bands,
-                                    bandOffsets);
+                    sampleModel = new ComponentSampleModelJAI(
+                            DataBuffer.TYPE_DOUBLE,
+                            rasterMapWidth,
+                            rasterMapHeight,
+                            1,
+                            rasterMapWidth,
+                            bands,
+                            bandOffsets);
                 } else {
-                    sampleModel =
-                            new ComponentSampleModelJAI(
-                                    DataBuffer.TYPE_FLOAT,
-                                    rasterMapWidth,
-                                    rasterMapHeight,
-                                    1,
-                                    rasterMapWidth,
-                                    bands,
-                                    bandOffsets);
+                    sampleModel = new ComponentSampleModelJAI(
+                            DataBuffer.TYPE_FLOAT,
+                            rasterMapWidth,
+                            rasterMapHeight,
+                            1,
+                            rasterMapWidth,
+                            bands,
+                            bandOffsets);
                 }
             } else if (numberOfBytesPerValue == 4 && readerMapType < 0) {
-                sampleModel =
-                        new ComponentSampleModelJAI(
-                                DataBuffer.TYPE_FLOAT,
-                                rasterMapWidth,
-                                rasterMapHeight,
-                                1,
-                                rasterMapWidth,
-                                bands,
-                                bandOffsets);
+                sampleModel = new ComponentSampleModelJAI(
+                        DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, rasterMapWidth, bands, bandOffsets);
             } else if (readerMapType > -1) {
-                sampleModel =
-                        new ComponentSampleModelJAI(
-                                DataBuffer.TYPE_INT,
-                                rasterMapWidth,
-                                rasterMapHeight,
-                                1,
-                                rasterMapWidth,
-                                bands,
-                                bandOffsets);
+                sampleModel = new ComponentSampleModelJAI(
+                        DataBuffer.TYPE_INT, rasterMapWidth, rasterMapHeight, 1, rasterMapWidth, bands, bandOffsets);
             }
         }
         return sampleModel;

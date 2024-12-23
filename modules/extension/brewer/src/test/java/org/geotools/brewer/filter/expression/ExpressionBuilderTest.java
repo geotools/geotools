@@ -26,8 +26,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 
 /**
- * ExpressionBuilder is the main entry point from a fluent programming point of view. We will mostly
- * test using this as a starting point; and break out other test cases on an as needed basis.
+ * ExpressionBuilder is the main entry point from a fluent programming point of view. We will mostly test using this as
+ * a starting point; and break out other test cases on an as needed basis.
  */
 public class ExpressionBuilderTest {
 
@@ -83,7 +83,8 @@ public class ExpressionBuilderTest {
                 ff.function("abs", ff.literal(-2)),
                 b.function().name("abs").param().literal(-2).build());
         assertEquals(
-                ff.function("abs", ff.literal(-2)), b.function("abs").param().literal(-2).build());
+                ff.function("abs", ff.literal(-2)),
+                b.function("abs").param().literal(-2).build());
 
         assertEquals(
                 ff.function("min", ff.literal(1), ff.literal(2)),
@@ -149,6 +150,7 @@ public class ExpressionBuilderTest {
                 ff.add(ff.literal(1), ff.literal(2)),
                 b.add().expr1().literal(1).expr2().literal(2).build());
 
-        assertEquals(ff.add(ff.literal(1), ff.literal(2)), b.add().expr1(1).expr2(2).build());
+        assertEquals(
+                ff.add(ff.literal(1), ff.literal(2)), b.add().expr1(1).expr2(2).build());
     }
 }

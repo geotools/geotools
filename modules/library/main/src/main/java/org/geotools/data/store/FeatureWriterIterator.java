@@ -26,14 +26,14 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 /**
  * An iterator wrapper for a FeatureWriter - for use with an AbstractFeatureCollection.
  *
- * <p>There is no reason modify this class, subclasses that wish to work with a custom iterator need
- * just that - a custom iterator.
+ * <p>There is no reason modify this class, subclasses that wish to work with a custom iterator need just that - a
+ * custom iterator.
  *
  * <p>
  *
- * <p>The use of this class against a SimpleFeatureSource not backed by a Transaction may *really*
- * cut into performance. Consider if you will the overhead involved in writing out each feature into
- * a temporary file (when the user may not even modify anything).
+ * <p>The use of this class against a SimpleFeatureSource not backed by a Transaction may *really* cut into performance.
+ * Consider if you will the overhead involved in writing out each feature into a temporary file (when the user may not
+ * even modify anything).
  *
  * @author jgarnett
  * @since 2.1.RC0
@@ -74,8 +74,7 @@ final class FeatureWriterIterator implements Iterator<SimpleFeature> {
         try {
             return writer.next();
         } catch (IOException io) {
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not obtain the next feature:" + io);
+            NoSuchElementException problem = new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
         }
@@ -86,14 +85,10 @@ final class FeatureWriterIterator implements Iterator<SimpleFeature> {
         try {
             writer.remove();
         } catch (IOException problem) {
-            throw (IllegalStateException)
-                    new IllegalStateException("Could not remove feature").initCause(problem);
+            throw (IllegalStateException) new IllegalStateException("Could not remove feature").initCause(problem);
         }
     }
-    /**
-     * This method only needs package visability as only AbstractFeatureCollection is trusted enough
-     * to call it.
-     */
+    /** This method only needs package visability as only AbstractFeatureCollection is trusted enough to call it. */
     void close() {
         if (writer != null) {
             try {

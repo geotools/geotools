@@ -42,15 +42,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * This class contains tests that validate the mappings files obtained through http and the
- * correspondent includes are correctly handled.
+ * This class contains tests that validate the mappings files obtained through http and the correspondent includes are
+ * correctly handled.
  */
 public final class HttpConfigTest {
 
     private static final HttpStaticServer HTTP_SERVER = new HttpStaticServer();
 
-    private static final File APP_SCHEMA_CACHE_DIR =
-            new File(FileUtils.getTempDirectory(), "app-schema-cache");
+    private static final File APP_SCHEMA_CACHE_DIR = new File(FileUtils.getTempDirectory(), "app-schema-cache");
     private static final boolean LINUX_GITHUB_BUILD = Boolean.getBoolean("linux-github-build");
 
     @BeforeClass
@@ -63,15 +62,11 @@ public final class HttpConfigTest {
         System.setProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY, APP_SCHEMA_CACHE_DIR.getPath());
         // start HTTP static server and load the necessary resources
         HTTP_SERVER.start();
+        HTTP_SERVER.putResource("measurements_http_includes.xml", "/test-data/http/measurements_http_includes.xml");
         HTTP_SERVER.putResource(
-                "measurements_http_includes.xml", "/test-data/http/measurements_http_includes.xml");
-        HTTP_SERVER.putResource(
-                "measurements_relative_includes.xml",
-                "/test-data/http/measurements_relative_includes.xml");
-        HTTP_SERVER.putResource(
-                "stations_http_includes.xml", "/test-data/http/stations_http_includes.xml");
-        HTTP_SERVER.putResource(
-                "stations_relative_includes.xml", "/test-data/http/stations_relative_includes.xml");
+                "measurements_relative_includes.xml", "/test-data/http/measurements_relative_includes.xml");
+        HTTP_SERVER.putResource("stations_http_includes.xml", "/test-data/http/stations_http_includes.xml");
+        HTTP_SERVER.putResource("stations_relative_includes.xml", "/test-data/http/stations_relative_includes.xml");
         HTTP_SERVER.putResource("stations.xsd", "/test-data/http/stations.xsd");
     }
 
@@ -100,8 +95,8 @@ public final class HttpConfigTest {
     }
 
     /**
-     * Helper method that tests that mappings files obtained through an hTTP request are correctly
-     * handled, as well the included types and schemas.
+     * Helper method that tests that mappings files obtained through an hTTP request are correctly handled, as well the
+     * included types and schemas.
      */
     private void testHttpMapping(String mappingFileName) throws Exception {
         // instantiate a store for the mapping file
@@ -125,8 +120,8 @@ public final class HttpConfigTest {
     }
 
     /**
-     * Static method that cna be sued to start the HTTP static server in the background, this only
-     * exists for debug proposes.
+     * Static method that cna be sued to start the HTTP static server in the background, this only exists for debug
+     * proposes.
      */
     public static void runHttpStaticServer() {
         // start the HTTP static server in the background
@@ -134,10 +129,7 @@ public final class HttpConfigTest {
         HTTP_SERVER.join();
     }
 
-    /**
-     * Helper method that instantiates a new App-Schema data store using the provided mapping file
-     * name.
-     */
+    /** Helper method that instantiates a new App-Schema data store using the provided mapping file name. */
     private static AppSchemaDataAccess buildAppSchemaDataStore(String mappingsName) {
         // create the parameters map
         Map<String, Serializable> parameters = new HashMap<>();
@@ -149,9 +141,7 @@ public final class HttpConfigTest {
             return (AppSchemaDataAccess) dataAccess;
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format(
-                            "Error build App-Schema data store for mappings '%s'.", mappingsName),
-                    exception);
+                    String.format("Error build App-Schema data store for mappings '%s'.", mappingsName), exception);
         }
     }
 }

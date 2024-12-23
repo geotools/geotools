@@ -34,8 +34,8 @@ import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
 
 /**
- * Builds an instance of one {@link BinarySpatialOperator} subclass. Copied from gt-cql, should be
- * removed once the modules * are merged.
+ * Builds an instance of one {@link BinarySpatialOperator} subclass. Copied from gt-cql, should be removed once the
+ * modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -191,11 +191,10 @@ class SpatialOperationBuilder {
     }
 
     /**
-     * From the spec: In cases where the bounding box spans the antimeridian of a geographic
-     * coordinate reference system, the lower-left value (west-most box edge) is larger than the //
-     * upper-right value (east-most box edge). Since with CQL2 we won't get the CRS (it's provided
-     * in a separate request parameter, not part of the CQL2 text), we'll just assume it's a
-     * geographic CRS
+     * From the spec: In cases where the bounding box spans the antimeridian of a geographic coordinate reference
+     * system, the lower-left value (west-most box edge) is larger than the // upper-right value (east-most box edge).
+     * Since with CQL2 we won't get the CRS (it's provided in a separate request parameter, not part of the CQL2 text),
+     * we'll just assume it's a geographic CRS
      */
     static boolean isWrappingDateline(double minLon, double maxLon) {
         return minLon > maxLon && validLongitude(minLon) && validLongitude(maxLon);

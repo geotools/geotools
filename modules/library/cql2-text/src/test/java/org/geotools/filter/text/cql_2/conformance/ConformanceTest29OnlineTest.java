@@ -24,8 +24,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_29">table 13 from
- * section A.8.2 Conformance test 29.</a>
+ * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_29">table 13 from section A.8.2
+ * Conformance test 29.</a>
  */
 @RunWith(Parameterized.class)
 public class ConformanceTest29OnlineTest extends ATSOnlineTest {
@@ -36,30 +36,26 @@ public class ConformanceTest29OnlineTest extends ATSOnlineTest {
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
     public static Collection<Object[]> params() {
-        return Arrays.asList(
-                new Object[][] {
-                    {"S_INTERSECTS(geom,LINESTRING(-180 -45, 0 -45))", 2},
-                    {"S_INTERSECTS(geom,MULTILINESTRING((-180 -45, 0 -45), (0 45, 180 45)))", 14},
-                    {
-                        "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50)))",
-                        8
-                    },
-                    {
-                        "S_INTERSECTS(geom,MULTIPOLYGON(((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50)),((0 0, 10 0, 10 10, 0 10, 0 0))))",
-                        15
-                    },
-                    {
-                        "S_INTERSECTS(geom,GEOMETRYCOLLECTION(POINT(7.02 49.92), POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))))",
-                        8
-                    },
-                    {
-                        "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50))) or S_INTERSECTS(geom,POLYGON((0 0, 10 0, 10 10, 0 10, 0 0)))",
-                        15
-                    },
-                    {
-                        "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50))) and not S_INTERSECTS(geom,POLYGON((-130 0, 0 0, 0 50, -130 50, -130 0)))",
-                        3
-                    }
-                });
+        return Arrays.asList(new Object[][] {
+            {"S_INTERSECTS(geom,LINESTRING(-180 -45, 0 -45))", 2},
+            {"S_INTERSECTS(geom,MULTILINESTRING((-180 -45, 0 -45), (0 45, 180 45)))", 14},
+            {
+                "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50)))",
+                8
+            },
+            {
+                "S_INTERSECTS(geom,MULTIPOLYGON(((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50)),((0 0, 10 0, 10 10, 0 10, 0 0))))",
+                15
+            },
+            {"S_INTERSECTS(geom,GEOMETRYCOLLECTION(POINT(7.02 49.92), POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))))", 8},
+            {
+                "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50))) or S_INTERSECTS(geom,POLYGON((0 0, 10 0, 10 10, 0 10, 0 0)))",
+                15
+            },
+            {
+                "S_INTERSECTS(geom,POLYGON((-180 -90, -90 -90, -90 90, -180 90, -180 -90), (-120 -50, -100 -50, -100 -40, -120 -40, -120 -50))) and not S_INTERSECTS(geom,POLYGON((-130 0, 0 0, 0 50, -130 50, -130 0)))",
+                3
+            }
+        });
     }
 }

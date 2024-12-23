@@ -20,8 +20,7 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Simple support class that allows accumulating doubles in an array, transparently growing it as
- * the data gets added.
+ * Simple support class that allows accumulating doubles in an array, transparently growing it as the data gets added.
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -36,9 +35,7 @@ class GrowableOrdinateArray {
         this.data = new double[size];
     }
 
-    /**
-     * Builds an initialized array, which will be primed when {@link #ensureLength(int)} is called
-     */
+    /** Builds an initialized array, which will be primed when {@link #ensureLength(int)} is called */
     GrowableOrdinateArray() {}
 
     /** Appends a single number to the array */
@@ -108,8 +105,7 @@ class GrowableOrdinateArray {
 
     public void setSize(int newSize) {
         if (newSize < 0) {
-            throw new IllegalArgumentException(
-                    "The size must zero or positive, it was " + newSize + " instead");
+            throw new IllegalArgumentException("The size must zero or positive, it was " + newSize + " instead");
         }
         ensureLength(newSize);
         curr = newSize;

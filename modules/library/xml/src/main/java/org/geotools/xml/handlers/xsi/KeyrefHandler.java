@@ -26,8 +26,8 @@ import org.xml.sax.SAXNotRecognizedException;
 /**
  * KeyrefHandler purpose.
  *
- * <p>represents a 'keyref' element. This class is not currently used asside from as a placeholder.
- * TODO use this class semantically
+ * <p>represents a 'keyref' element. This class is not currently used asside from as a placeholder. TODO use this class
+ * semantically
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
@@ -89,8 +89,7 @@ public class KeyrefHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {

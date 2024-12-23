@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strDefaultIfBlank extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strDefaultIfBlank",
-                    parameter("string", String.class),
-                    parameter("string", String.class),
-                    parameter("default", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strDefaultIfBlank",
+            parameter("string", String.class),
+            parameter("string", String.class),
+            parameter("default", String.class));
 
     public FilterFunction_strDefaultIfBlank() {
         super(NAME);

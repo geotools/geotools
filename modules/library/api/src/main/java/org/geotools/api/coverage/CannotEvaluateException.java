@@ -12,10 +12,10 @@ package org.geotools.api.coverage;
 import org.geotools.api.geometry.Position;
 
 /**
- * The base class for exceptions thrown when a quantity can't be evaluated. This exception is
- * usually invoked by a <code>
- * Coverage.{@linkplain Coverage#evaluate(Position, double[]) evaluate}(&hellip;)</code> method, for
- * example when a point is outside the coverage.
+ * The base class for exceptions thrown when a quantity can't be evaluated. This exception is usually invoked by a
+ * <code>
+ * Coverage.{@linkplain Coverage#evaluate(Position, double[]) evaluate}(&hellip;)</code> method, for example when a
+ * point is outside the coverage.
  *
  * @author Martin Desruisseaux (IRD)
  * @author Alexander Petkov
@@ -28,9 +28,8 @@ public class CannotEvaluateException extends RuntimeException {
     private static final long serialVersionUID = 506793649975583062L;
 
     /**
-     * Represents the coverage for which this exception is thrown. Useful when {@link Coverage} is
-     * used on a multilevel, so {@code PointOutsideCoverageException} can provide informative
-     * details.
+     * Represents the coverage for which this exception is thrown. Useful when {@link Coverage} is used on a multilevel,
+     * so {@code PointOutsideCoverageException} can provide informative details.
      */
     private Coverage coverage;
 
@@ -42,8 +41,8 @@ public class CannotEvaluateException extends RuntimeException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public CannotEvaluateException(String message) {
         super(message);
@@ -52,18 +51,18 @@ public class CannotEvaluateException extends RuntimeException {
     /**
      * Creates an exception with the specified message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public CannotEvaluateException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Returns the coverage for which this exception is thrown. Useful when {@link Coverage} is used
-     * on a multilevel, so {@code CannotEvaluateException} can provide informative details.
+     * Returns the coverage for which this exception is thrown. Useful when {@link Coverage} is used on a multilevel, so
+     * {@code CannotEvaluateException} can provide informative details.
      *
      * @return The coverage, or {@code null} if unknown.
      * @since GeoAPÏ 2.2

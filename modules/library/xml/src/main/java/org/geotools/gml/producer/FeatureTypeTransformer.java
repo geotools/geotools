@@ -47,9 +47,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * Transformer that transforms feature types into (hopefully) valid XML schemas. This class may be
- * used by geoserver in the future to automatically create XML schemas for the DescribeFeatureType
- * request.
+ * Transformer that transforms feature types into (hopefully) valid XML schemas. This class may be used by geoserver in
+ * the future to automatically create XML schemas for the DescribeFeatureType request.
  *
  * <pre>
  *   FeatureType type = ...; // you have it from somewhere
@@ -57,8 +56,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *   t.transform(type, System.out);
  * </pre>
  *
- * The following table lists the mapping between java types and xml schema data types for attribute
- * types.
+ * The following table lists the mapping between java types and xml schema data types for attribute types.
  *
  * <table>
  * <tr><th>
@@ -166,19 +164,16 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Simon Raess
  * @version $Id$
  * @task TODO: Support GeometryCollection.
- * @task REVISIT: Should support a bit more for the header, like being able to set the
- *     schemaLocation. It also should declare and import the gml namespace - it's always used as all
- *     extend gml:AbstractFeatureType. Also should be able to set the global substitution group, so
- *     that this type can be used directly as a feature.
+ * @task REVISIT: Should support a bit more for the header, like being able to set the schemaLocation. It also should
+ *     declare and import the gml namespace - it's always used as all extend gml:AbstractFeatureType. Also should be
+ *     able to set the global substitution group, so that this type can be used directly as a feature.
  */
 public class FeatureTypeTransformer extends TransformerBase {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTypeTransformer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureTypeTransformer.class);
     private static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
 
     /**
-     * Creates a Translator that is capable to translate FeatureType objects into a XML schema
-     * fragment.
+     * Creates a Translator that is capable to translate FeatureType objects into a XML schema fragment.
      *
      * @param handler the content handler to use
      */
@@ -196,8 +191,8 @@ public class FeatureTypeTransformer extends TransformerBase {
      */
     public static class FeatureTypeTranslator extends TransformerBase.TranslatorSupport {
         /**
-         * Creates a new FeatureTypeTranslator. The default prefix is "xs" and the default namespace
-         * is "http://www.w3.org/2001/XMLSchema".
+         * Creates a new FeatureTypeTranslator. The default prefix is "xs" and the default namespace is
+         * "http://www.w3.org/2001/XMLSchema".
          *
          * @param handler the content handler that receives the SAX events
          */
@@ -206,8 +201,8 @@ public class FeatureTypeTransformer extends TransformerBase {
         }
 
         /**
-         * Encode object o, which must be an instance of FeatureType. If it is not an
-         * IllegalArgumentException will be thrown.
+         * Encode object o, which must be an instance of FeatureType. If it is not an IllegalArgumentException will be
+         * thrown.
          *
          * @throws IllegalArgumentException if supplied object is not an instance of FeatureType
          * @see org.geotools.xml.transform.Translator#encode(java.lang.Object)
@@ -217,8 +212,8 @@ public class FeatureTypeTransformer extends TransformerBase {
             if (o instanceof SimpleFeatureType) {
                 encode((SimpleFeatureType) o);
             } else {
-                throw new IllegalArgumentException(
-                        "Translator does not know how to translate " + o.getClass().getName());
+                throw new IllegalArgumentException("Translator does not know how to translate "
+                        + o.getClass().getName());
             }
         }
 
@@ -251,8 +246,7 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             contentHandler.startElement(SCHEMA_NS, "complexType", "xs:complexType", atts);
 
-            contentHandler.startElement(
-                    SCHEMA_NS, "complexContent", "xs:complexContent", new AttributesImpl());
+            contentHandler.startElement(SCHEMA_NS, "complexContent", "xs:complexContent", new AttributesImpl());
 
             atts = new AttributesImpl();
 
@@ -320,21 +314,17 @@ public class FeatureTypeTransformer extends TransformerBase {
                 if (f == Filter.INCLUDE || f == Filter.EXCLUDE) continue;
 
                 try {
-                    if (f instanceof PropertyIsLessThan
-                            || f instanceof PropertyIsLessThanOrEqualTo) {
+                    if (f instanceof PropertyIsLessThan || f instanceof PropertyIsLessThanOrEqualTo) {
                         BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
                         Expression e = cf.getExpression1();
                         if (e != null && e instanceof LengthFunction) {
-                            length =
-                                    Integer.parseInt(
-                                            ((Literal) cf.getExpression2()).getValue().toString());
+                            length = Integer.parseInt(
+                                    ((Literal) cf.getExpression2()).getValue().toString());
                         } else {
                             if (cf.getExpression2() instanceof LengthFunction) {
-                                length =
-                                        Integer.parseInt(
-                                                ((Literal) cf.getExpression1())
-                                                        .getValue()
-                                                        .toString());
+                                length = Integer.parseInt(((Literal) cf.getExpression1())
+                                        .getValue()
+                                        .toString());
                             }
                         }
                     }
@@ -354,8 +344,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             } else {
                 contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
-                contentHandler.startElement(
-                        SCHEMA_NS, "simpleType", "xs:simpleType", new AttributesImpl());
+                contentHandler.startElement(SCHEMA_NS, "simpleType", "xs:simpleType", new AttributesImpl());
 
                 atts = new AttributesImpl();
 
@@ -421,8 +410,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             Class binding = attribute.getType().getBinding();
-            if (java.sql.Date.class.isAssignableFrom(binding))
-                atts.addAttribute("", "type", "type", "", "xs:date");
+            if (java.sql.Date.class.isAssignableFrom(binding)) atts.addAttribute("", "type", "type", "", "xs:date");
             else if (java.sql.Time.class.isAssignableFrom(binding))
                 atts.addAttribute("", "type", "type", "", "xs:time");
             else atts.addAttribute("", "type", "type", "", "xs:dateTime");
@@ -487,12 +475,11 @@ public class FeatureTypeTransformer extends TransformerBase {
         }*/
 
         /**
-         * Creates standard xml attributes present on all xs:element elements. These are name,
-         * maxOccurs, minOccurs and nillable.
+         * Creates standard xml attributes present on all xs:element elements. These are name, maxOccurs, minOccurs and
+         * nillable.
          *
          * @param attribute the attribute type from which the information is retrieved
-         * @return an org.xml.sax.helpers.AttributesImpl object that contains the standard
-         *     attributes
+         * @return an org.xml.sax.helpers.AttributesImpl object that contains the standard attributes
          */
         protected AttributesImpl createStandardAttributes(AttributeDescriptor attribute) {
             AttributesImpl atts = new AttributesImpl();

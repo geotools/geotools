@@ -19,9 +19,9 @@ package org.geotools.util;
 import java.util.Iterator;
 
 /**
- * An iterator synchronized on the given lock. The functionality is equivalent to the one provided
- * by {@link java.util.Collections#synchronizedSet}'s iterator, except that the synchronization is
- * performed on an arbitrary lock.
+ * An iterator synchronized on the given lock. The functionality is equivalent to the one provided by
+ * {@link java.util.Collections#synchronizedSet}'s iterator, except that the synchronization is performed on an
+ * arbitrary lock.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

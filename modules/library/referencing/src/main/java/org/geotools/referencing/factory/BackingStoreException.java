@@ -22,9 +22,9 @@ import java.io.IOException; // For javadoc
 import java.sql.SQLException; // For javadoc
 
 /**
- * Thrown to indicate that an {@link IdentifiedObjectSet} operation could not complete because of a
- * failure in the backing store, or a failure to contact the backing store. This exception usually
- * has an {@link IOException} or a {@link SQLException} as its {@linkplain #getCause cause}.
+ * Thrown to indicate that an {@link IdentifiedObjectSet} operation could not complete because of a failure in the
+ * backing store, or a failure to contact the backing store. This exception usually has an {@link IOException} or a
+ * {@link SQLException} as its {@linkplain #getCause cause}.
  *
  * @since 2.3
  * @version $Id$
@@ -40,8 +40,7 @@ public class BackingStoreException extends RuntimeException {
     /**
      * Constructs a new exception with the specified detail message.
      *
-     * @param message the detail message, saved for later retrieval by the {@link #getMessage}
-     *     method.
+     * @param message the detail message, saved for later retrieval by the {@link #getMessage} method.
      */
     public BackingStoreException(final String message) {
         super(message);
@@ -59,8 +58,7 @@ public class BackingStoreException extends RuntimeException {
     /**
      * Constructs a new exception with the specified detail message and cause.
      *
-     * @param message the detail message, saved for later retrieval by the {@link #getMessage}
-     *     method.
+     * @param message the detail message, saved for later retrieval by the {@link #getMessage} method.
      * @param cause the cause, saved for later retrieval by the {@link Throwable#getCause} method.
      */
     public BackingStoreException(final String message, final Throwable cause) {

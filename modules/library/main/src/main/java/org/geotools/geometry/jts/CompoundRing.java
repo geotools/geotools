@@ -34,13 +34,11 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * A CompoundRing is a connected sequence of circular arcs and linear segments forming a closed
- * line.
+ * A CompoundRing is a connected sequence of circular arcs and linear segments forming a closed line.
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class CompoundRing extends LinearRing
-        implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
+public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
@@ -68,8 +66,8 @@ public class CompoundRing extends LinearRing
     }
 
     /**
-     * Returns the components of this compound curve, which will be a list of straight LineString
-     * objects and CircularString/CircularRing
+     * Returns the components of this compound curve, which will be a list of straight LineString objects and
+     * CircularString/CircularRing
      */
     @Override
     public List<LineString> getComponents() {

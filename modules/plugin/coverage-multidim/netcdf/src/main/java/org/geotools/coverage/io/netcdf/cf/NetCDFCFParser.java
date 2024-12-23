@@ -31,8 +31,8 @@ import org.geotools.util.logging.Logging;
 /**
  * A NetCDF CF (ClimateForecast) parser.
  *
- * <p>It can be used to load from a standard name table (XML) all the available CF compliant
- * standard names and the related information, such as canonical units, descriptions and alias.
+ * <p>It can be used to load from a standard name table (XML) all the available CF compliant standard names and the
+ * related information, such as canonical units, descriptions and alias.
  *
  * <p>See <a href="http://cfconventions.org/standard-names.html">CF Convention: Standard names</a>
  */

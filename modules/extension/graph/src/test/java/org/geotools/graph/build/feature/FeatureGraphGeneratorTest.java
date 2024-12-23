@@ -69,11 +69,7 @@ public class FeatureGraphGeneratorTest {
         LineString[] lines = new LineString[5];
 
         for (int i = 0; i < lines.length; i++) {
-            lines[i] =
-                    gf.createLineString(
-                            new Coordinate[] {
-                                new Coordinate(i, i + 1), new Coordinate(i + 2, i + 3)
-                            });
+            lines[i] = gf.createLineString(new Coordinate[] {new Coordinate(i, i + 1), new Coordinate(i + 2, i + 3)});
         }
 
         return lines;
@@ -90,9 +86,7 @@ public class FeatureGraphGeneratorTest {
 
         for (int i = 0; i < lines.length; i++) {
             Integer id = Integer.valueOf(i);
-            features[i] =
-                    SimpleFeatureBuilder.build(
-                            schema, new Object[] {lines[i], id}, "fid" + id.toString());
+            features[i] = SimpleFeatureBuilder.build(schema, new Object[] {lines[i], id}, "fid" + id.toString());
         }
 
         return features;

@@ -93,12 +93,11 @@ public class GridCoverageBuilder {
     private NumberRange<? extends Number> range;
 
     /** The default {@linkplain #range}. */
-    private static final NumberRange<Integer> DEFAULT_RANGE =
-            NumberRange.create(0, true, 256, false);
+    private static final NumberRange<Integer> DEFAULT_RANGE = NumberRange.create(0, true, 256, false);
 
     /**
-     * The list of variables created. Each variable will be mapped to a {@linkplain
-     * GridSampleDimension sample dimension}.
+     * The list of variables created. Each variable will be mapped to a {@linkplain GridSampleDimension sample
+     * dimension}.
      *
      * @see #newVariable
      */
@@ -137,25 +136,20 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Returns the current coordinate reference system. If no CRS has been {@linkplain
-     * #setCoordinateReferenceSystem explicitly defined}, then the default CRS is {@linkplain
-     * DefaultGeographicCRS#WGS84 WGS84}.
+     * Returns the current coordinate reference system. If no CRS has been {@linkplain #setCoordinateReferenceSystem
+     * explicitly defined}, then the default CRS is {@linkplain DefaultGeographicCRS#WGS84 WGS84}.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return (envelope != null)
-                ? envelope.getCoordinateReferenceSystem()
-                : DefaultGeographicCRS.WGS84;
+        return (envelope != null) ? envelope.getCoordinateReferenceSystem() : DefaultGeographicCRS.WGS84;
     }
 
     /**
-     * Sets the coordinate reference system to the specified value. If an {@linkplain #setEnvelope
-     * envelope was previously defined}, it will be reprojected to the new CRS.
+     * Sets the coordinate reference system to the specified value. If an {@linkplain #setEnvelope envelope was
+     * previously defined}, it will be reprojected to the new CRS.
      *
-     * @throws IllegalArgumentException if the CRS is illegal for the {@linkplain #getEnvelope
-     *     current envelope}.
+     * @throws IllegalArgumentException if the CRS is illegal for the {@linkplain #getEnvelope current envelope}.
      */
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws IllegalArgumentException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws IllegalArgumentException {
         if (envelope == null) {
             if (crs != null) {
                 envelope = wrap(CRS.getEnvelope(crs));
@@ -168,15 +162,14 @@ public class GridCoverageBuilder {
             try {
                 envelope = wrap(CRS.transform(envelope, crs));
             } catch (TransformException exception) {
-                throw new IllegalArgumentException(
-                        ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+                throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
             }
         coverage = null;
     }
 
     /**
-     * Sets the coordinate reference system to the specified authority code. This convenience method
-     * gives a preference to axis in (<var>longitude</var>, <var>latitude</var>) order.
+     * Sets the coordinate reference system to the specified authority code. This convenience method gives a preference
+     * to axis in (<var>longitude</var>, <var>latitude</var>) order.
      *
      * @throws IllegalArgumentException if the given CRS is illegal.
      */
@@ -185,16 +178,14 @@ public class GridCoverageBuilder {
         try {
             crs = CRS.decode(code, true);
         } catch (FactoryException exception) {
-            throw new IllegalArgumentException(
-                    ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+            throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
         }
         setCoordinateReferenceSystem(crs);
     }
 
     /**
-     * Returns a copy of current envelope. If no envelope has been {@linkplain #setEnvelope
-     * explicitly defined}, then the default is inferred from the CRS (by default a geographic
-     * envelope from 180°W to 180°E and 90°S to 90°N).
+     * Returns a copy of current envelope. If no envelope has been {@linkplain #setEnvelope explicitly defined}, then
+     * the default is inferred from the CRS (by default a geographic envelope from 180°W to 180°E and 90°S to 90°N).
      */
     public Bounds getEnvelope() {
         if (envelope != null) {
@@ -212,34 +203,31 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the envelope to the specified value. If a {@linkplain #setCoordinateReferenceSystem CRS
-     * was previously defined}, the envelope will be reprojected to that CRS. If no CRS was
-     * previously defined, then the CRS will be set to the {@linkplain
-     * Bounds#getCoordinateReferenceSystem envelope CRS}.
+     * Sets the envelope to the specified value. If a {@linkplain #setCoordinateReferenceSystem CRS was previously
+     * defined}, the envelope will be reprojected to that CRS. If no CRS was previously defined, then the CRS will be
+     * set to the {@linkplain Bounds#getCoordinateReferenceSystem envelope CRS}.
      *
-     * @throws IllegalArgumentException if the envelope is illegal for the {@linkplain
-     *     #getCoordinateReferenceSystem current CRS}.
+     * @throws IllegalArgumentException if the envelope is illegal for the {@linkplain #getCoordinateReferenceSystem
+     *     current CRS}.
      */
     public void setEnvelope(Bounds envelope) throws IllegalArgumentException {
         if (this.envelope != null)
             try {
                 envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
             } catch (TransformException exception) {
-                throw new IllegalArgumentException(
-                        ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+                throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
             }
         this.envelope = new GeneralBounds(envelope);
         coverage = null;
     }
 
     /**
-     * Sets the envelope to the specified values, which must be the lower corner coordinates
-     * followed by upper corner coordinates. The number of arguments provided shall be twice the
-     * envelope dimension, and minimum shall not be greater than maximum.
+     * Sets the envelope to the specified values, which must be the lower corner coordinates followed by upper corner
+     * coordinates. The number of arguments provided shall be twice the envelope dimension, and minimum shall not be
+     * greater than maximum.
      *
-     * <p><b>Example:</b> (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>,
-     * <var>z</var><sub>min</sub>, <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>,
-     * <var>z</var><sub>max</sub>)
+     * <p><b>Example:</b> (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>, <var>z</var><sub>min</sub>,
+     * <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>, <var>z</var><sub>max</sub>)
      */
     public void setEnvelope(final double... ordinates) throws IllegalArgumentException {
         GeneralBounds envelope = this.envelope;
@@ -251,8 +239,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Returns the range of sample values. If no range has been {@linkplain #setSampleRange
-     * explicitly defined}, then the default is a range from 0 inclusive to 256 exclusive.
+     * Returns the range of sample values. If no range has been {@linkplain #setSampleRange explicitly defined}, then
+     * the default is a range from 0 inclusive to 256 exclusive.
      */
     public NumberRange<? extends Number> getSampleRange() {
         return (range != null) ? range : DEFAULT_RANGE;
@@ -275,8 +263,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Returns the image size. If no size has been {@linkplain #setImageSize explicitly defined},
-     * then the default is 256&times;256 pixels.
+     * Returns the image size. If no size has been {@linkplain #setImageSize explicitly defined}, then the default is
+     * 256&times;256 pixels.
      */
     public Dimension getImageSize() {
         return new Dimension(width, height);
@@ -296,9 +284,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Creates a new variable, which will be mapped to a {@linkplain GridSampleDimension sample
-     * dimension}. Additional information like scale, offset and nodata values can be provided by
-     * invoking setters on the returned variable.
+     * Creates a new variable, which will be mapped to a {@linkplain GridSampleDimension sample dimension}. Additional
+     * information like scale, offset and nodata values can be provided by invoking setters on the returned variable.
      *
      * @param name The variable name, or {@code null} for a default name.
      * @param units The variable units, or {@code null} if unknown.
@@ -312,8 +299,8 @@ public class GridCoverageBuilder {
 
     /**
      * Returns the buffered image to be wrapped by {@link GridCoverage2D}. If no image has been
-     * {@linkplain #setBufferedImage explicitly defined}, a new one is created the first time this
-     * method is invoked. Users can write in this image before to create the grid coverage.
+     * {@linkplain #setBufferedImage explicitly defined}, a new one is created the first time this method is invoked.
+     * Users can write in this image before to create the grid coverage.
      */
     public BufferedImage getBufferedImage() {
         if (image == null) {
@@ -336,8 +323,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the buffered image. Invoking this method overwrite the {@linkplain #getImageSize image
-     * size} with the given image size.
+     * Sets the buffered image. Invoking this method overwrite the {@linkplain #getImageSize image size} with the given
+     * image size.
      */
     public void setBufferedImage(final BufferedImage image) {
         setImageSize(image.getWidth(), image.getHeight());
@@ -356,9 +343,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the buffered image to a raster filled with random value using the specified random
-     * number generator. This method can be used for testing purpose, or for adding noise to a
-     * coverage.
+     * Sets the buffered image to a raster filled with random value using the specified random number generator. This
+     * method can be used for testing purpose, or for adding noise to a coverage.
      */
     public void setBufferedImage(final Random random) {
         image = null; // Will forces the creation of a new BufferedImage.
@@ -398,8 +384,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * A variable to be mapped to a {@linkplain GridSampleDimension sample dimension}. Variables are
-     * created by {@link GridCoverageBuilder#newVariable}.
+     * A variable to be mapped to a {@linkplain GridSampleDimension sample dimension}. Variables are created by
+     * {@link GridCoverageBuilder#newVariable}.
      *
      * @since 2.5
      * @author Martin Desruisseaux
@@ -416,8 +402,8 @@ public class GridCoverageBuilder {
         private final Map<Integer, CharSequence> nodata;
 
         /**
-         * The sample dimension. Will be created when first needed. May be reset to {@code null}
-         * after creation if a new sample dimension need to be computed.
+         * The sample dimension. Will be created when first needed. May be reset to {@code null} after creation if a new
+         * sample dimension need to be computed.
          */
         private GridSampleDimension sampleDimension;
 
@@ -441,21 +427,19 @@ public class GridCoverageBuilder {
          * @param value The pixel value to assign to "nodata".
          * @throws IllegalArgumentException if the given pixel value is already assigned.
          */
-        public void addNodataValue(final CharSequence name, final int value)
-                throws IllegalArgumentException {
+        public void addNodataValue(final CharSequence name, final int value) throws IllegalArgumentException {
             final Integer key = value;
             final CharSequence old = nodata.put(key, name);
             if (old != null) {
                 nodata.put(key, old);
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
             }
             sampleDimension = null;
         }
 
         /**
-         * Returns a sample dimension for the current {@linkplain GridCoverageBuilder#getSampleRange
-         * range of sample values}.
+         * Returns a sample dimension for the current {@linkplain GridCoverageBuilder#getSampleRange range of sample
+         * values}.
          */
         public GridSampleDimension getSampleDimension() {
             if (sampleDimension == null) {

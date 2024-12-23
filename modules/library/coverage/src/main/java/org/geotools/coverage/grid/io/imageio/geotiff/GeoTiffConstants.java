@@ -43,28 +43,25 @@ public final class GeoTiffConstants {
     public static final int USHORT_MIN = 0;
 
     /**
-     * GTModelTypeGeoKey Key ID = 1024 Type: SHORT (code) Values: Section 6.3.1.1 Codes This GeoKey
-     * defines the general type of model Coordinate system used, and to which the raster space will
-     * be transformed: unknown, Geocentric (rarely used), Geographic, Projected Coordinate System,
-     * or user-defined. If the coordinate system is a PCS, then only the PCS code need be specified.
-     * If the coordinate system does not fit into one of the standard registered PCS'S, but it uses
-     * one of the standard projections and datums, then its should be documented as a PCS model with
-     * "user-defined" type, requiring the specification of projection parameters, etc. GeoKey
-     * requirements for User-Defined Model Type (not advisable): GTCitationGeoKey
+     * GTModelTypeGeoKey Key ID = 1024 Type: SHORT (code) Values: Section 6.3.1.1 Codes This GeoKey defines the general
+     * type of model Coordinate system used, and to which the raster space will be transformed: unknown, Geocentric
+     * (rarely used), Geographic, Projected Coordinate System, or user-defined. If the coordinate system is a PCS, then
+     * only the PCS code need be specified. If the coordinate system does not fit into one of the standard registered
+     * PCS'S, but it uses one of the standard projections and datums, then its should be documented as a PCS model with
+     * "user-defined" type, requiring the specification of projection parameters, etc. GeoKey requirements for
+     * User-Defined Model Type (not advisable): GTCitationGeoKey
      */
     public static final int GTModelTypeGeoKey = 1024;
 
     /**
-     * GTRasterTypeGeoKey Key ID = 1025 Type = Section 6.3.1.2 codes This establishes the Raster
-     * Space coordinate system used; there are currently only two, namely RasterPixelIsPoint and
-     * RasterPixelIsArea.
+     * GTRasterTypeGeoKey Key ID = 1025 Type = Section 6.3.1.2 codes This establishes the Raster Space coordinate system
+     * used; there are currently only two, namely RasterPixelIsPoint and RasterPixelIsArea.
      */
     public static final int GTRasterTypeGeoKey = 1025;
 
     /**
-     * 6.3.1.2 Raster Type Codes Ranges: 0 = undefined [ 1, 1023] = Raster Type Codes
-     * (GeoTIFFWritingUtilities Defined) [1024, 32766] = Reserved 32767 = user-defined [32768,
-     * 65535]= Private User
+     * 6.3.1.2 Raster Type Codes Ranges: 0 = undefined [ 1, 1023] = Raster Type Codes (GeoTIFFWritingUtilities Defined)
+     * [1024, 32766] = Reserved 32767 = user-defined [32768, 65535]= Private User
      */
     public static final int RasterPixelIsArea = 1;
 
@@ -76,10 +73,7 @@ public final class GeoTiffConstants {
     /** The DOM element ID (tag) for a set of TIFF Ascii values */
     public static final String GEOTIFF_ASCIIS_TAG = "TIFFAsciis";
 
-    /**
-     * The DOM element ID (tag) for a single TIFF double. The value is stored in an attribute named
-     * "value"
-     */
+    /** The DOM element ID (tag) for a single TIFF double. The value is stored in an attribute named "value" */
     public static final String GEOTIFF_DOUBLE_TAG = "TIFFDouble";
 
     /** The DOM element ID (tag) for a set of TIFF Double values */
@@ -91,10 +85,7 @@ public final class GeoTiffConstants {
     /** The DOM element ID (tag) for a TIFF Image File Directory */
     public static final String GEOTIFF_IFD_TAG = "TIFFIFD";
 
-    /**
-     * The DOM element ID (tag) for a single TIFF Short value. The value is stored in an attribute
-     * named "value"
-     */
+    /** The DOM element ID (tag) for a single TIFF Short value. The value is stored in an attribute named "value" */
     public static final String GEOTIFF_SHORT_TAG = "TIFFShort";
 
     /** The DOM element ID (tag) for a set of TIFF Short values */
@@ -119,8 +110,7 @@ public final class GeoTiffConstants {
 
     public static final int UNDEFINED = 0;
 
-    public static TIFFTag NODATA_TAG =
-            new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, TIFFTag.TIFF_ASCII);
+    public static TIFFTag NODATA_TAG = new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, TIFFTag.TIFF_ASCII);
 
     public static boolean isNumeric(String number) {
         boolean isValid = false;

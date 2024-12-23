@@ -45,11 +45,10 @@ import org.geotools.util.XArray;
 import org.geotools.util.logging.Logging;
 
 /**
- * Describes the data values for a coverage as a list of {@linkplain Category categories}. For a
- * grid coverage a sample dimension is a band. Sample values in a band may be organized in
- * categories. This {@code GridSampleDimension} implementation is capable to differenciate
- * <em>qualitative</em> and <em>quantitative</em> categories. For example an image of sea surface
- * temperature (SST) could very well defines the following categories:
+ * Describes the data values for a coverage as a list of {@linkplain Category categories}. For a grid coverage a sample
+ * dimension is a band. Sample values in a band may be organized in categories. This {@code GridSampleDimension}
+ * implementation is capable to differenciate <em>qualitative</em> and <em>quantitative</em> categories. For example an
+ * image of sea surface temperature (SST) could very well defines the following categories:
  *
  * <blockquote>
  *
@@ -62,13 +61,12 @@ import org.geotools.util.logging.Logging;
  *
  * </blockquote>
  *
- * In this example, sample values in range {@code [10..210]} defines a quantitative category, while
- * all others categories are qualitative.
+ * In this example, sample values in range {@code [10..210]} defines a quantitative category, while all others
+ * categories are qualitative.
  *
- * <p>While this class can be used with arbitrary {@linkplain org.geotools.api.coverage.Coverage
- * coverage}, the primary target for this implementation is {@linkplain
- * org.geotools.api.coverage.grid.GridCoverage grid coverage} storing their sample values as
- * integers. This explain the "{@code Grid}" prefix in the class name.
+ * <p>While this class can be used with arbitrary {@linkplain org.geotools.api.coverage.Coverage coverage}, the primary
+ * target for this implementation is {@linkplain org.geotools.api.coverage.grid.GridCoverage grid coverage} storing
+ * their sample values as integers. This explain the "{@code Grid}" prefix in the class name.
  *
  * @since 2.1
  * @version $Id$
@@ -84,22 +82,21 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     public static final Logger LOGGER = Logging.getLogger(GridSampleDimension.class);
 
     /**
-     * The category list for this sample dimension, or {@code null} if this sample dimension has no
-     * category. This field is read by {@code SampleTranscoder} only.
+     * The category list for this sample dimension, or {@code null} if this sample dimension has no category. This field
+     * is read by {@code SampleTranscoder} only.
      */
     final CategoryList categories;
 
     /**
-     * {@code true} if this sample dimension has at least one qualitative category. An arbitrary
-     * number of qualitative categories is allowed, providing their sample value ranges do not
-     * overlap. A sample dimension can have both qualitative and quantitative categories.
+     * {@code true} if this sample dimension has at least one qualitative category. An arbitrary number of qualitative
+     * categories is allowed, providing their sample value ranges do not overlap. A sample dimension can have both
+     * qualitative and quantitative categories.
      */
     private final boolean hasQualitative;
 
     /**
-     * {@code true} if this sample dimension has at least one quantitative category. An arbitrary
-     * number of quantitative categories is allowed, providing their sample value ranges do not
-     * overlap.
+     * {@code true} if this sample dimension has at least one quantitative category. An arbitrary number of quantitative
+     * categories is allowed, providing their sample value ranges do not overlap.
      */
     private final boolean hasQuantitative;
 
@@ -108,9 +105,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     private double offset = 0;
 
     /**
-     * Decription for this sample dimension. Typically used as a way to perform a band select by
-     * using human comprehensible descriptions instead of just numbers. Web Coverage Service (WCS)
-     * can use this feature in order to perform band subsetting as directed from a user request.
+     * Decription for this sample dimension. Typically used as a way to perform a band select by using human
+     * comprehensible descriptions instead of just numbers. Web Coverage Service (WCS) can use this feature in order to
+     * perform band subsetting as directed from a user request.
      */
     private final InternationalString description;
 
@@ -120,8 +117,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     /**
      * Constructs a sample dimension with specified name and no category.
      *
-     * @param description The sample dimension title or description, or {@code null} if none. This
-     *     is the value to be returned by {@link #getDescription}.
+     * @param description The sample dimension title or description, or {@code null} if none. This is the value to be
+     *     returned by {@link #getDescription}.
      * @since 2.3
      */
     public GridSampleDimension(final CharSequence description) {
@@ -129,21 +126,19 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Constructs a sample dimension with a set of qualitative categories only. This constructor
-     * expects only a sequence of category names for the values contained in a sample dimension.
-     * This allows for names to be assigned to numerical values. The first entry in the sequence
-     * relates to a cell value of zero. For example: [0]="Background", [1]="Water", [2]="Forest",
-     * [3]="Urban". The created sample dimension will have no unit and a default set of colors.
+     * Constructs a sample dimension with a set of qualitative categories only. This constructor expects only a sequence
+     * of category names for the values contained in a sample dimension. This allows for names to be assigned to
+     * numerical values. The first entry in the sequence relates to a cell value of zero. For example: [0]="Background",
+     * [1]="Water", [2]="Forest", [3]="Urban". The created sample dimension will have no unit and a default set of
+     * colors.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
-     * @param categoriesNames Sequence of category names for the values contained in a sample
-     *     dimension, as {@link String} or {@link InternationalString} objects.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
+     * @param categoriesNames Sequence of category names for the values contained in a sample dimension, as
+     *     {@link String} or {@link InternationalString} objects.
      * @since 2.3
      */
-    public GridSampleDimension(
-            final CharSequence description, final CharSequence[] categoriesNames) {
+    public GridSampleDimension(final CharSequence description, final CharSequence[] categoriesNames) {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(categoriesNames), 1, 0);
@@ -162,24 +157,20 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Constructs a sample dimension with a set of qualitative categories and colors. This
-     * constructor expects a sequence of category names for the values contained in a sample
-     * dimension. This allows for names to be assigned to numerical values. The first entry in the
-     * sequence relates to a cell value of zero. For example: [0]="Background", [1]="Water",
-     * [2]="Forest", [3]="Urban". The created sample dimension will have no unit and a default set
-     * of colors.
+     * Constructs a sample dimension with a set of qualitative categories and colors. This constructor expects a
+     * sequence of category names for the values contained in a sample dimension. This allows for names to be assigned
+     * to numerical values. The first entry in the sequence relates to a cell value of zero. For example:
+     * [0]="Background", [1]="Water", [2]="Forest", [3]="Urban". The created sample dimension will have no unit and a
+     * default set of colors.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
-     * @param names Sequence of category names for the values contained in a sample dimension, as
-     *     {@link String} or {@link InternationalString} objects.
-     * @param colors Color to assign to each category. This array must have the same length than
-     *     {@code names}.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
+     * @param names Sequence of category names for the values contained in a sample dimension, as {@link String} or
+     *     {@link InternationalString} objects.
+     * @param colors Color to assign to each category. This array must have the same length than {@code names}.
      * @since 2.3
      */
-    public GridSampleDimension(
-            final CharSequence description, final CharSequence[] names, final Color[] colors) {
+    public GridSampleDimension(final CharSequence description, final CharSequence[] names, final Color[] colors) {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(names, colors), 1, 0);
@@ -199,46 +190,41 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Constructs a sample dimension with the specified properties. For convenience, any argument
-     * which is not a {@code double} primitive can be {@code null}, and any {@linkplain CharSequence
-     * char sequence} can be either a {@link String} or {@link InternationalString} object.
+     * Constructs a sample dimension with the specified properties. For convenience, any argument which is not a
+     * {@code double} primitive can be {@code null}, and any {@linkplain CharSequence char sequence} can be either a
+     * {@link String} or {@link InternationalString} object.
      *
-     * <p>This constructor allows the construction of a {@code GridSampleDimension} without explicit
-     * construction of {@link Category} objects. An heuristic approach is used for dispatching the
-     * informations into a set of {@link Category} objects. However, this constructor still less
-     * general and provides less fine-grain control than the constructor expecting an array of
-     * {@link Category} objects.
+     * <p>This constructor allows the construction of a {@code GridSampleDimension} without explicit construction of
+     * {@link Category} objects. An heuristic approach is used for dispatching the informations into a set of
+     * {@link Category} objects. However, this constructor still less general and provides less fine-grain control than
+     * the constructor expecting an array of {@link Category} objects.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
-     * @param type The grid value data type (which indicate the number of bits for the data type),
-     *     or {@code null} for computing it automatically from the range {@code [minimum..maximum]}.
-     *     This is the value to be returned by {@link #getSampleDimensionType}.
-     * @param palette The color palette associated with the sample dimension, or {@code null} for a
-     *     default color palette (usually grayscale). If {@code categories} is non-null, then both
-     *     arrays usually have the same length. However, this constructor is tolerant on this array
-     *     length. This is the value to be returned (indirectly) by {@link #getColorModel}.
-     * @param categories A sequence of category names for the values contained in the sample
-     *     dimension, or {@code null} if none. This is the values to be returned by {@link
-     *     #getCategoryNames}.
-     * @param nodata the values to indicate "no data", or {@code null} if none. This is the values
-     *     to be returned by {@link #getNoDataValues}.
-     * @param minimum The lower value, inclusive. The {@code [minimum..maximum]} range may or may
-     *     not includes the {@code nodata} values; the range will be adjusted as needed. If {@code
-     *     categories} was non-null, then {@code minimum} is usually 0. This is the value to be
-     *     returned by {@link #getMinimumValue}.
-     * @param maximum The upper value, <strong>inclusive</strong> as well. The {@code
-     *     [minimum..maximum]} range may or may not includes the {@code nodata} values; the range
-     *     will be adjusted as needed. If {@code categories} was non-null, then {@code maximum} is
-     *     usually equals to {@code categories.length-1}. This is the value to be returned by {@link
-     *     #getMaximumValue}.
-     * @param scale The value which is multiplied to grid values, or 1 if none. This is the value to
-     *     be returned by {@link #getScale}.
-     * @param offset The value to add to grid values, or 0 if none. This is the value to be returned
-     *     by {@link #getOffset}.
-     * @param unit The unit information for this sample dimension, or {@code null} if none. This is
-     *     the value to be returned by {@link #getUnits}.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
+     * @param type The grid value data type (which indicate the number of bits for the data type), or {@code null} for
+     *     computing it automatically from the range {@code [minimum..maximum]}. This is the value to be returned by
+     *     {@link #getSampleDimensionType}.
+     * @param palette The color palette associated with the sample dimension, or {@code null} for a default color
+     *     palette (usually grayscale). If {@code categories} is non-null, then both arrays usually have the same
+     *     length. However, this constructor is tolerant on this array length. This is the value to be returned
+     *     (indirectly) by {@link #getColorModel}.
+     * @param categories A sequence of category names for the values contained in the sample dimension, or {@code null}
+     *     if none. This is the values to be returned by {@link #getCategoryNames}.
+     * @param nodata the values to indicate "no data", or {@code null} if none. This is the values to be returned by
+     *     {@link #getNoDataValues}.
+     * @param minimum The lower value, inclusive. The {@code [minimum..maximum]} range may or may not includes the
+     *     {@code nodata} values; the range will be adjusted as needed. If {@code categories} was non-null, then
+     *     {@code minimum} is usually 0. This is the value to be returned by {@link #getMinimumValue}.
+     * @param maximum The upper value, <strong>inclusive</strong> as well. The {@code [minimum..maximum]} range may or
+     *     may not includes the {@code nodata} values; the range will be adjusted as needed. If {@code categories} was
+     *     non-null, then {@code maximum} is usually equals to {@code categories.length-1}. This is the value to be
+     *     returned by {@link #getMaximumValue}.
+     * @param scale The value which is multiplied to grid values, or 1 if none. This is the value to be returned by
+     *     {@link #getScale}.
+     * @param offset The value to add to grid values, or 0 if none. This is the value to be returned by
+     *     {@link #getOffset}.
+     * @param unit The unit information for this sample dimension, or {@code null} if none. This is the value to be
+     *     returned by {@link #getUnits}.
      * @throws IllegalArgumentException if the range {@code [minimum..maximum]} is not valid.
      */
     public GridSampleDimension(
@@ -263,42 +249,37 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Constructs a sample dimension with the specified properties. For convenience, any argument
-     * which is not a {@code double} primitive can be {@code null}, and any {@linkplain CharSequence
-     * char sequence} can be either a {@link String} or {@link InternationalString} object.
+     * Constructs a sample dimension with the specified properties. For convenience, any argument which is not a
+     * {@code double} primitive can be {@code null}, and any {@linkplain CharSequence char sequence} can be either a
+     * {@link String} or {@link InternationalString} object.
      *
-     * <p>This constructor allows the construction of a {@code GridSampleDimension} without explicit
-     * construction of {@link Category} objects. An heuristic approach is used for dispatching the
-     * informations into a set of {@link Category} objects. However, this constructor still less
-     * general and provides less fine-grain control than the constructor expecting an array of
-     * {@link Category} objects.
+     * <p>This constructor allows the construction of a {@code GridSampleDimension} without explicit construction of
+     * {@link Category} objects. An heuristic approach is used for dispatching the informations into a set of
+     * {@link Category} objects. However, this constructor still less general and provides less fine-grain control than
+     * the constructor expecting an array of {@link Category} objects.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
-     * @param type The grid value data type (which indicate the number of bits for the data type),
-     *     or {@code null} for computing it automatically from the range {@code [minimum..maximum]}.
-     *     This is the value to be returned by {@link #getSampleDimensionType}.
-     * @param categories A sequence of category names for the values contained in the sample
-     *     dimension, or {@code null} if none. This is the values to be returned by {@link
-     *     #getCategoryNames}.
-     * @param nodata the values to indicate "no data", or {@code null} if none. This is the values
-     *     to be returned by {@link #getNoDataValues}.
-     * @param minimum The lower value, inclusive. The {@code [minimum..maximum]} range may or may
-     *     not includes the {@code nodata} values; the range will be adjusted as needed. If {@code
-     *     categories} was non-null, then {@code minimum} is usually 0. This is the value to be
-     *     returned by {@link #getMinimumValue}.
-     * @param maximum The upper value, <strong>inclusive</strong> as well. The {@code
-     *     [minimum..maximum]} range may or may not includes the {@code nodata} values; the range
-     *     will be adjusted as needed. If {@code categories} was non-null, then {@code maximum} is
-     *     usually equals to {@code categories.length-1}. This is the value to be returned by {@link
-     *     #getMaximumValue}.
-     * @param scale The value which is multiplied to grid values, or 1 if none. This is the value to
-     *     be returned by {@link #getScale}.
-     * @param offset The value to add to grid values, or 0 if none. This is the value to be returned
-     *     by {@link #getOffset}.
-     * @param unit The unit information for this sample dimension, or {@code null} if none. This is
-     *     the value to be returned by {@link #getUnits}.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
+     * @param type The grid value data type (which indicate the number of bits for the data type), or {@code null} for
+     *     computing it automatically from the range {@code [minimum..maximum]}. This is the value to be returned by
+     *     {@link #getSampleDimensionType}.
+     * @param categories A sequence of category names for the values contained in the sample dimension, or {@code null}
+     *     if none. This is the values to be returned by {@link #getCategoryNames}.
+     * @param nodata the values to indicate "no data", or {@code null} if none. This is the values to be returned by
+     *     {@link #getNoDataValues}.
+     * @param minimum The lower value, inclusive. The {@code [minimum..maximum]} range may or may not includes the
+     *     {@code nodata} values; the range will be adjusted as needed. If {@code categories} was non-null, then
+     *     {@code minimum} is usually 0. This is the value to be returned by {@link #getMinimumValue}.
+     * @param maximum The upper value, <strong>inclusive</strong> as well. The {@code [minimum..maximum]} range may or
+     *     may not includes the {@code nodata} values; the range will be adjusted as needed. If {@code categories} was
+     *     non-null, then {@code maximum} is usually equals to {@code categories.length-1}. This is the value to be
+     *     returned by {@link #getMaximumValue}.
+     * @param scale The value which is multiplied to grid values, or 1 if none. This is the value to be returned by
+     *     {@link #getScale}.
+     * @param offset The value to add to grid values, or 0 if none. This is the value to be returned by
+     *     {@link #getOffset}.
+     * @param unit The unit information for this sample dimension, or {@code null} if none. This is the value to be
+     *     returned by {@link #getUnits}.
      * @throws IllegalArgumentException if the range {@code [minimum..maximum]} is not valid.
      */
     public GridSampleDimension(
@@ -335,8 +316,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             description = Vocabulary.formatInternational(VocabularyKeys.UNTITLED);
         }
         if (Double.isInfinite(minimum) || Double.isInfinite(maximum) || !(minimum < maximum)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
         if (type == null) {
             type = TypeMap.getSampleDimensionType(minimum, maximum);
@@ -493,11 +473,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                 min = ClassChanger.cast(min, classe);
                 max = ClassChanger.cast(max, classe);
                 @SuppressWarnings("unchecked")
-                final NumberRange<? extends Number> range =
-                        new NumberRange(classe, min, minIncluded, max, maxIncluded);
+                final NumberRange<? extends Number> range = new NumberRange(classe, min, minIncluded, max, maxIncluded);
                 final Color[] colors =
-                        ColorUtilities.subarray(
-                                palette, (int) Math.ceil(minimum), (int) Math.floor(maximum));
+                        ColorUtilities.subarray(palette, (int) Math.ceil(minimum), (int) Math.floor(maximum));
                 categoryList.add(new Category(description, colors, range));
                 needQuantitative = false;
             }
@@ -507,27 +485,23 @@ public class GridSampleDimension implements SampleDimension, Serializable {
          *          sample dimension appropriate for the type of palette used.
          */
         final Category[] cl = categoryList.toArray(new Category[categoryList.size()]);
-        if (ColorInterpretation.PALETTE_INDEX.equals(color)
-                || ColorInterpretation.GRAY_INDEX.equals(color)) {
+        if (ColorInterpretation.PALETTE_INDEX.equals(color) || ColorInterpretation.GRAY_INDEX.equals(color)) {
             return list(cl, unit);
         }
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
-     * Constructs a sample dimension with an arbitrary set of categories, which may be both
-     * quantitative and qualitative. It is possible to specify more than one quantitative
-     * categories, providing that their sample value ranges do not overlap.
+     * Constructs a sample dimension with an arbitrary set of categories, which may be both quantitative and
+     * qualitative. It is possible to specify more than one quantitative categories, providing that their sample value
+     * ranges do not overlap.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
      * @param categories The list of categories.
-     * @param units The unit information for this sample dimension. May be {@code null} if no
-     *     category has units.
-     * @throws IllegalArgumentException if {@code categories} contains incompatible categories. If
-     *     may be the case for example if two or more categories have overlapping ranges of sample
-     *     values.
+     * @param units The unit information for this sample dimension. May be {@code null} if no category has units.
+     * @throws IllegalArgumentException if {@code categories} contains incompatible categories. If may be the case for
+     *     example if two or more categories have overlapping ranges of sample values.
      * @since 2.3
      */
     public GridSampleDimension(CharSequence description, Category[] categories, Unit<?> units)
@@ -550,13 +524,11 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     /**
      * Constructs a sample dimension with the specified list of categories.
      *
-     * @param description The sample dimension title or description, or {@code null} for the default
-     *     (the name of what looks like the "main" category). This is the value to be returned by
-     *     {@link #getDescription}.
+     * @param description The sample dimension title or description, or {@code null} for the default (the name of what
+     *     looks like the "main" category). This is the value to be returned by {@link #getDescription}.
      * @param list The list of categories, or {@code null}.
      */
-    private GridSampleDimension(
-            final CharSequence description, final CategoryList list, double scale, double offset) {
+    private GridSampleDimension(final CharSequence description, final CategoryList list, double scale, double offset) {
         /*
          * Checks the supplied description to see if it is null. In such a case it builds up a new
          * description by using the list of categories supplied. This second description may be less
@@ -598,8 +570,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Constructs a new sample dimension with the same categories and units than the specified
-     * sample dimension.
+     * Constructs a new sample dimension with the same categories and units than the specified sample dimension.
      *
      * @param other The other sample dimension, or {@code null}.
      */
@@ -620,14 +591,12 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
     }
 
-    public GridSampleDimension(
-            String description, Category[] categories, double scale, double offset) {
+    public GridSampleDimension(String description, Category[] categories, double scale, double offset) {
         this(description, list(categories, null), scale, offset);
     }
 
     /**
-     * Wraps the specified OpenGIS's sample dimension into a Geotools's implementation of {@code
-     * GridSampleDimension}.
+     * Wraps the specified OpenGIS's sample dimension into a Geotools's implementation of {@code GridSampleDimension}.
      *
      * @param sd The sample dimension to wrap into a Geotools implementation.
      * @return The given sample dimension as a {@code GridSampleDimension} instance.
@@ -649,8 +618,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a code value indicating grid value data type. This will also indicate the number of
-     * bits for the data type.
+     * Returns a code value indicating grid value data type. This will also indicate the number of bits for the data
+     * type.
      *
      * @return A code value indicating grid value data type.
      */
@@ -664,8 +633,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Gets the sample dimension title or description. This string may be {@code null} if no
-     * description is present.
+     * Gets the sample dimension title or description. This string may be {@code null} if no description is present.
      *
      * @return The title or description of this sample dimension.
      */
@@ -675,9 +643,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a sequence of category names for the values contained in this sample dimension. This
-     * allows for names to be assigned to numerical values. The first entry in the sequence relates
-     * to a cell value of zero. For example:
+     * Returns a sequence of category names for the values contained in this sample dimension. This allows for names to
+     * be assigned to numerical values. The first entry in the sequence relates to a cell value of zero. For example:
      *
      * <blockquote>
      *
@@ -690,10 +657,10 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * </blockquote>
      *
-     * @return The sequence of category names for the values contained in this sample dimension, or
-     *     {@code null} if there is no category in this sample dimension.
-     * @throws IllegalStateException if a sequence can't be mapped because some category use
-     *     negative or non-integer sample values.
+     * @return The sequence of category names for the values contained in this sample dimension, or {@code null} if
+     *     there is no category in this sample dimension.
+     * @throws IllegalStateException if a sequence can't be mapped because some category use negative or non-integer
+     *     sample values.
      * @see #getCategories
      * @see #getCategory
      */
@@ -722,9 +689,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns all categories in this sample dimension. Note that a {@link Category} object may
-     * apply to an arbitrary range of sample values. Consequently, the first element in this
-     * collection may not be directly related to the sample value {@code 0}.
+     * Returns all categories in this sample dimension. Note that a {@link Category} object may apply to an arbitrary
+     * range of sample values. Consequently, the first element in this collection may not be directly related to the
+     * sample value {@code 0}.
      *
      * @return The list of categories in this sample dimension, or {@code null} if none.
      * @see #getCategoryNames
@@ -739,8 +706,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the category for the specified sample value. If this method can't maps a category to
-     * the specified value, then it returns {@code null}.
+     * Returns the category for the specified sample value. If this method can't maps a category to the specified value,
+     * then it returns {@code null}.
      *
      * @param sample The value (can be one of {@code NaN} values).
      * @return The category for the supplied value, or {@code null} if none.
@@ -752,14 +719,11 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the values to indicate "no data" for this sample dimension. The default
-     * implementation deduces the "no data" values from the list of categories supplied at
-     * construction time.
+     * Returns the values to indicate "no data" for this sample dimension. The default implementation deduces the "no
+     * data" values from the list of categories supplied at construction time.
      *
-     * @return The values to indicate no data values for this sample dimension, or {@code null} if
-     *     not applicable.
-     * @throws IllegalStateException if some qualitative categories use a range of non-integer
-     *     values.
+     * @return The values to indicate no data values for this sample dimension, or {@code null} if not applicable.
+     * @throws IllegalStateException if some qualitative categories use a range of non-integer values.
      */
     @Override
     public double[] getNoDataValues() throws IllegalStateException {
@@ -825,9 +789,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the minimum value occurring in this sample dimension (inclusive). The default
-     * implementation fetch this value from the categories supplied at construction time. If the
-     * minimum value can't be computed, then this method returns {@link Double#NEGATIVE_INFINITY}.
+     * Returns the minimum value occurring in this sample dimension (inclusive). The default implementation fetch this
+     * value from the categories supplied at construction time. If the minimum value can't be computed, then this method
+     * returns {@link Double#NEGATIVE_INFINITY}.
      *
      * @see #getRange
      */
@@ -849,9 +813,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the maximum value occurring in this sample dimension (inclusive). The default
-     * implementation fetch this value from the categories supplied at construction time. If the
-     * maximum value can't be computed, then this method returns {@link Double#POSITIVE_INFINITY}.
+     * Returns the maximum value occurring in this sample dimension (inclusive). The default implementation fetch this
+     * value from the categories supplied at construction time. If the maximum value can't be computed, then this method
+     * returns {@link Double#POSITIVE_INFINITY}.
      *
      * @see #getRange
      */
@@ -874,29 +838,27 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the range of values in this sample dimension. This is the union of the range of
-     * values of every categories, excluding {@code NaN} values. A {@link NumberRange} object gives
-     * more informations than {@link #getMinimumValue} and {@link #getMaximumValue} methods since it
-     * contains also the data type (integer, float, etc.) and inclusion/exclusion informations.
+     * Returns the range of values in this sample dimension. This is the union of the range of values of every
+     * categories, excluding {@code NaN} values. A {@link NumberRange} object gives more informations than
+     * {@link #getMinimumValue} and {@link #getMaximumValue} methods since it contains also the data type (integer,
+     * float, etc.) and inclusion/exclusion informations.
      *
-     * @return The range of values. May be {@code null} if this sample dimension has no quantitative
-     *     category.
+     * @return The range of values. May be {@code null} if this sample dimension has no quantitative category.
      * @see Category#getRange
      * @see #getMinimumValue
      * @see #getMaximumValue
-     * @todo We should do a better job in {@code CategoryList.getRange()} when selecting the
-     *     appropriate data type. {@link TypeMap#getSampleDimensionType} may be of some help.
+     * @todo We should do a better job in {@code CategoryList.getRange()} when selecting the appropriate data type.
+     *     {@link TypeMap#getSampleDimensionType} may be of some help.
      */
     public NumberRange<? extends Number> getRange() {
         return (categories != null) ? categories.getRange() : null;
     }
 
     /**
-     * Returns {@code true} if at least one value of {@code values} is in the range {@code lower}
-     * inclusive to {@code upper} exclusive.
+     * Returns {@code true} if at least one value of {@code values} is in the range {@code lower} inclusive to
+     * {@code upper} exclusive.
      */
-    private static boolean rangeContains(
-            final double lower, final double upper, final double[] values) {
+    private static boolean rangeContains(final double lower, final double upper, final double[] values) {
         if (values != null) {
             for (final double v : values) {
                 if (v >= lower && v < upper) {
@@ -908,24 +870,22 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a string representation of a sample value. This method try to returns a
-     * representation of the geophysics value; the transformation is automatically applied when
-     * necessary. More specifically:
+     * Returns a string representation of a sample value. This method try to returns a representation of the geophysics
+     * value; the transformation is automatically applied when necessary. More specifically:
      *
      * <ul>
      *   <li>If {@code value} maps a qualitative category, then the category name is returned as of
      *       {@link Category#getName}.
-     *   <li>Otherwise, if {@code value} maps a quantitative category, then the value is formatted
-     *       as a number and the unit symbol is appened.
+     *   <li>Otherwise, if {@code value} maps a quantitative category, then the value is formatted as a number and the
+     *       unit symbol is appened.
      * </ul>
      *
      * @param value The sample value (can be one of {@code NaN} values).
      * @param locale Locale to use for formatting, or {@code null} for the default locale.
      * @return A string representation of the geophysics value, or {@code null} if there is none.
-     * @todo What should we do when the value can't be formatted? {@code GridSampleDimension}
-     *     returns {@code null} if there is no category or if an exception is thrown, but {@code
-     *     CategoryList} returns "Untitled" if the value is an unknow NaN, and try to format the
-     *     number anyway in other cases.
+     * @todo What should we do when the value can't be formatted? {@code GridSampleDimension} returns {@code null} if
+     *     there is no category or if an exception is thrown, but {@code CategoryList} returns "Untitled" if the value
+     *     is an unknow NaN, and try to format the number anyway in other cases.
      */
     public String getLabel(final double value, final Locale locale) {
         if (categories != null) {
@@ -935,8 +895,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the unit information for this sample dimension. May returns {@code null} if this
-     * dimension has no units.
+     * Returns the unit information for this sample dimension. May returns {@code null} if this dimension has no units.
      */
     @Override
     public Unit<?> getUnits() {
@@ -944,9 +903,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the value to add to grid values for this sample dimension. This attribute is
-     * typically used when the sample dimension represents elevation data. The transformation
-     * equation is:
+     * Returns the value to add to grid values for this sample dimension. This attribute is typically used when the
+     * sample dimension represents elevation data. The transformation equation is:
      *
      * <blockquote>
      *
@@ -954,8 +912,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * </blockquote>
      *
-     * Together with {@link #getScale()} and {@link #getNoDataValues()}, this method provides a
-     * limited way to transform sample values into geophysics values.
+     * Together with {@link #getScale()} and {@link #getNoDataValues()}, this method provides a limited way to transform
+     * sample values into geophysics values.
      *
      * @return The offset to add to grid values.
      */
@@ -965,9 +923,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the value which is multiplied to grid values for this sample dimension. This
-     * attribute is typically used when the sample dimension represents elevation data. The
-     * transformation equation is:
+     * Returns the value which is multiplied to grid values for this sample dimension. This attribute is typically used
+     * when the sample dimension represents elevation data. The transformation equation is:
      *
      * <blockquote>
      *
@@ -975,8 +932,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * </blockquote>
      *
-     * Together with {@link #getOffset()} and {@link #getNoDataValues()}, this method provides a
-     * limited way to transform sample values into geophysics values.
+     * Together with {@link #getOffset()} and {@link #getNoDataValues()}, this method provides a limited way to
+     * transform sample values into geophysics values.
      *
      * @return The scale to multiply to grid value.
      */
@@ -986,9 +943,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns the color interpretation of the sample dimension. A sample dimension can be an index
-     * into a color palette or be a color model component. If the sample dimension is not assigned a
-     * color interpretation the value is {@link ColorInterpretation#UNDEFINED}.
+     * Returns the color interpretation of the sample dimension. A sample dimension can be an index into a color palette
+     * or be a color model component. If the sample dimension is not assigned a color interpretation the value is
+     * {@link ColorInterpretation#UNDEFINED}.
      */
     public ColorInterpretation getColorInterpretation() {
         // The 'Grid2DSampleDimension' class overrides this method
@@ -999,17 +956,15 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a color model for this sample dimension. The default implementation create a color
-     * model with 1 band using each category's colors as returned by {@link Category#getColors}.
+     * Returns a color model for this sample dimension. The default implementation create a color model with 1 band
+     * using each category's colors as returned by {@link Category#getColors}.
      *
-     * <p>Note that {@link org.geotools.coverage.grid.GridCoverage2D#getSampleDimension} returns
-     * special implementations of {@code GridSampleDimension}. In this particular case, the color
-     * model created by this {@code getColorModel()} method will have the same number of bands than
-     * the grid coverage's {@link java.awt.image.RenderedImage}.
+     * <p>Note that {@link org.geotools.coverage.grid.GridCoverage2D#getSampleDimension} returns special implementations
+     * of {@code GridSampleDimension}. In this particular case, the color model created by this {@code getColorModel()}
+     * method will have the same number of bands than the grid coverage's {@link java.awt.image.RenderedImage}.
      *
-     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
-     *     with values in the <code>{@link #getRange}</code> range. May be {@code null} if this
-     *     sample dimension has no category.
+     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects with values in the
+     *     <code>{@link #getRange}</code> range. May be {@code null} if this sample dimension has no category.
      */
     public ColorModel getColorModel() {
         // The 'Grid2DSampleDimension' class overrides this method
@@ -1020,21 +975,18 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a color model for this sample dimension. The default implementation create the color
-     * model using each category's colors as returned by {@link Category#getColors}.
+     * Returns a color model for this sample dimension. The default implementation create the color model using each
+     * category's colors as returned by {@link Category#getColors}.
      *
-     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be
-     *     ignored.
-     * @param numBands The number of bands for the color model (usually 1). The returned color model
-     *     will renderer only the {@code visibleBand} and ignore the others, but the existence of
-     *     all {@code numBands} will be at least tolerated. Supplemental bands, even invisible, are
-     *     useful for processing with Java Advanced Imaging.
-     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
-     *     with values in the <code>{@link #getRange}</code> range. May be {@code null} if this
-     *     sample dimension has no category.
-     * @todo This method may be deprecated in a future version. It it strange to use only one {@code
-     *     SampleDimension} object for creating a multi-bands color model. Logically, we would
-     *     expect as many {@code SampleDimension}s as bands.
+     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be ignored.
+     * @param numBands The number of bands for the color model (usually 1). The returned color model will renderer only
+     *     the {@code visibleBand} and ignore the others, but the existence of all {@code numBands} will be at least
+     *     tolerated. Supplemental bands, even invisible, are useful for processing with Java Advanced Imaging.
+     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects with values in the
+     *     <code>{@link #getRange}</code> range. May be {@code null} if this sample dimension has no category.
+     * @todo This method may be deprecated in a future version. It it strange to use only one {@code SampleDimension}
+     *     object for creating a multi-bands color model. Logically, we would expect as many {@code SampleDimension}s as
+     *     bands.
      */
     public ColorModel getColorModel(final int visibleBand, final int numBands) {
         if (categories != null) {
@@ -1048,22 +1000,19 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a color model for this sample dimension. The default implementation create the color
-     * model using each category's colors as returned by {@link Category#getColors}.
+     * Returns a color model for this sample dimension. The default implementation create the color model using each
+     * category's colors as returned by {@link Category#getColors}.
      *
-     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be
-     *     ignored.
-     * @param numBands The number of bands for the color model (usually 1). The returned color model
-     *     will renderer only the {@code visibleBand} and ignore the others, but the existence of
-     *     all {@code numBands} will be at least tolerated. Supplemental bands, even invisible, are
-     *     useful for processing with Java Advanced Imaging.
+     * @param visibleBand The band to be made visible (usually 0). All other bands, if any will be ignored.
+     * @param numBands The number of bands for the color model (usually 1). The returned color model will renderer only
+     *     the {@code visibleBand} and ignore the others, but the existence of all {@code numBands} will be at least
+     *     tolerated. Supplemental bands, even invisible, are useful for processing with Java Advanced Imaging.
      * @param type The data type that has to be used for the sample model.
-     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
-     *     with values in the <code>{@link #getRange}</code> range. May be {@code null} if this
-     *     sample dimension has no category.
-     * @todo This method may be deprecated in a future version. It it strange to use only one {@code
-     *     SampleDimension} object for creating a multi-bands color model. Logically, we would
-     *     expect as many {@code SampleDimension}s as bands.
+     * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects with values in the
+     *     <code>{@link #getRange}</code> range. May be {@code null} if this sample dimension has no category.
+     * @todo This method may be deprecated in a future version. It it strange to use only one {@code SampleDimension}
+     *     object for creating a multi-bands color model. Logically, we would expect as many {@code SampleDimension}s as
+     *     bands.
      */
     public ColorModel getColorModel(final int visibleBand, final int numBands, final int type) {
         if (categories != null) {
@@ -1073,8 +1022,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /**
-     * Returns a hash value for this sample dimension. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this sample dimension. This value need not remain consistent between different
+     * implementations of the same class.
      */
     @Override
     public int hashCode() {
@@ -1097,17 +1046,15 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             final GridSampleDimension that = (GridSampleDimension) object;
             // two dimensions are equal if they have de same description (name)
             // and same categories lists
-            return this.description.equals(that.description)
-                    && Utilities.equals(this.categories, that.categories);
+            return this.description.equals(that.description) && Utilities.equals(this.categories, that.categories);
         }
         return false;
     }
 
     /**
-     * Returns a string representation of this sample dimension. This string is for debugging
-     * purpose only and may change in future version. The default implementation format the sample
-     * value range, then the list of categories. A "*" mark is put in front of what seems the "main"
-     * category.
+     * Returns a string representation of this sample dimension. This string is for debugging purpose only and may
+     * change in future version. The default implementation format the sample value range, then the list of categories.
+     * A "*" mark is put in front of what seems the "main" category.
      */
     @Override
     public String toString() {

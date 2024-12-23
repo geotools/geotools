@@ -40,8 +40,8 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
 
     /**
-     * This flag lets us know that an optimized result was stored and therefore we don't have enough
-     * data to perform any merges.
+     * This flag lets us know that an optimized result was stored and therefore we don't have enough data to perform any
+     * merges.
      */
     private boolean isOptimized = false;
 
@@ -53,8 +53,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * @param attributeTypeIndex integer representing the AttributeDescriptor
      * @param type FeatureType
      */
-    public AverageVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public AverageVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attributeType = type.getDescriptor(attributeTypeIndex);
         expr = factory.property(attributeType.getLocalName());
@@ -91,15 +90,13 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != 1)
-            throw new IllegalArgumentException(
-                    "Expecting a single type in input, not " + inputTypes);
+            throw new IllegalArgumentException("Expecting a single type in input, not " + inputTypes);
 
         Class type = inputTypes.get(0);
         if (Number.class.isAssignableFrom(type)) {
             return Optional.of(Collections.singletonList(Double.class));
         }
-        throw new IllegalArgumentException(
-                "The input type for sum must be numeric, instead this was found: " + type);
+        throw new IllegalArgumentException("The input type for sum must be numeric, instead this was found: " + type);
     }
 
     /**
@@ -179,9 +176,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         } else if (newAverage instanceof Number) {
             strategy = new FixedResultAverageStrategy((Number) newAverage);
             isOptimized = true;
-        } else
-            throw new IllegalArgumentException(
-                    "Cannot set the value, should be a Number or an AverageStrategy");
+        } else throw new IllegalArgumentException("Cannot set the value, should be a Number or an AverageStrategy");
     }
 
     public void setValue(int newCount, Object newSum) {
@@ -340,13 +335,12 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * Implements the average calculation for fixed values (for optimizing out in memory counts.
-     * This however means the average cannot be merged any with other results (normally not a
-     * problem when the final result has been calculated already by storage)
+     * Implements the average calculation for fixed values (for optimizing out in memory counts. This however means the
+     * average cannot be merged any with other results (normally not a problem when the final result has been calculated
+     * already by storage)
      */
     static class FixedResultAverageStrategy implements AverageStrategy {
-        private static final String NO_MERGE_ERROR =
-                "This strategy does not support merge with other results";
+        private static final String NO_MERGE_ERROR = "This strategy does not support merge with other results";
         Number result;
 
         public FixedResultAverageStrategy(Number result) {
@@ -390,10 +384,9 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
             } else if (value instanceof Number) {
                 averageStrategy = new FixedResultAverageStrategy((Number) value);
             } else {
-                throw new IllegalArgumentException(
-                        "Cannot build an AverageResult using "
-                                + value
-                                + ", must be a Number or an instance of AverageStrategy");
+                throw new IllegalArgumentException("Cannot build an AverageResult using "
+                        + value
+                        + ", must be a Number or an instance of AverageStrategy");
             }
         }
 
@@ -454,8 +447,8 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         /**
-         * Merges the contents of a CalcResult Object with another CalcResult Object. If the two
-         * CalcResult objects are compatible, the merged result (a new object) is returned.
+         * Merges the contents of a CalcResult Object with another CalcResult Object. If the two CalcResult objects are
+         * compatible, the merged result (a new object) is returned.
          *
          * @param resultsToAdd the CalcResult to merge the results with
          * @return a new merged CalcResult object
@@ -476,18 +469,12 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
                 // ensure both results are NOT optimized
                 if (isOptimized || moreResults.isOptimized) {
-                    throw new IllegalArgumentException(
-                            "Optimized average results cannot be merged.");
+                    throw new IllegalArgumentException("Optimized average results cannot be merged.");
                 }
 
-                Number[] sums = {
-                    (Number) averageStrategy.getSum(), (Number) moreResults.averageStrategy.getSum()
-                };
+                Number[] sums = {(Number) averageStrategy.getSum(), (Number) moreResults.averageStrategy.getSum()};
                 Number newSum = CalcUtil.sum(sums);
-                Number newCount =
-                        Integer.valueOf(
-                                averageStrategy.getCount()
-                                        + moreResults.averageStrategy.getCount());
+                Number newCount = Integer.valueOf(averageStrategy.getCount() + moreResults.averageStrategy.getCount());
                 Number[] params = {newSum, newCount};
                 Object newAverage = CalcUtil.getObject(params);
                 AverageStrategy newAverageObj = createStrategy(newAverage.getClass());

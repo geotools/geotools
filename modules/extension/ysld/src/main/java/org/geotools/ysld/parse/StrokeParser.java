@@ -23,8 +23,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * Handles parsing Ysld "stroke-*" (e.g., "stroke-color", "stroke-width", ... ) properties into a
- * {@link Stroke} object.
+ * Handles parsing Ysld "stroke-*" (e.g., "stroke-color", "stroke-width", ... ) properties into a {@link Stroke} object.
  */
 public abstract class StrokeParser extends YsldParseHandler {
     Stroke stroke;
@@ -59,22 +58,18 @@ public abstract class StrokeParser extends YsldParseHandler {
             stroke().setDashOffset(Util.expression(map.str("stroke-dashoffset"), factory));
         }
 
-        context.push(
-                "stroke-graphic-fill",
-                new GraphicParser(factory) {
-                    @Override
-                    protected void graphic(Graphic g) {
-                        stroke().setGraphicFill(g);
-                    }
-                });
-        context.push(
-                "stroke-graphic",
-                new GraphicParser(factory) {
-                    @Override
-                    protected void graphic(Graphic g) {
-                        stroke().setGraphicStroke(g);
-                    }
-                });
+        context.push("stroke-graphic-fill", new GraphicParser(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                stroke().setGraphicFill(g);
+            }
+        });
+        context.push("stroke-graphic", new GraphicParser(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                stroke().setGraphicStroke(g);
+            }
+        });
     }
 
     Stroke stroke() {

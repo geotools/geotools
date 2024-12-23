@@ -28,9 +28,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests for SingleTaskRenderingExecutor that involve multi-threading. These are run using the
- * MultiRepTestRunner class. Edit the constant field in that class to set the number of replicates
- * to run (set to 1 for the Hudson build).
+ * Tests for SingleTaskRenderingExecutor that involve multi-threading. These are run using the MultiRepTestRunner class.
+ * Edit the constant field in that class to set the number of replicates to run (set to 1 for the Hudson build).
  *
  * @author Michael Bedward
  * @since 8.0
@@ -56,8 +55,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         createSubmitObjects();
         listener.setExpected(WaitingRenderingExecutorListener.Type.STARTED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent =
-                listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
 
@@ -66,8 +64,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         createSubmitObjects();
         listener.setExpected(WaitingRenderingExecutorListener.Type.COMPLETED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent =
-                listener.await(WaitingRenderingExecutorListener.Type.COMPLETED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.Type.COMPLETED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
 
@@ -87,10 +84,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         assertTrue(listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT));
 
         executor.cancel(id);
-        boolean gotFailed =
-                listener.await(WaitingRenderingExecutorListener.Type.FAILED, WAIT_TIMEOUT);
-        assertTrue(
-                gotFailed
-                        || listener.eventReceived(WaitingRenderingExecutorListener.Type.COMPLETED));
+        boolean gotFailed = listener.await(WaitingRenderingExecutorListener.Type.FAILED, WAIT_TIMEOUT);
+        assertTrue(gotFailed || listener.eventReceived(WaitingRenderingExecutorListener.Type.COMPLETED));
     }
 }

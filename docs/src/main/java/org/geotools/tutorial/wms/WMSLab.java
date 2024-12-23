@@ -23,13 +23,11 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.swing.wms.WMSChooser;
 import org.geotools.swing.wms.WMSLayerChooser;
 
-/**
- * This is a Web Map Server "quickstart" doing the minimum required to display something on screen.
- */
+/** This is a Web Map Server "quickstart" doing the minimum required to display something on screen. */
 public class WMSLab extends JFrame {
     /**
-     * Prompts the user for a wms service, connects, and asks for a layer and then and displays its
-     * contents on the screen in a map frame.
+     * Prompts the user for a wms service, connects, and asks for a layer and then and displays its contents on the
+     * screen in a map frame.
      */
     public static void main(String[] args) throws Exception {
         // display a data store file chooser dialog for shapefiles

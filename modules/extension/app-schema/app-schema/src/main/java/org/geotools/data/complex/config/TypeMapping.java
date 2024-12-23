@@ -31,8 +31,7 @@ import org.geotools.util.CheckedArrayList;
  * @since 2.4
  */
 public class TypeMapping implements Serializable {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
 
     private static final long serialVersionUID = 1444252634598922057L;
 
@@ -46,14 +45,12 @@ public class TypeMapping implements Serializable {
     private String itemXpath;
 
     /**
-     * True if we don't want to create a new feature, but want to add attributes to the feature
-     * returned from the backend Data access.
+     * True if we don't want to create a new feature, but want to add attributes to the feature returned from the
+     * backend Data access.
      */
     private boolean isXmlDataStore;
 
-    /**
-     * True if data is multiple rows represent 1 feature. The safe default is to assume it's true.
-     */
+    /** True if data is multiple rows represent 1 feature. The safe default is to assume it's true. */
     private boolean isDenormalised = true;
     /** True if isDenormalised has been set in config. */
     private boolean isDenormalisedSet = false;
@@ -64,10 +61,7 @@ public class TypeMapping implements Serializable {
 
     private List<AttributeMapping> attributeMappings = Collections.emptyList();
 
-    /**
-     * Optional unique identifier for a FeatureTypeMapping, useful for multiple mappings of the same
-     * type.
-     */
+    /** Optional unique identifier for a FeatureTypeMapping, useful for multiple mappings of the same type. */
     private String mappingName;
 
     public TypeMapping() {
@@ -135,11 +129,10 @@ public class TypeMapping implements Serializable {
 
     public boolean isDenormalised() {
         if (!isDenormalisedSet) {
-            LOGGER.info(
-                    "isDenormalised is not set in app-schema mapping file for: "
-                            + (mappingName == null ? targetElementName : mappingName)
-                            + ".\n"
-                            + "Setting isDenormalised can result in more efficient SQL queries.");
+            LOGGER.info("isDenormalised is not set in app-schema mapping file for: "
+                    + (mappingName == null ? targetElementName : mappingName)
+                    + ".\n"
+                    + "Setting isDenormalised can result in more efficient SQL queries.");
         }
         return isDenormalised;
     }

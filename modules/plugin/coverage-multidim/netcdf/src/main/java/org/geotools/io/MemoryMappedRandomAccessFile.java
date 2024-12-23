@@ -28,8 +28,7 @@ import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.StringUtil2;
 
 /**
- * A ReadOnly MemoryMapped RandomAccessFile. It will map the file in memory, using a
- * MappedByteBuffer.
+ * A ReadOnly MemoryMapped RandomAccessFile. It will map the file in memory, using a MappedByteBuffer.
  *
  * <p>Writing capability is not supported at the moment.
  */
@@ -49,8 +48,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
 
     static {
         long limit = Integer.MAX_VALUE;
-        String memoryMappingLimit =
-                System.getProperty("org.geotools.coverage.io.netcdf.memorymaplimit");
+        String memoryMappingLimit = System.getProperty("org.geotools.coverage.io.netcdf.memorymaplimit");
         if (memoryMappingLimit != null && !memoryMappingLimit.isEmpty()) {
             limit = Long.parseLong(memoryMappingLimit);
             // The mapped byte buffer cannot be bigger than 2GB.
@@ -87,9 +85,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         dataEnd = channelSize;
 
         long initialMapSize =
-                (channelSize - channel.position()) < (long) BUFFER_MEMORY_LIMIT
-                        ? channelSize
-                        : BUFFER_MEMORY_LIMIT;
+                (channelSize - channel.position()) < (long) BUFFER_MEMORY_LIMIT ? channelSize : BUFFER_MEMORY_LIMIT;
         mappedByteBuffer = channel.map(mapMode, 0, initialMapSize);
         mappedByteBuffer.position((int) channel.position());
         bufferStart = 0;
@@ -102,8 +98,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         filePosition = pos;
         if (filePosition < 0) throw new IOException("Negative seek offset");
         if (filePosition < dataEnd) {
-            if (filePosition >= currentOffset + BUFFER_MEMORY_LIMIT
-                    || filePosition < currentOffset) {
+            if (filePosition >= currentOffset + BUFFER_MEMORY_LIMIT || filePosition < currentOffset) {
                 // If going outside of the currently mapped portion we need to remap the buffer
                 bufferCheck(-1);
             } else {
@@ -141,8 +136,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
     @Override
     public int read() throws IOException {
         bufferCheck(1);
-        if (filePosition < 0)
-            throw new IOException(format("Negative file position %d for %s", filePosition, this));
+        if (filePosition < 0) throw new IOException(format("Negative file position %d for %s", filePosition, this));
         if (filePosition < dataEnd) {
             filePosition++;
             return mappedByteBuffer.get() & 0xff;
@@ -175,9 +169,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         if (endOfFile) return -1;
         length = (int) Math.min(length, dataEnd - filePosition);
         if (length > 0) {
-            if (filePosition < 0)
-                throw new IOException(
-                        format("Negative file position %d for %s", filePosition, this));
+            if (filePosition < 0) throw new IOException(format("Negative file position %d for %s", filePosition, this));
             bufferCheck(length);
             mappedByteBuffer.get(dst, offset, length);
             filePosition += length;
@@ -264,8 +256,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
             this.seek(this.filePosition);
             bytesAvailable = (int) (this.dataEnd - this.filePosition);
         }
-        int scanBytes =
-                (int) Math.min(Math.min(bytesAvailable, needToScan), MAX_SEARCH_BUFFER_LIMIT);
+        int scanBytes = (int) Math.min(Math.min(bytesAvailable, needToScan), MAX_SEARCH_BUFFER_LIMIT);
         byte[] tempBuffer = new byte[scanBytes];
         long startPosition = mappedByteBuffer.position() % BUFFER_MEMORY_LIMIT;
         readBytes(tempBuffer, 0, scanBytes);
@@ -279,18 +270,11 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
             int matchLen = match.getMatchLength();
 
             for (needToScan -= scanBytes; needToScan > (long) matchLen; needToScan -= scanBytes) {
-                scanBytes =
-                        (int)
-                                Math.min(
-                                        maxBytes > 0 ? maxBytes : MAX_SEARCH_BUFFER_LIMIT,
-                                        needToScan);
+                scanBytes = (int) Math.min(maxBytes > 0 ? maxBytes : MAX_SEARCH_BUFFER_LIMIT, needToScan);
                 readBytes(tempBuffer, 0, scanBytes);
                 pos = match.indexOf(tempBuffer, 0, scanBytes);
                 if (pos > 0) {
-                    seekPos =
-                            this.currentOffset
-                                    + (long) pos
-                                    + (endOfFile ? BUFFER_MEMORY_LIMIT - scanBytes : 0);
+                    seekPos = this.currentOffset + (long) pos + (endOfFile ? BUFFER_MEMORY_LIMIT - scanBytes : 0);
                     this.seek(seekPos);
                     return true;
                 }

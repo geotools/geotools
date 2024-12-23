@@ -23,17 +23,16 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.util.InternationalString;
 
 /**
- * A {@link net.opengis.wcs11.FieldType} describes a measure/observation/forecast of a certain
- * quantity. A {@link FieldType} may be a scalar (numeric or text) value, such as population
- * density, or a vector of many similar values, such as incomes by race, or radiance by wavelength.
+ * A {@link net.opengis.wcs11.FieldType} describes a measure/observation/forecast of a certain quantity. A
+ * {@link FieldType} may be a scalar (numeric or text) value, such as population density, or a vector of many similar
+ * values, such as incomes by race, or radiance by wavelength.
  *
- * <p>A {@link FieldType} has an associated quantity from the JScience project since the goal of a
- * {@link FieldType} is to describe a {@link Quantity}. Note that I am referring to quantity in the
- * broader term here. As an instance a {@link FieldType} could describe the bands of a synthetic RGB
- * image. Now, there might not be a real physical quantity (like Temperature or Pressure) associated
- * to such a quantity, but still we want to be able to capture somehow the concept of digital number
- * as the represented quantity as well as the concept of the bands index or textual representation
- * for the bands.
+ * <p>A {@link FieldType} has an associated quantity from the JScience project since the goal of a {@link FieldType} is
+ * to describe a {@link Quantity}. Note that I am referring to quantity in the broader term here. As an instance a
+ * {@link FieldType} could describe the bands of a synthetic RGB image. Now, there might not be a real physical quantity
+ * (like Temperature or Pressure) associated to such a quantity, but still we want to be able to capture somehow the
+ * concept of digital number as the represented quantity as well as the concept of the bands index or textual
+ * representation for the bands.
  *
  * <p>Note that in our proposal a {@link FieldType} shall always contain at least one {@link Axis}.
  *

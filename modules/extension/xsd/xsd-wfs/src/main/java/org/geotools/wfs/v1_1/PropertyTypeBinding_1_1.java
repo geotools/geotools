@@ -60,42 +60,35 @@ public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
     @Override
     public Object getProperty(final Object object, QName name) throws Exception {
         if (VALUE.equals(name.getLocalPart())) {
-            return (EncoderDelegate)
-                    output -> {
-                        Object value = ((PropertyType) object).getValue();
+            return (EncoderDelegate) output -> {
+                Object value = ((PropertyType) object).getValue();
 
-                        output.startElement(
-                                org.geotools.wfs.WFS.NAMESPACE,
-                                VALUE,
-                                "wfs:" + VALUE,
-                                new AttributesImpl());
-                        if (value instanceof Geometry) {
-                            Geometry geometry = (Geometry) value;
+                output.startElement(org.geotools.wfs.WFS.NAMESPACE, VALUE, "wfs:" + VALUE, new AttributesImpl());
+                if (value instanceof Geometry) {
+                    Geometry geometry = (Geometry) value;
 
-                            GMLConfiguration gml = new GMLConfiguration();
+                    GMLConfiguration gml = new GMLConfiguration();
 
-                            Encoder encoder = new Encoder(gml);
-                            encoder.setInline(true);
+                    Encoder encoder = new Encoder(gml);
+                    encoder.setInline(true);
 
-                            GenericGeometryEncoder geometryEncoder =
-                                    new GenericGeometryEncoder(encoder);
-                            GMLWriter handler =
-                                    new GMLWriter(
-                                            output,
-                                            new NamespaceSupport(),
-                                            gml.getNumDecimals(),
-                                            gml.getForceDecimalEncoding(),
-                                            gml.getPadWithZeros(),
-                                            "gml",
-                                            gml.getEncodeMeasures());
-                            geometryEncoder.encode(geometry, new AttributesImpl(), handler);
+                    GenericGeometryEncoder geometryEncoder = new GenericGeometryEncoder(encoder);
+                    GMLWriter handler = new GMLWriter(
+                            output,
+                            new NamespaceSupport(),
+                            gml.getNumDecimals(),
+                            gml.getForceDecimalEncoding(),
+                            gml.getPadWithZeros(),
+                            "gml",
+                            gml.getEncodeMeasures());
+                    geometryEncoder.encode(geometry, new AttributesImpl(), handler);
 
-                        } else {
-                            String s = value.toString();
-                            output.characters(s.toCharArray(), 0, s.length());
-                        }
-                        output.endElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE);
-                    };
+                } else {
+                    String s = value.toString();
+                    output.characters(s.toCharArray(), 0, s.length());
+                }
+                output.endElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE);
+            };
         }
 
         return super.getProperty(object, name);

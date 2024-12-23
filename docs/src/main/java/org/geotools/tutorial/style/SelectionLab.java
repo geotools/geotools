@@ -56,8 +56,8 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * In this example we create a map tool to select a feature clicked with the mouse. The selected
- * feature will be painted yellow.
+ * In this example we create a map tool to select a feature clicked with the mouse. The selected feature will be painted
+ * yellow.
  */
 public class SelectionLab {
 
@@ -109,9 +109,8 @@ public class SelectionLab {
 
     // docs start display shapefile
     /**
-     * This method connects to the shapefile; retrieves information about its features; creates a
-     * map frame to display the shapefile and adds a custom feature selection tool to the toolbar of
-     * the map frame.
+     * This method connects to the shapefile; retrieves information about its features; creates a map frame to display
+     * the shapefile and adds a custom feature selection tool to the toolbar of the map frame.
      */
     public void displayShapefile(File file) throws Exception {
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
@@ -148,17 +147,13 @@ public class SelectionLab {
          * we can just create our tool as an anonymous sub-class
          * of CursorTool.
          */
-        btn.addActionListener(
-                e ->
-                        mapFrame.getMapPane()
-                                .setCursorTool(
-                                        new CursorTool() {
+        btn.addActionListener(e -> mapFrame.getMapPane().setCursorTool(new CursorTool() {
 
-                                            @Override
-                                            public void onMouseClicked(MapMouseEvent ev) {
-                                                selectFeatures(ev);
-                                            }
-                                        }));
+            @Override
+            public void onMouseClicked(MapMouseEvent ev) {
+                selectFeatures(ev);
+            }
+        }));
 
         /** Finally, we display the map frame. When it is closed this application will exit. */
         mapFrame.setSize(600, 600);
@@ -190,8 +185,7 @@ public class SelectionLab {
         AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();
         Rectangle2D worldRect = screenToWorld.createTransformedShape(screenRect).getBounds2D();
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(
-                        worldRect, mapFrame.getMapContent().getCoordinateReferenceSystem());
+                new ReferencedEnvelope(worldRect, mapFrame.getMapContent().getCoordinateReferenceSystem());
 
         /*
          * Create a Filter to select features that intersect with
@@ -229,8 +223,7 @@ public class SelectionLab {
 
     // docs start display selected
     /**
-     * Sets the display to paint selected features yellow and unselected features in the default
-     * style.
+     * Sets the display to paint selected features yellow and unselected features in the default style.
      *
      * @param IDs identifiers of currently selected features
      */
@@ -266,8 +259,8 @@ public class SelectionLab {
 
     // docs start selected style
     /**
-     * Create a Style where features with given IDs are painted yellow, while others are painted
-     * with the default colors.
+     * Create a Style where features with given IDs are painted yellow, while others are painted with the default
+     * colors.
      */
     private Style createSelectedStyle(Set<FeatureId> IDs) {
         Rule selectedRule = createRule(SELECTED_COLOUR, SELECTED_COLOUR);
@@ -288,8 +281,8 @@ public class SelectionLab {
 
     // docs start create rule
     /**
-     * Helper for createXXXStyle methods. Creates a new Rule containing a Symbolizer tailored to the
-     * geometry type of the features that we are displaying.
+     * Helper for createXXXStyle methods. Creates a new Rule containing a Symbolizer tailored to the geometry type of
+     * the features that we are displaying.
      */
     private Rule createRule(Color outlineColor, Color fillColor) {
         Symbolizer symbolizer = null;
@@ -338,8 +331,7 @@ public class SelectionLab {
         if (Polygon.class.isAssignableFrom(clazz) || MultiPolygon.class.isAssignableFrom(clazz)) {
             geometryType = GeomType.POLYGON;
 
-        } else if (LineString.class.isAssignableFrom(clazz)
-                || MultiLineString.class.isAssignableFrom(clazz)) {
+        } else if (LineString.class.isAssignableFrom(clazz) || MultiLineString.class.isAssignableFrom(clazz)) {
 
             geometryType = GeomType.LINE;
 

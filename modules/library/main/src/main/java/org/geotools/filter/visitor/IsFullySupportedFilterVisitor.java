@@ -87,13 +87,11 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 
 /**
- * This visitor will return Boolean.TRUE if the provided filter is completely supported by the
- * FilterCapabilities.
+ * This visitor will return Boolean.TRUE if the provided filter is completely supported by the FilterCapabilities.
  *
- * <p>This method will look up the right information in the provided FilterCapabilities instance for
- * you depending on the type of filter provided. It will do a deep structural search of the provided
- * filter ensuring every expression and function is accounted for and supported by the provided
- * FilterCapabilities.
+ * <p>This method will look up the right information in the provided FilterCapabilities instance for you depending on
+ * the type of filter provided. It will do a deep structural search of the provided filter ensuring every expression and
+ * function is accounted for and supported by the provided FilterCapabilities.
  *
  * <p>Example:
  *
@@ -145,7 +143,8 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         Set<Identifier> identifiers = filter.getIdentifiers();
         if (identifiers == null) return null;
         for (Identifier identifier : identifiers) {
-            if (identifier instanceof FeatureId && capabilities.getIdCapabilities().hasFID()) {
+            if (identifier instanceof FeatureId
+                    && capabilities.getIdCapabilities().hasFID()) {
                 continue;
             } else if (identifier instanceof ObjectId
                     && capabilities.getIdCapabilities().hasEID()) {

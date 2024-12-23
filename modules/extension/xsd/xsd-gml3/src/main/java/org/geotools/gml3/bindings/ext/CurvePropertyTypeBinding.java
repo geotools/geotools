@@ -62,8 +62,7 @@ public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePr
 
     GeometryFactory gf;
 
-    public CurvePropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
+    public CurvePropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
         super(encodingUtils, idRegistry);
         this.gf = gf;
     }

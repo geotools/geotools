@@ -21,6 +21,5 @@ import org.geotools.data.complex.feature.wrapper.XSDMapping;
 @XSDMapping(namespace = "urn:org:example", separator = ":")
 public class MineType2 extends FeatureWrapper {
     @XSDMapping(local = "MineNamePropertyType")
-    public ArrayList<MineNamePropertyType>
-            MineNameProperties; // ArrayLists are allowed for multivalued types.
+    public ArrayList<MineNamePropertyType> MineNameProperties; // ArrayLists are allowed for multivalued types.
 }

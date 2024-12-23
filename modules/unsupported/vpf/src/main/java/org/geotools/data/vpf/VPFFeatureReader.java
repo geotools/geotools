@@ -46,8 +46,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this.featureType = type;
     }
 
-    public VPFFeatureReader(ContentState contentState, VPFFeatureType featureType)
-            throws IOException {
+    public VPFFeatureReader(ContentState contentState, VPFFeatureType featureType) throws IOException {
         this.state = contentState;
         this.featureType = featureType;
     }
@@ -84,16 +83,15 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @see org.geotools.api.data.FeatureReader#next()
      */
     @Override
-    public synchronized SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public synchronized SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         readNext();
         return currentFeature;
     }
 
     /**
-     * Read a row and determine if it matches the feature type Three possibilities here: row is null
-     * -- hasNext = false, do not try again row matches -- hasNext = true, do not try again row does
-     * not match -- hasNext is undefined because we must try again
+     * Read a row and determine if it matches the feature type Three possibilities here: row is null -- hasNext = false,
+     * do not try again row matches -- hasNext = true, do not try again row does not match -- hasNext is undefined
+     * because we must try again
      *
      * @return Whether we need to read again
      */
@@ -107,8 +105,8 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /**
-     * Returns the VPFFile for a particular column. It will only find the first match, but that
-     * should be okay because duplicate columns will cause even bigger problems elsewhere.
+     * Returns the VPFFile for a particular column. It will only find the first match, but that should be okay because
+     * duplicate columns will cause even bigger problems elsewhere.
      *
      * @param column the column to search for
      * @return the VPFFile that owns this column
@@ -128,8 +126,8 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         return result;
     }
     /**
-     * Returns the VPFFile for a particular column. It will only find the first match, but that
-     * should be okay because duplicate columns will cause even bigger problems elsewhere.
+     * Returns the VPFFile for a particular column. It will only find the first match, but that should be okay because
+     * duplicate columns will cause even bigger problems elsewhere.
      *
      * @param column the column to search for
      * @return the VPFFile that owns this column

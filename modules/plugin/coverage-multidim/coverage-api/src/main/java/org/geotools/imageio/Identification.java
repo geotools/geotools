@@ -40,8 +40,7 @@ public class Identification implements CharSequence, Serializable {
     private final String identifier;
 
     /** Creates an identification from the specified object name. */
-    public Identification(
-            final String name, final String remarks, final String alias, final String identifier) {
+    public Identification(final String name, final String remarks, final String alias, final String identifier) {
         this.name = name;
         this.remarks = remarks;
         this.alias = alias;
@@ -69,8 +68,8 @@ public class Identification implements CharSequence, Serializable {
     }
 
     /**
-     * Returns a subsequence of this identification. The new identification will contains a
-     * substring of the {@linkplain #name}, but the {@linkplain #type} will be unchanged.
+     * Returns a subsequence of this identification. The new identification will contains a substring of the
+     * {@linkplain #name}, but the {@linkplain #type} will be unchanged.
      */
     @Override
     public CharSequence subSequence(final int start, final int end) {

@@ -17,8 +17,8 @@
 package org.geotools.filter.function;
 
 /**
- * The data structure returned by classification functions. We can take this object, tweak it, and
- * then pass it to a ClassifyFunction.
+ * The data structure returned by classification functions. We can take this object, tweak it, and then pass it to a
+ * ClassifyFunction.
  *
  * @author Cory Horner, Refractions Research
  */

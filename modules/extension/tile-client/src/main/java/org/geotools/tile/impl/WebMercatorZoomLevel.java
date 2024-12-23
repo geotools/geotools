@@ -17,8 +17,8 @@
 package org.geotools.tile.impl;
 
 /**
- * The WebMercatorTileService is an abstract class that holds some of the tile service logic for
- * Mercator-based tile services.
+ * The WebMercatorTileService is an abstract class that holds some of the tile service logic for Mercator-based tile
+ * services.
  *
  * @author to.srwn
  * @author Ugo Taddei
@@ -31,8 +31,8 @@ public class WebMercatorZoomLevel extends ZoomLevel {
     }
 
     /**
-     * The maximum tile-number: For example at zoom-level 2, the tilenames are in the following
-     * range: 2/0/0 - 2/3/3 (zoom-level/x/y): zoom-level/2^(zoom-level)-1/2^(zoom-level)-1)
+     * The maximum tile-number: For example at zoom-level 2, the tilenames are in the following range: 2/0/0 - 2/3/3
+     * (zoom-level/x/y): zoom-level/2^(zoom-level)-1/2^(zoom-level)-1)
      */
     @Override
     public int calculateMaxTilePerColNumber(int zoomLevel) {

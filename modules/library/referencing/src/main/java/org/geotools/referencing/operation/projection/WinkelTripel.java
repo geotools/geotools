@@ -48,10 +48,8 @@ import si.uom.NonSI;
  *   <li>http://en.wikipedia.org/wiki/Hammer_projection
  * </ul>
  *
- * @see <A HREF="http://mathworld.wolfram.com/PolyconicProjection.html">Polyconic projection on
- *     MathWorld</A>
- * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on
- *     RemoteSensing.org</A>
+ * @see <A HREF="http://mathworld.wolfram.com/PolyconicProjection.html">Polyconic projection on MathWorld</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on RemoteSensing.org</A>
  * @since 2.6.3
  * @author Andrea Aime
  */
@@ -78,9 +76,7 @@ public class WinkelTripel extends MapProjection {
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
     protected WinkelTripel(
-            ProjectionMode mode,
-            final ParameterDescriptorGroup descriptors,
-            final ParameterValueGroup parameters)
+            ProjectionMode mode, final ParameterDescriptorGroup descriptors, final ParameterValueGroup parameters)
             throws ParameterNotFoundException {
         super(parameters, descriptors.descriptors());
         this.descriptors = descriptors;
@@ -90,8 +86,7 @@ public class WinkelTripel extends MapProjection {
         if (mode == ProjectionMode.Winkel) {
             final Collection<GeneralParameterDescriptor> expected =
                     getParameterDescriptors().descriptors();
-            final double phi1 =
-                    doubleValue(expected, WinkelProvider.STANDARD_PARALLEL_1, parameters);
+            final double phi1 = doubleValue(expected, WinkelProvider.STANDARD_PARALLEL_1, parameters);
             cosphi1 = cos(phi1);
         } else {
             cosphi1 = 0;
@@ -107,12 +102,11 @@ public class WinkelTripel extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst) throws ProjectionException {
         double c, d;
         double x, y;
 
@@ -138,8 +132,7 @@ public class WinkelTripel extends MapProjection {
     }
 
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         throw new UnsupportedOperationException("Cannot invert this transformation");
     }
 
@@ -173,8 +166,8 @@ public class WinkelTripel extends MapProjection {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Winkle Tripel projection projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the Winkle
+     * Tripel projection projection (not part of the EPSG database).
      *
      * @since 2.6.3
      * @author Andrea Aime
@@ -185,31 +178,28 @@ public class WinkelTripel extends MapProjection {
         private static final long serialVersionUID = -2484567298319140781L;
 
         /**
-         * The operation parameter descriptor for the standard parallel 1 parameter value. Valid
-         * values range is from -90 to 90°. Default value is 0.
+         * The operation parameter descriptor for the standard parallel 1 parameter value. Valid values range is from
+         * -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor STANDARD_PARALLEL_1 =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Latitude of 1st standard parallel"),
-                            new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
-                        },
-                        toDegrees(0.880689235),
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor STANDARD_PARALLEL_1 = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of 1st standard parallel"),
+                    new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
+                },
+                toDegrees(0.880689235),
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Winkel_Tripel"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Winkel Tripel"),
-                            new NamedIdentifier(Citations.PROJ, "wintri")
-                        },
-                        new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, STANDARD_PARALLEL_1});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Winkel_Tripel"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "Winkel Tripel"),
+                    new NamedIdentifier(Citations.PROJ, "wintri")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, STANDARD_PARALLEL_1});
 
         /** Constructs a new provider. */
         public WinkelProvider() {
@@ -231,8 +221,8 @@ public class WinkelTripel extends MapProjection {
     }
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Aitoff projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the Aitoff
+     * projection (not part of the EPSG database).
      *
      * @since 2.7.0
      * @author Andrea Aime
@@ -243,13 +233,11 @@ public class WinkelTripel extends MapProjection {
         private static final long serialVersionUID = 1189973109778926762L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Aitoff"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Aitoff"),
-                        },
-                        new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Aitoff"), new NamedIdentifier(Citations.GEOTOOLS, "Aitoff"),
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR});
 
         /** Constructs a new provider. */
         public AitoffProvider() {

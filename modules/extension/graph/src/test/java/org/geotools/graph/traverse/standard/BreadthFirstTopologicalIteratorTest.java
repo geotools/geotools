@@ -52,18 +52,16 @@ public class BreadthFirstTopologicalIteratorTest {
         // note: traversal uses count and we are changing the count value here.
         // but it shouldn't matter because at the time of visitation, the traversal
         // no longer needs the counter value.
-        CountingWalker walker =
-                new CountingWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        element.setCount(getCount());
-                        return super.visit(element, traversal);
-                    }
-                };
+        CountingWalker walker = new CountingWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                element.setCount(getCount());
+                return super.visit(element, traversal);
+            }
+        };
 
         BreadthFirstTopologicalIterator iterator = createIterator();
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -104,42 +102,38 @@ public class BreadthFirstTopologicalIteratorTest {
     /**
      * Create a balanced binary tree and do a full traversal. <br>
      * <br>
-     * Expected: 1. Nodes in a lower level of the tree should be visited before nodes in a higher
-     * level.
+     * Expected: 1. Nodes in a lower level of the tree should be visited before nodes in a higher level.
      */
     @Test
     public void test_1() {
         int k = 4;
         GraphTestUtil.buildPerfectBinaryTree(builder(), k);
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        element.setCount(getCount());
-                        return super.visit(element, traversal);
-                    }
-                };
+        CountingWalker walker = new CountingWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                element.setCount(getCount());
+                return super.visit(element, traversal);
+            }
+        };
 
         BreadthFirstTopologicalIterator iterator = createIterator();
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
         // ensure that each node in lower level visited before node in higher level
-        GraphVisitor visitor =
-                component -> {
-                    String id = component.getObject().toString();
+        GraphVisitor visitor = component -> {
+            String id = component.getObject().toString();
 
-                    for (Node other : builder().getGraph().getNodes()) {
-                        if (other.getObject().toString().length() < id.length()) {
-                            Assert.assertTrue(other.getCount() > component.getCount());
-                        }
-                    }
-                    return 0;
-                };
+            for (Node other : builder().getGraph().getNodes()) {
+                if (other.getObject().toString().length() < id.length()) {
+                    Assert.assertTrue(other.getCount() > component.getCount());
+                }
+            }
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
@@ -158,16 +152,14 @@ public class BreadthFirstTopologicalIteratorTest {
         CountingWalker walker = new CountingWalker();
         BreadthFirstTopologicalIterator iterator = createIterator();
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertFalse(component.isVisited());
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertFalse(component.isVisited());
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(0, walker.getCount());

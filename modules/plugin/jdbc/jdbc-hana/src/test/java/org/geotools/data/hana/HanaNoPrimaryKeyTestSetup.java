@@ -34,16 +34,11 @@ public class HanaNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
-            String[][] cols = {
-                {"id", "INT"}, {"geom", "ST_Geometry(1000004326)"}, {"name", "VARCHAR(255)"}
-            };
+            String[][] cols = {{"id", "INT"}, {"geom", "ST_Geometry(1000004326)"}, {"name", "VARCHAR(255)"}};
             htu.createTestTable(TABLE, cols);
 
             htu.insertIntoTestTable(
-                    TABLE,
-                    0,
-                    htu.geometry("POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))", 1000004326),
-                    "muddy");
+                    TABLE, 0, htu.geometry("POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))", 1000004326), "muddy");
         }
     }
 

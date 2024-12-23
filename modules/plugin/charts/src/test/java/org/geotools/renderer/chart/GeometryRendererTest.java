@@ -65,9 +65,7 @@ public class GeometryRendererTest {
 
     @Test
     public void testMultiPolygon() throws Exception {
-        render(
-                wkt.read(
-                        "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2)),((6 3,9 2,9 4,6 3)))"));
+        render(wkt.read("MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2)),((6 3,9 2,9 4,6 3)))"));
     }
 
     @Test
@@ -95,13 +93,12 @@ public class GeometryRendererTest {
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
             try {
                 JFrame frame = new JFrame(getClass().getName());
-                frame.addWindowListener(
-                        new WindowAdapter() {
-                            @Override
-                            public void windowClosing(WindowEvent e) {
-                                e.getWindow().dispose();
-                            }
-                        });
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        e.getWindow().dispose();
+                    }
+                });
                 frame.setContentPane(panel);
                 frame.setSize(new Dimension(500, 500));
                 frame.setVisible(true);

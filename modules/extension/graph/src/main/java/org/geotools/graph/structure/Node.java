@@ -19,9 +19,8 @@ package org.geotools.graph.structure;
 import java.util.List;
 
 /**
- * Represents a node in a graph. A node is a point in a graph which is iadjacent to 0 or more edges.
- * The collection of edges that are incident/ adjacent to the node, is referred to as the "adjacency
- * list" of the node.
+ * Represents a node in a graph. A node is a point in a graph which is iadjacent to 0 or more edges. The collection of
+ * edges that are incident/ adjacent to the node, is referred to as the "adjacency list" of the node.
  *
  * @see Graph
  * @see Edge
@@ -44,11 +43,10 @@ public interface Node extends Graphable {
     public void remove(Edge e);
 
     /**
-     * Returns an edge in the adjacency list of the node that is adjacent to another specified node.
+     * Returns an edge in the adjacency list of the node that is adjacent to another specified node. <br>
      * <br>
-     * <br>
-     * Note: It is possible for two nodes to share multiple edges between them. In this case,
-     * getEdges(Node other) can be used to obtain a complete list.
+     * Note: It is possible for two nodes to share multiple edges between them. In this case, getEdges(Node other) can
+     * be used to obtain a complete list.
      *
      * @param other The other node that the desired edge to return is adjacent to.
      * @return The first edge that is found to be adjacent to the specified node.
@@ -56,8 +54,7 @@ public interface Node extends Graphable {
     public Edge getEdge(Node other);
 
     /**
-     * Returns a collection of edges in the adjacency list of the node that are adjacent to another
-     * specified node.
+     * Returns a collection of edges in the adjacency list of the node that are adjacent to another specified node.
      *
      * @param other The other node that the desired edges to return are adjacent to.
      * @return List of all edges that are found to be adjacent to the specified node.
@@ -72,8 +69,8 @@ public interface Node extends Graphable {
     public List<? extends Edge> getEdges();
 
     /**
-     * Returns the degree of the node. The degree of a node is defined as the number of edges that
-     * are adjacent to the node.
+     * Returns the degree of the node. The degree of a node is defined as the number of edges that are adjacent to the
+     * node.
      *
      * @return int Degree of node.
      */

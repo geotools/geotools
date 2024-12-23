@@ -43,8 +43,7 @@ import org.geotools.util.factory.Hints;
 public final class GrassCoverageFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GrassCoverageFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GrassCoverageFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public GrassCoverageFormat() {
@@ -54,16 +53,12 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         mInfo.put("vendor", "Geotools");
 
         // reading parameters
-        readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D}));
+        readParameters = new ParameterGroup(
+                new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D}));
 
         // reading parameters
-        writeParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo, new GeneralParameterDescriptor[] {GEOTOOLS_WRITE_PARAMS}));
+        writeParameters = new ParameterGroup(
+                new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {GEOTOOLS_WRITE_PARAMS}));
     }
 
     @Override
@@ -76,8 +71,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         try {
             return new GrassCoverageWriter(destination);
         } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -116,15 +110,13 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
             GrassCoverageReader coverageReader = new GrassCoverageReader(o);
             return coverageReader;
         } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
         }
     }
 
     /**
-     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} available
-     * for this format.
+     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} available for this format.
      *
      * @return always null.
      */

@@ -30,8 +30,8 @@ public final class GeoTiffUoMCodes {
     public static final int Angular_Gon = 9106;
     public static final int Angular_Grad = 9105;
     /**
-     * 6.3.1.4 Angular Units Codes These codes shall be used for any key that requires specification
-     * of an angular unit of measurement.
+     * 6.3.1.4 Angular Units Codes These codes shall be used for any key that requires specification of an angular unit
+     * of measurement.
      */
     public static final int Angular_Radian = 9101;
 
@@ -47,13 +47,12 @@ public final class GeoTiffUoMCodes {
     public static final int Linear_Link_Benoit = 9008;
     public static final int Linear_Link_Sears = 9009;
     /**
-     * 6.3.1.3 Linear Units Codes There are several different kinds of units that may be used in
-     * geographically related raster data: linear units, angular units, units of time (e.g. for
-     * radar-return), CCD-voltages, etc. For this reason there will be a single, unique range for
-     * each kind of unit, broken down into the following currently defined ranges: Ranges: 0 =
-     * undefined [ 1, 2000] = Obsolete GeoTIFFWritingUtilities codes [2001, 8999] = Reserved by
-     * GeoTIFFWritingUtilities [9000, 9099] = EPSG Linear Units. [9100, 9199] = EPSG Angular Units.
-     * 32767 = user-defined unit [32768, 65535]= Private User Implementations
+     * 6.3.1.3 Linear Units Codes There are several different kinds of units that may be used in geographically related
+     * raster data: linear units, angular units, units of time (e.g. for radar-return), CCD-voltages, etc. For this
+     * reason there will be a single, unique range for each kind of unit, broken down into the following currently
+     * defined ranges: Ranges: 0 = undefined [ 1, 2000] = Obsolete GeoTIFFWritingUtilities codes [2001, 8999] = Reserved
+     * by GeoTIFFWritingUtilities [9000, 9099] = EPSG Linear Units. [9100, 9199] = EPSG Angular Units. 32767 =
+     * user-defined unit [32768, 65535]= Private User Implementations
      */
     public static final int Linear_Meter = 9001;
 

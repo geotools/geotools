@@ -17,9 +17,9 @@
 package org.geotools.util;
 
 /**
- * A canonical set of objects, used to optimize memory use. The operation of this set is similar in
- * spirit to the {@link String#intern} method. The following example shows a convenient way to use
- * {@code CanonicalSet} as an internal pool of immutable objects.
+ * A canonical set of objects, used to optimize memory use. The operation of this set is similar in spirit to the
+ * {@link String#intern} method. The following example shows a convenient way to use {@code CanonicalSet} as an internal
+ * pool of immutable objects.
  *
  * <blockquote>
  *
@@ -32,13 +32,12 @@ package org.geotools.util;
  *
  * </blockquote>
  *
- * The {@code CanonicalSet} has a {@link #get} method that is not part of the {@link java.util.Set}
- * interface. This {@code get} method retrieves an entry from this set that is equals to the
- * supplied object. The {@link #unique} method combines a {@code get} followed by a {@code put}
- * operation if the specified object was not in the set.
+ * The {@code CanonicalSet} has a {@link #get} method that is not part of the {@link java.util.Set} interface. This
+ * {@code get} method retrieves an entry from this set that is equals to the supplied object. The {@link #unique} method
+ * combines a {@code get} followed by a {@code put} operation if the specified object was not in the set.
  *
- * <p>The set of objects is held by weak references as explained in {@link WeakHashSet}. The {@code
- * CanonicalSet} class is thread-safe.
+ * <p>The set of objects is held by weak references as explained in {@link WeakHashSet}. The {@code CanonicalSet} class
+ * is thread-safe.
  *
  * @param <E> The type of elements in the set.
  * @since 2.4
@@ -70,13 +69,12 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
     }
 
     /**
-     * Returns an object equals to the specified object, if present. If this set doesn't contains
-     * any object equals to {@code object}, then this method returns {@code null}.
+     * Returns an object equals to the specified object, if present. If this set doesn't contains any object equals to
+     * {@code object}, then this method returns {@code null}.
      *
      * @param <T> The type of the element to get.
      * @param object The element to get.
-     * @return An element equals to the given one if already presents in the set, or {@code null}
-     *     otherwise.
+     * @return An element equals to the given one if already presents in the set, or {@code null} otherwise.
      * @see #unique(Object)
      */
     public synchronized <T extends E> T get(final T object) {
@@ -84,9 +82,8 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
     }
 
     /**
-     * Returns an object equals to {@code object} if such an object already exist in this {@code
-     * CanonicalSet}. Otherwise, adds {@code object} to this {@code CanonicalSet}. This method is
-     * equivalents to the following code:
+     * Returns an object equals to {@code object} if such an object already exist in this {@code CanonicalSet}.
+     * Otherwise, adds {@code object} to this {@code CanonicalSet}. This method is equivalents to the following code:
      *
      * <blockquote>
      *
@@ -106,16 +103,15 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
      *
      * @param <T> The type of the element to get.
      * @param object The element to get or to add in the set if not already presents.
-     * @return An element equals to the given one if already presents in the set, or the given
-     *     {@code object} otherwise.
+     * @return An element equals to the given one if already presents in the set, or the given {@code object} otherwise.
      */
     public synchronized <T extends E> T unique(final T object) {
         return intern(object, INTERN);
     }
 
     /**
-     * Iteratively call {@link #unique(Object)} for an array of objects. This method is equivalents
-     * to the following code:
+     * Iteratively call {@link #unique(Object)} for an array of objects. This method is equivalents to the following
+     * code:
      *
      * <blockquote>
      *
@@ -127,10 +123,9 @@ public class CanonicalSet<E> extends WeakHashSet<E> {
      *
      * </blockquote>
      *
-     * @param objects On input, the objects to add to this set if not already present. On output,
-     *     elements that are {@linkplain Object#equals equal}, but where every reference to an
-     *     instance already presents in this set has been replaced by a reference to the existing
-     *     instance.
+     * @param objects On input, the objects to add to this set if not already present. On output, elements that are
+     *     {@linkplain Object#equals equal}, but where every reference to an instance already presents in this set has
+     *     been replaced by a reference to the existing instance.
      */
     @SafeVarargs
     public final synchronized void uniques(final E... objects) {

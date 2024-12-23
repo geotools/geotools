@@ -35,10 +35,7 @@ public class BasicGraphTraversal implements GraphTraversal {
     /** the walker being iterated over the graph * */
     private GraphWalker m_walker;
 
-    /**
-     * the iterator specifying the order in which to visit components of the graph during the
-     * traversal *
-     */
+    /** the iterator specifying the order in which to visit components of the graph during the traversal * */
     private GraphIterator m_iterator;
 
     /**
@@ -105,18 +102,16 @@ public class BasicGraphTraversal implements GraphTraversal {
     @Override
     public void init() {
         // initialize the nodes of the graph
-        m_graph.visitNodes(
-                component -> {
-                    component.setVisited(false);
-                    component.setCount(0);
-                    return (0);
-                });
+        m_graph.visitNodes(component -> {
+            component.setVisited(false);
+            component.setCount(0);
+            return (0);
+        });
     }
 
     /**
-     * Upon each iteration of the traversal, a component is returned from the iterator and passed to
-     * the visitor. The traversal interprets the return codes from the walker and performs the
-     * following actions. <br>
+     * Upon each iteration of the traversal, a component is returned from the iterator and passed to the visitor. The
+     * traversal interprets the return codes from the walker and performs the following actions. <br>
      * <br>
      *
      * <TABLE border="1" width="60%" style="font-family:Arial;font-size=10pt">

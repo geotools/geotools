@@ -33,11 +33,9 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
-    static final QualifiedName MULTI_SURFACE =
-            new QualifiedName(GML.NAMESPACE, "MultiSurface", "gml");
+    static final QualifiedName MULTI_SURFACE = new QualifiedName(GML.NAMESPACE, "MultiSurface", "gml");
 
-    static final QualifiedName SURFACE_MEMBER =
-            new QualifiedName(GML.NAMESPACE, "surfaceMember", "gml");
+    static final QualifiedName SURFACE_MEMBER = new QualifiedName(GML.NAMESPACE, "surfaceMember", "gml");
 
     QualifiedName multiSurface;
 
@@ -51,8 +49,7 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
         init(gmlPrefix, gmlUri);
     }
 
-    protected MultiPolygonEncoder(
-            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+    protected MultiPolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
         super(encoder, encodeGmlId);
         pe = new PolygonEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
         init(gmlPrefix, gmlUri);
@@ -64,8 +61,7 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
     }
 
     @Override
-    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiSurface, atts);
 

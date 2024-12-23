@@ -36,8 +36,8 @@ import org.geotools.util.logging.Logging;
 /**
  * Provide batch notification on Commit / Rollback.
  *
- * <p>This is used by FeatureListenerManager to report a bit more detail on transaction commit() and
- * rollback(). Previously these changes were represented as an change event with no known bounds.
+ * <p>This is used by FeatureListenerManager to report a bit more detail on transaction commit() and rollback().
+ * Previously these changes were represented as an change event with no known bounds.
  *
  * @author Jody Garnett
  */
@@ -45,8 +45,7 @@ public class BatchFeatureEvent extends FeatureEvent {
     static final Logger LOGGER = Logging.getLogger(BatchFeatureEvent.class);
     private static final long serialVersionUID = 3154238322369916486L;
 
-    public BatchFeatureEvent(
-            FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
+    public BatchFeatureEvent(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
         this(featureSource, new ReferencedEnvelope(), Filter.EXCLUDE);
     }
 
@@ -58,8 +57,8 @@ public class BatchFeatureEvent extends FeatureEvent {
     }
 
     /**
-     * This is a weak hash set as we don't need to track changes on FeatureIds that are not being
-     * used by the client to track selection.
+     * This is a weak hash set as we don't need to track changes on FeatureIds that are not being used by the client to
+     * track selection.
      */
     protected WeakHashSet<Identifier> fids = new WeakHashSet<>(Identifier.class);
 
@@ -70,9 +69,8 @@ public class BatchFeatureEvent extends FeatureEvent {
     /**
      * Indicate a change being batched.
      *
-     * <p>Will be use to update internal state of bounds and filter; in the special case of Features
-     * being added we will record the FeatureIds in case we need to update them later (this is only
-     * required for a *commit* event).
+     * <p>Will be use to update internal state of bounds and filter; in the special case of Features being added we will
+     * record the FeatureIds in case we need to update them later (this is only required for a *commit* event).
      */
     public void add(FeatureEvent change) {
         if (change.getType() == Type.ADDED) {
@@ -93,8 +91,7 @@ public class BatchFeatureEvent extends FeatureEvent {
             // so we are never going to be able to be more specific
             return;
         }
-        if (change.getFilter() == Filter.INCLUDE
-                || change.getBounds() == ReferencedEnvelope.EVERYTHING) {
+        if (change.getFilter() == Filter.INCLUDE || change.getBounds() == ReferencedEnvelope.EVERYTHING) {
             // something has changed but we are not sure what...
             filter = Filter.INCLUDE;
             bounds = ReferencedEnvelope.EVERYTHING;
@@ -134,9 +131,8 @@ public class BatchFeatureEvent extends FeatureEvent {
     /**
      * This is the set of Identifiers that have been created over the course of this operation.
      *
-     * <p>Please note that this is only the set of identifiers that is *still in use*; if no client
-     * code is holding on to these Identifiers waiting to see what the final value will be we are
-     * not going to hold onto these for you.
+     * <p>Please note that this is only the set of identifiers that is *still in use*; if no client code is holding on
+     * to these Identifiers waiting to see what the final value will be we are not going to hold onto these for you.
      *
      * @return Set of Identifiers created during this commit
      */

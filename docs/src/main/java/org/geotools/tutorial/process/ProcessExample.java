@@ -124,14 +124,12 @@ public class ProcessExample {
         BufferFeatureCollectionProcess process = factory.create();
         Map<String, Object> output = process.execute(input, null);
 
-        FeatureCollection buffered =
-                (FeatureCollection) output.get(BufferFeatureCollectionFactory.RESULT.key);
+        FeatureCollection buffered = (FeatureCollection) output.get(BufferFeatureCollectionFactory.RESULT.key);
 
         assertEquals(2, buffered.size());
         for (int i = 0; i < 2; i++) {
             Geometry expected = gf.createPoint(new Coordinate(i, i)).buffer(10d);
-            FeatureCollection sub =
-                    buffered.subCollection(ff.equals(ff.property("integer"), ff.literal(i)));
+            FeatureCollection sub = buffered.subCollection(ff.equals(ff.property("integer"), ff.literal(i)));
             assertEquals(1, sub.size());
             FeatureIterator iterator = sub.features();
             SimpleFeature sf = (SimpleFeature) iterator.next();

@@ -44,8 +44,7 @@ import org.locationtech.jts.geom.Geometry;
  * ReprojectFeatureReader provides a reprojection for FeatureTypes.
  *
  * <p>ReprojectFeatureResults is a wrapper used to reproject GeometryAttributes to a user supplied
- * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original
- * FeatureResults.
+ * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original FeatureResults.
  *
  * <p>Example Use:
  *
@@ -64,8 +63,8 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @author aaime
  * @author $Author: jive $ (last modification)
- * @version $Id$ TODO: handle the case where there is more than one geometry and the other
- *     geometries have a different CS than the default geometry
+ * @version $Id$ TODO: handle the case where there is more than one geometry and the other geometries have a different
+ *     CS than the default geometry
  */
 public class ReprojectFeatureResults extends AbstractFeatureCollection {
     FeatureCollection<SimpleFeatureType, SimpleFeature> results;
@@ -73,10 +72,9 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
     /** Creates a new reprojecting feature results */
     public ReprojectFeatureResults(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results,
-            CoordinateReferenceSystem destinationCS)
-            throws IOException, SchemaException, TransformException, OperationNotFoundException,
-                    NoSuchElementException, FactoryException {
+            FeatureCollection<SimpleFeatureType, SimpleFeature> results, CoordinateReferenceSystem destinationCS)
+            throws IOException, SchemaException, TransformException, OperationNotFoundException, NoSuchElementException,
+                    FactoryException {
 
         super(forceType(origionalType(results), destinationCS));
         this.results = origionalCollection(results);
@@ -84,9 +82,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         CoordinateReferenceSystem originalCs = null;
         if (results instanceof ForceCoordinateSystemFeatureResults)
             originalCs = results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
-        else
-            originalCs =
-                    this.results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
+        else originalCs = this.results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
         this.transform = CRS.findMathTransform(originalCs, destinationCS, true);
     }
 
@@ -123,8 +119,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return results;
     }
 
-    private static SimpleFeatureType origionalType(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
+    private static SimpleFeatureType origionalType(FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
             if (results instanceof ReprojectFeatureResults) {
                 results = ((ReprojectFeatureResults) results).getOrigin();
@@ -137,8 +132,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return results.getSchema();
     }
 
-    private static SimpleFeatureType forceType(
-            SimpleFeatureType startingType, CoordinateReferenceSystem forcedCS)
+    private static SimpleFeatureType forceType(SimpleFeatureType startingType, CoordinateReferenceSystem forcedCS)
             throws SchemaException {
         if (forcedCS == null) {
             throw new NullPointerException("CoordinateSystem required");
@@ -154,12 +148,11 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
     }
 
     /**
-     * This method computes reprojected bounds the hard way, but computing them feature by feature.
-     * This method could be faster if computed the reprojected bounds by reprojecting the original
-     * feature bounds a Shape object, thus getting the true shape of the reprojected envelope, and
-     * then computing the minumum and maximum coordinates of that new shape. The result would not a
-     * true representation of the new bounds, but it would be guaranteed to be larger that the true
-     * representation.
+     * This method computes reprojected bounds the hard way, but computing them feature by feature. This method could be
+     * faster if computed the reprojected bounds by reprojecting the original feature bounds a Shape object, thus
+     * getting the true shape of the reprojected envelope, and then computing the minumum and maximum coordinates of
+     * that new shape. The result would not a true representation of the new bounds, but it would be guaranteed to be
+     * larger that the true representation.
      *
      * @see org.geotools.data.FeatureResults#getBounds()
      */
@@ -178,9 +171,9 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
                     newBBox.expandToInclude(internal);
                 }
             }
-            Optional<CoordinateReferenceSystem> crs =
-                    Optional.ofNullable(getSchema().getGeometryDescriptor())
-                            .map(GeometryDescriptor::getCoordinateReferenceSystem);
+            Optional<CoordinateReferenceSystem> crs = Optional.ofNullable(
+                            getSchema().getGeometryDescriptor())
+                    .map(GeometryDescriptor::getCoordinateReferenceSystem);
             if (crs.isPresent()) {
                 return ReferencedEnvelope.envelope(newBBox, crs.get());
             } else {
@@ -198,8 +191,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         if (canDelegate(visitor)) {
             results.accepts(visitor, progress);

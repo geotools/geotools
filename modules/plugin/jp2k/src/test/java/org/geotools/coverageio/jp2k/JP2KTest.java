@@ -73,8 +73,7 @@ public final class JP2KTest extends BaseJP2K {
         final ParameterValue<Boolean> useMT = JP2KFormat.USE_MULTITHREADING.createValue();
         final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
         final ParameterValue<String> tileSize = JP2KFormat.SUGGESTED_TILE_SIZE.createValue();
-        final ParameterValue<Color> transparentColor =
-                JP2KFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        final ParameterValue<Color> transparentColor = JP2KFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transparentColor.setValue(new Color(0, 0, 0));
         tileSize.setValue("128,128");
 
@@ -89,10 +88,7 @@ public final class JP2KTest extends BaseJP2K {
         //
         // //
         final GridCoverage2D gc =
-                reader.read(
-                        new GeneralParameterValue[] {
-                            gg, useJAI, useMT, tileSize, transparentColor
-                        });
+                reader.read(new GeneralParameterValue[] {gg, useJAI, useMT, tileSize, transparentColor});
         assertNotNull(gc);
         forceDataLoading(gc);
 
@@ -199,8 +195,7 @@ public final class JP2KTest extends BaseJP2K {
         try {
             file = TestData.file(this, path);
         } catch (FileNotFoundException fnfe) {
-            throw new AssumptionViolatedException(
-                    "test-data not found: " + file + "\nTests are skipped");
+            throw new AssumptionViolatedException("test-data not found: " + file + "\nTests are skipped");
         }
         final JP2KFormat format = factorySpi.createFormat();
         assertTrue(format.accepts(file));

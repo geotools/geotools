@@ -25,9 +25,9 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Wraps an arbitrary {@link MathTransform2D} into an image warp operation. This warp operation is
- * used by {@link org.geotools.coverage.processing.operation.Resample} when no standard warp
- * operation has been found applicable.
+ * Wraps an arbitrary {@link MathTransform2D} into an image warp operation. This warp operation is used by
+ * {@link org.geotools.coverage.processing.operation.Resample} when no standard warp operation has been found
+ * applicable.
  *
  * @since 2.1
  * @version $Id$
@@ -41,8 +41,8 @@ final class WarpAdapter extends Warp {
     private final CharSequence name;
 
     /**
-     * The <strong>inverse</strong> of the transform to apply for projecting an image. This
-     * transform maps destination pixels to source pixels.
+     * The <strong>inverse</strong> of the transform to apply for projecting an image. This transform maps destination
+     * pixels to source pixels.
      */
     private final MathTransform2D inverse;
 
@@ -50,8 +50,8 @@ final class WarpAdapter extends Warp {
      * Constructs a new {@code WarpAdapter} using the given transform.
      *
      * @param name The coverage name. Used for formatting error message.
-     * @param inverse The <strong>inverse</strong> of the transformation to apply for projecting an
-     *     image. This inverse transform maps destination pixels to source pixels.
+     * @param inverse The <strong>inverse</strong> of the transformation to apply for projecting an image. This inverse
+     *     transform maps destination pixels to source pixels.
      */
     public WarpAdapter(final CharSequence name, final MathTransform2D inverse) {
         this.name = name;
@@ -64,8 +64,8 @@ final class WarpAdapter extends Warp {
     }
 
     /**
-     * Computes the source pixel positions for a given rectangular destination region, subsampled
-     * with an integral period.
+     * Computes the source pixel positions for a given rectangular destination region, subsampled with an integral
+     * period.
      */
     @Override
     public float[] warpSparseRect(
@@ -81,8 +81,7 @@ final class WarpAdapter extends Warp {
 
         final int xmax = xmin + width;
         final int ymax = ymin + height;
-        final int count =
-                ((width + (periodX - 1)) / periodX) * ((height + (periodY - 1)) / periodY);
+        final int count = ((width + (periodX - 1)) / periodX) * ((height + (periodY - 1)) / periodY);
         if (destRect == null) {
             destRect = new float[2 * count];
         }
@@ -90,18 +89,8 @@ final class WarpAdapter extends Warp {
         // potentially, we'll make it throw lots of TransformExceptions, without reporting or using
         // the stack trace. Avoid the overhead of filling them.
         final float[] finalDestRect = destRect;
-        return TransformException.runWithoutStackTraces(
-                () ->
-                        warpSparseRectInternal(
-                                xmin,
-                                ymin,
-                                periodX,
-                                periodY,
-                                finalDestRect,
-                                ymax,
-                                xmax,
-                                finalDestRect,
-                                count));
+        return TransformException.runWithoutStackTraces(() ->
+                warpSparseRectInternal(xmin, ymin, periodX, periodY, finalDestRect, ymax, xmax, finalDestRect, count));
     }
 
     private float[] warpSparseRectInternal(
@@ -167,8 +156,7 @@ final class WarpAdapter extends Warp {
     /**
      * Computes the source point corresponding to the supplied point.
      *
-     * @param destPt The position in destination image coordinates to map to source image
-     *     coordinates.
+     * @param destPt The position in destination image coordinates to map to source image coordinates.
      */
     @Override
     public Point2D mapDestPoint(final Point2D destPt) {
@@ -186,8 +174,7 @@ final class WarpAdapter extends Warp {
     /**
      * Computes the destination point corresponding to the supplied point.
      *
-     * @param sourcePt The position in source image coordinates to map to destination image
-     *     coordinates.
+     * @param sourcePt The position in source image coordinates to map to destination image coordinates.
      */
     @Override
     public Point2D mapSourcePoint(final Point2D sourcePt) {
@@ -196,8 +183,7 @@ final class WarpAdapter extends Warp {
             result = inverse.inverse().transform(result, result);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "sourcePt", sourcePt),
-                    exception);
+                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "sourcePt", sourcePt), exception);
         }
         result.setLocation(result.getX() - 0.5, result.getY() - 0.5);
         return result;

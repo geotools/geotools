@@ -41,8 +41,8 @@ public final class WeakValueHashMapTest {
     private static final int SAMPLE_SIZE = 500;
 
     /**
-     * Tests the {@link WeakValueHashMap} using strong references. The tested {@link
-     * WeakValueHashMap} should behave like a standard {@link Map} object.
+     * Tests the {@link WeakValueHashMap} using strong references. The tested {@link WeakValueHashMap} should behave
+     * like a standard {@link Map} object.
      */
     @Test
     public void testStrongReferences() {
@@ -68,8 +68,8 @@ public final class WeakValueHashMapTest {
     }
 
     /**
-     * Tests the {@link WeakValueHashMap} using weak references. In this test, we have to keep in
-     * mind than some elements in {@code weakMap} may disaspear at any time.
+     * Tests the {@link WeakValueHashMap} using weak references. In this test, we have to keep in mind than some
+     * elements in {@code weakMap} may disaspear at any time.
      */
     @Test
     public void testWeakReferences() throws InterruptedException {

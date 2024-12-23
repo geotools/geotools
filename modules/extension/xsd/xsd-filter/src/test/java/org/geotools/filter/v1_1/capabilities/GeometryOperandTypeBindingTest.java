@@ -84,10 +84,7 @@ public class GeometryOperandTypeBindingTest extends OGCTestSupport {
     @Test
     public void testEncode() throws Exception {
         Document dom =
-                encode(
-                        GeometryOperand.Envelope,
-                        new QName(OGC.NAMESPACE, "GeometryOperand"),
-                        OGC.GeometryOperandType);
+                encode(GeometryOperand.Envelope, new QName(OGC.NAMESPACE, "GeometryOperand"), OGC.GeometryOperandType);
         assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeValue());
     }
 }

@@ -35,8 +35,8 @@ import org.locationtech.jts.geom.Polygon;
 
 /**
  * @author bowens
- *     <p>To change the template for this generated type comment go to Window>Preferences>Java>Code
- *     Generation>Code and Comments
+ *     <p>To change the template for this generated type comment go to Window>Preferences>Java>Code Generation>Code and
+ *     Comments
  */
 public interface TT {
     /** <code>TT</code> code representing unknown geometies (like splines) */
@@ -76,11 +76,10 @@ public interface TT {
     public static final int MULTISOLID = 9;
 
     /**
-     * A map from geomery type, as a string, to JTS Geometry. See Oracle Spatial documentation,
-     * Table 2-1, Valid SDO_GTYPE values.
+     * A map from geomery type, as a string, to JTS Geometry. See Oracle Spatial documentation, Table 2-1, Valid
+     * SDO_GTYPE values.
      */
-    public static final Map<String, Class<?>> GEOM_CLASSES =
-            Collections.unmodifiableMap(new GeomClasses());
+    public static final Map<String, Class<?>> GEOM_CLASSES = Collections.unmodifiableMap(new GeomClasses());
 
     static final class GeomClasses extends HashMap<String, Class<?>> {
         private static final long serialVersionUID = -3359664692996608331L;

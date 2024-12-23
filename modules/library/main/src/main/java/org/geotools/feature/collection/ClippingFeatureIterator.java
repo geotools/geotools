@@ -25,8 +25,8 @@ import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * Decorates a SimpleFeatureIterator with one that return features if intersect the Geometry passed
- * with the Hint.GEOMETRY_CLIP
+ * Decorates a SimpleFeatureIterator with one that return features if intersect the Geometry passed with the
+ * Hint.GEOMETRY_CLIP
  */
 public class ClippingFeatureIterator extends DecoratingSimpleFeatureIterator {
 

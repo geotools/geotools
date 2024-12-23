@@ -26,8 +26,7 @@ package org.geotools.process.factory;
 public class IdentityProcess {
 
     @DescribeResult(name = "value", description = "the value provided as input")
-    public Object execute(
-            @DescribeParameter(name = "input", description = "input object") Object input) {
+    public Object execute(@DescribeParameter(name = "input", description = "input object") Object input) {
         return input;
     }
 }

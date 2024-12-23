@@ -40,15 +40,14 @@ public class DocumentTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<Document>"
-                        + "<name>document</name>"
-                        + "<Placemark>"
-                        + "<Point>"
-                        + "<coordinates>0,0</coordinates>"
-                        + "</Point>"
-                        + "</Placemark>"
-                        + "</Document>";
+        String xml = "<Document>"
+                + "<name>document</name>"
+                + "<Placemark>"
+                + "<Point>"
+                + "<coordinates>0,0</coordinates>"
+                + "</Point>"
+                + "</Placemark>"
+                + "</Document>";
         buildDocument(xml);
 
         SimpleFeature document = (SimpleFeature) parse();

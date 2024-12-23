@@ -47,8 +47,7 @@ public class SLDAnchorPointBindingTest extends SLDTestSupport {
     @Test
     public void testNoY() throws Exception {
         Element anchorPoint = SLDMockData.anchorPoint(document, document);
-        NodeList anchorPointX =
-                anchorPoint.getElementsByTagNameNS(SLD.NAMESPACE, SLD.ANCHORPOINTY.getLocalPart());
+        NodeList anchorPointX = anchorPoint.getElementsByTagNameNS(SLD.NAMESPACE, SLD.ANCHORPOINTY.getLocalPart());
         anchorPoint.removeChild(anchorPointX.item(0));
 
         AnchorPoint point = (AnchorPoint) parse();

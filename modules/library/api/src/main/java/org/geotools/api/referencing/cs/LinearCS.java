@@ -10,10 +10,10 @@
 package org.geotools.api.referencing.cs;
 
 /**
- * A one-dimensional coordinate system that consists of the points that lie on the single axis
- * described. The associated ordinate is the distance from the specified origin to the point along
- * the axis. Example: usage of the line feature representing a road to describe points on or along
- * that road. A {@code LinearCS} shall have one {@linkplain #getAxis axis association}.
+ * A one-dimensional coordinate system that consists of the points that lie on the single axis described. The associated
+ * ordinate is the distance from the specified origin to the point along the axis. Example: usage of the line feature
+ * representing a road to describe points on or along that road. A {@code LinearCS} shall have one {@linkplain #getAxis
+ * axis association}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -21,8 +21,7 @@ package org.geotools.api.referencing.cs;
  *   {@link org.geotools.api.referencing.crs.EngineeringCRS Engineering}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

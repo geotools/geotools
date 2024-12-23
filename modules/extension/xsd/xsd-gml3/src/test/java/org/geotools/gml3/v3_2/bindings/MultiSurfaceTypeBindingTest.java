@@ -35,7 +35,8 @@ public class MultiSurfaceTypeBindingTest extends GML32TestSupport {
         // print(dom);
         assertEquals(
                 2,
-                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart())
+                        .getLength());
         assertEquals(
                 1,
                 dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart())
@@ -60,7 +61,6 @@ public class MultiSurfaceTypeBindingTest extends GML32TestSupport {
 
     @Test
     public void testMultiSurfaceTypeAssignable() {
-        Assert.assertTrue(
-                GMLSchema.MULTISURFACETYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
+        Assert.assertTrue(GMLSchema.MULTISURFACETYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
     }
 }

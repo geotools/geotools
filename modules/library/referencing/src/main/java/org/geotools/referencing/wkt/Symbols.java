@@ -54,14 +54,10 @@ public class Symbols {
     /** The locale for querying localizable information. */
     final Locale locale;
 
-    /**
-     * The character used for opening brace. Usually {@code '['}, but {@code '('} is legal as well.
-     */
+    /** The character used for opening brace. Usually {@code '['}, but {@code '('} is legal as well. */
     char open = '[';
 
-    /**
-     * The character used for closing brace. Usually {@code ']'}, but {@code ')'} is legal as well.
-     */
+    /** The character used for closing brace. Usually {@code ']'}, but {@code ')'} is legal as well. */
     char close = ']';
 
     /**
@@ -77,20 +73,20 @@ public class Symbols {
     final char quote = '"';
 
     /**
-     * The character used as a separator. Usually {@code ','}, but would need to be changed if a
-     * non-English locale is used for formatting numbers.
+     * The character used as a separator. Usually {@code ','}, but would need to be changed if a non-English locale is
+     * used for formatting numbers.
      */
     char separator = ',';
 
     /**
-     * The character used for space. Usually <code>'&nbsp;'</code>, but could be a no-break space
-     * too if unicode is allowed.
+     * The character used for space. Usually <code>'&nbsp;'</code>, but could be a no-break space too if unicode is
+     * allowed.
      */
     final char space = ' ';
 
     /**
-     * List of caracters acceptable as opening bracket. The closing bracket must be the character in
-     * the {@code closingBrackets} array at the same index than the opening bracket.
+     * List of caracters acceptable as opening bracket. The closing bracket must be the character in the
+     * {@code closingBrackets} array at the same index than the opening bracket.
      */
     final char[] openingBrackets = {'[', '('};
 
@@ -100,9 +96,9 @@ public class Symbols {
     /**
      * The object to use for parsing and formatting numbers.
      *
-     * <p><STRONG>Note:</STRONG> {@link NumberFormat} object are usually not thread safe.
-     * Consequently, each instances of {@link Parser} or {@link Formatter} must use a clone of this
-     * object, not this object directly (unless they synchronize on it).
+     * <p><STRONG>Note:</STRONG> {@link NumberFormat} object are usually not thread safe. Consequently, each instances
+     * of {@link Parser} or {@link Formatter} must use a clone of this object, not this object directly (unless they
+     * synchronize on it).
      */
     final NumberFormat numberFormat;
 
@@ -138,8 +134,8 @@ public class Symbols {
     }
 
     /**
-     * Returns {@code true} if the specified WKT contains at least one {@code AXIS[...]} element.
-     * This method tries to make a quick checks taking in account a minimal set of WKT syntax rules.
+     * Returns {@code true} if the specified WKT contains at least one {@code AXIS[...]} element. This method tries to
+     * make a quick checks taking in account a minimal set of WKT syntax rules.
      *
      * @since 2.4
      */
@@ -148,9 +144,9 @@ public class Symbols {
     }
 
     /**
-     * Returns the index after the specified element in the specified WKT, or -1 if not found. The
-     * element must be followed (ignoring spaces) by an opening bracket. If found, this method
-     * returns the index of the opening bracket after the element.
+     * Returns the index after the specified element in the specified WKT, or -1 if not found. The element must be
+     * followed (ignoring spaces) by an opening bracket. If found, this method returns the index of the opening bracket
+     * after the element.
      *
      * @param wkt The WKT to parse.
      * @param element The element to search. Must contains only uppercase letters.

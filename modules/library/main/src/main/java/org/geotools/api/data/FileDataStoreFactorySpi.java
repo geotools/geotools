@@ -22,8 +22,7 @@ import java.net.URL;
 /**
  * DataAccessFactory for working with formats based on a single URL.
  *
- * <p>This interface provides a mechanism of discovery for DataAccessFactories which support
- * singular files.
+ * <p>This interface provides a mechanism of discovery for DataAccessFactories which support singular files.
  *
  * @author dzwiers
  */
@@ -39,16 +38,15 @@ public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
      * Tests if the provided url can be handled by this factory.
      *
      * @param url URL to a real file (may not be local)
-     * @return <code>true</code> if this url can when this dataStore can resolve and read the data
-     *     specified
+     * @return <code>true</code> if this url can when this dataStore can resolve and read the data specified
      */
     public boolean canProcess(URL url);
 
     /**
      * A DataStore attached to the provided url, may be created if needed.
      *
-     * <p>Please note that additional configuration options may be available via the traditional
-     * createDataStore( Map ) method provided by the superclass.
+     * <p>Please note that additional configuration options may be available via the traditional createDataStore( Map )
+     * method provided by the superclass.
      *
      * <p>
      *
@@ -62,8 +60,8 @@ public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
      * The typeName represented by the provided url.
      *
      * @param url The location of the datum to parse into features
-     * @return Returns the typename of the datum specified (on occasion this may involve starting
-     *     the parse as well to get the FeatureType -- may not be instantanious).
+     * @return Returns the typename of the datum specified (on occasion this may involve starting the parse as well to
+     *     get the FeatureType -- may not be instantanious).
      */
     public String getTypeName(URL url) throws IOException;
 }

@@ -22,8 +22,8 @@ import org.geotools.api.data.FileResourceInfo;
 import org.geotools.api.data.Query;
 
 /**
- * Default implementation of {@link FileResourceInfo}. It simply returns a {@link
- * DefaultCloseableIterator} built on top of the underlying file list.
+ * Default implementation of {@link FileResourceInfo}. It simply returns a {@link DefaultCloseableIterator} built on top
+ * of the underlying file list.
  */
 public class DefaultFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {
 

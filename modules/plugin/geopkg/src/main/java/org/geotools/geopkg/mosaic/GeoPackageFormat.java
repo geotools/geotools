@@ -93,8 +93,7 @@ public class GeoPackageFormat extends AbstractGridFormat {
 
     @Override
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
-        throw new UnsupportedOperationException(
-                "Unsupported method: Geopackage format is read-only.");
+        throw new UnsupportedOperationException("Unsupported method: Geopackage format is read-only.");
     }
 
     @Override
@@ -134,11 +133,8 @@ public class GeoPackageFormat extends AbstractGridFormat {
         mInfo = info;
 
         // reading parameters
-        readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D /*,
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(
+                mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D /*,
                        INPUT_TRANSPARENT_COLOR,
                 OUTPUT_TRANSPARENT_COLOR,
                 USE_JAI_IMAGEREAD,

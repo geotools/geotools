@@ -84,9 +84,8 @@ class LineInfo {
         }
 
         /**
-         * Computes some metrics for this part of the line taking in account the provided rendering
-         * context. This methods will always recompute the metrics even if the same font rendering
-         * context is provided.
+         * Computes some metrics for this part of the line taking in account the provided rendering context. This
+         * methods will always recompute the metrics even if the same font rendering context is provided.
          */
         LineMetrics computeLineMetrics(FontRenderContext fontRenderContext) {
             return gv.getFont().getLineMetrics(text, fontRenderContext);
@@ -132,23 +131,17 @@ class LineInfo {
             // However... for empty text (used to place symbols along a line with conflict res.)
             // we have to use the logical bounds even for the vertical direction, as the visual
             // bounds are completely empty (empty rectangle)
-            if (lineComponent.getText().trim().isEmpty() && components.size() == 1)
-                verticalBounds = horizontalBounds;
-            Rectangle2D componentBounds =
-                    new Rectangle2D.Double(
-                            horizontalBounds.getX(),
-                            verticalBounds.getY(),
-                            horizontalBounds.getWidth(),
-                            verticalBounds.getHeight());
+            if (lineComponent.getText().trim().isEmpty() && components.size() == 1) verticalBounds = horizontalBounds;
+            Rectangle2D componentBounds = new Rectangle2D.Double(
+                    horizontalBounds.getX(),
+                    verticalBounds.getY(),
+                    horizontalBounds.getWidth(),
+                    verticalBounds.getHeight());
             if (vb == null) {
                 vb = componentBounds;
             } else {
-                Rectangle2D other =
-                        new Rectangle2D.Double(
-                                vb.getMaxX(),
-                                vb.getMinY(),
-                                componentBounds.getWidth(),
-                                componentBounds.getHeight());
+                Rectangle2D other = new Rectangle2D.Double(
+                        vb.getMaxX(), vb.getMinY(), componentBounds.getWidth(), componentBounds.getHeight());
                 vb = vb.createUnion(other);
             }
         }

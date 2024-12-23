@@ -124,17 +124,16 @@ public abstract class TestSchema {
             try (FileWriter file = new FileWriter(temp);
                     BufferedWriter buff = new BufferedWriter(file);
                     PrintWriter print = new PrintWriter(buff)) {
-                print.println(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                                + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
-                                + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
-                                + "              targetNamespace=\"http://localhost//test\">"
-                                + "  <xsd:element name=\""
-                                + name
-                                + "\" type=\"xsd:"
-                                + original.getLocalPart()
-                                + "\"/>"
-                                + "</xsd:schema>");
+                print.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                        + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
+                        + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
+                        + "              targetNamespace=\"http://localhost//test\">"
+                        + "  <xsd:element name=\""
+                        + name
+                        + "\" type=\"xsd:"
+                        + original.getLocalPart()
+                        + "\"/>"
+                        + "</xsd:schema>");
 
                 URL url = URLs.fileToUrl(temp);
                 XSDParser parser = new XSDParser(Collections.emptyMap());
@@ -153,8 +152,8 @@ public abstract class TestSchema {
     }
 
     /**
-     * Will call the parse method on the strategy object, passing it <code>given</code> to use as a
-     * value. It will then perform <code>assertEquals(expected, result);</code>
+     * Will call the parse method on the strategy object, passing it <code>given</code> to use as a value. It will then
+     * perform <code>assertEquals(expected, result);</code>
      *
      * @param given the value to pass to the parse method
      * @param expected used to compare against the result of the parse method

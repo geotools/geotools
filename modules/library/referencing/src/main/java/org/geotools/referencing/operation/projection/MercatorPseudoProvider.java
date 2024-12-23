@@ -49,79 +49,71 @@ public class MercatorPseudoProvider extends AbstractProvider {
      *   <li>0 (use semimajor axis or radius of the geographic coordinate system)
      *   <li>
      *   <li>1 (use semiminor axis or radius)
-     *   <li>2 (calculate and use authalic radius), or 3 (use authalic radius and convert geodetic
-     *       latitudes to authalic latitudes).
+     *   <li>2 (calculate and use authalic radius), or 3 (use authalic radius and convert geodetic latitudes to authalic
+     *       latitudes).
      * </ul>
      *
      * Geotools only supports 0 for the moment
      */
-    public static final ParameterDescriptor AUXILIARY_SPHERE_TYPE =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.ESRI, "Auxiliary_sphere_type"),
-                    },
-                    0,
-                    0,
-                    0,
-                    null);
+    public static final ParameterDescriptor AUXILIARY_SPHERE_TYPE = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.ESRI, "Auxiliary_sphere_type"),
+            },
+            0,
+            0,
+            0,
+            null);
 
-    public static final ParameterDescriptor FAKE_ESRI_STANDARD_PARALLELL =
-            createDescriptor(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(Citations.ESRI, "Standard_parallel_1"),
-                    },
-                    0,
-                    0,
-                    0,
-                    NonSI.DEGREE_ANGLE);
+    public static final ParameterDescriptor FAKE_ESRI_STANDARD_PARALLELL = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.ESRI, "Standard_parallel_1"),
+            },
+            0,
+            0,
+            0,
+            NonSI.DEGREE_ANGLE);
 
     /** The parameters group. */
-    static final ParameterDescriptorGroup PARAMETERS =
-            createDescriptorGroup(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG, "Popular Visualisation Pseudo Mercator"),
-                        new NamedIdentifier(Citations.EPSG, "1024"),
-                        new NamedIdentifier(Citations.ESRI, "Mercator_Auxiliary_Sphere"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(
-                                        VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION)),
-                        new NamedIdentifier(Citations.PROJ, "merc")
-                    },
-                    new ParameterDescriptor[] {
-                        SEMI_MAJOR,
-                        SEMI_MINOR,
-                        LATITUDE_OF_ORIGIN,
-                        CENTRAL_MERIDIAN,
-                        SCALE_FACTOR,
-                        FALSE_EASTING,
-                        FALSE_NORTHING,
-                        // these two added for ESRI compatibility
-                        FAKE_ESRI_STANDARD_PARALLELL,
-                        AUXILIARY_SPHERE_TYPE
-                    });
+    static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Popular Visualisation Pseudo Mercator"),
+                new NamedIdentifier(Citations.EPSG, "1024"),
+                new NamedIdentifier(Citations.ESRI, "Mercator_Auxiliary_Sphere"),
+                new NamedIdentifier(
+                        Citations.GEOTOOLS,
+                        Vocabulary.formatInternational(VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION)),
+                new NamedIdentifier(Citations.PROJ, "merc")
+            },
+            new ParameterDescriptor[] {
+                SEMI_MAJOR,
+                SEMI_MINOR,
+                LATITUDE_OF_ORIGIN,
+                CENTRAL_MERIDIAN,
+                SCALE_FACTOR,
+                FALSE_EASTING,
+                FALSE_NORTHING,
+                // these two added for ESRI compatibility
+                FAKE_ESRI_STANDARD_PARALLELL,
+                AUXILIARY_SPHERE_TYPE
+            });
 
-    static final ParameterDescriptorGroup BASE_PARAMETERS =
-            createDescriptorGroup(
-                    new NamedIdentifier[] {
-                        new NamedIdentifier(
-                                Citations.EPSG, "Popular Visualisation Pseudo Mercator"),
-                        new NamedIdentifier(Citations.EPSG, "1024"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(
-                                        VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
-                    },
-                    new ParameterDescriptor[] {
-                        SEMI_MAJOR,
-                        SEMI_MINOR,
-                        LATITUDE_OF_ORIGIN,
-                        CENTRAL_MERIDIAN,
-                        SCALE_FACTOR,
-                        FALSE_EASTING,
-                        FALSE_NORTHING,
-                    });
+    static final ParameterDescriptorGroup BASE_PARAMETERS = createDescriptorGroup(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.EPSG, "Popular Visualisation Pseudo Mercator"),
+                new NamedIdentifier(Citations.EPSG, "1024"),
+                new NamedIdentifier(
+                        Citations.GEOTOOLS,
+                        Vocabulary.formatInternational(VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+            },
+            new ParameterDescriptor[] {
+                SEMI_MAJOR,
+                SEMI_MINOR,
+                LATITUDE_OF_ORIGIN,
+                CENTRAL_MERIDIAN,
+                SCALE_FACTOR,
+                FALSE_EASTING,
+                FALSE_NORTHING,
+            });
 
     /** Constructs a new provider. */
     public MercatorPseudoProvider() {
@@ -145,14 +137,13 @@ public class MercatorPseudoProvider extends AbstractProvider {
     protected MathTransform createMathTransform(final ParameterValueGroup parameters)
             throws ParameterNotFoundException {
         // make sure we assume a spherical reference
-        parameters.parameter("semi_minor").setValue(parameters.parameter("semi_major").getValue());
+        parameters
+                .parameter("semi_minor")
+                .setValue(parameters.parameter("semi_major").getValue());
         return new Spherical(parameters);
     }
 
-    /**
-     * Just like the {@link Mercator1SP.Spherical} but returning the proper parameter for the pseudo
-     * mercartor case
-     */
+    /** Just like the {@link Mercator1SP.Spherical} but returning the proper parameter for the pseudo mercartor case */
     private static final class Spherical extends Mercator.Spherical {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -7583892502939355783L;
@@ -163,15 +154,11 @@ public class MercatorPseudoProvider extends AbstractProvider {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
         }
 
-        /**
-         * Override to discard ESRI extra parameters, they are adding un-welcomed shift in the
-         * reprojection results
-         */
+        /** Override to discard ESRI extra parameters, they are adding un-welcomed shift in the reprojection results */
         @Override
         public ParameterValueGroup getParameterValues() {
             final ParameterDescriptorGroup descriptor = BASE_PARAMETERS;
@@ -198,8 +185,7 @@ public class MercatorPseudoProvider extends AbstractProvider {
 
         @Override
         protected double getToleranceForAssertions(double longitude, double latitude) {
-            final double delta =
-                    abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
+            final double delta = abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
             if (delta > 40) {
                 // When far from the valid area, use a larger tolerance.
                 return 1;

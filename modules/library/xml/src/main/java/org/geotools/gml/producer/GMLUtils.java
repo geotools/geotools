@@ -35,8 +35,7 @@ import org.locationtech.jts.geom.Polygon;
 */
 final class GMLUtils {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GMLUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GMLUtils.class);
 
     /** Internal representation of URL used to represent GML */
     public static final String GML_URL = "http://www.opengis.net/gml";
@@ -159,13 +158,13 @@ final class GMLUtils {
     }
 
     /**
-     * Parses the passed string, and encodes the special characters (used in xml for special
-     * purposes) with the appropriate codes. e.g. right bracket char is changed to '&lt;'
+     * Parses the passed string, and encodes the special characters (used in xml for special purposes) with the
+     * appropriate codes. e.g. right bracket char is changed to '&lt;'
      *
      * @param inData the string to encode.
      * @return the encoded string. Returns null, if null is passed as argument
-     * @task TODO: Take output as a param, write directly to out, send the characters straight out,
-     *     doing translation on the fly.
+     * @task TODO: Take output as a param, write directly to out, send the characters straight out, doing translation on
+     *     the fly.
      */
     public static String encodeXML(String inData) {
         // LOGGER.entering("GMLUtils", "encodeXML", inData);

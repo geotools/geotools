@@ -17,10 +17,9 @@
 package org.geotools.data.ows;
 
 /**
- * Checks URIs/URLs/locations to confirm if they are allowed for use. Used to restrict access to
- * remote servers, e.g. to prevent access to untrusted servers or local resources, as many OGC
- * services either allow users to provide links to remote resources, or provide links that are not
- * restricted to their original host. <br>
+ * Checks URIs/URLs/locations to confirm if they are allowed for use. Used to restrict access to remote servers, e.g. to
+ * prevent access to untrusted servers or local resources, as many OGC services either allow users to provide links to
+ * remote resources, or provide links that are not restricted to their original host. <br>
  * Implementations should be registered using SPI in <code>META-INF/services/org.geotools.data
  * .ows.URLChecker</code>.
  */
@@ -36,17 +35,16 @@ public interface URLChecker {
     /**
      * Used to confirm location is allowed for use.
      *
-     * <p>URLChecker is used to confirm if a location is allowed for use, returning {@true} when
-     * they recognize a location as permitted. Several URLChecker instances are expected to be
-     * available, the location will be allowed if at least one URLChecker can confirm it is
-     * permitted for use.
+     * <p>URLChecker is used to confirm if a location is allowed for use, returning {@true} when they recognize a
+     * location as permitted. Several URLChecker instances are expected to be available, the location will be allowed if
+     * at least one URLChecker can confirm it is permitted for use.
      *
-     * <p>Location is normalized to remove all redundant {@code .} and {@code ..} path names, and
-     * provide absolute file references using empty host name {@code file:///path} approach.
+     * <p>Location is normalized to remove all redundant {@code .} and {@code ..} path names, and provide absolute file
+     * references using empty host name {@code file:///path} approach.
      *
      * @param location Location expressed as normalized URL, URI or path.
-     * @return {@code true} indicates the URLChecker can confirm the location is allowed for use,
-     *     {@code false} indicates the URLChecker is unable to confirm.
+     * @return {@code true} indicates the URLChecker can confirm the location is allowed for use, {@code false}
+     *     indicates the URLChecker is unable to confirm.
      */
     boolean confirm(String location);
 }

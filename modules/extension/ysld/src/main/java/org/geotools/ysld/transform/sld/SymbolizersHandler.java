@@ -22,14 +22,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Handles xml parse events for symbolizers, delegating to {@link PointSymblolizerHandler}, {@link
- * PolygonSymbolizerHandler}, {@link LineSymbolizerHandler}, {@link TextSymbolizerHandler}, or
+ * Handles xml parse events for symbolizers, delegating to {@link PointSymblolizerHandler},
+ * {@link PolygonSymbolizerHandler}, {@link LineSymbolizerHandler}, {@link TextSymbolizerHandler}, or
  * {@link RasterSymbolizerHandler} as appropriate.
  */
 public class SymbolizersHandler extends SldTransformHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PointSymbolizer".equals(name)) {
             context.push(new PointSymbolizerHandler());
@@ -45,8 +44,7 @@ public class SymbolizersHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if (name.equals("Rule")) {
             context.pop();

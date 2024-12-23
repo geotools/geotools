@@ -50,16 +50,16 @@ import org.xml.sax.SAXException;
 /**
  * A strategy object to aid in querying a CubeWerx WFS 1.1 server
  *
- * <p>This strategy was created as per the limitations encountered at the CubeWerx server being
- * tested while developing this plugin.
+ * <p>This strategy was created as per the limitations encountered at the CubeWerx server being tested while developing
+ * this plugin.
  *
  * <p>For instance, the following issues were found:
  *
  * <ul>
  *   <li>resultType parameter is not supported in GetFeature
  *   <li>Logically grouped spatial filters can't be handled
- *   <li>CubeWerx does not support logical filters containing mixed geometry filters (eg, AND(BBOX,
- *       Intersects)), no matter what the capabilities doc says
+ *   <li>CubeWerx does not support logical filters containing mixed geometry filters (eg, AND(BBOX, Intersects)), no
+ *       matter what the capabilities doc says
  * </ul>
  *
  * @author groldan
@@ -67,10 +67,9 @@ import org.xml.sax.SAXException;
 public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
 
     /**
-     * @return {@code true} only if resultType == results, CubeWerx throws a service exception if
-     *     the resultType parameter is set on a POST request, no matter it's value, and on a GET
-     *     request it's just ignored; also the returned feature collection does not contain the
-     *     number of features matched.
+     * @return {@code true} only if resultType == results, CubeWerx throws a service exception if the resultType
+     *     parameter is set on a POST request, no matter it's value, and on a GET request it's just ignored; also the
+     *     returned feature collection does not contain the number of features matched.
      */
     @Override
     public boolean supports(final ResultType resultType) {
@@ -147,8 +146,7 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         } else {
             boolean spatialAdded = false;
             // if a logical operator, check no more than one geometry filter is enclosed on it
-            List<Filter> children =
-                    new ArrayList<>(((BinaryLogicOperator) serverFilter).getChildren());
+            List<Filter> children = new ArrayList<>(((BinaryLogicOperator) serverFilter).getChildren());
             for (Iterator<Filter> it = children.iterator(); it.hasNext(); ) {
                 Filter f = it.next();
                 if (f instanceof BinarySpatialOperator) {

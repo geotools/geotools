@@ -61,9 +61,7 @@ class ReadRequest {
     Interpolation interpolation;
 
     Interpolation interpolation() {
-        return interpolation != null
-                ? interpolation
-                : Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
+        return interpolation != null ? interpolation : Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
     }
 
     Color backgroundColor;

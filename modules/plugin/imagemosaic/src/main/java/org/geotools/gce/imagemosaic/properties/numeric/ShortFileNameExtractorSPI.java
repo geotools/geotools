@@ -20,16 +20,14 @@ import java.util.List;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
-public final class ShortFileNameExtractorSPI extends NumericFileNameExtractorSPI
-        implements PropertiesCollectorSPI {
+public final class ShortFileNameExtractorSPI extends NumericFileNameExtractorSPI implements PropertiesCollectorSPI {
 
     public ShortFileNameExtractorSPI() {
         super("ShortFileNameExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.ShortFileNameExtractor(spi, propertyNames, regex);
     }
 }

@@ -30,12 +30,11 @@ public interface GridCoordinates extends Cloneable {
     int getDimension();
 
     /**
-     * Returns one integer value for each dimension of the grid. The value of a single coordinate
-     * shall be the number of offsets from the origin of the grid in the direction of a specific
-     * axis.
+     * Returns one integer value for each dimension of the grid. The value of a single coordinate shall be the number of
+     * offsets from the origin of the grid in the direction of a specific axis.
      *
-     * @return A copy of the coordinates. Changes in the returned array will not be reflected back
-     *     in this {@code GridCoordinates} object.
+     * @return A copy of the coordinates. Changes in the returned array will not be reflected back in this
+     *     {@code GridCoordinates} object.
      */
     int[] getCoordinateValues();
 
@@ -45,8 +44,8 @@ public interface GridCoordinates extends Cloneable {
      *
      * @param dimension The dimension for which to obtain the coordinate value.
      * @return The coordinate value at the given dimension.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
-     *     the {@linkplain #getDimension grid dimension}.
+     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than the
+     *     {@linkplain #getDimension grid dimension}.
      */
     int getCoordinateValue(int dimension) throws IndexOutOfBoundsException;
 
@@ -55,10 +54,9 @@ public interface GridCoordinates extends Cloneable {
      *
      * @param dimension The dimension for which to set the coordinate value.
      * @param value The new value.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
-     *     the {@linkplain #getDimension grid dimension}.
+     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than the
+     *     {@linkplain #getDimension grid dimension}.
      * @throws UnsupportedOperationException if this grid coordinates is not modifiable.
      */
-    void setCoordinateValue(int dimension, int value)
-            throws IndexOutOfBoundsException, UnsupportedOperationException;
+    void setCoordinateValue(int dimension, int value) throws IndexOutOfBoundsException, UnsupportedOperationException;
 }

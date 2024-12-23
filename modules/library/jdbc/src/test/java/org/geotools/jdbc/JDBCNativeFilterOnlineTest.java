@@ -41,12 +41,10 @@ public abstract class JDBCNativeFilterOnlineTest extends JDBCTestSupport {
     public void testNativeFilterExecution() throws Exception {
         // build the filter that will be send to the database
         BBOX boundingBoxFilter =
-                filterFactory.bbox(
-                        tname("location"), -5, -5, 5, 5, DefaultGeographicCRS.WGS84.toString());
+                filterFactory.bbox(tname("location"), -5, -5, 5, 5, DefaultGeographicCRS.WGS84.toString());
         Filter filter = filterFactory.and(boundingBoxFilter, getNativeFilter());
         // retrieve the features that match the filter above
-        ContentFeatureSource featureSource =
-                dataStore.getFeatureSource(tname("gt_jdbc_test_measurements"));
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("gt_jdbc_test_measurements"));
         assertThat(featureSource, notNullValue());
         try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
             List<SimpleFeature> features = new ArrayList<>();
@@ -60,8 +58,8 @@ public abstract class JDBCNativeFilterOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Builds a native filter that consider only the measurement of type temperature or type wind,
-     * and with a value greater than 15:
+     * Builds a native filter that consider only the measurement of type temperature or type wind, and with a value
+     * greater than 15:
      *
      * <p>{@code (TYPE = 'temperature' OR TYPE = 'wind') AND value > 15 }.
      */

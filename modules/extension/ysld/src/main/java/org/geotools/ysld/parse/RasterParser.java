@@ -47,14 +47,12 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             sym.setOpacity(Util.expression(map.str("opacity"), factory));
         }
 
-        context.push(
-                "color-map",
-                new ColorMapParser(factory) {
-                    @Override
-                    protected void colorMap(ColorMap colorMap) {
-                        sym.setColorMap(colorMap);
-                    }
-                });
+        context.push("color-map", new ColorMapParser(factory) {
+            @Override
+            protected void colorMap(ColorMap colorMap) {
+                sym.setColorMap(colorMap);
+            }
+        });
         context.push("contrast-enhancement", new ContrastEnhancementHandler());
         context.push("channels", new ChannelsHandler());
     }
@@ -144,15 +142,13 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             String name = obj.map().str("name");
             sel.setChannelName(Util.expression(name, factory));
-            context.push(
-                    "contrast-enhancement",
-                    new ContrastEnhancementHandler() {
+            context.push("contrast-enhancement", new ContrastEnhancementHandler() {
 
-                        @Override
-                        protected void set() {
-                            sel.setContrastEnhancement(this.contrast);
-                        }
-                    });
+                @Override
+                protected void set() {
+                    sel.setContrastEnhancement(this.contrast);
+                }
+            });
         }
     }
 }

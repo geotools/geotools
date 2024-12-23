@@ -83,11 +83,7 @@ public class OSMService extends WebMercatorTileService {
          * Because the latitude is only valid in 85.0511 °N to 85.0511 °S
          * (http://wiki.openstreetmap.org/wiki/Tilenames#X_and_Y), we have to correct if necessary.
          */
-        lat =
-                OSMTileFactory.moveInRange(
-                        lat,
-                        WebMercatorTileService.MIN_LATITUDE,
-                        WebMercatorTileService.MAX_LATITUDE);
+        lat = OSMTileFactory.moveInRange(lat, WebMercatorTileService.MIN_LATITUDE, WebMercatorTileService.MAX_LATITUDE);
 
         int zoomPower = 1 << zoomLevel.getZoomLevel();
         int xTile = (int) Math.floor((lon + 180) / 360 * zoomPower);

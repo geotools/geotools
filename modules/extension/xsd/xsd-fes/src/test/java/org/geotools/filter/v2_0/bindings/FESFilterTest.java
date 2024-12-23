@@ -37,16 +37,14 @@ public class FESFilterTest extends FESTestSupport {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLike filter = ff.like(ff.property("name"), "%test%");
-        org.geotools.filter.v2_0.FESConfiguration configuration =
-                new org.geotools.filter.v2_0.FESConfiguration();
+        org.geotools.filter.v2_0.FESConfiguration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        Document doc =
-                docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
+        Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
 
         assertEquals(1, doc.getElementsByTagName("fes:PropertyIsLike").getLength());
         assertEquals(1, doc.getElementsByTagName("fes:ValueReference").getLength());
@@ -58,16 +56,14 @@ public class FESFilterTest extends FESTestSupport {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.after(ff.property("date"), ff.literal(new Date()));
-        org.geotools.filter.v2_0.FESConfiguration configuration =
-                new org.geotools.filter.v2_0.FESConfiguration();
+        org.geotools.filter.v2_0.FESConfiguration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        Document doc =
-                docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
+        Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
 
         assertEquals(1, doc.getElementsByTagName("fes:After").getLength());
         assertEquals(1, doc.getElementsByTagName("fes:ValueReference").getLength());

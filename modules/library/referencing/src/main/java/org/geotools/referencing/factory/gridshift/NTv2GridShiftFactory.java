@@ -36,9 +36,8 @@ import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
 
 /**
- * Loads and caches NTv2 grid files. Thisthat incorporates a soft cache mechanism to keep grids in
- * memory when first loaded. It also checks NTv2 grid file format in {@link #isNTv2Grid(String)}
- * method.
+ * Loads and caches NTv2 grid files. Thisthat incorporates a soft cache mechanism to keep grids in memory when first
+ * loaded. It also checks NTv2 grid file format in {@link #isNTv2Grid(String)} method.
  *
  * @author Oscar Fonts
  */
@@ -62,9 +61,8 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /**
      * Constructs an instance using the specified priority level.
      *
-     * @param priority The priority for this factory, as a number between {@link
-     *     AbstractFactory#MINIMUM_PRIORITY MINIMUM_PRIORITY} and {@link
-     *     AbstractFactory#MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link AbstractFactory#MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link AbstractFactory#MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
     public NTv2GridShiftFactory(final int priority) {
         super(priority);
@@ -132,8 +130,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
                 File file = URLs.urlToFile(url);
 
                 if (!file.exists() || !file.canRead()) {
-                    throw new IOException(
-                            MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
+                    throw new IOException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
                 }
 
                 try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {

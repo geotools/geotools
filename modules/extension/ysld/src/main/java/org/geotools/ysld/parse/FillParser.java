@@ -23,8 +23,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * Handles parsing Ysld "fill-*" properties ("fill-color", "fill-opacity", "fill-graphic") into a
- * {@link Fill} object.
+ * Handles parsing Ysld "fill-*" properties ("fill-color", "fill-opacity", "fill-graphic") into a {@link Fill} object.
  */
 public abstract class FillParser extends YsldParseHandler {
     Fill fill;
@@ -42,14 +41,12 @@ public abstract class FillParser extends YsldParseHandler {
         if (map.has("fill-opacity")) {
             fill().setOpacity(Util.expression(map.str("fill-opacity"), factory));
         }
-        context.push(
-                "fill-graphic",
-                new GraphicParser(factory) {
-                    @Override
-                    protected void graphic(Graphic g) {
-                        fill().setGraphicFill(g);
-                    }
-                });
+        context.push("fill-graphic", new GraphicParser(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                fill().setGraphicFill(g);
+            }
+        });
     }
 
     Fill fill() {

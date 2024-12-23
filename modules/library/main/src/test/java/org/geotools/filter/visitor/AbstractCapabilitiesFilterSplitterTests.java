@@ -79,17 +79,14 @@ public class AbstractCapabilitiesFilterSplitterTests {
 
     protected Function testFunction = new FilterFunction_geometryType();
 
-    protected CapabilitiesFilterSplitter newVisitor(Capabilities supportedCaps)
-            throws SchemaException {
+    protected CapabilitiesFilterSplitter newVisitor(Capabilities supportedCaps) throws SchemaException {
         return new CapabilitiesFilterSplitter(
                 supportedCaps,
-                DataUtilities.createType(
-                        typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
+                DataUtilities.createType(typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
                 accessor);
     }
 
-    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value)
-            throws IllegalFilterException {
+    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value) throws IllegalFilterException {
         return ff.equals(ff.property(attr), ff.literal(value));
     }
 
@@ -98,16 +95,15 @@ public class AbstractCapabilitiesFilterSplitterTests {
     }
 
     /**
-     * Runs 3 tests. 1 with out filtercapabilities containing filter type. 1 with filter caps
-     * containing filter type 1 with an edit to the attribute being queried by filter.
+     * Runs 3 tests. 1 with out filtercapabilities containing filter type. 1 with filter caps containing filter type 1
+     * with an edit to the attribute being queried by filter.
      *
      * @param filter filter to process
-     * @param filterTypeMask the constant in {@link FilterCapabilities} that is equivalent to the
-     *     FilterType used in filter
+     * @param filterTypeMask the constant in {@link FilterCapabilities} that is equivalent to the FilterType used in
+     *     filter
      * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
-    protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit)
-            throws SchemaException {
+    protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit) throws SchemaException {
         // initialize fields that might be previously modified in current test
         CapabilitiesFilterSplitter visitor = newVisitor(new Capabilities());
         if (accessor != null) accessor.setUpdate("", null);

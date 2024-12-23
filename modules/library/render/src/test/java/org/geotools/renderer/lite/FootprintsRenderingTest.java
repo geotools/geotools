@@ -55,9 +55,7 @@ public class FootprintsRenderingTest {
         ReferencedEnvelope bounds = mc.getViewport().getBounds();
         bounds.expandBy(bounds.getWidth() * 0.1);
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
-        File expected =
-                new File(
-                        "src/test/resources/org/geotools/renderer/lite/test-data/footprintstx.png");
+        File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/footprintstx.png");
         ImageAssert.assertEquals(expected, image, 100);
     }
 }

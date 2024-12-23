@@ -35,8 +35,7 @@ import javax.measure.UnitConverter;
  * @param <V>
  * @param <Q>
  */
-public abstract class Measure<V extends Number, Q extends Quantity<Q>>
-        implements Comparable<Measure<V, Q>> {
+public abstract class Measure<V extends Number, Q extends Quantity<Q>> implements Comparable<Measure<V, Q>> {
     /** value of this measure */
     abstract V getValue();
 
@@ -59,8 +58,8 @@ public abstract class Measure<V extends Number, Q extends Quantity<Q>>
         }
     }
     /**
-     * Double representation of {@link #getValue()} in the requested unit (values outside of the
-     * range {@link Double#MIN_VALUE} - {@link Double#MAX_VALUE} are represented as infinite).
+     * Double representation of {@link #getValue()} in the requested unit (values outside of the range
+     * {@link Double#MIN_VALUE} - {@link Double#MAX_VALUE} are represented as infinite).
      *
      * @param unit to convert to double
      */
@@ -70,8 +69,8 @@ public abstract class Measure<V extends Number, Q extends Quantity<Q>>
     }
 
     /**
-     * Long representation of {@link #getValue()} in the requested unit (clipped to range {@link
-     * Long#MIN_VALUE} - {@link Double#MAX_VALUE}).
+     * Long representation of {@link #getValue()} in the requested unit (clipped to range {@link Long#MIN_VALUE} -
+     * {@link Double#MAX_VALUE}).
      *
      * @param unit to convert to double
      */

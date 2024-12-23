@@ -45,11 +45,10 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * {@link GMLFilterFeature} modifies whitespaces in attribute values, this way tampering with input
- * data.
+ * {@link GMLFilterFeature} modifies whitespaces in attribute values, this way tampering with input data.
  *
- * <p>{@link SubHandlerPolygon} twists rings of {@link Polygon}s, reverses CCW shells and CW holes,
- * this way tampering with input data.
+ * <p>{@link SubHandlerPolygon} twists rings of {@link Polygon}s, reverses CCW shells and CW holes, this way tampering
+ * with input data.
  *
  * <p>It is not the job of a GML-parser to modify input data.
  *
@@ -58,8 +57,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 public class GMLFilterFeatureTest {
 
     @Test
-    public void test()
-            throws TransformerException, SAXException, IOException, ParserConfigurationException {
+    public void test() throws TransformerException, SAXException, IOException, ParserConfigurationException {
 
         final String gml = createTestGMLInput();
         // System.out.format("%s\n", gml);

@@ -53,12 +53,8 @@ public class LineStringTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        LineString l =
-                new GeometryFactory()
-                        .createLineString(
-                                new Coordinate[] {
-                                    new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3)
-                                });
+        LineString l = new GeometryFactory()
+                .createLineString(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3)});
 
         Document dom = encode(l, KML.LineString);
         Element coordinates = getElementByQName(dom, KML.coordinates);

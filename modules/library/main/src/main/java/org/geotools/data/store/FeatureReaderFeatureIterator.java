@@ -28,8 +28,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
  * An iterator wrapper for a FeatureReader<SimpleFeatureType, SimpleFeature> - for use with an
  * AbstractFeatureCollection.
  *
- * <p>There is no reason modify this class, subclasses that wish to work with a custom iterator need
- * just that - a custom iterator.
+ * <p>There is no reason modify this class, subclasses that wish to work with a custom iterator need just that - a
+ * custom iterator.
  *
  * <p>
  *
@@ -70,14 +70,12 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
             return reader.next();
         } catch (IOException io) {
             close();
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not obtain the next feature:" + io);
+            NoSuchElementException problem = new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
         } catch (IllegalAttributeException create) {
             close();
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not create the next feature:" + create);
+            NoSuchElementException problem = new NoSuchElementException("Could not create the next feature:" + create);
             problem.initCause(create);
             throw problem;
         }
@@ -86,10 +84,7 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
     public void remove() {
         throw new UnsupportedOperationException("Modification of contents is not supported");
     }
-    /**
-     * This method only needs package visability as only AbstractFeatureCollection is trusted enough
-     * to call it.
-     */
+    /** This method only needs package visability as only AbstractFeatureCollection is trusted enough to call it. */
     @Override
     public void close() {
         if (reader != null) {

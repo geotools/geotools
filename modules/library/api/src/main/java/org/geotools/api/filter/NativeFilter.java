@@ -17,13 +17,13 @@
 package org.geotools.api.filter;
 
 /**
- * This filter should be treated as an extension point that allows the injection of a complex
- * filtering expression defined in the language of the target data store. This can be used, for
- * example, to inject a complex SQL expression that cannot be defined with the available filters.
+ * This filter should be treated as an extension point that allows the injection of a complex filtering expression
+ * defined in the language of the target data store. This can be used, for example, to inject a complex SQL expression
+ * that cannot be defined with the available filters.
  *
- * <p>Native filters are not meant to be used by end users, but instead to be used by developers to
- * support advanced use cases. There should always be a business \ code layer between end users and
- * native filters. Not complying with this rule may introduce security risks, e.g. SQL injections.
+ * <p>Native filters are not meant to be used by end users, but instead to be used by developers to support advanced use
+ * cases. There should always be a business \ code layer between end users and native filters. Not complying with this
+ * rule may introduce security risks, e.g. SQL injections.
  */
 public interface NativeFilter extends Filter {
 

@@ -26,21 +26,21 @@ public class NoninvertibleTransformException extends TransformException {
     /**
      * Construct an exception with the specified detail message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public NoninvertibleTransformException(String message) {
         super(message);
     }
 
     /**
-     * Construct an exception with the specified detail message and cause. The cause is typically an
-     * other {@link java.lang.geom.NoninvertibleTransformException} emitted by Java2D.
+     * Construct an exception with the specified detail message and cause. The cause is typically an other
+     * {@link java.lang.geom.NoninvertibleTransformException} emitted by Java2D.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public NoninvertibleTransformException(String message, Throwable cause) {
         super(message, cause);

@@ -30,13 +30,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class HSLFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "hsl",
-                    parameter("result", Color.class),
-                    parameter("hue", Double.class),
-                    parameter("saturation", Double.class),
-                    parameter("lightness", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "hsl",
+            parameter("result", Color.class),
+            parameter("hue", Double.class),
+            parameter("saturation", Double.class),
+            parameter("lightness", Double.class));
 
     public HSLFunction() {
         this.functionName = NAME;

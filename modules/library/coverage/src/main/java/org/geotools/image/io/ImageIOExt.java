@@ -53,8 +53,8 @@ import org.w3c.dom.NodeList;
  * <p>Currently implemented optimizations:
  *
  * <ul>
- *   <li>wrap an OutputStream into a {@link MemoryCacheImageOutputStream} or a {@link
- *       FileCacheImageOutputStream} based on a image size threshold
+ *   <li>wrap an OutputStream into a {@link MemoryCacheImageOutputStream} or a {@link FileCacheImageOutputStream} based
+ *       on a image size threshold
  * </ul>
  *
  * @author Andrea Aime - GeoSolutions
@@ -67,8 +67,8 @@ public class ImageIOExt {
     static File cacheDirectory = null;
 
     /**
-     * Builds a {@link ImageOutputStream} writing to <code>destination</code>, based on logic that
-     * involves the image size
+     * Builds a {@link ImageOutputStream} writing to <code>destination</code>, based on logic that involves the image
+     * size
      *
      * @param image the image to be written on the destination (can be null)
      * @param destination the destination
@@ -97,16 +97,14 @@ public class ImageIOExt {
         }
     }
 
-    /**
-     * Returns a {@link ImageOutputStream} suitable for writing on the specified <code>input</code>
-     */
+    /** Returns a {@link ImageOutputStream} suitable for writing on the specified <code>input</code> */
     public static ImageInputStream createImageInputStream(Object input) throws IOException {
         return ImageIO.createImageInputStream(input);
     }
 
     /**
-     * Returns the cache directory used by ImageIOExt, either the manually configured one, or the
-     * result of calling {@link ImageIO#getCacheDirectory()}
+     * Returns the cache directory used by ImageIOExt, either the manually configured one, or the result of calling
+     * {@link ImageIO#getCacheDirectory()}
      */
     public static File getCacheDirectory() {
         File cacheDir = cacheDirectory;
@@ -128,9 +126,9 @@ public class ImageIOExt {
 
     /**
      * The threshold at which the class will flip from {@link MemoryCacheImageOutputStream} to
-     * {@link FileCacheImageOutputStream}. If the in memory, uncompressed image size is lower than
-     * the threshold a {@link MemoryCacheImageOutputStream} will be returned, otherwise a {@link
-     * FileCacheImageOutputStream} will be used instead
+     * {@link FileCacheImageOutputStream}. If the in memory, uncompressed image size is lower than the threshold a
+     * {@link MemoryCacheImageOutputStream} will be returned, otherwise a {@link FileCacheImageOutputStream} will be
+     * used instead
      */
     public static Long getFilesystemThreshold() {
         return filesystemThreshold;
@@ -146,18 +144,17 @@ public class ImageIOExt {
     }
 
     /**
-     * Allows or disallows native acceleration for the specified image format. By default, the image
-     * I/O extension for JAI provides native acceleration for PNG and JPEG. Unfortunatly, those
-     * native codec has bug in their 1.0 version. Invoking this method will force the use of
-     * standard codec provided in J2SE 1.4.
+     * Allows or disallows native acceleration for the specified image format. By default, the image I/O extension for
+     * JAI provides native acceleration for PNG and JPEG. Unfortunatly, those native codec has bug in their 1.0 version.
+     * Invoking this method will force the use of standard codec provided in J2SE 1.4.
      *
-     * <p><strong>Implementation note:</strong> the current implementation assume that JAI codec
-     * class name start with "CLib". It work for Sun's 1.0 implementation, but may change in future
-     * versions. If this method doesn't recognize the class name, it does nothing.
+     * <p><strong>Implementation note:</strong> the current implementation assume that JAI codec class name start with
+     * "CLib". It work for Sun's 1.0 implementation, but may change in future versions. If this method doesn't recognize
+     * the class name, it does nothing.
      *
      * @param format The format name (e.g. "png").
-     * @param category {@code ImageReaderSpi.class} to set the reader, or {@code
-     *     ImageWriterSpi.class} to set the writer.
+     * @param category {@code ImageReaderSpi.class} to set the reader, or {@code ImageWriterSpi.class} to set the
+     *     writer.
      * @param allowed {@code false} to disallow native acceleration.
      */
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
@@ -190,8 +187,8 @@ public class ImageIOExt {
     }
 
     /**
-     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input
-     * without trying to create an {@link ImageInputStream}.
+     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input without trying to create
+     * an {@link ImageInputStream}.
      *
      * @see #getImageInputStreamSPI(Object, boolean)
      */
@@ -202,11 +199,9 @@ public class ImageIOExt {
     /**
      * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input.
      *
-     * @param input the input object for which we need to find a proper {@link ImageInputStreamSpi}
-     *     instance
-     * @param streamCreationCheck if <code>true</code>, when a proper {@link ImageInputStreamSpi}
-     *     have been found for the provided input, use it to try creating an {@link
-     *     ImageInputStream} on top of the input.
+     * @param input the input object for which we need to find a proper {@link ImageInputStreamSpi} instance
+     * @param streamCreationCheck if <code>true</code>, when a proper {@link ImageInputStreamSpi} have been found for
+     *     the provided input, use it to try creating an {@link ImageInputStream} on top of the input.
      * @return an {@link ImageInputStreamSpi} instance.
      */
     public static final ImageInputStreamSpi getImageInputStreamSPI(
@@ -215,9 +210,7 @@ public class ImageIOExt {
         Iterator<ImageInputStreamSpi> iter;
         // Ensure category is present
         try {
-            iter =
-                    IIORegistry.getDefaultInstance()
-                            .getServiceProviders(ImageInputStreamSpi.class, true);
+            iter = IIORegistry.getDefaultInstance().getServiceProviders(ImageInputStreamSpi.class, true);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -232,8 +225,7 @@ public class ImageIOExt {
                 // Stream creation check
                 if (streamCreationCheck) {
                     try (ImageInputStream stream =
-                            spi.createInputStreamInstance(
-                                    input, usecache, ImageIO.getCacheDirectory())) {
+                            spi.createInputStreamInstance(input, usecache, ImageIO.getCacheDirectory())) {
                         break;
                     } catch (IOException e) {
                         return null;
@@ -258,15 +250,13 @@ public class ImageIOExt {
     }
 
     /**
-     * Look for an {@link ImageReader} instance that is able to read the provided {@link
-     * ImageInputStream}, which must be non null.
+     * Look for an {@link ImageReader} instance that is able to read the provided {@link ImageInputStream}, which must
+     * be non null.
      *
      * <p>In case no reader is found, <code>null</code> is returned.
      *
-     * @param inStream an instance of {@link ImageInputStream} for which we need to find a suitable
-     *     {@link ImageReader}.
-     * @return a suitable instance of {@link ImageReader} or <code>null</code> if one cannot be
-     *     found.
+     * @param inStream an instance of {@link ImageInputStream} for which we need to find a suitable {@link ImageReader}.
+     * @return a suitable instance of {@link ImageReader} or <code>null</code> if one cannot be found.
      */
     public static ImageReader getImageioReader(final ImageInputStream inStream) {
         Utilities.ensureNonNull("inStream", inStream);
@@ -290,12 +280,11 @@ public class ImageIOExt {
     }
 
     /**
-     * Reads an image from the given input, working around some JDK reader issues. At the time of
-     * writing, this applies a work around for PNGs with RGB (no alpha) and a transparent color
-     * configured in the header, that the JDK reader cannot handle.
+     * Reads an image from the given input, working around some JDK reader issues. At the time of writing, this applies
+     * a work around for PNGs with RGB (no alpha) and a transparent color configured in the header, that the JDK reader
+     * cannot handle.
      *
-     * @param input A non null image source, like a {@link File}, {@link java.net.URL}, or {@link
-     *     java.io.InputStream}
+     * @param input A non null image source, like a {@link File}, {@link java.net.URL}, or {@link java.io.InputStream}
      * @return A image
      */
     public static RenderedImage read(Object input) throws IOException {
@@ -315,9 +304,8 @@ public class ImageIOExt {
             // work around PNG with transparent RGB color if needed
             // we can remove it once we run on JDK 11, see
             // https://bugs.openjdk.java.net/browse/JDK-6788458
-            boolean isJdkPNGReader =
-                    "com.sun.imageio.plugins.png.PNGImageReader"
-                            .equals(reader.getClass().getName());
+            boolean isJdkPNGReader = "com.sun.imageio.plugins.png.PNGImageReader"
+                    .equals(reader.getClass().getName());
             // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
             // there
             reader.setInput(stream, true, !isJdkPNGReader);
@@ -368,9 +356,8 @@ public class ImageIOExt {
     }
 
     /**
-     * Same as {@link #read(Object)} but ensures the result is a {@link BufferedImage}, eventually
-     * transforming it if needs be. Callers that can deal with {@link RenderedImage} should use the
-     * other method for efficiency sake.
+     * Same as {@link #read(Object)} but ensures the result is a {@link BufferedImage}, eventually transforming it if
+     * needs be. Callers that can deal with {@link RenderedImage} should use the other method for efficiency sake.
      *
      * @return A image
      */

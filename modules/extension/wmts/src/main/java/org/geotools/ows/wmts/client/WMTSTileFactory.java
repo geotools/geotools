@@ -59,18 +59,16 @@ public class WMTSTileFactory extends TileFactory {
     /**
      * Return a tile with the proper row and column indexes.
      *
-     * <p>Please notice that the tile indexes are purely computed on the zoom level details, but the
-     * MatrixLimits in a given layer may make the row/col invalid for that layer.
+     * <p>Please notice that the tile indexes are purely computed on the zoom level details, but the MatrixLimits in a
+     * given layer may make the row/col invalid for that layer.
      */
     @Override
-    public Tile findTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel, TileService service) {
+    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service) {
         return create(service.identifyTileAtCoordinate(lon, lat, zoomLevel), service);
     }
 
     /** Find the first valid Upper Left tile for the current layer. */
-    public Tile findUpperLeftTile(
-            double lon, double lat, WMTSZoomLevel zoomLevel, WMTSTileService service) {
+    public Tile findUpperLeftTile(double lon, double lat, WMTSZoomLevel zoomLevel, WMTSTileService service) {
         // get the tile in the tilematrix
         Tile matrixTile = findTileAtCoordinate(lon, lat, zoomLevel, service);
         return constrainToUpperLeftTile(matrixTile, zoomLevel, service);
@@ -99,11 +97,9 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** If the tile is outside the limits, take a valid one which can be used to start a loop on. */
-    public WMTSTile constrainToUpperLeftTile(
-            Tile matrixTile, WMTSZoomLevel zl, WMTSTileService service) {
+    public WMTSTile constrainToUpperLeftTile(Tile matrixTile, WMTSZoomLevel zl, WMTSTileService service) {
 
-        TileMatrixLimits limits =
-                getLimits(service.getMatrixSetLink(), service.getMatrixSet(), zl.getZoomLevel());
+        TileMatrixLimits limits = getLimits(service.getMatrixSetLink(), service.getMatrixSet(), zl.getZoomLevel());
 
         long origxTile = matrixTile.getTileIdentifier().getX();
         long origyTile = matrixTile.getTileIdentifier().getY();
@@ -118,23 +114,19 @@ public class WMTSTileFactory extends TileFactory {
 
         if (origxTile != xTile || origyTile != yTile) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "findUpperLeftTile: constraining tile within limits: ("
-                                + origxTile
-                                + ","
-                                + origyTile
-                                + ") -> ("
-                                + xTile
-                                + ","
-                                + yTile
-                                + ")");
+                LOGGER.fine("findUpperLeftTile: constraining tile within limits: ("
+                        + origxTile
+                        + ","
+                        + origyTile
+                        + ") -> ("
+                        + xTile
+                        + ","
+                        + yTile
+                        + ")");
             }
         }
 
-        return (WMTSTile)
-                create(
-                        new WMTSTileIdentifier((int) xTile, (int) yTile, zl, service.getName()),
-                        service);
+        return (WMTSTile) create(new WMTSTileIdentifier((int) xTile, (int) yTile, zl, service.getName()), service);
     }
 
     @Override
@@ -155,8 +147,7 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** */
-    public static ReferencedEnvelope getExtentFromTileName(
-            WMTSTileIdentifier tileIdentifier, TileService service) {
+    public static ReferencedEnvelope getExtentFromTileName(WMTSTileIdentifier tileIdentifier, TileService service) {
         WMTSZoomLevel zl = new WMTSZoomLevel(tileIdentifier.getZ(), (WMTSTileService) service);
         TileMatrix tileMatrix =
                 ((WMTSTileService) service).getMatrixSet().getMatrices().get(zl.getZoomLevel());

@@ -55,8 +55,7 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
                     }
                 }
             } catch (Exception e) {
-                throw (IOException)
-                        new IOException("Error parsing " + value + " as crs id").initCause(e);
+                throw (IOException) new IOException("Error parsing " + value + " as crs id").initCause(e);
             }
             state = -1;
         }

@@ -28,12 +28,10 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  *
  * @author Jody
  */
-public class TreeSetFeatureCollectionTest
-        extends org.geotools.data.collection.FeatureCollectionTest {
+public class TreeSetFeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
 
     @Override
-    protected TreeSetFeatureCollection newCollection(
-            SimpleFeatureType schema, List<SimpleFeature> list) {
+    protected TreeSetFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list) {
         TreeSetFeatureCollection treeset = new TreeSetFeatureCollection(null, null);
         treeset.addAll(list);
         return treeset;

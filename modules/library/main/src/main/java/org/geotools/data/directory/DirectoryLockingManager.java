@@ -73,8 +73,7 @@ public class DirectoryLockingManager implements LockingManager {
     }
 
     @Override
-    public void unLockFeatureID(
-            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+    public void unLockFeatureID(String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 
@@ -84,8 +83,7 @@ public class DirectoryLockingManager implements LockingManager {
     }
 
     @Override
-    public void lockFeatureID(
-            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+    public void lockFeatureID(String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 

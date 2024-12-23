@@ -69,9 +69,11 @@ public class MultithreadedHttpClientTest {
     public static WireMockClassRule classProxyRule =
             new WireMockClassRule(WireMockConfiguration.options().dynamicPort());
 
-    @Rule public WireMockClassRule service = classRule;
+    @Rule
+    public WireMockClassRule service = classRule;
 
-    @Rule public WireMockClassRule proxyService = classProxyRule;
+    @Rule
+    public WireMockClassRule proxyService = classProxyRule;
 
     /** Verifies that method is executed without specifying nonProxyHosts. */
     @Test
@@ -80,13 +82,11 @@ public class MultithreadedHttpClientTest {
         URL proxy = new URL("http://localhost:" + proxyService.port());
         System.setProperty(SYS_PROP_KEY_HOST, proxy.getHost());
         System.setProperty(SYS_PROP_KEY_PORT, Integer.toString(proxy.getPort()));
-        proxyService.stubFor(
-                get(urlEqualTo("/fred"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        proxyService.stubFor(get(urlEqualTo("/fred"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(new URL("http://geotools.org/fred"));
         }
@@ -96,14 +96,12 @@ public class MultithreadedHttpClientTest {
 
     @Test
     public void testWithBasicAuthProvided() throws Exception {
-        service.stubFor(
-                get(urlEqualTo("/testba"))
-                        .withBasicAuth("flup", "top")
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<ok>authorized</ok>")));
+        service.stubFor(get(urlEqualTo("/testba"))
+                .withBasicAuth("flup", "top")
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<ok>authorized</ok>")));
 
         try (MultithreadedHttpClient toTest = new MultithreadedHttpClient()) {
             toTest.setUser("flup");
@@ -123,26 +121,22 @@ public class MultithreadedHttpClientTest {
 
         URL testURL = new URL("http://localhost:" + service.port() + "/test");
 
-        proxyService.stubFor(
-                get(urlEqualTo("/fred"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        proxyService.stubFor(get(urlEqualTo("/fred"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(new URL("http://geotools.org/fred"));
         }
         // check we intercepted the request with our "proxy"
         proxyService.verify(getRequestedFor(urlEqualTo("/fred")));
 
-        service.stubFor(
-                get(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        service.stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(testURL);
@@ -183,22 +177,16 @@ public class MultithreadedHttpClientTest {
     public void testBasicHeaderGET() throws IOException {
         String longPassword = "0123456789".repeat(10);
         String userName = "user";
-        service.stubFor(
-                get(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(401)
-                                        .withHeader(
-                                                "WWW-Authenticate",
-                                                "Basic realm=\"User Visible Realm\"")));
-        service.stubFor(
-                get(urlEqualTo("/test"))
-                        .withBasicAuth(userName, longPassword)
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        service.stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("WWW-Authenticate", "Basic realm=\"User Visible Realm\"")));
+        service.stubFor(get(urlEqualTo("/test"))
+                .withBasicAuth(userName, longPassword)
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -206,9 +194,8 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            service.verify(
-                    getRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+            service.verify(getRequestedFor(urlEqualTo("/test"))
+                    .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
     }
 
@@ -216,22 +203,16 @@ public class MultithreadedHttpClientTest {
     public void testBasicHeaderPOST() throws IOException {
         String longPassword = "0123456789".repeat(10);
         String userName = "user";
-        service.stubFor(
-                post(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(401)
-                                        .withHeader(
-                                                "WWW-Authenticate",
-                                                "Basic realm=\"User Visible Realm\"")));
-        service.stubFor(
-                post(urlEqualTo("/test"))
-                        .withBasicAuth(userName, longPassword)
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        service.stubFor(post(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("WWW-Authenticate", "Basic realm=\"User Visible Realm\"")));
+        service.stubFor(post(urlEqualTo("/test"))
+                .withBasicAuth(userName, longPassword)
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -243,28 +224,24 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            service.verify(
-                    postRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+            service.verify(postRequestedFor(urlEqualTo("/test"))
+                    .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
     }
 
     @Test
     public void testUserAgentInRequests() throws Exception {
-        service.stubFor(
-                get(urlEqualTo("/agent"))
-                        .withHeader("User-Agent", new ContainsPattern("GeoTools"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "plain/text")
-                                        .withBody("OK")));
+        service.stubFor(get(urlEqualTo("/agent"))
+                .withHeader("User-Agent", new ContainsPattern("GeoTools"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "plain/text")
+                        .withBody("OK")));
 
         HTTPResponse response = null;
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             response = client.get(new URL("http://localhost:" + service.port() + "/agent"));
-            String result =
-                    IOUtils.toString(response.getResponseStream(), response.getResponseCharset());
+            String result = IOUtils.toString(response.getResponseStream(), response.getResponseCharset());
             Assert.assertEquals("OK", result);
 
             service.verify(getRequestedFor(urlEqualTo("/agent")));
@@ -285,11 +262,10 @@ public class MultithreadedHttpClientTest {
         String headerValue;
         URL url = new URL("http://localhost:" + service.port() + "/test");
         UrlPattern urlPattern = urlEqualTo("/test");
-        ResponseDefinitionBuilder responseBldr =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder responseBldr = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         HTTPResponse response = null;
 
@@ -298,9 +274,7 @@ public class MultithreadedHttpClientTest {
         headerValue = "Bearer " + System.currentTimeMillis();
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             response = client.get(url, Map.of("Authorization", headerValue));
-            service.verify(
-                    getRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo(headerValue)));
+            service.verify(getRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
         } finally {
             if (response != null) {
                 response.dispose();
@@ -312,11 +286,8 @@ public class MultithreadedHttpClientTest {
         service.stubFor(post(urlPattern).willReturn(responseBldr));
         headerValue = "Bearer " + System.currentTimeMillis() + 1;
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
-            response =
-                    client.post(url, postBody, "text/plain", Map.of("Authorization", headerValue));
-            service.verify(
-                    postRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo(headerValue)));
+            response = client.post(url, postBody, "text/plain", Map.of("Authorization", headerValue));
+            service.verify(postRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
         } finally {
             if (response != null) {
                 response.dispose();

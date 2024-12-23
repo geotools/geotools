@@ -37,12 +37,8 @@ public class SimpleFeatureImplTest {
 
     @Before
     public void setUp() throws Exception {
-        schema =
-                DataUtilities.createType(
-                        "buildings", "the_geom:Geometry,name:String,ADDRESS:String");
-        feature =
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {null, "ABC", "Random Road, 12"}, "building.1");
+        schema = DataUtilities.createType("buildings", "the_geom:Geometry,name:String,ADDRESS:String");
+        feature = SimpleFeatureBuilder.build(schema, new Object[] {null, "ABC", "Random Road, 12"}, "building.1");
         wkt = new WKTReader();
     }
 
@@ -99,8 +95,7 @@ public class SimpleFeatureImplTest {
     @Test
     public void testSetValue() {
 
-        SimpleFeature myFeature =
-                SimpleFeatureBuilder.build(schema, new Object[] {null, null, null}, "building.2");
+        SimpleFeature myFeature = SimpleFeatureBuilder.build(schema, new Object[] {null, null, null}, "building.2");
 
         myFeature.setValue(feature.getProperties());
         for (int i = 0; i < feature.getAttributeCount(); i++) {
@@ -110,47 +105,26 @@ public class SimpleFeatureImplTest {
 
     @Test
     public void testCompare2D() throws ParseException {
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"},
-                        "building.1");
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"},
-                        "building.1");
-        SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(3 4)"), "ABC", "Random Road, 12"},
-                        "building.1");
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f3 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(3 4)"), "ABC", "Random Road, 12"}, "building.1");
         Assert.assertEquals(f1, f2);
         assertNotEquals(f1, f3);
     }
 
     @Test
     public void testCompare3D() throws ParseException {
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"},
-                        "building.1");
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2 15)"), "ABC", "Random Road, 12"},
-                        "building.1");
-        SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"},
-                        "building.1");
-        SimpleFeature f4 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"},
-                        "building.1");
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2 15)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f3 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f4 = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"}, "building.1");
         assertNotEquals(f1, f2);
         assertNotEquals(f1, f3);
         assertNotEquals(f2, f3);
@@ -159,11 +133,8 @@ public class SimpleFeatureImplTest {
 
     @Test
     public void testUserMetadata() throws ParseException {
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"},
-                        "building.1");
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
         // no user data
         Assert.assertFalse(feature.hasUserData());
         // force map creation

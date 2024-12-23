@@ -28,8 +28,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_numInteriorRing extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "numInteriorRing", Integer.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("numInteriorRing", Integer.class, parameter("geometry", Geometry.class));
 
     public FilterFunction_numInteriorRing() {
         super(NAME);

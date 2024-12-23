@@ -54,9 +54,7 @@ public class MergeBehaviorTest {
         assertNotNull(values);
         Set<String> testSet = new HashSet<>(Arrays.asList(values));
         Set<String> expectedSet =
-                Arrays.stream(MergeBehavior.values())
-                        .map(v -> v.name())
-                        .collect(Collectors.toSet());
+                Arrays.stream(MergeBehavior.values()).map(v -> v.name()).collect(Collectors.toSet());
         assertEquals(expectedSet, testSet);
     }
 
@@ -89,8 +87,7 @@ public class MergeBehaviorTest {
 
         ImageMosaicReader reader = new ImageMosaicReader(mergeExt);
         try {
-            final ParameterValue<String> mergeBehavior =
-                    ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
+            final ParameterValue<String> mergeBehavior = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
             mergeBehavior.setValue(MergeBehavior.MAX.toString());
             GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {mergeBehavior});
             assertNotNull(coverage);
@@ -158,8 +155,7 @@ public class MergeBehaviorTest {
 
         ImageMosaicReader reader = new ImageMosaicReader(mergeExt);
         try {
-            final ParameterValue<String> mergeBehavior =
-                    ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
+            final ParameterValue<String> mergeBehavior = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
             mergeBehavior.setValue(MergeBehavior.MIN.toString());
             GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {mergeBehavior});
             assertNotNull(coverage);

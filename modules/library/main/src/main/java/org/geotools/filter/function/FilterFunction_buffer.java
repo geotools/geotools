@@ -29,15 +29,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-public class FilterFunction_buffer extends FunctionExpressionImpl
-        implements GeometryTransformation {
+public class FilterFunction_buffer extends FunctionExpressionImpl implements GeometryTransformation {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "buffer",
-                    parameter("buffer", Geometry.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("distance", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "buffer",
+            parameter("buffer", Geometry.class),
+            parameter("geometry", Geometry.class),
+            parameter("distance", Number.class));
 
     public FilterFunction_buffer() {
         super(NAME);
@@ -68,9 +66,8 @@ public class FilterFunction_buffer extends FunctionExpressionImpl
     }
 
     /**
-     * Returns an expanded rendering envelope if the buffering size is not using feature attributes.
-     * If the buffering size is feature dependent the user will have to expand the rendering area
-     * via the renderer buffer parameter
+     * Returns an expanded rendering envelope if the buffering size is not using feature attributes. If the buffering
+     * size is feature dependent the user will have to expand the rendering area via the renderer buffer parameter
      */
     @Override
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
@@ -81,7 +78,6 @@ public class FilterFunction_buffer extends FunctionExpressionImpl
 
         Envelope bufferedEnvelope =
                 JTS.toGeometry((Envelope) renderingEnvelope).buffer(buffer).getEnvelopeInternal();
-        return new ReferencedEnvelope(
-                bufferedEnvelope, renderingEnvelope.getCoordinateReferenceSystem());
+        return new ReferencedEnvelope(bufferedEnvelope, renderingEnvelope.getCoordinateReferenceSystem());
     }
 }

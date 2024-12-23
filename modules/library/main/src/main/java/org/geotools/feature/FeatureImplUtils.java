@@ -32,8 +32,7 @@ import java.util.SortedSet;
 public class FeatureImplUtils {
 
     /**
-     * Wraps a collection in an umodifiable collection based on the interface the collection
-     * implements.
+     * Wraps a collection in an umodifiable collection based on the interface the collection implements.
      *
      * <p>A list will result in an umodifiable list, a set in an unmodifiable set, etc..
      */

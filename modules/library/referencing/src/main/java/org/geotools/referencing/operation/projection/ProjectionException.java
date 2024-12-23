@@ -46,14 +46,9 @@ public class ProjectionException extends TransformException {
         super(MessageFormat.format(pattern, value));
     }
 
-    /**
-     * Constructs a new exception with a detail message formatted for a latitude too close from a
-     * pole.
-     */
+    /** Constructs a new exception with a detail message formatted for a latitude too close from a pole. */
     ProjectionException(final double latitude) {
-        super(
-                MessageFormat.format(
-                        ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
+        super(MessageFormat.format(ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
     }
 
     /** Constructs a new exception with the specified detail message. */

@@ -52,9 +52,9 @@ public final class ISOTest {
     private static final String IMPLEMENTATION_SUFFIX = "Impl";
 
     /**
-     * List of GeoAPI interfaces to test. This list is not exclusive, since this test suite will
-     * automatically scans for dependencies even if an interface do not appears in this list. This
-     * list should not contains any {@link CodeList}.
+     * List of GeoAPI interfaces to test. This list is not exclusive, since this test suite will automatically scans for
+     * dependencies even if an interface do not appears in this list. This list should not contains any
+     * {@link CodeList}.
      */
     private static final Class<?>[] TEST = {
         org.geotools.api.metadata.Identifier.class,
@@ -110,9 +110,7 @@ public final class ISOTest {
         }
     }
 
-    /**
-     * Recursively ensures that the specified metadata implementation has setters for every methods.
-     */
+    /** Recursively ensures that the specified metadata implementation has setters for every methods. */
     private static void assertSetters(final PropertyAccessor accessor, final Set<Class<?>> done) {
         if (done.add(accessor.type)) {
             /*
@@ -124,10 +122,9 @@ public final class ISOTest {
             final boolean isImplemented = isImplemented(accessor.type);
             if (isImplemented)
                 try {
-                    dummyInstance =
-                            accessor.implementation
-                                    .getConstructor((Class[]) null)
-                                    .newInstance((Object[]) null);
+                    dummyInstance = accessor.implementation
+                            .getConstructor((Class[]) null)
+                            .newInstance((Object[]) null);
                 } catch (Exception e) {
                     fail(e.toString());
                     return;
@@ -172,17 +169,12 @@ public final class ISOTest {
         }
     }
 
-    /**
-     * Returns the implementation class for the specified interface class, or {@code null} if none.
-     */
+    /** Returns the implementation class for the specified interface class, or {@code null} if none. */
     private static Class<?> getImplementation(final Class<?> type) {
         if (!CodeList.class.isAssignableFrom(type)) {
             String name = type.getName();
             if (name.startsWith(INTERFACE_PACKAGE)) {
-                name =
-                        IMPLEMENTATION_PACKAGE
-                                + name.substring(INTERFACE_PACKAGE.length())
-                                + IMPLEMENTATION_SUFFIX;
+                name = IMPLEMENTATION_PACKAGE + name.substring(INTERFACE_PACKAGE.length()) + IMPLEMENTATION_SUFFIX;
                 try {
                     return Class.forName(name);
                 } catch (ClassNotFoundException e) {
@@ -199,9 +191,7 @@ public final class ISOTest {
         return null;
     }
 
-    /**
-     * Returns {@code true} if the specified type is not in the list of known unimplemented types.
-     */
+    /** Returns {@code true} if the specified type is not in the list of known unimplemented types. */
     private static boolean isImplemented(final Class<?> type) {
         for (Class<?> aClass : UNIMPLEMENTED) {
             if (type.equals(aClass)) {

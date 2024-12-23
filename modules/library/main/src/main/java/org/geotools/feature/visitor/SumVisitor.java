@@ -42,8 +42,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
     SumStrategy strategy;
 
-    public SumVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public SumVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attributeType = type.getDescriptor(attributeTypeIndex);
         expr = factory.property(attributeType.getLocalName());
@@ -79,15 +78,13 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != 1)
-            throw new IllegalArgumentException(
-                    "Expecting a single type in input, not " + inputTypes);
+            throw new IllegalArgumentException("Expecting a single type in input, not " + inputTypes);
 
         Class type = inputTypes.get(0);
         if (Number.class.isAssignableFrom(type)) {
             return Optional.of(inputTypes);
         }
-        throw new IllegalArgumentException(
-                "The input type for sum must be numeric, instead this was found: " + type);
+        throw new IllegalArgumentException("The input type for sum must be numeric, instead this was found: " + type);
     }
 
     /**

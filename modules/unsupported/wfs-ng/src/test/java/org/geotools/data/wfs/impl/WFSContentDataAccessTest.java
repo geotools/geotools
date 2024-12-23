@@ -30,9 +30,9 @@ public class WFSContentDataAccessTest {
     static final String WFS_URL = "https://wfs.geonorge.no/skwms1/wfs.stedsnavn";
 
     /**
-     * When no cache is set WFSContentDataAccess will use SchemaResolver to download and parse
-     * DescribeFeatureType. Those are based on http requests, and that depends on SchemaResolver
-     * being backed by a SchemaCache with download to a temporary folder.
+     * When no cache is set WFSContentDataAccess will use SchemaResolver to download and parse DescribeFeatureType.
+     * Those are based on http requests, and that depends on SchemaResolver being backed by a SchemaCache with download
+     * to a temporary folder.
      */
     @Test
     public void getShemaWithoutCache() throws Exception {
@@ -57,10 +57,8 @@ public class WFSContentDataAccessTest {
     private TestHttpClient createHttpClient() throws IOException {
         TestHttpClient mockHttp = new TestHttpClient();
         mockHttp.expectGet(
-                new URL(
-                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
-                new MockHttpResponse(
-                        TestData.file(mockHttp, "KartverketNo/GetCapabilities.xml"), "text/xml"));
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
+                new MockHttpResponse(TestData.file(mockHttp, "KartverketNo/GetCapabilities.xml"), "text/xml"));
         return mockHttp;
     }
 }

@@ -137,13 +137,12 @@ public class MapViewportTest extends LoggerTest {
     @Test
     public void setBoundsWithAspectCorrection_2_1() {
         double w = WORLD_1_1.getWidth();
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(
-                        WORLD_1_1.getMinX() - w / 2,
-                        WORLD_1_1.getMaxX() + w / 2,
-                        WORLD_1_1.getMinY(),
-                        WORLD_1_1.getMaxY(),
-                        WORLD_1_1.getCoordinateReferenceSystem());
+        ReferencedEnvelope expected = new ReferencedEnvelope(
+                WORLD_1_1.getMinX() - w / 2,
+                WORLD_1_1.getMaxX() + w / 2,
+                WORLD_1_1.getMinY(),
+                WORLD_1_1.getMaxY(),
+                WORLD_1_1.getCoordinateReferenceSystem());
 
         assertAspectCorrection(SCREEN_2_1, expected);
     }
@@ -151,13 +150,12 @@ public class MapViewportTest extends LoggerTest {
     @Test
     public void setBoundsWithAspectCorrection_1_2() {
         double h = WORLD_1_1.getHeight();
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(
-                        WORLD_1_1.getMinX(),
-                        WORLD_1_1.getMaxX(),
-                        WORLD_1_1.getMinY() - h / 2,
-                        WORLD_1_1.getMaxY() + h / 2,
-                        WORLD_1_1.getCoordinateReferenceSystem());
+        ReferencedEnvelope expected = new ReferencedEnvelope(
+                WORLD_1_1.getMinX(),
+                WORLD_1_1.getMaxX(),
+                WORLD_1_1.getMinY() - h / 2,
+                WORLD_1_1.getMaxY() + h / 2,
+                WORLD_1_1.getCoordinateReferenceSystem());
 
         assertAspectCorrection(SCREEN_1_2, expected);
     }
@@ -173,15 +171,11 @@ public class MapViewportTest extends LoggerTest {
     public void settingBoundsSetsTheViewportCRS() {
         MapViewport vp = new MapViewport();
         assertFalse(
-                CRS.equalsIgnoreMetadata(
-                        WORLD_1_1.getCoordinateReferenceSystem(),
-                        vp.getCoordinateReferenceSystem()));
+                CRS.equalsIgnoreMetadata(WORLD_1_1.getCoordinateReferenceSystem(), vp.getCoordinateReferenceSystem()));
 
         vp.setBounds(WORLD_1_1);
         assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        WORLD_1_1.getCoordinateReferenceSystem(),
-                        vp.getCoordinateReferenceSystem()));
+                CRS.equalsIgnoreMetadata(WORLD_1_1.getCoordinateReferenceSystem(), vp.getCoordinateReferenceSystem()));
     }
 
     @Test
@@ -192,13 +186,12 @@ public class MapViewportTest extends LoggerTest {
 
         vp.setScreenArea(SCREEN_2_1);
 
-        ReferencedEnvelope expectedBounds =
-                new ReferencedEnvelope(
-                        WORLD_1_1.getMinX(),
-                        WORLD_1_1.getMaxX() + WORLD_1_1.getWidth(),
-                        WORLD_1_1.getMinY(),
-                        WORLD_1_1.getMaxY(),
-                        WORLD_1_1.getCoordinateReferenceSystem());
+        ReferencedEnvelope expectedBounds = new ReferencedEnvelope(
+                WORLD_1_1.getMinX(),
+                WORLD_1_1.getMaxX() + WORLD_1_1.getWidth(),
+                WORLD_1_1.getMinY(),
+                WORLD_1_1.getMaxY(),
+                WORLD_1_1.getCoordinateReferenceSystem());
 
         assertTrue(expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
         // Now check with Fixed bounds set - bounding box will change but will include the old bbox
@@ -208,13 +201,12 @@ public class MapViewportTest extends LoggerTest {
 
         vp.setScreenArea(SCREEN_2_1);
 
-        expectedBounds =
-                new ReferencedEnvelope(
-                        WORLD_1_1.getMinX() - WORLD_1_1.getWidth() / 2,
-                        WORLD_1_1.getMaxX() + WORLD_1_1.getWidth() / 2,
-                        WORLD_1_1.getMinY(),
-                        WORLD_1_1.getMaxY(),
-                        WORLD_1_1.getCoordinateReferenceSystem());
+        expectedBounds = new ReferencedEnvelope(
+                WORLD_1_1.getMinX() - WORLD_1_1.getWidth() / 2,
+                WORLD_1_1.getMaxX() + WORLD_1_1.getWidth() / 2,
+                WORLD_1_1.getMinY(),
+                WORLD_1_1.getMaxY(),
+                WORLD_1_1.getCoordinateReferenceSystem());
         assertTrue(expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
         // double size of screen - no change in BBOX
         vp.setScreenArea(SCREEN_1_1);
@@ -256,9 +248,7 @@ public class MapViewportTest extends LoggerTest {
         vp.setBounds(world);
         vp.setScreenArea(screen);
 
-        double[] screenXY = {
-            screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()
-        };
+        double[] screenXY = {screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()};
 
         double[] worldXY = new double[screenXY.length];
         vp.getScreenToWorld().transform(screenXY, 0, worldXY, 0, screenXY.length / 2);
@@ -280,9 +270,7 @@ public class MapViewportTest extends LoggerTest {
 
         ReferencedEnvelope actualWorld = vp.getBounds();
 
-        double[] screenXY = {
-            screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()
-        };
+        double[] screenXY = {screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()};
 
         double[] worldXY = new double[screenXY.length];
         vp.getScreenToWorld().transform(screenXY, 0, worldXY, 0, screenXY.length / 2);

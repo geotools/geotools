@@ -25,8 +25,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_17">table 10 from
- * section A.5.3 Conformance test 17.</a>
+ * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_17">table 10 from section A.5.3
+ * Conformance test 17.</a>
  */
 @RunWith(Parameterized.class)
 @Ignore("Not implemented yet")
@@ -38,21 +38,17 @@ public class ConformanceTest17OnlineTest extends ATSOnlineTest {
 
     @Parameterized.Parameters(name = "{index} {0}")
     public static Collection<Object[]> params() {
-        return Arrays.asList(
-                new Object[][] {
-                    {"CASEI(name)=casei('KIEV')", 1},
-                    {"CASEI(name)=casei('kiev')", 1},
-                    {"CASEI(name)=casei('Kiev')", 1},
-                    {"CASEI(name)=casei('København')", 1},
-                    {"CASEI(name)=casei('københavn')", 1},
-                    {"CASEI(name)=casei('KØBENHAVN')", 1},
-                    {"CASEI(name) LIKE casei('B_r%')", 3},
-                    {"CASEI(name) LIKE casei('b_r%')", 3},
-                    {"CASEI(name) LIKE casei('B_R%')", 3},
-                    {
-                        "CASEI(name) IN (casei('Kiev'), casei('kobenhavn'), casei('Berlin'), casei('athens'), casei('foo'))",
-                        3
-                    }
-                });
+        return Arrays.asList(new Object[][] {
+            {"CASEI(name)=casei('KIEV')", 1},
+            {"CASEI(name)=casei('kiev')", 1},
+            {"CASEI(name)=casei('Kiev')", 1},
+            {"CASEI(name)=casei('København')", 1},
+            {"CASEI(name)=casei('københavn')", 1},
+            {"CASEI(name)=casei('KØBENHAVN')", 1},
+            {"CASEI(name) LIKE casei('B_r%')", 3},
+            {"CASEI(name) LIKE casei('b_r%')", 3},
+            {"CASEI(name) LIKE casei('B_R%')", 3},
+            {"CASEI(name) IN (casei('Kiev'), casei('kobenhavn'), casei('Berlin'), casei('athens'), casei('foo'))", 3}
+        });
     }
 }

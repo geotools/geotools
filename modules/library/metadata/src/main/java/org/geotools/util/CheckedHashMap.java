@@ -23,16 +23,15 @@ import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A {@linkplain Collections#checkedMap checked} and {@linkplain Collections#synchronizedMap
- * synchronized} {@link java.util.Map}. Type checks are performed at run-time in addition of
- * compile-time checks. The synchronization lock can be modified at runtime by overriding the {@link
- * #getLock} method.
+ * A {@linkplain Collections#checkedMap checked} and {@linkplain Collections#synchronizedMap synchronized}
+ * {@link java.util.Map}. Type checks are performed at run-time in addition of compile-time checks. The synchronization
+ * lock can be modified at runtime by overriding the {@link #getLock} method.
  *
- * <p>This class is similar to using the wrappers provided in {@link Collections}, minus the cost of
- * indirection levels and with the addition of overrideable methods.
+ * <p>This class is similar to using the wrappers provided in {@link Collections}, minus the cost of indirection levels
+ * and with the addition of overrideable methods.
  *
- * @todo Current implementation do not synchronize the {@linkplain #entrySet entry set}, {@linkplain
- *     #keySet key set} and {@linkplain #values values} collection.
+ * @todo Current implementation do not synchronize the {@linkplain #entrySet entry set}, {@linkplain #keySet key set}
+ *     and {@linkplain #values values} collection.
  * @param <K> The type of keys in the map.
  * @param <V> The type of values in the map.
  * @since 2.1
@@ -73,14 +72,13 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
     }
 
     /**
-     * Checks the type of the specified object. The default implementation ensure that the object is
-     * assignable to the type specified at construction time.
+     * Checks the type of the specified object. The default implementation ensure that the object is assignable to the
+     * type specified at construction time.
      *
      * @param element the object to check, or {@code null}.
      * @throws IllegalArgumentException if the specified element is not of the expected type.
      */
-    private static <E> void ensureValidType(final E element, final Class<E> type)
-            throws IllegalArgumentException {
+    private static <E> void ensureValidType(final E element, final Class<E> type) throws IllegalArgumentException {
         if (element != null && !type.isInstance(element)) {
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
@@ -88,10 +86,10 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
     }
 
     /**
-     * Checks if changes in this collection are allowed. This method is automatically invoked after
-     * this collection got the {@linkplain #getLock lock} and before any operation that may change
-     * the content. The default implementation does nothing (i.e. this collection is modifiable).
-     * Subclasses should override this method if they want to control write access.
+     * Checks if changes in this collection are allowed. This method is automatically invoked after this collection got
+     * the {@linkplain #getLock lock} and before any operation that may change the content. The default implementation
+     * does nothing (i.e. this collection is modifiable). Subclasses should override this method if they want to control
+     * write access.
      *
      * @throws UnsupportedOperationException if this collection is unmodifiable.
      * @since 2.5
@@ -101,9 +99,8 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
     }
 
     /**
-     * Returns the synchronization lock. The default implementation returns {@code this}. Subclasses
-     * that override this method should be careful to update the lock reference when this set is
-     * {@linkplain #clone cloned}.
+     * Returns the synchronization lock. The default implementation returns {@code this}. Subclasses that override this
+     * method should be careful to update the lock reference when this set is {@linkplain #clone cloned}.
      *
      * @return The synchronization lock.
      * @since 2.5
@@ -153,8 +150,8 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
     }
 
     /**
-     * Associates the specified value with the specified key in this map. If the map previously
-     * contained a mapping for this key, the old value is replaced.
+     * Associates the specified value with the specified key in this map. If the map previously contained a mapping for
+     * this key, the old value is replaced.
      *
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
@@ -163,8 +160,7 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
      * @throws UnsupportedOperationException if this collection is unmodifiable.
      */
     @Override
-    public V put(final K key, final V value)
-            throws IllegalArgumentException, UnsupportedOperationException {
+    public V put(final K key, final V value) throws IllegalArgumentException, UnsupportedOperationException {
         ensureValidType(key, keyType);
         ensureValidType(value, valueType);
         synchronized (getLock()) {

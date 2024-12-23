@@ -22,8 +22,8 @@ import org.locationtech.jts.geom.Envelope;
 
 /**
  * @author dzwiers
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
- *     Java - Code Style - Code Templates
+ *     <p>TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
+ *     Code Templates
  */
 public class GMLFeatureCollection extends DefaultFeatureCollection {
     private ReferencedEnvelope bounds;

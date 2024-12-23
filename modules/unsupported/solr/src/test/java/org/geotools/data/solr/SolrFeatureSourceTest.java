@@ -102,8 +102,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithAndLogicFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property =
-                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -1, -1, 10, 10, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -121,9 +120,8 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = iterator.next();
-                assertTrue(
-                        f.getAttribute("vendor_s").equals("D-Link")
-                                || f.getAttribute("vendor_s").equals("Linksys"));
+                assertTrue(f.getAttribute("vendor_s").equals("D-Link")
+                        || f.getAttribute("vendor_s").equals("Linksys"));
             }
         }
     }
@@ -146,12 +144,8 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithIdFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        Id id =
-                ff.id(
-                        new HashSet<>(
-                                Arrays.asList(
-                                        ff.featureId(this.layerName + ".1"),
-                                        ff.featureId(this.layerName + ".7"))));
+        Id id = ff.id(
+                new HashSet<>(Arrays.asList(ff.featureId(this.layerName + ".1"), ff.featureId(this.layerName + ".7"))));
         SimpleFeatureCollection features = featureSource.getFeatures(id);
         assertEquals(2, features.size());
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -167,8 +161,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithBetweenFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsBetween between =
-                ff.between(ff.property("speed_is"), ff.literal(0), ff.literal(150));
+        PropertyIsBetween between = ff.between(ff.property("speed_is"), ff.literal(0), ff.literal(150));
         SimpleFeatureCollection features = featureSource.getFeatures(between);
         assertEquals(9, features.size());
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -335,8 +328,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithIsGreaterThanOrEqualToFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsGreaterThanOrEqualTo f =
-                ff.greaterOrEqual(ff.property("speed_is"), ff.literal(300));
+        PropertyIsGreaterThanOrEqualTo f = ff.greaterOrEqual(ff.property("speed_is"), ff.literal(300));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
     }

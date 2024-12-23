@@ -24,16 +24,15 @@ import org.geotools.api.filter.spatial.DistanceBufferOperator;
 /**
  * Defines geometry filters with a distance element.
  *
- * <p>These filters are defined in the filter spec by the DistanceBufferType, which contains an
- * additioinal field for a distance. The two filters that use the distance buffer type are Beyond
- * and DWithin.
+ * <p>These filters are defined in the filter spec by the DistanceBufferType, which contains an additioinal field for a
+ * distance. The two filters that use the distance buffer type are Beyond and DWithin.
  *
- * <p>From the spec: The spatial operators DWithin and Beyond test whether the value of a geometric
- * property is within or beyond a specified distance of the specified literal geometric value.
- * Distance values are expressed using the Distance element.
+ * <p>From the spec: The spatial operators DWithin and Beyond test whether the value of a geometric property is within
+ * or beyond a specified distance of the specified literal geometric value. Distance values are expressed using the
+ * Distance element.
  *
- * <p>For now this code does not take into account the units of distance, we will assume that the
- * filter units are the same as the geometry being filtered, and that they are cartesian.
+ * <p>For now this code does not take into account the units of distance, we will assume that the filter units are the
+ * same as the geometry being filtered, and that they are cartesian.
  *
  * <p>
  *
@@ -41,8 +40,7 @@ import org.geotools.api.filter.spatial.DistanceBufferOperator;
  * @version $Id$
  * @task REVISIT: add units for distance.
  */
-public abstract class CartesianDistanceFilter extends GeometryFilterImpl
-        implements DistanceBufferOperator {
+public abstract class CartesianDistanceFilter extends GeometryFilterImpl implements DistanceBufferOperator {
     /** The distance value */
     private double distance;
     /** the distnace units */
@@ -113,25 +111,19 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
             return "[ " + leftGeometry.toString() + operator + "null" + distStr + " ]";
         }
 
-        return "[ "
-                + leftGeometry.toString()
-                + operator
-                + rightGeometry.toString()
-                + distStr
-                + " ]";
+        return "[ " + leftGeometry.toString() + operator + rightGeometry.toString() + distStr + " ]";
     }
 
     /**
-     * Returns true if the passed in object is the same as this filter. Checks to make sure the
-     * filter types are the same as well as all three of the values.
+     * Returns true if the passed in object is the same as this filter. Checks to make sure the filter types are the
+     * same as well as all three of the values.
      *
      * @param oFilter The filter to test equality against.
      * @return True if the objects are equal.
      */
     @Override
     public boolean equals(Object oFilter) {
-        return super.equals(oFilter)
-                && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
+        return super.equals(oFilter) && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
     }
 
     /**
@@ -149,12 +141,11 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
     }
 
     /**
-     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by
-     * Filter decoders, but may also be used by any thing which needs infomration from filter
-     * structure. Implementations should always call: visitor.visit(this); It is importatant that
-     * this is not left to a parent class unless the parents API is identical.
+     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by Filter decoders, but may
+     * also be used by any thing which needs infomration from filter structure. Implementations should always call:
+     * visitor.visit(this); It is importatant that this is not left to a parent class unless the parents API is
+     * identical.
      *
-     * @param visitor The visitor which requires access to this filter, the method must call
-     *     visitor.visit(this);
+     * @param visitor The visitor which requires access to this filter, the method must call visitor.visit(this);
      */
 }

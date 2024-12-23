@@ -14,10 +14,9 @@ package org.geotools.api.filter.spatial;
 import org.geotools.api.geometry.BoundingBox;
 
 /**
- * {@linkplain SpatialOperator Spatial operator} that evaluates to {@code true} when the bounding
- * box of the feature's geometry overlaps the bounding box provided in this object's properties. An
- * implementation may choose to throw an exception if one attempts to test features that are in a
- * different SRS than the SRS contained here.
+ * {@linkplain SpatialOperator Spatial operator} that evaluates to {@code true} when the bounding box of the feature's
+ * geometry overlaps the bounding box provided in this object's properties. An implementation may choose to throw an
+ * exception if one attempts to test features that are in a different SRS than the SRS contained here.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

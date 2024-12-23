@@ -69,8 +69,7 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
         dataStore.setTryCPGFile(true);
         try {
             String typeName = dataStore.getTypeNames()[0];
-            FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                    dataStore.getFeatureSource(typeName);
+            FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
 
             try (FeatureIterator<SimpleFeature> features =
                     source.getFeatures(Filter.INCLUDE).features()) {
@@ -90,8 +89,7 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
         ShapefileDataStore dataStore = new ShapefileDataStore(url);
         try {
             String typeName = dataStore.getTypeNames()[0];
-            FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                    dataStore.getFeatureSource(typeName);
+            FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
 
             try (FeatureIterator<SimpleFeature> features =
                     source.getFeatures(Filter.INCLUDE).features()) {
@@ -177,19 +175,17 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
         File file = copyShapefiles(DANISH);
 
         Map<String, Object> params = new HashMap<>();
-        params.put(ShapefileDataStoreFactory.URLP.key, file.getParentFile().toURI().toURL());
+        params.put(
+                ShapefileDataStoreFactory.URLP.key, file.getParentFile().toURI().toURL());
         ShapefileDirectoryFactory factory = new ShapefileDirectoryFactory();
 
         DataStore dataStore = factory.createDataStore(params);
 
         try {
-            assertThat(
-                    Arrays.asList(dataStore.getTypeNames()),
-                    hasItems("rus-windows-1251", "danish_point"));
+            assertThat(Arrays.asList(dataStore.getTypeNames()), hasItems("rus-windows-1251", "danish_point"));
 
             for (String typeName : dataStore.getTypeNames()) {
-                FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                        dataStore.getFeatureSource(typeName);
+                FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
 
                 try (FeatureIterator<SimpleFeature> features =
                         source.getFeatures(Filter.INCLUDE).features()) {
@@ -211,20 +207,18 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
         File file = copyShapefiles(DANISH);
 
         Map<String, Object> params = new HashMap<>();
-        params.put(ShapefileDataStoreFactory.URLP.key, file.getParentFile().toURI().toURL());
+        params.put(
+                ShapefileDataStoreFactory.URLP.key, file.getParentFile().toURI().toURL());
         params.put(ShapefileDataStoreFactory.DBFCHARSET.key, StandardCharsets.ISO_8859_1);
         ShapefileDirectoryFactory factory = new ShapefileDirectoryFactory();
 
         DataStore dataStore = factory.createDataStore(params);
 
         try {
-            assertThat(
-                    Arrays.asList(dataStore.getTypeNames()),
-                    hasItems("rus-windows-1251", "danish_point"));
+            assertThat(Arrays.asList(dataStore.getTypeNames()), hasItems("rus-windows-1251", "danish_point"));
 
             for (String typeName : dataStore.getTypeNames()) {
-                FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                        dataStore.getFeatureSource(typeName);
+                FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
 
                 try (FeatureIterator<SimpleFeature> features =
                         source.getFeatures(Filter.INCLUDE).features()) {

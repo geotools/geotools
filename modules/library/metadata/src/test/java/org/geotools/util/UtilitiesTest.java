@@ -75,9 +75,8 @@ public final class UtilitiesTest {
     }
 
     /**
-     * Tests that the proper overloaded method of {@code equals} is selected. Actually there is no
-     * easy way to make sure that this test pass, except follow the execution of this method
-     * step-by-step in a debugger.
+     * Tests that the proper overloaded method of {@code equals} is selected. Actually there is no easy way to make sure
+     * that this test pass, except follow the execution of this method step-by-step in a debugger.
      */
     @Test
     public void testEqualOverload() {
@@ -149,8 +148,8 @@ public final class UtilitiesTest {
     }
 
     /**
-     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for
-     * vulnerable filename/path combination.
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for vulnerable
+     * filename/path combination.
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable() throws IOException {
@@ -158,53 +157,46 @@ public final class UtilitiesTest {
     }
 
     /**
-     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for
-     * vulnerable filename/path combination.
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for vulnerable
+     * filename/path combination.
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable2() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(
-                new File("./target/../../testfile"), Paths.get("./target"));
+        Utilities.assertNotZipSlipVulnarable(new File("./target/../../testfile"), Paths.get("./target"));
     }
 
     /**
-     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for
-     * vulnerable filename/path combination.
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for vulnerable
+     * filename/path combination.
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable3() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(
-                new File("../target/../testfile"), Paths.get("../target"));
+        Utilities.assertNotZipSlipVulnarable(new File("../target/../testfile"), Paths.get("../target"));
     }
 
     /**
-     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for
-     * non-vulnerable filename/path combination.
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for non-vulnerable
+     * filename/path combination.
      */
     @Test
     public void testAssertNotZipSlipVulnarableNotVulnerable() throws IOException {
         try {
             Utilities.assertNotZipSlipVulnarable(new File("/../testfile"), Paths.get("/"));
         } catch (IOException io) {
-            fail(
-                    "zip slip check should not have failed for this case: "
-                            + io.getLocalizedMessage());
+            fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }
     }
 
     /**
-     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for
-     * non-vulnerable filename/path combination.
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(File, Path)} for non-vulnerable
+     * filename/path combination.
      */
     @Test
     public void testAssertNotZipSlipVulnarableNotVulnerable2() throws IOException {
         try {
-            Utilities.assertNotZipSlipVulnarable(
-                    new File("../target/testfile"), Paths.get("../target"));
+            Utilities.assertNotZipSlipVulnarable(new File("../target/testfile"), Paths.get("../target"));
         } catch (IOException io) {
-            fail(
-                    "zip slip check should not have failed for this case: "
-                            + io.getLocalizedMessage());
+            fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }
     }
 }

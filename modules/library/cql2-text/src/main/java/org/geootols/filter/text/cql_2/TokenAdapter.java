@@ -20,8 +20,8 @@ import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.cql_2.parsers.Token;
 
 /**
- * Copy from gt-cql, as it needs to adapt a different Token class. Can probably be removed once we
- * merge gt-cql2-text with gt-cql
+ * Copy from gt-cql, as it needs to adapt a different Token class. Can probably be removed once we merge gt-cql2-text
+ * with gt-cql
  */
 class TokenAdapter implements IToken {
 

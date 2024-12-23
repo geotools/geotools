@@ -53,16 +53,13 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
     @Override
     protected Map<String, String> getNamespaces() {
         return namespaces(
-                Namespace("csw", CSW.NAMESPACE),
-                Namespace("ows", OWS.NAMESPACE),
-                Namespace("rim", RIM_NAMESPACE));
+                Namespace("csw", CSW.NAMESPACE), Namespace("ows", OWS.NAMESPACE), Namespace("rim", RIM_NAMESPACE));
     }
 
     @Test
     public void testParseCapabilitiesRequest() throws Exception {
         String capRequestPath = "GetCapabilities.xml";
-        GetCapabilitiesType caps =
-                (GetCapabilitiesType) parser.parse(getClass().getResourceAsStream(capRequestPath));
+        GetCapabilitiesType caps = (GetCapabilitiesType) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("CSW", caps.getService());
 
         List versions = caps.getAcceptVersions().getVersion();
@@ -76,8 +73,7 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
 
     @Test
     public void testParseCapabilities() throws Exception {
-        CapabilitiesType caps =
-                (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
+        CapabilitiesType caps = (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
         assertEquals("2.0.2", caps.getVersion());
 
         ServiceIdentificationType si = caps.getServiceIdentification();
@@ -170,8 +166,7 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
 
     @Test
     public void testRoundTripCapabilities() throws Exception {
-        CapabilitiesType caps =
-                (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
+        CapabilitiesType caps = (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
 
         Encoder encoder = new Encoder(new CSWConfiguration());
         encoder.setIndenting(true);
@@ -193,21 +188,20 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
         CapabilitiesType caps = cswf.createCapabilitiesType();
         OperationsMetadataType om = owsf.createOperationsMetadataType();
         caps.setOperationsMetadata(om);
-        om.setExtendedCapabilities(
-                new EncoderDelegate() {
+        om.setExtendedCapabilities(new EncoderDelegate() {
 
-                    @Override
-                    public void encode(ContentHandler output) throws Exception {
-                        AttributesImpl atts = new AttributesImpl();
-                        output.startPrefixMapping("rim", RIM_NAMESPACE);
-                        atts.addAttribute(RIM_NAMESPACE, "test", "rim:test", "xs:string", "test");
-                        output.startElement(RIM_NAMESPACE, "Slot", "rim:Slot", atts);
-                        String content = "test content";
-                        output.characters(content.toCharArray(), 0, content.length());
-                        output.endElement(RIM_NAMESPACE, "Slot", "rim:Slot");
-                        output.endPrefixMapping("rim");
-                    }
-                });
+            @Override
+            public void encode(ContentHandler output) throws Exception {
+                AttributesImpl atts = new AttributesImpl();
+                output.startPrefixMapping("rim", RIM_NAMESPACE);
+                atts.addAttribute(RIM_NAMESPACE, "test", "rim:test", "xs:string", "test");
+                output.startElement(RIM_NAMESPACE, "Slot", "rim:Slot", atts);
+                String content = "test content";
+                output.characters(content.toCharArray(), 0, content.length());
+                output.endElement(RIM_NAMESPACE, "Slot", "rim:Slot");
+                output.endPrefixMapping("rim");
+            }
+        });
 
         Encoder encoder = new Encoder(new CSWConfiguration());
         encoder.setIndenting(true);
@@ -217,15 +211,7 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
         encoder.getNamespaces().declarePrefix("gml", GML.NAMESPACE);
         String encoded = encoder.encodeAsString(caps, CSW.Capabilities);
 
-        assertThat(
-                encoded,
-                hasXPath(
-                        "/csw:Capabilities/ows:OperationsMetadata/rim:Slot/@rim:test",
-                        equalTo("test")));
-        assertThat(
-                encoded,
-                hasXPath(
-                        "/csw:Capabilities/ows:OperationsMetadata/rim:Slot",
-                        equalTo("test content")));
+        assertThat(encoded, hasXPath("/csw:Capabilities/ows:OperationsMetadata/rim:Slot/@rim:test", equalTo("test")));
+        assertThat(encoded, hasXPath("/csw:Capabilities/ows:OperationsMetadata/rim:Slot", equalTo("test content")));
     }
 }

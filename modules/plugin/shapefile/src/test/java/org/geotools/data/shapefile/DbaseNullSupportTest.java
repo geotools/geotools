@@ -23,11 +23,11 @@ import org.geotools.data.shapefile.dbf.DbaseFileWriter;
 import org.junit.Test;
 
 /**
- * Verifies that null String, Date, Boolean, Integer, Long, Float, and Double types can be written
- * and read back without losing the proper 'null' Java value.
+ * Verifies that null String, Date, Boolean, Integer, Long, Float, and Double types can be written and read back without
+ * losing the proper 'null' Java value.
  *
- * <p>This is a separate test from the DbaseFileTest#testEmptyFields method since it seems to be
- * checking for something else.
+ * <p>This is a separate test from the DbaseFileTest#testEmptyFields method since it seems to be checking for something
+ * else.
  */
 public class DbaseNullSupportTest {
     /** declare a specific charset for test portability */
@@ -44,10 +44,9 @@ public class DbaseNullSupportTest {
     private static final int[] sizes = {5, 9, 20, 1, 8};
     private static final int[] decimals = {0, 0, 31, 0, 0};
     /**
-     * Creates some non-null values to mix in with the nulls so we have variety. Be sure to use
-     * powers of two for the numbers to prevent any possible loss of precision when
-     * saving/reloading. Be sure to use a Date with no time component since only the month/day/year
-     * are saved.
+     * Creates some non-null values to mix in with the nulls so we have variety. Be sure to use powers of two for the
+     * numbers to prevent any possible loss of precision when saving/reloading. Be sure to use a Date with no time
+     * component since only the month/day/year are saved.
      */
     private static final Object[] values;
 
@@ -100,9 +99,7 @@ public class DbaseNullSupportTest {
                     reader.getHeader().getNumRecords());
             for (int row = 0; row < values.length; row++) {
                 Object[] current = reader.readEntry();
-                assertTrue(
-                        "Number of columns incorrect",
-                        current != null && current.length == values.length);
+                assertTrue("Number of columns incorrect", current != null && current.length == values.length);
                 for (int column = 0; column < values.length; column++) {
                     if (column == row) {
                         assertNotNull("Column was null and should not have been", current[column]);

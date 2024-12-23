@@ -30,13 +30,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class QuantileFunction extends AbstractQuantityClassificationFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Quantile",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Quantile",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public QuantileFunction() {
         super(NAME);

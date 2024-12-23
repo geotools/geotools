@@ -23,9 +23,9 @@ import org.geotools.api.filter.expression.PropertyName;
 /**
  * Resolves all property name references in a filter against a particular feature type.
  *
- * <p>This visitor is used to handle property accesses such as "gml:name", "//foo" etc.. Each such
- * reference is resolved against the feature type and replaced with the actual name of the
- * attribute, ie "gml:name" => "name", "//foo" => "foo".
+ * <p>This visitor is used to handle property accesses such as "gml:name", "//foo" etc.. Each such reference is resolved
+ * against the feature type and replaced with the actual name of the attribute, ie "gml:name" => "name", "//foo" =>
+ * "foo".
  *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6

@@ -23,8 +23,8 @@ import java.awt.Paint;
 import java.awt.Stroke;
 
 /**
- * A rendered style to draw the contour of shapes TODO: add support for Graphic rendering (that is,
- * an image painted along the contour)
+ * A rendered style to draw the contour of shapes TODO: add support for Graphic rendering (that is, an image painted
+ * along the contour)
  *
  * @author aaime
  */
@@ -40,8 +40,8 @@ public class LineStyle2D extends Style2D {
     private Style2D graphicStroke;
 
     /**
-     * Returns the stroke for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be
-     * rendered, or <code>null</code> if none.
+     * Returns the stroke for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered, or <code>
+     * null</code> if none.
      *
      * @return the current stroke or null if none
      */
@@ -50,8 +50,7 @@ public class LineStyle2D extends Style2D {
     }
 
     /**
-     * Sets the stroke for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be
-     * rendered
+     * Sets the stroke for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered
      *
      * @param stroke The stroke, or null if the contour doesn't need to be stroked
      */
@@ -60,8 +59,8 @@ public class LineStyle2D extends Style2D {
     }
 
     /**
-     * Returns the contour color for the {@linkplain org.geotools.renderer.geom.Polyline polyline}
-     * to be rendered, or <code>null</code> if none.
+     * Returns the contour color for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered, or
+     * <code>null</code> if none.
      *
      * @return the current contour, or null if none
      */
@@ -69,17 +68,14 @@ public class LineStyle2D extends Style2D {
         return this.contour;
     }
 
-    /**
-     * Sets the contour color for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to
-     * be rendered
-     */
+    /** Sets the contour color for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered */
     public void setContour(Paint contour) {
         this.contour = contour;
     }
 
     /**
-     * Returns the contour Composite for the {@linkplain org.geotools.renderer.geom.Polyline
-     * polyline} to be rendered, or <code>null</code> if the contour is to be opaque
+     * Returns the contour Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered,
+     * or <code>null</code> if the contour is to be opaque
      *
      * @return the current contour composite, or null if opaque
      */
@@ -88,8 +84,8 @@ public class LineStyle2D extends Style2D {
     }
 
     /**
-     * Sets the contour Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline}
-     * to be rendered. Set it to <code>null</code> if the contour is to be opaque
+     * Sets the contour Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered. Set
+     * it to <code>null</code> if the contour is to be opaque
      */
     public void setContourComposite(Composite contourComposite) {
         this.contourComposite = contourComposite;

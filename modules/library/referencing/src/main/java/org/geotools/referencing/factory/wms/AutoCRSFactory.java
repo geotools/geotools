@@ -36,8 +36,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * The factory for {@linkplain ProjectedCRS projected CRS} in the {@code AUTO} and {@code AUTO2}
- * space.
+ * The factory for {@linkplain ProjectedCRS projected CRS} in the {@code AUTO} and {@code AUTO2} space.
  *
  * @since 2.2
  * @version $Id$
@@ -48,8 +47,8 @@ import org.geotools.util.factory.Hints;
  */
 public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
     /**
-     * The authority code. We use {@code AUTO2} citation, but merge {@code AUTO} and {@code AUTO2}
-     * identifiers in order to use the same factory for both authorities.
+     * The authority code. We use {@code AUTO2} citation, but merge {@code AUTO} and {@code AUTO2} identifiers in order
+     * to use the same factory for both authorities.
      */
     private static final Citation AUTHORITY;
 
@@ -119,20 +118,16 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
     }
 
     /**
-     * Provides a complete set of the known codes provided by this authority. The returned set
-     * contains only numeric identifiers like {@code "42001"}, {@code "42002"}, <cite>etc</cite>.
-     * The authority name ({@code "AUTO"}) and the {@code lon0,lat0} part are not included. This is
-     * consistent with the {@linkplain
-     * org.geotools.referencing.factory.epsg.DirectEpsgFactory#getAuthorityCodes codes returned by
-     * the EPSG factory} and avoid duplication, since the authority is the same for every codes
-     * returned by this factory. It also make it easier for clients to prepend whatever authority
-     * name they wish, as for example in the {@linkplain
-     * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
-     * factory}.
+     * Provides a complete set of the known codes provided by this authority. The returned set contains only numeric
+     * identifiers like {@code "42001"}, {@code "42002"}, <cite>etc</cite>. The authority name ({@code "AUTO"}) and the
+     * {@code lon0,lat0} part are not included. This is consistent with the
+     * {@linkplain org.geotools.referencing.factory.epsg.DirectEpsgFactory#getAuthorityCodes codes returned by the EPSG
+     * factory} and avoid duplication, since the authority is the same for every codes returned by this factory. It also
+     * make it easier for clients to prepend whatever authority name they wish, as for example in the
+     * {@linkplain org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities factory}.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         if (type.isAssignableFrom(ProjectedCRS.class)) {
             final Set<String> set = new LinkedHashSet<>();
             for (Integer code : factlets.keySet()) {
@@ -161,12 +156,11 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
     }
 
     /**
-     * Creates a coordinate reference system from the specified code. The default implementation
-     * delegates to <code>{@linkplain #createProjectedCRS createProjectedCRS}(code)</code>.
+     * Creates a coordinate reference system from the specified code. The default implementation delegates to <code>
+     * {@linkplain #createProjectedCRS createProjectedCRS}(code)</code>.
      */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         return createProjectedCRS(code);
     }
 

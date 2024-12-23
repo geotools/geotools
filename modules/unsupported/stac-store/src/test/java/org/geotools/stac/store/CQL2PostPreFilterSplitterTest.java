@@ -29,11 +29,9 @@ import org.junit.Test;
 public class CQL2PostPreFilterSplitterTest {
 
     static final String BASIC = "http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2";
-    static final String PROPERTY_PROPERTY =
-            "http://www.opengis.net/spec/cql2/1.0/conf/property-property";
+    static final String PROPERTY_PROPERTY = "http://www.opengis.net/spec/cql2/1.0/conf/property-property";
 
-    static final String BASIC_SPATIAL =
-            "http://www.opengis.net/spec/cql2/1.0/conf/basic-spatial-operators";
+    static final String BASIC_SPATIAL = "http://www.opengis.net/spec/cql2/1.0/conf/basic-spatial-operators";
 
     static final String SPATIAL = "http://www.opengis.net/spec/cql2/1.0/conf/spatial-operators";
 
@@ -101,8 +99,7 @@ public class CQL2PostPreFilterSplitterTest {
 
     @Test
     public void testSpatialNoTemporal() throws Exception {
-        Filter filter =
-                ECQL.toFilter("bbox(g, 10, 10, 20, 20) and time AFTER 2006-11-30T01:30:00Z");
+        Filter filter = ECQL.toFilter("bbox(g, 10, 10, 20, 20) and time AFTER 2006-11-30T01:30:00Z");
         Filter[] filters = visit(filter, BASIC, SPATIAL);
         assertEquals(ECQL.toFilter("bbox(g, 10, 10, 20, 20)"), filters[0]);
         assertEquals(ECQL.toFilter("time AFTER 2006-11-30T01:30:00Z"), filters[1]);
@@ -110,8 +107,7 @@ public class CQL2PostPreFilterSplitterTest {
 
     @Test
     public void testSpatialTemporal() throws Exception {
-        Filter filter =
-                ECQL.toFilter("bbox(g, 10, 10, 20, 20) and time AFTER 2006-11-30T01:30:00Z");
+        Filter filter = ECQL.toFilter("bbox(g, 10, 10, 20, 20) and time AFTER 2006-11-30T01:30:00Z");
         Filter[] filters = visit(filter, BASIC, SPATIAL, TEMPORAL);
         assertEquals(filter, filters[0]);
         assertEquals(Filter.INCLUDE, filters[1]);

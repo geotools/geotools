@@ -17,11 +17,11 @@
 package org.geotools.gce.grassraster;
 
 /**
- * Represents the read parameters in the geotools space, as opposed to {@linkplain
- * GrassBinaryImageReadParam} that are for the imageio space.
+ * Represents the read parameters in the geotools space, as opposed to {@linkplain GrassBinaryImageReadParam} that are
+ * for the imageio space.
  *
- * <p>Represents the parameters needed by the {@linkplain GrassCoverageReader} for reading coverage,
- * i.e. the portion and resolution of the map you want to get from the GridCoverageReader.
+ * <p>Represents the parameters needed by the {@linkplain GrassCoverageReader} for reading coverage, i.e. the portion
+ * and resolution of the map you want to get from the GridCoverageReader.
  *
  * <p>The needed parameters to read a GRASS raster map, are the following:
  *
@@ -34,10 +34,9 @@ package org.geotools.gce.grassraster;
  *   <li>the number of rows and columns
  * </ul>
  *
- * <p>All these values are already handled in the {@linkplain JGrassRegion}, so that has to be
- * supplied in order to choose a region different from the native data region. <b>Note:</b> it is
- * enough to have bounds and row-cols, or bounds and resolutions, or also a corner and row-cols and
- * resolutions.
+ * <p>All these values are already handled in the {@linkplain JGrassRegion}, so that has to be supplied in order to
+ * choose a region different from the native data region. <b>Note:</b> it is enough to have bounds and row-cols, or
+ * bounds and resolutions, or also a corner and row-cols and resolutions.
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
@@ -46,10 +45,7 @@ package org.geotools.gce.grassraster;
  */
 public class GrassCoverageReadParam {
 
-    /**
-     * The active read region used by the {@linkplain GrassCoverageReader} for defining the
-     * requested map portion.
-     */
+    /** The active read region used by the {@linkplain GrassCoverageReader} for defining the requested map portion. */
     private JGrassRegion requestedWorldRegion = null;
 
     /**

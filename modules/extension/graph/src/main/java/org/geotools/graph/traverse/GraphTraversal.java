@@ -20,13 +20,12 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 
 /**
- * Iterates a GraphWalker over the components of a Graph. The order in which components are iterated
- * over is determined by the GraphIterator class. The GraphTraversal is the mediator between the
- * GraphWalker and the GraphIterator.<br>
+ * Iterates a GraphWalker over the components of a Graph. The order in which components are iterated over is determined
+ * by the GraphIterator class. The GraphTraversal is the mediator between the GraphWalker and the GraphIterator.<br>
  * <br>
- * Upon each visitation, the GraphWalker communicates to the GraphTraversal through a series of
- * return codes, each specifying a different action to perform at that point of the travesal. The
- * following summarizes the meaning of the codes.<br>
+ * Upon each visitation, the GraphWalker communicates to the GraphTraversal through a series of return codes, each
+ * specifying a different action to perform at that point of the travesal. The following summarizes the meaning of the
+ * codes.<br>
  * <br>
  *
  * <TABLE border="1" width="60%" style="font-family:Arial;font-size=10pt">
@@ -54,8 +53,8 @@ import org.geotools.graph.structure.Graphable;
  *
  * <br>
  * <br>
- * GraphTraversals are started with a call to traverse(). If the traversal is suspended at some
- * intermediate point, an additional call to traverse() will resume the traversal.<br>
+ * GraphTraversals are started with a call to traverse(). If the traversal is suspended at some intermediate point, an
+ * additional call to traverse() will resume the traversal.<br>
  * <br>
  *
  * @see GraphWalker

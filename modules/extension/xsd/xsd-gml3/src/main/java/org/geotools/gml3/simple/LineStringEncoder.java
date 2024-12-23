@@ -40,8 +40,7 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         this(encoder, LINE_STRING.derive(gmlPrefix, gmlUri));
     }
 
-    protected LineStringEncoder(
-            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+    protected LineStringEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
         this(encoder, LINE_STRING.derive(gmlPrefix, gmlUri), encodeGmlId);
     }
 
@@ -56,8 +55,7 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
     }
 
     @Override
-    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(element, atts);
         handler.posList(geometry.getCoordinateSequence());

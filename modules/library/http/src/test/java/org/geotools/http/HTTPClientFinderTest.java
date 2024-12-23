@@ -44,8 +44,7 @@ public class HTTPClientFinderTest {
     @Test
     public void findingCustomHttpClientTestByHints() throws Exception {
 
-        HTTPClient client =
-                HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
+        HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
         assertTrue(client instanceof CustomHttpClient);
     }
@@ -67,8 +66,7 @@ public class HTTPClientFinderTest {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
 
-            HTTPClient client =
-                    HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
+            HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);
@@ -107,9 +105,7 @@ public class HTTPClientFinderTest {
         }
     }
 
-    /**
-     * Test that a HTTPProxy behavior is added when http.proxyhost is set. In support of GEOT-6850.
-     */
+    /** Test that a HTTPProxy behavior is added when http.proxyhost is set. In support of GEOT-6850. */
     @Test
     public void createClientWithSystemProxyHost() throws Exception {
         final boolean nullInitially = System.getProperty("http.proxyHost") == null;

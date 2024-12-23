@@ -62,15 +62,12 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class RasterLayerRequest {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
     private static final int DEFAULT_PADDING = 10;
 
     private ReadType readType =
-            AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue()
-                    ? ReadType.JAI_IMAGEREAD
-                    : ReadType.DIRECT_READ;
+            AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
 
     SpatialRequestHelper spatialRequestHelper;
 
@@ -85,7 +82,8 @@ public class RasterLayerRequest {
 
     private FootprintBehavior footprintBehavior = FootprintBehavior.None;
 
-    private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;;
+    private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
+    ;
 
     private double artifactsFilterPTileThreshold;
 
@@ -99,22 +97,20 @@ public class RasterLayerRequest {
 
     RasterManager rasterManager;
 
-    private Color inputTransparentColor =
-            AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();
+    private Color inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();
 
     private boolean blend = ImageMosaicFormat.FADING.getDefaultValue();
 
     /** Specifies the behavior for the merging of the final mosaic. */
     private MergeBehavior mergeBehavior = MergeBehavior.getDefault();
 
-    private Color outputTransparentColor =
-            ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.getDefaultValue();
+    private Color outputTransparentColor = ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.getDefaultValue();
 
     /**
      * Max number of tiles that this plugin will load.
      *
-     * <p>If this number is exceeded, i.e. we request an area which is too large instead of getting
-     * stuck with opening thousands of files I give you back a fake coverage.
+     * <p>If this number is exceeded, i.e. we request an area which is too large instead of getting stuck with opening
+     * thousands of files I give you back a fake coverage.
      */
     private int maximumNumberOfGranules =
             ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue().intValue();
@@ -137,8 +133,7 @@ public class RasterLayerRequest {
     private Geometry geometryMask;
 
     /**
-     * The optional buffer to be applied to the provided geometryMask. Buffer size is expressed in
-     * raster coordinates
+     * The optional buffer to be applied to the provided geometryMask. Buffer size is expressed in raster coordinates
      */
     private double maskingBufferPixels;
 
@@ -236,8 +231,7 @@ public class RasterLayerRequest {
      *
      * @param params The {@code GeneralParameterValue}s to initialize this request
      */
-    public RasterLayerRequest(
-            final GeneralParameterValue[] params, final RasterManager rasterManager)
+    public RasterLayerRequest(final GeneralParameterValue[] params, final RasterManager rasterManager)
             throws IOException {
 
         this.params = params;
@@ -253,15 +247,11 @@ public class RasterLayerRequest {
         CoverageProperties coverageProperties = new CoverageProperties();
         coverageProperties.setBBox(rasterManager.spatialDomainManager.coverageBBox);
         coverageProperties.setRasterArea(rasterManager.spatialDomainManager.coverageRasterArea);
-        coverageProperties.setFullResolution(
-                rasterManager.spatialDomainManager.coverageFullResolution);
-        coverageProperties.setGridToWorld2D(
-                rasterManager.spatialDomainManager.coverageGridToWorld2D);
+        coverageProperties.setFullResolution(rasterManager.spatialDomainManager.coverageFullResolution);
+        coverageProperties.setGridToWorld2D(rasterManager.spatialDomainManager.coverageGridToWorld2D);
         coverageProperties.setCrs2D(rasterManager.spatialDomainManager.coverageCRS2D);
-        coverageProperties.setGeographicBBox(
-                rasterManager.spatialDomainManager.coverageGeographicBBox);
-        coverageProperties.setGeographicCRS2D(
-                rasterManager.spatialDomainManager.coverageGeographicCRS2D);
+        coverageProperties.setGeographicBBox(rasterManager.spatialDomainManager.coverageGeographicBBox);
+        coverageProperties.setGeographicCRS2D(rasterManager.spatialDomainManager.coverageGeographicCRS2D);
         this.spatialRequestHelper = new SpatialRequestHelper(coverageProperties);
         setDefaultParameterValues();
 
@@ -304,9 +294,7 @@ public class RasterLayerRequest {
                 requestedEpsgCode = CRS.lookupEpsgCode(requestedCRS, false);
             } catch (FactoryException e) {
                 throw new IOException(
-                        "Exception occurred while looking for an "
-                                + "epsgCode on the provided crs: "
-                                + requestedCRS,
+                        "Exception occurred while looking for an " + "epsgCode on the provided crs: " + requestedCRS,
                         e);
             }
             // Enable alternative CRS Output support only when the requested CRS doesn't match
@@ -329,19 +317,17 @@ public class RasterLayerRequest {
     private void computeRequestedGridGeometry() throws IOException {
         if (requestedGridGeometry != null) {
             if (heterogeneousCRS && !useAlternativeCRS) {
-                GridEnvelope2D paddedRange =
-                        new GridEnvelope2D(requestedGridGeometry.getGridRange2D());
+                GridEnvelope2D paddedRange = new GridEnvelope2D(requestedGridGeometry.getGridRange2D());
                 paddedRange.setBounds(
                         paddedRange.x - DEFAULT_PADDING,
                         paddedRange.y - DEFAULT_PADDING,
                         paddedRange.width + DEFAULT_PADDING * 2,
                         paddedRange.height + DEFAULT_PADDING * 2);
 
-                GridGeometry2D padded =
-                        new GridGeometry2D(
-                                paddedRange,
-                                requestedGridGeometry.getGridToCRS(),
-                                requestedGridGeometry.getCoordinateReferenceSystem());
+                GridGeometry2D padded = new GridGeometry2D(
+                        paddedRange,
+                        requestedGridGeometry.getGridToCRS(),
+                        requestedGridGeometry.getCoordinateReferenceSystem());
                 spatialRequestHelper.setRequestedGridGeometry(padded.toCanonical());
             } else {
                 // Do not apply any padding if we are going to produce output in requested CRS.
@@ -351,15 +337,13 @@ public class RasterLayerRequest {
         }
     }
 
-    protected ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager)
-            throws IOException {
+    protected ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager) throws IOException {
         try {
             ReferencedEnvelope queryBounds = null;
             if (requestedBounds != null) {
                 try {
                     ReferencedEnvelope re = ReferencedEnvelope.reference(requestedBounds);
-                    queryBounds =
-                            re.transform(rasterManager.spatialDomainManager.coverageCRS2D, true);
+                    queryBounds = re.transform(rasterManager.spatialDomainManager.coverageCRS2D, true);
                 } catch (TransformException | FactoryException e) {
                     LOGGER.log(
                             Level.FINE,
@@ -396,8 +380,7 @@ public class RasterLayerRequest {
         final ParameterValueGroup readParams =
                 this.rasterManager.parentReader.getFormat().getReadParameters();
         if (readParams == null) {
-            if (LOGGER.isLoggable(Level.FINER))
-                LOGGER.finer("No default values for the read parameters!");
+            if (LOGGER.isLoggable(Level.FINER)) LOGGER.finer("No default values for the read parameters!");
             return;
         }
         final List<GeneralParameterDescriptor> parametersDescriptors =
@@ -475,11 +458,10 @@ public class RasterLayerRequest {
                 if (value == null) continue;
                 inputTransparentColor = (Color) value;
                 // paranoiac check on the provided transparent color
-                inputTransparentColor =
-                        new Color(
-                                inputTransparentColor.getRed(),
-                                inputTransparentColor.getGreen(),
-                                inputTransparentColor.getBlue());
+                inputTransparentColor = new Color(
+                        inputTransparentColor.getRed(),
+                        inputTransparentColor.getGreen(),
+                        inputTransparentColor.getBlue());
                 continue;
             }
 
@@ -492,11 +474,10 @@ public class RasterLayerRequest {
                 if (value == null) continue;
                 outputTransparentColor = (Color) value;
                 // paranoiac check on the provided transparent color
-                outputTransparentColor =
-                        new Color(
-                                outputTransparentColor.getRed(),
-                                outputTransparentColor.getGreen(),
-                                outputTransparentColor.getBlue());
+                outputTransparentColor = new Color(
+                        outputTransparentColor.getRed(),
+                        outputTransparentColor.getGreen(),
+                        outputTransparentColor.getBlue());
                 continue;
             }
 
@@ -556,8 +537,7 @@ public class RasterLayerRequest {
                 if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
 
                     if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
-                        final String[] tilesSize =
-                                suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
+                        final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
                         if (tilesSize.length == 2) {
                             try {
                                 // Getting suggested tile size
@@ -566,9 +546,7 @@ public class RasterLayerRequest {
                                 tileDimensions = new Dimension(tileWidth, tileHeight);
                             } catch (NumberFormatException nfe) {
                                 if (LOGGER.isLoggable(Level.WARNING)) {
-                                    LOGGER.log(
-                                            Level.WARNING,
-                                            "Unable to parse " + "suggested tile size parameter");
+                                    LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter");
                                 }
                             }
                         }
@@ -721,11 +699,8 @@ public class RasterLayerRequest {
             if (value == null) return;
             inputTransparentColor = (Color) value;
             // paranoiac check on the provided transparent color
-            inputTransparentColor =
-                    new Color(
-                            inputTransparentColor.getRed(),
-                            inputTransparentColor.getGreen(),
-                            inputTransparentColor.getBlue());
+            inputTransparentColor = new Color(
+                    inputTransparentColor.getRed(), inputTransparentColor.getGreen(), inputTransparentColor.getBlue());
             return;
         }
 
@@ -740,11 +715,10 @@ public class RasterLayerRequest {
             if (value == null) return;
             outputTransparentColor = (Color) value;
             // paranoiac check on the provided transparent color
-            outputTransparentColor =
-                    new Color(
-                            outputTransparentColor.getRed(),
-                            outputTransparentColor.getGreen(),
-                            outputTransparentColor.getBlue());
+            outputTransparentColor = new Color(
+                    outputTransparentColor.getRed(),
+                    outputTransparentColor.getGreen(),
+                    outputTransparentColor.getBlue());
             return;
         }
 
@@ -820,8 +794,7 @@ public class RasterLayerRequest {
             if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
 
                 if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
-                    final String[] tilesSize =
-                            suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
+                    final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
                     if (tilesSize.length == 2) {
                         try {
                             // Getting suggested tile size
@@ -830,9 +803,7 @@ public class RasterLayerRequest {
                             tileDimensions = new Dimension(tileWidth, tileHeight);
                         } catch (NumberFormatException nfe) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(
-                                        Level.WARNING,
-                                        "Unable to parse " + "suggested tile size parameter");
+                                LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter");
                             }
                         }
                     }
@@ -887,8 +858,7 @@ public class RasterLayerRequest {
         //
         // //
         String paramName = name.getCode();
-        if (rasterManager.domainsManager != null
-                && rasterManager.domainsManager.isParameterSupported(name)) {
+        if (rasterManager.domainsManager != null && rasterManager.domainsManager.isParameterSupported(name)) {
             final Object value = param.getValue();
             if (value == null) {
                 return;
@@ -956,9 +926,8 @@ public class RasterLayerRequest {
     }
 
     /**
-     * Check the type of read operation which will be performed and return {@code true} if a JAI
-     * imageRead operation need to be performed or {@code false} if a simple read operation is
-     * needed.
+     * Check the type of read operation which will be performed and return {@code true} if a JAI imageRead operation
+     * need to be performed or {@code false} if a simple read operation is needed.
      */
     private void checkReadType() {
         // //

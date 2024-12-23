@@ -38,8 +38,8 @@ public abstract class SingleProcessFactory implements ProcessFactory {
     Name processName;
 
     /**
-     * Utility method for factories that will use the process factory name in order to define the
-     * process name by stripping the "Factory" at the end of the name.
+     * Utility method for factories that will use the process factory name in order to define the process name by
+     * stripping the "Factory" at the end of the name.
      */
     protected SingleProcessFactory() {
         String factoryName = this.getClass().getSimpleName();
@@ -59,19 +59,12 @@ public abstract class SingleProcessFactory implements ProcessFactory {
         this.processName = processName;
     }
 
-    /**
-     * Checks the process name and makes sure it's consistent with the only process name this
-     * factory knows about
-     */
+    /** Checks the process name and makes sure it's consistent with the only process name this factory knows about */
     void checkName(Name name) {
         if (name == null) throw new NullPointerException("Process name cannot be null");
         if (!processName.equals(name))
             throw new IllegalArgumentException(
-                    "Unknown process '"
-                            + name
-                            + "', this factory knows only about '"
-                            + processName
-                            + "'");
+                    "Unknown process '" + name + "', this factory knows only about '" + processName + "'");
     }
 
     @Override

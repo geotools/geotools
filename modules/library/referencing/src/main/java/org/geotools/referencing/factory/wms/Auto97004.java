@@ -19,11 +19,10 @@ package org.geotools.referencing.factory.wms;
 import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
- * Auto Geostationary Satellite ({@code AUTO:97004}). In the notation below, "<code>${var}</code>"
- * denotes a reference to the value of a variable "{@code var}". The variables "{@code lon0}" and
- * "{@code satellite_height}" are the central point of the projection and the height of the
- * satellite above the equator, respectively. For convenience, if the height is 0, it's assumed to
- * default to 35785831 meters, which is the height of the geostationary satellites.
+ * Auto Geostationary Satellite ({@code AUTO:97004}). In the notation below, "<code>${var}</code>" denotes a reference
+ * to the value of a variable "{@code var}". The variables "{@code lon0}" and "{@code satellite_height}" are the central
+ * point of the projection and the height of the satellite above the equator, respectively. For convenience, if the
+ * height is 0, it's assumed to default to 35785831 meters, which is the height of the geostationary satellites.
  *
  * <pre>
  * PROJCS["Geostationary_Satellite",

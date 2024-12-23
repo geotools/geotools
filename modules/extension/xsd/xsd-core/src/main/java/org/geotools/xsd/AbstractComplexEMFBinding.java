@@ -47,8 +47,8 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /**
      * Default constructor.
      *
-     * <p>Creating the binding with this constructor will force it to perform a noop in the {@link
-     * #parse(ElementInstance, Node, Object)} method.
+     * <p>Creating the binding with this constructor will force it to perform a noop in the
+     * {@link #parse(ElementInstance, Node, Object)} method.
      */
     public AbstractComplexEMFBinding() {}
 
@@ -72,11 +72,11 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     }
 
     /**
-     * Dynamically tries to determine the type of the object using emf naming conventions and the
-     * name returned by {@link Binding#getTarget()}.
+     * Dynamically tries to determine the type of the object using emf naming conventions and the name returned by
+     * {@link Binding#getTarget()}.
      *
-     * <p>This implementation is a heuristic and is not guaranteed to work. Subclasses may override
-     * to provide the type explicitly.
+     * <p>This implementation is a heuristic and is not guaranteed to work. Subclasses may override to provide the type
+     * explicitly.
      */
     @Override
     public Class<?> getType() {
@@ -116,10 +116,9 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /**
      * Uses EMF reflection to create an instance of the EMF model object this binding maps to.
      *
-     * <p>The properties of the resulting object are set using the the contents of
-     * <param>node</param>. In the case that the name of a child element or attributes does not
-     * match the name of a property on the object, subclasses may wish to extend this method and set
-     * the property explicitly.
+     * <p>The properties of the resulting object are set using the the contents of <param>node</param>. In the case that
+     * the name of a child element or attributes does not match the name of a property on the object, subclasses may
+     * wish to extend this method and set the property explicitly.
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -135,8 +134,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
 
             // check for a complex type with simpleContent, in this case use
             // the string value (if any) to set the value property
-            if (instance.getElementDeclaration().getTypeDefinition().getBaseType()
-                    instanceof XSDTypeDefinition) {
+            if (instance.getElementDeclaration().getTypeDefinition().getBaseType() instanceof XSDTypeDefinition) {
                 if ((value != null) && EMFUtils.has(eObject, "value")) {
                     setProperty(eObject, "value", value, false);
                 }
@@ -226,10 +224,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
                         // try to convert based on method return type
                         // JD: this is a hack
                         try {
-                            String methodName =
-                                    "get"
-                                            + property.substring(0, 1).toUpperCase()
-                                            + property.substring(1);
+                            String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
                             Method g = eObject.getClass().getMethod(methodName, null);
                             if (g == null) {
                                 throw e;
@@ -280,8 +275,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     }
 
     /** Helper method to convert a value, throwing an exception when it cant be converted. */
-    private Object convert(Object value, Class<?> target, RuntimeException toThrow)
-            throws RuntimeException {
+    private Object convert(Object value, Class<?> target, RuntimeException toThrow) throws RuntimeException {
         Object converted = value;
         if ((converted != null) && !converted.getClass().isAssignableFrom(target)) {
             // TODO: log this
@@ -299,9 +293,8 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /**
      * Uses EMF reflection dynamically return the property with the specified name.
      *
-     * <p>In the case that the name of a child element or attributes does not match the name of a
-     * property on the object, subclasses may wish to extend this method and set the property
-     * explicitly.
+     * <p>In the case that the name of a child element or attributes does not match the name of a property on the
+     * object, subclasses may wish to extend this method and set the property explicitly.
      */
     @Override
     public Object getProperty(Object object, QName name) throws Exception {

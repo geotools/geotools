@@ -10,8 +10,7 @@
 package org.geotools.api.referencing;
 
 /**
- * Thrown when an {@linkplain AuthorityFactory authority factory} can't find the requested authority
- * code.
+ * Thrown when an {@linkplain AuthorityFactory authority factory} can't find the requested authority code.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -31,8 +30,8 @@ public class NoSuchAuthorityCodeException extends FactoryException {
     /**
      * Constructs an exception with the specified detail message and authority code.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param authority The authority.
      * @param code The invalid authority code.
      */

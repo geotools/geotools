@@ -34,11 +34,11 @@ import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.geotools.filter.identity.FeatureIdImpl;
 
 /**
- * Defines a ID filter, which holds a list of IDs ( usually feature id;s ). This filter stores a
- * series of IDs, which are used to distinguish features uniquely.
+ * Defines a ID filter, which holds a list of IDs ( usually feature id;s ). This filter stores a series of IDs, which
+ * are used to distinguish features uniquely.
  *
- * <p>Please note that addAllFids( Collection ) may be a performance hog; uDig makes use of its own
- * implementation of FidFilter in order to reuse the internal set of fids between uses.
+ * <p>Please note that addAllFids( Collection ) may be a performance hog; uDig makes use of its own implementation of
+ * FidFilter in order to reuse the internal set of fids between uses.
  *
  * @author Rob Hranac, TOPP
  * @author Justin Deoliveira, TOPP
@@ -47,8 +47,7 @@ import org.geotools.filter.identity.FeatureIdImpl;
  */
 public class FidFilterImpl extends AbstractFilter implements Id {
     /** Logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
 
     /** List of the Identifer. */
     private Set<Identifier> fids = new LinkedHashSet<>();
@@ -60,8 +59,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
         // check these are really identifiers
         for (Object next : fids) {
             if (!(next instanceof Identifier))
-                throw new ClassCastException(
-                        "Fids must implement Identifier, " + next.getClass() + " does not");
+                throw new ClassCastException("Fids must implement Identifier, " + next.getClass() + " does not");
         }
         this.fids = new LinkedHashSet<>(fids);
         for (Identifier identifier : this.fids) {
@@ -162,12 +160,11 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     /**
      * Determines whether or not the given feature's ID matches this filter.
      *
-     * <p>In order to get the object's ID, the {@link PropertyAccessor} capable of dealing with
-     * <code>feature</code> has to support the request of the expression <code>"@id"</code>
+     * <p>In order to get the object's ID, the {@link PropertyAccessor} capable of dealing with <code>feature</code> has
+     * to support the request of the expression <code>"@id"</code>
      *
      * @param feature Specified feature to examine.
-     * @return <tt>true</tt> if the feature's ID matches an fid held by this filter, <tt>false</tt>
-     *     otherwise.
+     * @return <tt>true</tt> if the feature's ID matches an fid held by this filter, <tt>false</tt> otherwise.
      * @see SimpleFeaturePropertyAccessorFactory
      */
     @Override
@@ -210,13 +207,12 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     }
 
     /**
-     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by
-     * Filter decoders, but may also be used by any thing which needs infomration from filter
-     * structure. Implementations should always call: visitor.visit(this); It is importatant that
-     * this is not left to a parent class unless the parents API is identical.
+     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by Filter decoders, but may
+     * also be used by any thing which needs infomration from filter structure. Implementations should always call:
+     * visitor.visit(this); It is importatant that this is not left to a parent class unless the parents API is
+     * identical.
      *
-     * @param visitor The visitor which requires access to this filter, the method must call
-     *     visitor.visit(this);
+     * @param visitor The visitor which requires access to this filter, the method must call visitor.visit(this);
      */
     @Override
     public Object accept(FilterVisitor visitor, Object extraData) {

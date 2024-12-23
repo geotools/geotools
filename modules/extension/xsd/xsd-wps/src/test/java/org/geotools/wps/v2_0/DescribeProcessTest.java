@@ -31,7 +31,8 @@ public class DescribeProcessTest extends WPSTestSupport {
         Assert.assertNotNull(processOfferings.getProcessOffering());
         Assert.assertEquals(1, processOfferings.getProcessOffering().size());
 
-        ProcessOfferingType processOffering = processOfferings.getProcessOffering().get(0);
+        ProcessOfferingType processOffering =
+                processOfferings.getProcessOffering().get(0);
         Assert.assertNotNull(processOffering.getProcess());
 
         ProcessDescriptionType processDesc = processOffering.getProcess();
@@ -44,10 +45,7 @@ public class DescribeProcessTest extends WPSTestSupport {
                 1,
                 Arrays.asList(
                         "Create a buffer around Simple Feature geometries. Accepts any valid simple features input in GML or GeoJson and computes their joint buffer geometry."));
-        assertLanguageString(
-                processDesc.getTitle(),
-                1,
-                Arrays.asList("Planar Buffer operation for Simple Features"));
+        assertLanguageString(processDesc.getTitle(), 1, Arrays.asList("Planar Buffer operation for Simple Features"));
 
         assertMetadata(processDesc.getMetadata());
         assertInputs(processDesc.getInput());
@@ -58,12 +56,14 @@ public class DescribeProcessTest extends WPSTestSupport {
         Assert.assertNotNull(metadatas);
         Assert.assertEquals(4, metadatas.size());
         Assert.assertEquals(
-                "http://some.host/profileregistry/concept/buffer", metadatas.get(0).getHref());
+                "http://some.host/profileregistry/concept/buffer",
+                metadatas.get(0).getHref());
         Assert.assertEquals(
                 "http://some.host/profileregistry/concept/planarbuffer",
                 metadatas.get(1).getHref());
         Assert.assertEquals(
-                "http://some.host/profileregistry/generic/SF-Buffer", metadatas.get(2).getHref());
+                "http://some.host/profileregistry/generic/SF-Buffer",
+                metadatas.get(2).getHref());
         Assert.assertEquals(
                 "http://some.host/profileregistry/implementation/Planar-GML-Buffer.html",
                 metadatas.get(3).getHref());
@@ -75,10 +75,7 @@ public class DescribeProcessTest extends WPSTestSupport {
 
         InputDescriptionType desc = inputs.get(0);
         assertLanguageString(desc.getTitle(), 1, Arrays.asList("Geometry to be buffered"));
-        assertLanguageString(
-                desc.getAbstract(),
-                1,
-                Arrays.asList("Simple Features geometry input in GML or GeoJson"));
+        assertLanguageString(desc.getAbstract(), 1, Arrays.asList("Simple Features geometry input in GML or GeoJson"));
         Assert.assertNotNull(desc.getIdentifier());
         Assert.assertEquals("INPUT_GEOMETRY", desc.getIdentifier().getValue());
         Assert.assertNotNull(desc.getDataDescription());
@@ -90,8 +87,7 @@ public class DescribeProcessTest extends WPSTestSupport {
 
         desc = inputs.get(1);
         assertLanguageString(desc.getTitle(), 1, Arrays.asList("Distance"));
-        assertLanguageString(
-                desc.getAbstract(), 1, Arrays.asList("Distance to be used to calculate buffer."));
+        assertLanguageString(desc.getAbstract(), 1, Arrays.asList("Distance to be used to calculate buffer."));
         Assert.assertNotNull(desc.getIdentifier());
         Assert.assertEquals("DISTANCE", desc.getIdentifier().getValue());
 
@@ -103,8 +99,12 @@ public class DescribeProcessTest extends WPSTestSupport {
         Assert.assertNotNull(literalData.getLiteralDataDomain().get(0).getAllowedValues());
         Assert.assertNotNull(
                 literalData.getLiteralDataDomain().get(0).getAllowedValues().getRange());
-        Assert.assertNotNull(
-                literalData.getLiteralDataDomain().get(0).getAllowedValues().getRange().get(0));
+        Assert.assertNotNull(literalData
+                .getLiteralDataDomain()
+                .get(0)
+                .getAllowedValues()
+                .getRange()
+                .get(0));
         Assert.assertEquals(
                 "INF",
                 literalData
@@ -127,7 +127,8 @@ public class DescribeProcessTest extends WPSTestSupport {
                         .getValue());
         Assert.assertNotNull(literalData.getLiteralDataDomain().get(0).getDataType());
         Assert.assertNotNull(
-                "Double", literalData.getLiteralDataDomain().get(0).getDataType().getValue());
+                "Double",
+                literalData.getLiteralDataDomain().get(0).getDataType().getValue());
     }
 
     public void assertOutputs(EList<OutputDescriptionType> outputs) {
@@ -136,8 +137,7 @@ public class DescribeProcessTest extends WPSTestSupport {
 
         OutputDescriptionType desc = outputs.get(0);
         assertLanguageString(desc.getTitle(), 1, Arrays.asList("Buffered Geometry"));
-        assertLanguageString(
-                desc.getAbstract(), 1, Arrays.asList("Output Geometry in GML or GeoJson"));
+        assertLanguageString(desc.getAbstract(), 1, Arrays.asList("Output Geometry in GML or GeoJson"));
         Assert.assertNotNull(desc.getIdentifier());
         Assert.assertEquals("BUFFERED_GEOMETRY", desc.getIdentifier().getValue());
         Assert.assertNotNull(desc.getDataDescription());
@@ -148,8 +148,7 @@ public class DescribeProcessTest extends WPSTestSupport {
         Assert.assertEquals(2, complexData.getFormat().size());
     }
 
-    public void assertLanguageString(
-            List<LanguageStringType> ls, Integer size, List<String> values) {
+    public void assertLanguageString(List<LanguageStringType> ls, Integer size, List<String> values) {
         Assert.assertNotNull(ls);
         Assert.assertEquals(size, Integer.valueOf(ls.size()));
         for (Integer i = 0; i < size; i++) {

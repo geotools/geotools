@@ -32,9 +32,8 @@ import org.geotools.metadata.i18n.VocabularyKeys;
 import si.uom.SI;
 
 /**
- * A one-dimensional coordinate system containing a single time axis, used to describe the temporal
- * position of a point in the specified time units from a specified time origin. A {@code TimeCS}
- * shall have one {@linkplain #getAxis axis}.
+ * A one-dimensional coordinate system containing a single time axis, used to describe the temporal position of a point
+ * in the specified time units from a specified time origin. A {@code TimeCS} shall have one {@linkplain #getAxis axis}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -51,8 +50,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     private static final long serialVersionUID = 5222911412381303989L;
 
     /**
-     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME
-     * time}</var>, axis in {@linkplain SI#DAY day} units.
+     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME time}</var>, axis in
+     * {@linkplain SI#DAY day} units.
      *
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#JULIAN
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#MODIFIED_JULIAN
@@ -62,8 +61,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     public static final DefaultTimeCS DAYS;
 
     /**
-     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME
-     * time}</var>, axis in {@linkplain SI#SECOND second} units.
+     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME time}</var>, axis in
+     * {@linkplain SI#SECOND second} units.
      *
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#UNIX
      * @since 2.5
@@ -71,8 +70,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     public static final DefaultTimeCS SECONDS;
 
     /**
-     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME
-     * time}</var>, axis in millisecond units.
+     * A one-dimensional temporal CS with <var>{@linkplain DefaultCoordinateSystemAxis#TIME time}</var>, axis in
+     * millisecond units.
      *
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#JAVA
      * @since 2.5
@@ -87,17 +86,15 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
         final InternationalString name = axis.getAlias().iterator().next().toInternationalString();
         axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, SI.SECOND);
         SECONDS = new DefaultTimeCS(properties, axis);
-        axis =
-                new DefaultCoordinateSystemAxis(
-                        name, "t", AxisDirection.FUTURE, MetricPrefix.MILLI(SI.SECOND));
+        axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, MetricPrefix.MILLI(SI.SECOND));
         MILLISECONDS = new DefaultTimeCS(properties, axis);
     }
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy constructor provides a
+     * way to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in
+     * order to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties
+     * are not cloned.
      *
      * @param cs The coordinate system to copy.
      * @since 2.2
@@ -118,9 +115,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     }
 
     /**
-     * Constructs a coordinate system from a set of properties. The properties map is given
-     * unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class
-     * constructor}.
+     * Constructs a coordinate system from a set of properties. The properties map is given unchanged to the
+     * {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis The axis.
@@ -131,9 +127,9 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     }
 
     /**
-     * Returns {@code true} if the specified axis direction is allowed for this coordinate system.
-     * The default implementation accepts only temporal directions (i.e. {@link AxisDirection#FUTURE
-     * FUTURE} and {@link AxisDirection#PAST PAST}).
+     * Returns {@code true} if the specified axis direction is allowed for this coordinate system. The default
+     * implementation accepts only temporal directions (i.e. {@link AxisDirection#FUTURE FUTURE} and
+     * {@link AxisDirection#PAST PAST}).
      */
     @Override
     protected boolean isCompatibleDirection(final AxisDirection direction) {
@@ -141,8 +137,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
     }
 
     /**
-     * Returns {@code true} if the specified unit is compatible with {@linkplain SI#SECOND seconds}.
-     * This method is invoked at construction time for checking units compatibility.
+     * Returns {@code true} if the specified unit is compatible with {@linkplain SI#SECOND seconds}. This method is
+     * invoked at construction time for checking units compatibility.
      *
      * @since 2.2
      */
@@ -160,8 +156,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         return new Measure(Math.abs(coord1[0] - coord2[0]), getDistanceUnit());

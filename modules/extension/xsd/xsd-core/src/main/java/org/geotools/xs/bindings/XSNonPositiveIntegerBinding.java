@@ -92,8 +92,7 @@ public class XSNonPositiveIntegerBinding implements SimpleBinding {
         BigInteger number = (BigInteger) value;
 
         if (BigInteger.ZERO.compareTo(number) < 0) {
-            throw new IllegalArgumentException(
-                    "Value '" + number + "' must be non-positive (0 or below).");
+            throw new IllegalArgumentException("Value '" + number + "' must be non-positive (0 or below).");
         }
 
         if (MIN_INTEGER.compareTo(number) <= 0) {
@@ -119,8 +118,7 @@ public class XSNonPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) object;
 
         if (number.longValue() > 0) {
-            throw new IllegalArgumentException(
-                    "Value '" + number + "' must be non-positive (0 or below).");
+            throw new IllegalArgumentException("Value '" + number + "' must be non-positive (0 or below).");
         }
 
         return value;

@@ -23,8 +23,7 @@ import java.util.List;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 /**
- * Validators for tuples that represent a range of values This Validator is stateful, do not re-use
- * it.
+ * Validators for tuples that represent a range of values This Validator is stateful, do not re-use it.
  *
  * @param <T> Content type of the tuple.
  */
@@ -54,9 +53,7 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
         @Override
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
-                if (value != null
-                        && !value.isEmpty()
-                        && !(isMin ? "min" : "max").equalsIgnoreCase(value)) {
+                if (value != null && !value.isEmpty() && !(isMin ? "min" : "max").equalsIgnoreCase(value)) {
                     T parsed = parse(value);
                     validateParsed(parsed, evt, context);
                     if (isMin) {

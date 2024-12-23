@@ -25,8 +25,7 @@ import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.util.Utilities;
 
 /**
- * Class responsible for loading granules, mosaicking a group of granules, pre-processing them
- * before handling, etc.
+ * Class responsible for loading granules, mosaicking a group of granules, pre-processing them before handling, etc.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
@@ -39,8 +38,7 @@ public class DefaultSubmosaicProducer extends BaseSubmosaicProducer {
      *     {@link DefaultSubmosaicProducer}.
      * @param dryRun whether we need to make
      */
-    public DefaultSubmosaicProducer(
-            RasterLayerResponse rasterLayerResponse, Filter granuleFilter, boolean dryRun) {
+    public DefaultSubmosaicProducer(RasterLayerResponse rasterLayerResponse, Filter granuleFilter, boolean dryRun) {
         super(rasterLayerResponse, dryRun);
         this.granuleFilter = granuleFilter;
     }
@@ -49,18 +47,15 @@ public class DefaultSubmosaicProducer extends BaseSubmosaicProducer {
     private final Filter granuleFilter;
 
     /**
-     * This method is responsible for collecting all the granules accepting a certain {@link
-     * Filter}.
+     * This method is responsible for collecting all the granules accepting a certain {@link Filter}.
      *
-     * <p>The method return <code>true</code> when a {@link GranuleDescriptor} for which the {@link
-     * GranuleDescriptor#originator} {@link SimpleFeature} is evaluated positively by the internal
-     * filter and retain the granule, or <code>false</code> otherwise so that the caller can keep
-     * trying with a different {@link DefaultSubmosaicProducer}
+     * <p>The method return <code>true</code> when a {@link GranuleDescriptor} for which the
+     * {@link GranuleDescriptor#originator} {@link SimpleFeature} is evaluated positively by the internal filter and
+     * retain the granule, or <code>false</code> otherwise so that the caller can keep trying with a different
+     * {@link DefaultSubmosaicProducer}
      *
-     * @param granuleDescriptor the {@link GranuleDescriptor} to test with the internal {@link
-     *     Filter}
-     * @return <code>true</code> in case the {@link GranuleDescriptor} is added, <code>false</code>
-     *     otherwise.
+     * @param granuleDescriptor the {@link GranuleDescriptor} to test with the internal {@link Filter}
+     * @return <code>true</code> in case the {@link GranuleDescriptor} is added, <code>false</code> otherwise.
      */
     @Override
     public boolean accept(GranuleDescriptor granuleDescriptor) {

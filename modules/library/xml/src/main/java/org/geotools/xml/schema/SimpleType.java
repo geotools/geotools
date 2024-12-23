@@ -20,45 +20,40 @@ import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 
 /**
- * This interface is intended to represent an XML Schema simple type. This interface extends the
- * generic XML schema type interface to represent datum within a single element.
+ * This interface is intended to represent an XML Schema simple type. This interface extends the generic XML schema type
+ * interface to represent datum within a single element.
  *
  * @author dzwiers www.refractions.net
  */
 public interface SimpleType extends Type {
     /**
-     * Represents a masks used to represent how this simpleType may or may not be changed though the
-     * use of inheritance
+     * Represents a masks used to represent how this simpleType may or may not be changed though the use of inheritance
      */
     public static final int NONE = 0;
 
     /**
-     * Represents a masks used to represent how this simpleType may or may not be changed though the
-     * use of inheritance
+     * Represents a masks used to represent how this simpleType may or may not be changed though the use of inheritance
      */
     public static final int UNION = 1;
 
     /**
-     * Represents a masks used to represent how this simpleType may or may not be changed though the
-     * use of inheritance
+     * Represents a masks used to represent how this simpleType may or may not be changed though the use of inheritance
      */
     public static final int LIST = 2;
 
     /**
-     * Represents a masks used to represent how this simpleType may or may not be changed though the
-     * use of inheritance
+     * Represents a masks used to represent how this simpleType may or may not be changed though the use of inheritance
      */
     public static final int RESTRICTION = 4;
 
     /**
-     * Represents a masks used to represent how this simpleType may or may not be changed though the
-     * use of inheritance
+     * Represents a masks used to represent how this simpleType may or may not be changed though the use of inheritance
      */
     public static final int ALL = 7;
 
     /**
-     * This specifies a mask which represents how this XML Schema SimpleType may be
-     * extended/restricted ... through Schema declared derivations.
+     * This specifies a mask which represents how this XML Schema SimpleType may be extended/restricted ... through
+     * Schema declared derivations.
      */
     public int getFinal();
 
@@ -70,8 +65,7 @@ public interface SimpleType extends Type {
             throws OperationNotSupportedException;
 
     /** */
-    public boolean canCreateAttributes(
-            Attribute attribute, Object value, Map<String, Object> hints);
+    public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints);
 
     /** Returns an int of either List, Union or Restriction */
     public int getChildType();

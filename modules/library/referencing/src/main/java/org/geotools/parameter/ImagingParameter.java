@@ -57,17 +57,15 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     /** Returns the exception to be throws for an operation on a wrong parameter type. */
     private InvalidParameterTypeException invalidType(final ClassCastException cause) {
         final Object arg0 = getType();
-        final InvalidParameterTypeException exception =
-                new InvalidParameterTypeException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, arg0),
-                        getName(descriptor));
+        final InvalidParameterTypeException exception = new InvalidParameterTypeException(
+                MessageFormat.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, arg0), getName(descriptor));
         exception.initCause(cause);
         return exception;
     }
 
     /**
-     * Returns the unlocalized operation name. This is different from {@link
-     * AbstractParameter#getName}, which may returns a localized name.
+     * Returns the unlocalized operation name. This is different from {@link AbstractParameter#getName}, which may
+     * returns a localized name.
      */
     private String getName() {
         return descriptor.getName().getCode();
@@ -189,9 +187,8 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /**
-     * Returns the parameter value as an object. The object type is typically a {@link Double},
-     * {@link Integer}, {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code
-     * int[]}.
+     * Returns the parameter value as an object. The object type is typically a {@link Double}, {@link Integer},
+     * {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code int[]}.
      */
     @Override
     public T getValue() {
@@ -279,8 +276,8 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /**
-     * Set the parameter value as an object. The object type is typically a {@link Double}, {@link
-     * Integer}, {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code int[]}.
+     * Set the parameter value as an object. The object type is typically a {@link Double}, {@link Integer},
+     * {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code int[]}.
      */
     @Override
     public void setValue(final Object value) throws InvalidParameterValueException {
@@ -324,8 +321,8 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /**
-     * Returns a clone of this parameter. Actually returns a different classes, since this parameter
-     * is not really cloneable (it would requires a clone of {@link #parameters} first).
+     * Returns a clone of this parameter. Actually returns a different classes, since this parameter is not really
+     * cloneable (it would requires a clone of {@link #parameters} first).
      */
     @Override
     public Parameter<T> clone() {

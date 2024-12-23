@@ -21,8 +21,8 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * This is a style visitor that will produce a copy of the provided style. The copy will be rescaled
- * by a provided factor if UOM is PIXEL.
+ * This is a style visitor that will produce a copy of the provided style. The copy will be rescaled by a provided
+ * factor if UOM is PIXEL.
  */
 public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
 

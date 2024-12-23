@@ -32,14 +32,12 @@ public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest 
 
         if (dialect instanceof MySQLDialect) {
             org.geotools.util.logging.Logging.getLogger(MySQLSpatialFiltersOnlineTest.class)
-                    .info(
-                            "MySQLDialect enhanced spatial support is:"
-                                    + ((MySQLDialect) dialect).getUsePreciseSpatialOps());
+                    .info("MySQLDialect enhanced spatial support is:"
+                            + ((MySQLDialect) dialect).getUsePreciseSpatialOps());
         } else if (dialect instanceof MySQLDialectBasic) {
             org.geotools.util.logging.Logging.getLogger(MySQLSpatialFiltersOnlineTest.class)
-                    .info(
-                            "MySQLDialectBasic enhanced spatial support is:"
-                                    + ((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
+                    .info("MySQLDialectBasic enhanced spatial support is:"
+                            + ((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
         }
     }
 

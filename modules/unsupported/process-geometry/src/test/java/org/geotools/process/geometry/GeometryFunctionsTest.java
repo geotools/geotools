@@ -30,13 +30,11 @@ public class GeometryFunctionsTest {
 
     @Test
     public void testPolygonize() throws Exception {
-        Geometry lines =
-                wktRdr.read(
-                        "MULTILINESTRING ((100 100, 200 100), (200 100, 300 100), (100 100, 100 200, 200 200), (200 100, 200 200), (200 200, 300 200, 300 100))");
+        Geometry lines = wktRdr.read(
+                "MULTILINESTRING ((100 100, 200 100), (200 100, 300 100), (100 100, 100 200, 200 200), (200 100, 200 200), (200 200, 300 200, 300 100))");
         Geometry output = GeometryFunctions.polygonize(lines);
-        Geometry expectedOutput =
-                wktRdr.read(
-                        "GEOMETRYCOLLECTION (POLYGON ((200 100, 100 100, 100 200, 200 200, 200 100)), POLYGON ((200 100, 200 200, 300 200, 300 100, 200 100)))");
+        Geometry expectedOutput = wktRdr.read(
+                "GEOMETRYCOLLECTION (POLYGON ((200 100, 100 100, 100 200, 200 200, 200 100)), POLYGON ((200 100, 200 200, 300 200, 300 100, 200 100)))");
         assertTrue(output.norm().equalsExact(expectedOutput.norm()));
     }
 
@@ -45,9 +43,8 @@ public class GeometryFunctionsTest {
         Geometry poly = wktRdr.read("POLYGON ((100 100, 200 200, 200 100, 100 100))");
         LineString line = (LineString) wktRdr.read("LINESTRING (150 200, 150 50)");
         Geometry output = GeometryFunctions.splitPolygon(poly, line);
-        Geometry expectedOutput =
-                wktRdr.read(
-                        "GEOMETRYCOLLECTION (POLYGON ((150 100, 100 100, 150 150, 150 100)), POLYGON ((150 150, 200 200, 200 100, 150 100, 150 150)))");
+        Geometry expectedOutput = wktRdr.read(
+                "GEOMETRYCOLLECTION (POLYGON ((150 100, 100 100, 150 150, 150 100)), POLYGON ((150 150, 200 200, 200 100, 150 100, 150 150)))");
         assertTrue(output.norm().equalsExact(expectedOutput.norm()));
     }
 }

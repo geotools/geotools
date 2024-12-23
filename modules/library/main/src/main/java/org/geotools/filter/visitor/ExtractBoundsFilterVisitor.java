@@ -78,28 +78,26 @@ import org.locationtech.jts.geom.Geometry;
  * <p>The maximal envelope is generated from:
  *
  * <ul>
- *   <li>all the literal geometry instances involved if spatial operations - using
- *       geom.getEnvelopeInternal().
+ *   <li>all the literal geometry instances involved if spatial operations - using geom.getEnvelopeInternal().
  *   <li>Filter.EXCLUDES will result in an empty envelope
  *   <li>Filter.INCLUDES will result in a "world" envelope with range Double.NEGATIVE_INFINITY to
  *       Double.POSITIVE_INFINITY for each axis.
  *   <li>all other non spatial filters will result in a world envelope
- *   <li>combinations in and will return the intersection of the envelopes, or an empty envelope if
- *       an exclude is in the mix, or null if the and is mixing non spatial filters
+ *   <li>combinations in and will return the intersection of the envelopes, or an empty envelope if an exclude is in the
+ *       mix, or null if the and is mixing non spatial filters
  *   <li>combinations in or will return the intersection of
  * </ul>
  *
- * Since geometry literals do not contains CRS information we can only produce a ReferencedEnvelope
- * without CRS information. You can call this function with an existing ReferencedEnvelope or with
- * your data CRS to correct for this limitation. ReferencedEnvelope example:
+ * Since geometry literals do not contains CRS information we can only produce a ReferencedEnvelope without CRS
+ * information. You can call this function with an existing ReferencedEnvelope or with your data CRS to correct for this
+ * limitation. ReferencedEnvelope example:
  *
  * <pre><code>
  * ReferencedEnvelope bbox = (ReferencedEnvelope)
  *     filter.accepts(new ExtractBoundsFilterVisitor(), dataCRS );
  * </code></pre>
  *
- * You can also call this function with an existing Envelope; if you are building up bounds based on
- * several filters.
+ * You can also call this function with an existing Envelope; if you are building up bounds based on several filters.
  *
  * <p>This is a replacement for FilterConsumer.
  *
@@ -108,14 +106,12 @@ import org.locationtech.jts.geom.Geometry;
 public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     public static NullFilterVisitor BOUNDS_VISITOR = new ExtractBoundsFilterVisitor();
 
-    private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
+    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
 
     /**
      * This FilterVisitor is stateless - use ExtractBoundsFilterVisitor.BOUNDS_VISITOR.
      *
-     * <p>You may also subclass in order to reuse this functionality in your own FilterVisitor
-     * implementation.
+     * <p>You may also subclass in order to reuse this functionality in your own FilterVisitor implementation.
      */
     protected ExtractBoundsFilterVisitor() {}
 
@@ -149,10 +145,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
 
     protected Envelope infinity() {
         return new Envelope(
-                Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY);
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     @Override
@@ -274,12 +267,10 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         // expand it by the distance.
         // We ignore the unit of measure for the moment
         Literal geometry = null;
-        if (filter.getExpression1() instanceof PropertyName
-                && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
             geometry = (Literal) filter.getExpression2();
         }
-        if (filter.getExpression2() instanceof PropertyName
-                && filter.getExpression1() instanceof Literal) {
+        if (filter.getExpression2() instanceof PropertyName && filter.getExpression1() instanceof Literal) {
             geometry = (Literal) filter.getExpression2();
         }
 

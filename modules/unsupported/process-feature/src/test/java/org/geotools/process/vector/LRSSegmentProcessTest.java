@@ -151,7 +151,8 @@ public class LRSSegmentProcessTest {
         FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", 0.5, 1.5);
         Assert.assertEquals(1, result.size());
         Feature feature = result.features().next();
-        MultiLineString segment = (MultiLineString) feature.getDefaultGeometryProperty().getValue();
+        MultiLineString segment =
+                (MultiLineString) feature.getDefaultGeometryProperty().getValue();
         Assert.assertEquals(2, segment.getNumPoints());
         Assert.assertEquals(0.5, segment.getCoordinates()[0].x, 0.0);
         Assert.assertEquals(0.0, segment.getCoordinates()[0].y, 0.0);
@@ -168,7 +169,8 @@ public class LRSSegmentProcessTest {
         FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", 0.5, 3.5);
         Assert.assertEquals(1, result.size());
         Feature feature = result.features().next();
-        MultiLineString segment = (MultiLineString) feature.getDefaultGeometryProperty().getValue();
+        MultiLineString segment =
+                (MultiLineString) feature.getDefaultGeometryProperty().getValue();
         Assert.assertEquals(3, segment.getNumPoints());
         Assert.assertEquals(0.5, segment.getCoordinates()[0].x, 0.0);
         Assert.assertEquals(0.0, segment.getCoordinates()[0].y, 0.0);
@@ -185,7 +187,8 @@ public class LRSSegmentProcessTest {
         FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", 0.5, 5.5);
         Assert.assertEquals(1, result.size());
         Feature feature = result.features().next();
-        MultiLineString segment = (MultiLineString) feature.getDefaultGeometryProperty().getValue();
+        MultiLineString segment =
+                (MultiLineString) feature.getDefaultGeometryProperty().getValue();
         Assert.assertEquals(4, segment.getNumPoints());
         Assert.assertEquals(0.5, segment.getCoordinates()[0].x, 0.0);
         Assert.assertEquals(0.0, segment.getCoordinates()[0].y, 0.0);

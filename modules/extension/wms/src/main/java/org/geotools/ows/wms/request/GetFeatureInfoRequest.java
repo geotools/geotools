@@ -23,9 +23,8 @@ import org.geotools.ows.wms.Layer;
 /**
  * Information required for a GetFeatureInfo request.
  *
- * <p>Q: queryableLayers is a Set - is this true? Or is order important Q: infoFormats - what does
- * this do? Do these match up with querableLayers? Or is it a list of formats our client is willing
- * to understand?
+ * <p>Q: queryableLayers is a Set - is this true? Or is order important Q: infoFormats - what does this do? Do these
+ * match up with querableLayers? Or is it a list of formats our client is willing to understand?
  *
  * @author Richard Gould, Refractions Research
  */
@@ -42,24 +41,22 @@ public interface GetFeatureInfoRequest extends Request {
     public static final String QUERY_LAYERS = "QUERY_LAYERS"; // $NON-NLS-1$
 
     /**
-     * An unordered set of type Layer. These are the layers that the GetFeatureInfo request will be
-     * performed on.
+     * An unordered set of type Layer. These are the layers that the GetFeatureInfo request will be performed on.
      *
      * @param layers A Set of type Layer, each to be queried
      */
     public void setQueryLayers(Set<Layer> layers);
 
     /**
-     * Add a Layer to the set of layers to be queried in the request. This Layer must have queryable
-     * set to true.
+     * Add a Layer to the set of layers to be queried in the request. This Layer must have queryable set to true.
      *
      * @param layer a queryable Layer
      */
     public void addQueryLayer(Layer layer);
 
     /**
-     * Sets the INFO_FORMAT parameter, which specifies the format of the GetFeatureInfoResponse.
-     * Valid values are available in getInfoFormats()
+     * Sets the INFO_FORMAT parameter, which specifies the format of the GetFeatureInfoResponse. Valid values are
+     * available in getInfoFormats()
      *
      * @param infoFormat a value from getInfoFormats()
      */
@@ -72,8 +69,8 @@ public interface GetFeatureInfoRequest extends Request {
     public void setFeatureCount(int featureCount);
 
     /**
-     * The point on the image (in pixels) to be queried. The image is represented by the
-     * GetMapRequest passed into the constructor.
+     * The point on the image (in pixels) to be queried. The image is represented by the GetMapRequest passed into the
+     * constructor.
      *
      * @param x the x point, in pixels
      * @param y the y point, in pixels

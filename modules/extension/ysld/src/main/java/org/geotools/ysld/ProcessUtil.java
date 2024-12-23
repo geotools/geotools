@@ -47,15 +47,15 @@ public class ProcessUtil {
     public static FunctionFactory loadProcessFunctionFactory() {
         Class<?> functionFactoryClass = null;
         try {
-            functionFactoryClass =
-                    Class.forName("org.geotools.process.function.ProcessFunctionFactory");
+            functionFactoryClass = Class.forName("org.geotools.process.function.ProcessFunctionFactory");
         } catch (ClassNotFoundException e) {
             LOG.log(Level.WARNING, "Error creating process function factory", e);
             return null;
         }
 
         try {
-            return (FunctionFactory) functionFactoryClass.getDeclaredConstructor().newInstance();
+            return (FunctionFactory)
+                    functionFactoryClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Error creating process function factory", e);
         }
@@ -85,8 +85,7 @@ public class ProcessUtil {
         }
     }
 
-    private static boolean hasWMSParam(
-            Map<String, Parameter<?>> processInfo, String name, Class<?> type) {
+    private static boolean hasWMSParam(Map<String, Parameter<?>> processInfo, String name, Class<?> type) {
         Parameter<?> param = processInfo.get(name);
         if (param == null) return false;
         if (!param.getName().equals(name)) return false;

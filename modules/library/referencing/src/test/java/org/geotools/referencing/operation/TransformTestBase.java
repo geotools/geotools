@@ -71,8 +71,8 @@ public abstract class TransformTestBase {
     }
 
     /**
-     * Returns the hints to be used by {@link #setUp} in order to fetch the factories. The default
-     * implementation returns {@code null}. Subclasses can override.
+     * Returns the hints to be used by {@link #setUp} in order to fetch the factories. The default implementation
+     * returns {@code null}. Subclasses can override.
      */
     protected Hints getHintsForTesting() {
         return null;
@@ -84,8 +84,7 @@ public abstract class TransformTestBase {
     }
 
     /**
-     * Verify that the specified transform implements {@link MathTransform1D} or {@link
-     * MathTransform2D} as needed.
+     * Verify that the specified transform implements {@link MathTransform1D} or {@link MathTransform2D} as needed.
      *
      * @param transform The transform to test.
      */
@@ -108,26 +107,13 @@ public abstract class TransformTestBase {
      * @param ey The expected y value.
      */
     public static void assertTransformEquals2_2(
-            final MathTransform transform,
-            final double x,
-            final double y,
-            final double ex,
-            final double ey)
+            final MathTransform transform, final double x, final double y, final double ex, final double ey)
             throws TransformException {
         final Position2D source = new Position2D(x, y);
         final Position2D target = new Position2D();
         assertSame(target, transform.transform(source, target));
         final String message =
-                "Expected ("
-                        + ex
-                        + ", "
-                        + ey
-                        + "), "
-                        + "transformed=("
-                        + target.x
-                        + ", "
-                        + target.y
-                        + ")";
+                "Expected (" + ex + ", " + ey + "), " + "transformed=(" + target.x + ", " + target.y + ")";
         assertEquals(message, ex, target.x, EPS);
         assertEquals(message, ey, target.y, EPS);
     }
@@ -155,29 +141,27 @@ public abstract class TransformTestBase {
         final GeneralPosition source = new GeneralPosition(x, y, z);
         final GeneralPosition target = new GeneralPosition(3);
         assertSame(target, transform.transform(source, target));
-        final String message =
-                "Expected ("
-                        + ex
-                        + ", "
-                        + ey
-                        + ", "
-                        + ez
-                        + "), "
-                        + "transformed=("
-                        + target.ordinates[0]
-                        + ", "
-                        + target.ordinates[1]
-                        + ", "
-                        + target.ordinates[2]
-                        + ")";
+        final String message = "Expected ("
+                + ex
+                + ", "
+                + ey
+                + ", "
+                + ez
+                + "), "
+                + "transformed=("
+                + target.ordinates[0]
+                + ", "
+                + target.ordinates[1]
+                + ", "
+                + target.ordinates[2]
+                + ")";
         assertEquals(message, ex, target.ordinates[0], EPS);
         assertEquals(message, ey, target.ordinates[1], EPS);
         assertEquals(message, ez, target.ordinates[2], 1E-2); // Greater tolerance level for Z.
     }
 
     /**
-     * Transforms a two-dimensional point and compare the result with the expected three-dimensional
-     * value.
+     * Transforms a two-dimensional point and compare the result with the expected three-dimensional value.
      *
      * @param transform The transform to test.
      * @param x The x value to transform.
@@ -197,29 +181,27 @@ public abstract class TransformTestBase {
         final GeneralPosition source = new GeneralPosition(x, y);
         final GeneralPosition target = new GeneralPosition(3);
         assertSame(target, transform.transform(source, target));
-        final String message =
-                "Expected ("
-                        + ex
-                        + ", "
-                        + ey
-                        + ", "
-                        + ez
-                        + "), "
-                        + "transformed=("
-                        + target.ordinates[0]
-                        + ", "
-                        + target.ordinates[1]
-                        + ", "
-                        + target.ordinates[2]
-                        + ")";
+        final String message = "Expected ("
+                + ex
+                + ", "
+                + ey
+                + ", "
+                + ez
+                + "), "
+                + "transformed=("
+                + target.ordinates[0]
+                + ", "
+                + target.ordinates[1]
+                + ", "
+                + target.ordinates[2]
+                + ")";
         assertEquals(message, ex, target.ordinates[0], EPS);
         assertEquals(message, ey, target.ordinates[1], EPS);
         assertEquals(message, ez, target.ordinates[2], 1E-2); // Greater tolerance level for Z.
     }
 
     /**
-     * Transforms a three-dimensional point and compare the result with the expected two-dimensional
-     * value.
+     * Transforms a three-dimensional point and compare the result with the expected two-dimensional value.
      *
      * @param transform The transform to test.
      * @param x The x value to transform.
@@ -239,24 +221,22 @@ public abstract class TransformTestBase {
         final GeneralPosition source = new GeneralPosition(x, y, z);
         final GeneralPosition target = new GeneralPosition(2);
         assertSame(target, transform.transform(source, target));
-        final String message =
-                "Expected ("
-                        + ex
-                        + ", "
-                        + ey
-                        + "), "
-                        + "transformed=("
-                        + target.ordinates[0]
-                        + ", "
-                        + target.ordinates[1]
-                        + ")";
+        final String message = "Expected ("
+                + ex
+                + ", "
+                + ey
+                + "), "
+                + "transformed=("
+                + target.ordinates[0]
+                + ", "
+                + target.ordinates[1]
+                + ")";
         assertEquals(message, ex, target.ordinates[0], EPS);
         assertEquals(message, ey, target.ordinates[1], EPS);
     }
 
     /**
-     * Transforms a three-dimensional point and compare the result with the expected one-dimensional
-     * value.
+     * Transforms a three-dimensional point and compare the result with the expected one-dimensional value.
      *
      * @param transform The transform to test.
      * @param x The x value to transform.
@@ -265,17 +245,12 @@ public abstract class TransformTestBase {
      * @param ez The expected z value.
      */
     public static void assertTransformEquals3_1(
-            final MathTransform transform,
-            final double x,
-            final double y,
-            final double z,
-            final double ez)
+            final MathTransform transform, final double x, final double y, final double z, final double ez)
             throws TransformException {
         final GeneralPosition source = new GeneralPosition(x, y, z);
         final GeneralPosition target = new GeneralPosition(1);
         assertSame(target, transform.transform(source, target));
-        final String message =
-                "Expected (" + ez + "), " + "transformed=(" + target.ordinates[0] + ")";
+        final String message = "Expected (" + ez + "), " + "transformed=(" + target.ordinates[0] + ")";
         assertEquals(message, ez, target.ordinates[0], 1E-2); // Greater tolerance level for Z.
     }
 
@@ -285,14 +260,11 @@ public abstract class TransformTestBase {
      * @param name The name of the comparaison to be performed.
      * @param expected The expected array of points.
      * @param actual The actual array of points.
-     * @param delta The maximal difference tolerated in comparaisons for each dimension. This array
-     *     length must be equal to coordinate dimension (usually 1, 2 or 3).
+     * @param delta The maximal difference tolerated in comparaisons for each dimension. This array length must be equal
+     *     to coordinate dimension (usually 1, 2 or 3).
      */
     public static void assertPointsEqual(
-            final String name,
-            final double[] expected,
-            final double[] actual,
-            final double[] delta) {
+            final String name, final double[] expected, final double[] actual, final double[] delta) {
         final int dimension = delta.length;
         final int stop = Math.min(expected.length, actual.length) / dimension * dimension;
         assertEquals("Array length for expected points", stop, expected.length);
@@ -317,9 +289,7 @@ public abstract class TransformTestBase {
         }
     }
 
-    /**
-     * Quick self test, in part to give this test suite a test and also to test the internal method.
-     */
+    /** Quick self test, in part to give this test suite a test and also to test the internal method. */
     @Test
     public void testAssertPointsEqual() {
         String name = "self test";

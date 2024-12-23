@@ -29,8 +29,8 @@ import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
 
 /**
- * A handle to a WFS response that contains the input stream to the actual contents and some well
- * known response information derived from the HTTP response headers.
+ * A handle to a WFS response that contains the input stream to the actual contents and some well known response
+ * information derived from the HTTP response headers.
  *
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
@@ -76,8 +76,7 @@ public class WFSResponse extends Response {
     }
 
     /**
-     * Returns the character encoding if set by the server as an http header, if unknown assumes
-     * {@code UTF-8}
+     * Returns the character encoding if set by the server as an http header, if unknown assumes {@code UTF-8}
      *
      * @return the character set for the response if set, or {@code null}
      */

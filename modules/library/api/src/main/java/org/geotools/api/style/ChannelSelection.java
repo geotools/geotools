@@ -10,11 +10,11 @@
 package org.geotools.api.style;
 
 /**
- * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
- * raster source (such as a multi-band satellite-imagery source).
+ * The ChannelSelection element specifies the false-color channel selection for a multi-spectral raster source (such as
+ * a multi-band satellite-imagery source).
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
@@ -29,8 +29,7 @@ public interface ChannelSelection {
      * @param green the green channel
      * @param blue the blue channel
      */
-    void setRGBChannels(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+    void setRGBChannels(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
 
     /**
      * Set the RGB channels to be used

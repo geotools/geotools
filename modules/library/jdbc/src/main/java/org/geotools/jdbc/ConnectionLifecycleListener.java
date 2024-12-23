@@ -20,8 +20,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * This interface can be implemented to perform custom behavior on each connection as it gets
- * borrowed from the connection pool and then released back to the pool.
+ * This interface can be implemented to perform custom behavior on each connection as it gets borrowed from the
+ * connection pool and then released back to the pool.
  *
  * @author Andrea Aime - GeoSolutions
  */

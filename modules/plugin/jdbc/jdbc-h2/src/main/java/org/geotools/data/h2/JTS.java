@@ -104,8 +104,8 @@ public class JTS {
     /**
      * Returns the envelope for a geometry.
      *
-     * <p>This method will return an "null" envelope ({@link Envelope#setToNull()}) if <tt>wkb</tt>
-     * is <code>null</code>.
+     * <p>This method will return an "null" envelope ({@link Envelope#setToNull()}) if <tt>wkb</tt> is <code>null</code>
+     * .
      *
      * @param wkb The geometry.
      * @return The envelope of the geometry.

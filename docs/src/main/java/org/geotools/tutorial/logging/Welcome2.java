@@ -16,8 +16,7 @@ import org.geotools.util.logging.Logging;
 
 class Welcome2 {
     static {
-        Logging.GEOTOOLS.setLoggerFactory(
-                org.geotools.util.logging.CommonsLoggerFactory.getInstance());
+        Logging.GEOTOOLS.setLoggerFactory(org.geotools.util.logging.CommonsLoggerFactory.getInstance());
     }
 
     public static final Logger LOGGER = Logging.getLogger(Welcome2.class);

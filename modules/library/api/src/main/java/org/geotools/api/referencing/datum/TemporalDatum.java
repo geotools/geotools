@@ -15,8 +15,7 @@ import org.geotools.api.util.InternationalString;
 /**
  * A temporal datum defines the origin of a temporal coordinate reference system.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
@@ -29,8 +28,7 @@ public interface TemporalDatum extends Datum {
     Date getOrigin();
 
     /**
-     * This attribute is defined in the {@link Datum} parent interface, but is not used by a
-     * temporal datum.
+     * This attribute is defined in the {@link Datum} parent interface, but is not used by a temporal datum.
      *
      * @return Always {@code null}.
      */
@@ -38,8 +36,7 @@ public interface TemporalDatum extends Datum {
     InternationalString getAnchorPoint();
 
     /**
-     * This attribute is defined in the {@link Datum} parent interface, but is not used by a
-     * temporal datum.
+     * This attribute is defined in the {@link Datum} parent interface, but is not used by a temporal datum.
      *
      * @return Always {@code null}.
      */

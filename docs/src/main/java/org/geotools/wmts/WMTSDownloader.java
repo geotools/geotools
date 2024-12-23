@@ -57,9 +57,7 @@ public class WMTSDownloader {
         // start wmtsTileService example
         WebMapTileServer server = new WebMapTileServer(new URL(serverUrl));
         System.out.println("Layers:");
-        server.getCapabilities()
-                .getLayerList()
-                .forEach(layer -> System.out.println(layer.getName()));
+        server.getCapabilities().getLayerList().forEach(layer -> System.out.println(layer.getName()));
 
         WMTSLayer layer = server.getCapabilities().getLayer(layerName);
 
@@ -67,12 +65,10 @@ public class WMTSDownloader {
         layer.getTileMatrixLinks().keySet().forEach(System.out::println);
         TileMatrixSet matrixSet = server.getCapabilities().getMatrixSet(matrixSetName);
 
-        WMTSTileService service =
-                new WMTSTileService(serverUrl, WMTSServiceType.KVP, layer, null, matrixSet);
+        WMTSTileService service = new WMTSTileService(serverUrl, WMTSServiceType.KVP, layer, null, matrixSet);
 
         ReferencedEnvelope extent =
-                new ReferencedEnvelope(
-                        minX, maxX, minY, maxY, matrixSet.getCoordinateReferenceSystem());
+                new ReferencedEnvelope(minX, maxX, minY, maxY, matrixSet.getCoordinateReferenceSystem());
 
         Set<Tile> tiles = service.findTilesInExtent(extent, scaleFactor, true, 100);
         for (Tile tile : tiles) {

@@ -23,8 +23,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 /**
- * Renderer draws a map on behalf on <code>MapPane</code>. It determines what features to draw,
- * bounding box, size, and style from the {@linkplain org.geotools.map.Context context}.
+ * Renderer draws a map on behalf on <code>MapPane</code>. It determines what features to draw, bounding box, size, and
+ * style from the {@linkplain org.geotools.map.Context context}.
  *
  * @author Cameron Shorter
  * @version $Id$
@@ -32,18 +32,17 @@ import java.awt.geom.AffineTransform;
  */
 public interface Renderer2D {
     /**
-     * Render features based on the {@link org.geotools.map.LayerList}, bounding box and {@link
-     * org.geotools.styling.Style} specified in the {@linkplain org.geotools.map.Context context}.
+     * Render features based on the {@link org.geotools.map.LayerList}, bounding box and
+     * {@link org.geotools.styling.Style} specified in the {@linkplain org.geotools.map.Context context}.
      *
      * @param graphics The graphics handler to draw to.
-     * @param paintArea The bounds of the output area in output units (usually pixels). The upper
-     *     left corner is (0,0) in most cases. However, a different value is allowed if some widget
-     *     area must be preserved, for example a margin on the left and top size for painting a
-     *     graduation.
-     * @param transform A transform which converts "World coordinates" to output coordinates. This
-     *     transform will be concatenated to the <code>graphics</code> transform (as of <code>
-     *     graphics.{@link Graphics2D#transform(AffineTransform) transform}(transform)</code>)
-     *     before the rendering take place.
+     * @param paintArea The bounds of the output area in output units (usually pixels). The upper left corner is (0,0)
+     *     in most cases. However, a different value is allowed if some widget area must be preserved, for example a
+     *     margin on the left and top size for painting a graduation.
+     * @param transform A transform which converts "World coordinates" to output coordinates. This transform will be
+     *     concatenated to the <code>graphics</code> transform (as of <code>
+     *     graphics.{@link Graphics2D#transform(AffineTransform) transform}(transform)</code>) before the rendering take
+     *     place.
      */
     public void paint(Graphics2D graphics, Rectangle paintArea, AffineTransform transform);
 }

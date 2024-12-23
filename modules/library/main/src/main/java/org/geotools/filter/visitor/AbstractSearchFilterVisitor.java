@@ -73,15 +73,13 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 
 /**
- * SearchFilterVisitor is a base class used to optimize finding specific information in the filter
- * data structure.
+ * SearchFilterVisitor is a base class used to optimize finding specific information in the filter data structure.
  *
- * <p>This differs slightly form the DefaultFilterVisitor case in that you can abandon the depth
- * first traversal at any point by returning true from found( object ).
+ * <p>This differs slightly form the DefaultFilterVisitor case in that you can abandon the depth first traversal at any
+ * point by returning true from found( object ).
  *
- * <p>Most implementations accept the default functionality which simply checks if data is non null.
- * This allows you to simply return an object from any method the moment you have found what you are
- * looking for.
+ * <p>Most implementations accept the default functionality which simply checks if data is non null. This allows you to
+ * simply return an object from any method the moment you have found what you are looking for.
  *
  * @author Jody Garnett
  */

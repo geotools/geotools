@@ -39,8 +39,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     protected AbstractSymbolizer() {}
 
-    public AbstractSymbolizer(
-            String name, Description description, Expression geometry, Unit<Length> unitOfMeasure) {
+    public AbstractSymbolizer(String name, Description description, Expression geometry, Unit<Length> unitOfMeasure) {
         this.name = name;
         this.description = description;
         this.geometry = geometry;
@@ -48,10 +47,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     }
 
     public AbstractSymbolizer(
-            String name,
-            Description description,
-            String geometryPropertyName,
-            Unit<Length> unitOfMeasure) {
+            String name, Description description, String geometryPropertyName, Unit<Length> unitOfMeasure) {
         this.name = name;
         this.description = description;
         this.unitOfMeasure = unitOfMeasure;

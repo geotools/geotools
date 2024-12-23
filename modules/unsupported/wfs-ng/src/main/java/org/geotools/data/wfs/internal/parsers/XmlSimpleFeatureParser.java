@@ -47,8 +47,7 @@ import org.geotools.wfs.WFS;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature
- * response.
+ * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature response.
  *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
@@ -202,10 +201,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         return feature;
     }
 
-    /**
-     * Parses the value of the current attribute, parser cursor shall be on a feature attribute
-     * START_ELEMENT event.
-     */
+    /** Parses the value of the current attribute, parser cursor shall be on a feature attribute START_ELEMENT event. */
     private Object parseAttributeValue() throws XMLStreamException, IOException {
         final String name = parser.getLocalName();
         final AttributeDescriptor attribute = expectedProperties.get(name);
@@ -242,9 +238,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                 String namespace = parser.getNamespaceURI();
                 String name = parser.getLocalName();
                 if (featureNamespace.equals(namespace) && featureName.equals(name)) {
-                    String featureId =
-                            parser.getAttributeValue(
-                                    GML.id.getNamespaceURI(), GML.id.getLocalPart());
+                    String featureId = parser.getAttributeValue(GML.id.getNamespaceURI(), GML.id.getLocalPart());
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

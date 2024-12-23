@@ -13,26 +13,24 @@ public class DB2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
     protected void createSkipColumnTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
 
-            String stmt =
-                    "create table "
-                            + DB2TestUtil.SCHEMA_QUOTED
-                            + ".\"skipcolumn\" (\"fid\" int generated always as identity (start with 0, increment by 1),"
-                            + "\"id\" int ,"
-                            + " \"geom\" DB2GSE.ST_GEOMETRY, "
-                            + "\"weirdproperty\" XML, "
-                            + "\"name\" varchar(255), "
-                            + "primary key (\"fid\"))";
+            String stmt = "create table "
+                    + DB2TestUtil.SCHEMA_QUOTED
+                    + ".\"skipcolumn\" (\"fid\" int generated always as identity (start with 0, increment by 1),"
+                    + "\"id\" int ,"
+                    + " \"geom\" DB2GSE.ST_GEOMETRY, "
+                    + "\"weirdproperty\" XML, "
+                    + "\"name\" varchar(255), "
+                    + "primary key (\"fid\"))";
             con.prepareStatement(stmt).execute();
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, "auto", "geom", DB2TestUtil.SRSNAME, con);
 
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"skipcolumn\" "
-                                    + "(\"id\",\"geom\",\"weirdproperty\",\"name\")  "
-                                    + "VALUES (0, db2gse.st_GeomFromText('POINT(0 0)', "
-                                    + DB2TestUtil.SRID
-                                    + "), null, 'GeoTools')")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"skipcolumn\" "
+                            + "(\"id\",\"geom\",\"weirdproperty\",\"name\")  "
+                            + "VALUES (0, db2gse.st_GeomFromText('POINT(0 0)', "
+                            + DB2TestUtil.SRID
+                            + "), null, 'GeoTools')")
                     .execute();
         }
     }

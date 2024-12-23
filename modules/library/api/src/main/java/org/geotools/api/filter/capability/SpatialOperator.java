@@ -30,8 +30,8 @@ import java.util.Collection;
  *   <li>A subclass of Filter. Examples include "BBOX" and "Beyond"
  * </ul>
  *
- * Each filter subclass has an associated name, you can use this name to determine if a matching
- * SpatialOperator is defined as part of FilterCapabilities.
+ * Each filter subclass has an associated name, you can use this name to determine if a matching SpatialOperator is
+ * defined as part of FilterCapabilities.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider </a>
  */

@@ -31,9 +31,9 @@ import org.geotools.api.style.TextSymbolizer;
 
 /**
  * This abstract class applies the include VendorOptions to a Style eg. <VendorOption
- * name="include">mapOnly|legendOnly|normal</VendorOption> The visitor provides generic methods to
- * avoid including in the deep copy of the Style being passed to it the FeatureTypeStyle or the Rule
- * or the Symbolizer for which the vendorOptions defined doesn't allow the rendering.
+ * name="include">mapOnly|legendOnly|normal</VendorOption> The visitor provides generic methods to avoid including in
+ * the deep copy of the Style being passed to it the FeatureTypeStyle or the Rule or the Symbolizer for which the
+ * vendorOptions defined doesn't allow the rendering.
  */
 public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisitor {
 
@@ -85,19 +85,17 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
     }
 
     /**
-     * Check if the vendorOptions being passed allows the element they belong to, to be included in
-     * the deep copy of the style.
+     * Check if the vendorOptions being passed allows the element they belong to, to be included in the deep copy of the
+     * style.
      *
      * @param vendorOptions the vendorOptions map
      * @return true if the element can be included false otherwise
      */
     protected boolean canRender(Map<String, String> vendorOptions) {
         boolean canRenderer;
-        String value =
-                vendorOptions != null
-                        ? vendorOptions.get(
-                                org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
-                        : null;
+        String value = vendorOptions != null
+                ? vendorOptions.get(org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
+                : null;
         if (value == null) canRenderer = true;
         else if (value.equalsIgnoreCase(NORMAL.name())) canRenderer = true;
         else {
@@ -107,11 +105,9 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
     }
 
     /**
-     * Used by subclass to provide custom logic to check if the SLD element should be included in
-     * the copy
+     * Used by subclass to provide custom logic to check if the SLD element should be included in the copy
      *
-     * @param value the value of the <VendorOption
-     *     name="include">mapOnly|legendOnly|normal</VendorOption>
+     * @param value the value of the <VendorOption name="include">mapOnly|legendOnly|normal</VendorOption>
      * @return true if the element should be included in the copy, false otherwise.
      */
     protected abstract boolean canRenderInternal(String value);

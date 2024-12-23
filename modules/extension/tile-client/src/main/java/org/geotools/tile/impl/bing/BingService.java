@@ -25,13 +25,12 @@ import org.geotools.tile.impl.ZoomLevel;
  * The Bing tile service.
  *
  * <p>Note that Bing requires a key, which you can generate <a
- * href="http://www.microsoft.com/maps/create-a-bing-maps-key.aspx">here</a>. This service follows
- * the documentation for the <a
- * href="https://msdn.microsoft.com/en-us/library/ff701721.aspx">Imagery API</a>
+ * href="http://www.microsoft.com/maps/create-a-bing-maps-key.aspx">here</a>. This service follows the documentation for
+ * the <a href="https://msdn.microsoft.com/en-us/library/ff701721.aspx">Imagery API</a>
  *
  * <p>In order for the BingService to work correctly, you must use the URL fragment provided by <a
- * href="https://msdn.microsoft.com/en-us/library/ff701716.aspx">Get Imagery Metadata</a>. In
- * particular, you need to instantiate a BingService with a URL template such as <code>
+ * href="https://msdn.microsoft.com/en-us/library/ff701716.aspx">Get Imagery Metadata</a>. In particular, you need to
+ * instantiate a BingService with a URL template such as <code>
  * http://ecn.subdomain.tiles.virtualearth.net/tiles/r${code}.jpeg?key=YOUR_BING_KEY&g=129&mkt={culture}&shading=hill&stl=H
  * </code> .
  *
@@ -47,8 +46,7 @@ import org.geotools.tile.impl.ZoomLevel;
  *          scale, false, 128);
  * </pre>
  *
- * The "${code}" value will be substituted by the tile code (the quadkey) when the BingTile creates
- * its URL.
+ * The "${code}" value will be substituted by the tile code (the quadkey) when the BingTile creates its URL.
  *
  * @author Ugo Taddei
  * @since 12

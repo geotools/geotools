@@ -3,8 +3,8 @@ package org.geotools.jdbc;
 import java.sql.SQLException;
 
 /**
- * This test setup is so simple that subclasses may not be necessary, but just in case, we provide
- * the ability to subclass
+ * This test setup is so simple that subclasses may not be necessary, but just in case, we provide the ability to
+ * subclass
  */
 public class JDBCThreeValuedLogicTestSetup extends JDBCDelegatingTestSetup {
 

@@ -32,22 +32,21 @@ import org.geotools.util.Utilities;
 import si.uom.NonSI;
 
 /**
- * A prime meridian defines the origin from which longitude values are determined. The {@link
- * #getName name} initial value is "Greenwich", and that value shall be used when the {@linkplain
- * #getGreenwichLongitude greenwich longitude} value is zero.
+ * A prime meridian defines the origin from which longitude values are determined. The {@link #getName name} initial
+ * value is "Greenwich", and that value shall be used when the {@linkplain #getGreenwichLongitude greenwich longitude}
+ * value is zero.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
  */
-public class DefaultPrimeMeridian extends AbstractIdentifiedObject
-        implements PrimeMeridian, PROJFormattable {
+public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements PrimeMeridian, PROJFormattable {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = 541978454643213305L;;
+    private static final long serialVersionUID = 541978454643213305L;
+    ;
 
     /** The Greenwich meridian, with angular measurements in decimal degrees. */
-    public static final DefaultPrimeMeridian GREENWICH =
-            new DefaultPrimeMeridian("Greenwich", 0, NonSI.DEGREE_ANGLE);
+    public static final DefaultPrimeMeridian GREENWICH = new DefaultPrimeMeridian("Greenwich", 0, NonSI.DEGREE_ANGLE);
 
     /** Longitude of the prime meridian measured from the Greenwich meridian, positive eastward. */
     private final double greenwichLongitude;
@@ -56,10 +55,10 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
     private final Unit<Angle> angularUnit;
 
     /**
-     * Constructs a new prime meridian with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new prime meridian with the same values than the specified one. This copy constructor provides a way
+     * to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order
+     * to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are
+     * not cloned.
      *
      * @param meridian The prime meridian to copy.
      * @since 2.2
@@ -88,24 +87,20 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
      * @param greenwichLongitude The longitude value relative to the Greenwich Meridian.
      * @param angularUnit The angular unit of the longitude.
      */
-    public DefaultPrimeMeridian(
-            final String name, final double greenwichLongitude, final Unit<Angle> angularUnit) {
+    public DefaultPrimeMeridian(final String name, final double greenwichLongitude, final Unit<Angle> angularUnit) {
         this(Collections.singletonMap(NAME_KEY, name), greenwichLongitude, angularUnit);
     }
 
     /**
-     * Constructs a prime meridian from a set of properties. The properties map is given unchanged
-     * to the {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class
-     * constructor}.
+     * Constructs a prime meridian from a set of properties. The properties map is given unchanged to the
+     * {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param greenwichLongitude The longitude value relative to the Greenwich Meridian.
      * @param angularUnit The angular unit of the longitude.
      */
     public DefaultPrimeMeridian(
-            final Map<String, ?> properties,
-            final double greenwichLongitude,
-            final Unit<Angle> angularUnit) {
+            final Map<String, ?> properties, final double greenwichLongitude, final Unit<Angle> angularUnit) {
         super(properties);
         this.greenwichLongitude = greenwichLongitude;
         this.angularUnit = angularUnit;
@@ -114,8 +109,8 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
 
     /**
      * Longitude of the prime meridian measured from the Greenwich meridian, positive eastward. The
-     * {@code greenwichLongitude} initial value is zero, and that value shall be used when the
-     * {@linkplain #getName meridian name} value is "Greenwich".
+     * {@code greenwichLongitude} initial value is zero, and that value shall be used when the {@linkplain #getName
+     * meridian name} value is "Greenwich".
      *
      * @return The prime meridian Greenwich longitude, in {@linkplain #getAngularUnit angular unit}.
      */
@@ -125,10 +120,10 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
     }
 
     /**
-     * Returns the longitude value relative to the Greenwich Meridian, expressed in the specified
-     * units. This convenience method makes it easier to obtain longitude in decimal degrees ({@code
-     * getGreenwichLongitude(NonSI.DEGREE_ANGLE)}), regardless of the underlying angular units of
-     * this prime meridian.
+     * Returns the longitude value relative to the Greenwich Meridian, expressed in the specified units. This
+     * convenience method makes it easier to obtain longitude in decimal degrees
+     * ({@code getGreenwichLongitude(NonSI.DEGREE_ANGLE)}), regardless of the underlying angular units of this prime
+     * meridian.
      *
      * @param targetUnit The unit in which to express longitude.
      * @return The Greenwich longitude in the given units.
@@ -147,8 +142,8 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
      * Compare this prime meridian with the specified object for equality.
      *
      * @param object The object to compare to {@code this}.
-     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
-     *     comparing only properties relevant to transformations.
+     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for comparing only
+     *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
     @Override
@@ -163,8 +158,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
                         && Utilities.equals(this.angularUnit, that.angularUnit);
             } else {
                 return Utilities.equals(
-                        this.getGreenwichLongitude(NonSI.DEGREE_ANGLE),
-                        that.getGreenwichLongitude(NonSI.DEGREE_ANGLE));
+                        this.getGreenwichLongitude(NonSI.DEGREE_ANGLE), that.getGreenwichLongitude(NonSI.DEGREE_ANGLE));
 
                 /*
                  * Note: if compareMetadata==false, we relax the unit check because EPSG uses
@@ -177,13 +171,12 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
     }
 
     /**
-     * Returns a hash value for this prime meridian. {@linkplain #getName Name}, {@linkplain
-     * #getRemarks remarks} and the like are not taken in account. In other words, two prime
-     * meridians will return the same hash value if they are equal in the sense of <code>
+     * Returns a hash value for this prime meridian. {@linkplain #getName Name}, {@linkplain #getRemarks remarks} and
+     * the like are not taken in account. In other words, two prime meridians will return the same hash value if they
+     * are equal in the sense of <code>
      * {@link #equals equals}(AbstractIdentifiedObject, <strong>false</strong>)</code>.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -194,8 +187,8 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * @param formatter The formatter to use.
      * @return The WKT element name, which is "PRIMEM"
@@ -216,8 +209,6 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject
 
     @Override
     public String formatPROJ(final PROJFormatter formatter) {
-        return !formatter.isDatumProvided() && formatter.isPrimeMeridianProvided()
-                ? "+pm="
-                : PROJFormatter.NO_KEYWORD;
+        return !formatter.isDatumProvided() && formatter.isPrimeMeridianProvided() ? "+pm=" : PROJFormatter.NO_KEYWORD;
     }
 }

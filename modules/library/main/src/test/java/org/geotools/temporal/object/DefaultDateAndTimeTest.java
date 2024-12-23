@@ -83,8 +83,7 @@ public class DefaultDateAndTimeTest {
     @Test
     public void testSetCalendarEraName() {
         InternationalString result = dateAndTime1.getCalendarEraName();
-        ((DefaultDateAndTime) dateAndTime1)
-                .setCalendarEraName(new SimpleInternationalString("new Era"));
+        ((DefaultDateAndTime) dateAndTime1).setCalendarEraName(new SimpleInternationalString("new Era"));
         assertNotEquals(dateAndTime1.getCalendarEraName(), result);
     }
 

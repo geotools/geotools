@@ -33,8 +33,7 @@ import org.locationtech.jts.geom.Geometry;
  * ReprojectFeatureReader provides a reprojection for FeatureTypes.
  *
  * <p>ReprojectFeatureReader is a wrapper used to reproject GeometryAttributes to a user supplied
- * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original
- * FeatureReader.
+ * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original FeatureReader.
  *
  * <p>Example Use:
  *
@@ -51,8 +50,8 @@ import org.locationtech.jts.geom.Geometry;
  * assertEquals( reprojectCS, newCS );
  * </code></pre>
  *
- * TODO: handle the case where there is more than one geometry and the other geometries have a
- * different CS than the default geometry
+ * TODO: handle the case where there is more than one geometry and the other geometries have a different CS than the
+ * default geometry
  *
  * @author jgarnett, Refractions Research, Inc.
  * @author aaime
@@ -65,9 +64,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
     GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
 
     public ReprojectFeatureIterator(
-            FeatureIterator<SimpleFeature> reader,
-            SimpleFeatureType schema,
-            MathTransform transform) {
+            FeatureIterator<SimpleFeature> reader, SimpleFeatureType schema, MathTransform transform) {
         this.reader = reader;
         this.schema = schema;
         transformer.setMathTransform(transform);
@@ -117,8 +114,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
             }
         } catch (TransformException e) {
             throw (IllegalStateException)
-                    new IllegalStateException(
-                                    "A transformation exception occurred while reprojecting data on the fly")
+                    new IllegalStateException("A transformation exception occurred while reprojecting data on the fly")
                             .initCause(e);
         }
 

@@ -57,11 +57,8 @@ public class Spatial_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupp
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.spatial(),
-                        new QName(OGC.NAMESPACE, "Spatial_Operators"),
-                        OGC.Spatial_OperatorsType);
+        Document dom = encode(
+                FilterMockData.spatial(), new QName(OGC.NAMESPACE, "Spatial_Operators"), OGC.Spatial_OperatorsType);
 
         assertNotNull(getElementByQName(dom, OGC.BBOX));
         assertNotNull(getElementByQName(dom, OGC.Equals));

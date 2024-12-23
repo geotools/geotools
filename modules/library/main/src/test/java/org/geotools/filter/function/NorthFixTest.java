@@ -62,8 +62,8 @@ public class NorthFixTest {
     public static final String NORTH_FIX = NorthFix.FUNCTION_NAME;
 
     /**
-     * The tolerance for comparing angles reported by NorthFix. There is a balance here between
-     * accurancy and the distance that NorthFix can use to determine the angle.
+     * The tolerance for comparing angles reported by NorthFix. There is a balance here between accurancy and the
+     * distance that NorthFix can use to determine the angle.
      */
     private static final double EPS = 1;
 
@@ -105,8 +105,7 @@ public class NorthFixTest {
         CoordinateReferenceSystem sourceVerticalCRS = CRS.decode("EPSG:5783");
         Map<String, Object> properties = new HashMap<>();
         properties.put(
-                IdentifiedObject.NAME_KEY,
-                new NamedIdentifier(Citations.fromName("TEST"), "Compound 4326+5783"));
+                IdentifiedObject.NAME_KEY, new NamedIdentifier(Citations.fromName("TEST"), "Compound 4326+5783"));
         CoordinateReferenceSystem[] elements = {sourceHorizontalCRS, sourceVerticalCRS};
         CoordinateReferenceSystem compoundCRS = crsFactory.createCompoundCRS(properties, elements);
         return compoundCRS;
@@ -140,23 +139,20 @@ public class NorthFixTest {
     }
 
     /**
-     * Real world use case, with source and target CRS, visually tested. Source CRS provided as a
-     * direct function parameter.
+     * Real world use case, with source and target CRS, visually tested. Source CRS provided as a direct function
+     * parameter.
      */
     @Test
     public void testPolarExplicitSourceCRS() throws Exception {
         CoordinateReferenceSystem polarCRS = CRS.decode("EPSG:3976");
 
         Point pt = getPoint(-102, -73);
-        Function function =
-                FF.function(
-                        NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195), WGS84_LT);
+        Function function = FF.function(NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195), WGS84_LT);
         assertEquals(93, function.evaluate(null, Double.class), EPS);
     }
 
     /**
-     * Real world use case, with source and target CRS, visually tested. Source CRS coming from the
-     * geometry user data.
+     * Real world use case, with source and target CRS, visually tested. Source CRS coming from the geometry user data.
      */
     @Test
     public void testPolarMetadataSourceCRS() throws Exception {
@@ -164,14 +160,12 @@ public class NorthFixTest {
 
         Point pt = getPoint(-102, -73);
         pt.setUserData(WGS84);
-        Function function =
-                FF.function(NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195));
+        Function function = FF.function(NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195));
         assertEquals(93, function.evaluate(null, Double.class), EPS);
     }
 
     /**
-     * Real world use case, with source and target CRS, visually tested. Source CRS coming from the
-     * geometry user data.
+     * Real world use case, with source and target CRS, visually tested. Source CRS coming from the geometry user data.
      */
     @Test
     public void testPolarSridCRS() throws Exception {
@@ -179,23 +173,18 @@ public class NorthFixTest {
 
         Point pt = getPoint(-102, -73);
         pt.setSRID(4326);
-        Function function =
-                FF.function(NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195));
+        Function function = FF.function(NORTH_FIX, FF.literal(polarCRS), FF.literal(pt), FF.literal(195));
         assertEquals(93, function.evaluate(null, Double.class), EPS);
     }
 
-    /**
-     * Real world use case, with source and target CRS, visually tested. Source CRS coming from the
-     * feature schema.
-     */
+    /** Real world use case, with source and target CRS, visually tested. Source CRS coming from the feature schema. */
     @Test
     public void testPolarFeatureCRS() throws Exception {
         CoordinateReferenceSystem polarCRS = CRS.decode("EPSG:3976");
 
         SimpleFeature feature = buildWGS84Feature();
 
-        Function function =
-                FF.function(NORTH_FIX, FF.literal(polarCRS), FF.property("geom"), FF.literal(195));
+        Function function = FF.function(NORTH_FIX, FF.literal(polarCRS), FF.property("geom"), FF.literal(195));
         assertEquals(93, function.evaluate(feature, Double.class), EPS);
     }
 
@@ -238,13 +227,7 @@ public class NorthFixTest {
     public void testSimplifyCRSConversions() throws Exception {
         // function that could use conversion to static CRS objects (rather than strings)
         NorthFix function =
-                (NorthFix)
-                        FF.function(
-                                NORTH_FIX,
-                                FF.literal("EPSG:3976"),
-                                POINT_LT,
-                                ANGLE_LT,
-                                FF.literal("CRS:84"));
+                (NorthFix) FF.function(NORTH_FIX, FF.literal("EPSG:3976"), POINT_LT, ANGLE_LT, FF.literal("CRS:84"));
         NorthFix simplified = (NorthFix) function.simplify(FF, null);
 
         Expression targetCRSParameter = simplified.getParameters().get(0);
@@ -262,9 +245,7 @@ public class NorthFixTest {
         PropertyName angle = FF.property("myAngle");
         // the source CRS can be looked up dynamically from the feature type, the simplification
         // should make that lookup static
-        NorthFix function =
-                (NorthFix)
-                        FF.function(NORTH_FIX, FF.literal("EPSG:3976"), FF.property("geom"), angle);
+        NorthFix function = (NorthFix) FF.function(NORTH_FIX, FF.literal("EPSG:3976"), FF.property("geom"), angle);
         assertEquals(3, function.getParameters().size());
         NorthFix simplified = (NorthFix) function.simplify(FF, feature.getFeatureType());
         assertEquals(4, simplified.getParameters().size());

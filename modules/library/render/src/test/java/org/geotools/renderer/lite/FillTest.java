@@ -64,10 +64,8 @@ public class FillTest {
         bounds.expandBy(0.2, 0.2);
 
         // load font
-        Font f =
-                Font.createFont(
-                        Font.TRUETYPE_FONT,
-                        TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(
+                Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -89,11 +87,7 @@ public class FillTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/"
-                                + styleName
-                                + ".png");
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
 
@@ -232,9 +226,7 @@ public class FillTest {
     public void testGEOT3111() throws Exception {
         FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        Symbolizer sym =
-                sf.createPolygonSymbolizer(
-                        StrokeImpl.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+        Symbolizer sym = sf.createPolygonSymbolizer(StrokeImpl.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
 
         MapContent mc = new MapContent();

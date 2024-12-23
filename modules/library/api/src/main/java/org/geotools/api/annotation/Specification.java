@@ -17,28 +17,28 @@ package org.geotools.api.annotation;
  */
 public enum Specification {
     /**
-     * ISO 19103, Geographic information - Conceptual schema language. This is the specification for
-     * some interfaces in package {@link org.geotools.api.util}.
+     * ISO 19103, Geographic information - Conceptual schema language. This is the specification for some interfaces in
+     * package {@link org.geotools.api.util}.
      */
     ISO_19103,
 
     /**
-     * ISO 19107, Feature Geometry (Topic 1). This is the specification for package {@link
-     * org.geotools.api.geometry} and sub-packages.
+     * ISO 19107, Feature Geometry (Topic 1). This is the specification for package {@link org.geotools.api.geometry}
+     * and sub-packages.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/as">Buy from ISO</A>
      */
     ISO_19107,
 
     /**
-     * ISO 19108, Temporal Schema. This is the specification for package {@link
-     * org.geotools.api.temporal} and sub-packages.
+     * ISO 19108, Temporal Schema. This is the specification for package {@link org.geotools.api.temporal} and
+     * sub-packages.
      */
     ISO_19108,
 
     /**
-     * ISO 19111, Spatial Referencing by Coordinates (Topic 2). This is the specification for
-     * package {@link org.geotools.api.referencing} and sub-packages.
+     * ISO 19111, Spatial Referencing by Coordinates (Topic 2). This is the specification for package
+     * {@link org.geotools.api.referencing} and sub-packages.
      *
      * @see #OGC_01009
      * @see <A HREF="http://www.opengeospatial.org/standards/as#04-046r3">Download from OGC</A>
@@ -46,8 +46,8 @@ public enum Specification {
     ISO_19111,
 
     /**
-     * ISO 19115, Metadata (Topic 11). This is the specification for package {@link
-     * org.geotools.api.metadata} and sub-packages.
+     * ISO 19115, Metadata (Topic 11). This is the specification for package {@link org.geotools.api.metadata} and
+     * sub-packages.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/as#01-111">Buy from ISO</A>
      */
@@ -56,9 +56,8 @@ public enum Specification {
     /**
      * ISO 19117, Portrayal. This is an abstract specification for portraying features.
      *
-     * @see <A
-     *     HREF="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40395">Buy
-     *     from ISO</A>
+     * @see <A HREF="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40395">Buy from
+     *     ISO</A>
      */
     ISO_19117,
 
@@ -71,25 +70,23 @@ public enum Specification {
     ISO_19123,
 
     /**
-     * ISO 19128, Layers and styles. This is the specification for package {@link
-     * org.geotools.api.layer} and sub-packages.
+     * ISO 19128, Layers and styles. This is the specification for package {@link org.geotools.api.layer} and
+     * sub-packages.
      *
      * @see <A HREF="http://portal.opengeospatial.org/files/?artifact_id=5316">Download from OGC</A>
      */
     ISO_19128,
 
     /**
-     * GO-1 Application Objects. This is the specification for package {@link org.geotools.api.go}
-     * and sub-packages.
+     * GO-1 Application Objects. This is the specification for package {@link org.geotools.api.go} and sub-packages.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/go">Download from OGC</A>
      */
     OGC_03064,
 
     /**
-     * Coordinate Transformation Services implementation specification. This is the specification
-     * used as a complement of {@linkplain #ISO_19111 ISO 19111} when an aspect was not defined in
-     * the ISO specification.
+     * Coordinate Transformation Services implementation specification. This is the specification used as a complement
+     * of {@linkplain #ISO_19111 ISO 19111} when an aspect was not defined in the ISO specification.
      *
      * @see #ISO_19111
      * @see <A HREF="http://www.opengeospatial.org/standards/ct">Download from OGC</A>
@@ -97,8 +94,8 @@ public enum Specification {
     OGC_01009,
 
     /**
-     * Grid Coverages implementation specification. This is the specification used as a complement
-     * of {@linkplain #ISO_19123 ISO 19123} when an aspect was not defined in the ISO specification.
+     * Grid Coverages implementation specification. This is the specification used as a complement of
+     * {@linkplain #ISO_19123 ISO 19123} when an aspect was not defined in the ISO specification.
      *
      * @see #ISO_19123
      * @see <A HREF="http://www.opengeospatial.org/standards/gc">Download from OGC</A>
@@ -106,8 +103,8 @@ public enum Specification {
     OGC_01004,
 
     /**
-     * Filter encoding implementation specification. This is the specification for package {@link
-     * org.geotools.api.filter} and sub-packages.
+     * Filter encoding implementation specification. This is the specification for package
+     * {@link org.geotools.api.filter} and sub-packages.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/filter">Download from OGC</A>
      * @todo Need to be updated to {@code OGC 04-095}.
@@ -115,8 +112,8 @@ public enum Specification {
     OGC_02059,
 
     /**
-     * Styled Layer Descriptor (SLD) implementation specification. This is the specification for
-     * package {@link org.geotools.api.sld} and sub-packages.
+     * Styled Layer Descriptor (SLD) implementation specification. This is the specification for package
+     * {@link org.geotools.api.sld} and sub-packages.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/sld">Download from OGC</A>
      * @todo Need to be updated to {@code OGC 05-078}.
@@ -132,8 +129,8 @@ public enum Specification {
     OGC_04094,
 
     /**
-     * Observations and Measurements, part 1. This is the specification for package {@link
-     * org.geotools.api.observation}.
+     * Observations and Measurements, part 1. This is the specification for package
+     * {@link org.geotools.api.observation}.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/bp#05-087r4">Download from OGC</A>
      * @todo Need to update the hyperlink.
@@ -141,8 +138,8 @@ public enum Specification {
     OGC_07022,
 
     /**
-     * Observations and Measurements, part 2: Sampling Features. This is the specification for
-     * package {@link org.geotools.api.observation.sampling}.
+     * Observations and Measurements, part 2: Sampling Features. This is the specification for package
+     * {@link org.geotools.api.observation.sampling}.
      *
      * @see <A HREF="http://www.opengeospatial.org/standards/bp#05-087r4">Download from OGC</A>
      * @todo Need to update the hyperlink.
@@ -150,8 +147,8 @@ public enum Specification {
     OGC_07002,
 
     /**
-     * Specification not yet determined. This is a temporary enumeration for the processing of API
-     * submitted by some contributors.
+     * Specification not yet determined. This is a temporary enumeration for the processing of API submitted by some
+     * contributors.
      */
     UNSPECIFIED
 }

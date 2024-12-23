@@ -36,8 +36,8 @@ public class IntersectUtils {
     /**
      * Tests whether the two geometries intersect.
      *
-     * <p>This method relies completely on {@link Geometry#intersects(Geometry)} but also tries to
-     * unroll <TT>GeometryCollection</TT>s.
+     * <p>This method relies completely on {@link Geometry#intersects(Geometry)} but also tries to unroll
+     * <TT>GeometryCollection</TT>s.
      *
      * @return true if the two geometries intersect.
      */
@@ -81,8 +81,8 @@ public class IntersectUtils {
 
     /**
      * Return the intersection of two Geometries. <br>
-     * This method relies completely on {@link Geometry#intersection(Geometry)} but also tries to
-     * unroll <TT>GeometryCollection</TT>s.
+     * This method relies completely on {@link Geometry#intersection(Geometry)} but also tries to unroll
+     * <TT>GeometryCollection</TT>s.
      *
      * @return true if the two geometries intersect.
      */
@@ -92,23 +92,19 @@ public class IntersectUtils {
                 return intersection((GeometryCollection) g1, (GeometryCollection) g2);
             } else {
                 List<Geometry> ret = intersection((GeometryCollection) g1, g2);
-                return g1.getFactory()
-                        .createGeometryCollection(GeometryFactory.toGeometryArray(ret));
+                return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             }
         } else {
             if (g2 instanceof GeometryCollection) {
                 List<Geometry> ret = intersection((GeometryCollection) g2, g1);
-                return g1.getFactory()
-                        .createGeometryCollection(GeometryFactory.toGeometryArray(ret));
+                return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             } else {
                 return g1.intersection(g2);
             }
         }
     }
 
-    /**
-     * Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)}
-     */
+    /** Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)} */
     private static List<Geometry> intersection(GeometryCollection gc, Geometry g) {
         List<Geometry> ret = new ArrayList<>();
         final int size = gc.getNumGeometries();
@@ -119,9 +115,7 @@ public class IntersectUtils {
         return ret;
     }
 
-    /**
-     * Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)}
-     */
+    /** Helper method for {@link #intersection(Geometry, Geometry) intersection(Geometry, Geometry)} */
     private static GeometryCollection intersection(GeometryCollection gc1, GeometryCollection gc2) {
         List<Geometry> ret = new ArrayList<>();
         final int size = gc1.getNumGeometries();
@@ -135,8 +129,8 @@ public class IntersectUtils {
     }
 
     /**
-     * Adds into the <TT>collector</TT> the Geometry <TT>g</TT>, or, if <TT>g</TT> is a
-     * GeometryCollection, every geometry in it.
+     * Adds into the <TT>collector</TT> the Geometry <TT>g</TT>, or, if <TT>g</TT> is a GeometryCollection, every
+     * geometry in it.
      *
      * @param g the Geometry (or GeometryCollection to unroll)
      * @param collector the Collection where the Geometries will be added into
@@ -154,8 +148,8 @@ public class IntersectUtils {
     }
 
     /**
-     * Flatten all first-level (i.e. non recursively) bundles (GeometryCollections and
-     * MultiPolygons) into a GeometryCollection. <br>
+     * Flatten all first-level (i.e. non recursively) bundles (GeometryCollections and MultiPolygons) into a
+     * GeometryCollection. <br>
      * Valid structures:
      *
      * <UL>
@@ -165,8 +159,7 @@ public class IntersectUtils {
      *   <LI>GeometryCollection holding Polygons and MultiPolygons -> GeometryCollection of Polygons
      * </UL>
      *
-     * @throws IllegalArgumentException when encountering illegal Geometries; message is the
-     *     Geometry class name.
+     * @throws IllegalArgumentException when encountering illegal Geometries; message is the Geometry class name.
      */
     public static Geometry unrollGeometries(Geometry geometry) throws IllegalArgumentException {
 
@@ -178,8 +171,7 @@ public class IntersectUtils {
         } else if (geometry instanceof MultiPolygon) {
 
             MultiPolygon mp = (MultiPolygon) geometry;
-            return geometry.getFactory()
-                    .createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
+            return geometry.getFactory().createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
 
         } else if (geometry instanceof GeometryCollection) {
             List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
@@ -205,8 +197,7 @@ public class IntersectUtils {
         List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
 
         for (int i = 0; i < mp.getNumGeometries(); i++) {
-            org.locationtech.jts.geom.Polygon g =
-                    (org.locationtech.jts.geom.Polygon) mp.getGeometryN(i);
+            org.locationtech.jts.geom.Polygon g = (org.locationtech.jts.geom.Polygon) mp.getGeometryN(i);
             ret.add(g);
         }
 

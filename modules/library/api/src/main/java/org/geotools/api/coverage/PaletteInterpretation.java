@@ -68,8 +68,8 @@ public final class PaletteInterpretation extends CodeList<PaletteInterpretation>
     public static final PaletteInterpretation HLS = new PaletteInterpretation("HLS");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -95,8 +95,7 @@ public final class PaletteInterpretation extends CodeList<PaletteInterpretation>
     }
 
     /**
-     * Returns the palette interpretation that matches the given string, or returns a new one if
-     * none match it.
+     * Returns the palette interpretation that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

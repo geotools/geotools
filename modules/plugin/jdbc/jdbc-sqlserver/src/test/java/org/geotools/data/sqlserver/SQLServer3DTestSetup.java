@@ -23,41 +23,33 @@ public class SQLServer3DTestSetup extends JDBC3DTestSetup {
                         + "   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ))");
 
         // setup table
-        run(
-                "CREATE TABLE \"line3d\"(\"fid\" int IDENTITY(0, 1) PRIMARY KEY, \"id\" int, "
-                        + "\"geom\" geometry, \"name\" varchar(255) )");
-        run(
-                "CREATE SPATIAL INDEX line3d_GEOM_IDX ON \"line3d\"(\"geom\") WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
+        run("CREATE TABLE \"line3d\"(\"fid\" int IDENTITY(0, 1) PRIMARY KEY, \"id\" int, "
+                + "\"geom\" geometry, \"name\" varchar(255) )");
+        run("CREATE SPATIAL INDEX line3d_GEOM_IDX ON \"line3d\"(\"geom\") WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
 
         // insert data
-        run(
-                "INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                        + "geometry::STGeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
-                        + "'l1')");
-        run(
-                "INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                        + "geometry::STGeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
-                        + "'l2')");
+        run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
+                + "geometry::STGeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
+                + "'l1')");
+        run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
+                + "geometry::STGeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
+                + "'l2')");
     }
 
     @Override
     protected void createPoint3DTable() throws Exception {
         // setup table
-        run(
-                "CREATE TABLE \"point3d\"(\"fid\" int IDENTITY(0, 1)  PRIMARY KEY, \"id\" int, "
-                        + "\"geom\" geometry, \"name\" varchar(255) )");
-        run(
-                "CREATE SPATIAL INDEX POINT3D_GEOM_IDX ON \"point3d\"(\"geom\") WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
+        run("CREATE TABLE \"point3d\"(\"fid\" int IDENTITY(0, 1)  PRIMARY KEY, \"id\" int, "
+                + "\"geom\" geometry, \"name\" varchar(255) )");
+        run("CREATE SPATIAL INDEX POINT3D_GEOM_IDX ON \"point3d\"(\"geom\") WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
 
         // insert data
-        run(
-                "INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (0, "
-                        + "geometry::STGeomFromText('POINT(1 1 1)', 4326),"
-                        + "'p1')");
-        run(
-                "INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (1, "
-                        + "geometry::STGeomFromText('POINT(3 0 1)', 4326),"
-                        + "'p2')");
+        run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (0, "
+                + "geometry::STGeomFromText('POINT(1 1 1)', 4326),"
+                + "'p1')");
+        run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (1, "
+                + "geometry::STGeomFromText('POINT(3 0 1)', 4326),"
+                + "'p2')");
     }
 
     @Override

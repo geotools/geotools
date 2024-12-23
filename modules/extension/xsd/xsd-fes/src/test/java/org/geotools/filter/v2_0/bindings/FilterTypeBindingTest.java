@@ -46,10 +46,9 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class FilterTypeBindingTest extends FESTestSupport {
     @Test
     public void testParseId() throws Exception {
-        String xml =
-                "<fes:Filter xmlns:fes='http://www.opengis.net/fes/2.0'>"
-                        + "<fes:ResourceId rid='InWaterA_1M.1234' version='1'/>"
-                        + "</fes:Filter>";
+        String xml = "<fes:Filter xmlns:fes='http://www.opengis.net/fes/2.0'>"
+                + "<fes:ResourceId rid='InWaterA_1M.1234' version='1'/>"
+                + "</fes:Filter>";
 
         buildDocument(xml);
         Id f = (Id) parse();
@@ -61,24 +60,23 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParseSpatial() throws Exception {
-        String xml =
-                "<fes:Filter"
-                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
-                        + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
-                        + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
-                        + "   <fes:Overlaps> "
-                        + "      <fes:ValueReference>Geometry</fes:ValueReference> "
-                        + "      <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
-                        + "         <gml:exterior> "
-                        + "            <gml:LinearRing> "
-                        + "               <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
-                        + "            </gml:LinearRing> "
-                        + "         </gml:exterior> "
-                        + "      </gml:Polygon> "
-                        + "   </fes:Overlaps> "
-                        + "</fes:Filter> ";
+        String xml = "<fes:Filter"
+                + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
+                + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
+                + "   <fes:Overlaps> "
+                + "      <fes:ValueReference>Geometry</fes:ValueReference> "
+                + "      <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
+                + "         <gml:exterior> "
+                + "            <gml:LinearRing> "
+                + "               <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
+                + "            </gml:LinearRing> "
+                + "         </gml:exterior> "
+                + "      </gml:Polygon> "
+                + "   </fes:Overlaps> "
+                + "</fes:Filter> ";
         buildDocument(xml);
 
         Overlaps f = (Overlaps) parse();
@@ -93,24 +91,23 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParseSpatialLocalNamespace() throws Exception {
-        String xml =
-                "<fes:Filter"
-                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
-                        + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
-                        + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
-                        + "   <fes:Overlaps> "
-                        + "      <fes:ValueReference xmlns:ns44=\"http://www.geootools.org/example\">ns44:Geometry</fes:ValueReference> "
-                        + "      <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
-                        + "         <gml:exterior> "
-                        + "            <gml:LinearRing> "
-                        + "               <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
-                        + "            </gml:LinearRing> "
-                        + "         </gml:exterior> "
-                        + "      </gml:Polygon> "
-                        + "   </fes:Overlaps> "
-                        + "</fes:Filter> ";
+        String xml = "<fes:Filter"
+                + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
+                + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
+                + "   <fes:Overlaps> "
+                + "      <fes:ValueReference xmlns:ns44=\"http://www.geootools.org/example\">ns44:Geometry</fes:ValueReference> "
+                + "      <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
+                + "         <gml:exterior> "
+                + "            <gml:LinearRing> "
+                + "               <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
+                + "            </gml:LinearRing> "
+                + "         </gml:exterior> "
+                + "      </gml:Polygon> "
+                + "   </fes:Overlaps> "
+                + "</fes:Filter> ";
         buildDocument(xml);
 
         Overlaps f = (Overlaps) parse();
@@ -127,29 +124,28 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParseLogical() throws Exception {
-        String xml =
-                "<fes:Filter "
-                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 "
-                        + "   http://schemas.opengis.net/filter/2.0/filterAll.xsd'> "
-                        + "   <fes:And> "
-                        + "      <fes:Or> "
-                        + "         <fes:PropertyIsEqualTo> "
-                        + "            <fes:ValueReference>FIELD1</fes:ValueReference> "
-                        + "            <fes:Literal>10</fes:Literal> "
-                        + "         </fes:PropertyIsEqualTo> "
-                        + "         <fes:PropertyIsEqualTo> "
-                        + "            <fes:ValueReference>FIELD1</fes:ValueReference> "
-                        + "            <fes:Literal>20</fes:Literal> "
-                        + "         </fes:PropertyIsEqualTo> "
-                        + "      </fes:Or> "
-                        + "      <fes:PropertyIsEqualTo> "
-                        + "         <fes:ValueReference>STATUS</fes:ValueReference> "
-                        + "         <fes:Literal>VALID</fes:Literal> "
-                        + "      </fes:PropertyIsEqualTo> "
-                        + "   </fes:And> "
-                        + "</fes:Filter> ";
+        String xml = "<fes:Filter "
+                + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 "
+                + "   http://schemas.opengis.net/filter/2.0/filterAll.xsd'> "
+                + "   <fes:And> "
+                + "      <fes:Or> "
+                + "         <fes:PropertyIsEqualTo> "
+                + "            <fes:ValueReference>FIELD1</fes:ValueReference> "
+                + "            <fes:Literal>10</fes:Literal> "
+                + "         </fes:PropertyIsEqualTo> "
+                + "         <fes:PropertyIsEqualTo> "
+                + "            <fes:ValueReference>FIELD1</fes:ValueReference> "
+                + "            <fes:Literal>20</fes:Literal> "
+                + "         </fes:PropertyIsEqualTo> "
+                + "      </fes:Or> "
+                + "      <fes:PropertyIsEqualTo> "
+                + "         <fes:ValueReference>STATUS</fes:ValueReference> "
+                + "         <fes:Literal>VALID</fes:Literal> "
+                + "      </fes:PropertyIsEqualTo> "
+                + "   </fes:And> "
+                + "</fes:Filter> ";
         buildDocument(xml);
 
         And f = (And) parse();
@@ -174,37 +170,36 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParse1() throws Exception {
-        String xml =
-                "<fes:Filter "
-                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
-                        + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 "
-                        + "   http://schemas.opengis.net/filter/2.0/filterAll.xsd "
-                        + "   http://www.opengis.net/gml/3.2 "
-                        + "   http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
-                        + "   <fes:And> "
-                        + "      <fes:Within> "
-                        + "         <fes:ValueReference>WKB_GEOM</fes:ValueReference> "
-                        + "         <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
-                        + "            <gml:exterior> "
-                        + "               <gml:LinearRing> "
-                        + "                  <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
-                        + "               </gml:LinearRing> "
-                        + "            </gml:exterior> "
-                        + "         </gml:Polygon> "
-                        + "      </fes:Within> "
-                        + "      <fes:PropertyIsBetween> "
-                        + "         <fes:ValueReference>DEPTH</fes:ValueReference> "
-                        + "         <fes:LowerBoundary> "
-                        + "            <fes:Literal>400</fes:Literal> "
-                        + "         </fes:LowerBoundary> "
-                        + "         <fes:UpperBoundary> "
-                        + "            <fes:Literal>800</fes:Literal> "
-                        + "         </fes:UpperBoundary> "
-                        + "      </fes:PropertyIsBetween> "
-                        + "   </fes:And> "
-                        + "</fes:Filter>";
+        String xml = "<fes:Filter "
+                + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 "
+                + "   http://schemas.opengis.net/filter/2.0/filterAll.xsd "
+                + "   http://www.opengis.net/gml/3.2 "
+                + "   http://schemas.opengis.net/gml/3.2.1/gml.xsd'> "
+                + "   <fes:And> "
+                + "      <fes:Within> "
+                + "         <fes:ValueReference>WKB_GEOM</fes:ValueReference> "
+                + "         <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> "
+                + "            <gml:exterior> "
+                + "               <gml:LinearRing> "
+                + "                  <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> "
+                + "               </gml:LinearRing> "
+                + "            </gml:exterior> "
+                + "         </gml:Polygon> "
+                + "      </fes:Within> "
+                + "      <fes:PropertyIsBetween> "
+                + "         <fes:ValueReference>DEPTH</fes:ValueReference> "
+                + "         <fes:LowerBoundary> "
+                + "            <fes:Literal>400</fes:Literal> "
+                + "         </fes:LowerBoundary> "
+                + "         <fes:UpperBoundary> "
+                + "            <fes:Literal>800</fes:Literal> "
+                + "         </fes:UpperBoundary> "
+                + "      </fes:PropertyIsBetween> "
+                + "   </fes:And> "
+                + "</fes:Filter>";
 
         buildDocument(xml);
 
@@ -306,39 +301,37 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testParseExtendedOperator() throws Exception {
-        String xml =
-                "<fes:Filter "
-                        + "xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:myops='http://www.someserver.com/myops/1.0'> "
-                        + "  <myops:strMatches> "
-                        + "   <fes:ValueReference>bar</fes:ValueReference> "
-                        + "   <fes:Literal>baz</fes:Literal> "
-                        + "  </myops:strMatches> "
-                        + "</fes:Filter>";
+        String xml = "<fes:Filter "
+                + "xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:myops='http://www.someserver.com/myops/1.0'> "
+                + "  <myops:strMatches> "
+                + "   <fes:ValueReference>bar</fes:ValueReference> "
+                + "   <fes:Literal>baz</fes:Literal> "
+                + "  </myops:strMatches> "
+                + "</fes:Filter>";
         buildDocument(xml);
 
         PropertyIsEqualTo f = (PropertyIsEqualTo) parse();
         assertTrue(f.getExpression1() instanceof Function);
         assertTrue(f.getExpression2() instanceof Literal);
 
-        xml =
-                "<fes:Filter "
-                        + "xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:myops='http://www.someserver.com/myops/1.0'> "
-                        + " <fes:And> "
-                        + "  <myops:strMatches> "
-                        + "   <fes:ValueReference>bar</fes:ValueReference> "
-                        + "   <fes:Literal>baz</fes:Literal> "
-                        + "  </myops:strMatches> "
-                        + "  <fes:PropertyIsBetween> "
-                        + "<fes:ValueReference>Person/age</fes:ValueReference> "
-                        + "   <fes:LowerBoundary> "
-                        + "    <fes:Literal>18</fes:Literal> "
-                        + "   </fes:LowerBoundary> "
-                        + "   <fes:UpperBoundary> "
-                        + "    <fes:Literal>200</fes:Literal> "
-                        + "   </fes:UpperBoundary> "
-                        + "  </fes:PropertyIsBetween> "
-                        + " </fes:And> "
-                        + "</fes:Filter>";
+        xml = "<fes:Filter "
+                + "xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:myops='http://www.someserver.com/myops/1.0'> "
+                + " <fes:And> "
+                + "  <myops:strMatches> "
+                + "   <fes:ValueReference>bar</fes:ValueReference> "
+                + "   <fes:Literal>baz</fes:Literal> "
+                + "  </myops:strMatches> "
+                + "  <fes:PropertyIsBetween> "
+                + "<fes:ValueReference>Person/age</fes:ValueReference> "
+                + "   <fes:LowerBoundary> "
+                + "    <fes:Literal>18</fes:Literal> "
+                + "   </fes:LowerBoundary> "
+                + "   <fes:UpperBoundary> "
+                + "    <fes:Literal>200</fes:Literal> "
+                + "   </fes:UpperBoundary> "
+                + "  </fes:PropertyIsBetween> "
+                + " </fes:And> "
+                + "</fes:Filter>";
         buildDocument(xml);
 
         And a = (And) parse();
@@ -346,9 +339,7 @@ public class FilterTypeBindingTest extends FESTestSupport {
 
         assertEquals(2, ch.size());
 
-        assertTrue(
-                ch.get(0) instanceof PropertyIsEqualTo || ch.get(0) instanceof PropertyIsBetween);
-        assertTrue(
-                ch.get(1) instanceof PropertyIsEqualTo || ch.get(1) instanceof PropertyIsBetween);
+        assertTrue(ch.get(0) instanceof PropertyIsEqualTo || ch.get(0) instanceof PropertyIsBetween);
+        assertTrue(ch.get(1) instanceof PropertyIsEqualTo || ch.get(1) instanceof PropertyIsBetween);
     }
 }

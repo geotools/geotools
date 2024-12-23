@@ -21,9 +21,9 @@ import java.util.Set;
 import javax.swing.JTextField;
 
 /**
- * Abstract base class for text field controls that work with a simple value such as {@code
- * JIntegerField}. Provides methods to add and remove listeners for value changes offering a simpler
- * API than messing about with Swing {@code KeyListener} and {@code DocumentListener} classes.
+ * Abstract base class for text field controls that work with a simple value such as {@code JIntegerField}. Provides
+ * methods to add and remove listeners for value changes offering a simpler API than messing about with Swing
+ * {@code KeyListener} and {@code DocumentListener} classes.
  *
  * @author Michael Bedward
  * @since 2.6.1

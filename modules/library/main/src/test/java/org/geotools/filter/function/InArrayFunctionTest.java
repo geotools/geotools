@@ -27,40 +27,28 @@ public class InArrayFunctionTest {
     @Test
     public void testMatchIntegers() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "inArray",
-                        ff.literal(9),
-                        ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}));
+        Function func = ff.function("inArray", ff.literal(9), ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testMatchStrings() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "inArray", ff.literal("b"), ff.literal(new String[] {"a", "b", "c", "d"}));
+        Function func = ff.function("inArray", ff.literal("b"), ff.literal(new String[] {"a", "b", "c", "d"}));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testDoesNotMatchIntegers() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "inArray",
-                        ff.literal(10),
-                        ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}));
+        Function func = ff.function("inArray", ff.literal(10), ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testDoesNotMatchStrings() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "inArray", ff.literal("g"), ff.literal(new String[] {"a", "b", "c", "d"}));
+        Function func = ff.function("inArray", ff.literal("g"), ff.literal(new String[] {"a", "b", "c", "d"}));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 

@@ -23,8 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * An event listener that can be set to expect specified types of events and test if they are
- * received.
+ * An event listener that can be set to expect specified types of events and test if they are received.
  *
  * @param <E> the Enum type associated with the event class
  * @param <T> type of {@code EventObject}

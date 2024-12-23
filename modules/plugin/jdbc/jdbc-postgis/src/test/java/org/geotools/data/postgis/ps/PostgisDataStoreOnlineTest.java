@@ -46,8 +46,8 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     }
 
     /**
-     * verifies that the column width of a varchar column is larger than 255 if length is not
-     * specified. See <a href="https://osgeo-org.atlassian.net/browse/GEOT-6888">GEOT-6888</a>.
+     * verifies that the column width of a varchar column is larger than 255 if length is not specified. See <a
+     * href="https://osgeo-org.atlassian.net/browse/GEOT-6888">GEOT-6888</a>.
      */
     @Test
     public void testDefaultVarcharSize() throws Exception {
@@ -57,14 +57,11 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         assertNotNull(simpleFeatureType);
         try (Transaction t = new DefaultTransaction("metadata");
                 Connection cx = dataStore.getConnection(t);
-                ResultSet rs =
-                        cx.getMetaData().getColumns(null, null, "varchartest", "stringProperty")) {
+                ResultSet rs = cx.getMetaData().getColumns(null, null, "varchartest", "stringProperty")) {
 
             rs.absolute(1);
             int columnSize = rs.getInt("COLUMN_SIZE");
-            assertTrue(
-                    "column size should be larger than 255 (default) but was " + columnSize,
-                    columnSize > 255);
+            assertTrue("column size should be larger than 255 (default) but was " + columnSize, columnSize > 255);
         }
     }
 }

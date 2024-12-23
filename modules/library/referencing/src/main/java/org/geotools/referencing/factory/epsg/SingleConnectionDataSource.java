@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 /**
- * Fake data source working around a single user provided connection. Used to allow backwards
- * compatibility with the athority constructors taking a single connection
+ * Fake data source working around a single user provided connection. Used to allow backwards compatibility with the
+ * athority constructors taking a single connection
  *
  * @author Andrea Aime - OpenGeo
  */

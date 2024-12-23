@@ -120,9 +120,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     private static final Map<String, Unit> UNITS_CACHE = new SoftValueHashMap<>();
 
     /**
-     * Simple chars replacing classes to deal with "custom" chars. As an instance, to be compliant
-     * with the javax.measure.unit.Unit parser, we should replace kg.m-2 to kg*m^-2 which means
-     * replacing the "." sign with the "*" and the "-" sign with "^_".
+     * Simple chars replacing classes to deal with "custom" chars. As an instance, to be compliant with the
+     * javax.measure.unit.Unit parser, we should replace kg.m-2 to kg*m^-2 which means replacing the "." sign with the
+     * "*" and the "-" sign with "^_".
      */
     static class UnitCharReplacement {
         String from;
@@ -184,14 +184,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             this.gridGeometry = gridGeometry;
         }
 
-        public void setCoordinateReferenceSystem(
-                CoordinateReferenceSystem coordinateReferenceSystem) {
+        public void setCoordinateReferenceSystem(CoordinateReferenceSystem coordinateReferenceSystem) {
             this.coordinateReferenceSystem = coordinateReferenceSystem;
         }
 
         @Override
-        public Set<? extends BoundingBox> getSpatialElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public Set<? extends BoundingBox> getSpatialElements(boolean overall, ProgressListener listener)
+                throws IOException {
             return Collections.singleton(referencedEnvelope);
         }
 
@@ -201,14 +200,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         @Override
-        public MathTransform2D getGridToWorldTransform(ProgressListener listener)
-                throws IOException {
+        public MathTransform2D getGridToWorldTransform(ProgressListener listener) throws IOException {
             return gridGeometry.getGridToCRS2D(PixelOrientation.CENTER);
         }
 
         @Override
-        public Set<? extends RasterLayout> getRasterElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public Set<? extends RasterLayout> getRasterElements(boolean overall, ProgressListener listener)
+                throws IOException {
             Rectangle bounds = gridGeometry.getGridRange2D().getBounds();
             return Collections.singleton(new RasterLayout(bounds));
         }
@@ -245,8 +243,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         @Override
-        public SortedSet<? extends DateRange> getTemporalElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public SortedSet<? extends DateRange> getTemporalElements(boolean overall, ProgressListener listener)
+                throws IOException {
             if (overall) {
 
                 // Getting overall Extent
@@ -273,8 +271,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         /** @param cv */
         UnidataVerticalDomain(CoordinateVariable<?> cv) {
             if (!Number.class.isAssignableFrom(cv.getType())) {
-                throw new IllegalArgumentException(
-                        "Unable to wrap a non Number CoordinateVariable:" + cv.toString());
+                throw new IllegalArgumentException("Unable to wrap a non Number CoordinateVariable:" + cv.toString());
             }
             @SuppressWarnings("unchecked")
             CoordinateVariable<? extends Number> cast = (CoordinateVariable) cv;
@@ -286,10 +283,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             final CoordinateVariable<? extends Number> verticalDimension = this.adaptee;
             NumberRange<Double> global;
             try {
-                global =
-                        NumberRange.create(
-                                verticalDimension.getMinimum().doubleValue(),
-                                verticalDimension.getMaximum().doubleValue());
+                global = NumberRange.create(
+                        verticalDimension.getMinimum().doubleValue(),
+                        verticalDimension.getMaximum().doubleValue());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -299,13 +295,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         @Override
-        public SortedSet<? extends NumberRange<Double>> getVerticalElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public SortedSet<? extends NumberRange<Double>> getVerticalElements(boolean overall, ProgressListener listener)
+                throws IOException {
 
             if (overall) {
                 // Getting overall Extent
-                final SortedSet<NumberRange<Double>> extent =
-                        new TreeSet<>(new NumberRangeComparator());
+                final SortedSet<NumberRange<Double>> extent = new TreeSet<>(new NumberRangeComparator());
                 for (Number vv : adaptee.read()) {
                     final double doubleValue = vv.doubleValue();
                     extent.add(NumberRange.create(doubleValue, doubleValue));
@@ -329,49 +324,38 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         private final Set<Object> domainExtent = new TreeSet<>();
 
         /** The merged domain extent */
-        private final Set<Object> globalDomainExtent =
-                new TreeSet<>(
-                        new Comparator<Object>() {
-                            private NumberRangeComparator numberRangeComparator =
-                                    new NumberRangeComparator();
-                            private DateRangeComparator dateRangeComparator =
-                                    new DateRangeComparator();
+        private final Set<Object> globalDomainExtent = new TreeSet<>(new Comparator<Object>() {
+            private NumberRangeComparator numberRangeComparator = new NumberRangeComparator();
+            private DateRangeComparator dateRangeComparator = new DateRangeComparator();
 
-                            @Override
-                            public int compare(Object o1, Object o2) {
-                                // assume that o1 and o2 are both not null
-                                boolean o1IsDateRange = true;
-                                boolean o2IsDateRange = true;
+            @Override
+            public int compare(Object o1, Object o2) {
+                // assume that o1 and o2 are both not null
+                boolean o1IsDateRange = true;
+                boolean o2IsDateRange = true;
 
-                                if (o1 instanceof NumberRange) {
-                                    o1IsDateRange = false;
-                                } else if (!(o1 instanceof DateRange)) {
-                                    throw new ClassCastException(
-                                            o1.getClass() + " is not an known range type");
-                                }
+                if (o1 instanceof NumberRange) {
+                    o1IsDateRange = false;
+                } else if (!(o1 instanceof DateRange)) {
+                    throw new ClassCastException(o1.getClass() + " is not an known range type");
+                }
 
-                                if (o2 instanceof NumberRange) {
-                                    o2IsDateRange = false;
-                                } else if (!(o2 instanceof DateRange)) {
-                                    throw new ClassCastException(
-                                            o2.getClass() + " is not an known range type");
-                                }
+                if (o2 instanceof NumberRange) {
+                    o2IsDateRange = false;
+                } else if (!(o2 instanceof DateRange)) {
+                    throw new ClassCastException(o2.getClass() + " is not an known range type");
+                }
 
-                                if (o1IsDateRange && o2IsDateRange) {
-                                    return dateRangeComparator.compare(
-                                            (DateRange) o1, (DateRange) o2);
-                                } else if (!o1IsDateRange && !o2IsDateRange) {
-                                    return numberRangeComparator.compare(
-                                            (NumberRange<?>) o1, (NumberRange<?>) o2);
-                                }
+                if (o1IsDateRange && o2IsDateRange) {
+                    return dateRangeComparator.compare((DateRange) o1, (DateRange) o2);
+                } else if (!o1IsDateRange && !o2IsDateRange) {
+                    return numberRangeComparator.compare((NumberRange<?>) o1, (NumberRange<?>) o2);
+                }
 
-                                throw new ClassCastException(
-                                        "Incompatible range types: "
-                                                + o1.getClass()
-                                                + " is not the same as "
-                                                + o2.getClass());
-                            }
-                        });
+                throw new ClassCastException(
+                        "Incompatible range types: " + o1.getClass() + " is not the same as " + o2.getClass());
+            }
+        });
 
         /** The domain name */
         private final String name;
@@ -391,20 +375,17 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 this.type = DomainType.DATE;
 
                 // global domain
-                globalDomainExtent.add(
-                        new DateRange((Date) adaptee.getMinimum(), (Date) adaptee.getMaximum()));
+                globalDomainExtent.add(new DateRange((Date) adaptee.getMinimum(), (Date) adaptee.getMaximum()));
             } else if (Number.class.isAssignableFrom(type)) {
                 this.type = DomainType.NUMBER;
 
                 // global domain
-                globalDomainExtent.add(
-                        new NumberRange<>(
-                                Double.class,
-                                ((Number) adaptee.getMinimum()).doubleValue(),
-                                ((Number) adaptee.getMaximum()).doubleValue()));
+                globalDomainExtent.add(new NumberRange<>(
+                        Double.class,
+                        ((Number) adaptee.getMinimum()).doubleValue(),
+                        ((Number) adaptee.getMaximum()).doubleValue()));
             } else {
-                throw new UnsupportedOperationException(
-                        "Unsupported CoordinateVariable:" + adaptee.toString());
+                throw new UnsupportedOperationException("Unsupported CoordinateVariable:" + adaptee.toString());
             }
 
             // domain
@@ -412,8 +393,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         @Override
-        public Set<Object> getElements(boolean overall, ProgressListener listener)
-                throws IOException {
+        public Set<Object> getElements(boolean overall, ProgressListener listener) throws IOException {
             if (overall) {
                 return globalDomainExtent;
             } else {
@@ -438,10 +418,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     final VariableDS variableDS;
 
-    /**
-     * Following COARDS or CF Convention, custom dimensions are always at the beginning (lower
-     * indexes)
-     */
+    /** Following COARDS or CF Convention, custom dimensions are always at the beginning (lower indexes) */
     Set<String> ignoredDimensions = new HashSet<>();
 
     private ucar.nc2.dataset.CoordinateSystem coordinateSystem;
@@ -466,10 +443,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     private static final java.util.logging.Logger LOGGER = Logging.getLogger(VariableAdapter.class);
 
-    /**
-     * Usual schema are the_geom, imageIndex, so the first attribute (time or elevation) will have
-     * index = 2
-     */
+    /** Usual schema are the_geom, imageIndex, so the first attribute (time or elevation) will have index = 2 */
     private static final int FIRST_ATTRIBUTE_INDEX = 2;
 
     /** Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable. */
@@ -516,13 +490,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
-     * Update the dimensions to attributes mapping for this variable if needed. Default behaviour is
-     * to get attributes from the name of the dimensions of the variable. In case the indexer.xml
-     * contains an explicit schema with different attributes for time and elevation we need to remap
-     * them and updates the dimensions mapping as well as the DimensionsDescriptors
+     * Update the dimensions to attributes mapping for this variable if needed. Default behaviour is to get attributes
+     * from the name of the dimensions of the variable. In case the indexer.xml contains an explicit schema with
+     * different attributes for time and elevation we need to remap them and updates the dimensions mapping as well as
+     * the DimensionsDescriptors
      */
-    private void updateDimensions(List<DimensionDescriptor> dimensionDescriptors)
-            throws IOException {
+    private void updateDimensions(List<DimensionDescriptor> dimensionDescriptors) throws IOException {
         final Map<Name, String> mapping = reader.ancillaryFileManager.variablesMap;
         final Set<Name> keys = mapping.keySet();
         final String varName = getName();
@@ -534,8 +507,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
                 // Get the mapped coverage name (as an instance, NO2 for a GOME2 with var = 'z')
                 final String coverageName = key.getLocalPart();
-                final Coverage coverage =
-                        reader.ancillaryFileManager.coveragesMapping.get(coverageName);
+                final Coverage coverage = reader.ancillaryFileManager.coveragesMapping.get(coverageName);
                 final SchemaType schema = coverage.getSchema();
                 if (schema != null) {
                     // look up the name
@@ -560,8 +532,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                             updateMapping(schemaType, dimensionDescriptors);
                             break;
                         }
-                        throw new IllegalStateException(
-                                "Unable to find the table for this coverage: " + coverageName);
+                        throw new IllegalStateException("Unable to find the table for this coverage: " + coverageName);
                     }
                 }
                 break;
@@ -569,12 +540,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
     }
 
-    /**
-     * Update the dimensionDescriptor attributes mapping by checking the actual attribute names from
-     * the schema
-     */
-    public void updateMapping(SimpleFeatureType indexSchema, List<DimensionDescriptor> descriptors)
-            throws IOException {
+    /** Update the dimensionDescriptor attributes mapping by checking the actual attribute names from the schema */
+    public void updateMapping(SimpleFeatureType indexSchema, List<DimensionDescriptor> descriptors) throws IOException {
         DimensionMapper mapper = reader.georeferencing.getDimensionMapper();
         Set<String> dimensionNames = mapper.getDimensionNames();
         // No need to do the mapping update in case one of these conditions apply
@@ -613,8 +580,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         if (getAdditionalDomains() != null) {
             for (AdditionalDomain dom : getAdditionalDomains()) {
                 currentDimName = dom.getName();
-                if (remapAttribute(
-                        indexSchema, currentDimName, indexAttribute, descriptors, mapper)) {
+                if (remapAttribute(indexSchema, currentDimName, indexAttribute, descriptors, mapper)) {
                     indexAttribute++;
                 }
             }
@@ -622,8 +588,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
-     * Remap an attribute for a specified dimension. Get it from the schemaType and update both the
-     * related dimension Descriptor as well as the dimensions mapping.
+     * Remap an attribute for a specified dimension. Get it from the schemaType and update both the related dimension
+     * Descriptor as well as the dimensions mapping.
      */
     private boolean remapAttribute(
             final SimpleFeatureType indexSchema,
@@ -691,8 +657,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 ignoredDimensions.add(fullName);
                 continue;
             }
-            CoordinateVariable<?> cv =
-                    reader.georeferencing.getCoordinateVariable(axis.getShortName());
+            CoordinateVariable<?> cv = reader.georeferencing.getCoordinateVariable(axis.getShortName());
             if (cv == null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to find a coordinate variable for " + fullName);
@@ -738,24 +703,21 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /** */
-    private void initVerticalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions)
-            throws IOException {
+    private void initVerticalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions) throws IOException {
         this.setHasVerticalDomain(true);
         final UnidataVerticalDomain verticalDomain = new UnidataVerticalDomain(cv);
         this.setVerticalDomain(verticalDomain);
         // TODO: Map ZAxis unit to UCUM UNIT (depending on type... elevation, level, pressure, ...)
-        dimensions.add(
-                new DefaultDimensionDescriptor(
-                        Utils.ELEVATION_DOMAIN,
-                        cv.getUnit(),
-                        CoverageUtilities.UCUM.ELEVATION_UNITS.getSymbol(),
-                        cv.getName(),
-                        null));
+        dimensions.add(new DefaultDimensionDescriptor(
+                Utils.ELEVATION_DOMAIN,
+                cv.getUnit(),
+                CoverageUtilities.UCUM.ELEVATION_UNITS.getSymbol(),
+                cv.getName(),
+                null));
     }
 
     /** */
-    private void initTemporalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions)
-            throws IOException {
+    private void initTemporalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions) throws IOException {
         if (!cv.getType().equals(Date.class)) {
             throw new IllegalArgumentException(
                     "Unable to init temporal domain from CoordinateVariable that does not bind to Date");
@@ -769,18 +731,17 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         this.setTemporalDomain(temporalDomain);
 
         String timeAttribute = reader.uniqueTimeAttribute ? NetCDFUtilities.TIME : cv.getName();
-        dimensions.add(
-                new DefaultDimensionDescriptor(
-                        Utils.TIME_DOMAIN,
-                        CoverageUtilities.UCUM.TIME_UNITS.getName(),
-                        CoverageUtilities.UCUM.TIME_UNITS.getSymbol(),
-                        timeAttribute,
-                        null));
+        dimensions.add(new DefaultDimensionDescriptor(
+                Utils.TIME_DOMAIN,
+                CoverageUtilities.UCUM.TIME_UNITS.getName(),
+                CoverageUtilities.UCUM.TIME_UNITS.getSymbol(),
+                timeAttribute,
+                null));
     }
 
     /** */
-    private void initAdditionalDomain(
-            CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions) throws IOException {
+    private void initAdditionalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions)
+            throws IOException {
         UnidataAdditionalDomain domain;
         try {
             domain = new UnidataAdditionalDomain(cv);
@@ -797,22 +758,19 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 throw new IllegalArgumentException(
                         "Unable to init temporal domain from CoordinateVariable that does not have a TemporalCRS");
             }
-            dimensions.add(
-                    new DefaultDimensionDescriptor(
-                            cv.getName(),
-                            CoverageUtilities.UCUM.TIME_UNITS.getName(),
-                            CoverageUtilities.UCUM.TIME_UNITS.getSymbol(),
-                            cv.getName(),
-                            null));
+            dimensions.add(new DefaultDimensionDescriptor(
+                    cv.getName(),
+                    CoverageUtilities.UCUM.TIME_UNITS.getName(),
+                    CoverageUtilities.UCUM.TIME_UNITS.getSymbol(),
+                    cv.getName(),
+                    null));
         } else if (Number.class.isAssignableFrom(cv.getType())) {
             // TODO: Parse Units from axis and map them to UCUM units
             dimensions.add(
-                    new DefaultDimensionDescriptor(
-                            cv.getName(), cv.getUnit(), cv.getUnit(), cv.getName(), null));
+                    new DefaultDimensionDescriptor(cv.getName(), cv.getUnit(), cv.getUnit(), cv.getName(), null));
         } else {
-            throw new IllegalArgumentException(
-                    "Unable to init domain from CoordinateVariable of type: "
-                            + cv.getType().getName());
+            throw new IllegalArgumentException("Unable to init domain from CoordinateVariable of type: "
+                    + cv.getType().getName());
         }
         this.setHasAdditionalDomains(true);
     }
@@ -832,14 +790,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     @SuppressWarnings("deprecation") // no alternative for Dimension.getFullName
     private void initRange() {
 
-        width =
-                variableDS
-                        .getDimension(variableDS.getRank() - NetCDFUtilities.X_DIMENSION)
-                        .getLength();
-        height =
-                variableDS
-                        .getDimension(variableDS.getRank() - NetCDFUtilities.Y_DIMENSION)
-                        .getLength();
+        width = variableDS
+                .getDimension(variableDS.getRank() - NetCDFUtilities.X_DIMENSION)
+                .getLength();
+        height = variableDS
+                .getDimension(variableDS.getRank() - NetCDFUtilities.Y_DIMENSION)
+                .getLength();
 
         // computing the number of bands, according to COARDS convention ignored dimension are at
         // the beginning
@@ -861,9 +817,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         final int bufferType = NetCDFUtilities.getRawDataType(variableDS);
-        sampleModel =
-                new BandedSampleModel(
-                        bufferType, width, height, multipleBands == null ? 1 : numBands);
+        sampleModel = new BandedSampleModel(bufferType, width, height, multipleBands == null ? 1 : numBands);
         final Number noData = NetCDFUtilities.getNodata(variableDS);
         List<Category> catArray = new ArrayList<>();
         Category noDataCategory = null;
@@ -872,11 +826,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         if (noData != null) {
             NumberRange<Double> noDataRange =
                     NumberRange.create(noData.doubleValue(), true, noData.doubleValue(), true);
-            noDataCategory =
-                    new Category(
-                            Category.NODATA.getName(),
-                            new Color[] {new Color(0, 0, 0, 0)},
-                            noDataRange);
+            noDataCategory = new Category(Category.NODATA.getName(), new Color[] {new Color(0, 0, 0, 0)}, noDataRange);
             catArray.add(noDataCategory);
         }
         NumberRange validRange = NetCDFUtilities.getRange(variableDS);
@@ -905,10 +855,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                     UNITS_CACHE.put(unitString, unit);
                 } catch (MeasurementParseException parseException) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Unable to parse the unit:"
-                                        + unitString
-                                        + "\nNo unit will be assigned");
+                        LOGGER.fine("Unable to parse the unit:" + unitString + "\nNo unit will be assigned");
                     }
                 }
             }
@@ -944,8 +891,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         double[] origin = new double[2];
         double scaleX = Double.POSITIVE_INFINITY, scaleY = Double.POSITIVE_INFINITY;
 
-        for (CoordinateVariable<?> cv :
-                reader.georeferencing.getCoordinatesVariables(variableDS.getShortName())) {
+        for (CoordinateVariable<?> cv : reader.georeferencing.getCoordinatesVariables(variableDS.getShortName())) {
             if (!cv.isNumeric()) {
                 continue;
             }
@@ -975,9 +921,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                             scaleX = (max - min) / vals.size();
                         } else {
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.log(
-                                        Level.FINE,
-                                        "Axis values contains NaN; finding first valid values");
+                                LOGGER.log(Level.FINE, "Axis values contains NaN; finding first valid values");
                             }
                             for (int j = 0; j < vals.size(); j++) {
                                 double v = vals.get(j).doubleValue();
@@ -1024,9 +968,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                             origin[1] = max;
                         } else {
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.log(
-                                        Level.FINE,
-                                        "Axis values contains NaN; finding first valid values");
+                                LOGGER.log(Level.FINE, "Axis values contains NaN; finding first valid values");
                             }
                             for (int j = 0; j < values.size(); j++) {
                                 double v = values.get(j).doubleValue();
@@ -1049,8 +991,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         final AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, origin[0], origin[1]);
-        final GridEnvelope gridRange =
-                new GridEnvelope2D(low[0], low[1], high[0] - low[0], high[1] - low[1]);
+        final GridEnvelope gridRange = new GridEnvelope2D(low[0], low[1], high[0] - low[0], high[1] - low[1]);
         final MathTransform raster2Model = ProjectiveTransform.create(at);
         return new GridGeometry2D(
                 gridRange,
@@ -1068,8 +1009,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return sampleModel;
     }
 
-    public VariableAdapter(NetCDFImageReader reader, Name coverageName, VariableDS variable)
-            throws Exception {
+    public VariableAdapter(NetCDFImageReader reader, Name coverageName, VariableDS variable) throws Exception {
         this.variableDS = variable;
         this.reader = reader;
         this.coverageName = coverageName;
@@ -1103,8 +1043,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
-     * Utility method to retrieve the index of a specific dimension index, for constructing the
-     * range
+     * Utility method to retrieve the index of a specific dimension index, for constructing the range
      *
      * @param n the dimension to retrieve the index for (0=Z, 1=T, 2+=Additional)
      * @return the index
@@ -1114,8 +1053,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
-     * Utility method to retrieve the n-index of a Variable coverageDescriptor stored on {@link
-     * NetCDFImageReader} NetCDF Flat Reader {@link HashMap} indexMap.
+     * Utility method to retrieve the n-index of a Variable coverageDescriptor stored on {@link NetCDFImageReader}
+     * NetCDF Flat Reader {@link HashMap} indexMap.
      *
      * @param n {@link int} the dimension
      * @param imageIndex {@link int} the image index
@@ -1129,16 +1068,14 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                     factor *= NetCDFUtilities.getDimensionLength(variableDS, nDimensionIndex[i]);
                 }
             }
-            return imageIndex
-                    % (NetCDFUtilities.getDimensionLength(variableDS, nDimensionIndex[n]) * factor)
-                    / factor;
+            return imageIndex % (NetCDFUtilities.getDimensionLength(variableDS, nDimensionIndex[n]) * factor) / factor;
         }
         return -1;
     }
 
     /**
-     * Utility method to split the index of a Variable coverageDescriptor stored on {@link
-     * NetCDFImageReader} NetCDF Flat Reader {@link HashMap} indexMap into dimensions.
+     * Utility method to split the index of a Variable coverageDescriptor stored on {@link NetCDFImageReader} NetCDF
+     * Flat Reader {@link HashMap} indexMap into dimensions.
      *
      * @param imageIndex {@link int} the index
      * @return splitted index
@@ -1156,9 +1093,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         Map<String, Integer> resultIndex = new HashMap<>();
         for (int n = 0; n < splittedIndex.length; n++) {
             if (nDimensionIndex[n] != -1) {
-                resultIndex.put(
-                        variableDS.getDimension(nDimensionIndex[n]).getFullName(),
-                        splittedIndex[n]);
+                resultIndex.put(variableDS.getDimension(nDimensionIndex[n]).getFullName(), splittedIndex[n]);
             }
         }
         return resultIndex;
@@ -1175,16 +1110,14 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
-     * Return features for that variable adapter, starting from slices with index = "startIndex",
-     * and up to "limit" elements. This allows for paging. Put the created features inside the
-     * provided collection
+     * Return features for that variable adapter, starting from slices with index = "startIndex", and up to "limit"
+     * elements. This allows for paging. Put the created features inside the provided collection
      *
      * @param startIndex the first slice to be returned
      * @param limit the max number of features to be created
      * @param collection the feature collection where features need to be stored
      */
-    public int getFeatures(
-            final int startIndex, final int limit, final ListFeatureCollection collection) {
+    public int getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
         final SimpleFeatureType indexSchema = collection.getSchema();
         final int slicesNum = getNumberOfSlices();
         if (startIndex > slicesNum) {
@@ -1206,12 +1139,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
             // Create a feature for that index to be put in the CoverageSlicesCatalog
             final SimpleFeature feature =
-                    createFeature(
-                            coverageName.toString(),
-                            index,
-                            coordinateSystem,
-                            imageIndex,
-                            indexSchema);
+                    createFeature(coverageName.toString(), index, coordinateSystem, imageIndex, indexSchema);
             if (feature != null) {
                 collection.add(feature);
             } // or else it is a non-existing slice (not in catalog, but counted)
@@ -1261,9 +1189,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 return null;
             }
             feature.setAttribute(
-                    reader.georeferencing
-                            .getDimensionMapper()
-                            .getDimension(NetCDFUtilities.ELEVATION_DIM),
+                    reader.georeferencing.getDimensionMapper().getDimension(NetCDFUtilities.ELEVATION_DIM),
                     verticalValue);
         }
 
@@ -1325,15 +1251,14 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     @SuppressWarnings({"unchecked", "deprecation"}) // no alternative for Dimension.getFullName
     private <T> T getValueByIndex(int dimensionIndex, final Map<String, Integer> mappedIndex) {
         final Dimension dimension = variableDS.getDimension(dimensionIndex);
-        return (T)
-                reader.georeferencing
-                        .getCoordinateVariable(dimension.getFullName())
-                        .read(mappedIndex);
+        return (T) reader.georeferencing
+                .getCoordinateVariable(dimension.getFullName())
+                .read(mappedIndex);
     }
 
     /**
-     * Wrapper class used for setting the OSEQD dimension to Vertical, even if the {@link
-     * CoordinateSystem} does not handle it.
+     * Wrapper class used for setting the OSEQD dimension to Vertical, even if the {@link CoordinateSystem} does not
+     * handle it.
      *
      * @author Nicola Lagomarsini GeoSolutions S.A.S.
      */
@@ -1344,8 +1269,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         /** Boolean indicating that the vertical axis is present */
         private final boolean vertical;
 
-        @SuppressWarnings(
-                "deprecation") // We are actually wrapping the coordinateSystem, not building it
+        @SuppressWarnings("deprecation") // We are actually wrapping the coordinateSystem, not building it
         CoordinateSystemAdapter(CoordinateSystem cs) {
             this.cs = cs;
             // Check if the Vertical axis is present

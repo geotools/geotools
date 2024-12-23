@@ -20,16 +20,15 @@ package org.geotools.data.solr;
 import java.io.Serializable;
 
 /**
- * Describes a SOLR field, that is, a field stored in remote SOLR document </br> This class carries
- * information about:
+ * Describes a SOLR field, that is, a field stored in remote SOLR document </br> This class carries information about:
  * <li>The name of field
  * <li>The mapped field type
  * <li>If the field can be used as the PK in the feature
  * <li>If the field can be used as attribute in the feature
  * <li>If the field is multiValued as defined in SOLR schema
  * <li>If the field has no data in SOLR store
- * <li>The native srid if the filed if a geometry type the geometry type and native srid (as in most
- *     databases those informations are not available on.
+ * <li>The native srid if the filed if a geometry type the geometry type and native srid (as in most databases those
+ *     informations are not available on.
  *
  * @see {@link SolrUtils#decodeSolrFieldType}
  * @see {@link SolrDataStore#getSolrAttributes}

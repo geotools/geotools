@@ -11,22 +11,20 @@ package org.geotools.api.referencing.operation;
 
 /**
  * A {@linkplain org.geotools.api.referencing.operation.Conversion conversion} transforming
- * (<var>longitude</var>,<var>latitude</var>) coordinates to cartesian coordinates
- * (<var>x</var>,<var>y</var>). Although some map projections can be represented as a geometric
- * process, in general a map projection is a set of formulae that converts geodetic latitude and
- * longitude to plane (map) coordinates. Height plays no role in this process, which is entirely
- * two-dimensional. The same map projection can be applied to many {@linkplain
- * org.geotools.api.referencing.crs.GeographicCRS geographic CRSs}, resulting in many {@linkplain
- * org.geotools.api.referencing.crs.ProjectedCRS projected CRSs} each of which is related to the
- * same {@linkplain org.geotools.api.referencing.datum.GeodeticDatum geodetic datum} as the
- * geographic CRS on which it was based.
+ * (<var>longitude</var>,<var>latitude</var>) coordinates to cartesian coordinates (<var>x</var>,<var>y</var>). Although
+ * some map projections can be represented as a geometric process, in general a map projection is a set of formulae that
+ * converts geodetic latitude and longitude to plane (map) coordinates. Height plays no role in this process, which is
+ * entirely two-dimensional. The same map projection can be applied to many
+ * {@linkplain org.geotools.api.referencing.crs.GeographicCRS geographic CRSs}, resulting in many
+ * {@linkplain org.geotools.api.referencing.crs.ProjectedCRS projected CRSs} each of which is related to the same
+ * {@linkplain org.geotools.api.referencing.datum.GeodeticDatum geodetic datum} as the geographic CRS on which it was
+ * based.
  *
  * <p>An unofficial list of projections and their parameters can be found <A
- * HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>. Most projections expect the
- * following parameters: <code>"semi_major"</code> (mandatory), <code>"semi_minor"</code>
- * (mandatory), <code>"central_meridian"</code> (default to 0), <code>"latitude_of_origin"</code>
- * (default to 0), <code>"scale_factor"</code> (default to 1), <code>"false_easting"</code> (default
- * to 0) and <code>"false_northing"</code> (default to 0).
+ * HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>. Most projections expect the following parameters:
+ * <code>"semi_major"</code> (mandatory), <code>"semi_minor"</code> (mandatory), <code>"central_meridian"</code>
+ * (default to 0), <code>"latitude_of_origin"</code> (default to 0), <code>"scale_factor"</code> (default to 1), <code>
+ * "false_easting"</code> (default to 0) and <code>"false_northing"</code> (default to 0).
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

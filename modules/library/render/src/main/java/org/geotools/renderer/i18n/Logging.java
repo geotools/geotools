@@ -25,8 +25,8 @@ import java.util.logging.LogRecord;
 import org.geotools.util.IndexedResourceBundle;
 
 /**
- * Base class for locale-dependent resources. Instances of this class should never been created
- * directly. Use the factory method {@link #getResources} or use static convenience methods instead.
+ * Base class for locale-dependent resources. Instances of this class should never been created directly. Use the
+ * factory method {@link #getResources} or use static convenience methods instead.
  *
  * @since 2.2
  * @version $Id$
@@ -59,14 +59,12 @@ public class Logging extends IndexedResourceBundle {
      * @return The string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static LogRecord format(final Level level, final int key)
-            throws MissingResourceException {
+    public static LogRecord format(final Level level, final int key) throws MissingResourceException {
         return getResources(null).getLogRecord(level, key);
     }
 
     /**
-     * Gets a log record for the given key. Replaces all occurence of "{0}" with values of {@code
-     * arg0}.
+     * Gets a log record for the given key. Replaces all occurence of "{0}" with values of {@code arg0}.
      *
      * @param level The log record level.
      * @param key The key for the desired string.
@@ -80,8 +78,8 @@ public class Logging extends IndexedResourceBundle {
     }
 
     /**
-     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}.
+     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}.
      *
      * @param level The log record level.
      * @param key The key for the desired string.
@@ -90,15 +88,14 @@ public class Logging extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static LogRecord format(
-            final Level level, final int key, final Object arg0, final Object arg1)
+    public static LogRecord format(final Level level, final int key, final Object arg0, final Object arg1)
             throws MissingResourceException {
         return getResources(null).getLogRecord(level, key, arg0, arg1);
     }
 
     /**
-     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param level The log record level.
      * @param key The key for the desired string.
@@ -109,18 +106,14 @@ public class Logging extends IndexedResourceBundle {
      * @throws MissingResourceException If no object for the given key can be found.
      */
     public static LogRecord format(
-            final Level level,
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2)
+            final Level level, final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getLogRecord(level, key, arg0, arg1, arg2);
     }
 
     /**
-     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
+     * Gets a log record for the given key. Replaces all occurence of "{0}", "{1}", with values of {@code arg0},
+     * {@code arg1}, etc.
      *
      * @param level The log record level.
      * @param key The key for the desired string.

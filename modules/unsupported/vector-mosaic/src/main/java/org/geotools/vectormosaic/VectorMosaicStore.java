@@ -83,8 +83,8 @@ public class VectorMosaicStore extends ContentDataStore {
     /**
      * Creates a new instance of VectorMosaicStore
      *
-     * @param delegateStoreName the name of the delegate store. Delegate store must be registered in
-     *     the repository and must point to vector featuretypes with identical attributes.
+     * @param delegateStoreName the name of the delegate store. Delegate store must be registered in the repository and
+     *     must point to vector featuretypes with identical attributes.
      * @param repository the repository to use for lookup of the delegate store.
      */
     public VectorMosaicStore(String delegateStoreName, Repository repository) {
@@ -100,11 +100,8 @@ public class VectorMosaicStore extends ContentDataStore {
      * @param delegateSchema the schema of the type to validate.
      * @return true if the schema is valid.
      */
-    private boolean validateSchema(
-            String delegateStoreName, String typeName, SimpleFeatureType delegateSchema) {
-        if (delegateSchema.getDescriptor(
-                        VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT)
-                == null) {
+    private boolean validateSchema(String delegateStoreName, String typeName, SimpleFeatureType delegateSchema) {
+        if (delegateSchema.getDescriptor(VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT) == null) {
             LOGGER.log(
                     Level.INFO,
                     "Delegate store "
@@ -130,8 +127,7 @@ public class VectorMosaicStore extends ContentDataStore {
                 && geometryType.getBinding() != null
                 && !geometryType.getBinding().isAssignableFrom(GeometryType.class)) {
             String geometryTypeName = geometryType.getBinding().getName();
-            if (!geometryTypeName.equals(POLYGON_TYPE_NAME)
-                    && !geometryTypeName.equals(MULTI_POLYGON_TYPE_NAME)) {
+            if (!geometryTypeName.equals(POLYGON_TYPE_NAME) && !geometryTypeName.equals(MULTI_POLYGON_TYPE_NAME)) {
                 LOGGER.log(
                         Level.INFO,
                         "Delegate store "
@@ -156,8 +152,8 @@ public class VectorMosaicStore extends ContentDataStore {
     }
 
     /**
-     * Builds a qualified name from a name containing the ":" separator, otherwise the given name
-     * will be used as the local part
+     * Builds a qualified name from a name containing the ":" separator, otherwise the given name will be used as the
+     * local part
      *
      * @param name the name to build a qualified name from
      * @return the qualified name
@@ -183,30 +179,21 @@ public class VectorMosaicStore extends ContentDataStore {
         }
         List<String> delegateTypes = null;
         try {
-            delegateTypes =
-                    Arrays.stream(delegateDataStore.getTypeNames())
-                            .filter(
-                                    t -> {
-                                        try {
-                                            return validateSchema(
-                                                    delegateStoreName,
-                                                    t,
-                                                    delegateDataStore.getSchema(t));
-                                        } catch (IOException e) {
-                                            LOGGER.log(
-                                                    Level.WARNING,
-                                                    "Failed to validate schema for type " + t,
-                                                    e);
-                                            return false;
-                                        }
-                                    })
-                            .collect(Collectors.toList());
+            delegateTypes = Arrays.stream(delegateDataStore.getTypeNames())
+                    .filter(t -> {
+                        try {
+                            return validateSchema(delegateStoreName, t, delegateDataStore.getSchema(t));
+                        } catch (IOException e) {
+                            LOGGER.log(Level.WARNING, "Failed to validate schema for type " + t, e);
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.toList());
 
         } catch (IOException e) {
             LOGGER.log(
                     Level.WARNING,
-                    "Failed to get type names for vector mosaic delegate data store "
-                            + delegateStoreName,
+                    "Failed to get type names for vector mosaic delegate data store " + delegateStoreName,
                     e);
         }
         List<Name> result = new ArrayList<>();

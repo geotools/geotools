@@ -39,8 +39,7 @@ import org.locationtech.jts.geom.Envelope;
 
 /** @author Tommaso Nolli */
 public class FileSystemIndexStore implements FileReader, IndexStore {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FileSystemIndexStore.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FileSystemIndexStore.class);
     private File file;
     private byte byteOrder;
     private ShpFiles shpFiles;
@@ -64,9 +63,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
         this.byteOrder = byteOrder;
     }
 
-    /**
-     * @see org.geotools.index.quadtree.IndexStore#dataStore(org.geotools.index.quadtree.QuadTree)
-     */
+    /** @see org.geotools.index.quadtree.IndexStore#dataStore(org.geotools.index.quadtree.QuadTree) */
     @Override
     public void store(QuadTree tree) throws StoreException {
         // For efficiency, trim the tree
@@ -111,8 +108,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
      * @param node The node
      * @param order byte order
      */
-    private void writeNode(Node node, FileChannel channel, ByteOrder order)
-            throws IOException, StoreException {
+    private void writeNode(Node node, FileChannel channel, ByteOrder order) throws IOException, StoreException {
         int offset = this.getSubNodeOffset(node);
 
         ByteBuffer buf = ByteBuffer.allocate((4 * 8) + (3 * 4) + (node.getNumShapeIds() * 4));
@@ -158,9 +154,8 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
     }
 
     /**
-     * Loads a quadrtee stored in a '.qix' file. <b>WARNING:</b> The resulting quadtree will be
-     * immutable; if you perform an insert, an <code>UnsupportedOperationException</code> will be
-     * thrown.
+     * Loads a quadrtee stored in a '.qix' file. <b>WARNING:</b> The resulting quadtree will be immutable; if you
+     * perform an insert, an <code>UnsupportedOperationException</code> will be thrown.
      *
      * @see org.geotools.index.quadtree.IndexStore#load()
      */
@@ -212,8 +207,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
         }
     }
 
-    private QuadTree doLoad(
-            FileInputStream fis, FileChannel channel, IndexFile indexfile, boolean useMemoryMapping)
+    private QuadTree doLoad(FileInputStream fis, FileChannel channel, IndexFile indexfile, boolean useMemoryMapping)
             throws IOException {
         IndexHeader header = new IndexHeader(channel);
 
@@ -223,31 +217,30 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
         channel.read(buf);
         ((Buffer) buf).flip();
 
-        QuadTree tree =
-                new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
-                    @Override
-                    public void insert(int recno, Envelope bounds) {
-                        throw new UnsupportedOperationException("File quadtrees are immutable");
-                    }
+        QuadTree tree = new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
+            @Override
+            public void insert(int recno, Envelope bounds) {
+                throw new UnsupportedOperationException("File quadtrees are immutable");
+            }
 
-                    @Override
-                    public boolean trim() {
-                        return false;
-                    }
+            @Override
+            public boolean trim() {
+                return false;
+            }
 
-                    @Override
-                    public void close() throws StoreException {
-                        super.close();
-                        try {
-                            channel.close();
-                            if (fis != null) {
-                                fis.close();
-                            }
-                        } catch (IOException e) {
-                            throw new StoreException(e);
-                        }
+            @Override
+            public void close() throws StoreException {
+                super.close();
+                try {
+                    channel.close();
+                    if (fis != null) {
+                        fis.close();
                     }
-                };
+                } catch (IOException e) {
+                    throw new StoreException(e);
+                }
+            }
+        };
 
         tree.setRoot(FileSystemNode.readNode(0, null, channel, order, useMemoryMapping));
 

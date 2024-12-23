@@ -34,15 +34,12 @@ public interface Citation {
     InternationalString getTitle();
 
     /**
-     * Short name or other language name by which the cited information is known. Example: "DCW" as
-     * an alternative title for "Digital Chart of the World".
+     * Short name or other language name by which the cited information is known. Example: "DCW" as an alternative title
+     * for "Digital Chart of the World".
      *
      * @return Other names for the resource, or an empty collection if none.
      */
-    @UML(
-            identifier = "alternateTitle",
-            obligation = Obligation.OPTIONAL,
-            specification = Specification.ISO_19115)
+    @UML(identifier = "alternateTitle", obligation = Obligation.OPTIONAL, specification = Specification.ISO_19115)
     Collection<? extends InternationalString> getAlternateTitles();
 
     /**
@@ -60,16 +57,15 @@ public interface Citation {
     Date getEditionDate();
 
     /**
-     * Unique identifier for the resource. Example: Universal Product Code (UPC), National Stock
-     * Number (NSN).
+     * Unique identifier for the resource. Example: Universal Product Code (UPC), National Stock Number (NSN).
      *
      * @return The identifiers, or an empty collection if none.
      */
     Collection<? extends Identifier> getIdentifiers();
 
     /**
-     * Name and position information for an individual or organization that is responsible for the
-     * resource. Returns an empty string if there is none.
+     * Name and position information for an individual or organization that is responsible for the resource. Returns an
+     * empty string if there is none.
      *
      * @return The individual or organization that is responsible, or an empty collection if none.
      */
@@ -83,17 +79,15 @@ public interface Citation {
     Collection<PresentationForm> getPresentationForm();
 
     /**
-     * Other information required to complete the citation that is not recorded elsewhere. Returns
-     * {@code null} if none.
+     * Other information required to complete the citation that is not recorded elsewhere. Returns {@code null} if none.
      *
      * @return Other details, or {@code null} if none.
      */
     InternationalString getOtherCitationDetails();
 
     /**
-     * Common title with holdings note. Note: title identifies elements of a series collectively,
-     * combined with information about what volumes are available at the source cited. Returns
-     * {@code null} if there is no title.
+     * Common title with holdings note. Note: title identifies elements of a series collectively, combined with
+     * information about what volumes are available at the source cited. Returns {@code null} if there is no title.
      *
      * @return The common title, or {@code null} if none.
      */

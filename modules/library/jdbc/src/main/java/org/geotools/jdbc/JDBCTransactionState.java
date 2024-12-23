@@ -32,8 +32,8 @@ final class JDBCTransactionState implements State {
     /** The current connection */
     Connection cx;
     /**
-     * Whether the connection is internally managed, or externally provided (in the latter case no
-     * attempt to commit, rollback or close will be done)
+     * Whether the connection is internally managed, or externally provided (in the latter case no attempt to commit,
+     * rollback or close will be done)
      */
     boolean external;
 
@@ -50,8 +50,7 @@ final class JDBCTransactionState implements State {
     @Override
     public void setTransaction(Transaction tx) {
         if (tx != null && this.tx != null) {
-            throw new IllegalStateException(
-                    "New transaction set without " + "closing old transaction first.");
+            throw new IllegalStateException("New transaction set without " + "closing old transaction first.");
         }
 
         if (tx == null) {
@@ -60,11 +59,7 @@ final class JDBCTransactionState implements State {
                     dataStore.closeSafe(cx);
                 }
             } else {
-                dataStore
-                        .getLogger()
-                        .warning(
-                                "Transaction is attempting to "
-                                        + "close an already closed connection");
+                dataStore.getLogger().warning("Transaction is attempting to " + "close an already closed connection");
             }
             cx = null;
         }

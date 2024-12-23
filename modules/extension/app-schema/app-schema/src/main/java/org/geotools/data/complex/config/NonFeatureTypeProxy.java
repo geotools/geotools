@@ -35,9 +35,9 @@ import org.geotools.data.complex.feature.type.ComplexTypeProxy;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 
 /**
- * This class represents the fake feature type needed for feature chaining for properties that are
- * not features. When a non feature is mapped separately in app schema data access, it is regarded
- * as a feature since it would have a feature source.
+ * This class represents the fake feature type needed for feature chaining for properties that are not features. When a
+ * non feature is mapped separately in app schema data access, it is regarded as a feature since it would have a feature
+ * source.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
@@ -69,8 +69,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         // create a new descriptor with the wrapped type and set it to the mapping
         ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
         AttributeDescriptor descriptor =
-                typeFactory.createAttributeDescriptor(
-                        this, name, minOccurs, maxOccurs, nillable, defaultValue);
+                typeFactory.createAttributeDescriptor(this, name, minOccurs, maxOccurs, nillable, defaultValue);
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor
@@ -81,9 +80,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
     }
 
     public NonFeatureTypeProxy(
-            final AttributeType type,
-            final FeatureTypeMapping mapping,
-            Collection<PropertyDescriptor> schema) {
+            final AttributeType type, final FeatureTypeMapping mapping, Collection<PropertyDescriptor> schema) {
         super(type.getName(), null);
 
         subject = type;
@@ -98,8 +95,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         // create a new descriptor with the wrapped type and set it to the mapping
         ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
         AttributeDescriptor descriptor =
-                typeFactory.createAttributeDescriptor(
-                        this, name, minOccurs, maxOccurs, nillable, defaultValue);
+                typeFactory.createAttributeDescriptor(this, name, minOccurs, maxOccurs, nillable, defaultValue);
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor

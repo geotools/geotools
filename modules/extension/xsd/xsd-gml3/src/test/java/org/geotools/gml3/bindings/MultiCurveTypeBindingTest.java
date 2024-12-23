@@ -35,8 +35,7 @@ public class MultiCurveTypeBindingTest extends GML3TestSupport {
         // print(dom);
         assertEquals("geometry", getID(dom.getDocumentElement()));
         assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "curveMember").getLength());
-        NodeList children =
-                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
+        NodeList children = dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));

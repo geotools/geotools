@@ -40,8 +40,7 @@ public interface FeatureId extends Identifier {
     boolean matches(Object feature);
 
     /**
-     * Check if the provided FeatureId is an exact match (including any optional version
-     * information).
+     * Check if the provided FeatureId is an exact match (including any optional version information).
      *
      * @return true if this is an exact match (including any optional version information)
      */
@@ -52,8 +51,7 @@ public interface FeatureId extends Identifier {
      *
      * <p>This comparison does not compare any optional version information.
      *
-     * @return true if both identifiers describe the same feature (does not compare version
-     *     information).
+     * @return true if both identifiers describe the same feature (does not compare version information).
      */
     boolean equalsFID(FeatureId id);
 
@@ -66,24 +64,22 @@ public interface FeatureId extends Identifier {
     /**
      * id of the resource that shall be selected by the predicate.
      *
-     * <p>Equals to {@link #getID()} if no feature version is provided, or {@code getID() + "@" +
-     * getFeatureVersion()} if {@code getFeatureVersion() != null}
+     * <p>Equals to {@link #getID()} if no feature version is provided, or {@code getID() + "@" + getFeatureVersion()}
+     * if {@code getFeatureVersion() != null}
      *
-     * <p>If an implementation that references this International Standard supports versioning, the
-     * rid shall be a system generated hash containing a logical resource identifier and a version
-     * number. The specific details of the hash are implementation dependant and shall be opaque to
-     * a client
+     * <p>If an implementation that references this International Standard supports versioning, the rid shall be a
+     * system generated hash containing a logical resource identifier and a version number. The specific details of the
+     * hash are implementation dependant and shall be opaque to a client
      *
-     * <p>If versioning is not supported, the same value than {@link FeatureId#getID()} shall be
-     * returned.
+     * <p>If versioning is not supported, the same value than {@link FeatureId#getID()} shall be returned.
      *
      * @return Resource identifier made up of FID (combined with FeatureVersion if available)
      */
     String getRid();
 
     /**
-     * previousRid attribute may be used, in implementations that support versioning, to report the
-     * previous identifier of a resource.
+     * previousRid attribute may be used, in implementations that support versioning, to report the previous identifier
+     * of a resource.
      *
      * @return Previous rid if available; or {@code null}
      */

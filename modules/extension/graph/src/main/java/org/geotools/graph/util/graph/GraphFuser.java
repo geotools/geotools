@@ -40,13 +40,12 @@ import org.geotools.graph.traverse.standard.NoBifurcationIterator;
  * <br>
  * <IMG src="doc-files/fuse_2.gif"/><br>
  * <br>
- * When a node of degree 2 is removed from tan unfused graph, the two edges is is adjacent to must
- * be merged into a single edge. More generally if n adjacent nodes of degree 2 are removed, n+1
- * edges must be merged into a single edge. This change in graph structure has an effect on the
- * entities modelled by the graph. Since each edge models a single object, replacing multiple edges
- * with a single edge results in an inconsistet model. Therefore an EdgeMerger is used to merge the
- * objects represented by the multiple edges into a single object. This new object becomes the
- * underlying object of the merged edge.
+ * When a node of degree 2 is removed from tan unfused graph, the two edges is is adjacent to must be merged into a
+ * single edge. More generally if n adjacent nodes of degree 2 are removed, n+1 edges must be merged into a single edge.
+ * This change in graph structure has an effect on the entities modelled by the graph. Since each edge models a single
+ * object, replacing multiple edges with a single edge results in an inconsistet model. Therefore an EdgeMerger is used
+ * to merge the objects represented by the multiple edges into a single object. This new object becomes the underlying
+ * object of the merged edge.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -99,37 +98,35 @@ public class GraphFuser {
         // create walker for first stage
         // if the walker sees a node of degree 2 it adds it to the current
         // set of nodes, else it starts a new set
-        m_walker =
-                new GraphWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        Node node = (Node) element;
+        m_walker = new GraphWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                Node node = (Node) element;
 
-                        // if the node is not of degree 2, start a new set
-                        if (node.getDegree() != 2) {
-                            finish();
-                        } else {
-                            // add node to current set
-                            m_nodes.add(node);
-                            m_ndegree2--;
-                        }
+                // if the node is not of degree 2, start a new set
+                if (node.getDegree() != 2) {
+                    finish();
+                } else {
+                    // add node to current set
+                    m_nodes.add(node);
+                    m_ndegree2--;
+                }
 
-                        return (GraphTraversal.CONTINUE);
-                    }
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {
-                        // no need to recreate if empty
-                        if (!m_nodes.isEmpty()) {
-                            m_sets.add(m_nodes);
-                            m_nodes = new ArrayList<>();
-                        }
-                    }
-                };
+            @Override
+            public void finish() {
+                // no need to recreate if empty
+                if (!m_nodes.isEmpty()) {
+                    m_sets.add(m_nodes);
+                    m_nodes = new ArrayList<>();
+                }
+            }
+        };
 
         // perform a topological depth first traversal
-        m_traversal =
-                new BasicGraphTraversal(m_graph, m_walker, new DepthFirstTopologicalIterator());
+        m_traversal = new BasicGraphTraversal(m_graph, m_walker, new DepthFirstTopologicalIterator());
 
         // initialise set and node collections
         m_sets = new ArrayList<>();
@@ -141,11 +138,10 @@ public class GraphFuser {
         m_traversal.init();
 
         // reset edge visited flags
-        m_graph.visitNodes(
-                component -> {
-                    component.setVisited(false);
-                    return 0;
-                });
+        m_graph.visitNodes(component -> {
+            component.setVisited(false);
+            return 0;
+        });
 
         // perform the traversal
         m_traversal.traverse();
@@ -158,53 +154,45 @@ public class GraphFuser {
             // internal to the cycle, so the strategy for the second stage is to
             // find all unvisited nodes of degree 2 that are not visited and start
             // a no bifurcation traversal from them
-            Iterator<?> sources =
-                    m_graph.queryNodes(
-                                    component -> {
-                                        Node node = (Node) component;
-                                        if (!node.isVisited() && node.getDegree() == 2) {
-                                            // check for adjacent node of degree > 2
-                                            for (Iterator<?> itr = node.getRelated();
-                                                    itr.hasNext(); ) {
-                                                Node rel = (Node) itr.next();
-                                                if (rel.getDegree() > 2)
-                                                    return (Graph.PASS_AND_CONTINUE);
-                                            }
-                                        }
-                                        return (Graph.FAIL_QUERY);
-                                    })
-                            .iterator();
+            Iterator<?> sources = m_graph.queryNodes(component -> {
+                        Node node = (Node) component;
+                        if (!node.isVisited() && node.getDegree() == 2) {
+                            // check for adjacent node of degree > 2
+                            for (Iterator<?> itr = node.getRelated(); itr.hasNext(); ) {
+                                Node rel = (Node) itr.next();
+                                if (rel.getDegree() > 2) return (Graph.PASS_AND_CONTINUE);
+                            }
+                        }
+                        return (Graph.FAIL_QUERY);
+                    })
+                    .iterator();
 
             // if the query returned no nodes, it means that all the cycle is
             // disconnected from the rest of graph, so just pick any node of degree 2
             if (!sources.hasNext()) {
-                sources =
-                        m_graph.queryNodes(
-                                        component -> {
-                                            if (!component.isVisited())
-                                                return (Graph.PASS_AND_STOP);
-                                            return (Graph.FAIL_QUERY);
-                                        })
-                                .iterator();
+                sources = m_graph.queryNodes(component -> {
+                            if (!component.isVisited()) return (Graph.PASS_AND_STOP);
+                            return (Graph.FAIL_QUERY);
+                        })
+                        .iterator();
             }
 
             // create stage 2 walker, simple add any nodes visited nodes to the
             // current node set
-            m_walker =
-                    new GraphWalker() {
-                        @Override
-                        public int visit(Graphable element, GraphTraversal traversal) {
-                            m_ndegree2--;
-                            m_nodes.add(element);
-                            return (GraphTraversal.CONTINUE);
-                        }
+            m_walker = new GraphWalker() {
+                @Override
+                public int visit(Graphable element, GraphTraversal traversal) {
+                    m_ndegree2--;
+                    m_nodes.add(element);
+                    return (GraphTraversal.CONTINUE);
+                }
 
-                        @Override
-                        public void finish() {
-                            m_sets.add(m_nodes);
-                            m_nodes = new ArrayList<>();
-                        }
-                    };
+                @Override
+                public void finish() {
+                    m_sets.add(m_nodes);
+                    m_nodes = new ArrayList<>();
+                }
+            };
             m_traversal.setWalker(m_walker);
             m_traversal.setIterator(new NoBifurcationIterator());
 
@@ -323,8 +311,7 @@ public class GraphFuser {
     public static interface EdgeMerger {
 
         /**
-         * Creates a single object from collection of underlying objects represented by a collection
-         * of edges.
+         * Creates a single object from collection of underlying objects represented by a collection of edges.
          *
          * @param edges A collection of edges.
          * @return A single object.

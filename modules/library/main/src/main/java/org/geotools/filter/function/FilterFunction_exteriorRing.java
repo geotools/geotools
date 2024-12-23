@@ -29,8 +29,7 @@ import org.locationtech.jts.geom.LinearRing;
 public class FilterFunction_exteriorRing extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "exteriorRing", LinearRing.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("exteriorRing", LinearRing.class, parameter("geometry", Geometry.class));
 
     public FilterFunction_exteriorRing() {
         super(NAME);

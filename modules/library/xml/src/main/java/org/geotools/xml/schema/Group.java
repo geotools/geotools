@@ -21,17 +21,14 @@ import java.net.URI;
 /**
  * This interface is intended to represent the Group construct within XML Schemas.
  *
- * <p>In many situations it is recommended that groups be flatened out to their child declaration,
- * removing the additional layer of indirection. Although this optimization is nice, it is imposible
- * to complete this all the time, as xml schemas may include publicly viewable Group definitions.
+ * <p>In many situations it is recommended that groups be flatened out to their child declaration, removing the
+ * additional layer of indirection. Although this optimization is nice, it is imposible to complete this all the time,
+ * as xml schemas may include publicly viewable Group definitions.
  *
  * @author dzwiers www.refractions.net
  */
 public interface Group extends ElementGrouping {
-    /**
-     * Returns the Child Schema element (Choice or Sequence) declaring valid element sequences for
-     * this group.
-     */
+    /** Returns the Child Schema element (Choice or Sequence) declaring valid element sequences for this group. */
     public ElementGrouping getChild();
 
     /** The Group's declaration object id. */

@@ -21,9 +21,9 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Concatenated transform where the transfert dimension is the same than source and target
- * dimension. This fact allows some optimizations, the most important one being the possibility to
- * avoid the use of an intermediate buffer in some case.
+ * Concatenated transform where the transfert dimension is the same than source and target dimension. This fact allows
+ * some optimizations, the most important one being the possibility to avoid the use of an intermediate buffer in some
+ * case.
  *
  * @since 2.0
  * @version $Id$
@@ -34,8 +34,7 @@ class ConcatenatedTransformDirect extends ConcatenatedTransform {
     private static final long serialVersionUID = -3568975979013908920L;
 
     /** Constructs a concatenated transform. */
-    public ConcatenatedTransformDirect(
-            final MathTransform transform1, final MathTransform transform2) {
+    public ConcatenatedTransformDirect(final MathTransform transform1, final MathTransform transform2) {
         super(transform1, transform2);
     }
 
@@ -58,11 +57,7 @@ class ConcatenatedTransformDirect extends ConcatenatedTransform {
     /** Transforms a list of coordinate point ordinal values. */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         assert isValid();
         transform1.transform(srcPts, srcOff, dstPts, dstOff, numPts);

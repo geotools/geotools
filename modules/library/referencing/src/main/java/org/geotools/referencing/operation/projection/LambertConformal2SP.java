@@ -48,8 +48,7 @@ public class LambertConformal2SP extends LambertConformal {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected LambertConformal2SP(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected LambertConformal2SP(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
     }
 
@@ -68,9 +67,8 @@ public class LambertConformal2SP extends LambertConformal {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for a {@linkplain LambertConformal2SP Lambert Conformal 2SP} projection (EPSG code
-     * 9802).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for a
+     * {@linkplain LambertConformal2SP Lambert Conformal 2SP} projection (EPSG code 9802).
      *
      * @since 2.2
      * @version $Id$
@@ -83,28 +81,26 @@ public class LambertConformal2SP extends LambertConformal {
         private static final long serialVersionUID = 3240860802816724947L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Lambert_Conformal_Conic_2SP"),
-                            new NamedIdentifier(Citations.EPSG, "Lambert Conic Conformal (2SP)"),
-                            new NamedIdentifier(Citations.EPSG, "9802"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_LambertConfConic_2SP"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_LambertConfConic"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.LAMBERT_CONFORMAL_PROJECTION)),
-                            new NamedIdentifier(Citations.PROJ, "lcc")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-                            FALSE_EASTING, FALSE_NORTHING,
-                            SCALE_FACTOR // This last parameter is for backwards compatibility, see
-                            // LambertConformalEsriProvider
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Lambert_Conformal_Conic_2SP"),
+                    new NamedIdentifier(Citations.EPSG, "Lambert Conic Conformal (2SP)"),
+                    new NamedIdentifier(Citations.EPSG, "9802"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_LambertConfConic_2SP"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_LambertConfConic"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.LAMBERT_CONFORMAL_PROJECTION)),
+                    new NamedIdentifier(Citations.PROJ, "lcc")
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
+                    FALSE_EASTING, FALSE_NORTHING,
+                    SCALE_FACTOR // This last parameter is for backwards compatibility, see
+                    // LambertConformalEsriProvider
+                });
 
         /** Constructs a new provider. */
         public Provider() {

@@ -25,26 +25,23 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Formats a number into a string given a certain pattern (specified in the format accepted by
- * {@link DecimalFormat}}
+ * Formats a number into a string given a certain pattern (specified in the format accepted by {@link DecimalFormat}}
  *
- * <p>This function expands on {@link FilterFunction_numberFormat} and adds some additonal
- * parameters such as allowing the user to explicitly specify the decimal and group separators,
- * rather than falling back on locale based defaults.
+ * <p>This function expands on {@link FilterFunction_numberFormat} and adds some additonal parameters such as allowing
+ * the user to explicitly specify the decimal and group separators, rather than falling back on locale based defaults.
  *
  * @author Justin Deoliveira, OpenGeo
  */
 public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "numberFormat2",
-                    String.class,
-                    parameter("format", String.class),
-                    parameter("number", Number.class),
-                    parameter("minus", String.class),
-                    parameter("decimal", String.class),
-                    parameter("separator", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "numberFormat2",
+            String.class,
+            parameter("format", String.class),
+            parameter("number", Number.class),
+            parameter("minus", String.class),
+            parameter("decimal", String.class),
+            parameter("separator", String.class));
 
     public FilterFunction_numberFormat2() {
         super(NAME);

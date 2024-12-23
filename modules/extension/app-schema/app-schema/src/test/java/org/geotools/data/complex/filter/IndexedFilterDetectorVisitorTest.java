@@ -36,12 +36,8 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testPartialIndexedFilter() {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             IndexedFilterDetectorVisitor visitor =
                     new IndexedFilterDetectorVisitor(fsource.getMappedSource().getMapping());
             Filter filter = partialIndexedFilter();
@@ -53,56 +49,43 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testPartialIndexedFilter_with2idxSubfilters() {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             IndexedFilterDetectorVisitor visitor =
                     new IndexedFilterDetectorVisitor(fsource.getMappedSource().getMapping());
             Filter filter = partialIndexedFilter_2idxfilterResults();
             filter.accept(visitor, null);
             assertEquals(2, visitor.getIndexedFilters().size());
-            assertEquals(
-                    visitor.getParentLogicOperator(), partialIndexedFilter_2idxfilterResults());
+            assertEquals(visitor.getParentLogicOperator(), partialIndexedFilter_2idxfilterResults());
         }
     }
 
     private Filter partialIndexedFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.and(
-                        totallyIndexedFilter(),
-                        ff.like(ff.property("st:location/st:name"), "*fer*"));
+        Filter filter = ff.and(totallyIndexedFilter(), ff.like(ff.property("st:location/st:name"), "*fer*"));
         return filter;
     }
 
     private Filter totallyIndexedFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.or(
-                        ff.equals(ff.property("st:Station"), ff.literal("st.1")),
-                        ff.like(ff.property("st:Station/st:name"), "*fer*"));
+        Filter filter = ff.or(
+                ff.equals(ff.property("st:Station"), ff.literal("st.1")),
+                ff.like(ff.property("st:Station/st:name"), "*fer*"));
         return filter;
     }
 
     private Filter totallyIndexedFilter2() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.or(
-                        ff.equals(ff.property("st:Station/st:name"), ff.literal("fer")),
-                        ff.like(ff.property("st:Station/st:name"), "*mariela*"));
+        Filter filter = ff.or(
+                ff.equals(ff.property("st:Station/st:name"), ff.literal("fer")),
+                ff.like(ff.property("st:Station/st:name"), "*mariela*"));
         return filter;
     }
 
     private Filter partialIndexedFilter_2idxfilterResults() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        List<Filter> filters =
-                Arrays.asList(
-                        totallyIndexedFilter(),
-                        ff.like(ff.property("st:location/st:name"), "*fer*"),
-                        totallyIndexedFilter2());
+        List<Filter> filters = Arrays.asList(
+                totallyIndexedFilter(), ff.like(ff.property("st:location/st:name"), "*fer*"), totallyIndexedFilter2());
         Filter filter = ff.and(filters);
         return filter;
     }

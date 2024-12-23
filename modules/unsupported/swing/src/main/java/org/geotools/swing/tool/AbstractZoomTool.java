@@ -18,8 +18,7 @@
 package org.geotools.swing.tool;
 
 /**
- * Abstract base class for the zoom-in and zoom-out tools. Provides getter / setter methods for the
- * zoom increment.
+ * Abstract base class for the zoom-in and zoom-out tools. Provides getter / setter methods for the zoom increment.
  *
  * @author Michael Bedward
  * @since 2.6

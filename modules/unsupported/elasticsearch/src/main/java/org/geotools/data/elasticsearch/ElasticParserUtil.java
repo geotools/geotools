@@ -42,10 +42,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
-/**
- * Utilities for parsing Elasticsearch document source and field content to extract values and
- * create geometries.
- */
+/** Utilities for parsing Elasticsearch document source and field content to extract values and create geometries. */
 class ElasticParserUtil {
 
     private static final Logger LOGGER = Logging.getLogger(ElasticParserUtil.class);
@@ -53,8 +50,7 @@ class ElasticParserUtil {
     private static final Pattern GEO_POINT_PATTERN;
 
     static {
-        GEO_POINT_PATTERN =
-                Pattern.compile("\\s*([-+]?\\d*\\.?\\d*)[^-+\\d.]+([-+]?\\d*\\.?\\d*)\\s*");
+        GEO_POINT_PATTERN = Pattern.compile("\\s*([-+]?\\d*\\.?\\d*)[^-+\\d.]+([-+]?\\d*\\.?\\d*)\\s*");
     }
 
     private static final Pattern GEO_HASH_PATTERN;
@@ -79,9 +75,8 @@ class ElasticParserUtil {
     private static final Pattern WKT_PATTERN;
 
     static {
-        WKT_PATTERN =
-                Pattern.compile(
-                        "POINT.*|LINESTRING.*|POLYGON.*|MULTIPOINT.*|MULTILINESTRING.*|MULTIPOLYGON.*|GEOMETRYCOLLECTION.*");
+        WKT_PATTERN = Pattern.compile(
+                "POINT.*|LINESTRING.*|POLYGON.*|MULTIPOINT.*|MULTILINESTRING.*|MULTIPOLYGON.*|GEOMETRYCOLLECTION.*");
     }
 
     private final GeometryFactory geometryFactory;
@@ -95,8 +90,8 @@ class ElasticParserUtil {
     }
 
     /**
-     * Create point geometry given geo_point or geo_shape definition. GeoPoint can be defined by
-     * string, geohash, coordinate array or properties map. GeoShape is defined by properties map.
+     * Create point geometry given geo_point or geo_shape definition. GeoPoint can be defined by string, geohash,
+     * coordinate array or properties map. GeoShape is defined by properties map.
      *
      * @param obj GeoPoint or GeoShape definition
      * @return Geometry
@@ -155,8 +150,7 @@ class ElasticParserUtil {
     }
 
     /**
-     * Create geometry given property map defining geo_shape type and coordinates or geo_point lat
-     * and lon.
+     * Create geometry given property map defining geo_shape type and coordinates or geo_point lat and lon.
      *
      * @param properties Properties
      * @return Geometry
@@ -165,81 +159,71 @@ class ElasticParserUtil {
     public Geometry createGeometry(final Map<String, Object> properties) {
         final Geometry geometry;
         switch (String.valueOf(properties.get("type")).toUpperCase()) {
-            case "POINT":
-                {
-                    final List posList = (List) properties.get("coordinates");
-                    final Coordinate coordinate = createCoordinate(posList);
-                    geometry = geometryFactory.createPoint(coordinate);
-                    break;
+            case "POINT": {
+                final List posList = (List) properties.get("coordinates");
+                final Coordinate coordinate = createCoordinate(posList);
+                geometry = geometryFactory.createPoint(coordinate);
+                break;
+            }
+            case "LINESTRING": {
+                final List<List<Object>> posList = (List) properties.get("coordinates");
+                final Coordinate[] coordinates = createCoordinates(posList);
+                geometry = geometryFactory.createLineString(coordinates);
+                break;
+            }
+            case "POLYGON": {
+                final List<List<List<Object>>> posList = (List) properties.get("coordinates");
+                geometry = createPolygon(posList);
+                break;
+            }
+            case "MULTIPOINT": {
+                final List<List<Object>> posList = (List) properties.get("coordinates");
+                final Coordinate[] coordinates = createCoordinates(posList);
+                geometry = geometryFactory.createMultiPointFromCoords(coordinates);
+                break;
+            }
+            case "MULTILINESTRING": {
+                final List<List<List<Object>>> posList = (List) properties.get("coordinates");
+                final LineString[] lineStrings = new LineString[posList.size()];
+                for (int i = 0; i < posList.size(); i++) {
+                    final Coordinate[] coordinates = createCoordinates(posList.get(i));
+                    lineStrings[i] = geometryFactory.createLineString(coordinates);
                 }
-            case "LINESTRING":
-                {
-                    final List<List<Object>> posList = (List) properties.get("coordinates");
-                    final Coordinate[] coordinates = createCoordinates(posList);
-                    geometry = geometryFactory.createLineString(coordinates);
-                    break;
+                geometry = geometryFactory.createMultiLineString(lineStrings);
+                break;
+            }
+            case "MULTIPOLYGON": {
+                final List<List<List<List<Object>>>> posList = (List) properties.get("coordinates");
+                final Polygon[] polygons = new Polygon[posList.size()];
+                for (int i = 0; i < posList.size(); i++) {
+                    polygons[i] = createPolygon(posList.get(i));
                 }
-            case "POLYGON":
-                {
-                    final List<List<List<Object>>> posList = (List) properties.get("coordinates");
-                    geometry = createPolygon(posList);
-                    break;
+                geometry = geometryFactory.createMultiPolygon(polygons);
+                break;
+            }
+            case "GEOMETRYCOLLECTION": {
+                final List<Map<String, Object>> list = (List) properties.get("geometries");
+                final Geometry[] geometries = new Geometry[list.size()];
+                for (int i = 0; i < geometries.length; i++) {
+                    geometries[i] = createGeometry(list.get(i));
                 }
-            case "MULTIPOINT":
-                {
-                    final List<List<Object>> posList = (List) properties.get("coordinates");
-                    final Coordinate[] coordinates = createCoordinates(posList);
-                    geometry = geometryFactory.createMultiPointFromCoords(coordinates);
-                    break;
-                }
-            case "MULTILINESTRING":
-                {
-                    final List<List<List<Object>>> posList = (List) properties.get("coordinates");
-                    final LineString[] lineStrings = new LineString[posList.size()];
-                    for (int i = 0; i < posList.size(); i++) {
-                        final Coordinate[] coordinates = createCoordinates(posList.get(i));
-                        lineStrings[i] = geometryFactory.createLineString(coordinates);
-                    }
-                    geometry = geometryFactory.createMultiLineString(lineStrings);
-                    break;
-                }
-            case "MULTIPOLYGON":
-                {
-                    final List<List<List<List<Object>>>> posList =
-                            (List) properties.get("coordinates");
-                    final Polygon[] polygons = new Polygon[posList.size()];
-                    for (int i = 0; i < posList.size(); i++) {
-                        polygons[i] = createPolygon(posList.get(i));
-                    }
-                    geometry = geometryFactory.createMultiPolygon(polygons);
-                    break;
-                }
-            case "GEOMETRYCOLLECTION":
-                {
-                    final List<Map<String, Object>> list = (List) properties.get("geometries");
-                    final Geometry[] geometries = new Geometry[list.size()];
-                    for (int i = 0; i < geometries.length; i++) {
-                        geometries[i] = createGeometry(list.get(i));
-                    }
-                    geometry = geometryFactory.createGeometryCollection(geometries);
-                    break;
-                }
-            case "ENVELOPE":
-                {
-                    final List<List<Object>> posList = (List) properties.get("coordinates");
-                    final Coordinate[] coords = createCoordinates(posList);
-                    final Envelope envelope = new Envelope(coords[0], coords[1]);
-                    geometry = geometryFactory.toGeometry(envelope);
-                    break;
-                }
-            case "CIRCLE":
-                {
-                    final List posList = (List) properties.get("coordinates");
-                    final String radius = (String) properties.get("radius");
-                    final Coordinate coordinate = createCoordinate(posList);
-                    geometry = createCircle(coordinate, radius);
-                    break;
-                }
+                geometry = geometryFactory.createGeometryCollection(geometries);
+                break;
+            }
+            case "ENVELOPE": {
+                final List<List<Object>> posList = (List) properties.get("coordinates");
+                final Coordinate[] coords = createCoordinates(posList);
+                final Envelope envelope = new Envelope(coords[0], coords[1]);
+                geometry = geometryFactory.toGeometry(envelope);
+                break;
+            }
+            case "CIRCLE": {
+                final List posList = (List) properties.get("coordinates");
+                final String radius = (String) properties.get("radius");
+                final Coordinate coordinate = createCoordinate(posList);
+                geometry = createCircle(coordinate, radius);
+                break;
+            }
             default:
                 // check if this is a geo_point
                 final Object latObj = properties.get("lat");
@@ -346,9 +330,7 @@ class ElasticParserUtil {
             for (Object object : (List<?>) entry) {
                 readField(object, keys, values);
             }
-        } else if (entry != null
-                && !keys.isEmpty()
-                && Map.class.isAssignableFrom(entry.getClass())) {
+        } else if (entry != null && !keys.isEmpty() && Map.class.isAssignableFrom(entry.getClass())) {
             final Object nextEntry = ((Map<?, ?>) entry).get(keys.get(0));
             final List<String> newKeys = keys.subList(1, keys.size());
             readField(nextEntry, newKeys, values);
@@ -427,9 +409,9 @@ class ElasticParserUtil {
     /**
      * Converts an Elasticsearch distance string consisting of value and unit into metres.
      *
-     * @param distanceWithUnit String of the form of a decimal number concatenated with a unit
-     *     string as defined in {@link FilterToElasticHelper#UNITS_MAP}. If the unit string is
-     *     missing then the number is assumed to be metres.
+     * @param distanceWithUnit String of the form of a decimal number concatenated with a unit string as defined in
+     *     {@link FilterToElasticHelper#UNITS_MAP}. If the unit string is missing then the number is assumed to be
+     *     metres.
      * @return distance in metres.
      * @throws IllegalArgumentException For invalid unit or format
      */

@@ -26,21 +26,20 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_in10 extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "in10",
-                    Boolean.class,
-                    parameter("value", Object.class),
-                    parameter("in1", Object.class),
-                    parameter("in2", Object.class),
-                    parameter("in3", Object.class),
-                    parameter("in4", Object.class),
-                    parameter("in5", Object.class),
-                    parameter("in6", Object.class),
-                    parameter("in7", Object.class),
-                    parameter("in8", Object.class),
-                    parameter("in9", Object.class),
-                    parameter("in10", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "in10",
+            Boolean.class,
+            parameter("value", Object.class),
+            parameter("in1", Object.class),
+            parameter("in2", Object.class),
+            parameter("in3", Object.class),
+            parameter("in4", Object.class),
+            parameter("in5", Object.class),
+            parameter("in6", Object.class),
+            parameter("in7", Object.class),
+            parameter("in8", Object.class),
+            parameter("in9", Object.class),
+            parameter("in10", Object.class));
 
     public FilterFunction_in10() {
         super(NAME);
@@ -148,8 +147,6 @@ public class FilterFunction_in10 extends FunctionExpressionImpl {
                     "Filter Function problem for function in10 argument #10 - expected type Object");
         }
 
-        return Boolean.valueOf(
-                StaticGeometry.in10(
-                        arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
+        return Boolean.valueOf(StaticGeometry.in10(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
     }
 }

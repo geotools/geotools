@@ -61,8 +61,8 @@ public final class RPFTOCReader extends BaseGDALGridCoverage2DReader implements 
     }
 
     /**
-     * Override coverage name because of the default structure of the folders. Very often
-     * XXX/RPF/A.TOC The parent directory is a better alternative
+     * Override coverage name because of the default structure of the folders. Very often XXX/RPF/A.TOC The parent
+     * directory is a better alternative
      *
      * @return the coverage name
      */

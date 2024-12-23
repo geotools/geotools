@@ -68,9 +68,9 @@ import tech.units.indriya.AbstractUnit;
  */
 public final class ParametersTest {
     /**
-     * Tests integer and floating point values in a wide range of values. Some on those values are
-     * cached (e.g. 0, 90, 360) because frequently used. It should be transparent to the user. Test
-     * also unit conversions (degrees to radians in this case).
+     * Tests integer and floating point values in a wide range of values. Some on those values are cached (e.g. 0, 90,
+     * 360) because frequently used. It should be transparent to the user. Test also unit conversions (degrees to
+     * radians in this case).
      */
     @Test
     public void testSequence() {
@@ -92,13 +92,12 @@ public final class ParametersTest {
     }
 
     /**
-     * Creates a parameter bounded by some range of integer numbers, and tests values inside and
-     * outside this range. Tests also the uses of values of the wrong type.
+     * Creates a parameter bounded by some range of integer numbers, and tests values inside and outside this range.
+     * Tests also the uses of values of the wrong type.
      */
     @Test
     public void testRangeIntegers() {
-        Parameter<Integer> param =
-                new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
+        Parameter<Integer> param = new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12);
@@ -129,14 +128,12 @@ public final class ParametersTest {
     }
 
     /**
-     * Creates a parameter bounded by some range of floating point numbers, and tests values inside
-     * and outside this range. Tests also the uses of values of the wrong types.
+     * Creates a parameter bounded by some range of floating point numbers, and tests values inside and outside this
+     * range. Tests also the uses of values of the wrong types.
      */
     @Test
     public void testRangeDoubles() {
-        Parameter<Double> param =
-                new Parameter<>(
-                        DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
+        Parameter<Double> param = new Parameter<>(DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12.0);
@@ -167,18 +164,14 @@ public final class ParametersTest {
     }
 
     /**
-     * Tests parameter for a code list. Try to inserts invalid values. Try also to insert a new code
-     * list. This operation should fails if the new code list is created after the parameter.
+     * Tests parameter for a code list. Try to inserts invalid values. Try also to insert a new code list. This
+     * operation should fails if the new code list is created after the parameter.
      */
     @Test
     public void testCodeList() {
-        Parameter<AxisDirection> param =
-                Parameter.create("Test", AxisDirection.class, AxisDirection.DISPLAY_UP);
+        Parameter<AxisDirection> param = Parameter.create("Test", AxisDirection.class, AxisDirection.DISPLAY_UP);
         ParameterDescriptor op = param.getDescriptor();
-        assertEquals(
-                "Set<AxisDirection>",
-                new HashSet<>(Arrays.asList(AxisDirection.values())),
-                op.getValidValues());
+        assertEquals("Set<AxisDirection>", new HashSet<>(Arrays.asList(AxisDirection.values())), op.getValidValues());
         assertNull("defaultValue", op.getDefaultValue());
         param.setValue(AxisDirection.DOWN);
         try {
@@ -205,8 +198,7 @@ public final class ParametersTest {
     @Test
     public void testParameterDescriptor() {
 
-        ParameterDescriptor<Double> dDescriptor =
-                DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
+        ParameterDescriptor<Double> dDescriptor = DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
         ParameterValue<Double> parameter = dDescriptor.createValue();
         assertEquals("name", "Test", dDescriptor.getName().getCode());
         assertEquals("unit", SI.METRE, dDescriptor.getUnit());
@@ -321,8 +313,7 @@ public final class ParametersTest {
         assertTrue("validValues", validValues.contains(AxisDirection.SOUTH));
         assertTrue("validValues", validValues.contains(AxisDirection.DISPLAY_LEFT));
         assertTrue("validValues", validValues.contains(AxisDirection.PAST));
-        assertEquals(
-                "validValues", new HashSet<>(Arrays.asList(AxisDirection.values())), validValues);
+        assertEquals("validValues", new HashSet<>(Arrays.asList(AxisDirection.values())), validValues);
         try {
             parameter.doubleValue();
             fail("doubleValue should not be allowed on AxisDirection");
@@ -339,50 +330,19 @@ public final class ParametersTest {
     public void testGroup() throws IOException {
         final ParameterWriter writer = new ParameterWriter(new StringWriter());
         final Integer ONE = 1;
-        final ParameterDescriptor<Integer> p1 =
-                new DefaultParameterDescriptor<>(
-                        Collections.singletonMap("name", "1"),
-                        Integer.class,
-                        null,
-                        ONE,
-                        null,
-                        null,
-                        null,
-                        true);
-        final ParameterDescriptor<Integer> p2 =
-                new DefaultParameterDescriptor<>(
-                        Collections.singletonMap("name", "2"),
-                        Integer.class,
-                        null,
-                        ONE,
-                        null,
-                        null,
-                        null,
-                        true);
-        final ParameterDescriptor<Integer> p3 =
-                new DefaultParameterDescriptor<>(
-                        Collections.singletonMap("name", "3"),
-                        Integer.class,
-                        null,
-                        ONE,
-                        null,
-                        null,
-                        null,
-                        false);
+        final ParameterDescriptor<Integer> p1 = new DefaultParameterDescriptor<>(
+                Collections.singletonMap("name", "1"), Integer.class, null, ONE, null, null, null, true);
+        final ParameterDescriptor<Integer> p2 = new DefaultParameterDescriptor<>(
+                Collections.singletonMap("name", "2"), Integer.class, null, ONE, null, null, null, true);
+        final ParameterDescriptor<Integer> p3 = new DefaultParameterDescriptor<>(
+                Collections.singletonMap("name", "3"), Integer.class, null, ONE, null, null, null, false);
         final ParameterDescriptor<Integer> p4 =
                 new DefaultParameterDescriptor<Integer>(
-                        Collections.singletonMap("name", "4"),
-                        Integer.class,
-                        null,
-                        ONE,
-                        null,
-                        null,
-                        null,
-                        false) {
+                        Collections.singletonMap("name", "4"), Integer.class, null, ONE, null, null, null, false) {
                     /**
-                     * We are cheating here: <code>maximumOccurs</code> should always be 1 for
-                     * <code>ParameterValue</code>. However, the Geotools implementation should be
-                     * robust enough to accept other values. We will test that.
+                     * We are cheating here: <code>maximumOccurs</code> should always be 1 for <code>ParameterValue
+                     * </code>. However, the Geotools implementation should be robust enough to accept other values. We
+                     * will test that.
                      */
                     @Override
                     public int getMaximumOccurs() {
@@ -475,10 +435,7 @@ public final class ParametersTest {
         assertEquals("values.size()", 3, content.size());
 
         // Tests equality
-        assertEquals(
-                "new",
-                group,
-                group = new ParameterGroup(descriptor, new Parameter[] {v1b, v2b, v3b}));
+        assertEquals("new", group, group = new ParameterGroup(descriptor, new Parameter[] {v1b, v2b, v3b}));
 
         /* --------------------------------------------- *
          * Case (v1, v2) where:
@@ -502,8 +459,7 @@ public final class ParametersTest {
         assertSame("parameter(\"1\")", v1, group.parameter("1"));
         assertSame("parameter(\"2\")", v2, group.parameter("2"));
         assertFalse("contains(automatic)", content.contains(automatic));
-        assertNotEquals(
-                "parameter(\"3\")", v3, group.parameter("3")); // Should have automatically created.
+        assertNotEquals("parameter(\"3\")", v3, group.parameter("3")); // Should have automatically created.
         assertTrue("contains(automatic)", content.contains(automatic));
         try {
             assertNotNull(group.parameter("4"));
@@ -575,8 +531,7 @@ public final class ParametersTest {
         assertSame("parameter(\"4\")", v4, group.parameter("4"));
         assertTrue("remove(v3)", content.remove(v3));
         assertFalse("contains(automatic)", content.contains(automatic));
-        assertNotEquals(
-                "parameter(\"3\")", v3, group.parameter("3")); // Should have automatically created.
+        assertNotEquals("parameter(\"3\")", v3, group.parameter("3")); // Should have automatically created.
         assertTrue("contains(automatic)", content.contains(automatic));
 
         try {
@@ -777,8 +732,7 @@ public final class ParametersTest {
         outs.writeObject(object);
         outs.close();
 
-        final ObjectInputStream in =
-                new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+        final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
         final Object test = in.readObject();
         in.close();
 

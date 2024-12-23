@@ -22,15 +22,14 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
 /**
- * Build the physical components of a Graph. The GraphBuilder manages the details of component
- * creation, addition, and removal from the graph.<br>
+ * Build the physical components of a Graph. The GraphBuilder manages the details of component creation, addition, and
+ * removal from the graph.<br>
  * <br>
- * Graph components are created through calls to buildNode() and buildEdge(Node, Node), and then
- * added to the graph through calls to addNode(Node), and addEdge(Edge).<br>
+ * Graph components are created through calls to buildNode() and buildEdge(Node, Node), and then added to the graph
+ * through calls to addNode(Node), and addEdge(Edge).<br>
  * <br>
- * The GraphBuilder class is the lower level of the graph construction process. The builder does not
- * manage the entities being modelled by the graph components. This is done at a higher level by the
- * GraphGenerator. class.
+ * The GraphBuilder class is the lower level of the graph construction process. The builder does not manage the entities
+ * being modelled by the graph components. This is done at a higher level by the GraphGenerator. class.
  *
  * @see Graph
  * @see GraphGenerator
@@ -46,16 +45,16 @@ public interface GraphBuilder {
     public Graph getGraph();
 
     /**
-     * Builds a new node for the graph. This method does not add the new node to the graph, this
-     * must be done with the addNode(Node) method.
+     * Builds a new node for the graph. This method does not add the new node to the graph, this must be done with the
+     * addNode(Node) method.
      *
      * @return Node The newly built node.
      */
     public Node buildNode();
 
     /**
-     * Builds a new edge for the graph. This method does not add the new node to the graph, this
-     * must be done with the addEdge(Edge) method.
+     * Builds a new edge for the graph. This method does not add the new node to the graph, this must be done with the
+     * addEdge(Edge) method.
      *
      * @param nodeA Adjacent node to edge.
      * @param nodeB Adjacent node to edge.
@@ -106,8 +105,8 @@ public interface GraphBuilder {
     public void removeEdges(Collection edges);
 
     /**
-     * Returns a clone of the builder. A deep clone copies the underlying graph structure, a non
-     * deep clone results in an empty builder
+     * Returns a clone of the builder. A deep clone copies the underlying graph structure, a non deep clone results in
+     * an empty builder
      *
      * @param deep Deep or non deep clone.
      * @return A graph builder.
@@ -115,9 +114,8 @@ public interface GraphBuilder {
     public Object clone(boolean deep) throws Exception;
 
     /**
-     * Constructs a graph builder from a pre built graph. The nodes and edges of the existing graph
-     * are imported into the builder. Relationships between nodes and edges are assummed to be
-     * preexistant.
+     * Constructs a graph builder from a pre built graph. The nodes and edges of the existing graph are imported into
+     * the builder. Relationships between nodes and edges are assummed to be preexistant.
      *
      * @param g A pre built graph.
      */

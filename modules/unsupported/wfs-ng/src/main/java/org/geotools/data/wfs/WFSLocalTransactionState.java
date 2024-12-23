@@ -45,19 +45,18 @@ class WFSLocalTransactionState extends DiffTransactionState {
     }
 
     /**
-     * We don't do any actual commit here, but let the {@link WFSRemoteTransactionState} do it all
-     * for all the types changed inside the transaction.
+     * We don't do any actual commit here, but let the {@link WFSRemoteTransactionState} do it all for all the types
+     * changed inside the transaction.
      *
      * @see org.geotools.data.store.DiffTransactionState#commit()
      */
     @Override
     public synchronized void commit() throws IOException {
         if (MODULE.isLoggable(Level.FINER)) {
-            MODULE.finer(
-                    getClass().getSimpleName()
-                            + "::commit(): doing nothing, letting "
-                            + WFSRemoteTransactionState.class.getSimpleName()
-                            + " do the job for the whole DataStore");
+            MODULE.finer(getClass().getSimpleName()
+                    + "::commit(): doing nothing, letting "
+                    + WFSRemoteTransactionState.class.getSimpleName()
+                    + " do the job for the whole DataStore");
         }
     }
 }

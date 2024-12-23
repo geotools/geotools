@@ -26,10 +26,10 @@ import org.geotools.api.referencing.cs.LinearCS;
 import org.geotools.measure.Measure;
 
 /**
- * A one-dimensional coordinate system that consists of the points that lie on the single axis
- * described. The associated ordinate is the distance from the specified origin to the point along
- * the axis. Example: usage of the line feature representing a road to describe points on or along
- * that road. A {@code LinearCS} shall have one {@linkplain #getAxis axis}.
+ * A one-dimensional coordinate system that consists of the points that lie on the single axis described. The associated
+ * ordinate is the distance from the specified origin to the point along the axis. Example: usage of the line feature
+ * representing a road to describe points on or along that road. A {@code LinearCS} shall have one {@linkplain #getAxis
+ * axis}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -46,10 +46,10 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
     private static final long serialVersionUID = -6890723478287625763L;
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy constructor provides a
+     * way to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in
+     * order to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties
+     * are not cloned.
      *
      * @since 2.2
      */
@@ -68,9 +68,8 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
     }
 
     /**
-     * Constructs a coordinate system from a set of properties. The properties map is given
-     * unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class
-     * constructor}.
+     * Constructs a coordinate system from a set of properties. The properties map is given unchanged to the
+     * {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis The axis.
@@ -88,8 +87,7 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         return new Measure(Math.abs(coord1[0] - coord2[0]), getDistanceUnit());

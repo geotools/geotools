@@ -46,27 +46,19 @@ public class SimpleTypeBuilderTest {
         Schema schema = new SchemaImpl("test");
 
         FeatureTypeFactoryImpl typeFactory = new FeatureTypeFactoryImpl();
-        AttributeType pointType =
-                typeFactory.createGeometryType(
-                        new NameImpl("test", "pointType"),
-                        Point.class,
-                        null,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        null,
-                        null);
+        AttributeType pointType = typeFactory.createGeometryType(
+                new NameImpl("test", "pointType"),
+                Point.class,
+                null,
+                false,
+                false,
+                Collections.emptyList(),
+                null,
+                null);
         schema.put(new NameImpl("test", "pointType"), pointType);
 
-        AttributeType intType =
-                typeFactory.createAttributeType(
-                        new NameImpl("test", "intType"),
-                        Integer.class,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        null,
-                        null);
+        AttributeType intType = typeFactory.createAttributeType(
+                new NameImpl("test", "intType"), Integer.class, false, false, Collections.emptyList(), null, null);
         schema.put(new NameImpl("test", "intType"), intType);
 
         builder = new SimpleFeatureTypeBuilder(new FeatureTypeFactoryImpl());
@@ -112,8 +104,7 @@ public class SimpleTypeBuilderTest {
 
         Assert.assertNull(type.getGeometryDescriptor().getType().getCoordinateReferenceSystem());
         Assert.assertEquals(
-                DefaultGeographicCRS.WGS84,
-                ((GeometryType) type.getType("point2")).getCoordinateReferenceSystem());
+                DefaultGeographicCRS.WGS84, ((GeometryType) type.getType("point2")).getCoordinateReferenceSystem());
     }
 
     @Test
@@ -160,10 +151,7 @@ public class SimpleTypeBuilderTest {
         SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, query);
         Assert.assertSame("crs", ballWorld, retyped.getCoordinateReferenceSystem());
         Assert.assertEquals("geom", retyped.getGeometryDescriptor().getLocalName());
-        Assert.assertSame(
-                "geom crs",
-                ballWorld,
-                retyped.getGeometryDescriptor().getCoordinateReferenceSystem());
+        Assert.assertSame("geom crs", ballWorld, retyped.getGeometryDescriptor().getCoordinateReferenceSystem());
     }
 
     @Test

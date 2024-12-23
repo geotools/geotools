@@ -56,16 +56,14 @@ import org.jaitools.numeric.Range;
  */
 @DescribeProcess(
         title = "Reclassify",
-        description =
-                "Reclassifies a continous raster into integer values defined by a set of ranges")
+        description = "Reclassifies a continous raster into integer values defined by a set of ranges")
 public class RangeLookupProcess implements RasterProcess {
 
     private static final double DEFAULT_NODATA = 0d;
 
     @DescribeResult(name = "reclassified", description = "The reclassified raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "Input raster")
-                    GridCoverage2D coverage,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
             @DescribeParameter(
                             name = "band",
                             description = "Source band to use for classification (default is 0)",
@@ -85,8 +83,7 @@ public class RangeLookupProcess implements RasterProcess {
                     int[] outputPixelValues,
             @DescribeParameter(
                             name = "noData",
-                            description =
-                                    "Value to be assigned to pixels outside any range (defaults to 0)",
+                            description = "Value to be assigned to pixels outside any range (defaults to 0)",
                             min = 0,
                             defaultValue = "0")
                     Double noData,
@@ -97,16 +94,13 @@ public class RangeLookupProcess implements RasterProcess {
         // initial checks
         //
         if (coverage == null) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
         }
         if (classificationRanges == null) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "classificationRanges"));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "classificationRanges"));
         }
         double nd = DEFAULT_NODATA;
-        NoDataContainer noDataProperty =
-                org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(coverage);
+        NoDataContainer noDataProperty = org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(coverage);
         if (noData != null) {
             nd = noData.doubleValue();
         } else if (noDataProperty != null) {
@@ -117,8 +111,7 @@ public class RangeLookupProcess implements RasterProcess {
             final int ranges = classificationRanges.size();
             if (ranges != outputPixelValues.length) {
                 throw new ProcessException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_ARRAY_LENGTH, "outputPixelValues"));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH, "outputPixelValues"));
             }
         }
 
@@ -131,8 +124,7 @@ public class RangeLookupProcess implements RasterProcess {
             final int band = classificationBand;
             final int numbands = sourceImage.getSampleModel().getNumBands();
             if (band < 0 || numbands <= band) {
-                throw new ProcessException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
+                throw new ProcessException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
             }
 
             if (band == 0 && numbands > 0 || band > 0) {
@@ -149,9 +141,8 @@ public class RangeLookupProcess implements RasterProcess {
         final int size = classificationRanges.size();
         int transferType = ColorUtilities.getTransferType(size);
         if (JAIExt.isJAIExtOperation("RLookup")) {
-            lookupTable =
-                    CoverageUtilities.getRangeLookupTableJAIEXT(
-                            classificationRanges, outputPixelValues, nd, transferType);
+            lookupTable = CoverageUtilities.getRangeLookupTableJAIEXT(
+                    classificationRanges, outputPixelValues, nd, transferType);
         } else {
             // Builds the range lookup table
             // final RangeLookupTable lookupTable;
@@ -159,31 +150,23 @@ public class RangeLookupProcess implements RasterProcess {
             switch (transferType) {
                 case DataBuffer.TYPE_BYTE:
                     lookupTable =
-                            CoverageUtilities.getRangeLookupTable(
-                                    classificationRanges, outputPixelValues, (byte) nd);
+                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd);
                     break;
                 case DataBuffer.TYPE_USHORT:
                     lookupTable =
-                            CoverageUtilities.getRangeLookupTable(
-                                    classificationRanges, outputPixelValues, (short) nd);
+                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd);
                     break;
                 case DataBuffer.TYPE_INT:
-                    lookupTable =
-                            CoverageUtilities.getRangeLookupTable(
-                                    classificationRanges, outputPixelValues, nd);
+                    lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd);
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                    "classification ranges size",
-                                    size));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classification ranges size", size));
             }
         }
         worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));
         worker.setBackground(new double[] {nd});
-        final RenderedOp indexedClassification =
-                worker.rangeLookup(lookupTable).getRenderedOperation();
+        final RenderedOp indexedClassification = worker.rangeLookup(lookupTable).getRenderedOperation();
 
         //
         // build the output coverage
@@ -192,19 +175,16 @@ public class RangeLookupProcess implements RasterProcess {
         // build the output sample dimensions, use the default value ( 0 ) as the no data
         final GridSampleDimension outSampleDimension =
                 new GridSampleDimension("classification", new Category[] {Category.NODATA}, null);
-        final GridCoverageFactory factory =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
-        Map<String, Object> properties =
-                new HashMap<>(Map.of(NoDataContainer.GC_NODATA, new NoDataContainer(0d)));
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        Map<String, Object> properties = new HashMap<>(Map.of(NoDataContainer.GC_NODATA, new NoDataContainer(0d)));
         org.geotools.coverage.util.CoverageUtilities.setROIProperty(properties, worker.getROI());
-        final GridCoverage2D output =
-                factory.create(
-                        "reclassified",
-                        indexedClassification,
-                        coverage.getGridGeometry(),
-                        new GridSampleDimension[] {outSampleDimension},
-                        new GridCoverage[] {coverage},
-                        properties);
+        final GridCoverage2D output = factory.create(
+                "reclassified",
+                indexedClassification,
+                coverage.getGridGeometry(),
+                new GridSampleDimension[] {outSampleDimension},
+                new GridCoverage[] {coverage},
+                properties);
         return output;
     }
 

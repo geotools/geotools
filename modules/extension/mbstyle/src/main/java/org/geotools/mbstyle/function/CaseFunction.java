@@ -24,12 +24,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * MapBox Expression function that will return the expression evaluation result that immediately
- * follows the first condition expression that evaluates to {@link java.lang.Boolean#TRUE}. If no
- * condition expression evaluates to {@link java.lang.Boolean#TRUE}, this function will return the
- * expression evaluation of the default expression, if present. If no condition expression evaluates
- * to {@link java.lang.Boolean#TRUE}, and either there is no default expression, or the default
- * expression evaluates to null, then a null value is returned.
+ * MapBox Expression function that will return the expression evaluation result that immediately follows the first
+ * condition expression that evaluates to {@link java.lang.Boolean#TRUE}. If no condition expression evaluates to
+ * {@link java.lang.Boolean#TRUE}, this function will return the expression evaluation of the default expression, if
+ * present. If no condition expression evaluates to {@link java.lang.Boolean#TRUE}, and either there is no default
+ * expression, or the default expression evaluates to null, then a null value is returned.
  *
  * <p>Format:
  *

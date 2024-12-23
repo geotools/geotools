@@ -37,14 +37,13 @@ import org.junit.Test;
 public class TransverseMercatorTest {
 
     /**
-     * Tests the example provided by the EPSG guidance. See "OGP Surveying and Positioning Guidance
-     * Note number 7, part 2 – April 2018", pages 53-57
+     * Tests the example provided by the EPSG guidance. See "OGP Surveying and Positioning Guidance Note number 7, part
+     * 2 – April 2018", pages 53-57
      */
     @Test
     public void testEpsgExample() throws Exception {
         MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
-        final ParameterValueGroup parameters =
-                mtFactory.getDefaultParameters("Transverse_Mercator");
+        final ParameterValueGroup parameters = mtFactory.getDefaultParameters("Transverse_Mercator");
 
         // build the transformation using the guidance provided values
         parameter(SEMI_MAJOR, parameters).setValue(6377563.396);

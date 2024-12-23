@@ -17,8 +17,8 @@ import org.geotools.api.feature.type.PropertyType;
 /**
  * An instance of a {@link PropertyType} relised as a {@link Attribute} or {@link Association}.
  *
- * <p>A property is a wrapper around an arbitrary object or value. The value is available via the
- * {@link #getValue()} and {@link #setValue(Object)}.
+ * <p>A property is a wrapper around an arbitrary object or value. The value is available via the {@link #getValue()}
+ * and {@link #setValue(Object)}.
  *
  * <pre>
  *  Property property = ...;
@@ -30,9 +30,9 @@ import org.geotools.api.feature.type.PropertyType;
  *  String value = (String) property.getValue();
  * </pre>
  *
- * <p>Every property has a type. This {@link PropertyType} defines information about the property.
- * This includes which java class the value of the property is an instance of, any restrictions on
- * the value, etc... The type is available via the {@link #getType()} method.
+ * <p>Every property has a type. This {@link PropertyType} defines information about the property. This includes which
+ * java class the value of the property is an instance of, any restrictions on the value, etc... The type is available
+ * via the {@link #getType()} method.
  *
  * <pre>
  *   Property property = ...;
@@ -45,11 +45,10 @@ import org.geotools.api.feature.type.PropertyType;
  *
  * </pre>
  *
- * <p>A property can often be part of another entity such as a {@link Feature} or {@link
- * ComplexAttribute}. When this is the case, the relationship between the property and its
- * "container" is described by a {@link PropertyDescriptor}. The descriptor of a property defines
- * things like nilablility, multiplicity, etc... See the javadoc of {@link PropertyDescriptor} for
- * more details. The descriptor is available via the {@link #getDescriptor()} method.
+ * <p>A property can often be part of another entity such as a {@link Feature} or {@link ComplexAttribute}. When this is
+ * the case, the relationship between the property and its "container" is described by a {@link PropertyDescriptor}. The
+ * descriptor of a property defines things like nilablility, multiplicity, etc... See the javadoc of
+ * {@link PropertyDescriptor} for more details. The descriptor is available via the {@link #getDescriptor()} method.
  *
  * <pre>
  *   Property property = ...;
@@ -87,8 +86,7 @@ public interface Property {
      * <p>The class of <tt>newValue</tt> should be the same as or a subclass of <code>
      * getType().getBinding()</code>.
      *
-     * <p><tt>newValue</tt> may be <code>null</code> if <code>getDescriptor().isNillable()</code> is
-     * <code>true</code>.
+     * <p><tt>newValue</tt> may be <code>null</code> if <code>getDescriptor().isNillable()</code> is <code>true</code>.
      *
      * @param newValue The new value of the property.
      */
@@ -97,8 +95,7 @@ public interface Property {
     /**
      * The type of the property.
      *
-     * <p>The type contains information about the value or content of the property such as its java
-     * class.
+     * <p>The type contains information about the value or content of the property such as its java class.
      *
      * <p>This value is also available via <code>getDescriptor().getType()</code>.
      *
@@ -109,8 +106,8 @@ public interface Property {
     /**
      * The {@link PropertyDscriptor} of the property, null if this is a top-level value.
      *
-     * <p>The descriptor provides information about the property with respect to its containing
-     * entity (more often then not a {@link Feature} or {@link ComplexAttribute}.
+     * <p>The descriptor provides information about the property with respect to its containing entity (more often then
+     * not a {@link Feature} or {@link ComplexAttribute}.
      *
      * @return The property descriptor, null if this is a top-level value.
      * @see ComplexAttribute
@@ -131,17 +128,16 @@ public interface Property {
      *
      * <p>This method is convenience for <code>getDescriptor().isNillable()</code>.
      *
-     * @return <code>true</code> if the value of the property is allowed to be <code>null</code>,
-     *     otherwise <code>false</code>.
+     * @return <code>true</code> if the value of the property is allowed to be <code>null</code>, otherwise <code>false
+     *     </code>.
      */
     boolean isNillable();
 
     /**
-     * A map of "user data" which enables applications to store "application-specific" information
-     * against a property.
+     * A map of "user data" which enables applications to store "application-specific" information against a property.
      *
-     * <p>An example of information that may wish to be stored along with an attribute could be its
-     * srs information (in the case of a geometric attribute ).
+     * <p>An example of information that may wish to be stored along with an attribute could be its srs information (in
+     * the case of a geometric attribute ).
      *
      * <pre>
      * <code>
@@ -161,8 +157,8 @@ public interface Property {
     Map<Object, Object> getUserData();
 
     /**
-     * Returns true if the property has a user data map. Can be used to avoid instantiation of Map
-     * object in cases where the main code paths won't have any.
+     * Returns true if the property has a user data map. Can be used to avoid instantiation of Map object in cases where
+     * the main code paths won't have any.
      *
      * @return True if there is any user data, false otherwise
      */

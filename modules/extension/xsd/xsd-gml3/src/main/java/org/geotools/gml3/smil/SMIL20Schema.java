@@ -45,15 +45,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType RESTARTDEFAULTTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "restartDefaultType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType RESTARTDEFAULTTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "restartDefaultType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -76,15 +75,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType FILLTIMINGATTRSTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType FILLTIMINGATTRSTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -102,15 +100,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATEMOTIONPROTOTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.ANYTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATEMOTIONPROTOTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.ANYTYPE_TYPE,
+            null);
 
     /**
      *
@@ -128,15 +125,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATECOLORPROTOTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "animateColorPrototype"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.ANYTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATECOLORPROTOTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "animateColorPrototype"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.ANYTYPE_TYPE,
+            null);
 
     /**
      *
@@ -154,15 +150,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NONNEGATIVEDECIMALTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "nonNegativeDecimalType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.DECIMAL_TYPE,
-                    null);
+    public static final AttributeType NONNEGATIVEDECIMALTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "nonNegativeDecimalType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.DECIMAL_TYPE,
+            null);
 
     /**
      *
@@ -185,15 +180,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType FILLDEFAULTTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "fillDefaultType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType FILLDEFAULTTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "fillDefaultType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -211,15 +205,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATEPROTOTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "animatePrototype"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.ANYTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATEPROTOTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "animatePrototype"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.ANYTYPE_TYPE,
+            null);
 
     /**
      *
@@ -240,15 +233,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType RESTARTTIMINGTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "restartTimingType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType RESTARTTIMINGTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "restartTimingType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -269,15 +261,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType SYNCBEHAVIORDEFAULTTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorDefaultType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType SYNCBEHAVIORDEFAULTTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorDefaultType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -298,15 +289,14 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType SYNCBEHAVIORTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType SYNCBEHAVIORTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -323,49 +313,28 @@ public class SMIL20Schema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType SETPROTOTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/", "setPrototype"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.ANYTYPE_TYPE,
-                    null);
+    public static final ComplexType SETPROTOTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/", "setPrototype"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.ANYTYPE_TYPE,
+            null);
 
     public SMIL20Schema() {
         super("http://www.w3.org/2001/SMIL20/");
 
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "restartDefaultType"),
-                RESTARTDEFAULTTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType"),
-                FILLTIMINGATTRSTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype"),
-                ANIMATEMOTIONPROTOTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "animateColorPrototype"),
-                ANIMATECOLORPROTOTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "nonNegativeDecimalType"),
-                NONNEGATIVEDECIMALTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "fillDefaultType"),
-                FILLDEFAULTTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "animatePrototype"),
-                ANIMATEPROTOTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "restartTimingType"),
-                RESTARTTIMINGTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorDefaultType"),
-                SYNCBEHAVIORDEFAULTTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorType"),
-                SYNCBEHAVIORTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "restartDefaultType"), RESTARTDEFAULTTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType"), FILLTIMINGATTRSTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype"), ANIMATEMOTIONPROTOTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "animateColorPrototype"), ANIMATECOLORPROTOTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "nonNegativeDecimalType"), NONNEGATIVEDECIMALTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "fillDefaultType"), FILLDEFAULTTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "animatePrototype"), ANIMATEPROTOTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "restartTimingType"), RESTARTTIMINGTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorDefaultType"), SYNCBEHAVIORDEFAULTTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/", "syncBehaviorType"), SYNCBEHAVIORTYPE_TYPE);
         put(new NameImpl("http://www.w3.org/2001/SMIL20/", "setPrototype"), SETPROTOTYPE_TYPE);
     }
 }

@@ -20,8 +20,8 @@ import org.geotools.graph.structure.basic.BasicDirectedNode;
 import org.locationtech.jts.geom.Coordinate;
 
 /**
- * Basic implementation of a directed XYNode extended from BasicDirectedNode. The coordinate is
- * stored in the underlying object reference of the node.
+ * Basic implementation of a directed XYNode extended from BasicDirectedNode. The coordinate is stored in the underlying
+ * object reference of the node.
  *
  * @see org.geotools.graph.structure.basic.BasicDirectedNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

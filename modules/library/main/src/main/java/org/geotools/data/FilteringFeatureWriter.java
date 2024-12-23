@@ -26,8 +26,8 @@ import org.geotools.api.filter.Filter;
 /**
  * Filtering is performed on this hasNext() method.
  *
- * <p>This implementation writes out content furing the hasNext() method. This allows the
- * implementation to "peek" ahead.
+ * <p>This implementation writes out content furing the hasNext() method. This allows the implementation to "peek"
+ * ahead.
  *
  * <p>This FeatureWriter does not support the addition of new content.
  *
@@ -39,8 +39,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     SimpleFeature next = null; // next feature as peeked by hasNext()
     SimpleFeature current = null; // holds current Feature returned to user
 
-    public FilteringFeatureWriter(
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
+    public FilteringFeatureWriter(FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
         this.writer = writer;
         this.filter = filter;
     }

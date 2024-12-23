@@ -23,9 +23,8 @@ import org.geotools.api.filter.Filter;
 import org.geotools.feature.FeatureIterator;
 
 /**
- * An extension to {@linkplain org.geotools.data.complex.DataAccessMappingFeatureIterator} where
- * filter is present. Unlike with FilteringMappingFeatureIterator The filter is applied on the
- * complex feature
+ * An extension to {@linkplain org.geotools.data.complex.DataAccessMappingFeatureIterator} where filter is present.
+ * Unlike with FilteringMappingFeatureIterator The filter is applied on the complex feature
  *
  * @author Niels Charlier (Curtin University of Technology)
  */

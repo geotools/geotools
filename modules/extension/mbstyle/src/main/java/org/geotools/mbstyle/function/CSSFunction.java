@@ -34,8 +34,7 @@ import org.geotools.text.Text;
  *   <li>string: string defining color
  * </ol>
  *
- * We are using this function, rather than the default converter in order to force the use of
- * CONVERT_CSS_TO_COLOR.
+ * We are using this function, rather than the default converter in order to force the use of CONVERT_CSS_TO_COLOR.
  *
  * @author Jody Garnett (Boundless)
  */
@@ -45,12 +44,11 @@ public class CSSFunction extends FunctionImpl {
 
     static {
         Parameter<Color> color = new Parameter<>("color", Color.class, 1, 1);
-        Parameter<Double> string =
-                new Parameter<>(
-                        "string",
-                        Double.class,
-                        Text.text("String"),
-                        Text.text("Color definition provided as hex, rgb, or css color name."));
+        Parameter<Double> string = new Parameter<>(
+                "string",
+                Double.class,
+                Text.text("String"),
+                Text.text("Color definition provided as hex, rgb, or css color name."));
         NAME = new FunctionNameImpl("css", color, string);
     }
 

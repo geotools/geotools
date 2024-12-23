@@ -61,29 +61,22 @@ public class JDataChoosePage extends JPage {
         page.add(description, "grow, span");
 
         java.util.List<DataStoreFactorySpi> factoryList = new ArrayList<>();
-        for (Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores();
-                iter.hasNext(); ) {
+        for (Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores(); iter.hasNext(); ) {
             factoryList.add(iter.next());
         }
         list = new JList<>(factoryList.toArray(new DataStoreFactorySpi[factoryList.size()]));
-        ListCellRenderer<Object> cellRenderer =
-                new DefaultListCellRenderer() {
-                    @Override
-                    public Component getListCellRendererComponent(
-                            JList list,
-                            Object value,
-                            int index,
-                            boolean isSelected,
-                            boolean cellHasFocus) {
-                        super.getListCellRendererComponent(
-                                list, value, index, isSelected, cellHasFocus);
-                        DataStoreFactorySpi factory = (DataStoreFactorySpi) value;
-                        setText(factory.getDisplayName());
-                        setToolTipText(factory.getDescription());
+        ListCellRenderer<Object> cellRenderer = new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                DataStoreFactorySpi factory = (DataStoreFactorySpi) value;
+                setText(factory.getDisplayName());
+                setToolTipText(factory.getDescription());
 
-                        return this;
-                    }
-                };
+                return this;
+            }
+        };
         list.setCellRenderer(cellRenderer);
         list.addListSelectionListener(e -> format = list.getSelectedValue());
         JScrollPane scroll = new JScrollPane(list);

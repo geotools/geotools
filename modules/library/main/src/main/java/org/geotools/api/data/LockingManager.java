@@ -52,8 +52,8 @@ public interface LockingManager {
     /**
      * Refresh locks held by the authorization <code>lockID</code>.
      *
-     * <p>All features locked with the provied <code>lockID</code> will be locked for additional
-     * time (the origional duration requested).
+     * <p>All features locked with the provied <code>lockID</code> will be locked for additional time (the origional
+     * duration requested).
      *
      * <p>(remember that the lock may have expired)
      *
@@ -64,12 +64,10 @@ public interface LockingManager {
     boolean refresh(String authID, Transaction transaction) throws IOException;
 
     /** FeatureID based unlocking. */
-    void unLockFeatureID(
-            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+    void unLockFeatureID(String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException;
 
     /** FeatureID based locking. */
-    void lockFeatureID(
-            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+    void lockFeatureID(String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException;
 }

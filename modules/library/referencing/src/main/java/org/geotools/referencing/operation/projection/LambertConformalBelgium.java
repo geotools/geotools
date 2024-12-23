@@ -47,8 +47,7 @@ public class LambertConformalBelgium extends LambertConformal {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected LambertConformalBelgium(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected LambertConformalBelgium(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters, true);
     }
 
@@ -67,9 +66,8 @@ public class LambertConformalBelgium extends LambertConformal {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for a {@linkplain LambertConformalBelgium Lambert Conformal 2SP Belgium} projection
-     * (EPSG code 9803).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for a
+     * {@linkplain LambertConformalBelgium Lambert Conformal 2SP Belgium} projection (EPSG code 9803).
      *
      * @since 2.2
      * @version $Id$
@@ -81,26 +79,22 @@ public class LambertConformalBelgium extends LambertConformal {
         private static final long serialVersionUID = -6388030784088639876L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.OGC, "Lambert_Conformal_Conic_2SP_Belgium"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Lambert Conic Conformal (2SP Belgium)"),
-                            new NamedIdentifier(Citations.EPSG, "9803"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.LAMBERT_CONFORMAL_PROJECTION)),
-                            new NamedIdentifier(Citations.PROJ, "lcc")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Lambert_Conformal_Conic_2SP_Belgium"),
+                    new NamedIdentifier(Citations.EPSG, "Lambert Conic Conformal (2SP Belgium)"),
+                    new NamedIdentifier(Citations.EPSG, "9803"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.LAMBERT_CONFORMAL_PROJECTION)),
+                    new NamedIdentifier(Citations.PROJ, "lcc")
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

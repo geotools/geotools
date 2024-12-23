@@ -44,8 +44,7 @@ public class CSVDataStore extends ContentDataStore {
 
     // reader start
     /**
-     * Allow read access to file; for our package visible "friends". Please close the reader when
-     * done.
+     * Allow read access to file; for our package visible "friends". Please close the reader when done.
      *
      * @return CsvReader for file
      */

@@ -30,8 +30,7 @@ public class FilterFunction_tan extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("tan","radians");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "tan", parameter("tan", Double.class), parameter("radians", Number.class));
+            new FunctionNameImpl("tan", parameter("tan", Double.class), parameter("radians", Number.class));
 
     public FilterFunction_tan() {
         super(NAME);

@@ -19,11 +19,11 @@ package org.geotools.jdbc;
 import java.util.regex.Pattern;
 
 /**
- * Perform basic SQL validation on input string. This is to allow safe encoding of parameters that
- * must contain quotes, while still protecting users from SQL injection.
+ * Perform basic SQL validation on input string. This is to allow safe encoding of parameters that must contain quotes,
+ * while still protecting users from SQL injection.
  *
- * <p>We prevent SQL from breaking out of quotes by replacing any quotes in input stream with double
- * quotes. Backslashes are too risky to allow so are removed completely
+ * <p>We prevent SQL from breaking out of quotes by replacing any quotes in input stream with double quotes. Backslashes
+ * are too risky to allow so are removed completely
  */
 public class EscapeSql {
 
@@ -33,8 +33,7 @@ public class EscapeSql {
 
     private static final Pattern BACKSLASH_PATTERN = Pattern.compile("\\\\");
 
-    public static String escapeLiteral(
-            String literal, boolean escapeBackslash, boolean escapeDoubleQuote) {
+    public static String escapeLiteral(String literal, boolean escapeBackslash, boolean escapeDoubleQuote) {
         // ' --> ''
         String escaped = SINGLE_QUOTE_PATTERN.matcher(literal).replaceAll("''");
         if (escapeBackslash) {

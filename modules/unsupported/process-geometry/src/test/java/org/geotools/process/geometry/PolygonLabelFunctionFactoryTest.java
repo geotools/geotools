@@ -38,10 +38,7 @@ public class PolygonLabelFunctionFactoryTest {
     @Before
     public void setUp() throws Exception {}
 
-    /**
-     * Test method for {@link
-     * org.geotools.process.geometry.PolygonLabelFunctionFactory#getFunctionNames()}.
-     */
+    /** Test method for {@link org.geotools.process.geometry.PolygonLabelFunctionFactory#getFunctionNames()}. */
     @Test
     public void testGetFunctionNames() {
         FunctionFactory ff = new PolygonLabelFunctionFactory();

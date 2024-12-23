@@ -39,25 +39,24 @@ import org.junit.Test;
 
 /**
  * Base class for tests issued from the Abstract Test Suite (ATS). See <a
- * href="https://docs.ogc.org/is/21-065r2/21-065r2.html#ats">https://docs.ogc.org/is/21-065r2/21-065r2.html#ats</a>
- * for the context.
+ * href="https://docs.ogc.org/is/21-065r2/21-065r2.html#ats">https://docs.ogc.org/is/21-065r2/21-065r2.html#ats</a> for
+ * the context.
  *
- * <p>This class will download the official Natural Earth dataset and store it into the default
- * temporary directory.
+ * <p>This class will download the official Natural Earth dataset and store it into the default temporary directory.
  */
 public abstract class ATSOnlineTest {
 
     private static String NE_DATA_URL =
             "https://github.com/opengeospatial/ogcapi-features/raw/refs/heads/master/cql2/standard/data/ne110m4cql2.gpkg";
 
-    protected final File neGpkg = Path.of(System.getProperty("java.io.tmpdir"), "ne.gpkg").toFile();
+    protected final File neGpkg =
+            Path.of(System.getProperty("java.io.tmpdir"), "ne.gpkg").toFile();
 
     protected final String dataset;
     protected final Filter filter;
     protected final int expectedFeatures;
 
-    protected ATSOnlineTest(String dataset, String criteria, int expectedFeatures)
-            throws CQLException {
+    protected ATSOnlineTest(String dataset, String criteria, int expectedFeatures) throws CQLException {
         this.dataset = dataset;
         this.filter = criteriaToFilter(criteria);
         this.expectedFeatures = expectedFeatures;

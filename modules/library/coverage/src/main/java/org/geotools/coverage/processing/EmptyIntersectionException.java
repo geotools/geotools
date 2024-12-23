@@ -17,8 +17,8 @@
 package org.geotools.coverage.processing;
 
 /**
- * Special subclass of {@link CannotCropException} reporting that the raster space intersection
- * between the crop area and the coverage one was found to be empty
+ * Special subclass of {@link CannotCropException} reporting that the raster space intersection between the crop area
+ * and the coverage one was found to be empty
  *
  * @author Andrea Aime - GeoSolutions
  */

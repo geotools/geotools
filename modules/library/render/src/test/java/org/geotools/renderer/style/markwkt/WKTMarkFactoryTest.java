@@ -33,9 +33,8 @@ import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 
 /**
- * Unit tests for WKT mark factory NOTE: To make it work, a properties wkt.properties, containing:
- * ls=LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25) and located in /tmp has to be
- * provided
+ * Unit tests for WKT mark factory NOTE: To make it work, a properties wkt.properties, containing: ls=LINESTRING(0.0
+ * 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25) and located in /tmp has to be provided
  *
  * @author Luca Morandini lmorandini@ieee.org
  */
@@ -55,7 +54,8 @@ public class WKTMarkFactoryTest {
         public void addToCachePublic(String urlLib) {
             this.addToCache(urlLib);
         }
-    };
+    }
+    ;
 
     static {
         try {
@@ -80,10 +80,8 @@ public class WKTMarkFactoryTest {
     public void testWellKnownTextLineString() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            Literal exp =
-                    ff.literal(
-                            WKTMarkFactory.WKT_PREFIX
-                                    + "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
+            Literal exp = ff.literal(
+                    WKTMarkFactory.WKT_PREFIX + "LINESTRING(0.0 0.25, 0.25 0.25, 0.5 0.75, 0.75 0.25, 1.00 0.25)");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             Assert.fail();
@@ -97,10 +95,9 @@ public class WKTMarkFactoryTest {
     public void testWellKnownTextMultiLineString() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            Literal exp =
-                    ff.literal(
-                            WKTMarkFactory.WKT_PREFIX
-                                    + "MULTILINESTRING((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25), (0.25 0.75, 0.5 0.25, 0.75 0.75, 0.25 0.75))");
+            Literal exp = ff.literal(
+                    WKTMarkFactory.WKT_PREFIX
+                            + "MULTILINESTRING((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25), (0.25 0.75, 0.5 0.25, 0.75 0.75, 0.25 0.75))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             Assert.fail();
@@ -115,9 +112,7 @@ public class WKTMarkFactoryTest {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
             Literal exp =
-                    ff.literal(
-                            WKTMarkFactory.WKT_PREFIX
-                                    + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25))");
+                    ff.literal(WKTMarkFactory.WKT_PREFIX + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25, 0.25 0.25))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             Assert.fail();
@@ -131,10 +126,8 @@ public class WKTMarkFactoryTest {
     public void testWellKnownTextCurve() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            Literal exp =
-                    ff.literal(
-                            WKTMarkFactory.WKT_PREFIX
-                                    + "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0,2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
+            Literal exp = ff.literal(WKTMarkFactory.WKT_PREFIX
+                    + "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0,2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             Assert.fail();
@@ -148,10 +141,7 @@ public class WKTMarkFactoryTest {
     public void testWellKnownTextPolygonError() {
         WKTMarkFactory wmf = new WKTMarkFactory();
         try {
-            Literal exp =
-                    ff.literal(
-                            WKTMarkFactory.WKT_PREFIX
-                                    + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,     ))");
+            Literal exp = ff.literal(WKTMarkFactory.WKT_PREFIX + "POLYGON((0.25 0.25, 0.5 0.75, 0.75 0.25,     ))");
             wmf.getShape(null, exp, feature);
         } catch (Exception e) {
             Assert.assertTrue(true);

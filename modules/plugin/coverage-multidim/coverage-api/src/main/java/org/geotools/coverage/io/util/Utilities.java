@@ -99,13 +99,12 @@ import tech.units.indriya.AbstractUnit;
 /** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utilities.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Utilities.class);
 
     /**
-     * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains
-     * a predefined extent. This would be useful to know which CoverageSlice to be used to access to
-     * a specific temporal/vertical extent defined slice.
+     * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains a predefined
+     * extent. This would be useful to know which CoverageSlice to be used to access to a specific temporal/vertical
+     * extent defined slice.
      */
 
     /** Caches a MathTransformFactory */
@@ -140,29 +139,23 @@ public class Utilities {
      * @return a properly built Datum.
      */
     public static DefaultGeodeticDatum getDefaultGeodeticDatum(
-            final String name,
-            final double equatorialRadius,
-            final double inverseFlattening,
-            Unit<Length> unit) {
+            final String name, final double equatorialRadius, final double inverseFlattening, Unit<Length> unit) {
 
         DefaultEllipsoid ellipsoid =
-                DefaultEllipsoid.createFlattenedSphere(
-                        name, equatorialRadius, inverseFlattening, unit);
+                DefaultEllipsoid.createFlattenedSphere(name, equatorialRadius, inverseFlattening, unit);
         final ReferenceIdentifier[] identifiers = Utilities.getIdentifiers(name);
         // TODO: Should I change this behavior?
-        if (identifiers == null)
-            throw new IllegalArgumentException("Reference Identifier not available");
+        if (identifiers == null) throw new IllegalArgumentException("Reference Identifier not available");
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(DefaultGeodeticDatum.NAME_KEY, identifiers[0]);
         properties.put(DefaultGeodeticDatum.ALIAS_KEY, identifiers);
-        DefaultGeodeticDatum datum =
-                new DefaultGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
+        DefaultGeodeticDatum datum = new DefaultGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
         return datum;
     }
 
     /**
-     * Temp utility method which allows to get the real file name from a custom input File, where
-     * "custom" means a file having a special name structured as "originalFileName:imageIndex"
+     * Temp utility method which allows to get the real file name from a custom input File, where "custom" means a file
+     * having a special name structured as "originalFileName:imageIndex"
      */
     public static File getFileFromCustomInput(Object input) {
         final File fileCheck = (File) input;
@@ -187,8 +180,8 @@ public class Utilities {
     }
 
     /**
-     * Simple utility method which allows to build a Mercator2SP Projected CRS given the set of
-     * required parameters. It will be used by several Terascan products.
+     * Simple utility method which allows to build a Mercator2SP Projected CRS given the set of required parameters. It
+     * will be used by several Terascan products.
      */
     public static CoordinateReferenceSystem getMercator2SPProjectedCRS(
             final double standardParallel,
@@ -224,15 +217,12 @@ public class Utilities {
             props.put("name", "Mercator CRS");
             OperationMethod method = null;
             final MathTransform mt =
-                    fg.getMathTransformFactory()
-                            .createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
+                    fg.getMathTransformFactory().createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
             if (method == null) {
                 method = fg.getMathTransformFactory().getLastMethodUsed();
             }
-            projectedCRS =
-                    ((ReferencingObjectFactory) fg.getCRSFactory())
-                            .createProjectedCRS(
-                                    props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
+            projectedCRS = ((ReferencingObjectFactory) fg.getCRSFactory())
+                    .createProjectedCRS(props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }
@@ -240,25 +230,22 @@ public class Utilities {
     }
 
     /** Build a base {@link GeographicCRS} given the parameters to specify a Geodetic Datum */
-    public static GeographicCRS getBaseCRS(
-            final double equatorialRadius, final double inverseFlattening) {
+    public static GeographicCRS getBaseCRS(final double equatorialRadius, final double inverseFlattening) {
         final DefaultGeodeticDatum datum =
-                Utilities.getDefaultGeodeticDatum(
-                        "WGS84", equatorialRadius, inverseFlattening, SI.METRE);
+                Utilities.getDefaultGeodeticDatum("WGS84", equatorialRadius, inverseFlattening, SI.METRE);
         final GeographicCRS sourceCRS =
-                new DefaultGeographicCRS(
-                        "WGS-84", datum, DefaultGeographicCRS.WGS84.getCoordinateSystem());
+                new DefaultGeographicCRS("WGS-84", datum, DefaultGeographicCRS.WGS84.getCoordinateSystem());
         return sourceCRS;
     }
 
     /**
-     * Simple method returning the value (as {@code String}) of the attribute with name {@code
-     * attributeName} from the input attributes map.
+     * Simple method returning the value (as {@code String}) of the attribute with name {@code attributeName} from the
+     * input attributes map.
      *
      * @param attributes the attributes map
      * @param attributeName the requested attribute
-     * @return the value of the requested attribute as a {@code String}. Returns {@code null} in
-     *     case of no attribute found.
+     * @return the value of the requested attribute as a {@code String}. Returns {@code null} in case of no attribute
+     *     found.
      */
     public static String getAttributeValue(NamedNodeMap attributes, String attributeName) {
         String attributeValue = null;
@@ -274,8 +261,7 @@ public class Utilities {
         Unit<? extends Quantity<?>> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
             // TODO: Add more well known cases
-            if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius"))
-                unit = SI.CELSIUS;
+            if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius")) unit = SI.CELSIUS;
             else {
                 try {
                     unit = UnitFormat.getInstance().parse(uom);
@@ -290,15 +276,14 @@ public class Utilities {
     }
 
     /**
-     * Get a WGS84 envelope for the specified envelope. The get2D parameter allows to specify if we
-     * need the returned coverage as an {@code ReferencedEnvelope} or a more general {@code
-     * GeneralEnvelope} instance.
+     * Get a WGS84 envelope for the specified envelope. The get2D parameter allows to specify if we need the returned
+     * coverage as an {@code ReferencedEnvelope} or a more general {@code GeneralEnvelope} instance.
      *
-     * <p>if {@code true}, the requested envelope will be an instance of {@link ReferencedEnvelope}.
-     * If {@code false} it will be an instance of {@link GeneralBounds}
+     * <p>if {@code true}, the requested envelope will be an instance of {@link ReferencedEnvelope}. If {@code false} it
+     * will be an instance of {@link GeneralBounds}
      *
-     * @return a WGS84 envelope as {@link Envelope2D} in case of request for a 2D WGS84 Envelope, or
-     *     a {@link GeneralBounds } otherwise.
+     * @return a WGS84 envelope as {@link Envelope2D} in case of request for a 2D WGS84 Envelope, or a
+     *     {@link GeneralBounds } otherwise.
      */
     public static Bounds getEnvelopeAsWGS84(final Bounds bounds, boolean get2D)
             throws FactoryException, TransformException {
@@ -334,12 +319,10 @@ public class Utilities {
      */
     public static GeneralBounds getRequestedEnvelope2D(GeneralBounds requestedEnvelope)
             throws FactoryException, TransformException {
-        if (requestedEnvelope == null)
-            throw new IllegalArgumentException("requested envelope is null");
+        if (requestedEnvelope == null) throw new IllegalArgumentException("requested envelope is null");
         GeneralBounds requestedEnvelope2D = null;
         final MathTransform transformTo2D;
-        CoordinateReferenceSystem requestedEnvelopeCRS2D =
-                requestedEnvelope.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem requestedEnvelopeCRS2D = requestedEnvelope.getCoordinateReferenceSystem();
 
         // //
         //
@@ -347,9 +330,7 @@ public class Utilities {
         //
         // //
         if (requestedEnvelopeCRS2D.getCoordinateSystem().getDimension() != 2) {
-            transformTo2D =
-                    CRS.findMathTransform(
-                            requestedEnvelopeCRS2D, CRS.getHorizontalCRS(requestedEnvelopeCRS2D));
+            transformTo2D = CRS.findMathTransform(requestedEnvelopeCRS2D, CRS.getHorizontalCRS(requestedEnvelopeCRS2D));
             requestedEnvelopeCRS2D = CRS.getHorizontalCRS(requestedEnvelopeCRS2D);
         } else transformTo2D = IdentityTransform.create(2);
 
@@ -370,8 +351,7 @@ public class Utilities {
      * @return a {@code Rectangle} representing the crop region.
      * @throws TransformException in case a problem occurs when going back to raster space.
      */
-    public static Rectangle getCropRegion(
-            GeneralBounds envelope, final MathTransform gridToWorldTransform)
+    public static Rectangle getCropRegion(GeneralBounds envelope, final MathTransform gridToWorldTransform)
             throws TransformException {
         if (envelope == null || gridToWorldTransform == null) {
             boolean isEnvelope = envelope == null;
@@ -396,18 +376,16 @@ public class Utilities {
      * Returns the intersection between the base envelope and the requested envelope.
      *
      * @param baseEnvelope2D the base envelope.
-     * @param requestedEnvelope2D the requested 2D envelope to be intersected with the base
-     *     envelope.
+     * @param requestedEnvelope2D the requested 2D envelope to be intersected with the base envelope.
      * @param requestedDim is the requested region where to load data of the specified envelope.
      * @param readGridToWorld the Grid to world transformation to be used in read
-     * @param wgs84BaseEnvelope2D a WGS84 version of the baseEnvelope to be used to try finding an
-     *     intersection in wgs84 in case it is impossible to compute an intersection of the base
-     *     envelope with the specified requested envelope.
-     * @return the resulting intersection of envelopes. In case of empty intersection, this method
-     *     is allowed to return {@code null}
-     * @todo TODO XXX refactor this method leveraging on the coverageSourceCapabilities of
-     *     reprojection. Moreover add a boolean parameter saying if trying to reproject to WGS84
-     *     always need to be done
+     * @param wgs84BaseEnvelope2D a WGS84 version of the baseEnvelope to be used to try finding an intersection in wgs84
+     *     in case it is impossible to compute an intersection of the base envelope with the specified requested
+     *     envelope.
+     * @return the resulting intersection of envelopes. In case of empty intersection, this method is allowed to return
+     *     {@code null}
+     * @todo TODO XXX refactor this method leveraging on the coverageSourceCapabilities of reprojection. Moreover add a
+     *     boolean parameter saying if trying to reproject to WGS84 always need to be done
      */
     public static GeneralBounds getIntersection(
             final ReferencedEnvelope baseEnvelope2D,
@@ -423,31 +401,22 @@ public class Utilities {
                 || requestedEnvelope2D == null
                 || requestedDim == null
                 || readGridToWorld == null) {
-            StringBuilder sb =
-                    new StringBuilder("Some of the specified parameters are null:")
-                            .append(baseEnvelope2D == null ? "base envelope \n" : "")
-                            .append(
-                                    spatialReferenceSystem2D == null
-                                            ? "native spatial reference system\n"
-                                            : "")
-                            .append(requestedEnvelope2D == null ? "requested envelope \n" : "")
-                            .append(requestedDim == null ? "requested dim\n" : "")
-                            .append(
-                                    readGridToWorld == null
-                                            ? "requested grid to world transformation \n"
-                                            : "");
+            StringBuilder sb = new StringBuilder("Some of the specified parameters are null:")
+                    .append(baseEnvelope2D == null ? "base envelope \n" : "")
+                    .append(spatialReferenceSystem2D == null ? "native spatial reference system\n" : "")
+                    .append(requestedEnvelope2D == null ? "requested envelope \n" : "")
+                    .append(requestedDim == null ? "requested dim\n" : "")
+                    .append(readGridToWorld == null ? "requested grid to world transformation \n" : "");
             throw new IllegalArgumentException(sb.toString());
         }
         GeneralBounds adjustedRequestedEnvelope = new GeneralBounds(2);
-        final CoordinateReferenceSystem requestedEnvelopeCRS2D =
-                requestedEnvelope2D.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem requestedEnvelopeCRS2D = requestedEnvelope2D.getCoordinateReferenceSystem();
         boolean tryWithWGS84 = false;
 
         try {
             // convert the requested envelope 2D to this coverage native crs.
             if (!CRS.equalsIgnoreMetadata(requestedEnvelopeCRS2D, spatialReferenceSystem2D)) {
-                adjustedRequestedEnvelope =
-                        CRS.transform(requestedEnvelope2D, spatialReferenceSystem2D);
+                adjustedRequestedEnvelope = CRS.transform(requestedEnvelope2D, spatialReferenceSystem2D);
             } else {
                 adjustedRequestedEnvelope.setEnvelope(requestedEnvelope2D);
             }
@@ -464,11 +433,9 @@ public class Utilities {
             // space to the requested raster space
             //
             // //
-            final Bounds requestedEnvelopeCropped =
-                    CRS.transform(adjustedRequestedEnvelope, requestedEnvelopeCRS2D);
-            final Rectangle2D ordinates =
-                    CRS.transform(readGridToWorld.inverse(), requestedEnvelopeCropped)
-                            .toRectangle2D();
+            final Bounds requestedEnvelopeCropped = CRS.transform(adjustedRequestedEnvelope, requestedEnvelopeCRS2D);
+            final Rectangle2D ordinates = CRS.transform(readGridToWorld.inverse(), requestedEnvelopeCropped)
+                    .toRectangle2D();
             final GeneralGridEnvelope finalRange = new GeneralGridEnvelope(ordinates.getBounds());
             final Rectangle tempRect = finalRange.toRectangle();
             // check that we stay inside the source rectangle
@@ -487,8 +454,7 @@ public class Utilities {
         //
         // //
         if (tryWithWGS84) {
-            final GeneralBounds requestedEnvelopeWGS84 =
-                    (GeneralBounds) getEnvelopeAsWGS84(requestedEnvelope2D, false);
+            final GeneralBounds requestedEnvelopeWGS84 = (GeneralBounds) getEnvelopeAsWGS84(requestedEnvelope2D, false);
 
             // checking the intersection in wgs84
             if (!requestedEnvelopeWGS84.intersects(wgs84BaseEnvelope2D, true)) return null;
@@ -496,22 +462,19 @@ public class Utilities {
             // intersect
             adjustedRequestedEnvelope = new GeneralBounds(requestedEnvelopeWGS84);
             adjustedRequestedEnvelope.intersect(wgs84BaseEnvelope2D);
-            adjustedRequestedEnvelope =
-                    CRS.transform(adjustedRequestedEnvelope, spatialReferenceSystem2D);
+            adjustedRequestedEnvelope = CRS.transform(adjustedRequestedEnvelope, spatialReferenceSystem2D);
             adjustedRequestedEnvelope.setCoordinateReferenceSystem(spatialReferenceSystem2D);
         }
         return adjustedRequestedEnvelope;
     }
 
     /**
-     * Retrieves the original grid to world transformation for this {@link
-     * AbstractGridCoverage2DReader}.
+     * Retrieves the original grid to world transformation for this {@link AbstractGridCoverage2DReader}.
      *
      * @param pixInCell specifies the datum of the transformation we want.
      * @return the original grid to world transformation
      */
-    public static MathTransform getOriginalGridToWorld(
-            MathTransform raster2Model, final PixelInCell pixInCell) {
+    public static MathTransform getOriginalGridToWorld(MathTransform raster2Model, final PixelInCell pixInCell) {
         // we do not have to change the pixel datum
         if (pixInCell == PixelInCell.CELL_CENTER) return raster2Model;
 
@@ -530,23 +493,20 @@ public class Utilities {
     }
 
     /**
-     * Evaluates the requested envelope and builds a new adjusted version of it fitting this
-     * coverage envelope.
+     * Evaluates the requested envelope and builds a new adjusted version of it fitting this coverage envelope.
      *
-     * <p>While adjusting the requested envelope this methods also compute the source region as a
-     * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
-     * crop-on-read.
+     * <p>While adjusting the requested envelope this methods also compute the source region as a rectangle which is
+     * suitable for a successive read operation with {@link ImageIO} to do crop-on-read.
      *
      * @param requestedEnvelope is the envelope we are requested to load.
-     * @param sourceRegion represents the area to load in raster space. This parameter cannot be
-     *     null since it gets filled with whatever the crop region is depending on the <code>
+     * @param sourceRegion represents the area to load in raster space. This parameter cannot be null since it gets
+     *     filled with whatever the crop region is depending on the <code>
      *     requestedEnvelope</code>.
      * @param requestedDim is the requested region where to load data of the specified envelope.
      * @param readGridToWorld the Grid to world transformation to be used
-     * @return the adjusted requested envelope, empty if no requestedEnvelope has been specified,
-     *     {@code null} in case the requested envelope does not intersect the coverage envelope or
-     *     in case the adjusted requested envelope is covered by a too small raster region (an empty
-     *     region).
+     * @return the adjusted requested envelope, empty if no requestedEnvelope has been specified, {@code null} in case
+     *     the requested envelope does not intersect the coverage envelope or in case the adjusted requested envelope is
+     *     covered by a too small raster region (an empty region).
      * @throws DataSourceException in case something bad occurs
      */
     public static GeneralBounds evaluateRequestedParams(
@@ -572,22 +532,20 @@ public class Utilities {
             //
             // ////////////////////////////////////////////////////////////////
             if (requestedEnvelope != null) {
-                final GeneralBounds requestedEnvelope2D =
-                        Utilities.getRequestedEnvelope2D(requestedEnvelope);
+                final GeneralBounds requestedEnvelope2D = Utilities.getRequestedEnvelope2D(requestedEnvelope);
 
                 // ////////////////////////////////////////////////////////////
                 //
                 // INTERSECT ENVELOPES AND CROP Destination REGION
                 //
                 // ////////////////////////////////////////////////////////////
-                adjustedRequestedEnvelope =
-                        Utilities.getIntersection(
-                                baseEnvelope2D,
-                                spatialReferenceSystem2D,
-                                requestedEnvelope2D,
-                                requestedDim,
-                                readGridToWorld,
-                                wgs84BaseEnvelope2D);
+                adjustedRequestedEnvelope = Utilities.getIntersection(
+                        baseEnvelope2D,
+                        spatialReferenceSystem2D,
+                        requestedEnvelope2D,
+                        requestedDim,
+                        readGridToWorld,
+                        wgs84BaseEnvelope2D);
                 if (adjustedRequestedEnvelope == null) return null;
 
                 // /////////////////////////////////////////////////////////////////////
@@ -595,16 +553,12 @@ public class Utilities {
                 // CROP SOURCE REGION
                 //
                 // /////////////////////////////////////////////////////////////////////
-                sourceRegion.setRect(
-                        Utilities.getCropRegion(
-                                adjustedRequestedEnvelope,
-                                Utilities.getOriginalGridToWorld(
-                                        originalGridToWorld, PixelInCell.CELL_CORNER)));
+                sourceRegion.setRect(Utilities.getCropRegion(
+                        adjustedRequestedEnvelope,
+                        Utilities.getOriginalGridToWorld(originalGridToWorld, PixelInCell.CELL_CORNER)));
                 if (sourceRegion.isEmpty()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.log(
-                                Level.INFO,
-                                "Too small envelope resulting in empty cropped raster region");
+                        LOGGER.log(Level.INFO, "Too small envelope resulting in empty cropped raster region");
                     }
                     return null;
                     // TODO: Future versions may define a 1x1 rectangle starting
@@ -615,15 +569,14 @@ public class Utilities {
                 sourceRegion.setRect(sourceRegion.intersection(baseGridRange.toRectangle()));
 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    StringBuilder sb =
-                            new StringBuilder("Adjusted Requested Envelope = ")
-                                    .append(adjustedRequestedEnvelope.toString())
-                                    .append("\n")
-                                    .append("Requested raster dimension = ")
-                                    .append(requestedDim.toString())
-                                    .append("\n")
-                                    .append("Corresponding raster source region = ")
-                                    .append(sourceRegion.toString());
+                    StringBuilder sb = new StringBuilder("Adjusted Requested Envelope = ")
+                            .append(adjustedRequestedEnvelope.toString())
+                            .append("\n")
+                            .append("Requested raster dimension = ")
+                            .append(requestedDim.toString())
+                            .append("\n")
+                            .append("Corresponding raster source region = ")
+                            .append(sourceRegion.toString());
                     LOGGER.log(Level.FINE, sb.toString());
                 }
 
@@ -638,15 +591,14 @@ public class Utilities {
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * MathTransform} that was provided for this coverage.
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link MathTransform} that was
+     * provided for this coverage.
      *
-     * <p>This method is vital when working with coverages that have a raster to model
-     * transformation that is not a simple scale and translate.
+     * <p>This method is vital when working with coverages that have a raster to model transformation that is not a
+     * simple scale and translate.
      *
      * @param image contains the data for the coverage to create.
-     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
-     *     space.
+     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model space.
      * @return a {@link GridCoverage}
      */
     public static GridCoverage createCoverageFromImage(
@@ -664,37 +616,23 @@ public class Utilities {
         GridCoverage2D gridCoverage;
         // creating coverage
         if (raster2Model != null) {
-            gridCoverage =
-                    coverageFactory.create(
-                            coverageName,
-                            image,
-                            spatialReferenceSystem2D,
-                            raster2Model,
-                            bands,
-                            null,
-                            null);
-        } else
-            gridCoverage =
-                    coverageFactory.create(
-                            coverageName, image, coverageEnvelope2D, bands, null, null);
+            gridCoverage = coverageFactory.create(
+                    coverageName, image, spatialReferenceSystem2D, raster2Model, bands, null, null);
+        } else gridCoverage = coverageFactory.create(coverageName, image, coverageEnvelope2D, bands, null, null);
 
         return gridCoverage;
     }
 
     /**
-     * This method is responsible for evaluating possible subsampling factors once the best
-     * resolution level has been found in case we have support for overviews, or starting from the
-     * original coverage in case there are no overviews available.
+     * This method is responsible for evaluating possible subsampling factors once the best resolution level has been
+     * found in case we have support for overviews, or starting from the original coverage in case there are no
+     * overviews available.
      *
      * @param readP the imageRead parameter to be set
-     * @param requestedRes the requested resolutions from which to determine the decimation
-     *     parameters.
+     * @param requestedRes the requested resolutions from which to determine the decimation parameters.
      */
     public static void setDecimationParameters(
-            ImageReadParam readP,
-            GridEnvelope baseGridRange,
-            double[] requestedRes,
-            double[] highestRes) {
+            ImageReadParam readP, GridEnvelope baseGridRange, double[] requestedRes, double[] highestRes) {
         {
             if (readP == null || baseGridRange == null)
                 throw new IllegalArgumentException("Specified parameters are null");
@@ -725,21 +663,20 @@ public class Utilities {
         // TODO: fix if slashIndex == -1
         fileName = fileName.substring(slashIndex + 1, fileName.length());
         final int dotIndex = fileName.lastIndexOf(".");
-        final String coverageNameString =
-                (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+        final String coverageNameString = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
         return new NameImpl(coverageNameString);
     }
 
     /**
      * Prepares the read parameters for doing an {@link ImageReader#read(int, ImageReadParam)}.
      *
-     * <p>It sets the passed {@link ImageReadParam} in terms of decimation on reading using the
-     * provided requestedEnvelope and requestedDim to evaluate the needed resolution.
+     * <p>It sets the passed {@link ImageReadParam} in terms of decimation on reading using the provided
+     * requestedEnvelope and requestedDim to evaluate the needed resolution.
      *
-     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE}, {@link
-     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
-     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
-     *     overviews level upon request.
+     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the overviews level upon
+     *     request.
      * @param readParam an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
@@ -804,22 +741,20 @@ public class Utilities {
         // DECIMATION ON READING
         //
         // ////////////////////////////////////////////////////////////////////
-        if (highestRes == null)
-            throw new IllegalArgumentException("Unspecified highest Resolution");
+        if (highestRes == null) throw new IllegalArgumentException("Unspecified highest Resolution");
         if ((requestedRes[0] > highestRes[0]) || (requestedRes[1] > highestRes[1])) {
             Utilities.setDecimationParameters(readParam, gridRange, requestedRes, highestRes);
         }
     }
 
     /**
-     * This method creates the GridCoverage2D from the underlying file given a specified envelope,
-     * and a requested dimension.
+     * This method creates the GridCoverage2D from the underlying file given a specified envelope, and a requested
+     * dimension.
      *
-     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead
-     *     operation or a simple direct call to the {@code read} method of a proper {@code
-     *     ImageReader}.
-     * @param useMultithreading specify if the underlying read process should use multithreading
-     *     when a JAI ImageRead operation is requested
+     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead operation or a simple
+     *     direct call to the {@code read} method of a proper {@code ImageReader}.
+     * @param useMultithreading specify if the underlying read process should use multithreading when a JAI ImageRead
+     *     operation is requested
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
@@ -843,8 +778,7 @@ public class Utilities {
         // Doing an image read for reading the coverage.
         //
         // ////////////////////////////////////////////////////////////////////
-        final PlanarImage image =
-                readImage(spi, input, imageIndex, useJAI, imageReadParam, useMultithreading);
+        final PlanarImage image = readImage(spi, input, imageIndex, useJAI, imageReadParam, useMultithreading);
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -882,8 +816,7 @@ public class Utilities {
                     image,
                     ConcatenatedTransform.create(
                             ProjectiveTransform.create(
-                                    new AffineTransform(
-                                            scaleX, 0, 0, scaleY, translateX, translateY)),
+                                    new AffineTransform(scaleX, 0, 0, scaleY, translateX, translateY)),
                             raster2Model),
                     coordinateReferenceSystem,
                     null,
@@ -892,27 +825,19 @@ public class Utilities {
             // In case of no transformation is required (As an instance,
             // when reading the whole image)
             return Utilities.createCoverageFromImage(
-                    coverageFactory,
-                    coverageName,
-                    imageIndex,
-                    image,
-                    null,
-                    null,
-                    coverageEnvelope2D,
-                    sampleDimensions);
+                    coverageFactory, coverageName, imageIndex, image, null, null, coverageEnvelope2D, sampleDimensions);
         }
     }
 
     /**
-     * Returns a {@code PlanarImage} given a set of parameter specifying the type of read operation
-     * to be performed.
+     * Returns a {@code PlanarImage} given a set of parameter specifying the type of read operation to be performed.
      *
      * @param input the input to be used for reading the image.
-     * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we
-     *     need a simple direct {@code ImageReader.read(...)} call.
+     * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we need a simple direct
+     *     {@code ImageReader.read(...)} call.
      * @param imageReadParam an {@code ImageReadParam} specifying the read parameters
-     * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support
-     *     for multithreading. This parameter will be ignored if requesting a direct read operation.
+     * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support for multithreading.
+     *     This parameter will be ignored if requesting a direct read operation.
      * @return the read {@code PlanarImage}
      */
     @SuppressWarnings("PMD.CloseResource") // stream managed in the returned delayed read op
@@ -983,8 +908,8 @@ public class Utilities {
     }
 
     /**
-     * Compute the coverage request and produce a grid coverage. The produced grid coverage may be
-     * {@code null} in case of empty request.
+     * Compute the coverage request and produce a grid coverage. The produced grid coverage may be {@code null} in case
+     * of empty request.
      *
      * @throws IOException @TODO: handle more input types
      */
@@ -1222,8 +1147,7 @@ public class Utilities {
     }
 
     /**
-     * Creates a human readable message that describe the provided {@link File} object in terms of
-     * its properties.
+     * Creates a human readable message that describe the provided {@link File} object in terms of its properties.
      *
      * <p>Useful for creating meaningful log messages.
      *
@@ -1253,8 +1177,7 @@ public class Utilities {
         try (InputStream openStream = propsURL.openStream()) {
             properties.load(openStream);
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
         }
         return properties;

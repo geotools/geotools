@@ -45,8 +45,7 @@ public class ECQLExamples {
 
                 System.out.println("Select the ECQL Example:");
                 System.out.println(" 1 - CQL Compatibility");
-                System.out.println(
-                        " 2 - Comparison with property in the right hand: 1000 <= POPULTATION");
+                System.out.println(" 2 - Comparison with property in the right hand: 1000 <= POPULTATION");
                 System.out.println(" 3 - Using functions in comparison predicate: ..."); // TODO
                 System.out.println(" 4 - like pattern using String: 'aabbcc' LIKE '%bb%'");
                 System.out.println(" 5 - like using property name: cityName LIKE 'New%");
@@ -59,16 +58,13 @@ public class ECQLExamples {
                         "10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
                 System.out.println(
                         "11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO
-                System.out.println(
-                        "12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
-                System.out.println(
-                        "13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+                System.out.println("12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+                System.out.println("13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
                 System.out.println(
                         "14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
                 System.out.println(
                         "15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
-                System.out.println(
-                        "16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
+                System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
                 System.out.println(
                         "17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
                 System.out.println(
@@ -157,8 +153,7 @@ public class ECQLExamples {
 
         // ecql relatePattern start
         Filter filter =
-                ECQL.toFilter(
-                        "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+                ECQL.toFilter("RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
         // ecql relatePattern end
         Utility.prittyPrintFilter(filter);
 
@@ -172,9 +167,8 @@ public class ECQLExamples {
     private static void referencedRelatePattern() throws Exception {
 
         // ecql referencedRelatePattern start
-        Filter filter =
-                ECQL.toFilter(
-                        "RELATE(geometry, SRID=4326;LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        Filter filter = ECQL.toFilter(
+                "RELATE(geometry, SRID=4326;LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
         // ecql referencedRelatePattern end
         Utility.prittyPrintFilter(filter);
 
@@ -209,9 +203,7 @@ public class ECQLExamples {
     private static void duringPredicateWithLefHandtExpression() throws Exception {
 
         // duringPredicateWithLefHandtExpression start
-        Filter filter =
-                ECQL.toFilter(
-                        "2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+        Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
         // duringPredicateWithLefHandtExpression end
         Utility.prittyPrintFilter(filter);
 
@@ -223,8 +215,7 @@ public class ECQLExamples {
 
         // utcTimeZone start
         Filter filter =
-                ECQL.toFilter(
-                        "2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00 ");
+                ECQL.toFilter("2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00 ");
         // utcTimeZone end
         Utility.prittyPrintFilter(filter);
 
@@ -244,10 +235,7 @@ public class ECQLExamples {
     private static void duringPredicateWithLefHandtAttribute() throws Exception {
 
         // duringPredicateWithLefHandtAttribute start
-        During filter =
-                (During)
-                        ECQL.toFilter(
-                                "lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+        During filter = (During) ECQL.toFilter("lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
         // duringPredicateWithLefHandtAttribute end
         Utility.prittyPrintFilter(filter);
 
@@ -274,8 +262,7 @@ public class ECQLExamples {
         if (!filter.equals(filterFromCQL)) {
             throw new Exception("uncompatible ECQL Syntax");
         } else {
-            System.out.println(
-                    "CQL and ECQL have produced the same filter for the predicate \"POPULTATION >= 1000\"");
+            System.out.println("CQL and ECQL have produced the same filter for the predicate \"POPULTATION >= 1000\"");
             Utility.prittyPrintFilter(filter);
         }
     }
@@ -301,9 +288,7 @@ public class ECQLExamples {
     private static void comparisonUsingExpressions() throws Exception {
 
         // comparisonUsingExpressions start
-        Filter filter =
-                ECQL.toFilter(
-                        "(under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
+        Filter filter = ECQL.toFilter("(under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
         // comparisonUsingExpressions end
         SimpleFeature city = DataExamples.getInstanceOfCity();
 
@@ -337,9 +322,7 @@ public class ECQLExamples {
     private static void betweenUsingExpression() throws Exception {
 
         // betweenUsingExpression start
-        Filter filter =
-                ECQL.toFilter(
-                        "area( Polygon((10 10, 20 10, 20 20, 10 10)) ) BETWEEN 10000 AND 30000");
+        Filter filter = ECQL.toFilter("area( Polygon((10 10, 20 10, 20 20, 10 10)) ) BETWEEN 10000 AND 30000");
         // betweenUsingExpression end
         Utility.prittyPrintFilter(filter);
 

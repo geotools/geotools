@@ -55,8 +55,7 @@ import org.geotools.api.style.UserLayer;
 /**
  * A basic implementation of the StyleVisitor interface.
  *
- * <p>This class implements the full StyleVisitor interface and visits all components of a style
- * object tree.
+ * <p>This class implements the full StyleVisitor interface and visits all components of a style object tree.
  */
 public class AbstractStyleVisitor implements StyleVisitor {
 

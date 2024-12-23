@@ -92,27 +92,21 @@ public class ZonalStatsTest {
     static {
         try {
             WKTReader reader = new WKTReader();
-            Geometry g1 =
-                    reader.read(
-                            "POLYGON ((11.895130178020111 46.207934814601089,11.895809089115916 "
-                                    + "46.207927430715209,11.895112009452415 46.207050983935503,11.895130178020111 46.207934814601089))");
-            Geometry g2 =
-                    reader.read(
-                            "POLYGON ((11.896630238926786 46.207395686643665,11.897000925691524 "
-                                    + "46.207985638846736,11.897753464657697 46.20749492858355,11.896630238926786 46.207395686643665))");
-            Geometry g3 =
-                    reader.read(
-                            "POLYGON ((11.897871315022112 46.20812076814061,11.898581076580497 "
-                                    + "46.208161712380381,11.898470449632523 46.207673246668122,11.897871315022112 46.20812076814061))");
+            Geometry g1 = reader.read(
+                    "POLYGON ((11.895130178020111 46.207934814601089,11.895809089115916 "
+                            + "46.207927430715209,11.895112009452415 46.207050983935503,11.895130178020111 46.207934814601089))");
+            Geometry g2 = reader.read(
+                    "POLYGON ((11.896630238926786 46.207395686643665,11.897000925691524 "
+                            + "46.207985638846736,11.897753464657697 46.20749492858355,11.896630238926786 46.207395686643665))");
+            Geometry g3 = reader.read(
+                    "POLYGON ((11.897871315022112 46.20812076814061,11.898581076580497 "
+                            + "46.208161712380381,11.898470449632523 46.207673246668122,11.897871315022112 46.20812076814061))");
 
             SimpleFeatureType schema = DataUtilities.createType("testPolygons", "the_geom:Polygon");
             testPolygons = new ListFeatureCollection(schema);
-            testPolygons.add(
-                    SimpleFeatureBuilder.build(schema, new Object[] {g1}, "testpolygon.1"));
-            testPolygons.add(
-                    SimpleFeatureBuilder.build(schema, new Object[] {g2}, "testpolygon.2"));
-            testPolygons.add(
-                    SimpleFeatureBuilder.build(schema, new Object[] {g3}, "testpolygon.3"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g1}, "testpolygon.1"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g2}, "testpolygon.2"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g3}, "testpolygon.3"));
         } catch (SchemaException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -148,14 +142,7 @@ public class ZonalStatsTest {
                 Integer[] bands,
                 List<SimpleFeature> polygonsList,
                 List<Range<Double>> inclusionRanges) {
-            this(
-                    statisticsSet,
-                    gridCoverage2D,
-                    bands,
-                    polygonsList,
-                    inclusionRanges,
-                    Range.Type.EXCLUDE,
-                    false);
+            this(statisticsSet, gridCoverage2D, bands, polygonsList, inclusionRanges, Range.Type.EXCLUDE, false);
         }
 
         private StatisticsTool(
@@ -178,24 +165,19 @@ public class ZonalStatsTest {
         /**
          * Run the requested analysis.
          *
-         * <p>This is the moment in which the analysis takes place. This method is intended to give
-         * the user the possibility to choose the moment in which the workload is done.
+         * <p>This is the moment in which the analysis takes place. This method is intended to give the user the
+         * possibility to choose the moment in which the workload is done.
          */
         public void run() throws Exception {
             processPolygonMode();
         }
 
         private void processPolygonMode() throws TransformException {
-            final AffineTransform gridToWorldTransformCorrected =
-                    new AffineTransform(
-                            (AffineTransform)
-                                    gridCoverage2D
-                                            .getGridGeometry()
-                                            .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
+            final AffineTransform gridToWorldTransformCorrected = new AffineTransform(
+                    (AffineTransform) gridCoverage2D.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform worldToGridTransform;
             try {
-                worldToGridTransform =
-                        ProjectiveTransform.create(gridToWorldTransformCorrected.createInverse());
+                worldToGridTransform = ProjectiveTransform.create(gridToWorldTransformCorrected.createInverse());
             } catch (NoninvertibleTransformException e) {
                 throw new IllegalArgumentException(e.getLocalizedMessage());
             }
@@ -220,8 +202,7 @@ public class ZonalStatsTest {
                     final int numGeometries = geometry.getNumGeometries();
                     for (int i = 0; i < numGeometries; i++) {
                         Geometry geometryN = geometry.getGeometryN(i);
-                        java.awt.Polygon awtPolygon =
-                                toAWTPolygon((Polygon) geometryN, worldToGridTransform);
+                        java.awt.Polygon awtPolygon = toAWTPolygon((Polygon) geometryN, worldToGridTransform);
                         if (roi == null) {
                             roi = new ROIShape(awtPolygon);
                         } else {
@@ -230,8 +211,7 @@ public class ZonalStatsTest {
                         }
                     }
 
-                    final Statistic[] statistis =
-                            statisticsSet.toArray(new Statistic[statisticsSet.size()]);
+                    final Statistic[] statistis = statisticsSet.toArray(new Statistic[statisticsSet.size()]);
 
                     final OperationJAI op = new OperationJAI("ZonalStats");
                     ParameterValueGroup params = op.getParameters();
@@ -245,8 +225,7 @@ public class ZonalStatsTest {
 
                     final GridCoverage2D coverage = (GridCoverage2D) op.doOperation(params, null);
                     final ZonalStats stats =
-                            (ZonalStats)
-                                    coverage.getProperty(ZonalStatsDescriptor.ZONAL_STATS_PROPERTY);
+                            (ZonalStats) coverage.getProperty(ZonalStatsDescriptor.ZONAL_STATS_PROPERTY);
                     final Map<Statistic, List<Result>> statsMap = new HashMap<>();
                     for (Statistic statistic : statistis) {
                         final List<Range> inclRanges = CollectionFactory.list();
@@ -260,8 +239,7 @@ public class ZonalStatsTest {
             }
         }
 
-        private java.awt.Polygon toAWTPolygon(
-                final Polygon roiInput, MathTransform worldToGridTransform)
+        private java.awt.Polygon toAWTPolygon(final Polygon roiInput, MathTransform worldToGridTransform)
                 throws TransformException {
             final boolean isIdentity = worldToGridTransform.isIdentity();
             final java.awt.Polygon retValue = new java.awt.Polygon();
@@ -282,9 +260,8 @@ public class ZonalStatsTest {
          * Gets the performed statistics.
          *
          * @param fId the id of the feature used as region for the analysis.
-         * @return the {@link List} of results of the analysis for all the requested {@link
-         *     Statistic} for the requested bands. Note that the result contains for every {@link
-         *     Statistic} a result value for every band.
+         * @return the {@link List} of results of the analysis for all the requested {@link Statistic} for the requested
+         *     bands. Note that the result contains for every {@link Statistic} a result value for every band.
          */
         public Map<Statistic, List<Result>> getStatistics(String fId) {
             return feature2StatisticsMap.get(fId);
@@ -301,27 +278,25 @@ public class ZonalStatsTest {
         final File tiff = TestData.file(this, "test.tif");
         final File tfw = TestData.file(this, "test.tfw");
 
-        final TIFFImageReader reader =
-                (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
-                        new TIFFImageReaderSpi().createReaderInstance();
+        final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
+                new TIFFImageReaderSpi().createReaderInstance();
         reader.setInput(ImageIO.createImageInputStream(tiff));
         final BufferedImage image = reader.read(0);
         reader.dispose();
 
         final MathTransform transform = new WorldFileReader(tfw).getTransform();
-        final GridCoverage2D coverage2D =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "coverage",
-                                image,
-                                new GridGeometry2D(
-                                        new GridEnvelope2D(
-                                                PlanarImage.wrapRenderedImage(image).getBounds()),
-                                        transform,
-                                        DefaultGeographicCRS.WGS84),
-                                new GridSampleDimension[] {new GridSampleDimension("coverage")},
-                                null,
-                                null);
+        final GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "coverage",
+                        image,
+                        new GridGeometry2D(
+                                new GridEnvelope2D(
+                                        PlanarImage.wrapRenderedImage(image).getBounds()),
+                                transform,
+                                DefaultGeographicCRS.WGS84),
+                        new GridSampleDimension[] {new GridSampleDimension("coverage")},
+                        null,
+                        null);
 
         List<SimpleFeature> polygonList = new ArrayList<>();
         try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
@@ -348,14 +323,7 @@ public class ZonalStatsTest {
 
         // create the proper instance
         StatisticsTool statisticsTool =
-                new StatisticsTool(
-                        statsSet,
-                        coverage2D,
-                        bands,
-                        polygonList,
-                        inclusionRanges,
-                        Type.INCLUDE,
-                        false);
+                new StatisticsTool(statsSet, coverage2D, bands, polygonList, inclusionRanges, Type.INCLUDE, false);
 
         // do analysis
         statisticsTool.run();
@@ -364,56 +332,32 @@ public class ZonalStatsTest {
         String id = "testpolygon.1";
         Map<Statistic, List<Result>> statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        Assert.assertEquals(
-                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 343.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 88.7358, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1380.5423, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
-                7874.0598,
-                DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1598.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 343.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 88.7358, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1380.5423, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(), 7874.0598, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1598.0, DELTA);
 
         id = "testpolygon.2";
         statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        Assert.assertEquals(
-                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 216.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 36.7996, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1192.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1248.3870, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
-                1354.2150,
-                DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1408.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 216.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 36.7996, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1192.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1248.3870, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(), 1354.2150, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1408.0, DELTA);
 
         id = "testpolygon.3";
         statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        Assert.assertEquals(
-                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 127.0000, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 30.9412, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1173.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1266.3876, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
-                957.3594,
-                DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 127.0000, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 30.9412, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1173.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1266.3876, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(), 957.3594, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
 
         reader.dispose();
         coverage2D.dispose(true);
@@ -425,27 +369,25 @@ public class ZonalStatsTest {
         final File tiff = TestData.file(this, "test.tif");
         final File tfw = TestData.file(this, "test.tfw");
 
-        final TIFFImageReader reader =
-                (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
-                        new TIFFImageReaderSpi().createReaderInstance();
+        final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
+                new TIFFImageReaderSpi().createReaderInstance();
         reader.setInput(ImageIO.createImageInputStream(tiff));
         final BufferedImage image = reader.read(0);
         reader.dispose();
 
         final MathTransform transform = new WorldFileReader(tfw).getTransform();
-        final GridCoverage2D coverage2D =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "coverage",
-                                image,
-                                new GridGeometry2D(
-                                        new GridEnvelope2D(
-                                                PlanarImage.wrapRenderedImage(image).getBounds()),
-                                        transform,
-                                        DefaultGeographicCRS.WGS84),
-                                new GridSampleDimension[] {new GridSampleDimension("coverage")},
-                                null,
-                                null);
+        final GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "coverage",
+                        image,
+                        new GridGeometry2D(
+                                new GridEnvelope2D(
+                                        PlanarImage.wrapRenderedImage(image).getBounds()),
+                                transform,
+                                DefaultGeographicCRS.WGS84),
+                        new GridSampleDimension[] {new GridSampleDimension("coverage")},
+                        null,
+                        null);
 
         List<SimpleFeature> polygonList = new ArrayList<>();
         try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
@@ -472,14 +414,7 @@ public class ZonalStatsTest {
 
         // create the proper instance
         StatisticsTool statisticsTool =
-                new StatisticsTool(
-                        statsSet,
-                        coverage2D,
-                        bands,
-                        polygonList,
-                        inclusionRanges,
-                        Range.Type.INCLUDE,
-                        true);
+                new StatisticsTool(statsSet, coverage2D, bands, polygonList, inclusionRanges, Range.Type.INCLUDE, true);
 
         // do analysis
         statisticsTool.run();
@@ -488,34 +423,18 @@ public class ZonalStatsTest {
         String id = "testpolygon.1";
         Map<Statistic, List<Result>> statistics = statisticsTool.getStatistics(id);
         LOGGER.info(id + statistics.toString());
-        Assert.assertEquals(
-                statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 45.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.RANGE).get(1).getValue().doubleValue(), 228.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 11.7972, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.SDEV).get(1).getValue().doubleValue(), 63.7335, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MIN).get(1).getValue().doubleValue(), 1370.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1283.1634, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MEAN).get(1).getValue().doubleValue(), 1433.8979, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(),
-                139.1754,
-                DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.VARIANCE).get(1).getValue().doubleValue(),
-                4061.9665,
-                DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
-        Assert.assertEquals(
-                statistics.get(Statistic.MAX).get(1).getValue().doubleValue(), 1598.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.RANGE).get(0).getValue().doubleValue(), 45.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.RANGE).get(1).getValue().doubleValue(), 228.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.SDEV).get(0).getValue().doubleValue(), 11.7972, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.SDEV).get(1).getValue().doubleValue(), 63.7335, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MIN).get(0).getValue().doubleValue(), 1255.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MIN).get(1).getValue().doubleValue(), 1370.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MEAN).get(0).getValue().doubleValue(), 1283.1634, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MEAN).get(1).getValue().doubleValue(), 1433.8979, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.VARIANCE).get(0).getValue().doubleValue(), 139.1754, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.VARIANCE).get(1).getValue().doubleValue(), 4061.9665, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
+        Assert.assertEquals(statistics.get(Statistic.MAX).get(1).getValue().doubleValue(), 1598.0, DELTA);
 
         reader.dispose();
         coverage2D.dispose(true);

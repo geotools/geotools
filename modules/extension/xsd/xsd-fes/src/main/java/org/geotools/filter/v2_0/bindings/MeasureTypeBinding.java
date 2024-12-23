@@ -90,10 +90,8 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object uom = node.getAttributeValue("uom");
         Object units = node.getAttributeValue("units");
-        DistanceUnits distanceUnits =
-                DistanceUnits.of(
-                        (Double) value,
-                        uom != null ? uom.toString() : units != null ? units.toString() : null);
+        DistanceUnits distanceUnits = DistanceUnits.of(
+                (Double) value, uom != null ? uom.toString() : units != null ? units.toString() : null);
         return distanceUnits;
     }
 

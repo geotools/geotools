@@ -34,8 +34,7 @@ public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetwee
 
     protected MatchAction matchAction;
 
-    protected IsBetweenImpl(
-            Expression lower, Expression expression, Expression upper, MatchAction matchAction) {
+    protected IsBetweenImpl(Expression lower, Expression expression, Expression upper, MatchAction matchAction) {
         super(lower, upper);
         this.expression = expression;
         this.matchAction = matchAction;
@@ -71,27 +70,19 @@ public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetwee
             return false;
         }
 
-        if (!(object0 instanceof Collection)
-                && !(object1 instanceof Collection)
-                && !(object2 instanceof Collection)) {
+        if (!(object0 instanceof Collection) && !(object1 instanceof Collection) && !(object2 instanceof Collection)) {
             return evaluateInternal(object0, object1, object2);
         }
 
         @SuppressWarnings("unchecked")
         Collection<Object> oValues =
-                object0 instanceof Collection
-                        ? (Collection<Object>) object0
-                        : Collections.singletonList(object0);
+                object0 instanceof Collection ? (Collection<Object>) object0 : Collections.singletonList(object0);
         @SuppressWarnings("unchecked")
         Collection<Object> leftValues =
-                object1 instanceof Collection
-                        ? (Collection<Object>) object1
-                        : Collections.singletonList(object1);
+                object1 instanceof Collection ? (Collection<Object>) object1 : Collections.singletonList(object1);
         @SuppressWarnings("unchecked")
         Collection<Object> rightValues =
-                object2 instanceof Collection
-                        ? (Collection<Object>) object2
-                        : Collections.singletonList(object2);
+                object2 instanceof Collection ? (Collection<Object>) object2 : Collections.singletonList(object2);
 
         int count = 0;
 

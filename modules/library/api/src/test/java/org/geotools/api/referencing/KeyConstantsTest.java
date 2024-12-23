@@ -24,9 +24,8 @@ import org.junit.Test;
  */
 public final class KeyConstantsTest {
     /**
-     * Ensures that the key that are expected to be the same are really the same. We use {@code
-     * assertSame} instead than {@code assertEquals} because we expect the JVM to have {@linkplain
-     * String#intern internalized} the strings.
+     * Ensures that the key that are expected to be the same are really the same. We use {@code assertSame} instead than
+     * {@code assertEquals} because we expect the JVM to have {@linkplain String#intern internalized} the strings.
      */
     @Test
     public void testSame() {

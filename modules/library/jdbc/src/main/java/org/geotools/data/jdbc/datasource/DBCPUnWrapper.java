@@ -40,9 +40,8 @@ public class DBCPUnWrapper implements UnWrapper {
                     "This unwrapper can only handle instances of " + DelegatingConnection.class);
         Connection unwrapped = ((DelegatingConnection) conn).getInnermostDelegate();
         if (unwrapped == null)
-            throw new RuntimeException(
-                    "Could not unwrap connection. Is the DBCP pool configured "
-                            + "to allow access to underlying connections?");
+            throw new RuntimeException("Could not unwrap connection. Is the DBCP pool configured "
+                    + "to allow access to underlying connections?");
         return unwrapped;
     }
 
@@ -58,9 +57,8 @@ public class DBCPUnWrapper implements UnWrapper {
                     "This unwrapper can only handle instances of " + DelegatingStatement.class);
         Statement unwrapped = ((DelegatingStatement) statement).getInnermostDelegate();
         if (unwrapped == null)
-            throw new RuntimeException(
-                    "Could not unwrap connection. Is the DBCP pool configured "
-                            + "to allow access to underlying connections?");
+            throw new RuntimeException("Could not unwrap connection. Is the DBCP pool configured "
+                    + "to allow access to underlying connections?");
         return unwrapped;
     }
 }

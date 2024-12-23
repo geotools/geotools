@@ -33,8 +33,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * Wraps multiple feature collections into a single.
  *
- * <p>This feature collection is used for wfs feature collections which can be made up of features
- * from different schemas.
+ * <p>This feature collection is used for wfs feature collections which can be made up of features from different
+ * schemas.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

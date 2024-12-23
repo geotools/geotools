@@ -18,11 +18,10 @@
 /**
  * Basic geometry concepts to support referencing and coverage use.
  *
- * <p>The {@link org.geotools.geometry.GeneralPosition} class represents a point in a
- * multi-dimensional space. This space may have an arbitrary number of dimensions. For a
- * two-dimensional space, {@code Position} is conceptually equivalent to {@code
- * java.awt.geom.Point2D}. The class {@link org.geotools.geometry.GeneralBounds} represents a box in
- * a multi-dimensional space. For a two-dimensional space, {@code Bounds} is conceptually equivalent
- * to {@link java.awt.geom.Rectangle2D}.
+ * <p>The {@link org.geotools.geometry.GeneralPosition} class represents a point in a multi-dimensional space. This
+ * space may have an arbitrary number of dimensions. For a two-dimensional space, {@code Position} is conceptually
+ * equivalent to {@code java.awt.geom.Point2D}. The class {@link org.geotools.geometry.GeneralBounds} represents a box
+ * in a multi-dimensional space. For a two-dimensional space, {@code Bounds} is conceptually equivalent to
+ * {@link java.awt.geom.Rectangle2D}.
  */
 package org.geotools.geometry;

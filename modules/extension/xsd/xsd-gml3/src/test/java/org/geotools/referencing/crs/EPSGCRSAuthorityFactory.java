@@ -39,19 +39,17 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.AbstractFactory;
 
 /**
- * A disabled version of {@link EPSGCRSAuthorityFactory} that exists solely as a workaround for
- * Eclipse capture of transitive dependencies. The real implementation in gt-epsg-wkt; Maven does
- * the right thing and does not include the provider at test time, but Eclipse captures it as a
- * transitive dependency, causing the wrong provider to be used for srsName encoding. The presence
- * of this class allows gt-xsd-gml3 unit tests to pass in Eclipse.
+ * A disabled version of {@link EPSGCRSAuthorityFactory} that exists solely as a workaround for Eclipse capture of
+ * transitive dependencies. The real implementation in gt-epsg-wkt; Maven does the right thing and does not include the
+ * provider at test time, but Eclipse captures it as a transitive dependency, causing the wrong provider to be used for
+ * srsName encoding. The presence of this class allows gt-xsd-gml3 unit tests to pass in Eclipse.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see <a href="http://jira.codehaus.org/browse/GEOT-3112">GEOT-3112</a>
  */
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 
-    private static final String EXCEPTION_MESSAGE =
-            "Factory disabled for gt-xsd-gml3 testing (see GEOT-3112)";
+    private static final String EXCEPTION_MESSAGE = "Factory disabled for gt-xsd-gml3 testing (see GEOT-3112)";
 
     public EPSGCRSAuthorityFactory() {
         super(MINIMUM_PRIORITY);
@@ -65,20 +63,17 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public IdentifiedObject createObject(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public IdentifiedObject createObject(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
@@ -94,56 +89,47 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public CompoundCRS createCompoundCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public CompoundCRS createCompoundCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public DerivedCRS createDerivedCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public DerivedCRS createDerivedCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public EngineeringCRS createEngineeringCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public EngineeringCRS createEngineeringCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public GeographicCRS createGeographicCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public GeographicCRS createGeographicCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public GeocentricCRS createGeocentricCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public GeocentricCRS createGeocentricCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public ImageCRS createImageCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public ImageCRS createImageCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public ProjectedCRS createProjectedCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public ProjectedCRS createProjectedCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public TemporalCRS createTemporalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public TemporalCRS createTemporalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public VerticalCRS createVerticalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public VerticalCRS createVerticalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 }

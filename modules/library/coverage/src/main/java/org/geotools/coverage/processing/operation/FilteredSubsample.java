@@ -19,8 +19,8 @@ package org.geotools.coverage.processing.operation;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 
 /**
- * This operation is simply a wrapper for the JAI FilteredSubsample operation which allows me to
- * arbitrarly scale a rendered image while smoothing it out.
+ * This operation is simply a wrapper for the JAI FilteredSubsample operation which allows me to arbitrarly scale a
+ * rendered image while smoothing it out.
  *
  * @version $Id$
  * @author Simone Giannecchini, GeoSolutions

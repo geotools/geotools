@@ -23,9 +23,9 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 
 /**
- * Decorator for Iterator&lt;Feature&gt; to provide a FeatureIterator&lt;Feature&gt; that adds a
- * close method that does nothing. This class exists only to satisfy the {@link FeatureCollection}
- * API. All iteration is performed using the iterator passed to the constructor.
+ * Decorator for Iterator&lt;Feature&gt; to provide a FeatureIterator&lt;Feature&gt; that adds a close method that does
+ * nothing. This class exists only to satisfy the {@link FeatureCollection} API. All iteration is performed using the
+ * iterator passed to the constructor.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$

@@ -40,8 +40,7 @@ final class URI_Type {
      * "urn:ogc:def:<b>crs</b>:EPSG:6.8"</code>.
      *
      * <p>The canonical source for the list of type names is the <a
-     * href="http://www.opengis.net/register/ogc-na/def-type">OGC Naming Authority register of def
-     * types</a>.
+     * href="http://www.opengis.net/register/ogc-na/def-type">OGC Naming Authority register of def types</a>.
      */
     private static final URI_Type[] TYPES = {
         new URI_Type("crs", CRSAuthorityFactory.class),
@@ -50,8 +49,7 @@ final class URI_Type {
         new URI_Type("ellipsoid", DatumAuthorityFactory.class),
         new URI_Type("cs", CSAuthorityFactory.class),
         new URI_Type("axis", CSAuthorityFactory.class),
-        new URI_Type(
-                "coordinateOperation", CoordinateOperationAuthorityFactory.class), // deprecated
+        new URI_Type("coordinateOperation", CoordinateOperationAuthorityFactory.class), // deprecated
         new URI_Type("coordinate-operation", CoordinateOperationAuthorityFactory.class),
         new URI_Type("method", CoordinateOperationAuthorityFactory.class),
         new URI_Type("parameter", CoordinateOperationAuthorityFactory.class),
@@ -70,10 +68,7 @@ final class URI_Type {
     /** The object type name. */
     public final String name;
 
-    /**
-     * The factory for this type, either as a {@link AuthorityFactory} subinterface or a {@link
-     * CodeList}.
-     */
+    /** The factory for this type, either as a {@link AuthorityFactory} subinterface or a {@link CodeList}. */
     public final Class<?> type;
 
     /** Creates a new instance of {@code URN_Type}. */

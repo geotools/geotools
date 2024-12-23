@@ -37,8 +37,8 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 
 /**
- * A Formatter that formats {@link PROJFormattable} objects as PROJ strings. Supported PROJ
- * formattable are normally {@link IdentifiedObject} as well.
+ * A Formatter that formats {@link PROJFormattable} objects as PROJ strings. Supported PROJ formattable are normally
+ * {@link IdentifiedObject} as well.
  *
  * <p>Call toPROJ(PROJFormattable) to get the associated proj String.
  */
@@ -92,8 +92,7 @@ public class PROJFormatter {
 
     public void append(final PROJFormattable formattable) {
         int base = buffer.length();
-        final IdentifiedObject info =
-                (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
         if (info != null) {
             // Getting the name of a formattable object will also check the type
             // of IdentifiedObject (i.e. a datum, a primemeridian, an ellipsoid)
@@ -113,20 +112,19 @@ public class PROJFormatter {
     /**
      * Appends a PROJ string representation of the given parameter to the internal buffer.
      *
-     * <p>This method is part of a PROJFormatter that converts {@link GeneralParameterValue} objects
-     * (such as parameters for projection operations) into PROJ format strings. It handles both
-     * individual parameters and groups of parameters.
+     * <p>This method is part of a PROJFormatter that converts {@link GeneralParameterValue} objects (such as parameters
+     * for projection operations) into PROJ format strings. It handles both individual parameters and groups of
+     * parameters.
      *
-     * <p>If the parameter is a {@link ParameterValueGroup}, the method recursively processes each
-     * contained {@link GeneralParameterValue}. For each {@link ParameterValue}, it appends a
-     * formatted key-value pair to the buffer, with the key based on the parameter descriptor's name
-     * and the value based on the parameter's value, converted to a double if possible.
+     * <p>If the parameter is a {@link ParameterValueGroup}, the method recursively processes each contained
+     * {@link GeneralParameterValue}. For each {@link ParameterValue}, it appends a formatted key-value pair to the
+     * buffer, with the key based on the parameter descriptor's name and the value based on the parameter's value,
+     * converted to a double if possible.
      *
-     * @param parameter the {@link GeneralParameterValue} to format and append. This may be an
-     *     individual {@link ParameterValue} or a group of parameters in a {@link
-     *     ParameterValueGroup}.
-     * @throws ClassCastException if {@code parameter} is not an instance of {@link
-     *     ParameterValueGroup} or {@link ParameterValue}, as only these types are supported.
+     * @param parameter the {@link GeneralParameterValue} to format and append. This may be an individual
+     *     {@link ParameterValue} or a group of parameters in a {@link ParameterValueGroup}.
+     * @throws ClassCastException if {@code parameter} is not an instance of {@link ParameterValueGroup} or
+     *     {@link ParameterValue}, as only these types are supported.
      */
     public void append(final GeneralParameterValue parameter) {
         if (parameter instanceof ParameterValueGroup) {
@@ -163,12 +161,11 @@ public class PROJFormatter {
     /**
      * Appends the PROJ string representation of the specified unit to the internal buffer.
      *
-     * <p>This method adds the unit symbol to the buffer in a format compatible with PROJ, typically
-     * as a `+units=` key-value pair. If the unit's symbol is not available, it uses the unit's
-     * string representation instead.
+     * <p>This method adds the unit symbol to the buffer in a format compatible with PROJ, typically as a `+units=`
+     * key-value pair. If the unit's symbol is not available, it uses the unit's string representation instead.
      *
-     * @param unit the {@link Unit} to format and append. If {@code unit} is {@code null}, nothing
-     *     is appended to the buffer.
+     * @param unit the {@link Unit} to format and append. If {@code unit} is {@code null}, nothing is appended to the
+     *     buffer.
      *     <p><b>Example:</b>
      *     <pre>
      * +units=m
@@ -186,8 +183,8 @@ public class PROJFormatter {
     }
 
     /**
-     * Append the specified value to a string buffer. If the value is an array, then the array
-     * elements are appended recursively (i.e. the array may contains sub-array).
+     * Append the specified value to a string buffer. If the value is an array, then the array elements are appended
+     * recursively (i.e. the array may contains sub-array).
      */
     private void appendObject(final Object value) {
         if (value == null) {
@@ -216,8 +213,7 @@ public class PROJFormatter {
     /**
      * Appends a PROJ-compatible key-value pair to the internal buffer, where the value is a string.
      *
-     * <p>This method formats the key and value in the style expected by PROJ. The result format is
-     * `+key=value`.
+     * <p>This method formats the key and value in the style expected by PROJ. The result format is `+key=value`.
      *
      * @param key the key to be appended, representing the parameter name.
      * @param value the value to be appended, represented as a string.
@@ -233,9 +229,8 @@ public class PROJFormatter {
     /**
      * Appends a PROJ-compatible key-value pair to the internal buffer, where the value is a double.
      *
-     * <p>This method formats the key and numeric value in a style compatible with PROJ. The result
-     * format is `+key=value`, with the value formatted to the appropriate precision using {@link
-     * #format(double)}.
+     * <p>This method formats the key and numeric value in a style compatible with PROJ. The result format is
+     * `+key=value`, with the value formatted to the appropriate precision using {@link #format(double)}.
      *
      * @param key the key to be appended, representing the parameter name.
      * @param number the value to be appended, represented as a double.
@@ -251,9 +246,8 @@ public class PROJFormatter {
     }
 
     /**
-     * Returns the preferred name for the specified object. If the specified object contains a name
-     * from the preferred authority then this name is returned. Otherwise, it will be added to not
-     * parseable list
+     * Returns the preferred name for the specified object. If the specified object contains a name from the preferred
+     * authority then this name is returned. Otherwise, it will be added to not parseable list
      *
      * @param info The object to looks for a preferred name.
      * @return The preferred name.
@@ -304,7 +298,8 @@ public class PROJFormatter {
                 }
             }
             if (info instanceof PrimeMeridian) {
-                String projAlias = PROJ_ALIASES.getPrimeMeridianAlias(info.getName().getCode());
+                String projAlias =
+                        PROJ_ALIASES.getPrimeMeridianAlias(info.getName().getCode());
                 if (projAlias != null) {
                     primeMeridianProvided = true;
                     return projAlias;
@@ -317,11 +312,11 @@ public class PROJFormatter {
     /**
      * Retrieves the identifier for a given {@link IdentifiedObject}.
      *
-     * @param info the {@link IdentifiedObject} from which to retrieve an identifier. May be {@code
-     *     null}, in which case this method returns {@code null}.
-     * @return the {@link Identifier} with the authority {@code Citations.PROJ} if found, or the
-     *     first identifier in the collection if no match with {@code Citations.PROJ} is found.
-     *     Returns {@code null} if {@code info} is {@code null} or has no identifiers.
+     * @param info the {@link IdentifiedObject} from which to retrieve an identifier. May be {@code null}, in which case
+     *     this method returns {@code null}.
+     * @return the {@link Identifier} with the authority {@code Citations.PROJ} if found, or the first identifier in the
+     *     collection if no match with {@code Citations.PROJ} is found. Returns {@code null} if {@code info} is
+     *     {@code null} or has no identifiers.
      */
     public Identifier getIdentifier(final IdentifiedObject info) {
         Identifier first = null;
@@ -344,12 +339,11 @@ public class PROJFormatter {
     /**
      * Clears the internal state of the formatter to allow for reuse.
      *
-     * <p>This method resets the internal buffer and all tracking flags, preparing the formatter for
-     * a new PROJ string generation. It can be used to reuse the same formatter instance for
-     * multiple formatting operations.
+     * <p>This method resets the internal buffer and all tracking flags, preparing the formatter for a new PROJ string
+     * generation. It can be used to reuse the same formatter instance for multiple formatting operations.
      *
-     * <p>This is useful when the formatter instance needs to be reused for different projections or
-     * coordinate reference systems without creating a new instance each time.
+     * <p>This is useful when the formatter instance needs to be reused for different projections or coordinate
+     * reference systems without creating a new instance each time.
      */
     public void clear() {
         if (buffer != null) {
@@ -397,10 +391,9 @@ public class PROJFormatter {
         if (formattable instanceof IdentifiedObject) {
             IdentifiedObject identifiedObject = (IdentifiedObject) formattable;
             formattable.formatPROJ(this);
-            String refinedString =
-                    PROJ_REFINER.refine(
-                            buffer.toString(),
-                            identifiedObject.getIdentifiers().iterator().next().getCode());
+            String refinedString = PROJ_REFINER.refine(
+                    buffer.toString(),
+                    identifiedObject.getIdentifiers().iterator().next().getCode());
             buffer = new StringBuffer(refinedString);
             return refinedString;
         } else {

@@ -122,8 +122,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         layer.setInlineFeatureDatastore(inlineFeatureDataStore);
         layer.setInlineFeatureType(inlineFeatureType);
         if (!featureTypeConstraint.isEmpty()) {
-            FeatureTypeConstraint[] constraints =
-                    new FeatureTypeConstraint[featureTypeConstraint.size()];
+            FeatureTypeConstraint[] constraints = new FeatureTypeConstraint[featureTypeConstraint.size()];
             for (int i = 0; i < constraints.length; i++) {
                 constraints[i] = featureTypeConstraint.get(i).build();
             }

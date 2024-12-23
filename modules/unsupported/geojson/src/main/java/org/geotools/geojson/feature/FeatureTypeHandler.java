@@ -33,12 +33,11 @@ import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
 
 /**
- * Obtains a complete feature type from GeoJSON by parsing beyond first feature and finding
- * attributes that did not appear in the first feature or had null values.
+ * Obtains a complete feature type from GeoJSON by parsing beyond first feature and finding attributes that did not
+ * appear in the first feature or had null values.
  *
- * <p>If null values are encoded, parsing will stop when all data types are found. In the worst
- * case, all features will be parsed. If null values are not encoded, all features will be parsed
- * anyway.
+ * <p>If null values are encoded, parsing will stop when all data types are found. In the worst case, all features will
+ * be parsed. If null values are not encoded, all features will be parsed anyway.
  */
 public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
         implements IContentHandler<SimpleFeatureType> {
@@ -151,17 +150,15 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
                     }
                 } else if (knownType != newType) {
                     if (Number.class.isAssignableFrom(knownType) && newType == Double.class
-                            || (Number.class.isAssignableFrom(newType)
-                                    && knownType == Double.class)) {
+                            || (Number.class.isAssignableFrom(newType) && knownType == Double.class)) {
                         propertyTypes.put(currentProp, Double.class);
                     } else {
-                        throw new IllegalStateException(
-                                "Found conflicting types "
-                                        + knownType.getSimpleName()
-                                        + " and "
-                                        + newType.getSimpleName()
-                                        + " for property "
-                                        + currentProp);
+                        throw new IllegalStateException("Found conflicting types "
+                                + knownType.getSimpleName()
+                                + " and "
+                                + newType.getSimpleName()
+                                + " for property "
+                                + currentProp);
                     }
                 }
             }

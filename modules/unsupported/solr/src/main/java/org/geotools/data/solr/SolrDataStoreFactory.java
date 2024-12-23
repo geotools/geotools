@@ -31,39 +31,35 @@ import org.geotools.util.KVP;
 public class SolrDataStoreFactory implements DataStoreFactorySpi {
 
     /** Url to the SOLR server core */
-    public static final Param URL =
-            new Param(
-                    "solr_url",
-                    URL.class,
-                    "Url to a SOLR server CORE",
-                    true,
-                    "http://localhost:8080/solr/collection1",
-                    new KVP(Param.LEVEL, "user"));
+    public static final Param URL = new Param(
+            "solr_url",
+            URL.class,
+            "Url to a SOLR server CORE",
+            true,
+            "http://localhost:8080/solr/collection1",
+            new KVP(Param.LEVEL, "user"));
 
     /** Document loading strategy */
-    public static final Param LAYER_MAPPER =
-            new Param(
-                    "layer_mapper",
-                    String.class,
-                    "Controls how documents in the solr index are mapped to layers"
-                            + Arrays.toString(SolrLayerMapper.Type.values()),
-                    false,
-                    Type.FIELD.name(),
-                    new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));
+    public static final Param LAYER_MAPPER = new Param(
+            "layer_mapper",
+            String.class,
+            "Controls how documents in the solr index are mapped to layers"
+                    + Arrays.toString(SolrLayerMapper.Type.values()),
+            false,
+            Type.FIELD.name(),
+            new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));
 
     /** SOLR field that holds the layers names, used by {@link SolrLayerMapper.Type#FIELD}. */
-    public static final Param FIELD =
-            new Param(
-                    "layer_name_field",
-                    String.class,
-                    "Field used in SOLR that holds the layer names",
-                    false,
-                    "",
-                    new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));
+    public static final Param FIELD = new Param(
+            "layer_name_field",
+            String.class,
+            "Field used in SOLR that holds the layer names",
+            false,
+            "",
+            new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));
 
     /** Field that holds the namespace */
-    public static final Param NAMESPACE =
-            new Param("namespace", String.class, "Namespace prefix", false, "solr");
+    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix", false, "solr");
 
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {

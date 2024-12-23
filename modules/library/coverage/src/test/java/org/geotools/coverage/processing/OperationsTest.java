@@ -34,19 +34,16 @@ import org.junit.Test;
 /**
  * Tests JAI operation wrapped as {@link OperatorJAI}.
  *
- * <p><strong>NOTE:</strong> This test may fails when executed on a machine without the
- * <cite>mediaLib</cite> accelerator. On Windows, the {@code mlib_jai.dll} and {@code
- * mlib_jai_mmx.dll} files should exist in the {@code jre/bin} directory, as well as {@code
- * mlibwrapper_jai.jar} in {@code jre/lib/ext}. Those {@code .dll} files should be there if JAI has
- * been installed with the Sun standard installation program ({@code
- * jai-1_1_2_01-lib-windows-i586-jdk.exe}). With such installation, everything should run fine. The
- * {@code .dll} files are probably missing if JAI has been put in the classpath by Maven, like our
- * past attempt on the 2.1 branch.
+ * <p><strong>NOTE:</strong> This test may fails when executed on a machine without the <cite>mediaLib</cite>
+ * accelerator. On Windows, the {@code mlib_jai.dll} and {@code mlib_jai_mmx.dll} files should exist in the
+ * {@code jre/bin} directory, as well as {@code mlibwrapper_jai.jar} in {@code jre/lib/ext}. Those {@code .dll} files
+ * should be there if JAI has been installed with the Sun standard installation program
+ * ({@code jai-1_1_2_01-lib-windows-i586-jdk.exe}). With such installation, everything should run fine. The {@code .dll}
+ * files are probably missing if JAI has been put in the classpath by Maven, like our past attempt on the 2.1 branch.
  *
- * <p>This behavior looks like a JAI bug to me. In theory, the pure Java mode is supposed to produce
- * exactly the same result than the <cite>mediaLib</cite> native mode; just slower. This test
- * failure suggests that it is not always the case. The <cite>mediaLib</cite> native code seems
- * right in this case (the bug would be in the pure Java code).
+ * <p>This behavior looks like a JAI bug to me. In theory, the pure Java mode is supposed to produce exactly the same
+ * result than the <cite>mediaLib</cite> native mode; just slower. This test failure suggests that it is not always the
+ * case. The <cite>mediaLib</cite> native code seems right in this case (the bug would be in the pure Java code).
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -75,18 +72,14 @@ public final class OperationsTest extends GridProcessingTestBase {
         double[] constants = {18};
         GridCoverage sourceCoverage = SST;
         GridCoverage targetCoverage = (GridCoverage) processor.subtract(sourceCoverage, constants);
-        RenderedImage sourceImage =
-                sourceCoverage.getRenderableImage(0, 1).createDefaultRendering();
-        RenderedImage targetImage =
-                targetCoverage.getRenderableImage(0, 1).createDefaultRendering();
+        RenderedImage sourceImage = sourceCoverage.getRenderableImage(0, 1).createDefaultRendering();
+        RenderedImage targetImage = targetCoverage.getRenderableImage(0, 1).createDefaultRendering();
         Raster sourceRaster = sourceImage.getData();
         Raster targetRaster = targetImage.getData();
         assertNotSame(sourceCoverage, targetCoverage);
         assertNotSame(sourceImage, targetImage);
         assertNotSame(sourceRaster, targetRaster);
-        assertSame(
-                sourceCoverage.getCoordinateReferenceSystem(),
-                targetCoverage.getCoordinateReferenceSystem());
+        assertSame(sourceCoverage.getCoordinateReferenceSystem(), targetCoverage.getCoordinateReferenceSystem());
         assertEquals(sourceCoverage.getEnvelope(), targetCoverage.getEnvelope());
         assertEquals(sourceCoverage.getGridGeometry(), targetCoverage.getGridGeometry());
         assertEquals(sourceRaster.getMinX(), targetRaster.getMinX());
@@ -95,9 +88,7 @@ public final class OperationsTest extends GridProcessingTestBase {
         assertEquals(sourceRaster.getHeight(), targetRaster.getHeight());
         assertEquals(0, sourceRaster.getMinX());
         assertEquals(0, sourceRaster.getMinY());
-        assertEquals(
-                JAIExt.getOperationName("SubtractConst"),
-                ((OperationNode) targetImage).getOperationName());
+        assertEquals(JAIExt.getOperationName("SubtractConst"), ((OperationNode) targetImage).getOperationName());
 
         final boolean medialib = TestData.isMediaLibAvailable();
         float difference;

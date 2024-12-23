@@ -32,14 +32,13 @@ import org.locationtech.jts.geom.Coordinate;
 public class BarnesSurfaceProcessTest {
 
     /**
-     * A test of a simple surface, validating that the process can be invoked and return a
-     * reasonable result in a simple situation.
+     * A test of a simple surface, validating that the process can be invoked and return a reasonable result in a simple
+     * situation.
      */
     @Test
     public void testSimpleSurface() {
 
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
         Coordinate[] data = {
             new Coordinate(10, 10, 100),
             new Coordinate(10, 20, 20),
@@ -51,24 +50,23 @@ public class BarnesSurfaceProcessTest {
         ProgressListener monitor = null;
 
         BarnesSurfaceProcess process = new BarnesSurfaceProcess();
-        GridCoverage2D cov =
-                process.execute(
-                        fc, // data
-                        "value", // valueAttr
-                        1000, // dataLimit
-                        10.0, // scale
-                        null, // convergence
-                        2, // passes
-                        null, // minObservations
-                        null, // maxObservationDistance
-                        -999.0, // noDataValue
-                        1, // pixelsPerCell
-                        0.0, // queryBuffer
-                        bounds, // outputEnv
-                        100, // outputWidth
-                        100, // outputHeight
-                        monitor // monitor)
-                        );
+        GridCoverage2D cov = process.execute(
+                fc, // data
+                "value", // valueAttr
+                1000, // dataLimit
+                10.0, // scale
+                null, // convergence
+                2, // passes
+                null, // minObservations
+                null, // maxObservationDistance
+                -999.0, // noDataValue
+                1, // pixelsPerCell
+                0.0, // queryBuffer
+                bounds, // outputEnv
+                100, // outputWidth
+                100, // outputHeight
+                monitor // monitor)
+                );
 
         //      System.out.println(coverageValue(cov, 20, 20));
 

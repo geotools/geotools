@@ -17,8 +17,7 @@
 package org.geotools.referencing.proj;
 
 /**
- * Simple interface for objects that can be formatted as PROJ String (using the provided {@link
- * PROJFormatter} instance
+ * Simple interface for objects that can be formatted as PROJ String (using the provided {@link PROJFormatter} instance
  */
 public interface PROJFormattable {
 
@@ -27,14 +26,13 @@ public interface PROJFormattable {
      *
      * <p>This method is automatically invoked by {@link PROJFormatter#append(PROJFormattable)}.
      *
-     * <p>For example for a element ({@link
-     * org.geotools.referencing.operation.DefaultOperationMethod}) of type Projection, the formatter
-     * will invoke this method to prepend the "+proj=" String for completing the PROJ String before
-     * appending the Projection Name (e.g. lcc for a Lambert Conformal Conic)
+     * <p>For example for a element ({@link org.geotools.referencing.operation.DefaultOperationMethod}) of type
+     * Projection, the formatter will invoke this method to prepend the "+proj=" String for completing the PROJ String
+     * before appending the Projection Name (e.g. lcc for a Lambert Conformal Conic)
      *
      * @param formatter The PROJFormatter to use.
-     * @return The proj String of the PROJ element type if any. (e.g. +ellps= for named ellipsoids,
-     *     +datum= for named datums).
+     * @return The proj String of the PROJ element type if any. (e.g. +ellps= for named ellipsoids, +datum= for named
+     *     datums).
      */
     String formatPROJ(PROJFormatter formatter);
 }

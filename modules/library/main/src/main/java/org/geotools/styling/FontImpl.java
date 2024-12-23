@@ -130,8 +130,8 @@ public class FontImpl implements Font, Cloneable {
     }
 
     /**
-     * Compares this font with another for equality. Two fonts are equal if their family, style,
-     * weight and size are equal.
+     * Compares this font with another for equality. Two fonts are equal if their family, style, weight and size are
+     * equal.
      *
      * @return True if this and oth are equal.
      */

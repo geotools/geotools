@@ -33,9 +33,8 @@ import java.util.logging.Logger;
  * <p>Resources are sought, in order:
  *
  * <ol>
- *   <li>In an <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS
- *       Catalog</a> (with URI resolution semantics), which maps URLs to arbitrary filesystem
- *       locations.
+ *   <li>In an <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS Catalog</a> (with URI
+ *       resolution semantics), which maps URLs to arbitrary filesystem locations.
  *   <li>On the classpath, where resources are located by their Simple HTTP Resource Path (see
  *       {@link #getSimpleHttpResourcePath(URI)}).
  *   <li>In a cache, with optional downloading support.
@@ -45,8 +44,7 @@ import java.util.logging.Logger;
  */
 public class SchemaResolver {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaResolver.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaResolver.class);
 
     /** A local OASIS catalog (null if not present). */
     private SchemaCatalog catalog;
@@ -58,11 +56,10 @@ public class SchemaResolver {
     private SchemaCache cache;
 
     /**
-     * Maps a resolved location (a URL used to obtain a schema from a file or the classpath) to the
-     * original HTTP URL used to obtain it. This is required so that relative imports can be
-     * resolved if they cross resolution boundaries. For example, an import ../../../om/.. used to
-     * import om in a schema, where one is supplied locally and the other must be downloaded and
-     * cached. Another example is when the schemas are in different jar files.
+     * Maps a resolved location (a URL used to obtain a schema from a file or the classpath) to the original HTTP URL
+     * used to obtain it. This is required so that relative imports can be resolved if they cross resolution boundaries.
+     * For example, an import ../../../om/.. used to import om in a schema, where one is supplied locally and the other
+     * must be downloaded and cached. Another example is when the schemas are in different jar files.
      */
     private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<>();
 
@@ -98,12 +95,11 @@ public class SchemaResolver {
     }
 
     /**
-     * Resolve an absolute or relative URL to a local file or jar URL. Relative URLs are resolved
-     * against a context schema URL if provided.
+     * Resolve an absolute or relative URL to a local file or jar URL. Relative URLs are resolved against a context
+     * schema URL if provided.
      *
      * @param location an absolute or relative URL for a schema
-     * @param context an absolute URL specifying the context schema of a relative location, or null
-     *     if none
+     * @param context an absolute URL specifying the context schema of a relative location, or null if none
      * @return the string representation of a file or jar URL
      * @throws RuntimeException if a local resource could not be found
      */
@@ -117,10 +113,9 @@ public class SchemaResolver {
         if (!locationUri.isAbsolute()) {
             // Location is relative, so need to resolve against context.
             if (context == null) {
-                throw new RuntimeException(
-                        "Could not determine absolute schema location for "
-                                + location
-                                + " because context schema location is unknown");
+                throw new RuntimeException("Could not determine absolute schema location for "
+                        + location
+                        + " because context schema location is unknown");
             }
             // Find the original absolute http/https (canonical) URL used to obtain the
             // context schema, so relative imports can be honoured across resolution source
@@ -186,8 +181,8 @@ public class SchemaResolver {
     }
 
     /**
-     * Return the Simple HTTP Resource Path for an absolute http/https URL. Does not include query
-     * components in the path.
+     * Return the Simple HTTP Resource Path for an absolute http/https URL. Does not include query components in the
+     * path.
      *
      * @param location not null
      * @return the resource path with a leading slash
@@ -201,9 +196,9 @@ public class SchemaResolver {
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
      *
      * @param location not null
-     * @param keepQuery indicates whether or not the query components should be included in the
-     *     path. If this is set to true then the query portion is converted to an MD5 message digest
-     *     and that string is used to identify the file in the cache.
+     * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to
+     *     true then the query portion is converted to an MD5 message digest and that string is used to identify the
+     *     file in the cache.
      * @return the resource path with a leading slash
      * @see #getSimpleHttpResourcePath(URI, boolean)
      */
@@ -220,25 +215,24 @@ public class SchemaResolver {
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
      *
-     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
-     * relative to some other root. To form the Simple HTTP Resource Path from an http/https URL:
+     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or relative to some other
+     * root. To form the Simple HTTP Resource Path from an http/https URL:
      *
      * <ol>
      *   <li>Protocol, port, fragment, and query are ignored.
-     *   <li>Take the host name, split it into its components, reverse their order, prepend a
-     *       forward slash to each, and concatenate them.
+     *   <li>Take the host name, split it into its components, reverse their order, prepend a forward slash to each, and
+     *       concatenate them.
      *   <li>Append the path component of the URL.
      * </ol>
      *
      * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes <code>
      * /org/example/schemas/exampleml/exml.xsd</code> .
      *
-     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
-     * include query components in the path.
+     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not include query
+     * components in the path.
      *
      * @param location not null
-     * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute
-     *     HTTP/HTTPS URL.
+     * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute HTTP/HTTPS URL.
      */
     public static String getSimpleHttpResourcePath(URI location) {
         return getSimpleHttpResourcePath(location, false);
@@ -247,28 +241,27 @@ public class SchemaResolver {
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
      *
-     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
-     * relative to some other root. To form the Simple HTTP Resource Path from an http/https URL:
+     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or relative to some other
+     * root. To form the Simple HTTP Resource Path from an http/https URL:
      *
      * <ol>
      *   <li>Protocol, port, fragment, and query are ignored.
-     *   <li>Take the host name, split it into its components, reverse their order, prepend a
-     *       forward slash to each, and concatenate them.
+     *   <li>Take the host name, split it into its components, reverse their order, prepend a forward slash to each, and
+     *       concatenate them.
      *   <li>Append the path component of the URL.
      * </ol>
      *
      * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes <code>
      * /org/example/schemas/exampleml/exml.xsd</code> .
      *
-     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
-     * include query components in the path.
+     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not include query
+     * components in the path.
      *
      * @param location not null
-     * @param keepQuery indicates whether or not the query components should be included in the
-     *     path. If this is set to true then the query portion is converted to an MD5 message digest
-     *     and that string is used to identify the file in the cache.
-     * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute
-     *     HTTP/HTTPS URL.
+     * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to
+     *     true then the query portion is converted to an MD5 message digest and that string is used to identify the
+     *     file in the cache.
+     * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute HTTP/HTTPS URL.
      */
     public static String getSimpleHttpResourcePath(URI location, boolean keepQuery) {
         String scheme = location.getScheme();
@@ -295,9 +288,8 @@ public class SchemaResolver {
     }
 
     /**
-     * Return the URL for a resource found on the classpath at the Simple HTTP Resource Path. This
-     * allows (for example) schema documents in jar files to be loaded from the classpath using
-     * their canonical HTTP URLs.
+     * Return the URL for a resource found on the classpath at the Simple HTTP Resource Path. This allows (for example)
+     * schema documents in jar files to be loaded from the classpath using their canonical HTTP URLs.
      *
      * @return the URL or null if not found
      */
@@ -311,9 +303,9 @@ public class SchemaResolver {
     }
 
     /**
-     * Return the string representation of URL for a resource found on the classpath at the Simple
-     * HTTP Resource Path. This allows (for example) schema documents in jar files to be loaded from
-     * the classpath using their canonical HTTP URLs.
+     * Return the string representation of URL for a resource found on the classpath at the Simple HTTP Resource Path.
+     * This allows (for example) schema documents in jar files to be loaded from the classpath using their canonical
+     * HTTP URLs.
      *
      * @return the string representation of a classpath URL, or null if not found
      */
@@ -330,8 +322,8 @@ public class SchemaResolver {
      * Convert a string into an MD5 digest.
      *
      * @param message The string whose MD5 digest you want to generate.
-     * @return An MD5 digest generated from message, this string is always 32 characters long. Or
-     *     returns null if there was an error.
+     * @return An MD5 digest generated from message, this string is always 32 characters long. Or returns null if there
+     *     was an error.
      */
     private static String stringToMD5String(String message) {
         byte[] bytesOfMessage = null;

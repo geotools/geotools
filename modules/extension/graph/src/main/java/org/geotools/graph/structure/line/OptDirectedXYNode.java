@@ -20,9 +20,8 @@ import org.geotools.graph.structure.opt.OptDirectedNode;
 import org.locationtech.jts.geom.Coordinate;
 
 /**
- * Optimized implementation of XYNode extended from OptDirectedNode. Instead of storing an
- * underlying coordinate object, only a set of (x,y) values are stored eliminating the storage of
- * additional oordinate dimensions.
+ * Optimized implementation of XYNode extended from OptDirectedNode. Instead of storing an underlying coordinate object,
+ * only a set of (x,y) values are stored eliminating the storage of additional oordinate dimensions.
  *
  * @see org.geotools.graph.structure.opt.OptDirectedNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

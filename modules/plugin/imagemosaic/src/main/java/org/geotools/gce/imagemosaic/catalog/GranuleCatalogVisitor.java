@@ -33,10 +33,7 @@ public interface GranuleCatalogVisitor {
      */
     public void visit(final GranuleDescriptor granule, SimpleFeature feature);
 
-    /**
-     * Returns true if the visit has been completed and there is no more need to scan though the
-     * other granules
-     */
+    /** Returns true if the visit has been completed and there is no more need to scan though the other granules */
     public default boolean isVisitComplete() {
         return false;
     }

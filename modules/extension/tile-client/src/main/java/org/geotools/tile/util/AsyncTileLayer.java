@@ -29,8 +29,8 @@ import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
 
 /**
- * This Layer is an attempt to speed rendering by using a CountDownLatch and threads to render each
- * tile. The performance improvement is minimal, though.
+ * This Layer is an attempt to speed rendering by using a CountDownLatch and threads to render each tile. The
+ * performance improvement is minimal, though.
  *
  * @author Ugo Taddei
  * @since 12
@@ -64,20 +64,19 @@ public class AsyncTileLayer extends TileLayer {
     @Override
     protected void renderTile(final Tile tile, final Graphics2D g2d, final double[] points) {
 
-        Runnable r =
-                () -> {
-                    BufferedImage img = getTileImage(tile);
+        Runnable r = () -> {
+            BufferedImage img = getTileImage(tile);
 
-                    g2d.drawImage(
-                            img,
-                            (int) points[0],
-                            (int) points[1],
-                            (int) Math.ceil(points[2] - points[0]),
-                            (int) Math.ceil(points[3] - points[1]),
-                            null);
+            g2d.drawImage(
+                    img,
+                    (int) points[0],
+                    (int) points[1],
+                    (int) Math.ceil(points[2] - points[0]),
+                    (int) Math.ceil(points[3] - points[1]),
+                    null);
 
-                    countDownLatch.countDown();
-                };
+            countDownLatch.countDown();
+        };
         new Thread(r).start();
     }
 
@@ -87,17 +86,14 @@ public class AsyncTileLayer extends TileLayer {
             ReferencedEnvelope viewportExtent,
             AffineTransform worldToImageTransform) {
 
-        g2d.setRenderingHint(
-                RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         for (Tile tile : tiles) {
             ReferencedEnvelope nativeTileEnvelope = tile.getExtent();
 
             ReferencedEnvelope tileEnvViewport;
             try {
-                tileEnvViewport =
-                        nativeTileEnvelope.transform(
-                                viewportExtent.getCoordinateReferenceSystem(), true);
+                tileEnvViewport = nativeTileEnvelope.transform(viewportExtent.getCoordinateReferenceSystem(), true);
             } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }

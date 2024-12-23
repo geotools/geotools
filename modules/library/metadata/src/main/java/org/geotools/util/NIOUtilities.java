@@ -48,8 +48,8 @@ public final class NIOUtilities {
     static Map<Class, Method> cleanerMethodCache = new ConcurrentHashMap<>();
 
     /**
-     * The maximum size of the hard reference cache (the soft one can be unbounded, the GC will
-     * regulate its size according to the memory pressure)
+     * The maximum size of the hard reference cache (the soft one can be unbounded, the GC will regulate its size
+     * according to the memory pressure)
      */
     static int maxCacheSize = 2 * 1024 * 1024;
 
@@ -76,10 +76,10 @@ public final class NIOUtilities {
     }
 
     /**
-     * If the flag is true {@link #allocate(int)} will allocate a direct buffer,, otherwise heap
-     * buffers will be used. Direct buffers are normally faster, but their cleanup is platform
-     * dependent and not guaranteed, under high load and in combination with some garbage collectors
-     * that might result in a JVM crash (failure to perform native memory allocation)
+     * If the flag is true {@link #allocate(int)} will allocate a direct buffer,, otherwise heap buffers will be used.
+     * Direct buffers are normally faster, but their cleanup is platform dependent and not guaranteed, under high load
+     * and in combination with some garbage collectors that might result in a JVM crash (failure to perform native
+     * memory allocation)
      */
     public static void setDirectBuffersEnabled(boolean directBuffersEnabled) {
         NIOUtilities.directBuffersEnabled = directBuffersEnabled;
@@ -89,18 +89,17 @@ public final class NIOUtilities {
     private NIOUtilities() {}
 
     /**
-     * Sets the maximum byte buffer cache size, in bytes (set to 0 to only use soft references in
-     * the case, a positive value will make the cache use hard references up to the max cache size)
+     * Sets the maximum byte buffer cache size, in bytes (set to 0 to only use soft references in the case, a positive
+     * value will make the cache use hard references up to the max cache size)
      */
     public static void setMaxCacheSize(int maxCacheSize) {
         NIOUtilities.maxCacheSize = maxCacheSize;
     }
 
     /**
-     * Allocates and returns a {@link ByteBuffer}. The buffer capacity will generally be greater
-     * than of two that can contain the specified limit, the buffer limit will be set at the
-     * specified value. The buffers are pooled, so remember to call {@link #clean(ByteBuffer,
-     * false)} to return the buffer to the pool.
+     * Allocates and returns a {@link ByteBuffer}. The buffer capacity will generally be greater than of two that can
+     * contain the specified limit, the buffer limit will be set at the specified value. The buffers are pooled, so
+     * remember to call {@link #clean(ByteBuffer, false)} to return the buffer to the pool.
      */
     public static ByteBuffer allocate(int size) {
         // look for a free cached buffer that has still not been garbage collected
@@ -153,8 +152,8 @@ public final class NIOUtilities {
      * Depending on the type of buffer different cleanup action will be taken:
      *
      * <ul>
-     *   <li>if the buffer is memory mapped (as per the specified parameter) the effect is the same
-     *       as {@link #clean(ByteBuffer)}
+     *   <li>if the buffer is memory mapped (as per the specified parameter) the effect is the same as
+     *       {@link #clean(ByteBuffer)}
      *   <li>if the buffer is not memory mapped it will be returned to the buffer cache
      * </ul>
      */
@@ -171,10 +170,9 @@ public final class NIOUtilities {
     }
 
     /**
-     * Really closes a {@code MappedByteBuffer} without the need to wait for garbage collection. Any
-     * problems with closing a buffer on Windows (the problem child in this case) will be logged as
-     * {@code SEVERE} to the logger of the package name. To force logging of errors, set the System
-     * property "org.geotools.io.debugBuffer" to "true".
+     * Really closes a {@code MappedByteBuffer} without the need to wait for garbage collection. Any problems with
+     * closing a buffer on Windows (the problem child in this case) will be logged as {@code SEVERE} to the logger of
+     * the package name. To force logging of errors, set the System property "org.geotools.io.debugBuffer" to "true".
      *
      * @param buffer The buffer to close.
      * @return true if the operation was successful, false otherwise.
@@ -185,10 +183,9 @@ public final class NIOUtilities {
             return true;
         }
 
-        PrivilegedAction<Boolean> action =
-                SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
-                        ? () -> new CleanupAfterJdk8(buffer).clean()
-                        : () -> new CleanupPriorJdk9(buffer).clean();
+        PrivilegedAction<Boolean> action = SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
+                ? () -> new CleanupAfterJdk8(buffer).clean()
+                : () -> new CleanupPriorJdk9(buffer).clean();
 
         return AccessController.doPrivileged(action).booleanValue();
     }
@@ -238,8 +235,7 @@ public final class NIOUtilities {
                 final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
                 theUnsafeField.setAccessible(true);
                 final Object theUnsafe = theUnsafeField.get(null);
-                final Method invokeCleanerMethod =
-                        unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
+                final Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
                 invokeCleanerMethod.invoke(theUnsafe, buffer);
 
                 success = Boolean.TRUE;
@@ -306,13 +302,12 @@ public final class NIOUtilities {
     /** Logs a warning message. */
     private static synchronized void log(final Exception e, final ByteBuffer buffer) {
         warned = true;
-        String message =
-                "Error attempting to close a mapped byte buffer : "
-                        + buffer.getClass().getName()
-                        + "\n JVM : "
-                        + System.getProperty("java.version")
-                        + ' '
-                        + System.getProperty("java.vendor");
+        String message = "Error attempting to close a mapped byte buffer : "
+                + buffer.getClass().getName()
+                + "\n JVM : "
+                + System.getProperty("java.version")
+                + ' '
+                + System.getProperty("java.vendor");
         Logging.getLogger(NIOUtilities.class).log(Level.SEVERE, message, e);
     }
 }

@@ -21,8 +21,7 @@ import org.geotools.api.referencing.datum.TemporalDatum;
  *   {@link org.geotools.api.referencing.cs.TimeCS Time}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

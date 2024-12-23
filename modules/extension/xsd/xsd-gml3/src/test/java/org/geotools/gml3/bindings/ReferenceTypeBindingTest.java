@@ -39,14 +39,7 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testXlinkHrefNull() throws Exception {
         AttributeType attType =
-                new AttributeTypeImpl(
-                        new NameImpl("someAttributeType"),
-                        String.class,
-                        false,
-                        false,
-                        null,
-                        null,
-                        null);
+                new AttributeTypeImpl(new NameImpl("someAttributeType"), String.class, false, false, null, null, null);
         AttributeImpl node = new AttributeImpl(null, attType, null);
         ReferenceTypeBinding binding = new ReferenceTypeBinding();
         Object xlink = binding.getProperty(node, XLINK.HREF);
@@ -57,14 +50,7 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testXlinkHref() throws Exception {
         AttributeType attType =
-                new AttributeTypeImpl(
-                        new NameImpl("someAttributeType"),
-                        String.class,
-                        false,
-                        false,
-                        null,
-                        null,
-                        null);
+                new AttributeTypeImpl(new NameImpl("someAttributeType"), String.class, false, false, null, null, null);
         AttributeImpl node = new AttributeImpl(null, attType, null);
         final String ID = "something";
         node.getUserData().put("gml:id", ID);

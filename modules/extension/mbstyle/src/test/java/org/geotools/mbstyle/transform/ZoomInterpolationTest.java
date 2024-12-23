@@ -17,8 +17,7 @@ public class ZoomInterpolationTest {
     @Test
     public void testZoomInterpolationExponential() throws ParseException {
         // Define an exponential zoom function
-        String functionJson =
-                "{'type':'exponential', 'base': 1, 'stops':[[0,0],[6,256],[12,1024]]}";
+        String functionJson = "{'type':'exponential', 'base': 1, 'stops':[[0,0],[6,256],[12,1024]]}";
         JSONObject json = MapboxTestUtils.object(functionJson);
         MBFunction function = new MBFunction(json);
         Expression fn = function.numeric();

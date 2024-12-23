@@ -34,14 +34,12 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * This is an implemenation of the Recode function as defined by the OGC Symbology Encoding (SE) 1.1
- * specification.
+ * This is an implemenation of the Recode function as defined by the OGC Symbology Encoding (SE) 1.1 specification.
  *
- * <p>The Recode function provides a lookup table facility (think HashTable) where both keys and
- * values can be any {@code Expression}. The first parameter to the function specifies the source of
- * the value to lookup, e.g. the name of a feature property as a {@code Literal}. The remaining
- * parameters define the lookup table as key:value pairs. Thus there should be an odd number of
- * parameters in total: the lookup value parameter plus the set of key value pairs.
+ * <p>The Recode function provides a lookup table facility (think HashTable) where both keys and values can be any
+ * {@code Expression}. The first parameter to the function specifies the source of the value to lookup, e.g. the name of
+ * a feature property as a {@code Literal}. The remaining parameters define the lookup table as key:value pairs. Thus
+ * there should be an odd number of parameters in total: the lookup value parameter plus the set of key value pairs.
  *
  * <p>Where the lookup involves {@code String} values, comparisons are done case-insensitively.
  *
@@ -81,8 +79,7 @@ public class RecodeFunction implements Function {
 
         // check inputs
         if ((parameters.size() % 2 != 1) && (!parameters.isEmpty())) {
-            throw new IllegalArgumentException(
-                    "There must be an equal number of lookup data and return values");
+            throw new IllegalArgumentException("There must be an equal number of lookup data and return values");
         }
 
         // see if the table is full of attribute independent expressions
@@ -152,9 +149,7 @@ public class RecodeFunction implements Function {
                     }
                 }
 
-                if (fastLookup != null
-                        && lookup.getClass() == lastKeyType
-                        && context == lastContextType) {
+                if (fastLookup != null && lookup.getClass() == lastKeyType && context == lastContextType) {
                     @SuppressWarnings("unchecked")
                     T result = (T) fastLookup.get(lookup);
                     return result;
@@ -184,9 +179,7 @@ public class RecodeFunction implements Function {
         return fallback;
     }
 
-    /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     */
+    /** Creates a String representation of this Function with the function name and the arguments. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -195,8 +188,7 @@ public class RecodeFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -225,7 +217,6 @@ public class RecodeFunction implements Function {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                parameters, staticTable, fastLookup, lastKeyType, lastContextType, fallback);
+        return Objects.hash(parameters, staticTable, fastLookup, lastKeyType, lastContextType, fallback);
     }
 }

@@ -41,8 +41,7 @@ import org.xml.sax.SAXException;
  *
  * <ul>
  *   <li>{@link #VALIDATION_HINT} - Boolean.FALSE to disable validation
- *   <li>{@link DocumentHandler#DEFAULT_NAMESPACE_HINT_KEY} - {@link Schema} for parsing and
- *       validation
+ *   <li>{@link DocumentHandler#DEFAULT_NAMESPACE_HINT_KEY} - {@link Schema} for parsing and validation
  *   <li>{@link XMLHandlerHints#FLOW_HANDLER_HINT}
  *   <li>{@link XMLHandlerHints#NAMESPACE_MAPPING} - Map&lt;String,URL&gt; namespace mapping
  *   <li>{@link XMLHandlerHints#ENTITY_RESOLVER} - control entry resolution
@@ -57,19 +56,18 @@ import org.xml.sax.SAXException;
 public class DocumentFactory {
 
     /**
-     * When this hint is contained and set to Boolean.FALSE, element ordering will not be validated.
-     * This key may also affect data validation within the parse routines. The inherent safety of
-     * the resulting objects is weekend by turning this param to false.
+     * When this hint is contained and set to Boolean.FALSE, element ordering will not be validated. This key may also
+     * affect data validation within the parse routines. The inherent safety of the resulting objects is weekend by
+     * turning this param to false.
      */
     public static final String VALIDATION_HINT = "DocumentFactory_VALIDATION_HINT";
 
     /**
-     * When this hint is contained and set to Boolean.TRUE, external entities will be disabled. This
-     * setting is used to alivate XXE attacks, preventing both {@link #VALIDATION_HINT} and {@link
-     * XMLHandlerHints#ENTITY_RESOLVER} from being effective.
+     * When this hint is contained and set to Boolean.TRUE, external entities will be disabled. This setting is used to
+     * alivate XXE attacks, preventing both {@link #VALIDATION_HINT} and {@link XMLHandlerHints#ENTITY_RESOLVER} from
+     * being effective.
      */
-    public static final String DISABLE_EXTERNAL_ENTITIES =
-            "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
+    public static final String DISABLE_EXTERNAL_ENTITIES = "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
 
     /**
      * calls getInstance(URI,Level) with Level.WARNING
@@ -78,22 +76,19 @@ public class DocumentFactory {
      * @return Object
      * @see DocumentFactory#getInstance(URI, Map, Level)
      */
-    public static Object getInstance(URI desiredDocument, Map<String, Object> hints)
-            throws SAXException {
+    public static Object getInstance(URI desiredDocument, Map<String, Object> hints) throws SAXException {
         return getInstance(desiredDocument, hints, Level.WARNING);
     }
 
     /**
-     * Parses the instance data provided. This method assumes that the XML document is fully
-     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
-     * as opposed to a vid parse.
+     * Parses the instance data provided. This method assumes that the XML document is fully described using XML
+     * Schemas. Failure to be fully described as Schemas will result in errors, as opposed to a vid parse.
      *
      * @param hints May be null.
      * @return Object
      * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
-    public static Object getInstance(URI desiredDocument, Map<String, Object> hints, Level level)
-            throws SAXException {
+    public static Object getInstance(URI desiredDocument, Map<String, Object> hints, Level level) throws SAXException {
         SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(desiredDocument, hints);
@@ -109,16 +104,14 @@ public class DocumentFactory {
     }
 
     /**
-     * Parses the instance data provided. This method assumes that the XML document is fully
-     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
-     * as opposed to a vid parse.
+     * Parses the instance data provided. This method assumes that the XML document is fully described using XML
+     * Schemas. Failure to be fully described as Schemas will result in errors, as opposed to a vid parse.
      *
      * @param hints May be null.
      * @return Object
      * @see DocumentFactory#getInstance(InputStream, Map, Level, boolean)
      */
-    public static Object getInstance(InputStream is, Map<String, Object> hints, Level level)
-            throws SAXException {
+    public static Object getInstance(InputStream is, Map<String, Object> hints, Level level) throws SAXException {
         SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(hints);

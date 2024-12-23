@@ -27,26 +27,21 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertLikeTest() throws IOException, CQLException {
         // {"op":"like","args":[{"property":"eo:instrument"},"OLI%"]}
-        Filter likeFilter =
-                parse("{\"op\":\"like\",\"args\":[{\"property\":\"eo:instrument\"},\"OLI%\"]}");
+        Filter likeFilter = parse("{\"op\":\"like\",\"args\":[{\"property\":\"eo:instrument\"},\"OLI%\"]}");
         Assert.assertEquals("\"eo:instrument\" ILIKE 'OLI%'", ECQL.toCQL(likeFilter));
     }
 
     @Test
     public void convertBinaryEqualsTest() throws IOException, CQLException {
         // {"op":"=","args":[{"property":"scene_id"},"LC82030282019133LGN00"]}
-        Filter equalsFilter =
-                parse(
-                        "{\"op\":\"=\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}");
+        Filter equalsFilter = parse("{\"op\":\"=\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}");
         Assert.assertEquals("scene_id = 'LC82030282019133LGN00'", ECQL.toCQL(equalsFilter));
     }
 
     @Test
     public void convertBinaryNotEqualsTest() throws IOException, CQLException {
         // {"op":"<>","args":[{"property":"scene_id"},"LC82030282019133LGN00"]}
-        Filter equalsFilter =
-                parse(
-                        "{\"op\":\"<>\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}");
+        Filter equalsFilter = parse("{\"op\":\"<>\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}");
         Assert.assertEquals("scene_id <> 'LC82030282019133LGN00'", ECQL.toCQL(equalsFilter));
     }
 
@@ -81,8 +76,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertBetweenTest() throws IOException, CQLException {
         // {"op":"between","args":[{"property":"eo:cloud_cover"},0.1,0.2]}
-        Filter gtFilter =
-                parse("{\"op\":\"between\",\"args\":[{\"property\":\"eo:cloud_cover\"},0.1,0.2]}");
+        Filter gtFilter = parse("{\"op\":\"between\",\"args\":[{\"property\":\"eo:cloud_cover\"},0.1,0.2]}");
         Assert.assertEquals("\"eo:cloud_cover\" BETWEEN 0.1 AND 0.2", ECQL.toCQL(gtFilter));
     }
 
@@ -90,26 +84,23 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     public void convertInTest() throws IOException, CQLException {
         // {"op":"in","args":[{"property":"landsat:wrs_path"},["153","154","155"]]}
         Filter gtFilter =
-                parse(
-                        "{\"op\":\"in\",\"args\":[{\"property\":\"landsat:wrs_path\"},[\"153\",\"154\",\"155\"]]}");
+                parse("{\"op\":\"in\",\"args\":[{\"property\":\"landsat:wrs_path\"},[\"153\",\"154\",\"155\"]]}");
         Assert.assertEquals("\"landsat:wrs_path\" IN ('153','154','155')", ECQL.toCQL(gtFilter));
     }
 
     @Test
     public void convertOrTest() throws IOException, CQLException {
         // {"op":"or","args":[{"op":"=","args":[{"property":"ro:cloud_cover"},0.1]},{"op":"=","args":[{"property":"ro:cloud_cover"},0.2]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"or\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.1]},{\"op\":\"=\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.2]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"or\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.1]},{\"op\":\"=\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.2]}]}");
         Assert.assertEquals("\"ro:cloud_cover\" IN (0.1,0.2)", ECQL.toCQL(gtFilter));
     }
 
     @Test
     public void convertAndTest() throws IOException, CQLException {
         // {"op":"and","args":[{"op":"<","args":[{"property":"ro:cloud_cover"},0.1]},{"op":"=","args":[{"property":"landsat:wrs_row"},28]},{"op":"=","args":[{"property":"landsat:wrs_path"},203]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"and\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.1]},{\"op\":\"=\",\"args\":[{\"property\":\"landsat:wrs_row\"},28]},{\"op\":\"=\",\"args\":[{\"property\":\"landsat:wrs_path\"},203]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"and\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.1]},{\"op\":\"=\",\"args\":[{\"property\":\"landsat:wrs_row\"},28]},{\"op\":\"=\",\"args\":[{\"property\":\"landsat:wrs_path\"},203]}]}");
         Assert.assertEquals(
                 "\"ro:cloud_cover\" < 0.1 AND \"landsat:wrs_row\" = 28 AND \"landsat:wrs_path\" = 203",
                 ECQL.toCQL(gtFilter));
@@ -125,9 +116,8 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertContainsTest() throws IOException, CQLException {
         // {"op":"s_contains","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "CONTAINS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -137,8 +127,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     public void convertCrossesTest() throws IOException, CQLException {
         // {"op":"s_crosses","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_crosses\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+                parse("{\"op\":\"s_crosses\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "CROSSES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -147,9 +136,8 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertDisjointTest() throws IOException, CQLException {
         // {"op":"s_disjoint","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_disjoint\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"s_disjoint\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "DISJOINT(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -159,8 +147,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     public void convertSEqualsTest() throws IOException, CQLException {
         // {"op":"s_equals","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_equals\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+                parse("{\"op\":\"s_equals\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "EQUALS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -169,9 +156,8 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertIntersectsTest() throws IOException, CQLException {
         // {"op":"s_intersects","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -180,9 +166,8 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertIntersectsGeoJsonTest() throws IOException, CQLException {
         // {"op":"s_intersects","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -191,9 +176,8 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertOverlapsTest() throws IOException, CQLException {
         // {"op":"s_overlaps","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_overlaps\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"s_overlaps\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "OVERLAPS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -203,8 +187,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     public void convertTouchesTest() throws IOException, CQLException {
         // {"op":"s_touches","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_touches\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+                parse("{\"op\":\"s_touches\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "TOUCHES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -214,8 +197,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     public void convertWithinTest() throws IOException, CQLException {
         // {"op":"s_within","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         Filter gtFilter =
-                parse(
-                        "{\"op\":\"s_within\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
+                parse("{\"op\":\"s_within\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
                 "WITHIN(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
@@ -224,36 +206,29 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertNotTest() throws IOException, CQLException {
         // {"op":"not","args":[{"op":"<","args":[{"property":"floors"},5]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"not\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"floors\"},5]}]}");
+        Filter gtFilter = parse("{\"op\":\"not\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"floors\"},5]}]}");
         Assert.assertEquals("NOT (floors < 5)", ECQL.toCQL(gtFilter));
     }
 
     @Test
     public void convertAfterTest() throws IOException, CQLException {
         // {"op":"t_after","args":[{"property":"built"},{"date":"2012-06-05"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
+        Filter gtFilter = parse("{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
         Assert.assertEquals(ECQL.toFilter("built AFTER 2012-06-05T00:00:00"), gtFilter);
     }
 
     @Test
     public void convertBeforeTest() throws IOException, CQLException {
         // {"op":"t_before","args":[{"property":"built"},{"date":"2015-01-01"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"date\":\"2015-01-01\"}]}");
+        Filter gtFilter = parse("{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"date\":\"2015-01-01\"}]}");
         Assert.assertEquals(ECQL.toFilter("built BEFORE 2015-01-01T00:00:00"), gtFilter);
     }
 
     @Test
     public void convertTDisjointTest() throws IOException, CQLException {
         // {"op":"t_disjoint","args":[{"property":"updated"},{"interval":["2017-06-10T07:30:00Z","2017-06-11T10:30:00Z"]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_disjoint\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"t_disjoint\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
         Assert.assertEquals(
                 "updated BEFORE '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]' AND updated AFTER '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'",
                 ECQL.toCQL(gtFilter));
@@ -262,21 +237,16 @@ public class CQLJsonParsingTest extends CQLJsonTest {
     @Test
     public void convertTEqualsTest() throws IOException, CQLException {
         // {"op":"t_equals","args":[{"property":"built"},{"date":"2012-06-05"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
+        Filter gtFilter = parse("{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
         Assert.assertEquals(ECQL.toFilter("built = 2012-06-05"), gtFilter);
     }
 
     @Test
     public void convertDuringTest() throws IOException, CQLException {
         // {"op":"t_during","args":[{"property":"updated"},{"interval":["2017-06-10T07:30:00Z","2017-06-11T10:30:00Z"]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_during\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
-        Assert.assertEquals(
-                "updated DURING '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'",
-                ECQL.toCQL(gtFilter));
+        Filter gtFilter = parse(
+                "{\"op\":\"t_during\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
+        Assert.assertEquals("updated DURING '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'", ECQL.toCQL(gtFilter));
     }
 
     @Test(expected = CQLException.class)

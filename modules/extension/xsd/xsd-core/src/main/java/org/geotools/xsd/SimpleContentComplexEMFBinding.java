@@ -25,8 +25,8 @@ import org.w3c.dom.Element;
 /**
  * A binding implementation which handles the case of a complex type with simple content.
  *
- * <p>Model objects typically have a single "value" getter/setter. This binding calls that method
- * reflectively on the class created by the super type.
+ * <p>Model objects typically have a single "value" getter/setter. This binding calls that method reflectively on the
+ * class created by the super type.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @see ComplexEMFBinding

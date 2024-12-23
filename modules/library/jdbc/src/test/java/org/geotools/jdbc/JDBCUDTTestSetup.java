@@ -37,8 +37,8 @@ public abstract class JDBCUDTTestSetup extends JDBCDelegatingTestSetup {
      *
      * <p>udt( id:Integer PRIMARY KEY; ut: String[] )
      *
-     * <p>The "ut" column is a user defined column that is text based but restricts input to 2
-     * numbers follows by two letters. Example: '12ab', '34CD'.
+     * <p>The "ut" column is a user defined column that is text based but restricts input to 2 numbers follows by two
+     * letters. Example: '12ab', '34CD'.
      *
      * <p>
      *

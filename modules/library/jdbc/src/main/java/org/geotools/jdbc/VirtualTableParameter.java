@@ -19,8 +19,8 @@ package org.geotools.jdbc;
 import java.io.Serializable;
 
 /**
- * A {@link VirtualTable} parameter. Has a name, a default value, and a {@link Validator} to protect
- * the parameters against sql injection attacks.
+ * A {@link VirtualTable} parameter. Has a name, a default value, and a {@link Validator} to protect the parameters
+ * against sql injection attacks.
  *
  * <p>The class includes some default validators
  *

@@ -48,8 +48,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * TestCase that can be extended to verify the functionality of different FeatureCollection
- * implementations.
+ * TestCase that can be extended to verify the functionality of different FeatureCollection implementations.
  *
  * @author Jody
  */
@@ -86,8 +85,7 @@ public abstract class FeatureCollectionTest {
      *
      * @return a new feature collection
      */
-    protected abstract SimpleFeatureCollection newCollection(
-            SimpleFeatureType schema, List<SimpleFeature> list);
+    protected abstract SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list);
 
     public Collection randomPiece(Collection original) {
         LinkedList next = new LinkedList();
@@ -250,8 +248,7 @@ public abstract class FeatureCollectionTest {
     }
 
     /**
-     * A simple colleciton listener used to count change events to verify event handling during
-     * testing.
+     * A simple colleciton listener used to count change events to verify event handling during testing.
      *
      * @author Jody
      */

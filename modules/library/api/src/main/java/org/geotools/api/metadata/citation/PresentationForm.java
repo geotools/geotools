@@ -34,30 +34,27 @@ public final class PresentationForm extends CodeList<PresentationForm> {
 
     /** Digital representation of a primarily textual item (can contain illustrations also). */
     @UML(identifier = "documentDigital", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm DOCUMENT_DIGITAL =
-            new PresentationForm("DOCUMENT_DIGITAL");
+    public static final PresentationForm DOCUMENT_DIGITAL = new PresentationForm("DOCUMENT_DIGITAL");
 
     /**
-     * Representation of a primarily textual item (can contain illustrations also) on paper,
-     * photographic material, or other media.
+     * Representation of a primarily textual item (can contain illustrations also) on paper, photographic material, or
+     * other media.
      */
     @UML(identifier = "documentHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm DOCUMENT_HARDCOPY =
-            new PresentationForm("DOCUMENT_HARDCOPY");
+    public static final PresentationForm DOCUMENT_HARDCOPY = new PresentationForm("DOCUMENT_HARDCOPY");
 
     /**
-     * Likeness of natural or man-made features, objects, and activities acquired through the
-     * sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as
-     * thermal infrared, and high resolution radar and stored in digital format.
+     * Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any
+     * other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and
+     * stored in digital format.
      */
     @UML(identifier = "imageDigital", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm IMAGE_DIGITAL = new PresentationForm("IMAGE_DIGITAL");
 
     /**
-     * Likeness of natural or man-made features, objects, and activities acquired through the
-     * sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as
-     * thermal infrared, and high resolution radar and reproduced on paper, photographic material,
-     * or other media for use directly by the human user.
+     * Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any
+     * other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and
+     * reproduced on paper, photographic material, or other media for use directly by the human user.
      */
     @UML(identifier = "imageHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm IMAGE_HARDCOPY = new PresentationForm("IMAGE_HARDCOPY");
@@ -66,10 +63,7 @@ public final class PresentationForm extends CodeList<PresentationForm> {
     @UML(identifier = "mapDigital", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm MAP_DIGITAL = new PresentationForm("MAP_DIGITAL");
 
-    /**
-     * Map printed on paper, photographic material, or other media for use directly by the human
-     * user.
-     */
+    /** Map printed on paper, photographic material, or other media for use directly by the human user. */
     @UML(identifier = "mapHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm MAP_HARDCOPY = new PresentationForm("MAP_HARDCOPY");
 
@@ -87,18 +81,15 @@ public final class PresentationForm extends CodeList<PresentationForm> {
 
     /** Vertical cross-section printed on paper, etc. */
     @UML(identifier = "profileHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm PROFILE_HARDCOPY =
-            new PresentationForm("PROFILE_HARDCOPY");
+    public static final PresentationForm PROFILE_HARDCOPY = new PresentationForm("PROFILE_HARDCOPY");
 
-    /**
-     * Digital representation of facts or figures systematically displayed, especially in columns.
-     */
+    /** Digital representation of facts or figures systematically displayed, especially in columns. */
     @UML(identifier = "tableDigital", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm TABLE_DIGITAL = new PresentationForm("TABLE_DIGITAL");
 
     /**
-     * Representation of facts or figures systematically displayed, especially in columns, printed
-     * on paper, photographic material, or other media.
+     * Representation of facts or figures systematically displayed, especially in columns, printed on paper,
+     * photographic material, or other media.
      */
     @UML(identifier = "tableHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
     public static final PresentationForm TABLE_HARDCOPY = new PresentationForm("TABLE_HARDCOPY");
@@ -112,8 +103,8 @@ public final class PresentationForm extends CodeList<PresentationForm> {
     public static final PresentationForm VIDEO_HARDCOPY = new PresentationForm("VIDEO_HARDCOPY");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -139,8 +130,7 @@ public final class PresentationForm extends CodeList<PresentationForm> {
     }
 
     /**
-     * Returns the presentation form that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the presentation form that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

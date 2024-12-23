@@ -36,11 +36,10 @@ import org.geotools.referencing.CRS;
  */
 public class WMSUtils {
     /**
-     * Utility method to return each layer that has a name. This method maintains no hierarchy at
-     * all.
+     * Utility method to return each layer that has a name. This method maintains no hierarchy at all.
      *
-     * @return An array of Layers, each value has a it's name property set or an empty array if
-     *     there are none. It will return null if there is no capabilities document
+     * @return An array of Layers, each value has a it's name property set or an empty array if there are none. It will
+     *     return null if there is no capabilities document
      */
     public static Layer[] getNamedLayers(WMSCapabilities capabilities) {
 
@@ -50,8 +49,9 @@ public class WMSUtils {
 
         List<Layer> namedLayersList = new ArrayList<>();
 
-        Layer[] layers =
-                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
+        Layer[] layers = capabilities
+                .getLayerList()
+                .toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (Layer layer : layers) {
             if ((layer.getName() != null) && (layer.getName().length() != 0)) {
@@ -84,8 +84,9 @@ public class WMSUtils {
     public static Set getSRSs(WMSCapabilities capabilities) {
         Set<String> srss = new TreeSet<>();
 
-        Layer[] layers =
-                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
+        Layer[] layers = capabilities
+                .getLayerList()
+                .toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (Layer layer : layers) {
             if (layer.getSrs() != null) {
@@ -97,8 +98,8 @@ public class WMSUtils {
     }
 
     /**
-     * Given a list of type Layer, return all EPSG codes that is supported by all of the layers.
-     * This is an intersection of each layer's SRS set.
+     * Given a list of type Layer, return all EPSG codes that is supported by all of the layers. This is an intersection
+     * of each layer's SRS set.
      *
      * @param layers A List of type Layer
      * @return a Set of type String, containin EPSG codes, or empty if none found
@@ -126,16 +127,14 @@ public class WMSUtils {
     }
 
     /**
-     * Given a CRS and a Set of type String consisting of EPSG CRS codes (such as "EPSG:4326"), it
-     * will check the transform that exists between each EPSG code's CRS and the given CRS. If this
-     * is the identity transform, meaning the CRS is equivalent to the EPSG code, the used EPSG code
-     * will be returned. The first valid EPSG code found is returned, so it is possibly that
-     * multiple valid codes exist.
+     * Given a CRS and a Set of type String consisting of EPSG CRS codes (such as "EPSG:4326"), it will check the
+     * transform that exists between each EPSG code's CRS and the given CRS. If this is the identity transform, meaning
+     * the CRS is equivalent to the EPSG code, the used EPSG code will be returned. The first valid EPSG code found is
+     * returned, so it is possibly that multiple valid codes exist.
      *
      * <p>If no such identity transform can be found, null will be returned.
      *
-     * <p>If this method is succesful, the result is stored in a cache, which is called in
-     * subsequent calls.
+     * <p>If this method is succesful, the result is stored in a cache, which is called in subsequent calls.
      *
      * @param crs a CRS that is to be compared to each EPSG code in codes
      * @param codes a Set of type String containing EPSG codes

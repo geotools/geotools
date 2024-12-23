@@ -35,9 +35,9 @@ import org.junit.Test;
  */
 public final class KeySortedListTest {
     /**
-     * Inserts random floating point numbers into the list. The key is the integer part of the
-     * floating point number. This means that the number should be sorted in such a way that their
-     * integer part are in increasing order, while the fractional part remains in random order.
+     * Inserts random floating point numbers into the list. The key is the integer part of the floating point number.
+     * This means that the number should be sorted in such a way that their integer part are in increasing order, while
+     * the fractional part remains in random order.
      */
     @Test
     public void testAdd() {

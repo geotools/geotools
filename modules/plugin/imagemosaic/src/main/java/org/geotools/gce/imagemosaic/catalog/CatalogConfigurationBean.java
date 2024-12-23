@@ -62,8 +62,8 @@ public class CatalogConfigurationBean {
     private boolean skipExternalOverviews;
 
     /**
-     * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
-     * (Oracle stores are wrapped by default).
+     * Whether the specified store should be wrapped. Only PostGis stores support this parameter. (Oracle stores are
+     * wrapped by default).
      */
     private boolean wrapStore = false;
 
@@ -127,10 +127,7 @@ public class CatalogConfigurationBean {
         if (resolvedSuggestedSPI == null) {
             resolvedSuggestedSPI = lookupImageReaderSpi(suggestedSPI);
             if (resolvedSuggestedSPI == null) {
-                LOGGER.info(
-                        "The suggested imageReaderSPI: "
-                                + suggestedSPI
-                                + " wasn't found at the classpath.");
+                LOGGER.info("The suggested imageReaderSPI: " + suggestedSPI + " wasn't found at the classpath.");
             }
         }
         return resolvedSuggestedSPI;
@@ -138,8 +135,7 @@ public class CatalogConfigurationBean {
 
     static ImageReaderSpi lookupImageReaderSpi(String className) {
         Objects.requireNonNull(className);
-        Iterator<ImageReaderSpi> serviceProviders =
-                IIORegistry.lookupProviders(ImageReaderSpi.class);
+        Iterator<ImageReaderSpi> serviceProviders = IIORegistry.lookupProviders(ImageReaderSpi.class);
         while (serviceProviders.hasNext()) {
             ImageReaderSpi serviceProvider = serviceProviders.next();
             if (className.equals(serviceProvider.getClass().getName())) {
@@ -197,9 +193,8 @@ public class CatalogConfigurationBean {
     public AbstractGridFormat suggestedFormat() throws ReflectiveOperationException {
         if (suggestedFormat == null) return null;
         if (resolvedFormat == null) {
-            resolvedFormat =
-                    (AbstractGridFormat)
-                            Class.forName(suggestedFormat).getDeclaredConstructor().newInstance();
+            resolvedFormat = (AbstractGridFormat)
+                    Class.forName(suggestedFormat).getDeclaredConstructor().newInstance();
         }
         return resolvedFormat;
     }
@@ -211,9 +206,8 @@ public class CatalogConfigurationBean {
     public ImageInputStreamSpi suggestedIsSPI() throws ReflectiveOperationException {
         if (suggestedIsSPI == null) return null;
         if (resolvedIsSPI == null) {
-            resolvedIsSPI =
-                    (ImageInputStreamSpi)
-                            Class.forName(suggestedIsSPI).getDeclaredConstructor().newInstance();
+            resolvedIsSPI = (ImageInputStreamSpi)
+                    Class.forName(suggestedIsSPI).getDeclaredConstructor().newInstance();
         }
         return resolvedIsSPI;
     }

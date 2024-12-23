@@ -51,11 +51,10 @@ import org.geotools.util.logging.Logging;
  *
  * <ul>
  *   <li>hide, rename fields - compute new fields
- *   <li>build geom from x,y (we need to add a new Point filter function and have a special
- *       treatment of it in simplifying filter visitor so that it turns bbox filters against it into
- *       a filter on x,y)
- *   <li>on the fly simplification for WFS (just use environment variables) and in general dynamic
- *       processing based on params without stored queries
+ *   <li>build geom from x,y (we need to add a new Point filter function and have a special treatment of it in
+ *       simplifying filter visitor so that it turns bbox filters against it into a filter on x,y)
+ *   <li>on the fly simplification for WFS (just use environment variables) and in general dynamic processing based on
+ *       params without stored queries
  * </ul>
  *
  * @author Andrea Aime - GeoSolutions
@@ -71,19 +70,15 @@ public class TransformFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureSource source;
 
     /**
-     * Creates a transformed feature source from the original source, giving it a certain name and a
-     * set of computed properties
+     * Creates a transformed feature source from the original source, giving it a certain name and a set of computed
+     * properties
      */
-    public TransformFeatureSource(
-            SimpleFeatureSource source, Name name, List<Definition> definitions)
+    public TransformFeatureSource(SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
         this.transformer = new Transformer(source, name, definitions, null);
         this.source = source;
 
-        LOGGER.log(
-                Level.FINE,
-                "Transformed target schema for this feature source is {0}",
-                transformer.getSchema());
+        LOGGER.log(Level.FINE, "Transformed target schema for this feature source is {0}", transformer.getSchema());
     }
 
     @Override

@@ -69,11 +69,10 @@ public class MongoTestUtil {
             assertThat(mc, is(notNullValue()));
             DB db = mc.getDB("db");
             DBCollection coll = db.getCollection("dbc");
-            BasicDBObject bdo =
-                    new BasicDBObject("name", "MongoDB")
-                            .append("type", "database")
-                            .append("count", 1)
-                            .append("info", new BasicDBObject("x", 203).append("y", 102));
+            BasicDBObject bdo = new BasicDBObject("name", "MongoDB")
+                    .append("type", "database")
+                    .append("count", 1)
+                    .append("info", new BasicDBObject("x", 203).append("y", 102));
 
             coll.insert(bdo);
             // System.out.println(coll.findOne());
@@ -124,8 +123,7 @@ public class MongoTestUtil {
         return store;
     }
 
-    private DBCollection grabDBCollection(
-            MongoClient client, String dbName, String dbcName, boolean init)
+    private DBCollection grabDBCollection(MongoClient client, String dbName, String dbcName, boolean init)
             throws UnknownHostException {
         DB db = client.getDB(dbName);
         DBCollection dbc = db.getCollection(dbcName);

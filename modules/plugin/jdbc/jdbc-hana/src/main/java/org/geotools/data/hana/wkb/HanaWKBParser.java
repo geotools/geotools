@@ -37,9 +37,9 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * A parser for the well-known-binary created by HANA.
  *
- * <p>The JTS parser cannot be used to parse 3- or 4-dimensional geometries because of different
- * type code conventions. HANA offsets type codes by multiples of 1000 (as described in the relevant
- * OGC and SQL/MM standard) while JTS expects specific bits to be set.
+ * <p>The JTS parser cannot be used to parse 3- or 4-dimensional geometries because of different type code conventions.
+ * HANA offsets type codes by multiples of 1000 (as described in the relevant OGC and SQL/MM standard) while JTS expects
+ * specific bits to be set.
  *
  * @author Stefan Uhrig, SAP SE
  */
@@ -291,8 +291,7 @@ public class HanaWKBParser {
                 data.order(ByteOrder.LITTLE_ENDIAN);
                 break;
             default:
-                throw new HanaWKBParserException(
-                        MessageFormat.format("Invalid BOM value {0}", order));
+                throw new HanaWKBParserException(MessageFormat.format("Invalid BOM value {0}", order));
         }
     }
 }

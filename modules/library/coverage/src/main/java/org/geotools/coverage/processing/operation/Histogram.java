@@ -40,22 +40,19 @@ import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
 
 /**
- * * This operation simply wraps JAI Histogram operations described by {@link HistogramDescriptor}
- * inside a GeoTools operation in order to make it spatial-aware.
+ * * This operation simply wraps JAI Histogram operations described by {@link HistogramDescriptor} inside a GeoTools
+ * operation in order to make it spatial-aware.
  *
- * <p>For the moment this is a very simple wrap. Plans on the 2.4 and successive versions of this
- * operation are to add the ability to use spatial ROIs and to specific Spatial subsampling. As of
- * now, ROI has to be a Java2D {@link Shape} subclass and the parameters to control x and y
- * subsamplings got to be Integer, which means pixel-aware.
+ * <p>For the moment this is a very simple wrap. Plans on the 2.4 and successive versions of this operation are to add
+ * the ability to use spatial ROIs and to specific Spatial subsampling. As of now, ROI has to be a Java2D {@link Shape}
+ * subclass and the parameters to control x and y subsamplings got to be Integer, which means pixel-aware.
  *
- * <p>For more information on how the underlying {@link JAI} operators works you can have a look
- * here: <a
+ * <p>For more information on how the underlying {@link JAI} operators works you can have a look here: <a
  * href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/operator/HistogramDescriptor.html">HistogramDescriptor</a>
- * <a
- * href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/Histogram.html>Histogram</a>
+ * <a href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/Histogram.html>Histogram</a>
  *
- * <p><strong>How to use this operation</strong> Here is a very simple example on how to use this
- * operation in order to get the {@link javax.media.jai.Histogram} of the source coverage. <code>
+ * <p><strong>How to use this operation</strong> Here is a very simple example on how to use this operation in order to
+ * get the {@link javax.media.jai.Histogram} of the source coverage. <code>
  * final OperationJAI op=new OperationJAI("Histogram");
  * ParameterValueGroup params = op.getParameters();
  * params.parameter("Source").setValue(coverage);
@@ -96,9 +93,8 @@ public class Histogram extends BaseStatisticsOperationJAI {
      * href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/operator/HistogramDescriptor.html">HistogramDescriptor</a>
      * for more info.
      *
-     * @see OperationJAI#getProperties(RenderedImage, CoordinateReferenceSystem,
-     *     InternationalString, MathTransform, GridCoverage2D[],
-     *     org.geotools.coverage.processing.OperationJAI.Parameters),
+     * @see OperationJAI#getProperties(RenderedImage, CoordinateReferenceSystem, InternationalString, MathTransform,
+     *     GridCoverage2D[], org.geotools.coverage.processing.OperationJAI.Parameters),
      */
     @Override
     protected Map<String, ?> getProperties(
@@ -122,8 +118,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties
-                Statistics[][] results =
-                        ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
+                Statistics[][] results = ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
                 // Extracting the bins
                 int numBands = result.getNumBands();
                 int[][] bins = new int[numBands][];
@@ -143,16 +138,14 @@ public class Histogram extends BaseStatisticsOperationJAI {
                 double[] highValues = (double[]) parameterBlock.getObjectParameter(8);
                 int[] numBins = (int[]) parameterBlock.getObjectParameter(9);
 
-                HistogramWrapper wrapper =
-                        new HistogramWrapper(numBins, lowValues, highValues, bins);
+                HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, wrapper);
             } else {
 
                 final javax.media.jai.Histogram hist =
-                        (javax.media.jai.Histogram)
-                                result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+                        (javax.media.jai.Histogram) result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, hist);
@@ -160,8 +153,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
-            CoverageUtilities.setNoDataProperty(
-                    synthProp, CoverageUtilities.getNoDataProperty(source));
+            CoverageUtilities.setNoDataProperty(synthProp, CoverageUtilities.getNoDataProperty(source));
             return Collections.unmodifiableMap(synthProp);
         }
         return super.getProperties(data, crs, name, toCRS, sources, parameters);
@@ -180,10 +172,10 @@ public class Histogram extends BaseStatisticsOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(STATS)) {
-            GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+            GridCoverage2D source =
+                    (GridCoverage2D) parameters2.parameter("source0").getValue();
             // Handle ROI and NoData
             handleROINoDataInternal(parameters, source, STATS, 2, 3);
             // Setting the Statistic operation

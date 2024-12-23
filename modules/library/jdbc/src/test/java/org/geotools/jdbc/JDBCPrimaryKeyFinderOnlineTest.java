@@ -58,12 +58,10 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testAssignedSinglePKeyView() throws Exception {
-        JDBCFeatureStore fs =
-                (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedsinglepk"));
+        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedsinglepk"));
 
         assertEquals(1, fs.getPrimaryKey().getColumns().size());
-        assertTrue(
-                fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
+        assertTrue(fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
 
         SimpleFeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
@@ -71,14 +69,11 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testAssignedMultiPKeyView() throws Exception {
-        JDBCFeatureStore fs =
-                (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));
+        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));
 
         assertEquals(2, fs.getPrimaryKey().getColumns().size());
-        assertTrue(
-                fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
-        assertTrue(
-                fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
+        assertTrue(fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
+        assertTrue(fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
 
         try (FeatureIterator i = fs.getFeatures().features()) {
             for (int j = 1; i.hasNext(); j++) {
@@ -89,8 +84,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         }
     }
 
-    protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features)
-            throws Exception {
+    protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
         b.add("four");
         b.add(new GeometryFactory().createPoint(new Coordinate(4, 4)));
@@ -99,29 +93,22 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         features.addFeatures(DataUtilities.collection(f));
 
         // pattern match to handle the multi primary key case
-        assertTrue(
-                ((String) f.getUserData().get("fid"))
-                        .matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
+        assertTrue(((String) f.getUserData().get("fid")).matches(tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
 
-    protected void assertPrimaryKeyValues(final SimpleFeatureCollection features, int count)
-            throws Exception {
-        assertFeatureIterator(
-                1,
-                count,
-                features.features(),
-                new SimpleFeatureAssertion() {
-                    @Override
-                    public int toIndex(SimpleFeature feature) {
-                        return Integer.parseInt(feature.getIdentifier().getID().split("\\.", 2)[1]);
-                    }
+    protected void assertPrimaryKeyValues(final SimpleFeatureCollection features, int count) throws Exception {
+        assertFeatureIterator(1, count, features.features(), new SimpleFeatureAssertion() {
+            @Override
+            public int toIndex(SimpleFeature feature) {
+                return Integer.parseInt(feature.getIdentifier().getID().split("\\.", 2)[1]);
+            }
 
-                    @Override
-                    public void check(int index, SimpleFeature feature) {
-                        assertEquals(
-                                tname(features.getSchema().getName().getLocalPart()) + "." + index,
-                                feature.getIdentifier().getID());
-                    }
-                });
+            @Override
+            public void check(int index, SimpleFeature feature) {
+                assertEquals(
+                        tname(features.getSchema().getName().getLocalPart()) + "." + index,
+                        feature.getIdentifier().getID());
+            }
+        });
     }
 }

@@ -40,22 +40,17 @@ public class DirectedLineGraphGeneratorTest {
 
     /**
      * Build a linear graph by adding a number of line segments that join at endpoints. <br>
-     * Expected: 1. Number of edges = number of lines added. 2. Number of nodes = number of lines +
-     * 1
+     * Expected: 1. Number of edges = number of lines added. 2. Number of nodes = number of lines + 1
      */
     @Test
     public void test_0() {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            Edge e = (Edge) generator()
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
             e.setID(i - 1);
             e.getNodeA().setID(i - 1);
             e.getNodeB().setID(i);
@@ -67,40 +62,33 @@ public class DirectedLineGraphGeneratorTest {
         Assert.assertEquals(built.getEdges().size(), n);
         Assert.assertEquals(built.getNodes().size(), n + 1);
 
-        GraphVisitor visitor =
-                component -> {
-                    DirectedNode node = (DirectedNode) component;
-                    Coordinate c = (Coordinate) node.getObject();
+        GraphVisitor visitor = component -> {
+            DirectedNode node = (DirectedNode) component;
+            Coordinate c = (Coordinate) node.getObject();
 
-                    if (node.getDegree() == 1) {
-                        Assert.assertTrue(
-                                (node.getID() == 0
-                                                && node.getInDegree() == 0
-                                                && node.getOutDegree() == 1)
-                                        || (node.getID() == n
-                                                && node.getInDegree() == 1
-                                                && node.getOutDegree() == 0));
-                    } else {
-                        Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
-                    }
+            if (node.getDegree() == 1) {
+                Assert.assertTrue((node.getID() == 0 && node.getInDegree() == 0 && node.getOutDegree() == 1)
+                        || (node.getID() == n && node.getInDegree() == 1 && node.getOutDegree() == 0));
+            } else {
+                Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
+            }
 
-                    Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
-                    return (0);
-                };
+            Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
+            return (0);
+        };
         built.visitNodes(visitor);
 
         // ensure correct edge direction
-        visitor =
-                component -> {
-                    DirectedEdge e = (DirectedEdge) component;
-                    Coordinate c0 = (Coordinate) e.getInNode().getObject();
-                    Coordinate c1 = (Coordinate) e.getOutNode().getObject();
-                    LineSegment ls = (LineSegment) e.getObject();
+        visitor = component -> {
+            DirectedEdge e = (DirectedEdge) component;
+            Coordinate c0 = (Coordinate) e.getInNode().getObject();
+            Coordinate c1 = (Coordinate) e.getOutNode().getObject();
+            LineSegment ls = (LineSegment) e.getObject();
 
-                    Assert.assertTrue(ls.p0.equals(c0) && ls.p1.equals(c1));
+            Assert.assertTrue(ls.p0.equals(c0) && ls.p1.equals(c1));
 
-                    return (0);
-                };
+            return (0);
+        };
     }
 
     /**
@@ -113,14 +101,10 @@ public class DirectedLineGraphGeneratorTest {
         final Coordinate base = new Coordinate(0d, 0d);
         final int n = 100;
         for (int i = 1; i <= n; i++) {
-            Edge e =
-                    (Edge)
-                            generator()
-                                    .add(
-                                            new LineSegment(
-                                                    new Coordinate(
-                                                            base.x + (i - 1), base.y + (i - 1)),
-                                                    new Coordinate(base.x + i, base.y + i)));
+            Edge e = (Edge) generator()
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
             e.setID(i - 1);
             e.getNodeA().setID(i - 1);
             e.getNodeB().setID(i);

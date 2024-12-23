@@ -279,8 +279,7 @@ public class GeoJSONWriter implements AutoCloseable {
                                 }
 
                                 @Override
-                                public DefaultSerializerProvider withCaches(
-                                        CacheProvider cacheProvider) {
+                                public DefaultSerializerProvider withCaches(CacheProvider cacheProvider) {
                                     throw new UnsupportedOperationException();
                                 }
                             });
@@ -312,10 +311,7 @@ public class GeoJSONWriter implements AutoCloseable {
             return collection;
         }
         CoordinateReferenceSystem inCRS =
-                currentFeature
-                        .getDefaultGeometryProperty()
-                        .getDescriptor()
-                        .getCoordinateReferenceSystem();
+                currentFeature.getDefaultGeometryProperty().getDescriptor().getCoordinateReferenceSystem();
         if (transform == null || inCRS != lastCRS) {
             lastCRS = inCRS;
             try {
@@ -342,9 +338,7 @@ public class GeoJSONWriter implements AutoCloseable {
     private void writeBbox(JsonGenerator g, Geometry defaultGeometry) throws IOException {
         g.writeFieldName("bbox");
         final Envelope envelope = defaultGeometry.getEnvelopeInternal();
-        double[] coords = {
-            envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY()
-        };
+        double[] coords = {envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY()};
         formatter.setMaximumFractionDigits(maxDecimals);
         g.writeStartArray();
         for (double c : coords) {
@@ -387,8 +381,7 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     /**
-     * Utility encoding a single JTS geometry in GeoJSON with configurable max decimals, and
-     * returning it as a string
+     * Utility encoding a single JTS geometry in GeoJSON with configurable max decimals, and returning it as a string
      */
     public static String toGeoJSON(Geometry geometry, int maxDecimals) {
         ObjectMapper lMapper = new ObjectMapper();
@@ -426,10 +419,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } catch (IOException e) {
             // very hard to actually generate this
             LOGGER.warning("Unexpected IOException converting featureCollection to GeoJSON");
-            LOGGER.log(
-                    Level.FINE,
-                    "Unexpected IOException converting featureCollection to GeoJSON",
-                    e);
+            LOGGER.log(Level.FINE, "Unexpected IOException converting featureCollection to GeoJSON", e);
         }
         return new String(out.toByteArray());
     }
@@ -454,9 +444,8 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     /**
-     * Set how many decimals should be used in writing out the coordinates. Users should consult
-     * https://xkcd.com/2170/ before changing this value, unless they are using a CRS different from
-     * 4326.
+     * Set how many decimals should be used in writing out the coordinates. Users should consult https://xkcd.com/2170/
+     * before changing this value, unless they are using a CRS different from 4326.
      *
      * @param number - the number of digits after the decimal place marker
      */
@@ -484,17 +473,14 @@ public class GeoJSONWriter implements AutoCloseable {
         bounds = bbox;
     }
 
-    /**
-     * Returns true if the generated JSON is for a single feature, without a feature collection
-     * wrapper around it.
-     */
+    /** Returns true if the generated JSON is for a single feature, without a feature collection wrapper around it. */
     public boolean isSingleFeature() {
         return singleFeature;
     }
 
     /**
-     * Turns on and off the single feature mode. In single feature mode the feature collection
-     * wrapper elements won't be emitted. Defaults to false.
+     * Turns on and off the single feature mode. In single feature mode the feature collection wrapper elements won't be
+     * emitted. Defaults to false.
      *
      * @param singleFeature
      */
@@ -514,8 +500,8 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     /**
-     * Sets the Timezone used to format the date fields. <code>null</code> is a valid value, the JVM
-     * local timezone will be used in that case.
+     * Sets the Timezone used to format the date fields. <code>null</code> is a valid value, the JVM local timezone will
+     * be used in that case.
      */
     public void setTimeZone(TimeZone tz) {
         this.dateFormatter = FastDateFormat.getInstance(dateFormatter.getPattern(), tz);

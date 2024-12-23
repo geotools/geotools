@@ -37,15 +37,13 @@ public class CatalogConfigurationBeans {
         if (configurations == null || configurations.isEmpty())
             throw new IllegalArgumentException("The configuration map is null or empty");
         this.configurations = configurations;
-        if (this.configurations.isEmpty())
-            throw new IllegalArgumentException("The configuration map is null or empty");
+        if (this.configurations.isEmpty()) throw new IllegalArgumentException("The configuration map is null or empty");
         else if (this.configurations.size() == 1)
             this.loneConfiguration = this.configurations.values().iterator().next();
     }
 
     public CatalogConfigurationBeans(CatalogConfigurationBean loneConfiguration) {
-        if (loneConfiguration == null)
-            throw new IllegalArgumentException("The configuration is null");
+        if (loneConfiguration == null) throw new IllegalArgumentException("The configuration is null");
         this.loneConfiguration = loneConfiguration;
     }
 
@@ -54,18 +52,13 @@ public class CatalogConfigurationBeans {
     }
 
     public CatalogConfigurationBeans(List<MosaicConfigurationBean> beans) {
-        this(
-                beans.stream()
-                        .collect(
-                                Collectors.toMap(
-                                        c -> c.getName(),
-                                        c -> c.getCatalogConfigurationBean(),
-                                        (c1, c2) -> c1)));
+        this(beans.stream()
+                .collect(Collectors.toMap(c -> c.getName(), c -> c.getCatalogConfigurationBean(), (c1, c2) -> c1)));
     }
 
     /**
-     * Returns the first configuration associated to the specified type name. Multiple coverages
-     * might share the same typename.
+     * Returns the first configuration associated to the specified type name. Multiple coverages might share the same
+     * typename.
      *
      * @param typeName
      * @return
@@ -79,8 +72,8 @@ public class CatalogConfigurationBeans {
     }
 
     /**
-     * Looks up the configurations considering both the query (looking for the COVERAGE_NAME hint)
-     * and falls back on the type name, if the first did not provide a match
+     * Looks up the configurations considering both the query (looking for the COVERAGE_NAME hint) and falls back on the
+     * type name, if the first did not provide a match
      */
     public CatalogConfigurationBean getByTypeQuery(Query q) {
         if (loneConfiguration != null) return loneConfiguration;

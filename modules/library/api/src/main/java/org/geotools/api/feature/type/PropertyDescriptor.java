@@ -13,8 +13,7 @@ import java.util.Map;
 import org.geotools.api.feature.ComplexAttribute;
 
 /**
- * Describes a Property, and how it relates to its containing entity, which is often a {@link
- * ComplexAttribute}. <br>
+ * Describes a Property, and how it relates to its containing entity, which is often a {@link ComplexAttribute}. <br>
  *
  * <p>A property descriptor defines the following about the property:
  *
@@ -27,8 +26,8 @@ import org.geotools.api.feature.ComplexAttribute;
  *
  * <br>
  *
- * <p>The concept of a descriptor is similar to that of a element declaration in xml. Consider the
- * following xml schema definition:
+ * <p>The concept of a descriptor is similar to that of a element declaration in xml. Consider the following xml schema
+ * definition:
  *
  * <pre>
  *   &lt;complexType name="someComplexType">
@@ -39,8 +38,8 @@ import org.geotools.api.feature.ComplexAttribute;
  * </pre>
  *
  * <br>
- * In the above, the element declaration named "foo" maps to a property descriptor. From the above
- * schema, the following property descriptor would result:
+ * In the above, the element declaration named "foo" maps to a property descriptor. From the above schema, the following
+ * property descriptor would result:
  *
  * <pre>
  *  //the complex type
@@ -87,18 +86,17 @@ public interface PropertyDescriptor {
     /**
      * The type of the property defined by the descriptor.
      *
-     * <p>This value should never be <code>null</code>. The type contains information about the
-     * value of the property such as its java class.
+     * <p>This value should never be <code>null</code>. The type contains information about the value of the property
+     * such as its java class.
      */
     PropertyType getType();
 
     /**
-     * The name of the property defined by the descriptor, with respect to its containing type or
-     * entity..
+     * The name of the property defined by the descriptor, with respect to its containing type or entity..
      *
-     * <p>This value may be <code>null</code> in some instances. Also note that this is not the same
-     * name as <code>getType().getName()</code>. The former is the name of the instance, the latter
-     * is the name of the type of the instance.
+     * <p>This value may be <code>null</code> in some instances. Also note that this is not the same name as <code>
+     * getType().getName()</code>. The former is the name of the instance, the latter is the name of the type of the
+     * instance.
      */
     Name getName();
 
@@ -114,8 +112,8 @@ public interface PropertyDescriptor {
     /**
      * The maximum number of occurrences of the property within its containing entity.
      *
-     * <p>This value is a positive integer. A value of <code>-1</code> means that the max number of
-     * occurrences is unbounded.
+     * <p>This value is a positive integer. A value of <code>-1</code> means that the max number of occurrences is
+     * unbounded.
      *
      * @return An integer >= 0, or -1.
      */
@@ -124,14 +122,13 @@ public interface PropertyDescriptor {
     /**
      * Flag indicating if <code>null</code> is an allowable value for the property.
      *
-     * @return <code>true</code> if the property is allowed to be <code>null</code>, otherwise
-     *     <code>false</code>.
+     * @return <code>true</code> if the property is allowed to be <code>null</code>, otherwise <code>false</code>.
      */
     boolean isNillable();
 
     /**
-     * A map of "user data" which enables applications to store "application-specific" information
-     * against a property descriptor.
+     * A map of "user data" which enables applications to store "application-specific" information against a property
+     * descriptor.
      *
      * @return A map of user data.
      */

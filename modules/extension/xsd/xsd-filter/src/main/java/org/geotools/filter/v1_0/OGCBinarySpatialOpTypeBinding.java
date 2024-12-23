@@ -184,8 +184,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // special hack for Functions, while not mandated by the spec we handle it
         // here
         BinarySpatialOperator operator = (BinarySpatialOperator) object;

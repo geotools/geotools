@@ -29,10 +29,9 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 
 /**
- * This is a specialization of complex feature type that can be nested inside another feature type.
- * A system attribute descriptor called "FEATURE_LINK" is added in the descriptors so it can be used
- * to link the type to its parent type, without being encoded, since it doesn't exist in the real
- * schema.
+ * This is a specialization of complex feature type that can be nested inside another feature type. A system attribute
+ * descriptor called "FEATURE_LINK" is added in the descriptors so it can be used to link the type to its parent type,
+ * without being encoded, since it doesn't exist in the real schema.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
@@ -66,7 +65,8 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
 
                     {
                         add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
-                    };
+                    }
+                    ;
                 },
                 defaultGeometry,
                 isAbstract,
@@ -83,8 +83,7 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
      * @param type Type to copy
      * @param schema Set of descriptors
      */
-    public ComplexFeatureTypeImpl(
-            ComplexFeatureTypeImpl type, Collection<PropertyDescriptor> schema) {
+    public ComplexFeatureTypeImpl(ComplexFeatureTypeImpl type, Collection<PropertyDescriptor> schema) {
         super(
                 type.name,
                 schema,
@@ -98,8 +97,8 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
     }
 
     /**
-     * Return all the descriptors that come from the schema, excluding the system descriptors, such
-     * as 'FEATURE_LINK', used for linking features.
+     * Return all the descriptors that come from the schema, excluding the system descriptors, such as 'FEATURE_LINK',
+     * used for linking features.
      *
      * @return schema descriptors
      */

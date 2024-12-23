@@ -93,8 +93,7 @@ public class OptGraphSerializerTest {
             Graph after = serializer().read();
 
             Assert.assertEquals(1, after.getNodesOfDegree(2).size()); // root
-            Assert.assertEquals(
-                    after.getNodesOfDegree(3).size(), (int) Math.pow(2, k) - 2); // internal
+            Assert.assertEquals(after.getNodesOfDegree(3).size(), (int) Math.pow(2, k) - 2); // internal
             Assert.assertEquals(after.getNodesOfDegree(1).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

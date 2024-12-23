@@ -31,14 +31,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * A FeatureCollection which completely delegates to another FeatureCollection.
  *
- * <p>This class should be subclasses by classes which must somehow decorate another
- * SimpleFeatureCollection and override the relevant methods.
+ * <p>This class should be subclasses by classes which must somehow decorate another SimpleFeatureCollection and
+ * override the relevant methods.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @since 2.5
  */
-public class DecoratingFeatureCollection<T extends FeatureType, F extends Feature>
-        implements FeatureCollection<T, F> {
+public class DecoratingFeatureCollection<T extends FeatureType, F extends Feature> implements FeatureCollection<T, F> {
 
     /** the delegate */
     protected FeatureCollection<T, F> delegate;
@@ -49,8 +48,7 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         if (canDelegate(visitor)) {
             delegate.accepts(visitor, progress);
@@ -60,8 +58,8 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
     }
 
     /**
-     * Methods for subclass to override in order to determine if the supplied visitor can be passed
-     * to the delegate collection.
+     * Methods for subclass to override in order to determine if the supplied visitor can be passed to the delegate
+     * collection.
      *
      * <p>The default is false and the visitor receives the decoraeted features.
      */

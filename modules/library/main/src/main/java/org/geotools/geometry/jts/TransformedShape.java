@@ -31,8 +31,8 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 
 /**
  * Apply an arbitrary {@link AffineTransform} on a {@link Shape}. This class is used internally by
- * {@link RenderedMarks}. It is designed for reuse with many different affine transforms and shapes.
- * This class is <strong>not</strong> thread-safe.
+ * {@link RenderedMarks}. It is designed for reuse with many different affine transforms and shapes. This class is
+ * <strong>not</strong> thread-safe.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -115,10 +115,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
         }
     }
 
-    /**
-     * Tests if the interior of the <code>Shape</code> entirely contains the specified rectangular
-     * area.
-     */
+    /** Tests if the interior of the <code>Shape</code> entirely contains the specified rectangular area. */
     @Override
     public boolean contains(double x, double y, double width, double height) {
         rectangle.x = x;
@@ -142,10 +139,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
         }
     }
 
-    /**
-     * Tests if the interior of the <code>Shape</code> intersects the interior of a specified
-     * rectangular area.
-     */
+    /** Tests if the interior of the <code>Shape</code> intersects the interior of a specified rectangular area. */
     @Override
     public boolean intersects(double x, double y, double width, double height) {
         rectangle.x = x;
@@ -181,11 +175,10 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /**
-     * Returns a high precision and more accurate bounding box of the <code>Shape</code> than the
-     * <code>getBounds</code> method.
+     * Returns a high precision and more accurate bounding box of the <code>Shape</code> than the <code>getBounds</code>
+     * method.
      *
-     * @todo REVISIT: tranform currently results in a new rectangle being created, is this a memory
-     *     overhead?
+     * @todo REVISIT: tranform currently results in a new rectangle being created, is this a memory overhead?
      */
     @Override
     public Rectangle2D getBounds2D() {
@@ -196,8 +189,8 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /**
-     * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides
-     * access to the geometry of the <code>Shape</code> outline.
+     * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides access to the
+     * geometry of the <code>Shape</code> outline.
      */
     @Override
     public PathIterator getPathIterator(AffineTransform at) {
@@ -212,8 +205,8 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /**
-     * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides
-     * access to a flattened view of the <code>Shape</code> outline geometry.
+     * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides access to a flattened
+     * view of the <code>Shape</code> outline geometry.
      */
     @Override
     public PathIterator getPathIterator(AffineTransform at, final double flatness) {
@@ -228,13 +221,11 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /**
-     * Invoked when an inverse transform was required but the transform is not invertible. This
-     * error should not happen. However, even if it happen, it will not prevent the application to
-     * work since <code>contains(...)</code> method may conservatively return <code>false</code>. We
-     * will just log a warning message and continue.
+     * Invoked when an inverse transform was required but the transform is not invertible. This error should not happen.
+     * However, even if it happen, it will not prevent the application to work since <code>contains(...)</code> method
+     * may conservatively return <code>false</code>. We will just log a warning message and continue.
      */
-    private static void exceptionOccured(
-            final NoninvertibleTransformException exception, final String method) {
+    private static void exceptionOccured(final NoninvertibleTransformException exception, final String method) {
         final LogRecord record = new LogRecord(Level.WARNING, exception.getLocalizedMessage());
         record.setSourceClassName(TransformedShape.class.getName());
         record.setSourceMethodName(method);

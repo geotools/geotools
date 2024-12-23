@@ -134,12 +134,10 @@ public class LobConverterFactoryTest {
     }
 
     private byte[] convert(Blob blob) throws Exception {
-        return factory.createConverter(blob.getClass(), byte[].class, null)
-                .convert(blob, byte[].class);
+        return factory.createConverter(blob.getClass(), byte[].class, null).convert(blob, byte[].class);
     }
 
     private String convert(Clob clob) throws Exception {
-        return factory.createConverter(clob.getClass(), String.class, null)
-                .convert(clob, String.class);
+        return factory.createConverter(clob.getClass(), String.class, null).convert(clob, String.class);
     }
 }

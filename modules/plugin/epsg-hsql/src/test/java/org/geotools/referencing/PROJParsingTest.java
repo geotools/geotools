@@ -40,8 +40,8 @@ import org.junit.Test;
 public class PROJParsingTest {
 
     /**
-     * Test used to create the definition files. Keep ignoring-it unless you need to generate the
-     * definition files again and validate it using the gt_proj_compare.py script
+     * Test used to create the definition files. Keep ignoring-it unless you need to generate the definition files again
+     * and validate it using the gt_proj_compare.py script
      */
     @SuppressWarnings("PMD.SystemPrintln")
     @Test
@@ -82,8 +82,8 @@ public class PROJParsingTest {
     }
 
     /**
-     * Load the supported EPSG Proj Definitions and get the PROJ String from each EPSG code. Check
-     * that what is being generated matches what is expected
+     * Load the supported EPSG Proj Definitions and get the PROJ String from each EPSG code. Check that what is being
+     * generated matches what is expected
      */
     @Test
     public void testExtensivePROJDefinitions() throws IOException, FactoryException {

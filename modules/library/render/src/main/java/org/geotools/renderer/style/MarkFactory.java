@@ -24,20 +24,18 @@ import org.geotools.api.filter.expression.Expression;
 /** Symbol handler for a Mark. */
 public interface MarkFactory {
     /**
-     * Turns the specified URL into an Shape, eventually using the Feature attributes to evaluate
-     * the expression, or returns <code>null</code> if the factory cannot evaluate this symbolUrl.
+     * Turns the specified URL into an Shape, eventually using the Feature attributes to evaluate the expression, or
+     * returns <code>null</code> if the factory cannot evaluate this symbolUrl.
      *
-     * <p>The returned Shape must not exceed the [-0.5, -0.5, 0.5, 0.5] bounds (will be rescaled
-     * according to the <size> parameter given in graphics on the fly
+     * <p>The returned Shape must not exceed the [-0.5, -0.5, 0.5, 0.5] bounds (will be rescaled according to the <size>
+     * parameter given in graphics on the fly
      *
-     * @param symbolUrl the expression that will return the symbol name. Once evaluated the
-     *     expression should return something like <code>plainName</code> or like <code>
-     *     protocol://path</code>. See the actual implementations for details on the kind of
-     *     supported name.
-     * @param feature The feature that will be used to evaluate the symbolURL expression (or to
-     *     extract data from it, think complex attributes, in that case a visit to the expression
-     *     and some direct attribute value extraction might be needed instead)
+     * @param symbolUrl the expression that will return the symbol name. Once evaluated the expression should return
+     *     something like <code>plainName</code> or like <code>
+     *     protocol://path</code>. See the actual implementations for details on the kind of supported name.
+     * @param feature The feature that will be used to evaluate the symbolURL expression (or to extract data from it,
+     *     think complex attributes, in that case a visit to the expression and some direct attribute value extraction
+     *     might be needed instead)
      */
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception;
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception;
 }

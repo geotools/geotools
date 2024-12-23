@@ -29,15 +29,13 @@ public enum Band {
     GRAY("gray") {
 
         @Override
-        public org.geotools.api.style.SelectedChannelType getFrom(
-                org.geotools.api.style.ChannelSelection sel) {
+        public org.geotools.api.style.SelectedChannelType getFrom(org.geotools.api.style.ChannelSelection sel) {
             return sel.getGrayChannel();
         }
 
         @Override
         public void setTo(
-                org.geotools.api.style.ChannelSelection sel,
-                org.geotools.api.style.SelectedChannelType chan) {
+                org.geotools.api.style.ChannelSelection sel, org.geotools.api.style.SelectedChannelType chan) {
             sel.setGrayChannel(chan);
         }
     },
@@ -49,8 +47,7 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.api.style.ChannelSelection sel,
-                org.geotools.api.style.SelectedChannelType chan) {
+                org.geotools.api.style.ChannelSelection sel, org.geotools.api.style.SelectedChannelType chan) {
             org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[0] = chan;
             sel.setRGBChannels(channels);
@@ -64,8 +61,7 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.api.style.ChannelSelection sel,
-                org.geotools.api.style.SelectedChannelType chan) {
+                org.geotools.api.style.ChannelSelection sel, org.geotools.api.style.SelectedChannelType chan) {
             org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[1] = chan;
             sel.setRGBChannels(channels);
@@ -79,8 +75,7 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.api.style.ChannelSelection sel,
-                org.geotools.api.style.SelectedChannelType chan) {
+                org.geotools.api.style.ChannelSelection sel, org.geotools.api.style.SelectedChannelType chan) {
             org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[2] = chan;
             sel.setRGBChannels(channels);
@@ -88,17 +83,14 @@ public enum Band {
     };
 
     /** A list of the bands representing Red, Green, Blue (in order). */
-    public static final List<Band> RGB =
-            Collections.unmodifiableList(Arrays.asList(RED, GREEN, BLUE));
+    public static final List<Band> RGB = Collections.unmodifiableList(Arrays.asList(RED, GREEN, BLUE));
 
     /** Get the {@link SelectedChannelType} in sel that is represented by this band. */
-    public abstract org.geotools.api.style.SelectedChannelType getFrom(
-            org.geotools.api.style.ChannelSelection sel);
+    public abstract org.geotools.api.style.SelectedChannelType getFrom(org.geotools.api.style.ChannelSelection sel);
 
     /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
     public abstract void setTo(
-            org.geotools.api.style.ChannelSelection sel,
-            org.geotools.api.style.SelectedChannelType chan);
+            org.geotools.api.style.ChannelSelection sel, org.geotools.api.style.SelectedChannelType chan);
 
     public final String key;
 

@@ -20,11 +20,9 @@ import org.geotools.api.feature.type.AssociationDescriptor;
 import org.geotools.api.feature.type.AssociationType;
 import org.geotools.api.feature.type.Name;
 
-public class AssociationDescriptorImpl extends PropertyDescriptorImpl
-        implements AssociationDescriptor {
+public class AssociationDescriptorImpl extends PropertyDescriptorImpl implements AssociationDescriptor {
 
-    public AssociationDescriptorImpl(
-            AssociationType type, Name name, int min, int max, boolean isNillable) {
+    public AssociationDescriptorImpl(AssociationType type, Name name, int min, int max, boolean isNillable) {
         super(type, name, min, max, isNillable);
     }
 

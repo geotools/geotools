@@ -28,9 +28,9 @@ import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.util.NumberRange;
 
 /**
- * Maps the sample values of a coverage from one range to another range. The rescaling is done by
- * multiplying each sample value by one of a set of constants and then adding another constant to
- * the result of the multiplication. The destination sample values are defined by the pseudocode:
+ * Maps the sample values of a coverage from one range to another range. The rescaling is done by multiplying each
+ * sample value by one of a set of constants and then adding another constant to the result of the multiplication. The
+ * destination sample values are defined by the pseudocode:
  *
  * <BLOCKQUOTE>
  *
@@ -106,9 +106,9 @@ public class Rescale extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, "Rescale", 2, 3);
     }
 
@@ -120,7 +120,6 @@ public class Rescale extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "Rescale", 2, 3, 5);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "Rescale", 2, 3, 5);
     }
 }

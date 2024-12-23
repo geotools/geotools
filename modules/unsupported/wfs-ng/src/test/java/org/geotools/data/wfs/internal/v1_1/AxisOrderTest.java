@@ -72,12 +72,10 @@ public class AxisOrderTest {
         Query query = new Query(typeName, ff.id(fids));
 
         TestWFSClient wfs = createWFSClient();
-        wfs.mockGetFeatureRequest(
-                url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
+        wfs.mockGetFeatureRequest(url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
 
         // axis order used will be NORTH / EAST
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
@@ -90,9 +88,7 @@ public class AxisOrderTest {
         assertEquals(41.587164718505285, x, 0);
 
         // specify axis order: results should be the same
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST,
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
         feature = iterate(source.getFeatures(query), 1);
@@ -106,8 +102,7 @@ public class AxisOrderTest {
     @Test
     @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
-        final Filter bbox =
-                ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
+        final Filter bbox = ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
 
         TestWFSClient wfs = createWFSClient();
         wfs.mockGetFeatureRequest(url("axisorder/GetFeaturesByBBox.xml"), qTypeName, bbox);
@@ -115,9 +110,7 @@ public class AxisOrderTest {
         WFSDataStore ds = new WFSDataStore(wfs);
 
         // axis order used will be EAST / NORTH
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT,
-                WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
 
         Query query = new Query(typeName, bbox);
 
@@ -126,12 +119,10 @@ public class AxisOrderTest {
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
-        assertTrue(
-                JTS.equals(
-                        new ReferencedEnvelope(
-                                4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
-                        filter.getBounds(),
-                        1e-6));
+        assertTrue(JTS.equals(
+                new ReferencedEnvelope(4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
+                filter.getBounds(),
+                1e-6));
     }
 
     @Test
@@ -145,16 +136,11 @@ public class AxisOrderTest {
                 ff.bbox("the_geom", 815134.0, 4623055.0, 820740.0, 4629904.0, "EPSG:3857"));
 
         // axis order used will be NORTH / EAST
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT,
-                WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
 
         WFSDataStore ds = new WFSDataStore(wfs);
 
-        Query query =
-                new Query(
-                        typeName,
-                        ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
+        Query query = new Query(typeName, ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857"));
 
         ds.getFeatureSource(typeName).getFeatures(query).features();
 
@@ -163,19 +149,16 @@ public class AxisOrderTest {
         // filter coordinates ARE inverted (EPSG:3857 is EAST/NORTH, so if we ask for NORTH/EAST,
         // the filter
         // should be inverted)
-        assertTrue(
-                JTS.equals(
-                        new ReferencedEnvelope(
-                                815134.0, 820740.0, 4623055.0, 4629904.0, CRS.decode("EPSG:3857")),
-                        filter.getBounds(),
-                        0));
+        assertTrue(JTS.equals(
+                new ReferencedEnvelope(815134.0, 820740.0, 4623055.0, 4629904.0, CRS.decode("EPSG:3857")),
+                filter.getBounds(),
+                0));
     }
 
     @Test
     @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testGetFeatureWithCompliantAxisOrderFilter() throws Exception {
-        final Filter bbox =
-                ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
+        final Filter bbox = ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
 
         TestWFSClient wfs = createWFSClient();
 
@@ -183,8 +166,7 @@ public class AxisOrderTest {
         wfs.mockGetFeatureRequest(url("axisorder/GetFeaturesByBBox.xml"), qTypeName, bbox);
 
         // axis order used will be NORTH / EAST
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         Query query = new Query(typeName, bbox);
 
@@ -193,12 +175,10 @@ public class AxisOrderTest {
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
-        assertTrue(
-                JTS.equals(
-                        new ReferencedEnvelope(
-                                4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
-                        filter.getBounds(),
-                        1e-6));
+        assertTrue(JTS.equals(
+                new ReferencedEnvelope(4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
+                filter.getBounds(),
+                1e-6));
     }
 
     @Test
@@ -208,13 +188,11 @@ public class AxisOrderTest {
         Query query = new Query(typeName, ff.id(fids));
 
         TestWFSClient wfs = createWFSClient();
-        wfs.mockGetFeatureRequest(
-                url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
+        wfs.mockGetFeatureRequest(url("axisorder/GetFeatureById4326.xml"), qTypeName, query.getFilter());
 
         WFSDataStore ds = new WFSDataStore(wfs);
         // axis order used will be EAST / NORTH
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
         SimpleFeature feature = iterate(source.getFeatures(query), 1);
@@ -225,9 +203,7 @@ public class AxisOrderTest {
         assertEquals(41.587164718505285, x, 0);
 
         // specify axis order: results should be inverted
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH,
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
         feature = iterate(source.getFeatures(query), 1);
@@ -245,13 +221,11 @@ public class AxisOrderTest {
         Query query = new Query(typeName, ff.id(fids));
 
         TestWFSClient wfs = createWFSClient();
-        wfs.mockGetFeatureRequest(
-                url("axisorder/GetFeatureById.xml"), qTypeName, query.getFilter());
+        wfs.mockGetFeatureRequest(url("axisorder/GetFeatureById.xml"), qTypeName, query.getFilter());
 
         WFSDataStore ds = new WFSDataStore(wfs);
         // axis order used will be EAST / NORTH
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_COMPLIANT, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         SimpleFeatureSource source = ds.getFeatureSource(typeName);
         SimpleFeature feature = iterate(source.getFeatures(query), 1);
@@ -262,9 +236,7 @@ public class AxisOrderTest {
         assertEquals(819841.0, y, 0);
 
         // specify axis order: results should be inverted
-        wfs.setAxisOrderOverride(
-                WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH,
-                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        wfs.setAxisOrderOverride(WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
 
         source = ds.getFeatureSource(typeName);
         feature = iterate(source.getFeatures(query), 1);
@@ -275,23 +247,18 @@ public class AxisOrderTest {
         assertEquals(819841.0, y, 0);
     }
 
-    private TestWFSClient createWFSClient()
-            throws ServiceException, FileNotFoundException, IOException {
+    private TestWFSClient createWFSClient() throws ServiceException, FileNotFoundException, IOException {
 
-        URL capabilitiesUrl =
-                new URL("http://127.0.0.1/cgi-bin/tinyows?REQUEST=GetCapabilities&SERVICE=WFS");
+        URL capabilitiesUrl = new URL("http://127.0.0.1/cgi-bin/tinyows?REQUEST=GetCapabilities&SERVICE=WFS");
 
         TestHttpClient httpClient = new TestHttpClient();
         httpClient.expectGet(
                 capabilitiesUrl,
-                new TestHttpResponse(
-                        TestData.url(WFSTestData.class, "axisorder/GetCapabilities.xml"),
-                        "text/xml"));
+                new TestHttpResponse(TestData.url(WFSTestData.class, "axisorder/GetCapabilities.xml"), "text/xml"));
 
         TestWFSClient wfs = new TestWFSClient(capabilitiesUrl, httpClient);
         wfs.mockDescribeFeatureTypeRequest(
-                url("axisorder/DescribeFeatureType.xsd"),
-                new QName("http://www.tinyows.org/", "comuni11", "comuni"));
+                url("axisorder/DescribeFeatureType.xsd"), new QName("http://www.tinyows.org/", "comuni11", "comuni"));
 
         return wfs;
     }

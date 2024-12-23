@@ -30,8 +30,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_17">table 10 from
- * section A.5.3 Conformance test 17.</a>
+ * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_17">table 10 from section A.5.3
+ * Conformance test 17.</a>
  */
 @RunWith(Parameterized.class)
 @Ignore("Not implemented yet")
@@ -52,20 +52,19 @@ public class ConformanceTest17OnlineTest
 
     @Parameterized.Parameters(name = "{index} {0}")
     public static Collection<Object[]> params() {
-        return Arrays.asList(
-                new Object[][] {
-                    /* TODO see comment in the ConformanceUtils class. */
-                    {"{}", 1},
-                    {"{}", 1},
-                    {"{}", 1},
-                    {"{}", 1},
-                    {"{}", 1},
-                    {"{}", 1},
-                    {"{}", 3},
-                    {"{}", 3},
-                    {"{}", 3},
-                    {"{}", 3}
-                });
+        return Arrays.asList(new Object[][] {
+            /* TODO see comment in the ConformanceUtils class. */
+            {"{}", 1},
+            {"{}", 1},
+            {"{}", 1},
+            {"{}", 1},
+            {"{}", 1},
+            {"{}", 1},
+            {"{}", 3},
+            {"{}", 3},
+            {"{}", 3},
+            {"{}", 3}
+        });
     }
 
     @Test

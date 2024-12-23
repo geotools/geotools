@@ -32,19 +32,15 @@ public class ColorInversion extends PointOpImage {
 
     private InverseColorMapRasterOp op;
 
-    public ColorInversion(
-            RenderedImage image, IndexColorModel icm, int quantizationColors, int alpaThreshold) {
+    public ColorInversion(RenderedImage image, IndexColorModel icm, int quantizationColors, int alpaThreshold) {
         super(image, new ImageLayout(image), null, false);
         this.setSource(image, 0);
         this.op = new InverseColorMapRasterOp(icm, quantizationColors, alpaThreshold);
 
         // setlayout;
-        setImageLayout(
-                new ImageLayout(image)
-                        .setColorModel(icm)
-                        .setSampleModel(
-                                icm.createCompatibleSampleModel(
-                                        image.getWidth(), image.getHeight())));
+        setImageLayout(new ImageLayout(image)
+                .setColorModel(icm)
+                .setSampleModel(icm.createCompatibleSampleModel(image.getWidth(), image.getHeight())));
     }
 
     @Override

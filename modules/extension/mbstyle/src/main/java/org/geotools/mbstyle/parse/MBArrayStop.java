@@ -20,12 +20,12 @@ import java.util.List;
 import org.json.simple.JSONArray;
 
 /**
- * Wrapper for a "stop" in an array function (See {@link MBFunction#isArrayFunction()}), providing
- * methods to access the stop key and stop value array, as well as a method to reduce it from an
- * array stop to a single-value stop (for a given index).
+ * Wrapper for a "stop" in an array function (See {@link MBFunction#isArrayFunction()}), providing methods to access the
+ * stop key and stop value array, as well as a method to reduce it from an array stop to a single-value stop (for a
+ * given index).
  *
- * <p>For example, the following "stops" list contains two {@link MBArrayStop}s. (for each stop, the
- * stop value is an array).
+ * <p>For example, the following "stops" list contains two {@link MBArrayStop}s. (for each stop, the stop value is an
+ * array).
  *
  * <pre>
  *  'stops': [
@@ -35,8 +35,8 @@ import org.json.simple.JSONArray;
  *    ]
  * </pre>
  *
- * <p>Used by {@link MBFunction#splitArrayFunction()} to split an array function into multiple
- * functions, one for each dimension in the output array.
+ * <p>Used by {@link MBFunction#splitArrayFunction()} to split an array function into multiple functions, one for each
+ * dimension in the output array.
  */
 public class MBArrayStop {
     public JSONArray json;
@@ -45,12 +45,10 @@ public class MBArrayStop {
 
     public MBArrayStop(JSONArray array) {
         if (array.size() != 2) {
-            throw new MBFormatException(
-                    "Exception parsing function stop: stop must be an array with length 2.");
+            throw new MBFormatException("Exception parsing function stop: stop must be an array with length 2.");
         }
         if (!(array.get(1) instanceof JSONArray)) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value must be an array.");
+            throw new MBFormatException("Exception parsing array function stop: stop value must be an array.");
         }
         this.json = array;
         this.stopValueArray = ((JSONArray) json.get(1));
@@ -59,8 +57,8 @@ public class MBArrayStop {
     /**
      * Get the stop key for this stop.
      *
-     * <p>For example, for the following {@link MBArrayStop}: <code>[1,   [0,10]]</code> the output
-     * of stop.getStopKey() is 1.
+     * <p>For example, for the following {@link MBArrayStop}: <code>[1,   [0,10]]</code> the output of stop.getStopKey()
+     * is 1.
      *
      * @return stop key
      */
@@ -71,8 +69,8 @@ public class MBArrayStop {
     /**
      * Returns the size of the array of stop values.
      *
-     * <p>For example, for the following {@link MBArrayStop}: <code>[0,   [0,10]]</code> the output
-     * of stop.getStopValueCount() is 2.
+     * <p>For example, for the following {@link MBArrayStop}: <code>[0,   [0,10]]</code> the output of
+     * stop.getStopValueCount() is 2.
      *
      * @return the size of the array of stop values.
      */
@@ -83,40 +81,38 @@ public class MBArrayStop {
     /**
      * Returns the value from the stop value array at the provided index.
      *
-     * <p>For example, for the following {@link MBArrayStop}: <code>[0,   [0,10]]</code>, the output
-     * of stop.getStopValue(1) is 10.
+     * <p>For example, for the following {@link MBArrayStop}: <code>[0,   [0,10]]</code>, the output of
+     * stop.getStopValue(1) is 10.
      *
      * @param idx The index to look up in the stop value array.
      * @return The value from the stop value array at the provided index.
      */
     public Object getStopValue(int idx) {
         if (stopValueArray.size() <= idx) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value requested at index "
-                            + idx
-                            + ", but stop value array length is "
-                            + stopValueArray.size());
+            throw new MBFormatException("Exception parsing array function stop: stop value requested at index "
+                    + idx
+                    + ", but stop value array length is "
+                    + stopValueArray.size());
         }
         return stopValueArray.get(idx);
     }
 
     /**
-     * Returns the JSON for a new stop derived from this stop, but reduced to a single-value stop
-     * with the value from the provided index.
+     * Returns the JSON for a new stop derived from this stop, but reduced to a single-value stop with the value from
+     * the provided index.
      *
-     * <p>For example, for the {@link MBArrayStop} <code>[0,   [0,10]]</code>, The output of
-     * stop.reducedToIndex(1) is the following new stop: <code>[0, 10]</code>
+     * <p>For example, for the {@link MBArrayStop} <code>[0,   [0,10]]</code>, The output of stop.reducedToIndex(1) is
+     * the following new stop: <code>[0, 10]</code>
      *
      * @param idx The index to use as the single value for the new stop.
      * @return A new stop, with a single stop value rather than a stop value array.
      */
     public JSONArray reducedToIndex(int idx) {
         if (stopValueArray.size() <= idx) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value requested at index "
-                            + idx
-                            + ", but stop value array length is "
-                            + stopValueArray.size());
+            throw new MBFormatException("Exception parsing array function stop: stop value requested at index "
+                    + idx
+                    + ", but stop value array length is "
+                    + stopValueArray.size());
         }
         @SuppressWarnings("unchecked")
         List<Object> newStopJson = new JSONArray();

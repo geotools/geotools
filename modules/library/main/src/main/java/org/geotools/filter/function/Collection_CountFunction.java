@@ -39,18 +39,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class Collection_CountFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_CountFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_CountFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
 
     Object count = null;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Count",
-                    parameter("count", Number.class),
-                    parameter("features", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Count", parameter("count", Number.class), parameter("features", Object.class));
 
     /** Creates a new instance of Collection_CountFunction */
     public Collection_CountFunction() {
@@ -63,8 +59,7 @@ public class Collection_CountFunction extends FunctionExpressionImpl {
      * @param collection collection to calculate the count
      * @return An object containing the count value of the attributes
      */
-    static CalcResult calculateCount(SimpleFeatureCollection collection)
-            throws IllegalFilterException, IOException {
+    static CalcResult calculateCount(SimpleFeatureCollection collection) throws IllegalFilterException, IOException {
         CountVisitor countVisitor = new CountVisitor();
         collection.accepts(countVisitor, null);
         return countVisitor.getResult();

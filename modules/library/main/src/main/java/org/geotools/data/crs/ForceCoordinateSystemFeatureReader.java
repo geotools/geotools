@@ -30,8 +30,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 /**
  * ForceCoordinateSystemFeatureReader provides a CoordinateReferenceSystem for FeatureTypes.
  *
- * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user
- * supplied CoordinateReferenceSystem rather then the default supplied by the DataStore.
+ * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user supplied
+ * CoordinateReferenceSystem rather then the default supplied by the DataStore.
  *
  * <p>Example Use:
  *
@@ -53,8 +53,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
  * @author $Author: jive $ (last modification)
  * @version $Id$
  */
-public class ForceCoordinateSystemFeatureReader
-        implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+public class ForceCoordinateSystemFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;
     protected SimpleFeatureBuilder builder;
 
@@ -107,8 +106,7 @@ public class ForceCoordinateSystemFeatureReader
 
     /** @see FeatureReader#next() */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
         }

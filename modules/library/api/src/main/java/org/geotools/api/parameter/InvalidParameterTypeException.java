@@ -10,13 +10,12 @@
 package org.geotools.api.parameter;
 
 /**
- * Thrown when a parameter can't be cast to the requested type. For example this exception is thrown
- * when {@link ParameterValue#doubleValue} is invoked but the value is not convertible to a {@code
- * double}.
+ * Thrown when a parameter can't be cast to the requested type. For example this exception is thrown when
+ * {@link ParameterValue#doubleValue} is invoked but the value is not convertible to a {@code double}.
  *
- * <p><b>Note:</b> This exception is of kind "{@linkplain IllegalStateException illegal state}"
- * rather than "{@linkplain IllegalArgumentException illegal argument}" because it is not caused by
- * a bad argument. It is rather a consequence of invoking the wrong zero-argument method.
+ * <p><b>Note:</b> This exception is of kind "{@linkplain IllegalStateException illegal state}" rather than
+ * "{@linkplain IllegalArgumentException illegal argument}" because it is not caused by a bad argument. It is rather a
+ * consequence of invoking the wrong zero-argument method.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -33,8 +32,8 @@ public class InvalidParameterTypeException extends IllegalStateException {
     /**
      * Creates an exception with the specified message and parameter name.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      * @param parameterName The parameter name.
      */
     public InvalidParameterTypeException(String message, String parameterName) {

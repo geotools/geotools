@@ -35,10 +35,10 @@ import org.geotools.map.MapViewport;
 import org.geotools.renderer.GTRenderer;
 
 /**
- * The default implementation of {@code RenderingExecutor} which is used by {@linkplain JMapPane}
- * and {@linkplain JLayeredMapPane}. It runs no more than one rendering task at any given time,
- * although that task may involve multiple threads (e.g. each layer of a map being rendered into
- * separate destinations. While a task is running any other submitted tasks are rejected.
+ * The default implementation of {@code RenderingExecutor} which is used by {@linkplain JMapPane} and
+ * {@linkplain JLayeredMapPane}. It runs no more than one rendering task at any given time, although that task may
+ * involve multiple threads (e.g. each layer of a map being rendered into separate destinations. While a task is running
+ * any other submitted tasks are rejected.
  *
  * <p>Whether a rendering task is accepted or rejected can be tested on submission:
  *
@@ -49,9 +49,9 @@ import org.geotools.renderer.GTRenderer;
  * }
  * </code></pre>
  *
- * While a rendering task is running it is regularly polled to see if it has completed and, if so,
- * whether it finished normally, was cancelled or failed. The interval between polling can be
- * adjusted which might be useful to tune the executor for particular applications:
+ * While a rendering task is running it is regularly polled to see if it has completed and, if so, whether it finished
+ * normally, was cancelled or failed. The interval between polling can be adjusted which might be useful to tune the
+ * executor for particular applications:
  *
  * <pre><code>
  *     executor.setPollingInterval( 10 );  // 10 milliseconds
@@ -138,15 +138,12 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     /**
-     * {@inheritDoc} If no rendering task is presently running this new task will be accepted,
-     * otherwise it will be rejected (ie. there is no task queue).
+     * {@inheritDoc} If no rendering task is presently running this new task will be accepted, otherwise it will be
+     * rejected (ie. there is no task queue).
      */
     @Override
     public synchronized long submit(
-            MapContent mapContent,
-            GTRenderer renderer,
-            Graphics2D graphics,
-            RenderingExecutorListener listener) {
+            MapContent mapContent, GTRenderer renderer, Graphics2D graphics, RenderingExecutorListener listener) {
 
         long rtnValue = RenderingExecutor.TASK_REJECTED;
 
@@ -184,10 +181,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     @Override
-    public long submit(
-            MapContent mapContent,
-            List<RenderingOperands> operands,
-            RenderingExecutorListener listener) {
+    public long submit(MapContent mapContent, List<RenderingOperands> operands, RenderingExecutorListener listener) {
 
         long rtnValue = RenderingExecutor.TASK_REJECTED;
 
@@ -224,8 +218,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 MapContent mc = new SingleLayerMapContent(op.getLayer());
                 mc.setViewport(vp);
                 op.getRenderer().setMapContent(mc);
-                RenderingTask task =
-                        new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
+                RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
                 currentTasks.add(new TaskInfo(id, task, mc, future, listener));
             }
@@ -244,8 +237,8 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     /**
-     * {@inheritDoc} Since this task can only ever have a single task running, and no tasks queued,
-     * this method simply checks for a running task and, if one exists, cancels it.
+     * {@inheritDoc} Since this task can only ever have a single task running, and no tasks queued, this method simply
+     * checks for a running task and, if one exists, cancels it.
      */
     @Override
     public synchronized void cancelAll() {
@@ -299,12 +292,8 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     private void startPolling() {
-        watcher =
-                watchExecutor.scheduleAtFixedRate(
-                        () -> pollTaskResult(),
-                        pollingInterval,
-                        pollingInterval,
-                        TimeUnit.MILLISECONDS);
+        watcher = watchExecutor.scheduleAtFixedRate(
+                () -> pollTaskResult(), pollingInterval, pollingInterval, TimeUnit.MILLISECONDS);
     }
 
     private void restartPolling() {

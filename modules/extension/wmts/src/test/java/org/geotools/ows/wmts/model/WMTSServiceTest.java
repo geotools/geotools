@@ -52,7 +52,8 @@ public class WMTSServiceTest {
             Contact contactDetails = serviceProvider.getContactInfo();
             assertEquals(1, contactDetails.getAddress().getDeliveryPoints().size());
             assertEquals(
-                    new SimpleInternationalString("Bern"), contactDetails.getAddress().getCity());
+                    new SimpleInternationalString("Bern"),
+                    contactDetails.getAddress().getCity());
             assertEquals("3084", contactDetails.getAddress().getPostalCode());
             assertEquals(
                     new SimpleInternationalString("BE"),
@@ -61,7 +62,8 @@ public class WMTSServiceTest {
                     new SimpleInternationalString("Switzerland"),
                     contactDetails.getAddress().getCountry());
 
-            assertEquals(1, contactDetails.getAddress().getElectronicMailAddresses().size());
+            assertEquals(
+                    1, contactDetails.getAddress().getElectronicMailAddresses().size());
 
             assertArrayEquals(
                     new String[] {

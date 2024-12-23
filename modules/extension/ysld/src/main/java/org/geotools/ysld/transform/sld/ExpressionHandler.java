@@ -22,8 +22,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Handles xml parse events for {@link org.geotools.api.filter.expression.Expression} elements
- * (literals, rendering transforms, and functions).
+ * Handles xml parse events for {@link org.geotools.api.filter.expression.Expression} elements (literals, rendering
+ * transforms, and functions).
  */
 public class ExpressionHandler extends SldTransformHandler {
 
@@ -38,8 +38,7 @@ public class ExpressionHandler extends SldTransformHandler {
     }
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Literal".equals(name)) {
             context.push(new LiteralHandler(scalar));
@@ -51,14 +50,12 @@ public class ExpressionHandler extends SldTransformHandler {
     }
 
     @Override
-    public void characters(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void characters(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         scalar.append(xml.getText());
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Literal".equals(name) || "PropertyName".equals(name) || "Function".equals(name)) {
             onValue(scalar.toString().trim(), context).pop();
@@ -68,8 +65,7 @@ public class ExpressionHandler extends SldTransformHandler {
         }
     }
 
-    protected SldTransformContext onValue(String value, SldTransformContext context)
-            throws IOException {
+    protected SldTransformContext onValue(String value, SldTransformContext context) throws IOException {
         return context.scalar(value);
     }
 
@@ -80,8 +76,7 @@ public class ExpressionHandler extends SldTransformHandler {
         }
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             if (!"Literal".equals(xml.getLocalName())) {
                 super.element(xml, context);
             }
@@ -109,8 +104,7 @@ public class ExpressionHandler extends SldTransformHandler {
         }
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             if (!"PropertyName".equals(xml.getLocalName())) {
                 super.element(xml, context);
             }
@@ -138,8 +132,7 @@ public class ExpressionHandler extends SldTransformHandler {
         }
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("Function".equals(name)) {
                 scalar.append(xml.getAttributeValue(xml.getNamespaceURI(), "name") + "(");

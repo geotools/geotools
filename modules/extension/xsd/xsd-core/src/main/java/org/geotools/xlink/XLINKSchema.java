@@ -45,15 +45,14 @@ public class XLINKSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType _SHOW_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/1999/xlink", "_show"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType _SHOW_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/1999/xlink", "_show"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     /**
      *
@@ -74,15 +73,14 @@ public class XLINKSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType _ACTUATE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/1999/xlink", "_actuate"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    XSSchema.STRING_TYPE,
-                    null);
+    public static final AttributeType _ACTUATE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/1999/xlink", "_actuate"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            XSSchema.STRING_TYPE,
+            null);
 
     public XLINKSchema() {
         super("http://www.w3.org/1999/xlink");

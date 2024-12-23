@@ -24,9 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the {@link GridSampleDimension} implementation. Since {@code GridSampleDimension} rely on
- * {@link CategoryList} for many of its work, many {@code GridSampleDimension} tests are actually
- * {@code CategoryList} tests.
+ * Tests the {@link GridSampleDimension} implementation. Since {@code GridSampleDimension} rely on {@link CategoryList}
+ * for many of its work, many {@code GridSampleDimension} tests are actually {@code CategoryList} tests.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -48,8 +47,7 @@ public final class SampleDimensionTest {
     private static final String[] CATEGORIES = {"No data", "Clouds", "Lands"};
 
     /**
-     * The "no data" values making the sample dimension to test. There is one for each category in
-     * {@link #CATEGORIES}.
+     * The "no data" values making the sample dimension to test. There is one for each category in {@link #CATEGORIES}.
      */
     private static final int[] NO_DATA = {0, 1, 255};
 

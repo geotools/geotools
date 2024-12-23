@@ -44,12 +44,10 @@ import org.geotools.parameter.Parameter;
  */
 public class WMTSMapLayer extends GridReaderLayer {
 
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
+    public static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
 
     public static final DefaultParameterDescriptor<CoordinateReferenceSystem> SOURCE_CRS =
-            new DefaultParameterDescriptor<>(
-                    "SourceCRS", CoordinateReferenceSystem.class, null, null);
+            new DefaultParameterDescriptor<>("SourceCRS", CoordinateReferenceSystem.class, null, null);
 
     private static Style createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -77,8 +75,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     public WMTSMapLayer(WebMapTileServer wmts, Layer layer, CoordinateReferenceSystem sourceCRS) {
         super(new WMTSCoverageReader(wmts, layer), createStyle());
         GeneralParameterValue[] generalParameterValues = new GeneralParameterValue[1];
-        Parameter<CoordinateReferenceSystem> parameter =
-                new Parameter<>(WMTSMapLayer.SOURCE_CRS, sourceCRS);
+        Parameter<CoordinateReferenceSystem> parameter = new Parameter<>(WMTSMapLayer.SOURCE_CRS, sourceCRS);
         generalParameterValues[0] = parameter;
         this.params = generalParameterValues;
     }
@@ -105,8 +102,8 @@ public class WMTSMapLayer extends GridReaderLayer {
     /**
      * Returns true if the specified CRS can be used directly to perform WMTS requests.
      *
-     * <p>Natively supported crs will provide the best rendering quality as no client side
-     * reprojection is necessary, the tiles coming from the WMTS server will be used as-is
+     * <p>Natively supported crs will provide the best rendering quality as no client side reprojection is necessary,
+     * the tiles coming from the WMTS server will be used as-is
      */
     public boolean isNativelySupported(CoordinateReferenceSystem crs) {
         return getReader().isNativelySupported(crs);

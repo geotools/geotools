@@ -62,11 +62,10 @@ public class FilterTransformerTest extends XmlTestSupport {
         String output = transform.transform(filter);
         Assert.assertNotNull("got xml", output);
 
-        String actual =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<features>"
-                        + output.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
-                        + "</features>";
+        String actual = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<features>"
+                + output.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
+                + "</features>";
 
         Diff diff = diffSimilar(expected, actual);
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
@@ -74,12 +73,11 @@ public class FilterTransformerTest extends XmlTestSupport {
 
     @Test
     public void testEncodeLong() throws Exception {
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:PropertyIsGreaterThan "
-                        + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
-                        + "xmlns:gml=\"http://www.opengis.net/gml\">"
-                        + "<ogc:PropertyName>MYATT</ogc:PropertyName>"
-                        + "<ogc:Literal>50000000</ogc:Literal></ogc:PropertyIsGreaterThan>";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:PropertyIsGreaterThan "
+                + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "xmlns:gml=\"http://www.opengis.net/gml\">"
+                + "<ogc:PropertyName>MYATT</ogc:PropertyName>"
+                + "<ogc:Literal>50000000</ogc:Literal></ogc:PropertyIsGreaterThan>";
 
         Filter filter = ff.greater(ff.property("MYATT"), ff.literal(50000000l));
         String output = transform.transform(filter);
@@ -117,13 +115,12 @@ public class FilterTransformerTest extends XmlTestSupport {
 
     @Test
     public void testEncodeBBox() throws Exception {
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:BBOX "
-                        + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
-                        + "xmlns:gml=\"http://www.opengis.net/gml\">"
-                        + "<ogc:PropertyName>geom</ogc:PropertyName>"
-                        + "<gml:Box><gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" decimal=\".\" cs=\",\" ts=\" \">-1,50 1,51</gml:coordinates></gml:Box>"
-                        + "</ogc:BBOX>";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:BBOX "
+                + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "xmlns:gml=\"http://www.opengis.net/gml\">"
+                + "<ogc:PropertyName>geom</ogc:PropertyName>"
+                + "<gml:Box><gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" decimal=\".\" cs=\",\" ts=\" \">-1,50 1,51</gml:coordinates></gml:Box>"
+                + "</ogc:BBOX>";
 
         Filter filter = ff.bbox("geom", -1.0, 50.0, 1.0, 51, "EPSG:4326");
         String out = transform.transform(filter);

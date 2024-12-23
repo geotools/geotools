@@ -19,23 +19,19 @@ package org.geotools.xml.schema;
 import java.net.URI;
 
 /**
- * This interface is intended to represent an XML Schema AttributeGroup. In many cases
- * AttributeGroups may be optimized within complexTypes to remove the level of indirection.
- * AttributeGroups remain in the interface set as there are publicly defined (externally visible)
- * AttributeGroups defined in XML Schemas.
+ * This interface is intended to represent an XML Schema AttributeGroup. In many cases AttributeGroups may be optimized
+ * within complexTypes to remove the level of indirection. AttributeGroups remain in the interface set as there are
+ * publicly defined (externally visible) AttributeGroups defined in XML Schemas.
  *
  * @author dzwiers www.refractions.net
  */
 public interface AttributeGroup {
-    /**
-     * Represents the Namespace attribute of an AnyAttribute child occuring within this
-     * attributeGroup.
-     */
+    /** Represents the Namespace attribute of an AnyAttribute child occuring within this attributeGroup. */
     public String getAnyAttributeNameSpace();
 
     /**
-     * The list of attribute declared within this attributeGroup. Although we encourage the order of
-     * this list to follow the order the attributes were declared in, there is no such requirement.
+     * The list of attribute declared within this attributeGroup. Although we encourage the order of this list to follow
+     * the order the attributes were declared in, there is no such requirement.
      */
     public Attribute[] getAttributes();
 

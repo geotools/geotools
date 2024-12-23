@@ -17,20 +17,16 @@ package org.geotools.api.filter;
 public interface MultiValuedFilter extends Filter {
 
     /**
-     * Enumerated type for MatchAction property (used by comparison and geometry operations): When
-     * one or more of the operands evaluates to multiple values rather than a single value, which
-     * action should be taken?
+     * Enumerated type for MatchAction property (used by comparison and geometry operations): When one or more of the
+     * operands evaluates to multiple values rather than a single value, which action should be taken?
      *
-     * <p>For example, in case of a binary comparison, if there are n values for the left operand
-     * and m values for the right operand, there are n * m possible combinations that can be
-     * compared,
+     * <p>For example, in case of a binary comparison, if there are n values for the left operand and m values for the
+     * right operand, there are n * m possible combinations that can be compared,
      *
      * <ul>
      *   <li>ANY - if any of the possible combinations match, the result is true (aggregated OR)
-     *   <li>ALL - only if all of the possible combinations match, the result is true (aggregated
-     *       AND)
-     *   <li>ONE - only if exactly one of the possible combinations match, the result is true
-     *       (aggregated XOR)
+     *   <li>ALL - only if all of the possible combinations match, the result is true (aggregated AND)
+     *   <li>ONE - only if exactly one of the possible combinations match, the result is true (aggregated XOR)
      * </ul>
      *
      * @author Niels Charlier, Curtin University of Technology
@@ -42,14 +38,13 @@ public interface MultiValuedFilter extends Filter {
     };
 
     /**
-     * * Flag Controlling MatchAction property When one or more of the operands evaluates to
-     * multiple values rather than a single value, which action should be taken? If there are n
-     * values for the left operand and m values for the right operand, there are n * m possible
-     * combinations that can be compared,
+     * * Flag Controlling MatchAction property When one or more of the operands evaluates to multiple values rather than
+     * a single value, which action should be taken? If there are n values for the left operand and m values for the
+     * right operand, there are n * m possible combinations that can be compared,
      *
-     * <p>ANY - if any of the possible combinations match, the result is true (aggregated OR) ALL -
-     * only if all of the possible combinations match, the result is true (aggregated AND) ONE -
-     * only if exactly one of the possible combinations match, the result is true (aggregated XOR)
+     * <p>ANY - if any of the possible combinations match, the result is true (aggregated OR) ALL - only if all of the
+     * possible combinations match, the result is true (aggregated AND) ONE - only if exactly one of the possible
+     * combinations match, the result is true (aggregated XOR)
      *
      * @return MatchAction flag
      */

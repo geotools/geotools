@@ -29,36 +29,28 @@ public final class H2GISNativeFilterTestSetup extends JDBCNativeFilterTestSetup 
     @Override
     protected void createMeasurementsTable() throws Exception {
         // create the necessary able
-        run(
-                "CREATE TABLE \"geotools\".\"gt_jdbc_test_measurements\" ("
-                        + "\"id\" INTEGER PRIMARY KEY, "
-                        + "\"code\" TEXT NOT NULL, "
-                        + "\"type\" TEXT NOT NULL, "
-                        + "\"value\" REAL NOT NULL,"
-                        + "\"location\" GEOMETRY(GEOMETRY, 4326));");
+        run("CREATE TABLE \"geotools\".\"gt_jdbc_test_measurements\" ("
+                + "\"id\" INTEGER PRIMARY KEY, "
+                + "\"code\" TEXT NOT NULL, "
+                + "\"type\" TEXT NOT NULL, "
+                + "\"value\" REAL NOT NULL,"
+                + "\"location\" GEOMETRY(GEOMETRY, 4326));");
         // insert the needed records
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(1, '#1', 'temperature', 15.0, ST_GeomFromText('POINT(1.0 2.0)', 4326));");
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(2, '#2', 'temperature', 18.5, ST_GeomFromText('POINT (1.0 4.0)', 4326));");
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(3, '#3', 'wind', 8.5, ST_GeomFromText('POINT (2.0 4.0)', 4326));");
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(4, '#4', 'wind', 4.5, ST_GeomFromText('POINT (2.0 2.0)', 4326));");
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(5, '#5', 'humidity', 0.7, ST_GeomFromText('POINT (1.0 4.0)', 4326));");
-        run(
-                "INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
-                        + "(6, '#6', 'humidity', 0.5, ST_GeomFromText('POINT (5.0 4.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(1, '#1', 'temperature', 15.0, ST_GeomFromText('POINT(1.0 2.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(2, '#2', 'temperature', 18.5, ST_GeomFromText('POINT (1.0 4.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(3, '#3', 'wind', 8.5, ST_GeomFromText('POINT (2.0 4.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(4, '#4', 'wind', 4.5, ST_GeomFromText('POINT (2.0 2.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(5, '#5', 'humidity', 0.7, ST_GeomFromText('POINT (1.0 4.0)', 4326));");
+        run("INSERT INTO  \"geotools\".\"gt_jdbc_test_measurements\" VALUES "
+                + "(6, '#6', 'humidity', 0.5, ST_GeomFromText('POINT (5.0 4.0)', 4326));");
         // create the spatial index
         run("DROP INDEX IF EXISTS \"geotools\".SPIDX");
-        run(
-                "Create Spatial Index spIdx ON \"geotools\".\"gt_jdbc_test_measurements\"(\"location\");");
+        run("Create Spatial Index spIdx ON \"geotools\".\"gt_jdbc_test_measurements\"(\"location\");");
     }
 
     @Override
@@ -67,7 +59,6 @@ public final class H2GISNativeFilterTestSetup extends JDBCNativeFilterTestSetup 
 
         runSafe("DROP TABLE  \"geotools\".\"gt_jdbc_test_measurements\";");
         runSafe("DROP TABLE  \"geotools\".\"gt_jdbc_test_measurements\"_HATBOX;");
-        runSafe(
-                "DELETE FROM geometry_columns WHERE f_table_name = 'gt_jdbc_test_measurements'; COMMIT;");
+        runSafe("DELETE FROM geometry_columns WHERE f_table_name = 'gt_jdbc_test_measurements'; COMMIT;");
     }
 }

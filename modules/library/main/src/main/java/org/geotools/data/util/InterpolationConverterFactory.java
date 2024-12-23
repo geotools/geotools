@@ -41,8 +41,7 @@ public class InterpolationConverterFactory implements ConverterFactory {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(InterpolationConverterFactory.class);
 
-    private static final InterpolationConverter THE_INTERPOLATION_CONVERTER =
-            new InterpolationConverter();
+    private static final InterpolationConverter THE_INTERPOLATION_CONVERTER = new InterpolationConverter();
 
     /**
      * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a converter instance.
@@ -53,8 +52,7 @@ public class InterpolationConverterFactory implements ConverterFactory {
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (source == null || target == null || !source.equals(String.class)) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "InterpolationConverterFactory can be applied from Strings to Interpolation only.");
+                LOGGER.fine("InterpolationConverterFactory can be applied from Strings to Interpolation only.");
             }
             return null; // only do strings
         }
@@ -62,8 +60,7 @@ public class InterpolationConverterFactory implements ConverterFactory {
             return THE_INTERPOLATION_CONVERTER;
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "InterpolationConverterFactory can be applied from Strings to Interpolation  only.");
+                LOGGER.fine("InterpolationConverterFactory can be applied from Strings to Interpolation  only.");
             }
         }
         return null;
@@ -96,10 +93,9 @@ public class InterpolationConverterFactory implements ConverterFactory {
             InterpolationParser parser = InterpolationParser.valueOf(key);
             if (parser == null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "InterpolationConverterFactory can be applied to Strings like interpolation????(XXX). "
-                                    + source
-                                    + " is invalid!");
+                    LOGGER.fine("InterpolationConverterFactory can be applied to Strings like interpolation????(XXX). "
+                            + source
+                            + " is invalid!");
                 }
             }
 
@@ -134,8 +130,7 @@ public class InterpolationConverterFactory implements ConverterFactory {
         INTERPOLATIONBILINEAR {
 
             /** INTERPOLATION_BILINEAR */
-            private final InterpolationBilinear INTERPOLATION_BILINEAR =
-                    new InterpolationBilinear();
+            private final InterpolationBilinear INTERPOLATION_BILINEAR = new InterpolationBilinear();
 
             private final Pattern INTERPOLATION_BILINEAR_PATTERN_MATCH =
                     Pattern.compile("InterpolationBilinear\\(\\d+\\)");

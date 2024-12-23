@@ -26,9 +26,9 @@ import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.MapProjection;
 
 /**
- * Returns a {@link ProjectionHandler} for the {@link LambertAzimuthalEqualArea} projection that
- * will cut geometries 90° away from the projection center (at the moment it works only with with
- * the versions centered on poles and the equator)
+ * Returns a {@link ProjectionHandler} for the {@link LambertAzimuthalEqualArea} projection that will cut geometries 90°
+ * away from the projection center (at the moment it works only with with the versions centered on poles and the
+ * equator)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -36,30 +36,22 @@ public class LambertAzimuthalEqualAreaHandlerFactory implements ProjectionHandle
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
         if (renderingEnvelope == null) {
             return null;
         }
-        MapProjection mapProjection =
-                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
         if (mapProjection instanceof LambertAzimuthalEqualArea) {
             ParameterValueGroup params = mapProjection.getParameterValues();
-            double latitudeOfCenter =
-                    params.parameter(
-                                    LambertAzimuthalEqualArea.Provider.LATITUDE_OF_CENTRE
-                                            .getName()
-                                            .getCode())
-                            .doubleValue();
-            double longitudeOfCenter =
-                    params.parameter(
-                                    LambertAzimuthalEqualArea.Provider.LONGITUDE_OF_CENTRE
-                                            .getName()
-                                            .getCode())
-                            .doubleValue();
+            double latitudeOfCenter = params.parameter(LambertAzimuthalEqualArea.Provider.LATITUDE_OF_CENTRE
+                            .getName()
+                            .getCode())
+                    .doubleValue();
+            double longitudeOfCenter = params.parameter(LambertAzimuthalEqualArea.Provider.LONGITUDE_OF_CENTRE
+                            .getName()
+                            .getCode())
+                    .doubleValue();
 
             ReferencedEnvelope validArea;
             if (latitudeOfCenter > 0) {
@@ -67,13 +59,8 @@ public class LambertAzimuthalEqualAreaHandlerFactory implements ProjectionHandle
             } else if (latitudeOfCenter < 0) {
                 validArea = new ReferencedEnvelope(-180, 180, -90, 0, DefaultGeographicCRS.WGS84);
             } else {
-                validArea =
-                        new ReferencedEnvelope(
-                                longitudeOfCenter - 90,
-                                longitudeOfCenter + 90,
-                                -90,
-                                90,
-                                DefaultGeographicCRS.WGS84);
+                validArea = new ReferencedEnvelope(
+                        longitudeOfCenter - 90, longitudeOfCenter + 90, -90, 90, DefaultGeographicCRS.WGS84);
             }
 
             return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);

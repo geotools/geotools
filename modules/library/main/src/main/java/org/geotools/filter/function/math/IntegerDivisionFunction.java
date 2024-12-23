@@ -23,12 +23,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 /** Implements an integer division */
 public class IntegerDivisionFunction extends FunctionExpressionImpl {
-    static FunctionName NAME =
-            new FunctionNameImpl(
-                    "div",
-                    Integer.class,
-                    FunctionNameImpl.parameter("dividend", Integer.class),
-                    FunctionNameImpl.parameter("divisor", Integer.class));
+    static FunctionName NAME = new FunctionNameImpl(
+            "div",
+            Integer.class,
+            FunctionNameImpl.parameter("dividend", Integer.class),
+            FunctionNameImpl.parameter("divisor", Integer.class));
 
     public IntegerDivisionFunction() {
         super(NAME);

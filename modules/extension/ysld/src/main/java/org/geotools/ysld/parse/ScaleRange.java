@@ -20,8 +20,8 @@ package org.geotools.ysld.parse;
 import org.geotools.api.style.Rule;
 
 /**
- * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be
- * applied to a given {@link Rule}.
+ * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be applied to a given
+ * {@link Rule}.
  *
  * @deprecated Use {@link org.geotools.styling.zoom.ScaleRange} instead.
  */

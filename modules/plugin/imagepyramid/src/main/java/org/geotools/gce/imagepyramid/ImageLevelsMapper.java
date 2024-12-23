@@ -28,41 +28,39 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /**
- * Parse imagePyramid property files and setup the mapping to provide the proper {@link
- * ImageMosaicReader} for the required image choice. We are supporting ImagePyramids of ImageMosaic
- * with internal overviews, therefore the mapper should take care of different levels which can be
- * related to the same underlying imageMosaic.
+ * Parse imagePyramid property files and setup the mapping to provide the proper {@link ImageMosaicReader} for the
+ * required image choice. We are supporting ImagePyramids of ImageMosaic with internal overviews, therefore the mapper
+ * should take care of different levels which can be related to the same underlying imageMosaic.
  *
- * <p>When ImageMosaic has overviews, the "Levels" property will look like this example: In this
- * case, "Levels" in the property file is like this: Levels=1,1;2,2 4,4;8,8 16,16;32,32
+ * <p>When ImageMosaic has overviews, the "Levels" property will look like this example: In this case, "Levels" in the
+ * property file is like this: Levels=1,1;2,2 4,4;8,8 16,16;32,32
  *
- * <p>White spaces separate groups of resolutions from different mosaics as before. mosaic0 has
- * resolutions 1,1;2,2 mosaic1 has resolutions 4,4;8,8 mosaic2 has resolutions 16,16;32,32
+ * <p>White spaces separate groups of resolutions from different mosaics as before. mosaic0 has resolutions 1,1;2,2
+ * mosaic1 has resolutions 4,4;8,8 mosaic2 has resolutions 16,16;32,32
  *
- * <p>Semicolon (new char to support overviews) separates resolutions of the same mosaic. mosaic0
- * has native resolution = 1,1 mosaic0 has 1 overview with resolution = 2,2
+ * <p>Semicolon (new char to support overviews) separates resolutions of the same mosaic. mosaic0 has native resolution
+ * = 1,1 mosaic0 has 1 overview with resolution = 2,2
  *
  * <p>Comma separates x,y resolutions as before.
  */
 class ImageLevelsMapper {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
 
     /**
      * The whole number of overviews in the pyramid.
      *
-     * <p>Note that all the available resolutions on the underlying mosaics are considered
-     * overviews, except the native resolution level of the first mosaic.
+     * <p>Note that all the available resolutions on the underlying mosaics are considered overviews, except the native
+     * resolution level of the first mosaic.
      */
     private int numOverviews;
 
     /**
      * All the available resolutions in the pyramid, beside the highest one.
      *
-     * <p>Note that all the available resolutions on the underlying mosaics are considered
-     * overviews, except the native resolution level of the first mosaic.
+     * <p>Note that all the available resolutions on the underlying mosaics are considered overviews, except the native
+     * resolution level of the first mosaic.
      */
     private double[][] overViewResolutions;
 
@@ -146,15 +144,13 @@ class ImageLevelsMapper {
                 element.getValue().dispose();
             } catch (Exception e) {
                 // Mimic the underlying imageMosaicReader dispose behavior
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         }
         readers.clear();
     }
 
-    protected ImageMosaicReader getReader(
-            Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
+    protected ImageMosaicReader getReader(Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
             throws IOException {
         int imageIndex = getImageReaderIndex(imageChoice);
         // light check to see if this reader had been disposed, not synching for performance.
@@ -171,12 +167,11 @@ class ImageLevelsMapper {
             final String levelDirName = levelsDirs[imageIndex];
             final URL parentUrl = URLs.getParentUrl(sourceURL);
             // look for a shapefile first
-            final String extension =
-                    new StringBuilder(levelDirName)
-                            .append("/")
-                            .append(coverageName)
-                            .append(".shp")
-                            .toString();
+            final String extension = new StringBuilder(levelDirName)
+                    .append("/")
+                    .append(coverageName)
+                    .append(".shp")
+                    .toString();
             final URL shpFileUrl = URLs.extendUrl(parentUrl, extension);
             if (shpFileUrl.getProtocol() != null
                     && shpFileUrl.getProtocol().equalsIgnoreCase("file")
@@ -185,8 +180,7 @@ class ImageLevelsMapper {
             } else {
                 reader = new ImageMosaicReader(shpFileUrl, hints);
             }
-            final ImageMosaicReader putByOtherThreadJustNow =
-                    readers.putIfAbsent(imageIndex, reader);
+            final ImageMosaicReader putByOtherThreadJustNow = readers.putIfAbsent(imageIndex, reader);
             if (putByOtherThreadJustNow != null) {
                 // some other thread just did inserted this
                 try {

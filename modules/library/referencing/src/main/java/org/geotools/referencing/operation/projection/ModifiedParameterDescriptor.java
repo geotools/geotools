@@ -23,15 +23,13 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.MathTransformProvider; // For javadoc
 
 /**
- * A parameter descriptor identical to the supplied one except for the default value. The
- * constructor expects a model created by one of the {@linkplain
- * MathTransformProvider#createDescriptor(Identifier[],double,double,double,Unit) provider methods},
- * usually using some neutral default value. For example the base class for map projection providers
- * defines a set of {@linkplain
- * org.geotools.referencing.operation.projection.MapProjection.Provider#SEMI_MAJOR commonly used
- * parameter descriptors}. However some map projections are specific to a particular area (for
- * example the {@linkplain NewZealandMapGrid New Zealand map grid} and may wish to override the
- * neutral default values with some default value appropriate for that area.
+ * A parameter descriptor identical to the supplied one except for the default value. The constructor expects a model
+ * created by one of the {@linkplain MathTransformProvider#createDescriptor(Identifier[],double,double,double,Unit)
+ * provider methods}, usually using some neutral default value. For example the base class for map projection providers
+ * defines a set of {@linkplain org.geotools.referencing.operation.projection.MapProjection.Provider#SEMI_MAJOR commonly
+ * used parameter descriptors}. However some map projections are specific to a particular area (for example the
+ * {@linkplain NewZealandMapGrid New Zealand map grid} and may wish to override the neutral default values with some
+ * default value appropriate for that area.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -46,11 +44,8 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Doubl
     /** The new default value. */
     private final Double defaultValue;
 
-    /**
-     * Creates a parameter descriptor wrapping the specified one with the specified default value.
-     */
-    public ModifiedParameterDescriptor(
-            final ParameterDescriptor<Double> original, final double defaultValue) {
+    /** Creates a parameter descriptor wrapping the specified one with the specified default value. */
+    public ModifiedParameterDescriptor(final ParameterDescriptor<Double> original, final double defaultValue) {
         super(original);
         this.original = original;
         this.defaultValue = defaultValue;
@@ -63,14 +58,12 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Doubl
     }
 
     /**
-     * Returns {@code true} if the specified collection contains the specified descriptor. Invoking
-     * this method is similar to invoking {@code set.contains(descriptor)}, except that instance of
-     * {@link ModifiedParameterDescriptor} are unwrapped to their original descriptor. The drawback
-     * is that this method is slower than {@code set.contains(descriptor)}, so it should be invoked
-     * only if the former fails.
+     * Returns {@code true} if the specified collection contains the specified descriptor. Invoking this method is
+     * similar to invoking {@code set.contains(descriptor)}, except that instance of {@link ModifiedParameterDescriptor}
+     * are unwrapped to their original descriptor. The drawback is that this method is slower than
+     * {@code set.contains(descriptor)}, so it should be invoked only if the former fails.
      */
-    public static boolean contains(
-            final Collection<GeneralParameterDescriptor> set, ParameterDescriptor descriptor) {
+    public static boolean contains(final Collection<GeneralParameterDescriptor> set, ParameterDescriptor descriptor) {
         if (descriptor instanceof ModifiedParameterDescriptor) {
             descriptor = ((ModifiedParameterDescriptor) descriptor).original;
         }

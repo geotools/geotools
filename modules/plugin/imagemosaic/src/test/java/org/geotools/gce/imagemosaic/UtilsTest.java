@@ -31,7 +31,8 @@ import org.junit.rules.TemporaryFolder;
 
 public class UtilsTest {
 
-    @ClassRule public static TemporaryFolder folder = new TemporaryFolder();
+    @ClassRule
+    public static TemporaryFolder folder = new TemporaryFolder();
 
     @Test
     public void testGetHistogramValid() throws Exception {

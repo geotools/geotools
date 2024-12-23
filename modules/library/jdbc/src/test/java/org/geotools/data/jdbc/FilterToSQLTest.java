@@ -59,8 +59,7 @@ import org.junit.Test;
  */
 public class FilterToSQLTest {
     private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterToSQLTest.class);
+    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSQLTest.class);
 
     private SimpleFeatureType integerFType;
     private SimpleFeatureType stringFType;
@@ -110,38 +109,38 @@ public class FilterToSQLTest {
 
         output = new StringWriter();
         encoder = new FilterToSQL(output);
-        encoder.setPrimaryKey(
-                new PrimaryKey(
-                        "foobar",
-                        Collections.singletonList(
-                                new NonIncrementingPrimaryKeyColumn("id", String.class))));
+        encoder.setPrimaryKey(new PrimaryKey(
+                "foobar", Collections.singletonList(new NonIncrementingPrimaryKeyColumn("id", String.class))));
     }
 
     @Test
     public void testIntegerContext() throws Exception {
 
         Expression literal = ff.literal(5);
-        Expression prop = ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop =
+                ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine(
+                "testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5");
     }
 
     @Test
     public void testSqlDateContext() throws Exception {
         Expression literal = ff.literal("2002-12-03");
-        Expression prop = ff.property(sqlDateFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop =
+                ff.property(sqlDateFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(sqlDateFType);
         encoder.encode(filter);
 
-        LOGGER.fine(
-                "testAttr is a java.sql.Date " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine("testAttr is a java.sql.Date " + filter + " -> "
+                + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03'");
     }
 
@@ -155,7 +154,8 @@ public class FilterToSQLTest {
         encoder.setFeatureType(timestampFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is a Timestampa " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine("testAttr is a Timestampa " + filter + " -> "
+                + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00'");
     }
 
@@ -168,21 +168,23 @@ public class FilterToSQLTest {
         encoder.setFeatureType(dateFType);
         encoder.encode(filter);
 
-        LOGGER.fine(
-                "testAttr is a java.util.Date " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine("testAttr is a java.util.Date " + filter + " -> "
+                + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00'");
     }
 
     @Test
     public void testStringContext() throws Exception {
         Expression literal = ff.literal(5);
-        Expression prop = ff.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop =
+                ff.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(stringFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is a String " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine(
+                "testAttr is a String " + filter + " -> " + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = '5'");
     }
 
@@ -190,13 +192,15 @@ public class FilterToSQLTest {
     public void testIntegerToNumberContext() throws Exception {
 
         Expression literal = ff.literal(5.0);
-        Expression prop = ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        Expression prop =
+                ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine(
+                "testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5.0");
     }
 
@@ -250,14 +254,13 @@ public class FilterToSQLTest {
     @Test
     public void testEscapeQuoteFancy() throws FilterToSQLException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Object fancyLiteral =
-                new Object() {
+        Object fancyLiteral = new Object() {
 
-                    @Override
-                    public String toString() {
-                        return "A'A";
-                    }
-                };
+            @Override
+            public String toString() {
+                return "A'A";
+            }
+        };
         PropertyIsEqualTo equals = ff.equals(ff.property("attribute"), ff.literal(fancyLiteral));
         StringWriter output = new StringWriter();
         FilterToSQL encoder = new FilterToSQL(output);
@@ -300,27 +303,23 @@ public class FilterToSQLTest {
         encoder.setFeatureType(timestampFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is a Timestamp " + filter + " -> " + output.getBuffer().toString());
-        Assert.assertEquals(
-                output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00:00.0'");
+        LOGGER.fine("testAttr is a Timestamp " + filter + " -> "
+                + output.getBuffer().toString());
+        Assert.assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00:00.0'");
     }
 
     @Test
     public void testSimpleIn() throws FilterToSQLException {
         // straight
-        Assert.assertEquals(
-                encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, " + "2)");
+        Assert.assertEquals(encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, " + "2)");
         // double negation
-        Assert.assertEquals(
-                encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN " + "(1, 2)");
+        Assert.assertEquals(encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN " + "(1, 2)");
     }
 
     @Test
     public void testMixedLogic() throws FilterToSQLException {
-        Assert.assertEquals(
-                encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, 2)");
-        Assert.assertEquals(
-                encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN (1, 2)");
+        Assert.assertEquals(encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, 2)");
+        Assert.assertEquals(encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN (1, 2)");
     }
 
     @Test
@@ -331,9 +330,7 @@ public class FilterToSQLTest {
                 values[j] = j;
             }
             String commaSeparatedValues =
-                    Arrays.stream(values)
-                            .map(v -> String.valueOf(v))
-                            .collect(Collectors.joining(", "));
+                    Arrays.stream(values).map(v -> String.valueOf(v)).collect(Collectors.joining(", "));
             Assert.assertEquals(
                     encodeInComparison("in" + i, true, "true", values),
                     "WHERE testAttr IN (" + commaSeparatedValues + ")");
@@ -349,11 +346,11 @@ public class FilterToSQLTest {
         encoder.encode(filter);
 
         // weird but legit, at least in some databases
-        Assert.assertEquals("WHERE (testAttr IN (1, 2)) < true", output.getBuffer().toString());
+        Assert.assertEquals(
+                "WHERE (testAttr IN (1, 2)) < true", output.getBuffer().toString());
     }
 
-    public String encodeInComparison(
-            String functionName, boolean equality, String literal, Object... valueList)
+    public String encodeInComparison(String functionName, boolean equality, String literal, Object... valueList)
             throws FilterToSQLException {
         FilterToSQL encoder = new FilterToSQL(output);
 
@@ -380,22 +377,16 @@ public class FilterToSQLTest {
 
     @Test
     public void testNestedMath1() throws Exception {
-        final Filter filter =
-                ff.equals(
-                        ff.multiply(
-                                ff.subtract(ff.property("PROP1"), ff.literal(10)), ff.literal(20)),
-                        ff.literal(50));
+        final Filter filter = ff.equals(
+                ff.multiply(ff.subtract(ff.property("PROP1"), ff.literal(10)), ff.literal(20)), ff.literal(50));
         FilterToSQL encoder = new FilterToSQL(output);
         Assert.assertEquals("WHERE (PROP1 - 10) * 20 = 50", encoder.encodeToString(filter));
     }
 
     @Test
     public void testNestedMath2() throws Exception {
-        final Filter filter =
-                ff.equals(
-                        ff.subtract(
-                                ff.property("PROP1"), ff.multiply(ff.literal(10), ff.literal(20))),
-                        ff.literal(50));
+        final Filter filter = ff.equals(
+                ff.subtract(ff.property("PROP1"), ff.multiply(ff.literal(10), ff.literal(20))), ff.literal(50));
         FilterToSQL encoder = new FilterToSQL(output);
         Assert.assertEquals("WHERE PROP1 - (10 * 20) = 50", encoder.encodeToString(filter));
     }
@@ -403,8 +394,7 @@ public class FilterToSQLTest {
     @Test
     public void testSimpleInFromEqualities() throws Exception {
         PropertyName p = ff.property("PROP1");
-        final Filter filter =
-                ff.or(Arrays.asList(ff.equals(p, ff.literal(1)), ff.equals(p, ff.literal(2))));
+        final Filter filter = ff.or(Arrays.asList(ff.equals(p, ff.literal(1)), ff.equals(p, ff.literal(2))));
         FilterToSQL encoder = new FilterToSQL(output);
         Assert.assertEquals("WHERE PROP1 IN (1, 2)", encoder.encodeToString(filter));
     }
@@ -413,28 +403,21 @@ public class FilterToSQLTest {
     public void testMixedInFromEqualities() throws Exception {
         PropertyName p1 = ff.property("P1");
         PropertyName p2 = ff.property("P2");
-        final Filter filter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equals(p1, ff.literal(1)),
-                                ff.equals(p2, ff.literal("a")),
-                                ff.equals(p1, ff.literal(2)),
-                                ff.equals(p2, ff.literal("b"))));
+        final Filter filter = ff.or(Arrays.asList(
+                ff.equals(p1, ff.literal(1)),
+                ff.equals(p2, ff.literal("a")),
+                ff.equals(p1, ff.literal(2)),
+                ff.equals(p2, ff.literal("b"))));
         FilterToSQL encoder = new FilterToSQL(output);
-        Assert.assertEquals(
-                "WHERE (P1 IN (1, 2) OR P2 IN ('a', 'b'))", encoder.encodeToString(filter));
+        Assert.assertEquals("WHERE (P1 IN (1, 2) OR P2 IN ('a', 'b'))", encoder.encodeToString(filter));
     }
 
     @Test
     public void testMixedInWithSingleEquality() throws Exception {
         PropertyName p1 = ff.property("P1");
         PropertyName p2 = ff.property("P2");
-        final Filter filter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equals(p1, ff.literal(1)),
-                                ff.equals(p2, ff.literal("a")),
-                                ff.equals(p1, ff.literal(2))));
+        final Filter filter = ff.or(Arrays.asList(
+                ff.equals(p1, ff.literal(1)), ff.equals(p2, ff.literal("a")), ff.equals(p1, ff.literal(2))));
         FilterToSQL encoder = new FilterToSQL(output);
         Assert.assertEquals("WHERE (P1 IN (1, 2) OR P2 = 'a')", encoder.encodeToString(filter));
     }
@@ -443,16 +426,13 @@ public class FilterToSQLTest {
     public void testInFromEqualitiesInequalities() throws Exception {
         PropertyName p1 = ff.property("P1");
         PropertyName p2 = ff.property("P2");
-        final Filter filter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equals(p1, ff.literal(1)),
-                                ff.greater(p2, ff.literal(3)),
-                                ff.equals(p1, ff.literal(2)),
-                                ff.less(p2, ff.literal(4))));
+        final Filter filter = ff.or(Arrays.asList(
+                ff.equals(p1, ff.literal(1)),
+                ff.greater(p2, ff.literal(3)),
+                ff.equals(p1, ff.literal(2)),
+                ff.less(p2, ff.literal(4))));
         FilterToSQL encoder = new FilterToSQL(output);
-        Assert.assertEquals(
-                "WHERE (P1 IN (1, 2) OR P2 > 3 OR P2 < 4)", encoder.encodeToString(filter));
+        Assert.assertEquals("WHERE (P1 IN (1, 2) OR P2 > 3 OR P2 < 4)", encoder.encodeToString(filter));
     }
 
     @Test

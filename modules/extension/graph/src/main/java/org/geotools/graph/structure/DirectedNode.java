@@ -19,9 +19,9 @@ package org.geotools.graph.structure;
 import java.util.List;
 
 /**
- * Represents a node in a directed graph. A directed node differentiates between adjacent edges that
- * start at the node and those adjacent edges that terminate at the node. The former are referred to
- * as "<B>in</B>" edges, and the latter "<B>out</B>" edges.
+ * Represents a node in a directed graph. A directed node differentiates between adjacent edges that start at the node
+ * and those adjacent edges that terminate at the node. The former are referred to as "<B>in</B>" edges, and the latter
+ * "<B>out</B>" edges.
  *
  * @see DirectedGraph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
@@ -63,8 +63,8 @@ public interface DirectedNode extends Node, DirectedGraphable {
     /**
      * Returns an edge that terminates at the node and originates from a specified node. <br>
      * <br>
-     * Note: It is possible for two nodes to share multiple edges between them. In this case,
-     * getInEdges(Node other) can be used to obtain a complete list.
+     * Note: It is possible for two nodes to share multiple edges between them. In this case, getInEdges(Node other) can
+     * be used to obtain a complete list.
      *
      * @param other The originating node.
      * @return The first edge found to terminate at the node and originate from the specefied node.
@@ -92,8 +92,8 @@ public interface DirectedNode extends Node, DirectedGraphable {
     /**
      * Returns an edge that originates at the node and terminates at a specified node. <br>
      * <br>
-     * Note: It is possible for two nodes to share multiple edges between them. In this case,
-     * getOutEdges(Node other) can be used to obtain a complete list.
+     * Note: It is possible for two nodes to share multiple edges between them. In this case, getOutEdges(Node other)
+     * can be used to obtain a complete list.
      *
      * @param other The terminating node.
      * @return The first edge found to originate at the node and terminate at the specefied node.

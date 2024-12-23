@@ -43,12 +43,7 @@ public class StyleAttributeExtractorTest {
     @Test
     public void testGeometryTransformation() {
         PointSymbolizer ps = sb.createPointSymbolizer();
-        ps.setGeometry(
-                ff.function(
-                        "offset",
-                        ff.property("the_geom"),
-                        ff.property("offx"),
-                        ff.property("offy")));
+        ps.setGeometry(ff.function("offset", ff.property("the_geom"), ff.property("offx"), ff.property("offy")));
         Rule r = sb.createRule(ps);
 
         StyleAttributeExtractor extractor = new StyleAttributeExtractor();
@@ -65,12 +60,7 @@ public class StyleAttributeExtractorTest {
     @Test
     public void testPropertyFucntion() {
         PointSymbolizer ps = sb.createPointSymbolizer();
-        ps.setGeometry(
-                ff.function(
-                        "offset",
-                        ff.property("the_geom"),
-                        ff.property("offx"),
-                        ff.property("offy")));
+        ps.setGeometry(ff.function("offset", ff.property("the_geom"), ff.property("offx"), ff.property("offy")));
         Function func = ff.function("property", ff.function("env", ff.literal("pname")));
         PropertyIsEqualTo filter = ff.equals(func, ff.literal("test"));
         Rule r = sb.createRule(ps);

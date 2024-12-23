@@ -47,10 +47,7 @@ public class NormalizeCoverageProcessTest {
         };
 
         GridCoverage2D cov =
-                covFactory.create(
-                        "test",
-                        grid,
-                        new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
+                covFactory.create("test", grid, new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
         NormalizeCoverageProcess p = new NormalizeCoverageProcess();
         GridCoverage2D norm = p.execute(cov);
 
@@ -68,10 +65,7 @@ public class NormalizeCoverageProcessTest {
         };
 
         GridCoverage2D cov =
-                covFactory.create(
-                        "test",
-                        grid,
-                        new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
+                covFactory.create("test", grid, new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
         NormalizeCoverageProcess p = new NormalizeCoverageProcess();
         GridCoverage2D norm = p.execute(cov);
 

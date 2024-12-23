@@ -66,22 +66,18 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Classes;
 
 /**
- * Delegates object creations to one of the {@code create} methods in a backing {@linkplain
- * AuthorityFactory authority factory}. It is possible to use the generic {@link
- * AuthorityFactory#createObject createObject} method instead of this class, but some factory
- * implementations are more efficient when we use the most specific {@code create} method. For
- * example when using a {@linkplain org.geotools.referencing.factory.epsg.DirectEpsgFactory EPSG
- * factory backed by a SQL database}, invoking {@link
- * CRSAuthorityFactory#createCoordinateReferenceSystem createCoordinateReferenceSystem} instead of
- * {@link AuthorityFactory#createObject createObject} method will reduce the amount of tables to be
- * queried.
+ * Delegates object creations to one of the {@code create} methods in a backing {@linkplain AuthorityFactory authority
+ * factory}. It is possible to use the generic {@link AuthorityFactory#createObject createObject} method instead of this
+ * class, but some factory implementations are more efficient when we use the most specific {@code create} method. For
+ * example when using a {@linkplain org.geotools.referencing.factory.epsg.DirectEpsgFactory EPSG factory backed by a SQL
+ * database}, invoking {@link CRSAuthorityFactory#createCoordinateReferenceSystem createCoordinateReferenceSystem}
+ * instead of {@link AuthorityFactory#createObject createObject} method will reduce the amount of tables to be queried.
  *
- * <p>This class is useful when the same {@code create} method need to be invoked often, but is
- * unknown at compile time. It may also be used as a workaround for authority factories that don't
- * implement the {@code createObject} method.
+ * <p>This class is useful when the same {@code create} method need to be invoked often, but is unknown at compile time.
+ * It may also be used as a workaround for authority factories that don't implement the {@code createObject} method.
  *
- * <p><b>Example:</b> The following code creates a proxy which will delegates its work to the {@link
- * CRSAuthorityFactory#createGeographicCRS createGeographicCRS} method.
+ * <p><b>Example:</b> The following code creates a proxy which will delegates its work to the
+ * {@link CRSAuthorityFactory#createGeographicCRS createGeographicCRS} method.
  *
  * <blockquote>
  *
@@ -102,51 +98,45 @@ import org.geotools.util.Classes;
  * @author Martin Desruisseaux
  */
 abstract class AuthorityFactoryProxy {
-    /**
-     * The types that factories can be create. The most specific types must appear first in this
-     * list.
-     */
-    private static final List<Class<? extends IdentifiedObject>> TYPES =
-            new ArrayList<>(
-                    Arrays.asList(
-                            CoordinateOperation.class,
-                            OperationMethod.class,
-                            ParameterDescriptor.class,
-                            ProjectedCRS.class,
-                            GeographicCRS.class,
-                            GeocentricCRS.class,
-                            ImageCRS.class,
-                            DerivedCRS.class,
-                            VerticalCRS.class,
-                            TemporalCRS.class,
-                            EngineeringCRS.class,
-                            CompoundCRS.class,
-                            CoordinateReferenceSystem.class,
-                            CoordinateSystemAxis.class,
-                            CartesianCS.class,
-                            EllipsoidalCS.class,
-                            SphericalCS.class,
-                            CylindricalCS.class,
-                            PolarCS.class,
-                            VerticalCS.class,
-                            TimeCS.class,
-                            CoordinateSystem.class,
-                            PrimeMeridian.class,
-                            Ellipsoid.class,
-                            GeodeticDatum.class,
-                            ImageDatum.class,
-                            VerticalDatum.class,
-                            TemporalDatum.class,
-                            EngineeringDatum.class,
-                            Datum.class,
-                            IdentifiedObject.class));
+    /** The types that factories can be create. The most specific types must appear first in this list. */
+    private static final List<Class<? extends IdentifiedObject>> TYPES = new ArrayList<>(Arrays.asList(
+            CoordinateOperation.class,
+            OperationMethod.class,
+            ParameterDescriptor.class,
+            ProjectedCRS.class,
+            GeographicCRS.class,
+            GeocentricCRS.class,
+            ImageCRS.class,
+            DerivedCRS.class,
+            VerticalCRS.class,
+            TemporalCRS.class,
+            EngineeringCRS.class,
+            CompoundCRS.class,
+            CoordinateReferenceSystem.class,
+            CoordinateSystemAxis.class,
+            CartesianCS.class,
+            EllipsoidalCS.class,
+            SphericalCS.class,
+            CylindricalCS.class,
+            PolarCS.class,
+            VerticalCS.class,
+            TimeCS.class,
+            CoordinateSystem.class,
+            PrimeMeridian.class,
+            Ellipsoid.class,
+            GeodeticDatum.class,
+            ImageDatum.class,
+            VerticalDatum.class,
+            TemporalDatum.class,
+            EngineeringDatum.class,
+            Datum.class,
+            IdentifiedObject.class));
 
     /** Creates a new proxy. */
     AuthorityFactoryProxy() {}
 
     /**
-     * Returns a proxy instance which will create objects of the specified type using the specified
-     * factory.
+     * Returns a proxy instance which will create objects of the specified type using the specified factory.
      *
      * @param factory The factory to use for object creations.
      * @param type The type of objects to be created by the proxy.
@@ -172,20 +162,18 @@ abstract class AuthorityFactoryProxy {
     }
 
     /**
-     * Returns the main GeoAPI interface implemented by an object of the specified type. The {@code
-     * type} argument is often some implementation class like {@link
-     * org.geotools.referencing.crs.DefaultProjectedCRS}. This method returns the most specific
-     * GeoAPI interface implemented by {@code type}, providing that a corresponding {@code create}
-     * method exists in some {@linkplain AuthorityFactory authority factory}. For example this
-     * method may returns {@link ProjectedCRS} or {@link DerivedCRS} class, but not {@link
-     * GeneralDerivedCRS}.
+     * Returns the main GeoAPI interface implemented by an object of the specified type. The {@code type} argument is
+     * often some implementation class like {@link org.geotools.referencing.crs.DefaultProjectedCRS}. This method
+     * returns the most specific GeoAPI interface implemented by {@code type}, providing that a corresponding
+     * {@code create} method exists in some {@linkplain AuthorityFactory authority factory}. For example this method may
+     * returns {@link ProjectedCRS} or {@link DerivedCRS} class, but not {@link GeneralDerivedCRS}.
      *
      * @param type The implementation class.
      * @return The most specific GeoAPI interface implemented by {@code type}.
      * @throws IllegalArgumentException if the type doesn't implement a valid interface.
      */
-    public static Class<? extends IdentifiedObject> getType(
-            final Class<? extends IdentifiedObject> type) throws IllegalArgumentException {
+    public static Class<? extends IdentifiedObject> getType(final Class<? extends IdentifiedObject> type)
+            throws IllegalArgumentException {
         for (final Class<? extends IdentifiedObject> candidate : TYPES) {
             if (candidate.isAssignableFrom(type)) {
                 return candidate;
@@ -212,15 +200,13 @@ abstract class AuthorityFactoryProxy {
     }
 
     /**
-     * Creates an object for the specified code. This method will delegates to the most specific
-     * {@code create} method from the authority factory. The returned object will always be of the
-     * type returned by {@link #getType()}.
+     * Creates an object for the specified code. This method will delegates to the most specific {@code create} method
+     * from the authority factory. The returned object will always be of the type returned by {@link #getType()}.
      *
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    public abstract IdentifiedObject create(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    public abstract IdentifiedObject create(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /** Returns a string representation of this proxy, for debugging purpose only. */
     @Override
@@ -242,8 +228,8 @@ abstract class AuthorityFactoryProxy {
     }
 
     /**
-     * A default implementation using reflections. To be used only when we don't provide a
-     * specialized, more efficient, implementation.
+     * A default implementation using reflections. To be used only when we don't provide a specialized, more efficient,
+     * implementation.
      *
      * @version $Id$
      * @author Martin Desruisseaux
@@ -261,9 +247,7 @@ abstract class AuthorityFactoryProxy {
         /** The {@code createFoo} method to invoke. */
         private final Method method;
 
-        /**
-         * Creates a new proxy which will delegates the object creation to the specified instance.
-         */
+        /** Creates a new proxy which will delegates the object creation to the specified instance. */
         Default(final AuthorityFactory factory, final Class<? extends IdentifiedObject> type)
                 throws IllegalArgumentException {
             this.factory = factory;
@@ -277,8 +261,7 @@ abstract class AuthorityFactoryProxy {
                     return;
                 }
             }
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
         }
 
         /** {@inheritDoc} */

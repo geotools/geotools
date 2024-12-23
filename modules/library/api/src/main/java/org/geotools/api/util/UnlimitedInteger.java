@@ -10,10 +10,9 @@
 package org.geotools.api.util;
 
 /**
- * An {@linkplain Integer integer} with associated infinite flag. This implementation uses {@link
- * Integer#MAX_VALUE} as a sentinel value for positive infinity. This approach is consistent with
- * J2SE {@link java.util.Collection#size()} contract. For consistency, {@link Integer#MIN_VALUE} is
- * a sentinal value for negative infinity.
+ * An {@linkplain Integer integer} with associated infinite flag. This implementation uses {@link Integer#MAX_VALUE} as
+ * a sentinel value for positive infinity. This approach is consistent with J2SE {@link java.util.Collection#size()}
+ * contract. For consistency, {@link Integer#MIN_VALUE} is a sentinal value for negative infinity.
  *
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)
@@ -24,12 +23,10 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     private static final long serialVersionUID = 4748246369364771836L;
 
     /** A constant holding the negative infinity. */
-    public static final UnlimitedInteger NEGATIVE_INFINITY =
-            new UnlimitedInteger(Integer.MIN_VALUE);
+    public static final UnlimitedInteger NEGATIVE_INFINITY = new UnlimitedInteger(Integer.MIN_VALUE);
 
     /** A constant holding the positive infinity. */
-    public static final UnlimitedInteger POSITIVE_INFINITY =
-            new UnlimitedInteger(Integer.MAX_VALUE);
+    public static final UnlimitedInteger POSITIVE_INFINITY = new UnlimitedInteger(Integer.MAX_VALUE);
 
     /** A constant holding the minimum finite value a {@code UnlimitedInteger} can have. */
     public static final int MIN_VALUE = Integer.MIN_VALUE + 1;
@@ -41,9 +38,9 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     private final int value;
 
     /**
-     * Constructs a newly allocated {@code UnlimitedInteger} object that represents the specified
-     * {@code int} value. {@link Integer#MAX_VALUE} and {@link Integer#MIN_VALUE MIN_VALUE} maps to
-     * positive and negative infinities respectively.
+     * Constructs a newly allocated {@code UnlimitedInteger} object that represents the specified {@code int} value.
+     * {@link Integer#MAX_VALUE} and {@link Integer#MIN_VALUE MIN_VALUE} maps to positive and negative infinities
+     * respectively.
      */
     public UnlimitedInteger(final int value) {
         this.value = value;
@@ -55,9 +52,8 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     }
 
     /**
-     * Returns the value of this {@code UnlimitedInteger} as an {@code int}. Positive and negative
-     * infinities map to {@link Integer#MAX_VALUE} and {@link Integer#MIN_VALUE MIN_VALUE}
-     * respectively.
+     * Returns the value of this {@code UnlimitedInteger} as an {@code int}. Positive and negative infinities map to
+     * {@link Integer#MAX_VALUE} and {@link Integer#MIN_VALUE MIN_VALUE} respectively.
      */
     @Override
     public int intValue() {
@@ -65,8 +61,8 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     }
 
     /**
-     * Returns the value of this {@code UnlimitedInteger} as a {@code long}. Positive and negative
-     * infinities map to {@link Long#MAX_VALUE} and {@link Long#MIN_VALUE MIN_VALUE} respectively.
+     * Returns the value of this {@code UnlimitedInteger} as a {@code long}. Positive and negative infinities map to
+     * {@link Long#MAX_VALUE} and {@link Long#MIN_VALUE MIN_VALUE} respectively.
      */
     @Override
     public long longValue() {
@@ -74,9 +70,8 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     }
 
     /**
-     * Returns the value of this {@code UnlimitedInteger} as a {@code float}. Positive and negative
-     * infinities map to {@link Float#POSITIVE_INFINITY} and {@link Float#NEGATIVE_INFINITY
-     * NEGATIVE_INFINITY} respectively.
+     * Returns the value of this {@code UnlimitedInteger} as a {@code float}. Positive and negative infinities map to
+     * {@link Float#POSITIVE_INFINITY} and {@link Float#NEGATIVE_INFINITY NEGATIVE_INFINITY} respectively.
      */
     @Override
     public float floatValue() {
@@ -91,9 +86,8 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     }
 
     /**
-     * Returns the value of this {@code UnlimitedInteger} as a {@code double}. Positive and negative
-     * infinities map to {@link Double#POSITIVE_INFINITY} and {@link Double#NEGATIVE_INFINITY
-     * NEGATIVE_INFINITY} respectively.
+     * Returns the value of this {@code UnlimitedInteger} as a {@code double}. Positive and negative infinities map to
+     * {@link Double#POSITIVE_INFINITY} and {@link Double#NEGATIVE_INFINITY NEGATIVE_INFINITY} respectively.
      */
     @Override
     public double doubleValue() {
@@ -136,9 +130,9 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
      * Compares two {@code UnlimitedInteger} objects numerically.
      *
      * @param other the unlimited integer to be compared.
-     * @return {@code 0} if this {@code UnlimitedInteger} is equal to the given value, {@code -1} if
-     *     this {@code UnlimitedInteger} is numerically less than the given value, and {@code +1} if
-     *     this {@code UnlimitedInteger} is numerically greater than the given value,
+     * @return {@code 0} if this {@code UnlimitedInteger} is equal to the given value, {@code -1} if this
+     *     {@code UnlimitedInteger} is numerically less than the given value, and {@code +1} if this
+     *     {@code UnlimitedInteger} is numerically greater than the given value,
      */
     @Override
     public int compareTo(final UnlimitedInteger other) {

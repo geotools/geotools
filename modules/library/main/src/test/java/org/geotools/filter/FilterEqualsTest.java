@@ -47,8 +47,7 @@ import org.junit.Test;
 public class FilterEqualsTest {
 
     /** Standard logging instance */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterEqualsTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterEqualsTest.class);
 
     private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private Expression testExp1;
@@ -181,10 +180,8 @@ public class FilterEqualsTest {
         bFilter1.setExpression2(testLit1);
         bFilter2.setExpression2(testLit2);
         Assert.assertEquals(bFilter2, bFilter1);
-        tFilter1 =
-                ff.equals(
-                        org.geotools.api.filter.expression.Expression.NIL,
-                        org.geotools.api.filter.expression.Expression.NIL);
+        tFilter1 = ff.equals(
+                org.geotools.api.filter.expression.Expression.NIL, org.geotools.api.filter.expression.Expression.NIL);
         assertNotEquals(bFilter2, tFilter1);
         bFilter2.setExpression2(new LiteralExpressionImpl(Integer.valueOf(65)));
         assertNotEquals(bFilter2, bFilter1);

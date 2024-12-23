@@ -22,8 +22,8 @@ import org.xml.sax.Attributes;
 /**
  * FieldHandler purpose.
  *
- * <p>Represents a 'field' element. This class is not currently in use as key ... constraints are
- * not used. TODO Use the referential constraints ... thus using this class
+ * <p>Represents a 'field' element. This class is not currently in use as key ... constraints are not used. TODO Use the
+ * referential constraints ... thus using this class
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
@@ -40,9 +40,7 @@ public class FieldHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((xpath == null) ? 1 : xpath.hashCode());
+        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((xpath == null) ? 1 : xpath.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -52,8 +50,7 @@ public class FieldHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {

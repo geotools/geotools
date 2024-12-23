@@ -24,19 +24,18 @@ import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Mix lesscss.org color function. Takes two colors and mixes them toghether based on a weight (and
- * their eventual alpha)
+ * Mix lesscss.org color function. Takes two colors and mixes them toghether based on a weight (and their eventual
+ * alpha)
  *
  * @author Andrea Aime - GeoSolutions
  */
 public class SpinFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "spin",
-                    parameter("result", Color.class),
-                    parameter("color", Color.class),
-                    parameter("amount", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "spin",
+            parameter("result", Color.class),
+            parameter("color", Color.class),
+            parameter("amount", Double.class));
 
     public SpinFunction() {
         this.functionName = NAME;

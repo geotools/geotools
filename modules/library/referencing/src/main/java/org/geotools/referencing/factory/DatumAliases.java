@@ -64,35 +64,32 @@ import org.geotools.util.NameFactory;
 import org.geotools.util.XArray;
 
 /**
- * A datum factory that add {@linkplain IdentifiedObject#getAlias aliases} to a datum name before to
- * delegates the {@linkplain org.geotools.referencing.datum.AbstractDatum#AbstractDatum(Map) datum
- * creation} to an other factory. Aliases are especially important for {@linkplain Datum datum}
- * since their {@linkplain IdentifiedObject#getName name} are often the only way to differentiate
- * them. Two datum with different names are considered incompatible, unless some datum shift method
- * are specified (e.g. {@linkplain org.geotools.referencing.datum.BursaWolfParameters Bursa-Wolf
- * parameters}). Unfortunatly, different softwares often use different names for the same datum,
- * which result in {@link org.geotools.api.referencing.operation.OperationNotFoundException} when
- * attempting to convert coordinates from one {@linkplain CoordinateReferenceSystem coordinate
- * reference system} to an other one. For example "<cite>Nouvelle Triangulation Française
- * (Paris)</cite>" and "<cite>NTF (Paris meridian)</cite>" are actually the same datum. This {@code
- * DatumAliases} class provides a way to handle that.
+ * A datum factory that add {@linkplain IdentifiedObject#getAlias aliases} to a datum name before to delegates the
+ * {@linkplain org.geotools.referencing.datum.AbstractDatum#AbstractDatum(Map) datum creation} to an other factory.
+ * Aliases are especially important for {@linkplain Datum datum} since their {@linkplain IdentifiedObject#getName name}
+ * are often the only way to differentiate them. Two datum with different names are considered incompatible, unless some
+ * datum shift method are specified (e.g. {@linkplain org.geotools.referencing.datum.BursaWolfParameters Bursa-Wolf
+ * parameters}). Unfortunatly, different softwares often use different names for the same datum, which result in
+ * {@link org.geotools.api.referencing.operation.OperationNotFoundException} when attempting to convert coordinates from
+ * one {@linkplain CoordinateReferenceSystem coordinate reference system} to an other one. For example "<cite>Nouvelle
+ * Triangulation Française (Paris)</cite>" and "<cite>NTF (Paris meridian)</cite>" are actually the same datum. This
+ * {@code DatumAliases} class provides a way to handle that.
  *
- * <p>{@code DatumAliases} is a class that determines if a datum name is in our list of aliases and
- * constructs a value for the {@linkplain IdentifiedObject#ALIAS_KEY aliases property} (as
- * {@linkplain GenericName generic names}) for a name. The default implementation is backed by the
- * text file "{@code DatumAliasesTable.txt}". The first line in this text file must be the authority
- * names. All other lines are the aliases.
+ * <p>{@code DatumAliases} is a class that determines if a datum name is in our list of aliases and constructs a value
+ * for the {@linkplain IdentifiedObject#ALIAS_KEY aliases property} (as {@linkplain GenericName generic names}) for a
+ * name. The default implementation is backed by the text file "{@code DatumAliasesTable.txt}". The first line in this
+ * text file must be the authority names. All other lines are the aliases.
  *
- * <p>Since {@code DatumAliases} is a datum factory, any {@linkplain AuthorityFactory authority
- * factory} or any {@linkplain org.geotools.referencing.wkt.Parser WKT parser} using this factory
- * will takes advantage of the aliases table.
+ * <p>Since {@code DatumAliases} is a datum factory, any {@linkplain AuthorityFactory authority factory} or any
+ * {@linkplain org.geotools.referencing.wkt.Parser WKT parser} using this factory will takes advantage of the aliases
+ * table.
  *
  * @since 2.1
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux
- * @todo Invokes {@link #freeUnused} automatically after some amount of time, in order to release
- *     memory for unusued aliases. A timer should be set in {@code reload()} method.
+ * @todo Invokes {@link #freeUnused} automatically after some amount of time, in order to release memory for unusued
+ *     aliases. A timer should be set in {@code reload()} method.
  * @see <A HREF="http://gdal.org/wktproblems.html">WKT problems</A>
  */
 public class DatumAliases extends ReferencingFactory implements DatumFactory {
@@ -103,8 +100,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     private static final String SEPARATORS = ";";
 
     /**
-     * Array used as a marker for alias that has been discarted because never used. This array may
-     * appears in {@link #aliasMap} values.
+     * Array used as a marker for alias that has been discarted because never used. This array may appears in
+     * {@link #aliasMap} values.
      *
      * @see #freeUnused
      */
@@ -114,23 +111,22 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     private final URL aliasURL;
 
     /**
-     * A map of our datum aliases. Keys are alias names in lower-case, and values are either {@code
-     * String[]} or {@code GenericName[]}. In order to reduce the amount of objects created, all
-     * values are initially {@code String[]} objects. They are converted to {@code GenericName[]}
-     * only when first needed.
+     * A map of our datum aliases. Keys are alias names in lower-case, and values are either {@code String[]} or
+     * {@code GenericName[]}. In order to reduce the amount of objects created, all values are initially
+     * {@code String[]} objects. They are converted to {@code GenericName[]} only when first needed.
      */
     private final Map<String, Object[]> aliasMap = new HashMap<>();
 
     /**
-     * The authorities. This is the first line in the alias table. This array is constructed by
-     * {@link #reload} when first needed.
+     * The authorities. This is the first line in the alias table. This array is constructed by {@link #reload} when
+     * first needed.
      */
     private LocalName[] authorities;
 
     /**
-     * The underlying datum factory. If {@code null}, a default factory will be fetch from {@link
-     * ReferencingFactoryFinder} when first needed. A default value can't be set at construction
-     * time, since all factories may not be registered at this time.
+     * The underlying datum factory. If {@code null}, a default factory will be fetch from
+     * {@link ReferencingFactoryFinder} when first needed. A default value can't be set at construction time, since all
+     * factories may not be registered at this time.
      */
     private DatumFactory factory;
 
@@ -157,9 +153,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Constructs a new datum factory which delegates its work to the specified factory. The aliases
-     * table is read from the specified URL. The fist line in this file most be the authority names.
-     * All other names are aliases.
+     * Constructs a new datum factory which delegates its work to the specified factory. The aliases table is read from
+     * the specified URL. The fist line in this file most be the authority names. All other names are aliases.
      *
      * @param factory The factory to use for datum creation.
      * @param aliasURL The url to the alias table.
@@ -173,16 +168,15 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Returns the backing datum factory. If no factory were explicitly specified by the user,
-     * selects the first datum factory other than {@code this}.
+     * Returns the backing datum factory. If no factory were explicitly specified by the user, selects the first datum
+     * factory other than {@code this}.
      *
-     * <p><strong>Note:</strong> We can't invoke this method in the constructor, because the
-     * constructor is typically invoked during {@code FactoryFinder.scanForPlugins()} execution.
-     * {@code scanForPlugins} is looking for {@link DatumFactory} instances, it has not finished to
-     * search them, and invoking this method in the constructor would prematurely ask an other
-     * {@link DatumFactory} instance while the list is incomplete. Instead, we will invoke this
-     * method when the first {@code createXXX} method is invoked, which typically occurs after all
-     * factories have been initialized.
+     * <p><strong>Note:</strong> We can't invoke this method in the constructor, because the constructor is typically
+     * invoked during {@code FactoryFinder.scanForPlugins()} execution. {@code scanForPlugins} is looking for
+     * {@link DatumFactory} instances, it has not finished to search them, and invoking this method in the constructor
+     * would prematurely ask an other {@link DatumFactory} instance while the list is incomplete. Instead, we will
+     * invoke this method when the first {@code createXXX} method is invoked, which typically occurs after all factories
+     * have been initialized.
      *
      * @return The backing datum factory.
      * @throws NoSuchElementException if there is no such factory.
@@ -206,8 +200,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Read the next line from the specified input stream, skipping all blank and comment lines.
-     * Returns {@code null} on end of stream.
+     * Read the next line from the specified input stream, skipping all blank and comment lines. Returns {@code null} on
+     * end of stream.
      */
     private static String readLine(final BufferedReader in) throws IOException {
         String line;
@@ -217,16 +211,15 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Read again the "{@code DatumAliasesTable.txt}" file into {@link #aliasMap}. This method may
-     * be invoked more than once in order to reload entries that have been discarted by {@link
-     * #freeUnused}. This method assumes that the file content didn't change between two calls.
+     * Read again the "{@code DatumAliasesTable.txt}" file into {@link #aliasMap}. This method may be invoked more than
+     * once in order to reload entries that have been discarted by {@link #freeUnused}. This method assumes that the
+     * file content didn't change between two calls.
      *
      * @throws IOException if the loading failed.
      */
     private void reload() throws IOException {
         assert Thread.holdsLock(this);
-        final LogRecord record =
-                Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
+        final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
         record.setLoggerName(LOGGER.getName());
         LOGGER.log(record);
         try (BufferedReader in = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
@@ -289,8 +282,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
                                     aliasMap.put(key, previous);
                                 } else if (!Arrays.equals(previous, names)) {
                                     // TODO: localize
-                                    LOGGER.warning(
-                                            "Inconsistent aliases for datum \"" + name + "\".");
+                                    LOGGER.warning("Inconsistent aliases for datum \"" + name + "\".");
                                 }
                             }
                         }
@@ -311,12 +303,12 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Returns the aliases, as a set of {@link GenericName}, for the given name. This method returns
-     * an internal array; do not modify the returned value.
+     * Returns the aliases, as a set of {@link GenericName}, for the given name. This method returns an internal array;
+     * do not modify the returned value.
      *
      * @param name Datum alias name to lookup.
-     * @return A set of datum aliases as {@link GenericName} objects for the given name, or {@code
-     *     null} if the name is not in our list of aliases.
+     * @return A set of datum aliases as {@link GenericName} objects for the given name, or {@code null} if the name is
+     *     not in our list of aliases.
      * @see #addAliases
      * @see #reload
      */
@@ -391,9 +383,9 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
 
     /**
      * Completes the given map of properties. This method expects a map of properties to be given to
-     * {@link AbstractDatum#AbstractDatum(Map)} constructor. The name is fetch from the {@link
-     * IdentifiedObject#NAME_KEY NAME_KEY}. The {@link AbstractIdentifiedObject#ALIAS_KEY ALIAS_KEY}
-     * is completed with the aliases know to this factory.
+     * {@link AbstractDatum#AbstractDatum(Map)} constructor. The name is fetch from the {@link IdentifiedObject#NAME_KEY
+     * NAME_KEY}. The {@link AbstractIdentifiedObject#ALIAS_KEY ALIAS_KEY} is completed with the aliases know to this
+     * factory.
      *
      * @param properties The set of properties to complete.
      * @return The completed properties, or {@code properties} if no change were done.
@@ -441,10 +433,9 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     }
 
     /**
-     * Puts all elements in the {@code names} array into the specified map. Order matter, since the
-     * first element in the array should be the first element returned by the map if the map is
-     * actually an instance of {@link LinkedHashMap}. This method returns the number of elements
-     * ignored.
+     * Puts all elements in the {@code names} array into the specified map. Order matter, since the first element in the
+     * array should be the first element returned by the map if the map is actually an instance of
+     * {@link LinkedHashMap}. This method returns the number of elements ignored.
      */
     private static final int putAll(final GenericName[] names, final Map<String, GenericName> map) {
         int ignored = 0;
@@ -482,25 +473,20 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      */
     @Override
     public synchronized GeodeticDatum createGeodeticDatum(
-            final Map<String, ?> properties,
-            final Ellipsoid ellipsoid,
-            final PrimeMeridian primeMeridian)
+            final Map<String, ?> properties, final Ellipsoid ellipsoid, final PrimeMeridian primeMeridian)
             throws FactoryException {
-        return getDatumFactory()
-                .createGeodeticDatum(addAliases(properties), ellipsoid, primeMeridian);
+        return getDatumFactory().createGeodeticDatum(addAliases(properties), ellipsoid, primeMeridian);
     }
 
     /**
      * Creates an image datum.
      *
      * @param properties Name and other properties to give to the new object.
-     * @param pixelInCell Specification of the way the image grid is associated with the image data
-     *     attributes.
+     * @param pixelInCell Specification of the way the image grid is associated with the image data attributes.
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized ImageDatum createImageDatum(
-            final Map<String, ?> properties, final PixelInCell pixelInCell)
+    public synchronized ImageDatum createImageDatum(final Map<String, ?> properties, final PixelInCell pixelInCell)
             throws FactoryException {
         return getDatumFactory().createImageDatum(addAliases(properties), pixelInCell);
     }
@@ -513,8 +499,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized TemporalDatum createTemporalDatum(
-            final Map<String, ?> properties, final Date origin) throws FactoryException {
+    public synchronized TemporalDatum createTemporalDatum(final Map<String, ?> properties, final Date origin)
+            throws FactoryException {
         return getDatumFactory().createTemporalDatum(addAliases(properties), origin);
     }
 
@@ -526,8 +512,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized VerticalDatum createVerticalDatum(
-            final Map<String, ?> properties, final VerticalDatumType type) throws FactoryException {
+    public synchronized VerticalDatum createVerticalDatum(final Map<String, ?> properties, final VerticalDatumType type)
+            throws FactoryException {
         return getDatumFactory().createVerticalDatum(addAliases(properties), type);
     }
 
@@ -547,8 +533,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             final double semiMinorAxis,
             final Unit<Length> unit)
             throws FactoryException {
-        return getDatumFactory()
-                .createEllipsoid(addAliases(properties), semiMajorAxis, semiMinorAxis, unit);
+        return getDatumFactory().createEllipsoid(addAliases(properties), semiMajorAxis, semiMinorAxis, unit);
     }
 
     /**
@@ -567,9 +552,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             final double inverseFlattening,
             final Unit<Length> unit)
             throws FactoryException {
-        return getDatumFactory()
-                .createFlattenedSphere(
-                        addAliases(properties), semiMajorAxis, inverseFlattening, unit);
+        return getDatumFactory().createFlattenedSphere(addAliases(properties), semiMajorAxis, inverseFlattening, unit);
     }
 
     /**
@@ -584,13 +567,12 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     public synchronized PrimeMeridian createPrimeMeridian(
             final Map<String, ?> properties, final double longitude, final Unit<Angle> angularUnit)
             throws FactoryException {
-        return getDatumFactory()
-                .createPrimeMeridian(addAliases(properties), longitude, angularUnit);
+        return getDatumFactory().createPrimeMeridian(addAliases(properties), longitude, angularUnit);
     }
 
     /**
-     * Free all aliases that have been unused up to date. If one of those alias is needed at a later
-     * time, the aliases table will be reloaded.
+     * Free all aliases that have been unused up to date. If one of those alias is needed at a later time, the aliases
+     * table will be reloaded.
      */
     public synchronized void freeUnused() {
         if (aliasMap != null) {

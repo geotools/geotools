@@ -22,8 +22,8 @@ import org.geotools.swing.MapPane;
 import org.geotools.swing.tool.ZoomInTool;
 
 /**
- * An action for connect a control (probably a JButton) to the ZoomInTool for zooming the map with
- * mouse clicks or drags.
+ * An action for connect a control (probably a JButton) to the ZoomInTool for zooming the map with mouse clicks or
+ * drags.
  *
  * @author Michael Bedward
  * @since 2.6
@@ -41,8 +41,7 @@ public class ZoomInAction extends MapAction {
     }
 
     /**
-     * Constructor. The associated control will be labelled with an icon and, optionally, the tool
-     * name.
+     * Constructor. The associated control will be labelled with an icon and, optionally, the tool name.
      *
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
@@ -53,8 +52,8 @@ public class ZoomInAction extends MapAction {
     }
 
     /**
-     * Called when the associated control is activated. Leads to the map pane's cursor tool being
-     * set to a new ZoomInTool object
+     * Called when the associated control is activated. Leads to the map pane's cursor tool being set to a new
+     * ZoomInTool object
      *
      * @param ev the event (not used)
      */

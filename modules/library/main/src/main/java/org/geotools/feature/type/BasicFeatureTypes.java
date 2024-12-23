@@ -26,9 +26,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 /**
  * Defines required attributes for Annotations.
  *
- * <p>Annotations represent a text based geographic feature. The geometry stored in the feature
- * indicates where the text should be drawn and the attribute indicated by the {@link
- * #ANNOTATION_ATTRIBUTE_NAME} attribute holds the text to be displayed for the feature.
+ * <p>Annotations represent a text based geographic feature. The geometry stored in the feature indicates where the text
+ * should be drawn and the attribute indicated by the {@link #ANNOTATION_ATTRIBUTE_NAME} attribute holds the text to be
+ * displayed for the feature.
  *
  * <p>Example:
  *
@@ -71,15 +71,8 @@ public class BasicFeatureTypes {
 
         // Feature is the base of everything else, must be created directly instead
         // of going thru the builder because the builder assumes it as the default base type
-        FEATURE =
-                new SimpleFeatureTypeImpl(
-                        new NameImpl("Feature"),
-                        Collections.emptyList(),
-                        null,
-                        true,
-                        Collections.emptyList(),
-                        null,
-                        null);
+        FEATURE = new SimpleFeatureTypeImpl(
+                new NameImpl("Feature"), Collections.emptyList(), null, true, Collections.emptyList(), null, null);
 
         try {
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();

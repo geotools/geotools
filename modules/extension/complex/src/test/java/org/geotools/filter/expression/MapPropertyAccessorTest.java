@@ -27,8 +27,7 @@ public class MapPropertyAccessorTest {
 
     @Test
     public void testAccessWithJavaMethod() {
-        PropertyName property =
-                CommonFactoryFinder.getFilterFactory().property("java.lang.Thread.sleep(30000)");
+        PropertyName property = CommonFactoryFinder.getFilterFactory().property("java.lang.Thread.sleep(30000)");
         long start = System.currentTimeMillis();
         property.evaluate(Collections.emptyMap());
         long runtime = System.currentTimeMillis() - start;

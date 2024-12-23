@@ -22,11 +22,11 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * This interface defines methods to convey information about some resource such as title, keywords,
- * description and spatial parameters.
+ * This interface defines methods to convey information about some resource such as title, keywords, description and
+ * spatial parameters.
  *
- * <p>It is based on Dublin Core (a metadata specification initiative; http://dublincore.org/) and
- * the RDF application profile.
+ * <p>It is based on Dublin Core (a metadata specification initiative; http://dublincore.org/) and the RDF application
+ * profile.
  *
  * <p>There are two ids that may be associated with a resource:
  *
@@ -44,8 +44,7 @@ public interface ResourceInfo {
     /**
      * Returns the resource's title.
      *
-     * <p>The title is human readable text representing the resource, in the current locale if
-     * available.
+     * <p>The title is human readable text representing the resource, in the current locale if available.
      *
      * <p>
      *
@@ -118,12 +117,10 @@ public interface ResourceInfo {
     URI getSchema();
 
     /**
-     * Returns the bounds of the resource, expressed in the native coordinate reference system. IF
-     * the bounds are unknown or undefined calling {@code isNull()} on the returned envelope will
-     * return {@code true}.
+     * Returns the bounds of the resource, expressed in the native coordinate reference system. IF the bounds are
+     * unknown or undefined calling {@code isNull()} on the returned envelope will return {@code true}.
      *
-     * @return bounds of the resource if defined; otherwise an envelope where the {@code isNull()}
-     *     returns {@code true}
+     * @return bounds of the resource if defined; otherwise an envelope where the {@code isNull()} returns {@code true}
      */
     ReferencedEnvelope getBounds();
 

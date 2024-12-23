@@ -56,8 +56,7 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
         re = new RingEncoder(encoder, gmlPrefix, gmlUri);
     }
 
-    protected PolygonEncoder(
-            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+    protected PolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
         super(encoder, encodeGmlId);
         init(encoder, gmlPrefix, gmlUri);
         lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
@@ -71,8 +70,7 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
     }
 
     @Override
-    public void encode(Polygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(Polygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(polygon, atts);
 

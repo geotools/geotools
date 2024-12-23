@@ -19,8 +19,8 @@ package org.geotools.filter.text.commons;
 /**
  * Maintains the result of building process.
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @since 2.4
  * @author Mauricio Pazos - Axios Engineering
@@ -38,8 +38,7 @@ public final class Result {
         this.nodeType = nodeType;
     }
 
-    public Result(
-            Object built2, org.geotools.filter.text.generated.parsers.Token token2, int type) {}
+    public Result(Object built2, org.geotools.filter.text.generated.parsers.Token token2, int type) {}
 
     @Override
     public String toString() {

@@ -10,8 +10,8 @@
 package org.geotools.api.filter.temporal;
 
 /**
- * Filter operator that determines if a temporal period is met by another temporal period as defined
- * by the Filter Encoding Specification.
+ * Filter operator that determines if a temporal period is met by another temporal period as defined by the Filter
+ * Encoding Specification.
  *
  * <p>The Meets operator is defined by ISO 19108 and has the following semantics:
  *

@@ -14,12 +14,11 @@ import org.geotools.api.feature.Association;
 /**
  * The type of an association; used to describe kind of relationship between two entities.
  *
- * <p>The notion of an "association" is similar to that of an association in UML and is used to
- * model a relationship among two attributes. See the javadoc for {@link Association} for more info
- * on the semantics of associations.
+ * <p>The notion of an "association" is similar to that of an association in UML and is used to model a relationship
+ * among two attributes. See the javadoc for {@link Association} for more info on the semantics of associations.
  *
- * <p>An association is used to relate one attribute to another. The type of the association
- * specifies the type of the related attribute with the {@link #getRelatedType()} method.
+ * <p>An association is used to relate one attribute to another. The type of the association specifies the type of the
+ * related attribute with the {@link #getRelatedType()} method.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
@@ -42,9 +41,8 @@ public interface AssociationType extends PropertyType {
     AttributeType getRelatedType();
 
     /**
-     * Override of {@link PropertyType#getBinding()} which specifies that this method should return
-     * <code>getRelatedType().getBinding()</code>, that is it returns the binding of the related
-     * type.
+     * Override of {@link PropertyType#getBinding()} which specifies that this method should return <code>
+     * getRelatedType().getBinding()</code>, that is it returns the binding of the related type.
      */
     @Override
     Class<?> getBinding();

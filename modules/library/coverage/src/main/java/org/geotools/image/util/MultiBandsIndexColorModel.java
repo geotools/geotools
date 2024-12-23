@@ -30,10 +30,9 @@ import java.util.Arrays;
 /**
  * An {@link IndexColorModel} tolerant with image having more than one band.
  *
- * <p><strong>Reminder:</strong> {@link #getNumComponents} will returns 3 or 4 no matter how many
- * bands were specified to the constructor. This is not specific to this class; {@code
- * IndexColorModel} behave that way. So we can't rely on this method for checking the number of
- * bands.
+ * <p><strong>Reminder:</strong> {@link #getNumComponents} will returns 3 or 4 no matter how many bands were specified
+ * to the constructor. This is not specific to this class; {@code IndexColorModel} behave that way. So we can't rely on
+ * this method for checking the number of bands.
  *
  * @since 2.0
  * @version $Id$
@@ -56,14 +55,14 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * @param start The starting offset of the first color component.
      * @param hasAlpha Indicates whether alpha values are contained in the {@code cmap} array.
      * @param transparent The index of the fully transparent pixel.
-     * @param transferType The data type of the array used to represent pixel values. The data type
-     *     must be either {@code DataBuffer.TYPE_BYTE} or {@code DataBuffer.TYPE_USHORT}.
+     * @param transferType The data type of the array used to represent pixel values. The data type must be either
+     *     {@code DataBuffer.TYPE_BYTE} or {@code DataBuffer.TYPE_USHORT}.
      * @param numBands The number of bands.
      * @param visibleBand The band to display.
      * @throws IllegalArgumentException if {@code bits} is less than 1 or greater than 16.
      * @throws IllegalArgumentException if {@code size} is less than 1.
-     * @throws IllegalArgumentException if {@code transferType} is not one of {@code
-     *     DataBuffer.TYPE_BYTE} or {@code DataBuffer.TYPE_USHORT}.
+     * @throws IllegalArgumentException if {@code transferType} is not one of {@code DataBuffer.TYPE_BYTE} or
+     *     {@code DataBuffer.TYPE_USHORT}.
      */
     public MultiBandsIndexColorModel(
             final int bits,
@@ -81,18 +80,17 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /**
-     * Returns a data element array representation of a pixel in this color model, given an integer
-     * pixel representation in the default RGB color model.
+     * Returns a data element array representation of a pixel in this color model, given an integer pixel representation
+     * in the default RGB color model.
      *
-     * <p>This method returns an array with a length equals to the number of bands specified to the
-     * constructor ({@code IndexColorModel} would returns an array of length 1). All array elements
-     * are set to the same value. Replicating the pixel value is a somewhat arbitrary choice, but
-     * this choice make this image appears as a gray scale image if the underlying {@link
-     * DataBuffer} were displayed again with a RGB color model instead of this one. Such a gray
-     * scale image seems more neutral than an image where only the Red component would vary.
+     * <p>This method returns an array with a length equals to the number of bands specified to the constructor
+     * ({@code IndexColorModel} would returns an array of length 1). All array elements are set to the same value.
+     * Replicating the pixel value is a somewhat arbitrary choice, but this choice make this image appears as a gray
+     * scale image if the underlying {@link DataBuffer} were displayed again with a RGB color model instead of this one.
+     * Such a gray scale image seems more neutral than an image where only the Red component would vary.
      *
-     * <p>All other {@code getDataElement} methods in this color model are ultimately defined in
-     * terms of this method, so overriding this method should be enough.
+     * <p>All other {@code getDataElement} methods in this color model are ultimately defined in terms of this method,
+     * so overriding this method should be enough.
      */
     @Override
     public Object getDataElements(final int RGB, Object pixel) {
@@ -115,24 +113,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
         pixel = super.getDataElements(RGB, pixel);
         switch (transferType) {
             case DataBuffer.TYPE_SHORT: // fall through
-            case DataBuffer.TYPE_USHORT:
-                {
-                    final short[] array = (short[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
-            case DataBuffer.TYPE_BYTE:
-                {
-                    final byte[] array = (byte[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    final int[] array = (int[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
+            case DataBuffer.TYPE_USHORT: {
+                final short[] array = (short[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
+            case DataBuffer.TYPE_BYTE: {
+                final byte[] array = (byte[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                final int[] array = (int[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException(unsupported());
         }
@@ -140,8 +135,8 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /**
-     * Returns an array of unnormalized color/alpha components for a specified pixel in this color
-     * model. This method is the converse of {@link #getDataElements}.
+     * Returns an array of unnormalized color/alpha components for a specified pixel in this color model. This method is
+     * the converse of {@link #getDataElements}.
      */
     @Override
     public int[] getComponents(final Object pixel, final int[] components, final int offset) {
@@ -164,94 +159,82 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /**
-     * Returns the red color component for the specified pixel, scaled from 0 to 255 in the default
-     * RGB {@code ColorSpace}, sRGB.
+     * Returns the red color component for the specified pixel, scaled from 0 to 255 in the default RGB
+     * {@code ColorSpace}, sRGB.
      */
     @Override
     public int getRed(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getRed(pixel);
     }
 
     /**
-     * Returns the green color component for the specified pixel, scaled from 0 to 255 in the
-     * default RGB {@code ColorSpace}, sRGB.
+     * Returns the green color component for the specified pixel, scaled from 0 to 255 in the default RGB
+     * {@code ColorSpace}, sRGB.
      */
     @Override
     public int getGreen(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getGreen(pixel);
     }
 
     /**
-     * Returns the blue color component for the specified pixel, scaled from 0 to 255 in the default
-     * RGB {@code ColorSpace}, sRGB.
+     * Returns the blue color component for the specified pixel, scaled from 0 to 255 in the default RGB
+     * {@code ColorSpace}, sRGB.
      */
     @Override
     public int getBlue(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getBlue(pixel);
     }
@@ -261,25 +244,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     public int getAlpha(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getAlpha(pixel);
     }
@@ -290,8 +269,8 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /**
-     * Creates a {@code WritableRaster} with the specified width and height that has a data layout
-     * ({@code SampleModel}) compatible with this {@code ColorModel}.
+     * Creates a {@code WritableRaster} with the specified width and height that has a data layout ({@code SampleModel})
+     * compatible with this {@code ColorModel}.
      */
     @Override
     public WritableRaster createCompatibleWritableRaster(final int width, final int height) {
@@ -305,8 +284,8 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /**
-     * Creates a {@code SampleModel} with the specified width and height that has a data layout
-     * compatible with this {@code ColorModel}.
+     * Creates a {@code SampleModel} with the specified width and height that has a data layout compatible with this
+     * {@code ColorModel}.
      */
     @Override
     public SampleModel createCompatibleSampleModel(final int width, final int height) {

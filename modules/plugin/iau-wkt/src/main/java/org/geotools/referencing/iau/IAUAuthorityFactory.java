@@ -24,14 +24,13 @@ import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.Hints;
 
 /**
- * Extends the EPSG database with {@linkplain CoordinateReferenceSystem Coordinate Reference
- * Systems} defined by IAU. Those CRS will be registered both in {@code "IAU"} and {@code
- * "IAU_2015"} name space.
+ * Extends the EPSG database with {@linkplain CoordinateReferenceSystem Coordinate Reference Systems} defined by IAU.
+ * Those CRS will be registered both in {@code "IAU"} and {@code "IAU_2015"} name space.
  */
 public class IAUAuthorityFactory extends FactoryUsingWKT {
     /**
-     * The default filename to read. This file will be searched in the {@code
-     * org/geotools/referencing/factory/espg} directory in the classpath or in a JAR file.
+     * The default filename to read. This file will be searched in the {@code org/geotools/referencing/factory/espg}
+     * directory in the classpath or in a JAR file.
      *
      * @see #getDefinitionsURL
      */
@@ -45,10 +44,9 @@ public class IAUAuthorityFactory extends FactoryUsingWKT {
     }
 
     /**
-     * Constructs an authority factory using a set of factories created from the specified hints.
-     * This constructor recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS},
-     * {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM}
-     * {@code FACTORY} hints.
+     * Constructs an authority factory using a set of factories created from the specified hints. This constructor
+     * recognizes the {@link Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
+     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      */
     public IAUAuthorityFactory(final Hints hints) {
         super(hints, PRIORITY);
@@ -56,8 +54,8 @@ public class IAUAuthorityFactory extends FactoryUsingWKT {
     }
 
     /**
-     * Returns the set of authorities to use as identifiers for the CRS to be created. The default
-     * implementation returns the {@linkplain Citations#IAU} authority.
+     * Returns the set of authorities to use as identifiers for the CRS to be created. The default implementation
+     * returns the {@linkplain Citations#IAU} authority.
      */
     @Override
     protected Citation[] getAuthorities() {
@@ -65,8 +63,8 @@ public class IAUAuthorityFactory extends FactoryUsingWKT {
     }
 
     /**
-     * Returns the URL to the property file that contains CRS definitions. The default
-     * implementation returns the URL to the {@value #FILENAME} file.
+     * Returns the URL to the property file that contains CRS definitions. The default implementation returns the URL to
+     * the {@value #FILENAME} file.
      *
      * @return The URL, or {@code null} if none.
      */

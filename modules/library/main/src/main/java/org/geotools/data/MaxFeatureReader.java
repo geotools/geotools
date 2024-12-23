@@ -25,14 +25,13 @@ import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.type.FeatureType;
 
 /**
- * Basic support for a FeatureReader<SimpleFeatureType, SimpleFeature> that limits itself to the
- * number of features passed in.
+ * Basic support for a FeatureReader<SimpleFeatureType, SimpleFeature> that limits itself to the number of features
+ * passed in.
  *
  * @author Chris Holmes
  * @version $Id$
  */
-public class MaxFeatureReader<T extends FeatureType, F extends Feature>
-        implements DelegatingFeatureReader<T, F> {
+public class MaxFeatureReader<T extends FeatureType, F extends Feature> implements DelegatingFeatureReader<T, F> {
 
     protected final FeatureReader<T, F> featureReader;
     protected final int maxFeatures;
@@ -75,8 +74,7 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /**
-     * @return <code>true</code> if the featureReader has not passed the max and still has more
-     *     features.
+     * @return <code>true</code> if the featureReader has not passed the max and still has more features.
      * @throws IOException If the reader we are filtering encounters a problem
      */
     @Override

@@ -58,8 +58,8 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * Visitor function, which looks at each feature and finds the value of the attribute given
-     * attribute nearest to the given comparison value.
+     * Visitor function, which looks at each feature and finds the value of the attribute given attribute nearest to the
+     * given comparison value.
      *
      * @param feature the feature to be visited
      */
@@ -99,15 +99,13 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
             Geometry convertedTarget = Converters.convert(valueToMatch, Geometry.class);
             return new GeometryAccumulator(convertedTarget);
         } else if (Comparable.class.isAssignableFrom(attributeClass)) {
-            Comparable convertedTarget =
-                    (Comparable) Converters.convert(valueToMatch, attributeClass);
+            Comparable convertedTarget = (Comparable) Converters.convert(valueToMatch, attributeClass);
             return new ComparableAccumulator(convertedTarget);
         }
         // TODO: we should probably create a custom one for strings, there are various
         // string distance algorithms described on the net
 
-        throw new IllegalArgumentException(
-                "Don't know how to compute nearest for target class " + attributeClass);
+        throw new IllegalArgumentException("Don't know how to compute nearest for target class " + attributeClass);
     }
 
     public void reset() {
@@ -129,8 +127,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
             this.nearest = maxBelow;
         } else {
             @SuppressWarnings("unchecked")
-            NearestAccumulator<Object> accumulator =
-                    (NearestAccumulator<Object>) getAccumulator(maxBelow.getClass());
+            NearestAccumulator<Object> accumulator = (NearestAccumulator<Object>) getAccumulator(maxBelow.getClass());
             accumulator.visit(maxBelow);
             accumulator.visit(minAbove);
             nearest = accumulator.getNearest();

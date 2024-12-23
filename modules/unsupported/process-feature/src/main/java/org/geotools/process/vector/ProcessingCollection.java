@@ -27,11 +27,11 @@ import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Abstract base class to ease the implementation of a streaming processing collection, that is, one
- * that tries to compute the results on the fly as the iterator is traversed.
+ * Abstract base class to ease the implementation of a streaming processing collection, that is, one that tries to
+ * compute the results on the fly as the iterator is traversed.
  *
- * <p>Besides the few methods that the implementor actually needs to override it suggested to
- * consider overriding also the followings to get extra performance gains:
+ * <p>Besides the few methods that the implementor actually needs to override it suggested to consider overriding also
+ * the followings to get extra performance gains:
  *
  * <ul>
  *   {@link #subCollection(Filter)} {@link #sort(SortBy)}
@@ -53,23 +53,18 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     public abstract FeatureIterator<F> features();
 
     /**
-     * The bounds of features in the output. If the bounds are not known in advance once can call
-     * the getFeatureBounds() which will build it from the features as they are returned from the
-     * feature iterator.
+     * The bounds of features in the output. If the bounds are not known in advance once can call the getFeatureBounds()
+     * which will build it from the features as they are returned from the feature iterator.
      */
     @Override
     public abstract ReferencedEnvelope getBounds();
 
-    /**
-     * Builds once and for all the target feature type. The results are available by calling
-     * getSchema()
-     */
+    /** Builds once and for all the target feature type. The results are available by calling getSchema() */
     protected abstract T buildTargetFeatureType();
 
     /**
-     * The number of features in the output. If the size is not known in advance once can call the
-     * getFeatureCount() which will count the features as they are returned from the feature
-     * iterator.
+     * The number of features in the output. If the size is not known in advance once can call the getFeatureCount()
+     * which will count the features as they are returned from the feature iterator.
      */
     @Override
     public abstract int size();

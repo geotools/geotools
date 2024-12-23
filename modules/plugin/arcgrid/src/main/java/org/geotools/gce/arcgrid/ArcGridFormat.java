@@ -42,26 +42,23 @@ import org.geotools.util.factory.Hints;
 public final class ArcGridFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ArcGridFormat.class);
 
     /** Indicates whether the arcgrid data must be written in GRASS format */
-    public static final DefaultParameterDescriptor<Boolean> GRASS =
-            DefaultParameterDescriptor.create(
-                    "GRASS",
-                    "Indicates whether the arcgrid data has to be written in GRASS format",
-                    Boolean.class,
-                    Boolean.FALSE,
-                    true);
+    public static final DefaultParameterDescriptor<Boolean> GRASS = DefaultParameterDescriptor.create(
+            "GRASS",
+            "Indicates whether the arcgrid data has to be written in GRASS format",
+            Boolean.class,
+            Boolean.FALSE,
+            true);
 
     /** Indicates whether we ask the plugin to resample the coverage to have dx==dy */
-    public static final DefaultParameterDescriptor<Boolean> FORCE_CELLSIZE =
-            DefaultParameterDescriptor.create(
-                    "FORCE_CELLSIZE",
-                    "Indicates whether the input coverage has to be resampled to have dx==dyt",
-                    Boolean.class,
-                    Boolean.FALSE,
-                    false);
+    public static final DefaultParameterDescriptor<Boolean> FORCE_CELLSIZE = DefaultParameterDescriptor.create(
+            "FORCE_CELLSIZE",
+            "Indicates whether the input coverage has to be resampled to have dx==dyt",
+            Boolean.class,
+            Boolean.FALSE,
+            false);
 
     /** Caching the {@link AsciiGridsImageReaderSpi} factory. */
     private final AsciiGridsImageReaderSpi spi = new AsciiGridsImageReaderSpi();
@@ -84,19 +81,12 @@ public final class ArcGridFormat extends AbstractGridFormat implements Format {
         mInfo = info;
 
         // writing parameters
-        writeParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    GRASS, GEOTOOLS_WRITE_PARAMS, FORCE_CELLSIZE
-                                }));
+        writeParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(
+                mInfo, new GeneralParameterDescriptor[] {GRASS, GEOTOOLS_WRITE_PARAMS, FORCE_CELLSIZE}));
 
         // reading parameters
-        readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D}));
+        readParameters = new ParameterGroup(
+                new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D}));
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object source) */
@@ -105,32 +95,26 @@ public final class ArcGridFormat extends AbstractGridFormat implements Format {
         return getReader(source, null);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object
-     *     destination)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object destination) */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
         try {
             return new ArcGridWriter(destination);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object
-     *     destination,Hints hints)
+     * @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object destination,Hints hints)
      */
     @Override
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
         try {
             return new ArcGridWriter(destination, hints);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -152,18 +136,17 @@ public final class ArcGridFormat extends AbstractGridFormat implements Format {
         try {
             return new ArcGridReader(source, hints);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Retrieves the default instance for the {@link ArcGridFormat} of the {@link
-     * GeoToolsWriteParams} to control the writing process.
+     * Retrieves the default instance for the {@link ArcGridFormat} of the {@link GeoToolsWriteParams} to control the
+     * writing process.
      *
-     * @return a default instance for the {@link ArcGridFormat} of the {@link GeoToolsWriteParams}
-     *     to control the writing process.
+     * @return a default instance for the {@link ArcGridFormat} of the {@link GeoToolsWriteParams} to control the
+     *     writing process.
      */
     @Override
     public GeoToolsWriteParams getDefaultImageIOWriteParameters() {

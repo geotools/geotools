@@ -40,19 +40,14 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     protected static Logger LOGGER = Logging.getLogger(OGRDataStoreFactory.class);
 
     public static final Param OGR_NAME =
-            new Param(
-                    "DatasourceName",
-                    String.class,
-                    "Name of the file, or data source to try and open",
-                    true);
+            new Param("DatasourceName", String.class, "Name of the file, or data source to try and open", true);
 
-    public static final Param OGR_DRIVER_NAME =
-            new Param(
-                    "DriverName",
-                    String.class,
-                    "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
-                    false,
-                    null);
+    public static final Param OGR_DRIVER_NAME = new Param(
+            "DriverName",
+            String.class,
+            "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
+            false,
+            null);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required
@@ -60,68 +55,62 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     protected static final Integer DEFAULT_MAXCONN = Integer.valueOf(20);
 
     /** Maximum number of connections in the connection pool */
-    public static final Param MAXCONN =
-            new Param(
-                    "max connections",
-                    Integer.class,
-                    "maximum number of pooled data source connections",
-                    false,
-                    DEFAULT_MAXCONN);
+    public static final Param MAXCONN = new Param(
+            "max connections",
+            Integer.class,
+            "maximum number of pooled data source connections",
+            false,
+            DEFAULT_MAXCONN);
 
     protected static final Integer DEFAULT_MINCONN = Integer.valueOf(1);
 
     /** Minimum number of connections in the connection pool */
-    public static final Param MINCONN =
-            new Param(
-                    "min connections",
-                    Integer.class,
-                    "minimum number of pooled data source connection connection",
-                    false,
-                    DEFAULT_MINCONN);
+    public static final Param MINCONN = new Param(
+            "min connections",
+            Integer.class,
+            "minimum number of pooled data source connection connection",
+            false,
+            DEFAULT_MINCONN);
 
     protected static final int DEFAULT_MAXWAIT = 20;
 
     /** Maximum amount of time the pool will wait when trying to grab a new connection * */
-    public static final Param MAXWAIT =
-            new Param(
-                    "Connection timeout",
-                    Integer.class,
-                    "number of seconds the pool will wait before timing out attempting to get a new data source (default, 20 seconds)",
-                    false,
-                    DEFAULT_MAXWAIT);
+    public static final Param MAXWAIT = new Param(
+            "Connection timeout",
+            Integer.class,
+            "number of seconds the pool will wait before timing out attempting to get a new data source (default, 20 seconds)",
+            false,
+            DEFAULT_MAXWAIT);
 
     protected static final int DEFAULT_EVICTABLE_TIME = 300;
 
     /** Min time for a connection to be idle in order to be evicted * */
-    public static final Param MIN_EVICTABLE_TIME =
-            new Param(
-                    "Max data source idle time",
-                    Integer.class,
-                    "number of seconds a data source needs to stay idle for the evictor to consider closing it",
-                    false,
-                    DEFAULT_EVICTABLE_TIME);
+    public static final Param MIN_EVICTABLE_TIME = new Param(
+            "Max data source idle time",
+            Integer.class,
+            "number of seconds a data source needs to stay idle for the evictor to consider closing it",
+            false,
+            DEFAULT_EVICTABLE_TIME);
 
     public static final int DEFAULT_EVICTOR_TESTS_PER_RUN = 3;
 
     /** Number of connections checked during a single evictor run * */
-    public static final Param EVICTOR_TESTS_PER_RUN =
-            new Param(
-                    "Evictor tests per run",
-                    Integer.class,
-                    "number of data source checked by the idle connection evictor for each of its runs (defaults to 3)",
-                    false,
-                    DEFAULT_EVICTOR_TESTS_PER_RUN);
+    public static final Param EVICTOR_TESTS_PER_RUN = new Param(
+            "Evictor tests per run",
+            Integer.class,
+            "number of data source checked by the idle connection evictor for each of its runs (defaults to 3)",
+            false,
+            DEFAULT_EVICTOR_TESTS_PER_RUN);
 
     public static final boolean DEFAULT_PRIME_DATASOURCE = false;
 
     /** Whether to try to initialize a datasource with a full data read before using it* */
-    public static final Param PRIME_DATASOURCE =
-            new Param(
-                    "Prime DataSources",
-                    Boolean.class,
-                    "Performs a full data read on data source creation, in some formats this generates a in memory cache, or a spatial index (check the OGR documentation for details)",
-                    false,
-                    DEFAULT_PRIME_DATASOURCE);
+    public static final Param PRIME_DATASOURCE = new Param(
+            "Prime DataSources",
+            Boolean.class,
+            "Performs a full data read on data source creation, in some formats this generates a in memory cache, or a spatial index (check the OGR documentation for details)",
+            false,
+            DEFAULT_PRIME_DATASOURCE);
 
     static Boolean AVAILABLE = null;
 
@@ -159,13 +148,8 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         OGR ogr = createOGR();
-        DataStore ds =
-                new OGRDataStore(
-                        ogrName,
-                        ogrDriver,
-                        namespace,
-                        ogr,
-                        new OGRDataSourcePool(ogr, ogrName, ogrDriver, params));
+        DataStore ds = new OGRDataStore(
+                ogrName, ogrDriver, namespace, ogr, new OGRDataSourcePool(ogr, ogrName, ogrDriver, params));
 
         return ds;
     }
@@ -178,8 +162,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Describes the type of data the datastore returned by this factory works with.
      *
-     * @return String a human readable description of the type of restore supported by this
-     *     datastore.
+     * @return String a human readable description of the type of restore supported by this datastore.
      */
     @Override
     public String getDescription() {
@@ -187,12 +170,11 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Test to see if this datastore is available, if it has all the appropriate libraries to
-     * construct a datastore.
+     * Test to see if this datastore is available, if it has all the appropriate libraries to construct a datastore.
      *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
-     * @task REVISIT: I'm just adding this method to compile, maintainer should revisit to check for
-     *     any libraries that may be necessary for datastore creations.
+     * @task REVISIT: I'm just adding this method to compile, maintainer should revisit to check for any libraries that
+     *     may be necessary for datastore creations.
      */
     @Override
     public final boolean isAvailable() {
@@ -202,8 +184,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Performs the available test specifying how to handle errors.
      *
-     * <p>Specifying true for <tt>handleError</tt> will cause any exceptions to be caught and
-     * logged, and return false
+     * <p>Specifying true for <tt>handleError</tt> will cause any exceptions to be caught and logged, and return false
      */
     public final boolean isAvailable(boolean handleError) {
         if (AVAILABLE == null) {
@@ -250,8 +231,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Assume we can process an ogrName if the ogrName exists and can be opened, or if the specified
-     * driver does exist.
+     * Assume we can process an ogrName if the ogrName exists and can be opened, or if the specified driver does exist.
      */
     public boolean canProcess(String ogrName, String driverName) {
         OGR ogr = createOGR();

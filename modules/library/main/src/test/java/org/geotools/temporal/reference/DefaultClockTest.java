@@ -52,20 +52,9 @@ public class DefaultClockTest {
         ClockTime clocktime2 = new DefaultClockTime(frame2, null, clockTime2);
         ClockTime utcReference1 = new DefaultClockTime(frame1, null, clockTime1);
         ClockTime utcReference2 = new DefaultClockTime(frame2, null, clockTime2);
-        clock1 =
-                new DefaultClock(
-                        name1,
-                        null,
-                        new SimpleInternationalString("reference event"),
-                        clocktime1,
-                        utcReference1);
-        clock2 =
-                new DefaultClock(
-                        name2,
-                        null,
-                        new SimpleInternationalString("description"),
-                        clocktime2,
-                        utcReference2);
+        clock1 = new DefaultClock(
+                name1, null, new SimpleInternationalString("reference event"), clocktime1, utcReference1);
+        clock2 = new DefaultClock(name2, null, new SimpleInternationalString("description"), clocktime2, utcReference2);
     }
 
     @After
@@ -119,8 +108,7 @@ public class DefaultClockTest {
     @Test
     public void testSetReferenceTime() {
         ClockTime result = clock1.getReferenceTime();
-        ((DefaultClock) clock1)
-                .setReferenceTime(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
+        ((DefaultClock) clock1).setReferenceTime(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
         assertNotEquals(clock1.getReferenceTime(), result);
     }
 
@@ -128,8 +116,7 @@ public class DefaultClockTest {
     @Test
     public void testSetUtcReference() {
         ClockTime result = clock1.getUTCReference();
-        ((DefaultClock) clock1)
-                .setUtcReference(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
+        ((DefaultClock) clock1).setUtcReference(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
         assertNotEquals(clock1.getUTCReference(), result);
     }
 

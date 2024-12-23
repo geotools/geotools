@@ -14,8 +14,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 
 /**
- * Checks that the filters are converted to two-value logic, unless the {@link
- * JDBCFeatureSource#FILTER_THREE_WAY_LOGIC} hint is enabled
+ * Checks that the filters are converted to two-value logic, unless the {@link JDBCFeatureSource#FILTER_THREE_WAY_LOGIC}
+ * hint is enabled
  */
 public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
@@ -56,12 +56,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testBetweenNegation() throws Exception {
-        Not filter =
-                ff.not(
-                        ff.between(
-                                ff.property(aname(B)),
-                                ff.property(aname(A)),
-                                ff.property(aname(C))));
+        Not filter = ff.not(ff.between(ff.property(aname(B)), ff.property(aname(A)), ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);
@@ -86,12 +81,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
     @Test
     public void test() throws Exception {
-        Not filter =
-                ff.not(
-                        ff.between(
-                                ff.property(aname(B)),
-                                ff.property(aname(A)),
-                                ff.property(aname(C))));
+        Not filter = ff.not(ff.between(ff.property(aname(B)), ff.property(aname(A)), ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);

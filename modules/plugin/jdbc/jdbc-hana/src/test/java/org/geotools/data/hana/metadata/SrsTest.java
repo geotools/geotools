@@ -29,24 +29,23 @@ public class SrsTest {
 
     @Test
     public void testValidGeographicSrs() {
-        Srs srs =
-                new Srs(
-                        "WGS 84",
-                        4326,
-                        "EPSG",
-                        4326,
-                        WGS84_WKT,
-                        WGS84_PROJ4,
-                        "meter",
-                        "degree",
-                        Type.GEOGRAPHIC,
-                        6378137.0,
-                        null,
-                        298.257223563,
-                        -180.0,
-                        180.0,
-                        -90.0,
-                        90.0);
+        Srs srs = new Srs(
+                "WGS 84",
+                4326,
+                "EPSG",
+                4326,
+                WGS84_WKT,
+                WGS84_PROJ4,
+                "meter",
+                "degree",
+                Type.GEOGRAPHIC,
+                6378137.0,
+                null,
+                298.257223563,
+                -180.0,
+                180.0,
+                -90.0,
+                90.0);
         Assert.assertEquals("WGS 84", srs.getName());
         Assert.assertEquals(4326, srs.getSrid());
         Assert.assertEquals("EPSG", srs.getOrganization());
@@ -67,24 +66,23 @@ public class SrsTest {
 
     @Test
     public void testValidFlatSrs() {
-        Srs srs =
-                new Srs(
-                        "WGS 84 (planar)",
-                        1000004326,
-                        "EPSG",
-                        4326,
-                        WGS84_WKT,
-                        WGS84_PROJ4,
-                        "meter",
-                        "degree",
-                        Type.GEOGRAPHIC,
-                        6378137.0,
-                        null,
-                        298.257223563,
-                        -180.0,
-                        180.0,
-                        -90.0,
-                        90.0);
+        Srs srs = new Srs(
+                "WGS 84 (planar)",
+                1000004326,
+                "EPSG",
+                4326,
+                WGS84_WKT,
+                WGS84_PROJ4,
+                "meter",
+                "degree",
+                Type.GEOGRAPHIC,
+                6378137.0,
+                null,
+                298.257223563,
+                -180.0,
+                180.0,
+                -90.0,
+                90.0);
         Assert.assertEquals("WGS 84 (planar)", srs.getName());
         Assert.assertEquals(1000004326, srs.getSrid());
         Assert.assertEquals("EPSG", srs.getOrganization());
@@ -110,24 +108,23 @@ public class SrsTest {
         String proj4 =
                 "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs";
 
-        Srs srs =
-                new Srs(
-                        "WGS 84 / Pseudo-Mercator",
-                        3857,
-                        "EPSG",
-                        3857,
-                        wkt,
-                        proj4,
-                        "meter",
-                        null,
-                        Type.PROJECTED,
-                        6378137.0,
-                        null,
-                        298.257223563,
-                        -20037508.342789248,
-                        20037508.342789248,
-                        -20048966.104014635,
-                        20048966.104014624);
+        Srs srs = new Srs(
+                "WGS 84 / Pseudo-Mercator",
+                3857,
+                "EPSG",
+                3857,
+                wkt,
+                proj4,
+                "meter",
+                null,
+                Type.PROJECTED,
+                6378137.0,
+                null,
+                298.257223563,
+                -20037508.342789248,
+                20037508.342789248,
+                -20048966.104014635,
+                20048966.104014624);
         Assert.assertEquals("WGS 84 / Pseudo-Mercator", srs.getName());
         Assert.assertEquals(3857, srs.getSrid());
         Assert.assertEquals("EPSG", srs.getOrganization());

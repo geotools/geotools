@@ -20,8 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.xsd.XSD;
 
 /**
- * This interface contains the qualified names of all the types in the http://mails/refractions/net
- * schema.
+ * This interface contains the qualified names of all the types in the http://mails/refractions/net schema.
  *
  * @generated
  */
@@ -30,15 +29,12 @@ public class ML extends XSD {
     private static ML instance = new ML();
 
     public static final String NAMESPACE = "http://mails/refractions/net";
-    public static final QName ATTACHMENTTYPE =
-            new QName("http://mails/refractions/net", "attachmentType");
+    public static final QName ATTACHMENTTYPE = new QName("http://mails/refractions/net", "attachmentType");
     public static final QName BODYTYPE = new QName("http://mails/refractions/net", "bodyType");
-    public static final QName ENVELOPETYPE =
-            new QName("http://mails/refractions/net", "envelopeType");
+    public static final QName ENVELOPETYPE = new QName("http://mails/refractions/net", "envelopeType");
     public static final QName MAILSTYPE = new QName("http://mails/refractions/net", "mailsType");
     public static final QName MAILTYPE = new QName("http://mails/refractions/net", "mailType");
-    public static final QName MIMETOPLEVELTYPE =
-            new QName("http://mails/refractions/net", "mimeTopLevelType");
+    public static final QName MIMETOPLEVELTYPE = new QName("http://mails/refractions/net", "mimeTopLevelType");
 
     /** private constructor. */
     private ML() {}

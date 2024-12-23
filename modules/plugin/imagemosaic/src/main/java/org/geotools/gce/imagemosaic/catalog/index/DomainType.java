@@ -55,14 +55,15 @@ public class DomainType {
     @XmlAttribute(required = true)
     protected String name;
 
-    @XmlAttribute protected String ref;
+    @XmlAttribute
+    protected String ref;
 
     /**
      * Gets the value of the attributes property.
      *
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-     * modification you make to the returned list will be present inside the JAXB object. This is
-     * why there is not a <CODE>set</CODE> method for the attributes property.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+     * for the attributes property.
      *
      * <p>For example, to add a new item, do as follows:
      *

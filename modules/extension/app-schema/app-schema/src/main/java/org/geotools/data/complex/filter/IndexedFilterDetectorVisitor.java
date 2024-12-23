@@ -28,8 +28,8 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 
 /**
- * Detects which AND/OR filter (BinaryLogicOperator) is the parent operator of indexed filter(s).
- * Then collects the full-indexed subfilter(s). Unrolled Filter implementation
+ * Detects which AND/OR filter (BinaryLogicOperator) is the parent operator of indexed filter(s). Then collects the
+ * full-indexed subfilter(s). Unrolled Filter implementation
  *
  * @author Fernando Miño - Geosolutions
  */
@@ -58,10 +58,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
         return super.visit(filter, data);
     }
 
-    /**
-     * Detect if AND/OR filter is the parent operator of indexed filter then collect the
-     * full-indexed subfilter(s)
-     */
+    /** Detect if AND/OR filter is the parent operator of indexed filter then collect the full-indexed subfilter(s) */
     protected void processFilter(BinaryLogicOperator filter) {
         if (parentLogicOperator != null) return;
         boolean hasindexedFilter = filter.getChildren().stream().anyMatch(c -> isFullyIndexed(c));
@@ -69,9 +66,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
             parentLogicOperator = filter;
             // get the full indexed subfilter(s)
             indexedFilters =
-                    filter.getChildren().stream()
-                            .filter(c -> isFullyIndexed(c))
-                            .collect(Collectors.toList());
+                    filter.getChildren().stream().filter(c -> isFullyIndexed(c)).collect(Collectors.toList());
         }
     }
 
@@ -81,8 +76,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
      * @param filter unrolled filter
      */
     protected boolean isFullyIndexed(Filter filter) {
-        return IndexQueryUtils.checkAllPropertiesIndexed(
-                IndexQueryUtils.getAttributesOnFilter(filter), mapping);
+        return IndexQueryUtils.checkAllPropertiesIndexed(IndexQueryUtils.getAttributesOnFilter(filter), mapping);
     }
 
     public BinaryLogicOperator getParentLogicOperator() {

@@ -107,15 +107,14 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL);
         list.setVisibleRowCount(-1);
-        list.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getClickCount() == 2) {
-                            setButton.doClick(); // emulate button click
-                        }
-                    }
-                });
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    setButton.doClick(); // emulate button click
+                }
+            }
+        });
 
         JScrollPane listScroller = new JScrollPane(list);
         listScroller.setPreferredSize(new Dimension(400, 280));

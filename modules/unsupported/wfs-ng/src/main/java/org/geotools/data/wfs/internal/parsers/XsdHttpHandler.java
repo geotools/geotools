@@ -29,8 +29,7 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.xsd.PullParser;
 
 /**
- * Handling url's in XSD documents with the same HTTP client as the WFS. Makes sure to reuse any
- * http configuration.
+ * Handling url's in XSD documents with the same HTTP client as the WFS. Makes sure to reuse any http configuration.
  *
  * <p>Used in conjunction with {@link PullParser}. {@link PullParser#setURIHandler(URIHandler)}
  *

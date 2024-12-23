@@ -26,7 +26,8 @@ import org.locationtech.jts.geom.GeometryCollection;
 public class GMLMultiGeometryPropertyTypeBinding2Test extends GMLTestSupport {
     @Test
     public void testType() {
-        assertEquals(GeometryCollection.class, binding(GML.MultiGeometryPropertyType).getType());
+        assertEquals(
+                GeometryCollection.class, binding(GML.MultiGeometryPropertyType).getType());
     }
 
     @Test

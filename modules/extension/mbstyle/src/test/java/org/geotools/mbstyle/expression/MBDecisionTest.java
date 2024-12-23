@@ -37,8 +37,7 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     }
 
     /**
-     * Helper method to create a MBDecision object from a JSON text field and evaluate the
-     * Expression.
+     * Helper method to create a MBDecision object from a JSON text field and evaluate the Expression.
      *
      * @param json JSONObject to parse.
      * @param jsonTextField Name of the text field to retrieve.

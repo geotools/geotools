@@ -24,23 +24,22 @@ package org.geotools.jdbc;
 public interface JDBCCallbackFactory {
 
     /** Null callback factory. */
-    JDBCCallbackFactory NULL =
-            new JDBCCallbackFactory() {
-                @Override
-                public String getName() {
-                    return "null";
-                }
+    JDBCCallbackFactory NULL = new JDBCCallbackFactory() {
+        @Override
+        public String getName() {
+            return "null";
+        }
 
-                @Override
-                public JDBCReaderCallback createReaderCallback() {
-                    return JDBCReaderCallback.NULL;
-                }
+        @Override
+        public JDBCReaderCallback createReaderCallback() {
+            return JDBCReaderCallback.NULL;
+        }
 
-                @Override
-                public String toString() {
-                    return "null callback";
-                }
-            };
+        @Override
+        public String toString() {
+            return "null callback";
+        }
+    };
 
     /** Callback factory name. */
     String getName();

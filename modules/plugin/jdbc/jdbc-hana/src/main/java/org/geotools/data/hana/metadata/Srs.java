@@ -79,8 +79,7 @@ public class Srs {
             }
         }
         if ((minorAxis != null) && (inverseFlattening != null)) {
-            throw new IllegalArgumentException(
-                    "Either minorAxis or inverseFlattening must be given, but not both");
+            throw new IllegalArgumentException("Either minorAxis or inverseFlattening must be given, but not both");
         }
         if ((majorAxis != null) && (majorAxis <= 0.0)) {
             throw new IllegalArgumentException("majorAxis must be greater than 0");
@@ -225,8 +224,7 @@ public class Srs {
             throw new NullPointerException(MessageFormat.format("{0} must not be null", paramName));
         }
         if (s.isEmpty()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format("{0} must not be empty", paramName));
+            throw new IllegalArgumentException(MessageFormat.format("{0} must not be empty", paramName));
         }
     }
 }

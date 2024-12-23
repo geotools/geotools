@@ -112,8 +112,8 @@ public class StyleImpl {
     }
 
     /**
-     * Because the style's name is declared as unique identifier in the interface javadocs, we will
-     * use that as our equals comparison.
+     * Because the style's name is declared as unique identifier in the interface javadocs, we will use that as our
+     * equals comparison.
      *
      * <p>So if two Styles have the same name, they are considered equal.
      */

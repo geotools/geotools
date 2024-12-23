@@ -34,8 +34,8 @@ import org.geotools.util.factory.FactoryRegistry;
 /**
  * Enable programs to find all available DataAccess implementations, including the DataStore ones.
  *
- * <p>In order to be located by this finder datasources must provide an implementation of the {@link
- * DataAccessFactory} interface.
+ * <p>In order to be located by this finder datasources must provide an implementation of the {@link DataAccessFactory}
+ * interface.
  *
  * <p>In addition to implementing this interface datasouces should have a services file:<br>
  * <code>META-INF/services/org.geotools.api.data.DataAccessFactory</code>
@@ -47,8 +47,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataAccessFinder {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
@@ -63,19 +62,17 @@ public final class DataAccessFinder {
      */
 
     /**
-     * Checks each available datasource implementation in turn and returns the first one which
-     * claims to support the resource identified by the params object.
+     * Checks each available datasource implementation in turn and returns the first one which claims to support the
+     * resource identified by the params object.
      *
-     * @param params A Map object which contains a defenition of the resource to connect to. for
-     *     file based resources the property 'url' should be set within this Map.
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @param params A Map object which contains a defenition of the resource to connect to. for file based resources
+     *     the property 'url' should be set within this Map.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     @SuppressWarnings("unchecked")
-    public static DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params)
-            throws IOException {
+    public static DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params) throws IOException {
         synchronized (DataAccessFinder.class) {
             Iterator<DataAccessFactory> ps = getAvailableDataStores();
             return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
@@ -94,12 +91,7 @@ public final class DataAccessFinder {
                 canProcess = fac.canProcess(params);
             } catch (Throwable t) {
                 LOGGER.log(
-                        Level.WARNING,
-                        "Problem asking "
-                                + fac.getDisplayName()
-                                + " if it can process request:"
-                                + t,
-                        t);
+                        Level.WARNING, "Problem asking " + fac.getDisplayName() + " if it can process request:" + t, t);
                 // Protect against DataStores that don't carefully code
                 // canProcess
                 continue;
@@ -110,12 +102,7 @@ public final class DataAccessFinder {
                     isAvailable = fac.isAvailable();
                 } catch (Throwable t) {
                     LOGGER.log(
-                            Level.WARNING,
-                            "Difficulity checking if "
-                                    + fac.getDisplayName()
-                                    + " is available:"
-                                    + t,
-                            t);
+                            Level.WARNING, "Difficulity checking if " + fac.getDisplayName() + " is available:" + t, t);
                     // Protect against DataStores that don't carefully code
                     // isAvailable
                     continue;
@@ -131,10 +118,9 @@ public final class DataAccessFinder {
                                 couldNotConnect);
                     }
                 } else {
-                    canProcessButNotAvailable =
-                            new IOException(
-                                    fac.getDisplayName()
-                                            + " should be used, but is not availble. Have you installed the required drivers or jar files?");
+                    canProcessButNotAvailable = new IOException(
+                            fac.getDisplayName()
+                                    + " should be used, but is not availble. Have you installed the required drivers or jar files?");
                     LOGGER.log(
                             Level.WARNING,
                             fac.getDisplayName() + " should be used, but is not availble",
@@ -149,8 +135,8 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Finds all implementations of DataAccessFactory which have registered using the services
-     * mechanism, regardless weather it has the appropriate libraries on the classpath.
+     * Finds all implementations of DataAccessFactory which have registered using the services mechanism, regardless
+     * weather it has the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories
      */
@@ -158,8 +144,7 @@ public final class DataAccessFinder {
         synchronized (DataAccessFinder.class) {
             Set<DataAccessFactory> all = new HashSet<>();
             Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
-            Iterator<DataAccessFactory> allDataAccess =
-                    getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
+            Iterator<DataAccessFactory> allDataAccess = getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
             while (allDataStores.hasNext()) {
                 DataStoreFactorySpi next = allDataStores.next();
                 all.add(next);
@@ -173,28 +158,25 @@ public final class DataAccessFinder {
         }
     }
 
-    static <T extends DataAccessFactory> Iterator<T> getAllDataStores(
-            FactoryRegistry registry, Class<T> category) {
+    static <T extends DataAccessFactory> Iterator<T> getAllDataStores(FactoryRegistry registry, Class<T> category) {
         synchronized (DataAccessFinder.class) {
             return registry.getFactories(category, null, null).iterator();
         }
     }
 
     /**
-     * Finds all implementations of DataAccessFactory which have registered using the services
-     * mechanism, and that have the appropriate libraries on the classpath.
+     * Finds all implementations of DataAccessFactory which have registered using the services mechanism, and that have
+     * the appropriate libraries on the classpath.
      *
-     * @return An iterator over all discovered datastores which have registered factories, and whose
-     *     available method returns true.
+     * @return An iterator over all discovered datastores which have registered factories, and whose available method
+     *     returns true.
      */
     public static Iterator<DataAccessFactory> getAvailableDataStores() {
         synchronized (DataAccessFinder.class) {
             FactoryRegistry serviceRegistry = getServiceRegistry();
-            Set<DataAccessFactory> availableDS =
-                    getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
+            Set<DataAccessFactory> availableDS = getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
 
-            Iterator<DataStoreFactorySpi> availableDataStores =
-                    DataStoreFinder.getAvailableDataStores();
+            Iterator<DataStoreFactorySpi> availableDataStores = DataStoreFinder.getAvailableDataStores();
             while (availableDataStores.hasNext()) {
                 availableDS.add(availableDataStores.next());
             }
@@ -203,8 +185,7 @@ public final class DataAccessFinder {
         }
     }
 
-    static <T extends DataAccessFactory> Set<T> getAvailableDataStores(
-            FactoryRegistry registry, Class<T> targetClass) {
+    static <T extends DataAccessFactory> Set<T> getAvailableDataStores(FactoryRegistry registry, Class<T> targetClass) {
         synchronized (DataAccessFinder.class) {
             return registry.getFactories(targetClass, null, null)
                     .filter(DataAccessFactory::isAvailable)
@@ -212,10 +193,7 @@ public final class DataAccessFinder {
         }
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(DataAccessFinder.class);
         if (registry == null) {
@@ -225,11 +203,10 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static void scanForPlugins() {
@@ -249,8 +226,8 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Programmatically registers a store. Mostly useful for tests, normal store registration should
-     * go through the SPI subsystem (META-INF/services files).
+     * Programmatically registers a store. Mostly useful for tests, normal store registration should go through the SPI
+     * subsystem (META-INF/services files).
      */
     public static void registerFactory(DataAccessFactory factorySpi) {
         synchronized (DataAccessFinder.class) {
@@ -259,8 +236,8 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Programmatically deregisters a store. Mostly useful for tests, normal store registration
-     * should go through the SPI subsystem (META-INF/services files).
+     * Programmatically deregisters a store. Mostly useful for tests, normal store registration should go through the
+     * SPI subsystem (META-INF/services files).
      */
     public static void deregisterFactory(DataAccessFactory factorySpi) {
         synchronized (DataAccessFinder.class) {

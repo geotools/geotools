@@ -24,8 +24,8 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
- * Base class for WPS GetCapabilities responses. They should typically attempt to parse the
- * Capabilities document in inputStream in the constructor.
+ * Base class for WPS GetCapabilities responses. They should typically attempt to parse the Capabilities document in
+ * inputStream in the constructor.
  *
  * @author gdavis
  */
@@ -34,8 +34,7 @@ public abstract class AbstractWPSGetCapabilitiesResponse extends Response {
     protected WPSCapabilitiesType capabilities;
     protected ExceptionReportType excepResponse;
 
-    public AbstractWPSGetCapabilitiesResponse(HTTPResponse httpResponse)
-            throws ServiceException, IOException {
+    public AbstractWPSGetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
         super(httpResponse);
     }
 

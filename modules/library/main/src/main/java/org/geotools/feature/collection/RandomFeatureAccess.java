@@ -23,12 +23,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 /**
  * Access Feature content using Feature "Id".
  *
- * <p>Many SimpleFeatureCollection classes will make use of this API to avoid unnecessary caching of
- * content. Supporting this interface will allow SubCollections to occur based on FeatureIds, with a
- * suitable improvement in memory consumption.
+ * <p>Many SimpleFeatureCollection classes will make use of this API to avoid unnecessary caching of content. Supporting
+ * this interface will allow SubCollections to occur based on FeatureIds, with a suitable improvement in memory
+ * consumption.
  *
- * <p>For an addition improvement in memory comsumption SubCollections may use of a sparse
- * reprsentation where only (beginId,endId] ranges are kept in memory.
+ * <p>For an addition improvement in memory comsumption SubCollections may use of a sparse reprsentation where only
+ * (beginId,endId] ranges are kept in memory.
  *
  * @author Jody Garnett, Refractions Research Inc.
  */

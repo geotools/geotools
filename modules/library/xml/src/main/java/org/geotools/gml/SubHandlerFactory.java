@@ -27,14 +27,11 @@ import java.util.logging.Logger;
  */
 public class SubHandlerFactory {
     /** The logger for the GML module */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SubHandlerFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SubHandlerFactory.class);
 
     /** List of all valid OGC multi geometry types. */
     private static final java.util.Collection<String> BASE_GEOMETRY_TYPES =
-            new ArrayList<>(
-                    java.util.Arrays.asList(
-                            new String[] {"MultiPoint", "MultiLineString", "MultiPolygon"}));
+            new ArrayList<>(java.util.Arrays.asList(new String[] {"MultiPoint", "MultiLineString", "MultiPolygon"}));
 
     /** Empty constructor. */
     public SubHandlerFactory() {
@@ -43,8 +40,8 @@ public class SubHandlerFactory {
     }
 
     /**
-     * Creates a new SubHandler, based on the appropriate OGC simple geometry type. Note that some
-     * types are aggregated into a generic 'multi' type.
+     * Creates a new SubHandler, based on the appropriate OGC simple geometry type. Note that some types are aggregated
+     * into a generic 'multi' type.
      *
      * @param type Type of SubHandler to return.
      * @task TODO: throw an exception, not return a null

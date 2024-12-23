@@ -21,13 +21,12 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper around a {@link JSONObject} containing the "sources" in a Mapbox style. Mapbox sources
- * supply data to be shown on the map. The type of source is specified by the "type" property, and
- * must be one of vector, raster, geojson, image, video, canvas.
+ * Wrapper around a {@link JSONObject} containing the "sources" in a Mapbox style. Mapbox sources supply data to be
+ * shown on the map. The type of source is specified by the "type" property, and must be one of vector, raster, geojson,
+ * image, video, canvas.
  *
- * <p>"Layers refer to a source and give it a visual representation. This makes it possible to style
- * the same source in different ways, like differentiating between types of roads in a highways
- * layer."
+ * <p>"Layers refer to a source and give it a visual representation. This makes it possible to style the same source in
+ * different ways, like differentiating between types of roads in a highways layer."
  *
  * <p>Internally we use a wtms end-point to refer to the data source:
  *

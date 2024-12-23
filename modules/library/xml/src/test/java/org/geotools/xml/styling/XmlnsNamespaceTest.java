@@ -25,9 +25,8 @@ import org.geotools.test.TestData;
 import org.junit.Test;
 
 /**
- * Tests XMLNS attributes serialization that might be missed/ignored if the proper namespace is not
- * specified. Parsing SLD into object tree, serialization back to XML and again parsing from this
- * XML says that there is no problem.
+ * Tests XMLNS attributes serialization that might be missed/ignored if the proper namespace is not specified. Parsing
+ * SLD into object tree, serialization back to XML and again parsing from this XML says that there is no problem.
  *
  * @author Vitalus
  */

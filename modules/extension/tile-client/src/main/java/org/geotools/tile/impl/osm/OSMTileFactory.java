@@ -38,15 +38,14 @@ public class OSMTileFactory extends WebMercatorTileFactory {
     }
 
     @Override
-    public Tile findTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel, TileService service) {
+    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service) {
 
         return create(service.identifyTileAtCoordinate(lon, lat, zoomLevel), service);
     }
 
     /**
-     * This method ensures that value is between min and max. If value < min, min is returned. If
-     * value > max, max is returned. Otherwise value.
+     * This method ensures that value is between min and max. If value < min, min is returned. If value > max, max is
+     * returned. Otherwise value.
      */
     public static double moveInRange(double value, double min, double max) {
         if (value < min) {

@@ -54,13 +54,13 @@ import org.geotools.api.filter.spatial.Within;
 /**
  * Represents the Filter capabilities that are supported by a SQLEncoder
  *
- * <p>Each SQLEncoder class should have one static FilterCapabilities, representing the filter
- * encoding operations that it can successfully perform.
+ * <p>Each SQLEncoder class should have one static FilterCapabilities, representing the filter encoding operations that
+ * it can successfully perform.
  *
  * <p>This class is used as one big mask to detect filters that cannot be performed
  *
- * @author Chris Holmes, TOPP TODO: check if possible to deprecate @ deprecated use {@link
- *     org.geotools.api.filter.capability.FilterCapabilities}.
+ * @author Chris Holmes, TOPP TODO: check if possible to deprecate @ deprecated use
+ *     {@link org.geotools.api.filter.capability.FilterCapabilities}.
  */
 public class FilterCapabilities {
     /** Mask for no operation */
@@ -133,13 +133,12 @@ public class FilterCapabilities {
     /** Scalar Mask for logical operation */
     public static final long LOGICAL = (LOGIC_AND | LOGIC_OR | LOGIC_NOT);
     /** Scalar Mask for simple comparison operations */
-    public static final long SIMPLE_COMPARISONS =
-            COMPARE_EQUALS
-                    | COMPARE_GREATER_THAN
-                    | COMPARE_GREATER_THAN_EQUAL
-                    | COMPARE_LESS_THAN
-                    | COMPARE_LESS_THAN_EQUAL
-                    | COMPARE_NOT_EQUALS;
+    public static final long SIMPLE_COMPARISONS = COMPARE_EQUALS
+            | COMPARE_GREATER_THAN
+            | COMPARE_GREATER_THAN_EQUAL
+            | COMPARE_LESS_THAN
+            | COMPARE_LESS_THAN_EQUAL
+            | COMPARE_NOT_EQUALS;
 
     public static final FilterCapabilities SIMPLE_COMPARISONS_OPENGIS;
 
@@ -173,17 +172,13 @@ public class FilterCapabilities {
         intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_BEYOND), Beyond.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_DWITHIN), DWithin.class);
         intTypeToOpenGisTypeMap.put(
-                Long.valueOf(SIMPLE_ARITHMETIC),
-                new Class[] {Add.class, Subtract.class, Multiply.class, Divide.class});
+                Long.valueOf(SIMPLE_ARITHMETIC), new Class[] {Add.class, Subtract.class, Multiply.class, Divide.class});
         intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_EQUALS), PropertyIsEqualTo.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_NOT_EQUALS), PropertyIsNotEqualTo.class);
-        intTypeToOpenGisTypeMap.put(
-                Long.valueOf(COMPARE_GREATER_THAN), PropertyIsGreaterThan.class);
-        intTypeToOpenGisTypeMap.put(
-                Long.valueOf(COMPARE_GREATER_THAN_EQUAL), PropertyIsGreaterThanOrEqualTo.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_GREATER_THAN), PropertyIsGreaterThan.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_GREATER_THAN_EQUAL), PropertyIsGreaterThanOrEqualTo.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_LESS_THAN), PropertyIsLessThan.class);
-        intTypeToOpenGisTypeMap.put(
-                Long.valueOf(COMPARE_LESS_THAN_EQUAL), PropertyIsLessThanOrEqualTo.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_LESS_THAN_EQUAL), PropertyIsLessThanOrEqualTo.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(NULL_CHECK), PropertyIsNull.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(LIKE), PropertyIsLike.class);
         intTypeToOpenGisTypeMap.put(Long.valueOf(BETWEEN), PropertyIsBetween.class);
@@ -239,8 +234,8 @@ public class FilterCapabilities {
     }
 
     /**
-     * Adds a new support type to capabilities. For 2.2 only function expression support is added
-     * this way. As of geotools 2.3 this will be the supported way of adding to Filtercapabilities.
+     * Adds a new support type to capabilities. For 2.2 only function expression support is added this way. As of
+     * geotools 2.3 this will be the supported way of adding to Filtercapabilities.
      *
      * @param type the Class that indicates the new support.
      */
@@ -253,8 +248,8 @@ public class FilterCapabilities {
     }
 
     /**
-     * Adds a new support type to capabilities. For 2.2 only function expression support is added
-     * this way. As of geotools 2.3 this will be the supported way of adding to Filtercapabilities.
+     * Adds a new support type to capabilities. For 2.2 only function expression support is added this way. As of
+     * geotools 2.3 this will be the supported way of adding to Filtercapabilities.
      *
      * @param type the Class that indicates the new support.
      */
@@ -285,8 +280,7 @@ public class FilterCapabilities {
     public FilterCapabilities convertFilterTypeToMask(short type) {
         if (type == FilterType.ALL) return FilterNameTypeMapping.NO_OP_CAPS;
         if (type == FilterType.NONE) return FilterNameTypeMapping.ALL_CAPS;
-        Object object =
-                FilterNameTypeMapping.filterTypeToFilterCapabilitiesMap.get(Short.valueOf(type));
+        Object object = FilterNameTypeMapping.filterTypeToFilterCapabilitiesMap.get(Short.valueOf(type));
         return (FilterCapabilities) object;
     }
 
@@ -312,15 +306,14 @@ public class FilterCapabilities {
     }
 
     /**
-     * Determines if the filter and all its sub filters are supported. Is most important for logic
-     * filters, as they are the only ones with subFilters. Null filters should not be used here, if
-     * nothing should be filtered than Filter.INCLUDE can be used. Embedded nulls can be a
-     * particular source of problems, buried in logic filters.
+     * Determines if the filter and all its sub filters are supported. Is most important for logic filters, as they are
+     * the only ones with subFilters. Null filters should not be used here, if nothing should be filtered than
+     * Filter.INCLUDE can be used. Embedded nulls can be a particular source of problems, buried in logic filters.
      *
      * @param filter the filter to be tested.
      * @return true if all sub filters are supported, false otherwise.
-     * @throws IllegalArgumentException If a null filter is passed in. As this function is recursive
-     *     a null in a logic filter will also cause an error.
+     * @throws IllegalArgumentException If a null filter is passed in. As this function is recursive a null in a logic
+     *     filter will also cause an error.
      */
     public boolean fullySupports(org.geotools.api.filter.Filter filter) {
         boolean supports = true;
@@ -371,15 +364,7 @@ public class FilterCapabilities {
     }
 
     public long getScalarOps() {
-        return ops
-                & (SIMPLE_ARITHMETIC
-                        | SIMPLE_COMPARISONS
-                        | FID
-                        | FUNCTIONS
-                        | LIKE
-                        | LOGICAL
-                        | NULL_CHECK
-                        | BETWEEN);
+        return ops & (SIMPLE_ARITHMETIC | SIMPLE_COMPARISONS | FID | FUNCTIONS | LIKE | LOGICAL | NULL_CHECK | BETWEEN);
     }
 
     public long getSpatialOps() {
@@ -416,12 +401,12 @@ public class FilterCapabilities {
     }
 
     /**
-     * Convert filter to a constant for use in switch statements. This is an alternative to
-     * performing instanceof checks.
+     * Convert filter to a constant for use in switch statements. This is an alternative to performing instanceof
+     * checks.
      *
-     * <p>This utility method for those upgrading to a newer version of GeoTools, instance of checks
-     * are preferred as they will take into account new kinds of filters (example temporal filters
-     * added for Filter 2.0 specification). Example:
+     * <p>This utility method for those upgrading to a newer version of GeoTools, instance of checks are preferred as
+     * they will take into account new kinds of filters (example temporal filters added for Filter 2.0 specification).
+     * Example:
      *
      * <pre>
      * <code>
@@ -438,11 +423,9 @@ public class FilterCapabilities {
         if (filter instanceof PropertyIsBetween) return FilterType.BETWEEN;
         if (filter instanceof PropertyIsEqualTo) return FilterType.COMPARE_EQUALS;
         if (filter instanceof PropertyIsGreaterThan) return FilterType.COMPARE_GREATER_THAN;
-        if (filter instanceof PropertyIsGreaterThanOrEqualTo)
-            return FilterType.COMPARE_GREATER_THAN_EQUAL;
+        if (filter instanceof PropertyIsGreaterThanOrEqualTo) return FilterType.COMPARE_GREATER_THAN_EQUAL;
         if (filter instanceof PropertyIsLessThan) return FilterType.COMPARE_LESS_THAN;
-        if (filter instanceof PropertyIsLessThanOrEqualTo)
-            return FilterType.COMPARE_LESS_THAN_EQUAL;
+        if (filter instanceof PropertyIsLessThanOrEqualTo) return FilterType.COMPARE_LESS_THAN_EQUAL;
         if (filter instanceof PropertyIsNotEqualTo) return FilterType.COMPARE_NOT_EQUALS;
         if (filter instanceof Id) return FilterType.FID;
         if (filter instanceof BBOX) return FilterType.GEOMETRY_BBOX;

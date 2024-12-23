@@ -28,9 +28,9 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
 
 /**
- * A replacement for {@link AttributeTypeImpl} with lazy evaluation of super type, so types can be
- * defined in any order. Note that type equality is defined by name, so do not allow different types
- * with the same name to be put in any Collection.
+ * A replacement for {@link AttributeTypeImpl} with lazy evaluation of super type, so types can be defined in any order.
+ * Note that type equality is defined by name, so do not allow different types with the same name to be put in any
+ * Collection.
  *
  * <p>Inspired by {@link AttributeTypeImpl} and {@link PropertyTypeImpl}.
  *
@@ -84,8 +84,8 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     }
 
     /**
-     * Subclasses must override this method to return the super type of this type or null if none.
-     * This method will only be called once at most.
+     * Subclasses must override this method to return the super type of this type or null if none. This method will only
+     * be called once at most.
      *
      * @return super type or null
      */
@@ -143,9 +143,8 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     }
 
     /**
-     * Equality by name. Yes, this may be a surprise to some client code, but how else do you define
-     * equality in the face of cyclic type definitions, without breaking encapsulation to analyse
-     * the full graph of types?
+     * Equality by name. Yes, this may be a surprise to some client code, but how else do you define equality in the
+     * face of cyclic type definitions, without breaking encapsulation to analyse the full graph of types?
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */

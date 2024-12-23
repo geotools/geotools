@@ -50,6 +50,7 @@ public class GMLPolygonPropertyTypeBinding2Test extends GMLTestSupport {
 
         assertEquals(
                 1,
-                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart()).getLength());
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart())
+                        .getLength());
     }
 }

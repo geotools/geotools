@@ -46,7 +46,8 @@ public class MultiGeometryTypeBindingTest extends GML32TestSupport {
         Document dom = encode(geometry, GML.MultiGeometry);
         // print(dom);
         assertEquals("geometry", getID(dom.getDocumentElement()));
-        assertEquals(3, dom.getElementsByTagNameNS(GML.NAMESPACE, "geometryMember").getLength());
+        assertEquals(
+                3, dom.getElementsByTagNameNS(GML.NAMESPACE, "geometryMember").getLength());
         // geometry.1 is not encoded on the gml:Point because user data is already being used for
         // srsDimension and srsName; not going to support the use of these inside a multigeometry
         // and combined with gml:id
@@ -54,6 +55,7 @@ public class MultiGeometryTypeBindingTest extends GML32TestSupport {
                 "geometry.2",
                 getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "LineString").item(0)));
         assertEquals(
-                "geometry.3", getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon").item(0)));
+                "geometry.3",
+                getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon").item(0)));
     }
 }

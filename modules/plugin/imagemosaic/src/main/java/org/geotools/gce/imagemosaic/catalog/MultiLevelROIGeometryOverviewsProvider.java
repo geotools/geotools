@@ -34,10 +34,7 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 
-/**
- * A {@link MultiLevelROIProvider} implementation used for returning {@link
- * MultiLevelROIGeometryOverviews}s
- */
+/** A {@link MultiLevelROIProvider} implementation used for returning {@link MultiLevelROIGeometryOverviews}s */
 public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProvider {
 
     public static final int LOOK_FOR_OVERVIEWS = Integer.MIN_VALUE;
@@ -55,16 +52,16 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
     public static final String OVERVIEWS_FOOTPRINT_LOADER_SPI = "overviewsFootprintLoaderSPI";
 
     /**
-     * The String format syntax used to setup the overviews file name suffix. As an instance, -%d
-     * means that a file named fileR1C1 will have its first overview stored as fileR1C1-1
+     * The String format syntax used to setup the overviews file name suffix. As an instance, -%d means that a file
+     * named fileR1C1 will have its first overview stored as fileR1C1-1
      */
     private String overviewSuffixFormat;
 
     private File baseFile;
 
     /**
-     * The known number of overviews available. When set to LOOK_FOR_OVERVIEWS, the provider will
-     * use a Reader to retrieve the number of overviews
+     * The known number of overviews available. When set to LOOK_FOR_OVERVIEWS, the provider will use a Reader to
+     * retrieve the number of overviews
      */
     private int numOverviews;
 
@@ -79,8 +76,8 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
     private Hints hints;
 
     /**
-     * Flag specifying whether overview's ROI are expressed in raster space coordinates (True) or
-     * model space coordinates (False)
+     * Flag specifying whether overview's ROI are expressed in raster space coordinates (True) or model space
+     * coordinates (False)
      */
     private boolean overviewsRoiInRasterSpace;
 
@@ -120,8 +117,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 // No number of overviews have been provided.
                 // Getting a reader to retrieve that number.
                 File file = new File(path);
-                AbstractGridFormat format =
-                        GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
+                AbstractGridFormat format = GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                 reader = format.getReader(file);
                 DatasetLayout layout = reader.getDatasetLayout();
                 int extOv = layout.getNumExternalOverviews();
@@ -136,8 +132,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 Geometry overviewFootprint = loadFootprint(pathOverview, true);
                 footprintOverviews.add(overviewFootprint);
             }
-            return new MultiLevelROIGeometryOverviews(
-                    footprint, footprintOverviews, overviewsRoiInRasterSpace, hints);
+            return new MultiLevelROIGeometryOverviews(footprint, footprintOverviews, overviewsRoiInRasterSpace, hints);
         } catch (Exception e) {
             throw new IOException("Exception occurred while loading footprints ", e);
         } finally {
@@ -182,8 +177,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         return footprintProvider.getFootprint(baseFullName);
     }
 
-    private List<File> loadFootprintFiles(String baseFullName, boolean isOverview)
-            throws IOException {
+    private List<File> loadFootprintFiles(String baseFullName, boolean isOverview) throws IOException {
         FootprintLoader loader = isOverview ? footprintLoader : overviewsFootprintLoader;
         if (loader != null) {
             return loader.getFootprintFiles(baseFullName);

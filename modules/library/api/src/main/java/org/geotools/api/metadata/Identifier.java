@@ -20,18 +20,18 @@ import org.geotools.api.metadata.citation.Citation;
  */
 public interface Identifier {
     /**
-     * Key for the <code>{@value}</code> property to be given to the {@linkplain
-     * org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code>
-     * methods. This is used for setting the value to be returned by {@link #getCode}.
+     * Key for the <code>{@value}</code> property to be given to the
+     * {@linkplain org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code> methods.
+     * This is used for setting the value to be returned by {@link #getCode}.
      *
      * @see #getCode
      */
     String CODE_KEY = "code";
 
     /**
-     * Key for the <code>{@value}</code> property to be given to the {@linkplain
-     * org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code>
-     * methods. This is used for setting the value to be returned by {@link #getAuthority}.
+     * Key for the <code>{@value}</code> property to be given to the
+     * {@linkplain org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code> methods.
+     * This is used for setting the value to be returned by {@link #getAuthority}.
      *
      * @see #getAuthority
      */
@@ -45,8 +45,7 @@ public interface Identifier {
     String getCode();
 
     /**
-     * Organization or party responsible for definition and maintenance of the {@linkplain #getCode
-     * code}.
+     * Organization or party responsible for definition and maintenance of the {@linkplain #getCode code}.
      *
      * @return Party responsible for definition and maintenance of the code.
      */

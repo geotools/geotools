@@ -57,9 +57,9 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
     }
 
     /**
-     * Creates a new instance of PeriodDuration from a long value passed in parameter. if the long
-     * contains milliseconds, this will be ignored because there is no MilliSeconds specified in the
-     * string format PnYnMnDTnHnMnS, see ISO 8601.
+     * Creates a new instance of PeriodDuration from a long value passed in parameter. if the long contains
+     * milliseconds, this will be ignored because there is no MilliSeconds specified in the string format
+     * PnYnMnDTnHnMnS, see ISO 8601.
      */
     public DefaultPeriodDuration(long durationInMilliSeconds) {
         long yearMS = 31536000000L;
@@ -133,37 +133,25 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
         }*/
     }
 
-    /**
-     * A mandatory element which designates that the returned string represents the duration of a
-     * period.
-     */
+    /** A mandatory element which designates that the returned string represents the duration of a period. */
     @Override
     public InternationalString getDesignator() {
         return DESIGNATOR;
     }
 
-    /**
-     * A positive integer, followed by the character "Y", which indicated the number of years in the
-     * period.
-     */
+    /** A positive integer, followed by the character "Y", which indicated the number of years in the period. */
     @Override
     public InternationalString getYears() {
         return years;
     }
 
-    /**
-     * A positive integer, followed by the character "M", which indicated the number of months in
-     * the period.
-     */
+    /** A positive integer, followed by the character "M", which indicated the number of months in the period. */
     @Override
     public InternationalString getMonths() {
         return months;
     }
 
-    /**
-     * A positive integer, followed by the character "D", which indicated the number of days in the
-     * period.
-     */
+    /** A positive integer, followed by the character "D", which indicated the number of days in the period. */
     @Override
     public InternationalString getDays() {
         return days;
@@ -175,28 +163,19 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
         return TIME_INDICATOR;
     }
 
-    /**
-     * A positive integer, followed by the character "H", which indicated the number of hours in the
-     * period.
-     */
+    /** A positive integer, followed by the character "H", which indicated the number of hours in the period. */
     @Override
     public InternationalString getHours() {
         return hours;
     }
 
-    /**
-     * A positive integer, followed by the character "M", which indicated the number of minutes in
-     * the period.
-     */
+    /** A positive integer, followed by the character "M", which indicated the number of minutes in the period. */
     @Override
     public InternationalString getMinutes() {
         return minutes;
     }
 
-    /**
-     * A positive integer, followed by the character "S", which indicated the number of seconds in
-     * the period.
-     */
+    /** A positive integer, followed by the character "S", which indicated the number of seconds in the period. */
     @Override
     public InternationalString getSeconds() {
         return seconds;
@@ -234,9 +213,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
         this.weeks = week;
     }
 
-    /**
-     * Returns a duration in long. note there is no starting instant to accurate the returned value.
-     */
+    /** Returns a duration in long. note there is no starting instant to accurate the returned value. */
     @Override
     public long getTimeInMillis() {
         String periodDescription = this.toString();
@@ -253,9 +230,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
 
         // if the period contains years (31536000000 ms) the response will be incremented
         if (periodDescription.indexOf('Y') != -1) {
-            int nbYear =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('Y')));
+            int nbYear = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('Y')));
             response += nbYear * yearMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('Y') + 1);
         }
@@ -265,27 +240,21 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
                 || ((periodDescription.indexOf('T') != -1)
                         && (periodDescription.indexOf('M') < periodDescription.indexOf('T'))
                         && ((periodDescription.indexOf('M') != -1)))) {
-            int nbMonth =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('M')));
+            int nbMonth = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('M')));
             response += nbMonth * monthMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('M') + 1);
         }
 
         // if the period contains weeks (604800000 ms)
         if (periodDescription.indexOf('W') != -1) {
-            int nbWeek =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('W')));
+            int nbWeek = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('W')));
             response += nbWeek * weekMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('W') + 1);
         }
 
         // if the period contains days (86400000 ms)
         if (periodDescription.indexOf('D') != -1) {
-            int nbDay =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('D')));
+            int nbDay = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('D')));
             response += nbDay * dayMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('D') + 1);
         }
@@ -297,27 +266,21 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
 
         // if the period contains hours (3600000 ms)
         if (periodDescription.indexOf('H') != -1) {
-            int nbHour =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('H')));
+            int nbHour = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('H')));
             response += nbHour * hourMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('H') + 1);
         }
 
         // if the period contains minutes (60000 ms)
         if (periodDescription.indexOf('M') != -1) {
-            int nbMin =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('M')));
+            int nbMin = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('M')));
             response += nbMin * minMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('M') + 1);
         }
 
         // if the period contains seconds (1000 ms)
         if (periodDescription.indexOf('S') != -1) {
-            int nbSec =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('S')));
+            int nbSec = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('S')));
             response += nbSec * secondMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('S') + 1);
         }

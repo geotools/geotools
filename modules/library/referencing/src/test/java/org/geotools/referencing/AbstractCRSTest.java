@@ -95,18 +95,14 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals("Lat", axis1.getAbbreviation());
 
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326");
-        assertFalse(
-                "Should not be (long,lat) axis order.", CRS.equalsIgnoreMetadata(crs, standard));
+        assertFalse("Should not be (long,lat) axis order.", CRS.equalsIgnoreMetadata(crs, standard));
 
         final CoordinateReferenceSystem def;
         try {
-            assertNull(
-                    Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            assertNull(Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             def = CRS.decode("EPSG:4326");
         } finally {
-            assertEquals(
-                    Boolean.TRUE,
-                    Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+            assertEquals(Boolean.TRUE, Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
         }
         assertEquals("Expected (long,lat) axis order.", crs, def);
         assertSame("Should be back to (lat,long) axis order.", standard, CRS.decode("EPSG:4326"));
@@ -115,12 +111,11 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /**
      * Tests again EPSG:4326, but forced to (longitude, latitude) axis order.
      *
-     * @todo Partially uncomment since we are allowed to compile for J2SE 1.5, but doesn't work as
-     *     it did prior some changes in the referencing module. Need to investigate why.
+     * @todo Partially uncomment since we are allowed to compile for J2SE 1.5, but doesn't work as it did prior some
+     *     changes in the referencing module. Need to investigate why.
      */
     @Test
-    public void testSystemPropertyToForceXY()
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public void testSystemPropertyToForceXY() throws NoSuchAuthorityCodeException, FactoryException {
         assertNull(System.getProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
         System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "true");
         try {
@@ -140,28 +135,19 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testFind() throws FactoryException {
         CoordinateReferenceSystem crs = getED50("ED50");
-        assertEquals(
-                "Should find without scan thanks to the name.",
-                "EPSG:4230",
-                CRS.lookupIdentifier(crs, false));
+        assertEquals("Should find without scan thanks to the name.", "EPSG:4230", CRS.lookupIdentifier(crs, false));
         assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
 
         crs = getED50("ED50 with unknown name");
         if (supportsED50QuickScan()) {
-            assertEquals(
-                    "With scan allowed, should find the CRS.",
-                    "EPSG:4230",
-                    CRS.lookupIdentifier(crs, false));
+            assertEquals("With scan allowed, should find the CRS.", "EPSG:4230", CRS.lookupIdentifier(crs, false));
             assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
         } else {
             assertNull("Should not find the CRS without a scan.", CRS.lookupIdentifier(crs, false));
             assertNull(CRS.lookupEpsgCode(crs, false));
         }
 
-        assertEquals(
-                "With scan allowed, should find the CRS.",
-                "EPSG:4230",
-                CRS.lookupIdentifier(crs, true));
+        assertEquals("With scan allowed, should find the CRS.", "EPSG:4230", CRS.lookupIdentifier(crs, true));
         assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, true));
     }
 
@@ -171,29 +157,27 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
     /** Returns a ED50 CRS with the specified name. */
     private static CoordinateReferenceSystem getED50(final String name) throws FactoryException {
-        final String wkt =
-                "GEOGCS[\""
-                        + name
-                        + "\",\n"
-                        + "  DATUM[\"European Datum 1950\",\n"
-                        + "  SPHEROID[\"International 1924\", 6378388.0, 297.0]],\n"
-                        + "PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "UNIT[\"degree\", 0.017453292519943295]]";
+        final String wkt = "GEOGCS[\""
+                + name
+                + "\",\n"
+                + "  DATUM[\"European Datum 1950\",\n"
+                + "  SPHEROID[\"International 1924\", 6378388.0, 297.0]],\n"
+                + "PRIMEM[\"Greenwich\", 0.0],\n"
+                + "UNIT[\"degree\", 0.017453292519943295]]";
         return CRS.parseWKT(wkt);
     }
 
     /** Tests the {@link CRS#parseWKT} method. */
     @Test
     public void testWKT() throws FactoryException {
-        String wkt =
-                "GEOGCS[\"WGS 84\",\n"
-                        + "  DATUM[\"WGS_1984\",\n"
-                        + "    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],\n"
-                        + "    TOWGS84[0,0,0,0,0,0,0], AUTHORITY[\"EPSG\",\"6326\"]],\n"
-                        + "  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                        + "  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],\n"
-                        + "  AXIS[\"Lat\",NORTH], AXIS[\"Long\",EAST],\n"
-                        + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt = "GEOGCS[\"WGS 84\",\n"
+                + "  DATUM[\"WGS_1984\",\n"
+                + "    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],\n"
+                + "    TOWGS84[0,0,0,0,0,0,0], AUTHORITY[\"EPSG\",\"6326\"]],\n"
+                + "  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
+                + "  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],\n"
+                + "  AXIS[\"Lat\",NORTH], AXIS[\"Long\",EAST],\n"
+                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         assertNotNull(crs);
     }
@@ -361,8 +345,8 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     }
 
     /**
-     * Tests the number of CRS that can be created. This test will be executed only if this test
-     * suite is run with the {@code -verbose} option provided on the command line.
+     * Tests the number of CRS that can be created. This test will be executed only if this test suite is run with the
+     * {@code -verbose} option provided on the command line.
      */
     @Test
     public void testSuccess() throws FactoryException {
@@ -439,8 +423,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // flip one way
         CoordinateReferenceSystem source = CRS.decode("EPSG:32638", true); // lon/lat
         CoordinateReferenceSystem target = CRS.decode("EPSG:4326", false); // lat/lon
-        CoordinateOperationFactory coordinateOperationFactory =
-                CRS.getCoordinateOperationFactory(true);
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(true);
         CoordinateOperation co = coordinateOperationFactory.createOperation(source, target);
         assertEquals(source, co.getSourceCRS());
         assertEquals(target, co.getTargetCRS());
@@ -470,9 +453,9 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     }
 
     /**
-     * Testing the handling of toSRS method; used to translate from CoordinateReferenceSystem
-     * identifiers to the spatial reference system name used by OGC web services. There are a number
-     * of options here depending on the specification used.
+     * Testing the handling of toSRS method; used to translate from CoordinateReferenceSystem identifiers to the spatial
+     * reference system name used by OGC web services. There are a number of options here depending on the specification
+     * used.
      */
     @Test
     public void testSRS() throws Exception {
@@ -505,35 +488,23 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
             assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326", false)));
             assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326", true)));
-            assertEquals(
-                    AxisOrder.NORTH_EAST,
-                    CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
-            assertEquals(
-                    AxisOrder.NORTH_EAST,
-                    CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
+            assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
+            assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
         } finally {
             Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         }
         CRS.reset("all");
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("EPSG:4326", false)));
         assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326", true)));
-        assertEquals(
-                AxisOrder.NORTH_EAST,
-                CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
-        assertEquals(
-                AxisOrder.NORTH_EAST,
-                CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
         try {
             CRS.reset("all");
             System.setProperty("org.geotools.referencing.forceXY", "true");
             assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326", false)));
             assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326", true)));
-            assertEquals(
-                    AxisOrder.NORTH_EAST,
-                    CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
-            assertEquals(
-                    AxisOrder.NORTH_EAST,
-                    CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
+            assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", false)));
+            assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326", true)));
         } finally {
             System.getProperties().remove("org.geotools.referencing.forceXY");
         }
@@ -541,8 +512,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
     @Test
     public void testCRS_CH1903_LV03()
-            throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException,
-                    TransformException {
+            throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
         CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326", false); // WGS84
         CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:21781", false); // CH1903_LV03
 
@@ -660,23 +630,22 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         try {
             MapProjection.SKIP_SANITY_CHECKS = true;
             // @formatter:off
-            String wkt =
-                    "PROJCS[\"World_Van_der_Grinten_I\", \n"
-                            + "  GEOGCS[\"GCS_WGS_1984\", \n"
-                            + "    DATUM[\"D_WGS_1984\", \n"
-                            + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
-                            + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                            + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                            + "    AXIS[\"Longitude\", EAST], \n"
-                            + "    AXIS[\"Latitude\", NORTH]], \n"
-                            + "  PROJECTION[\"World_Van_der_Grinten_I\"], \n"
-                            + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                            + "  PARAMETER[\"false_easting\", 0.0], \n"
-                            + "  PARAMETER[\"false_northing\", 0.0], \n"
-                            + "  UNIT[\"m\", 1.0], \n"
-                            + "  AXIS[\"x\", EAST], \n"
-                            + "  AXIS[\"y\", NORTH], \n"
-                            + "  AUTHORITY[\"EPSG\",\"54029\"]]";
+            String wkt = "PROJCS[\"World_Van_der_Grinten_I\", \n"
+                    + "  GEOGCS[\"GCS_WGS_1984\", \n"
+                    + "    DATUM[\"D_WGS_1984\", \n"
+                    + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
+                    + "    PRIMEM[\"Greenwich\", 0.0], \n"
+                    + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                    + "    AXIS[\"Longitude\", EAST], \n"
+                    + "    AXIS[\"Latitude\", NORTH]], \n"
+                    + "  PROJECTION[\"World_Van_der_Grinten_I\"], \n"
+                    + "  PARAMETER[\"central_meridian\", 0.0], \n"
+                    + "  PARAMETER[\"false_easting\", 0.0], \n"
+                    + "  PARAMETER[\"false_northing\", 0.0], \n"
+                    + "  UNIT[\"m\", 1.0], \n"
+                    + "  AXIS[\"x\", EAST], \n"
+                    + "  AXIS[\"y\", NORTH], \n"
+                    + "  AUTHORITY[\"EPSG\",\"54029\"]]";
             // @formatter:on
 
             CoordinateReferenceSystem worldVanDerGrinten = CRS.parseWKT(wkt);
@@ -693,29 +662,28 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
     @Test
     public void testTransformSouthEmisphereToStereographic() throws Exception {
-        String wkt =
-                "PROJCS[\"NSIDC Sea Ice Polar Stereographic South\",\n"
-                        + "    GEOGCS[\"Unspecified datum based upon the Hughes 1980 ellipsoid\",\n"
-                        + "        DATUM[\"Not_specified_based_on_Hughes_1980_ellipsoid\",\n"
-                        + "            SPHEROID[\"Hughes 1980\",6378273,298.279411123061,\n"
-                        + "                AUTHORITY[\"EPSG\",\"7058\"]],\n"
-                        + "            AUTHORITY[\"EPSG\",\"6054\"]],\n"
-                        + "        PRIMEM[\"Greenwich\",0,\n"
-                        + "            AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                        + "        UNIT[\"degree\",0.0174532925199433,\n"
-                        + "            AUTHORITY[\"EPSG\",\"9122\"]],\n"
-                        + "        AUTHORITY[\"EPSG\",\"4054\"]],\n"
-                        + "    PROJECTION[\"Polar_Stereographic\"],\n"
-                        + "    PARAMETER[\"latitude_of_origin\",-70],\n"
-                        + "    PARAMETER[\"central_meridian\",0],\n"
-                        + "    PARAMETER[\"scale_factor\",1],\n"
-                        + "    PARAMETER[\"false_easting\",0],\n"
-                        + "    PARAMETER[\"false_northing\",0],\n"
-                        + "    UNIT[\"metre\",1,\n"
-                        + "        AUTHORITY[\"EPSG\",\"9001\"]],\n"
-                        + "    AXIS[\"X\",EAST],\n"
-                        + "    AXIS[\"Y\",NORTH],\n"
-                        + "    AUTHORITY[\"EPSG\",\"3412\"]]";
+        String wkt = "PROJCS[\"NSIDC Sea Ice Polar Stereographic South\",\n"
+                + "    GEOGCS[\"Unspecified datum based upon the Hughes 1980 ellipsoid\",\n"
+                + "        DATUM[\"Not_specified_based_on_Hughes_1980_ellipsoid\",\n"
+                + "            SPHEROID[\"Hughes 1980\",6378273,298.279411123061,\n"
+                + "                AUTHORITY[\"EPSG\",\"7058\"]],\n"
+                + "            AUTHORITY[\"EPSG\",\"6054\"]],\n"
+                + "        PRIMEM[\"Greenwich\",0,\n"
+                + "            AUTHORITY[\"EPSG\",\"8901\"]],\n"
+                + "        UNIT[\"degree\",0.0174532925199433,\n"
+                + "            AUTHORITY[\"EPSG\",\"9122\"]],\n"
+                + "        AUTHORITY[\"EPSG\",\"4054\"]],\n"
+                + "    PROJECTION[\"Polar_Stereographic\"],\n"
+                + "    PARAMETER[\"latitude_of_origin\",-70],\n"
+                + "    PARAMETER[\"central_meridian\",0],\n"
+                + "    PARAMETER[\"scale_factor\",1],\n"
+                + "    PARAMETER[\"false_easting\",0],\n"
+                + "    PARAMETER[\"false_northing\",0],\n"
+                + "    UNIT[\"metre\",1,\n"
+                + "        AUTHORITY[\"EPSG\",\"9001\"]],\n"
+                + "    AXIS[\"X\",EAST],\n"
+                + "    AXIS[\"Y\",NORTH],\n"
+                + "    AUTHORITY[\"EPSG\",\"3412\"]]";
         CoordinateReferenceSystem polar = CRS.parseWKT(wkt);
 
         GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);

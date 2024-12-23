@@ -60,11 +60,8 @@ public class UnnamedExtensionTest {
     @Before
     public void setUp() throws Exception {
 
-        factory =
-                (UnnamedExtension)
-                        ReferencingFactoryFinder.getCRSAuthorityFactory(
-                                "EPSG",
-                                new Hints(Hints.CRS_AUTHORITY_FACTORY, UnnamedExtension.class));
+        factory = (UnnamedExtension) ReferencingFactoryFinder.getCRSAuthorityFactory(
+                "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, UnnamedExtension.class));
     }
 
     /** Tests the authority code. */
@@ -150,8 +147,7 @@ public class UnnamedExtensionTest {
     /**
      * Test for Google's Projection under its unofficial code (EPSG:900913).
      *
-     * <p>The official supported code for that projection is EPSG:3857, and both should be
-     * equivalent.
+     * <p>The official supported code for that projection is EPSG:3857, and both should be equivalent.
      */
     @Test
     public void test900913() {

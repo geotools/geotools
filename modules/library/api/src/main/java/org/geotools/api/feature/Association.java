@@ -16,8 +16,8 @@ import org.geotools.api.feature.type.AttributeType;
 /**
  * Extension of Property to represent an Association, or relationship, between two attributes.
  *
- * <p>The notion of an "association" is similar to that of an association in UML and is used to
- * model a relationship between entities. Examples of such a relationship could be:
+ * <p>The notion of an "association" is similar to that of an association in UML and is used to model a relationship
+ * between entities. Examples of such a relationship could be:
  *
  * <ul>
  *   <li>aggregation: An attribute may contain another attribute
@@ -27,8 +27,8 @@ import org.geotools.api.feature.type.AttributeType;
  *
  * <h2>Example</h2>
  *
- * <p>The value of an association is an {@link Attribute}. As an example consider the following xml
- * complex type definitions:
+ * <p>The value of an association is an {@link Attribute}. As an example consider the following xml complex type
+ * definitions:
  *
  * <pre>
  *   &lt;complexType name="fooType">
@@ -46,8 +46,7 @@ import org.geotools.api.feature.type.AttributeType;
  *   &lt;element name="bar" type="barType"/>
  * </pre>
  *
- * In the above, "fooType" is an identifiable type. Now consider the following section of an xml
- * instance document:
+ * In the above, "fooType" is an identifiable type. Now consider the following section of an xml instance document:
  *
  * <pre>
  *   &lt;foo id="someId">
@@ -87,12 +86,11 @@ public interface Association extends Property {
     /**
      * Description of the relationship between two attributes.
      *
-     * <p>Override of {@link Property#getDescriptor()} which type narrows to {@link
-     * AssociationDescriptor}.
+     * <p>Override of {@link Property#getDescriptor()} which type narrows to {@link AssociationDescriptor}.
      *
      * @see Property#getDescriptor()
-     * @return AssociationDescriptor used to describe the relationship between two attributes;
-     *     because two attributes are required the descriptor should not be null.
+     * @return AssociationDescriptor used to describe the relationship between two attributes; because two attributes
+     *     are required the descriptor should not be null.
      */
     @Override
     AssociationDescriptor getDescriptor();
@@ -116,8 +114,8 @@ public interface Association extends Property {
     Attribute getValue();
 
     /**
-     * Override of {@link Property#setValue(Object)} which specifies that <tt>newValue</tt> should
-     * be an instance of {@link Attribute}.
+     * Override of {@link Property#setValue(Object)} which specifies that <tt>newValue</tt> should be an instance of
+     * {@link Attribute}.
      *
      * @throws IllegalArgumentException If <tt>newValue</tt> is not an attribute.
      */

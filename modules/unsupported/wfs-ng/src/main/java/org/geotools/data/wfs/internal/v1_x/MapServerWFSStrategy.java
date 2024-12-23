@@ -47,9 +47,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * This strategy addresses a bug in most MapServer implementations where a filter is required in
- * order for all the features to be returned. So if the Filter is Filter.NONE or Query.ALL then a
- * BBox Filter is constructed that is the entire layer.
+ * This strategy addresses a bug in most MapServer implementations where a filter is required in order for all the
+ * features to be returned. So if the Filter is Filter.NONE or Query.ALL then a BBox Filter is constructed that is the
+ * entire layer.
  */
 public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
 
@@ -64,11 +64,8 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
     public FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo) {
         if ("wfs".equals(typeInfo.getName().getPrefix())
                 || "http://www.opengis.net/wfs".equals(typeInfo.getName().getNamespaceURI())) {
-            QName newName =
-                    new QName(
-                            "http://mapserver.gis.umn.edu/mapserver",
-                            typeInfo.getName().getLocalPart(),
-                            "ms");
+            QName newName = new QName(
+                    "http://mapserver.gis.umn.edu/mapserver", typeInfo.getName().getLocalPart(), "ms");
             typeInfo.setName(newName);
         }
         return typeInfo;
@@ -77,10 +74,8 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
     @Override
     public Map<QName, Class<?>> getFieldTypeMappings() {
         Map<QName, Class<?>> mappings = new HashMap<>();
-        mappings.put(
-                new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
-        mappings.put(
-                new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
         mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Real"), XSDoubleBinding.class);
         return mappings;
     }
@@ -124,22 +119,15 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                                 Element coord1 = (Element) coords.item(0);
                                 Element coord2 = (Element) coords.item(1);
                                 if (coord1 != null && coord2 != null) {
-                                    Element coordX1 =
-                                            (Element)
-                                                    (coord1.getElementsByTagName("gml:X").item(0));
-                                    Element coordY1 =
-                                            (Element)
-                                                    (coord1.getElementsByTagName("gml:Y").item(0));
-                                    Element coordX2 =
-                                            (Element)
-                                                    (coord2.getElementsByTagName("gml:X").item(0));
-                                    Element coordY2 =
-                                            (Element)
-                                                    (coord2.getElementsByTagName("gml:Y").item(0));
-                                    if (coordX1 != null
-                                            && coordY1 != null
-                                            && coordX2 != null
-                                            && coordY2 != null) {
+                                    Element coordX1 = (Element) (coord1.getElementsByTagName("gml:X")
+                                            .item(0));
+                                    Element coordY1 = (Element) (coord1.getElementsByTagName("gml:Y")
+                                            .item(0));
+                                    Element coordX2 = (Element) (coord2.getElementsByTagName("gml:X")
+                                            .item(0));
+                                    Element coordY2 = (Element) (coord2.getElementsByTagName("gml:Y")
+                                            .item(0));
+                                    if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
                                         reformatted = true;
                                         String x1 = coordX1.getTextContent();
                                         String y1 = coordY1.getTextContent();
@@ -154,8 +142,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                                         coordinates.setAttribute("decimal", ".");
                                         coordinates.setAttribute("ts", " ");
                                         coordinates.appendChild(
-                                                doc.createTextNode(
-                                                        x1 + "," + y1 + " " + x2 + "," + y2));
+                                                doc.createTextNode(x1 + "," + y1 + " " + x2 + "," + y2));
                                         box.appendChild(coordinates);
                                     }
                                 }
@@ -178,10 +165,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                     in.close();
                     in = new ByteArrayInputStream(pc.getBytes());
                 }
-            } catch (SAXException
-                    | ParserConfigurationException
-                    | TransformerException
-                    | IOException ex) {
+            } catch (SAXException | ParserConfigurationException | TransformerException | IOException ex) {
                 LOGGER.log(
                         Level.FINE,
                         "Unexpected exception while rewriting 1.0.0 GETFEATURE request with BBOX filter",
@@ -218,15 +202,15 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
     /**
      * Compares two version strings.
      *
-     * <p>Use this instead of String.compareTo() for a non-lexicographical comparison that works for
-     * version strings. e.g. "1.10".compareTo("1.6").
+     * <p>Use this instead of String.compareTo() for a non-lexicographical comparison that works for version strings.
+     * e.g. "1.10".compareTo("1.6").
      *
      * @note It does not work if "1.10" is supposed to be equal to "1.10.0".
      * @param str1 a string of ordinal numbers separated by decimal points.
      * @param str2 a string of ordinal numbers separated by decimal points.
-     * @return The result is a negative integer if str1 is _numerically_ less than str2. The result
-     *     is a positive integer if str1 is _numerically_ greater than str2. The result is zero if
-     *     the strings are _numerically_ equal.
+     * @return The result is a negative integer if str1 is _numerically_ less than str2. The result is a positive
+     *     integer if str1 is _numerically_ greater than str2. The result is zero if the strings are _numerically_
+     *     equal.
      */
     // Code from Stack Overflow:
     // http://stackoverflow.com/questions/6701948/efficient-way-to-compare-version-strings-in-java

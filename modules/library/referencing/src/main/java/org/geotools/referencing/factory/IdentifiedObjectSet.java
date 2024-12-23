@@ -40,33 +40,31 @@ import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactor
 import org.geotools.util.Utilities;
 
 /**
- * A lazy set of {@linkplain IdentifiedObject identified objects}. This set creates {@link
- * IdentifiedObject}s from authority codes only when first needed. This class is typically used as
- * the set returned by implementations of the {@link
- * CoordinateOperationAuthorityFactory#createFromCoordinateReferenceSystemCodes
- * createFromCoordinateReferenceSystemCodes} method. Deferred creation in this case may have great
- * performance impact since a set may contains about 40 entries (e.g. transformations from "ED50"
- * (EPSG:4230) to "WGS 84" (EPSG:4326)) while some users only want to look for the first entry (e.g.
- * the default {@link org.geotools.referencing.operation.AuthorityBackedFactory} implementation).
+ * A lazy set of {@linkplain IdentifiedObject identified objects}. This set creates {@link IdentifiedObject}s from
+ * authority codes only when first needed. This class is typically used as the set returned by implementations of the
+ * {@link CoordinateOperationAuthorityFactory#createFromCoordinateReferenceSystemCodes
+ * createFromCoordinateReferenceSystemCodes} method. Deferred creation in this case may have great performance impact
+ * since a set may contains about 40 entries (e.g. transformations from "ED50" (EPSG:4230) to "WGS 84" (EPSG:4326))
+ * while some users only want to look for the first entry (e.g. the default
+ * {@link org.geotools.referencing.operation.AuthorityBackedFactory} implementation).
  *
  * <p>
  *
  * <h3>Exception handling</h3>
  *
  * If the underlying factory failed to creates an object because of an unsupported operation method
- * ({@link NoSuchIdentifierException}), the exception is logged with the {@link Level#FINE FINE}
- * level (because this is a recoverable failure) and the iteration continue. If the operation
- * creation failed for any other kind of reason ({@link FactoryException}), then the exception is
- * rethrown as an unchecked {@link BackingStoreException}. This default behavior can be changed if a
- * subclass overrides the {@link #isRecoverableFailure isRecoverableFailure} method.
+ * ({@link NoSuchIdentifierException}), the exception is logged with the {@link Level#FINE FINE} level (because this is
+ * a recoverable failure) and the iteration continue. If the operation creation failed for any other kind of reason
+ * ({@link FactoryException}), then the exception is rethrown as an unchecked {@link BackingStoreException}. This
+ * default behavior can be changed if a subclass overrides the {@link #isRecoverableFailure isRecoverableFailure}
+ * method.
  *
  * <p>
  *
  * <h3>Serialization</h3>
  *
- * Serialization of this class forces the immediate creation of all {@linkplain IdentifiedObject
- * identified objects} not yet created. The serialized set is disconnected from the {@linkplain
- * #factory underlying factory}.
+ * Serialization of this class forces the immediate creation of all {@linkplain IdentifiedObject identified objects} not
+ * yet created. The serialized set is disconnected from the {@linkplain #factory underlying factory}.
  *
  * <p>
  *
@@ -83,20 +81,17 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     private static final long serialVersionUID = -4221260663706882719L;
 
     /**
-     * The map of object codes (keys), and the actual identified objects (values) when it has been
-     * created. Each entry has a null value until the corresponding object is created.
+     * The map of object codes (keys), and the actual identified objects (values) when it has been created. Each entry
+     * has a null value until the corresponding object is created.
      */
     private final Map<String, IdentifiedObject> objects = new LinkedHashMap<>();
 
-    /**
-     * The factory to use for creating {@linkplain IdentifiedObject identified objects} when first
-     * needed.
-     */
+    /** The factory to use for creating {@linkplain IdentifiedObject identified objects} when first needed. */
     protected final AuthorityFactory factory;
 
     /**
-     * Creates an initially empty set. The {@linkplain IdentifiedObject}s will be created when first
-     * needed using the specified factory.
+     * Creates an initially empty set. The {@linkplain IdentifiedObject}s will be created when first needed using the
+     * specified factory.
      *
      * @param factory The factory to use for deferred {@link IdentifiedObject}s creations.
      */
@@ -111,9 +106,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns the number of objects available in this set. Note that this number may decrease
-     * during the iteration process if the creation of some {@linkplain IdentifiedObject identified
-     * objects} failed.
+     * Returns the number of objects available in this set. Note that this number may decrease during the iteration
+     * process if the creation of some {@linkplain IdentifiedObject identified objects} failed.
      */
     @Override
     public int size() {
@@ -122,9 +116,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
 
     /**
      * Ensures that this collection contains an object for the specified authority code. The
-     * {@linkplain IdentifiedObject identified object} will be created from the specified code only
-     * when first needed. This method returns {@code true} if this set changed as a result of this
-     * call.
+     * {@linkplain IdentifiedObject identified object} will be created from the specified code only when first needed.
+     * This method returns {@code true} if this set changed as a result of this call.
      */
     public boolean addAuthorityCode(final String code) {
         final boolean already = objects.containsKey(code);
@@ -138,11 +131,10 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Ensures that this collection contains the specified object. This set do not allows multiple
-     * objects for the same {@linkplain #getAuthorityCode authority code}. If this set already
-     * contains an object using the same {@linkplain #getAuthorityCode authority code} than the
-     * specified one, then the old object is replaced by the new one even if the objects are not
-     * otherwise identical.
+     * Ensures that this collection contains the specified object. This set do not allows multiple objects for the same
+     * {@linkplain #getAuthorityCode authority code}. If this set already contains an object using the same
+     * {@linkplain #getAuthorityCode authority code} than the specified one, then the old object is replaced by the new
+     * one even if the objects are not otherwise identical.
      */
     @Override
     public boolean add(final Object object) {
@@ -151,8 +143,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns the identified object for the specified value, {@linkplain #createObject creating} it
-     * if needed.
+     * Returns the identified object for the specified value, {@linkplain #createObject creating} it if needed.
      *
      * @throws BackingStoreException if the object creation failed.
      */
@@ -181,9 +172,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         return object.equals(current);
     }
 
-    /**
-     * Removes a single instance of the specified element from this collection, if it is present.
-     */
+    /** Removes a single instance of the specified element from this collection, if it is present. */
     @Override
     public boolean remove(final Object object) {
         final String code = getAuthorityCode((IdentifiedObject) object);
@@ -195,10 +184,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         return false;
     }
 
-    /**
-     * Removes from this collection all of its elements that are contained in the specified
-     * collection.
-     */
+    /** Removes from this collection all of its elements that are contained in the specified collection. */
     @Override
     public boolean removeAll(final Collection collection) {
         boolean modified = false;
@@ -211,9 +197,9 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns an iterator over the objects in this set. If the iteration encounter any kind of
-     * {@link FactoryException} other than {@link NoSuchIdentifierException}, then the exception
-     * will be rethrown as an unchecked {@link BackingStoreException}.
+     * Returns an iterator over the objects in this set. If the iteration encounter any kind of {@link FactoryException}
+     * other than {@link NoSuchIdentifierException}, then the exception will be rethrown as an unchecked
+     * {@link BackingStoreException}.
      */
     @Override
     public Iterator iterator() {
@@ -221,15 +207,14 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Ensures that the <var>n</var> first objects in this set are created. This method is typically
-     * invoked after some calls to {@link #addAuthorityCode} in order to make sure that the
-     * {@linkplain #factory underlying factory} is really capable to create at least one object.
-     * {@link FactoryException} (except the ones accepted as {@linkplain #isRecoverableFailure
-     * recoverable failures}) are thrown as if they were never wrapped into {@link
-     * BackingStoreException}.
+     * Ensures that the <var>n</var> first objects in this set are created. This method is typically invoked after some
+     * calls to {@link #addAuthorityCode} in order to make sure that the {@linkplain #factory underlying factory} is
+     * really capable to create at least one object. {@link FactoryException} (except the ones accepted as
+     * {@linkplain #isRecoverableFailure recoverable failures}) are thrown as if they were never wrapped into
+     * {@link BackingStoreException}.
      *
-     * @param n The number of object to resolve. If this number is equals or greater than the
-     *     {@linkplain #size set's size}, then the creation of all objects is garantee successful.
+     * @param n The number of object to resolve. If this number is equals or greater than the {@linkplain #size set's
+     *     size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
     @SuppressWarnings("PMD.UnusedLocalVariable")
@@ -251,12 +236,11 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns the {@linkplain #getAuthorityCode authority code} of all objects in this set. The
-     * returned array contains the codes in iteration order. This method do not trig the {@linkplain
-     * #createObject creation} of any new object.
+     * Returns the {@linkplain #getAuthorityCode authority code} of all objects in this set. The returned array contains
+     * the codes in iteration order. This method do not trig the {@linkplain #createObject creation} of any new object.
      *
-     * <p>This method is typically used together with {@link #setAuthorityCodes} for altering the
-     * iteration order on the basis of authority codes.
+     * <p>This method is typically used together with {@link #setAuthorityCodes} for altering the iteration order on the
+     * basis of authority codes.
      */
     public String[] getAuthorityCodes() {
         final Set<String> codes = objects.keySet();
@@ -264,15 +248,14 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Set the content of this set as an array of authority codes. For any code in the given list,
-     * this method will preserve the corresponding {@linkplain IdentifiedObject identified object}
-     * if it was already created. Other objects will be {@linkplain #createObject created} only when
-     * first needed, as usual in this {@code IdentifiedObjectSet} implementation.
+     * Set the content of this set as an array of authority codes. For any code in the given list, this method will
+     * preserve the corresponding {@linkplain IdentifiedObject identified object} if it was already created. Other
+     * objects will be {@linkplain #createObject created} only when first needed, as usual in this
+     * {@code IdentifiedObjectSet} implementation.
      *
-     * <p>This method is typically used together with {@link #getAuthorityCodes} for altering the
-     * iteration order on the basis of authority codes. If the specified {@code codes} array
-     * contains the same elements than {@link #getAuthorityCodes} in a different order, then this
-     * method just set the new ordering.
+     * <p>This method is typically used together with {@link #getAuthorityCodes} for altering the iteration order on the
+     * basis of authority codes. If the specified {@code codes} array contains the same elements than
+     * {@link #getAuthorityCodes} in a different order, then this method just set the new ordering.
      *
      * @see #addAuthorityCode
      */
@@ -285,10 +268,10 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns the code to uses as a key for the specified object. The default implementation
-     * returns the code of the first {@linkplain IdentifiedObject#getIdentifiers identifier}, if
-     * any, or the code of the{@linkplain IdentifiedObject#getName primary name} otherwise.
-     * Subclasses may overrides this method if they want to use a different key for this set.
+     * Returns the code to uses as a key for the specified object. The default implementation returns the code of the
+     * first {@linkplain IdentifiedObject#getIdentifiers identifier}, if any, or the code of
+     * the{@linkplain IdentifiedObject#getName primary name} otherwise. Subclasses may overrides this method if they
+     * want to use a different key for this set.
      */
     protected String getAuthorityCode(final IdentifiedObject object) {
         final Identifier id;
@@ -302,24 +285,23 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Creates an object for the specified authority code. This method is invoked during the
-     * iteration process if an object was not already created. The default implementation invokes
-     * <code>{@linkplain #factory}.{@link AuthorityFactory#createObject createObject}(code)</code>.
-     * Subclasses may override this method if they want to invoke a more specific method.
+     * Creates an object for the specified authority code. This method is invoked during the iteration process if an
+     * object was not already created. The default implementation invokes <code>
+     * {@linkplain #factory}.{@link AuthorityFactory#createObject createObject}(code)</code>. Subclasses may override
+     * this method if they want to invoke a more specific method.
      */
     protected IdentifiedObject createObject(final String code) throws FactoryException {
         return factory.createObject(code);
     }
 
     /**
-     * Returns {@code true} if the specified exception should be handled as a recoverable failure.
-     * This method is invoked during the iteration process if the factory failed to create some
-     * object. If this method returns {@code true} for the given exception, then the exception will
-     * be logged in the {@linkplain AbstractAuthorityFactory#LOGGER Geotools factory logger} with
-     * the {@link Level#FINE FINE} level. If this method returns {@code false}, then the exception
-     * will be retrown as a {@link BackingStoreException}. The default implementation returns {@code
-     * true} only for {@link NoSuchIdentifierException} (not to be confused with {@link
-     * NoSuchAuthorityCodeException}).
+     * Returns {@code true} if the specified exception should be handled as a recoverable failure. This method is
+     * invoked during the iteration process if the factory failed to create some object. If this method returns
+     * {@code true} for the given exception, then the exception will be logged in the
+     * {@linkplain AbstractAuthorityFactory#LOGGER Geotools factory logger} with the {@link Level#FINE FINE} level. If
+     * this method returns {@code false}, then the exception will be retrown as a {@link BackingStoreException}. The
+     * default implementation returns {@code true} only for {@link NoSuchIdentifierException} (not to be confused with
+     * {@link NoSuchAuthorityCodeException}).
      */
     protected boolean isRecoverableFailure(final FactoryException exception) {
         return (exception instanceof NoSuchIdentifierException);
@@ -331,8 +313,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * @todo Localize.
      */
     static void log(final FactoryException exception, final String code) {
-        final LogRecord record =
-                new LogRecord(Level.FINE, "Failed to create an object for code \"" + code + "\".");
+        final LogRecord record = new LogRecord(Level.FINE, "Failed to create an object for code \"" + code + "\".");
         record.setSourceClassName(IdentifiedObjectSet.class.getName());
         record.setSourceMethodName("createObject");
         record.setThrown(exception);
@@ -342,9 +323,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * Returns a serializable copy of this set. This method is invoked automatically during
-     * serialization. The serialised set of identified objects is disconnected from the {@linkplain
-     * #factory underlying factory}.
+     * Returns a serializable copy of this set. This method is invoked automatically during serialization. The
+     * serialised set of identified objects is disconnected from the {@linkplain #factory underlying factory}.
      */
     @SuppressWarnings("unchecked")
     protected Object writeReplace() throws ObjectStreamException {
@@ -352,8 +332,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /**
-     * The iterator over the entries in the enclosing set. This iterator will creates the
-     * {@linkplain IdentifiedObject identified objects} when first needed.
+     * The iterator over the entries in the enclosing set. This iterator will creates the {@linkplain IdentifiedObject
+     * identified objects} when first needed.
      *
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
@@ -374,8 +354,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         /**
          * Moves to the next element.
          *
-         * @throws BackingStoreException if the underlying factory failed to creates the coordinate
-         *     operation.
+         * @throws BackingStoreException if the underlying factory failed to creates the coordinate operation.
          */
         @SuppressWarnings("unchecked")
         private void toNext() throws BackingStoreException {

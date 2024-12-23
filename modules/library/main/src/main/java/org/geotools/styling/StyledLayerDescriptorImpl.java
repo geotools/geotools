@@ -32,30 +32,27 @@ import org.geotools.util.Utilities;
  *
  * <p>This class is based on version 1.0 of the SLD specification.
  *
- * <p>For many of us in geotools this is the reason we came along for the ride - a pretty picture.
- * For documentation on the use of this class please consult the SLD 1.0 specification.
+ * <p>For many of us in geotools this is the reason we came along for the ride - a pretty picture. For documentation on
+ * the use of this class please consult the SLD 1.0 specification.
  *
- * <p>We may experiment with our own (or SLD 1.1) ideas but will mark such experiments for you. This
- * is only an issue of you are considering writing out these objects for interoptability with other
- * systems.
+ * <p>We may experiment with our own (or SLD 1.1) ideas but will mark such experiments for you. This is only an issue of
+ * you are considering writing out these objects for interoptability with other systems.
  *
  * <p>General strategy for supporting multiple SLD versions (and experiments):
  *
  * <ul>
  *   <li>These classes will be <b>BIGGER</b> and more capabile then any one specification
- *   <li>We can define (and support) explicit interfaces tracking each version (preferably GeoAPI
- *       would hold these)
- *   <li>We can use Factories (aka SLD1Factory and SLD1_1Factory and SEFactory) to support the
- *       creation of conformant datastructures. Code (such as user interfaces) can be parameratized
- *       with these factories when they need to confirm to an exact version supported by an
- *       individual service. We hope that specifications are always adaptive, and will be forced to
- *       throw unsupported exceptions when functionality is removed from a specification.
+ *   <li>We can define (and support) explicit interfaces tracking each version (preferably GeoAPI would hold these)
+ *   <li>We can use Factories (aka SLD1Factory and SLD1_1Factory and SEFactory) to support the creation of conformant
+ *       datastructures. Code (such as user interfaces) can be parameratized with these factories when they need to
+ *       confirm to an exact version supported by an individual service. We hope that specifications are always
+ *       adaptive, and will be forced to throw unsupported exceptions when functionality is removed from a
+ *       specification.
  * </ul>
  */
 public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
 
     /** Holds value of property name. */
     private String name;

@@ -21,9 +21,8 @@ import java.net.URL;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 
 /**
- * This is a data model for the Open Web Service (OWS) metadata. This should be extended while
- * implementing other OWSs. Name, Title and OnlineResource are required. Everything else is
- * optional.
+ * This is a data model for the Open Web Service (OWS) metadata. This should be extended while implementing other OWSs.
+ * Name, Title and OnlineResource are required. Everything else is optional.
  */
 public class Service {
     /** The name of the Service (machine readible, typically one word) - Required */
@@ -117,8 +116,8 @@ public class Service {
     }
 
     /**
-     * Information about a contact person for the service. Uses the GeoAPI citation metadata model,
-     * which does not map directly to the WMS specification, but it is close.
+     * Information about a contact person for the service. Uses the GeoAPI citation metadata model, which does not map
+     * directly to the WMS specification, but it is close.
      *
      * <p>The Role field is not used.
      */

@@ -35,15 +35,15 @@ import org.geotools.graph.structure.opt.OptNode;
 public class GraphTestUtil {
 
     /**
-     * Builds a graph with no bifurcations made up of a specified number of nodes. Nodes are
-     * numbered from 0 to (# of nodes - 1).<br>
+     * Builds a graph with no bifurcations made up of a specified number of nodes. Nodes are numbered from 0 to (# of
+     * nodes - 1).<br>
      * <br>
      * O----O----O--...--O----O----O
      *
      * @param builder Builder to use to construct graph.
      * @param nnodes Number of nodes in graph.
-     * @return 2 element object array containing references to the end points of the graph. (The
-     *     nodes of degree 1 at the end of the graph.
+     * @return 2 element object array containing references to the end points of the graph. (The nodes of degree 1 at
+     *     the end of the graph.
      */
     public static Node[] buildNoBifurcations(GraphBuilder builder, int nnodes) {
         Node n1 = builder.buildNode();
@@ -157,21 +157,18 @@ public class GraphTestUtil {
         return (new Object[] {first, n1, node2id, edge2id});
     }
 
-    public static Node[] buildSingleBifurcation(
-            final GraphBuilder builder, int nnodes, final int bifurcation) {
+    public static Node[] buildSingleBifurcation(final GraphBuilder builder, int nnodes, final int bifurcation) {
         Node[] ends = buildNoBifurcations(builder, nnodes - 1);
         final Node n = builder.buildNode();
         final List<Graphable> bif = new ArrayList<>();
 
-        builder.getGraph()
-                .visitNodes(
-                        component -> {
-                            if (component.getID() == bifurcation) {
-                                bif.add(component);
-                            }
+        builder.getGraph().visitNodes(component -> {
+            if (component.getID() == bifurcation) {
+                bif.add(component);
+            }
 
-                            return (0);
-                        });
+            return (0);
+        });
 
         Edge e = builder.buildEdge(n, (Node) bif.get(0));
         builder.addNode(n);
@@ -182,11 +179,11 @@ public class GraphTestUtil {
     }
 
     /**
-     * Creates a balanced binary tree consisting of a specefied number of levels. Each node created
-     * contains a string representing the nodes location in the tree.<br>
+     * Creates a balanced binary tree consisting of a specefied number of levels. Each node created contains a string
+     * representing the nodes location in the tree.<br>
      * <br>
-     * locstring(root) = "0"; locstring(node) = locstring(parent) + ".0" (if left child);
-     * locstring(node) = locstring(parent) + ".1" (if right child);
+     * locstring(root) = "0"; locstring(node) = locstring(parent) + ".0" (if left child); locstring(node) =
+     * locstring(parent) + ".1" (if right child);
      *
      * @param builder Builder to construct graph with
      * @param levels Number of levels in the tree.

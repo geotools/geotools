@@ -86,9 +86,8 @@ public class GMLNullTypeBinding implements SimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * Returns an object of type @link org.locationtech.jts.geom.Envelope. In the event that a
-     * <b>null</b> element is given, a null Envelope is returned by calling @link
-     * org.locationtech.jts.geom.Envelope#setToNull().
+     * Returns an object of type @link org.locationtech.jts.geom.Envelope. In the event that a <b>null</b> element is
+     * given, a null Envelope is returned by calling @link org.locationtech.jts.geom.Envelope#setToNull().
      * <!-- end-user-doc -->
      *
      * @generated modifiable

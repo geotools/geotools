@@ -10,8 +10,8 @@
 package org.geotools.api.filter.temporal;
 
 /**
- * Filter operator that determines if another temporal object is located at the beginning of a
- * temporal object as defined by the Filter Encoding Specification.
+ * Filter operator that determines if another temporal object is located at the beginning of a temporal object as
+ * defined by the Filter Encoding Specification.
  *
  * <p>The BegunBy operator is defined by ISO 19108 and has the following semantics:
  *

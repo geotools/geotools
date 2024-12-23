@@ -19,8 +19,8 @@ package org.geotools.gml;
 /**
  * LEVEL3 saxGML4j GML handler: Gets JTS objects.
  *
- * <p>This handler must be implemented by the parent of a GMLFilterGeometry filter in order to
- * handle the JTS objects passed to it from the child.
+ * <p>This handler must be implemented by the parent of a GMLFilterGeometry filter in order to handle the JTS objects
+ * passed to it from the child.
  *
  * @author Rob Hranac, Vision for New York
  * @version $Id$

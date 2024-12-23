@@ -19,11 +19,10 @@ package org.geotools.api.metadata.extent;
  */
 public interface GeographicExtent {
     /**
-     * Indication of whether the bounding polygon encompasses an area covered by the data
-     * (<cite>inclusion</cite>) or an area where data is not present (<cite>exclusion</cite>).
+     * Indication of whether the bounding polygon encompasses an area covered by the data (<cite>inclusion</cite>) or an
+     * area where data is not present (<cite>exclusion</cite>).
      *
-     * @return {@code true} for inclusion, {@code false} for exclusion, or {@code null} if
-     *     unspecified.
+     * @return {@code true} for inclusion, {@code false} for exclusion, or {@code null} if unspecified.
      */
     Boolean getInclusion();
 }

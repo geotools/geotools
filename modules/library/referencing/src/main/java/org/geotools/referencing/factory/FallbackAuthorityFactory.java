@@ -69,29 +69,28 @@ import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.factory.FactoryNotFoundException;
 
 /**
- * A factory which delegates all object creation to a <cite>primary</cite> factory, and fallback on
- * an other one if the primary factory failed.
+ * A factory which delegates all object creation to a <cite>primary</cite> factory, and fallback on an other one if the
+ * primary factory failed.
  *
  * @since 2.3
  * @version $Id$
  * @author Martin Desruisseaux
- * @todo Needs a mechanism for avoiding to query the same factory twice when the fallback is the
- *     same instance than the primary factory for some {@link AuthorityFactory} interfaces.
+ * @todo Needs a mechanism for avoiding to query the same factory twice when the fallback is the same instance than the
+ *     primary factory for some {@link AuthorityFactory} interfaces.
  */
 public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     /** The factory to use as a fallback if the primary factory failed. */
     private final AbstractAuthorityFactory fallback;
 
     /**
-     * The number of time the primary factory failed and the fallback factory was used instead. This
-     * information is provided mostly for debugging and testing purpose.
+     * The number of time the primary factory failed and the fallback factory was used instead. This information is
+     * provided mostly for debugging and testing purpose.
      */
     private static int failureCount;
 
     /**
-     * Returns {@code true} if the two specified factories can be used in a {@code
-     * FallbackAuthorityFactory}. If this method returns {@code false}, then we should not create
-     * instance of this class since it would be useless.
+     * Returns {@code true} if the two specified factories can be used in a {@code FallbackAuthorityFactory}. If this
+     * method returns {@code false}, then we should not create instance of this class since it would be useless.
      */
     static boolean chainable(final AuthorityFactory primary, final AuthorityFactory fallback) {
         return (interfaceMask(primary) & interfaceMask(fallback)) != 0;
@@ -100,53 +99,48 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     /**
      * Wraps a primary and a fallback authority factories.
      *
-     * <p>This constructor is protected because subclasses must declare which of the {@link
-     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
-     * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
+     * <p>This constructor is protected because subclasses must declare which of the {@link DatumAuthorityFactory},
+     * {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link CoordinateOperationAuthorityFactory}
+     * interfaces they choose to implement.
      *
      * @param primary The primary factory.
      * @param fallback The factory to use as a fallback if the primary factory failed.
      * @see #create
      */
-    protected FallbackAuthorityFactory(
-            final AuthorityFactory primary, final AuthorityFactory fallback) {
+    protected FallbackAuthorityFactory(final AuthorityFactory primary, final AuthorityFactory fallback) {
         super(primary, fallback);
         ensureNonNull("fallback", fallback);
-        this.fallback =
-                (fallback instanceof AbstractAuthorityFactory)
-                        ? (AbstractAuthorityFactory) fallback
-                        : new AuthorityFactoryAdapter(fallback);
+        this.fallback = (fallback instanceof AbstractAuthorityFactory)
+                ? (AbstractAuthorityFactory) fallback
+                : new AuthorityFactoryAdapter(fallback);
     }
 
     /**
-     * Wraps the specified authority factories. If the specified collection contains more than one
-     * element, then a chain of {@code FallbackAuthorityFactory} instances is created.
+     * Wraps the specified authority factories. If the specified collection contains more than one element, then a chain
+     * of {@code FallbackAuthorityFactory} instances is created.
      *
      * @param <T> The interface to implement.
      * @param type The interface to implement. Should be one of {@link DatumAuthorityFactory},
-     *     {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} or {@link
-     *     CoordinateOperationAuthorityFactory}.
+     *     {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} or {@link CoordinateOperationAuthorityFactory}.
      * @param factories The factories to wrap, in iteration order.
      * @return The given factories as a chain of fallback factories.
      * @throws FactoryNotFoundException if the collection doesn't contains at least one element.
      * @throws ClassCastException if {@code type} is illegal.
      */
-    public static <T extends AuthorityFactory> T create(
-            final Class<T> type, final Collection<T> factories)
+    public static <T extends AuthorityFactory> T create(final Class<T> type, final Collection<T> factories)
             throws FactoryNotFoundException, ClassCastException {
         ensureNonNull("type", type);
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
-            throw new FactoryNotFoundException(
-                    MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
+            throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
         }
         return type.cast(create(false, interfaceMask(type), factories.iterator()));
     }
 
     /**
-     * Wraps the specified authority factories. If the specified collection contains more than one
-     * element, then a chain of {@code FallbackAuthorityFactory} instances is created. The type is
-     * inferred from the factories found in the collection.
+     * Wraps the specified authority factories. If the specified collection contains more than one element, then a chain
+     * of {@code FallbackAuthorityFactory} instances is created. The type is inferred from the factories found in the
+     * collection.
      *
      * <p>Consider using <code>{@linkplain #create(Class, Collection) create}(type, factories)
      * </code> instead when the type is known at compile time.
@@ -167,19 +161,17 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Wraps the specified authority factories. If the specified collection contains more than one
-     * element, then a chain of {@code FallbackAuthorityFactory} instances is created.
+     * Wraps the specified authority factories. If the specified collection contains more than one element, then a chain
+     * of {@code FallbackAuthorityFactory} instances is created.
      *
-     * @param automatic {@code true} if {@code interfaceMask} should automatically be restricted to
-     *     the factory types detected in the collection.
-     * @param interfaceMask The value computed by {@link #interfaceMask(Class)} that describe the
-     *     set of interfaces to be implemented by the returned factory.
+     * @param automatic {@code true} if {@code interfaceMask} should automatically be restricted to the factory types
+     *     detected in the collection.
+     * @param interfaceMask The value computed by {@link #interfaceMask(Class)} that describe the set of interfaces to
+     *     be implemented by the returned factory.
      * @param factories The factories to chain.
      */
     private static AuthorityFactory create(
-            final boolean automatic,
-            int interfaceMask,
-            final Iterator<? extends AuthorityFactory> factories)
+            final boolean automatic, int interfaceMask, final Iterator<? extends AuthorityFactory> factories)
             throws FactoryNotFoundException {
         AuthorityFactory primary = factories.next();
         if (factories.hasNext()) {
@@ -224,8 +216,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Returns the direct dependencies. The returned list contains the backing store and the
-     * fallback specified at construction time, or the exception if they can't be obtained.
+     * Returns the direct dependencies. The returned list contains the backing store and the fallback specified at
+     * construction time, or the exception if they can't be obtained.
      */
     @Override
     Collection<? super AuthorityFactory> dependencies() {
@@ -235,13 +227,11 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Returns the set of authority codes for the specified type. The default implementation returns
-     * the union of the authority codes from the <cite>primary</cite> and the <cite>fallback</cite>
-     * factories.
+     * Returns the set of authority codes for the specified type. The default implementation returns the union of the
+     * authority codes from the <cite>primary</cite> and the <cite>fallback</cite> factories.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         final Set<String> codes = new LinkedHashSet<>(super.getAuthorityCodes(type));
         codes.addAll(fallback.getAuthorityCodes(type));
         return codes;
@@ -283,8 +273,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public org.geotools.api.referencing.datum.Datum createDatum(final String code)
-            throws FactoryException {
+    public org.geotools.api.referencing.datum.Datum createDatum(final String code) throws FactoryException {
         try {
             return super.createDatum(code);
         } catch (FactoryException exception) {
@@ -607,8 +596,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateSystemAxis createCoordinateSystemAxis(final String code)
-            throws FactoryException {
+    public CoordinateSystemAxis createCoordinateSystemAxis(final String code) throws FactoryException {
         try {
             return super.createCoordinateSystemAxis(code);
         } catch (FactoryException exception) {
@@ -641,14 +629,12 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Returns an arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system} from
-     * a code.
+     * Returns an arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system} from a code.
      *
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         try {
             return super.createCoordinateReferenceSystem(code);
         } catch (FactoryException exception) {
@@ -838,8 +824,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public ParameterDescriptor createParameterDescriptor(final String code)
-            throws FactoryException {
+    public ParameterDescriptor createParameterDescriptor(final String code) throws FactoryException {
         try {
             return super.createParameterDescriptor(code);
         } catch (FactoryException exception) {
@@ -877,8 +862,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateOperation createCoordinateOperation(final String code)
-            throws FactoryException {
+    public CoordinateOperation createCoordinateOperation(final String code) throws FactoryException {
         try {
             return super.createCoordinateOperation(code);
         } catch (FactoryException exception) {
@@ -912,9 +896,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Returns a finder which can be used for looking up unidentified objects. The default
-     * implementation delegates the lookups to the primary factory, and fallback on the second one
-     * if the primary factory can't find a match.
+     * Returns a finder which can be used for looking up unidentified objects. The default implementation delegates the
+     * lookups to the primary factory, and fallback on the second one if the primary factory can't find a match.
      *
      * @since 2.4
      */
@@ -924,10 +907,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         return new Finder(type);
     }
 
-    /**
-     * A {@link IdentifiedObjectFinder} which fallback to the second factory if the primary one
-     * can't find a match.
-     */
+    /** A {@link IdentifiedObjectFinder} which fallback to the second factory if the primary one can't find a match. */
     private final class Finder extends AuthorityFactoryAdapter.Finder {
         /** The fallback. Will be created only when first needed. */
         private transient IdentifiedObjectFinder fallback;
@@ -940,9 +920,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         /** Makes sure that {@link #fallback} is initialized. */
         private void ensureFallback() throws FactoryException {
             if (fallback == null) {
-                fallback =
-                        FallbackAuthorityFactory.this.fallback.getIdentifiedObjectFinder(
-                                getProxy().getType());
+                fallback = FallbackAuthorityFactory.this.fallback.getIdentifiedObjectFinder(
+                        getProxy().getType());
             }
             fallback.setFullScanAllowed(isFullScanAllowed());
         }
@@ -973,20 +952,18 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Invoked by <code>create</code><var>Foo</var><code>(String)</code> methods when the
-     * <cite>primary</cite> factory failed to create an object. Note that it doesn't imply anything
-     * about the success of <cite>fallback</cite> factory. The default implementation log a message
-     * to the {@link Level#FINE FINE} level.
+     * Invoked by <code>create</code><var>Foo</var><code>(String)</code> methods when the <cite>primary</cite> factory
+     * failed to create an object. Note that it doesn't imply anything about the success of <cite>fallback</cite>
+     * factory. The default implementation log a message to the {@link Level#FINE FINE} level.
      *
      * @param method The name of the invoked method.
-     * @param exception The exception that occured. It is often possible to get the authority code
-     *     from some subclasses of this exception.
+     * @param exception The exception that occured. It is often possible to get the authority code from some subclasses
+     *     of this exception.
      */
     private static void notifyFailure(final String method, final FactoryException exception) {
         failureCount++;
         if (LOGGER.isLoggable(Level.FINE)) {
-            final LogRecord record =
-                    Loggings.format(Level.FINE, LoggingKeys.FALLBACK_FACTORY_$1, exception);
+            final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.FALLBACK_FACTORY_$1, exception);
             record.setSourceClassName(FallbackAuthorityFactory.class.getName());
             record.setSourceMethodName(method);
             record.setLoggerName(LOGGER.getName());
@@ -1004,9 +981,9 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /**
-     * Returns the number of time the primary factory failed and the fallback factory was used
-     * instead. This information is provided mostly for debugging and testing purpose. It is
-     * approximative because incrementation is not sychronized.
+     * Returns the number of time the primary factory failed and the fallback factory was used instead. This information
+     * is provided mostly for debugging and testing purpose. It is approximative because incrementation is not
+     * sychronized.
      */
     static int getFailureCount() {
         return failureCount;
@@ -1109,8 +1086,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /** For internal use by {@link FallbackAuthorityFactory#create} only. */
-    private static final class Datum extends FallbackAuthorityFactory
-            implements DatumAuthorityFactory {
+    private static final class Datum extends FallbackAuthorityFactory implements DatumAuthorityFactory {
         Datum(final AuthorityFactory primary, final AuthorityFactory fallback) {
             super(primary, fallback);
         }

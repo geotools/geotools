@@ -72,8 +72,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     }
 
     @Override
-    public void serialize(Geometry value, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serialize(Geometry value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
         writeGeometry(jgen, value);
     }
@@ -119,8 +118,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         }
     }
 
-    private void writeGeometryCollection(JsonGenerator jgen, GeometryCollection value)
-            throws IOException {
+    private void writeGeometryCollection(JsonGenerator jgen, GeometryCollection value) throws IOException {
         jgen.writeStartObject();
         jgen.writeStringField(TYPE, GEOMETRY_COLLECTION);
         jgen.writeArrayFieldStart(GEOMETRIES);
@@ -146,8 +144,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         jgen.writeEndObject();
     }
 
-    private void writeMultiLineString(JsonGenerator jgen, MultiLineString value)
-            throws IOException {
+    private void writeMultiLineString(JsonGenerator jgen, MultiLineString value) throws IOException {
         jgen.writeStartObject();
         jgen.writeStringField(TYPE, MULTI_LINE_STRING);
         jgen.writeArrayFieldStart(COORDINATES);

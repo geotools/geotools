@@ -18,8 +18,8 @@
 package org.geotools.map;
 
 /**
- * An abstract adapter class to receive events about map bounds and layer changes. All of the
- * methods are empty. This class exists as convenience for creating listener objects.
+ * An abstract adapter class to receive events about map bounds and layer changes. All of the methods are empty. This
+ * class exists as convenience for creating listener objects.
  *
  * @author Michael Bedward
  * @since 8.0

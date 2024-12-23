@@ -36,8 +36,7 @@ import org.geotools.util.factory.GeoTools;
  */
 public class LinePlacementImpl implements LinePlacement, Cloneable {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(LinePlacementImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(LinePlacementImpl.class);
 
     private FilterFactory filterFactory;
 

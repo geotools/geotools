@@ -30,16 +30,16 @@ import org.geotools.text.Text;
 import org.geotools.util.Converters;
 
 /**
- * Generate an output by interpolating between stops just less than and just greater than the
- * function input. The domain must be numeric.
+ * Generate an output by interpolating between stops just less than and just greater than the function input. The domain
+ * must be numeric.
  *
  * <h2>Parameters:</h2>
  *
  * <ol start="0">
  *   <li>The interpolation input
  *   <li>The base of the interpolation
- *   <li>(...n) The remaining args are interpreted as pairs of stop values (input, output) for the
- *       interpolation. There must be an even number.
+ *   <li>(...n) The remaining args are interpreted as pairs of stop values (input, output) for the interpolation. There
+ *       must be an even number.
  * </ol>
  *
  * @author Jody Garnett (Boundless)
@@ -51,18 +51,17 @@ public class ExponentialFunction extends FunctionImpl {
     static {
         Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
         Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
-        Parameter<Double> base =
-                new Parameter<>(
-                        "base",
-                        Double.class,
-                        Text.text("Base"),
-                        Text.text(
-                                "Exponential base of the interpolation curve controlling rate at which function output increases."),
-                        true,
-                        0,
-                        1,
-                        1.0,
-                        null);
+        Parameter<Double> base = new Parameter<>(
+                "base",
+                Double.class,
+                Text.text("Base"),
+                Text.text(
+                        "Exponential base of the interpolation curve controlling rate at which function output increases."),
+                true,
+                0,
+                1,
+                1.0,
+                null);
         Parameter<Object> stops = new Parameter<>("stops", Object.class, 4, -1);
         NAME = new FunctionNameImpl("Exponential", result, input, base, stops);
     }
@@ -141,11 +140,10 @@ public class ExponentialFunction extends FunctionImpl {
     public List<Stop> getStops(List<Expression> parameters) {
         List<Stop> stops = new ArrayList<>();
         if (parameters.size() % 2 != 0) {
-            throw new IllegalArgumentException(
-                    this.getClass().getSimpleName()
-                            + " requires an even number of stop values, but "
-                            + (parameters.size() - 2)
-                            + " were provided.");
+            throw new IllegalArgumentException(this.getClass().getSimpleName()
+                    + " requires an even number of stop values, but "
+                    + (parameters.size() - 2)
+                    + " were provided.");
         }
 
         for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
@@ -156,12 +154,7 @@ public class ExponentialFunction extends FunctionImpl {
     }
 
     private <T> Object exponential(
-            Object object,
-            double inputValue,
-            double base,
-            Stop lower,
-            Stop upper,
-            Class<T> context) {
+            Object object, double inputValue, double base, Stop lower, Stop upper, Class<T> context) {
         if (Color.class.isAssignableFrom(context)) {
             return colorExponential(object, inputValue, base, lower, upper);
         } else {
@@ -169,8 +162,7 @@ public class ExponentialFunction extends FunctionImpl {
         }
     }
 
-    private double numericExponential(
-            Object object, double inputValue, double base, Stop lower, Stop upper) {
+    private double numericExponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
         double stop1 = lower.stop.evaluate(object, Double.class);
         double value1 = lower.value.evaluate(object, Double.class);
         double stop2 = upper.stop.evaluate(object, Double.class);
@@ -184,29 +176,28 @@ public class ExponentialFunction extends FunctionImpl {
      * Description from
      * https://github.com/mapbox/mapbox-gl-js/blob/master/src/style-spec/expression/definitions/interpolate.js#L220
      *
-     * <p>Returns a **ratio** that can be used to interpolate between exponential function stops.
-     * How it works: Two consecutive stop values define a (scaled and shifted) exponential function
-     * `f(x) = a * base^x + b`, where `base` is the user-specified base, and `a` and `b` are
-     * constants affording sufficient degrees of freedom to fit the function to the given stops.
+     * <p>Returns a **ratio** that can be used to interpolate between exponential function stops. How it works: Two
+     * consecutive stop values define a (scaled and shifted) exponential function `f(x) = a * base^x + b`, where `base`
+     * is the user-specified base, and `a` and `b` are constants affording sufficient degrees of freedom to fit the
+     * function to the given stops.
      *
-     * <p>Here's a bit of algebra that lets us compute `f(x)` directly from the stop values without
-     * explicitly solving for `a` and `b`:
+     * <p>Here's a bit of algebra that lets us compute `f(x)` directly from the stop values without explicitly solving
+     * for `a` and `b`:
      *
-     * <p>First stop value: `f(x0) = y0 = a * base^x0 + b` Second stop value: `f(x1) = y1 = a *
-     * base^x1 + b` => `y1 - y0 = a(base^x1 - base^x0)` => `a = (y1 - y0)/(base^x1 - base^x0)`
+     * <p>First stop value: `f(x0) = y0 = a * base^x0 + b` Second stop value: `f(x1) = y1 = a * base^x1 + b` => `y1 - y0
+     * = a(base^x1 - base^x0)` => `a = (y1 - y0)/(base^x1 - base^x0)`
      *
      * <p>Desired value: `f(x) = y = a * base^x + b` => `f(x) = y0 + a * (base^x - base^x0)`
      *
-     * <p>From the above, we can replace the `a` in `a * (base^x - base^x0)` and do a little
-     * algebra: ``` a * (base^x - base^x0) = (y1 - y0)/(base^x1 - base^x0) * (base^x - base^x0) =
-     * (y1 - y0) * (base^x - base^x0) / (base^x1 - base^x0) ```
+     * <p>From the above, we can replace the `a` in `a * (base^x - base^x0)` and do a little algebra: ``` a * (base^x -
+     * base^x0) = (y1 - y0)/(base^x1 - base^x0) * (base^x - base^x0) = (y1 - y0) * (base^x - base^x0) / (base^x1 -
+     * base^x0) ```
      *
-     * <p>If we let `(base^x - base^x0) / (base^x1 base^x0)`, then we have `f(x) = y0 + (y1 - y0) *
-     * ratio`. In other words, `ratio` may be treated as an interpolation factor between the two
-     * stops' output values.
+     * <p>If we let `(base^x - base^x0) / (base^x1 base^x0)`, then we have `f(x) = y0 + (y1 - y0) * ratio`. In other
+     * words, `ratio` may be treated as an interpolation factor between the two stops' output values.
      *
-     * <p>(Note: a slightly different form for `ratio`, `(base^(x-x0) - 1) / (base^(x1-x0) - 1) `,
-     * is equivalent, but requires fewer expensive `Math.pow()` operations.)
+     * <p>(Note: a slightly different form for `ratio`, `(base^(x-x0) - 1) / (base^(x1-x0) - 1) `, is equivalent, but
+     * requires fewer expensive `Math.pow()` operations.)
      */
     private double exponentialInterpolationRatio(
             Object object, double inputValue, double base, double stop1, double stop2) {
@@ -222,11 +213,8 @@ public class ExponentialFunction extends FunctionImpl {
         }
     }
 
-    /**
-     * Perform exponential interpolation on each of the channels of the color values at each stop.
-     */
-    private Object colorExponential(
-            Object object, double inputValue, double base, Stop lower, Stop upper) {
+    /** Perform exponential interpolation on each of the channels of the color values at each stop. */
+    private Object colorExponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
         Color lowerValue = lower.value.evaluate(object, Color.class);
         Color upperValue = upper.value.evaluate(object, Color.class);
 
@@ -247,16 +235,15 @@ public class ExponentialFunction extends FunctionImpl {
         double b = numericExponential(object, inputValue, base, blueLowerStop, blueUpperStop);
         double a = numericExponential(object, inputValue, base, alphaLowerStop, alphaUpperStop);
 
-        return new Color(
-                (int) Math.round(r), (int) Math.round(g), (int) Math.round(b), (int) Math.round(a));
+        return new Color((int) Math.round(r), (int) Math.round(g), (int) Math.round(b), (int) Math.round(a));
     }
 
     /**
-     * Find the stop containing the input value. The value returned is the index, in the stops list,
-     * of the higher point of the segment between two stops.
+     * Find the stop containing the input value. The value returned is the index, in the stops list, of the higher point
+     * of the segment between two stops.
      *
-     * @return stop index; or 0 if input is below the range of the stops; or {@code max stop index +
-     *     1} if it is above the range
+     * @return stop index; or 0 if input is below the range of the stops; or {@code max stop index + 1} if it is above
+     *     the range
      */
     private int find(Object object, Double input, List<Stop> stops) {
         int find = stops.size();

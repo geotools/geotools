@@ -19,17 +19,16 @@ package org.geotools.data.ows;
 import java.net.URL;
 
 /**
- * Each Open Web Service typically defines an operation that describes what operations it supports
- * and what data it holds. The document describing this information is usually called the
- * Capabilities document, and is usually accessed using the GetCapabilities operation.
+ * Each Open Web Service typically defines an operation that describes what operations it supports and what data it
+ * holds. The document describing this information is usually called the Capabilities document, and is usually accessed
+ * using the GetCapabilities operation.
  *
- * <p>This class provides a basic building block for clients to implement their
- * GetCapabilitiesRequest. It automatically sets the REQUEST parameter to "GetCapabilities".
+ * <p>This class provides a basic building block for clients to implement their GetCapabilitiesRequest. It automatically
+ * sets the REQUEST parameter to "GetCapabilities".
  *
  * @author rgould
  */
-public abstract class AbstractGetCapabilitiesRequest extends AbstractRequest
-        implements GetCapabilitiesRequest {
+public abstract class AbstractGetCapabilitiesRequest extends AbstractRequest implements GetCapabilitiesRequest {
     /** Represents the SERVICE parameter */
     public static final String SERVICE = "SERVICE"; // $NON-NLS-1$
 

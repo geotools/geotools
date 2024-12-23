@@ -52,8 +52,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
 
         Node request = node.getChild("Request");
 
-        OperationType operation =
-                getCapabilities(request.getChild("GetCapabilities"), ows10Factory);
+        OperationType operation = getCapabilities(request.getChild("GetCapabilities"), ows10Factory);
         addOperation(om, operation);
 
         operation = dft(request.getChild("DescribeFeatureType"), ows10Factory);
@@ -96,8 +95,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
         return operationType;
     }
 
-    private OperationType createOperation(
-            String opetationName, Node node, Ows10Factory ows10Factory) {
+    private OperationType createOperation(String opetationName, Node node, Ows10Factory ows10Factory) {
         if (node == null) {
             return null;
         }
@@ -107,11 +105,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
         return operationType;
     }
 
-    private void addParameter(
-            Node node,
-            Ows10Factory ows10Factory,
-            OperationType operationType,
-            String parameterName) {
+    private void addParameter(Node node, Ows10Factory ows10Factory, OperationType operationType, String parameterName) {
         Node paramParentNode = node.getChild(parameterName);
         List<String> paramValues = childNames(paramParentNode);
 

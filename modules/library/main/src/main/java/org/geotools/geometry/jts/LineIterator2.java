@@ -112,8 +112,8 @@ public final class LineIterator2 implements PathIterator {
     }
 
     /**
-     * Moves the iterator to the next segment of the path forwards along the primary direction of
-     * traversal as long as there are more points in that direction.
+     * Moves the iterator to the next segment of the path forwards along the primary direction of traversal as long as
+     * there are more points in that direction.
      */
     @Override
     public void next() {

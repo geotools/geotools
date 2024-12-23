@@ -37,8 +37,7 @@ public class HexagonBuilder extends PolygonBuilder {
     private int xIndex = 0;
     private int yIndex = 0;
 
-    public HexagonBuilder(
-            ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
+    public HexagonBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
         super(gridBounds);
         this.sideLen = sideLen;
         this.orientation = orientation;
@@ -56,10 +55,10 @@ public class HexagonBuilder extends PolygonBuilder {
     }
 
     /**
-     * Tests whether a neighbor position is valid for a given orientation. Since the {@code Hexagon}
-     * class is intended to work within a grid (ie. a perfect tesselation) some combinations of
-     * neighbour position and hexagon orientation are invalid. For example, a {@code FLAT} hexagon
-     * does not have a {@code LEFT}, rather it has {@code UPPER_LEFT} and {@code LOWER_LEFT}.
+     * Tests whether a neighbor position is valid for a given orientation. Since the {@code Hexagon} class is intended
+     * to work within a grid (ie. a perfect tesselation) some combinations of neighbour position and hexagon orientation
+     * are invalid. For example, a {@code FLAT} hexagon does not have a {@code LEFT}, rather it has {@code UPPER_LEFT}
+     * and {@code LOWER_LEFT}.
      *
      * @param neighbor neighbor position
      * @return {@code true} if the combination is valid; {@code false} otherwise
@@ -87,15 +86,13 @@ public class HexagonBuilder extends PolygonBuilder {
     }
 
     /**
-     * Creates a new {@code Hexagon} positioned at the given neighbor position relative to the
-     * reference element.
+     * Creates a new {@code Hexagon} positioned at the given neighbor position relative to the reference element.
      *
      * @param el the reference hexagon
      * @param neighbor a valid neighbour position given the reference hexagon's orientation
      * @return a new {@code Hexagon} object
-     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not
-     *     an instance of {@code Hexagon} or if the neighbor position is not valid for the reference
-     *     hexagon's orientation
+     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not an instance of
+     *     {@code Hexagon} or if the neighbor position is not valid for the reference hexagon's orientation
      * @see #isValidNeighbor(Hexagon.Orientation, Hexagon.Neighbor)
      */
     @Override
@@ -112,9 +109,7 @@ public class HexagonBuilder extends PolygonBuilder {
 
         if (!isValidNeighbor(neighbor)) {
             throw new IllegalArgumentException(
-                    neighbor
-                            + " is not a valid neighbour position for orientation "
-                            + hexagon.getOrientation());
+                    neighbor + " is not a valid neighbour position for orientation " + hexagon.getOrientation());
         }
 
         ReferencedEnvelope bounds = hexagon.getBounds();

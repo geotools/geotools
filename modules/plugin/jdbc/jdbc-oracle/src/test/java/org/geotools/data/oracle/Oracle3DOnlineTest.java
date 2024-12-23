@@ -27,9 +27,8 @@ public class Oracle3DOnlineTest extends JDBC3DOnlineTest {
     }
 
     /**
-     * This test is overridden to disable it, since it is a known issue. The issue is that the
-     * Oracle driver writes Rectangles as Oracle SDO Rectangle structures, which don't preserve 3D
-     * See GEOT-4133
+     * This test is overridden to disable it, since it is a known issue. The issue is that the Oracle driver writes
+     * Rectangles as Oracle SDO Rectangle structures, which don't preserve 3D See GEOT-4133
      */
     @Override
     public void testCreateSchemaAndInsertPolyRectangle() {}

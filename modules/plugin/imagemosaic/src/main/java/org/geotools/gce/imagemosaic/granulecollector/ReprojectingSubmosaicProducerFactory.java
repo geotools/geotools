@@ -23,17 +23,11 @@ import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
 
-/**
- * Creates a SubmosaicProducer that can handle reprojecting granules into the mosaic's target CRS
- */
+/** Creates a SubmosaicProducer that can handle reprojecting granules into the mosaic's target CRS */
 public class ReprojectingSubmosaicProducerFactory implements SubmosaicProducerFactory {
     @Override
     public List<SubmosaicProducer> createProducers(
-            RasterLayerRequest request,
-            RasterManager rasterManager,
-            RasterLayerResponse response,
-            boolean dryRun) {
-        return Collections.singletonList(
-                new ReprojectingSubmosaicProducer(request, response, rasterManager, dryRun));
+            RasterLayerRequest request, RasterManager rasterManager, RasterLayerResponse response, boolean dryRun) {
+        return Collections.singletonList(new ReprojectingSubmosaicProducer(request, response, rasterManager, dryRun));
     }
 }

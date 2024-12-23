@@ -27,9 +27,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * Layer used to draw a raster {@link GridCoverage}.
  *
- * <p>Direct access to the {@link GridCoverage} is available using {@link #getCoverage()}, the
- * outline of the raster is also available via {@link #toFeatureCollection()} for vector based
- * rendering systems.
+ * <p>Direct access to the {@link GridCoverage} is available using {@link #getCoverage()}, the outline of the raster is
+ * also available via {@link #toFeatureCollection()} for vector based rendering systems.
  *
  * @author Jody Garnett
  * @version 8.0

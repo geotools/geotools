@@ -57,11 +57,10 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 /**
  * A granule is an elementar piece of data image, with its own overviews and everything.
  *
- * <p>This class is responsible for caching the various size of the different levels of each single
- * granule.
+ * <p>This class is responsible for caching the various size of the different levels of each single granule.
  *
- * <p>Right now we are making the assumption that a single granule is made by a single file with
- * embedded overviews, either explicit or intrinsic through wavelets like MrSID, ECW or JPEG2000.
+ * <p>Right now we are making the assumption that a single granule is made by a single file with embedded overviews,
+ * either explicit or intrinsic through wavelets like MrSID, ECW or JPEG2000.
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
@@ -117,8 +116,7 @@ class Granule {
         public Level(final double scaleX, final double scaleY, final int width, final int height) {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
-            this.baseToLevelTransform =
-                    new AffineTransform2D(XAffineTransform.getScaleInstance(scaleX, scaleY, 0, 0));
+            this.baseToLevelTransform = new AffineTransform2D(XAffineTransform.getScaleInstance(scaleX, scaleY, 0, 0));
 
             final AffineTransform gridToWorldTransform_ = new AffineTransform(baseToLevelTransform);
             gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
@@ -184,8 +182,7 @@ class Granule {
             inStream = Utils.getInputStream(granuleFile);
             if (inStream == null)
                 throw new IllegalArgumentException(
-                        "Unable to get an input stream for the provided file "
-                                + granuleFile.getAbsolutePath());
+                        "Unable to get an input stream for the provided file " + granuleFile.getAbsolutePath());
 
             // get a reader and try to cache the relevant SPI
             if (cachedSPI == null) {
@@ -194,8 +191,7 @@ class Granule {
             } else reader = cachedSPI.createReaderInstance();
             if (reader == null)
                 throw new IllegalArgumentException(
-                        "Unable to get an ImageReader for the provided file "
-                                + granuleFile.getAbsolutePath());
+                        "Unable to get an ImageReader for the provided file " + granuleFile.getAbsolutePath());
 
             // get selected level and base level dimensions
             final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
@@ -206,16 +202,13 @@ class Granule {
             // scale and translate
             final GridToEnvelopeMapper geMapper =
                     new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension), granuleBBOX);
-            geMapper.setPixelAnchor(
-                    PixelInCell
-                            .CELL_CENTER); // this is the default behavior but it is nice to write
+            geMapper.setPixelAnchor(PixelInCell.CELL_CENTER); // this is the default behavior but it is nice to write
             // it down anyway
             this.baseGridToWorld = geMapper.createAffineTransform();
 
             // add the base level
             this.granuleLevels.put(
-                    Integer.valueOf(0),
-                    new Level(1, 1, originalDimension.width, originalDimension.height));
+                    Integer.valueOf(0), new Level(1, 1, originalDimension.width, originalDimension.height));
 
         } catch (IllegalStateException | IOException e) {
             throw new IllegalArgumentException(e);
@@ -247,8 +240,7 @@ class Granule {
         final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
         // intersection of this tile bound with the current crop bbox
         final ReferencedEnvelope intersection =
-                new ReferencedEnvelope(
-                        bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
+                new ReferencedEnvelope(bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
 
         ImageInputStream inStream = null;
         ImageReader reader = null;
@@ -268,11 +260,10 @@ class Granule {
             } else reader = cachedSPI.createReaderInstance();
             if (reader == null) {
                 if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-                    LOGGER.warning(
-                            "Unable to get reader for granule "
-                                    + this.toString()
-                                    + " with request "
-                                    + request.toString());
+                    LOGGER.warning("Unable to get reader for granule "
+                            + this.toString()
+                            + " with request "
+                            + request.toString());
                 return null;
             }
 
@@ -283,51 +274,40 @@ class Granule {
             // which source area we need to crop in the selected level taking
             // into account the scale factors imposed by the selection of this
             // level together with the base level grid to world transformation
-            MathTransform2D cropWorldToGrid =
-                    (MathTransform2D)
-                            PixelTranslation.translate(
-                                            ProjectiveTransform.create(
-                                                    selectedlevel.gridToWorldTransform),
-                                            PixelInCell.CELL_CENTER,
-                                            PixelInCell.CELL_CORNER)
-                                    .inverse();
+            MathTransform2D cropWorldToGrid = (MathTransform2D) PixelTranslation.translate(
+                            ProjectiveTransform.create(selectedlevel.gridToWorldTransform),
+                            PixelInCell.CELL_CENTER,
+                            PixelInCell.CELL_CORNER)
+                    .inverse();
 
             // computing the crop source area which leaves straight into the
             // selected level raster space, NOTICE that at the end we need to
             // take into account the fact that we might also decimate therefore
             // we cannot just use the crop grid to world but we need to correct
             // it.
-            final Rectangle sourceArea =
-                    CRS.transform(cropWorldToGrid, new GeneralBounds(intersection))
-                            .toRectangle2D()
-                            .getBounds();
+            final Rectangle sourceArea = CRS.transform(cropWorldToGrid, new GeneralBounds(intersection))
+                    .toRectangle2D()
+                    .getBounds();
             XRectangle2D.intersect(
-                    sourceArea,
-                    selectedlevel.rasterDimensions,
-                    sourceArea); // make sure roundings don't bother us
+                    sourceArea, selectedlevel.rasterDimensions, sourceArea); // make sure roundings don't bother us
             // is it empty??
             if (sourceArea.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE))
                     LOGGER.fine(
-                            "Got empty area for granule "
-                                    + this.toString()
-                                    + " with request "
-                                    + request.toString());
+                            "Got empty area for granule " + this.toString() + " with request " + request.toString());
                 return null;
 
             } else if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-                LOGGER.fine(
-                        (new StringBuffer("Loading level ")
-                                .append(imageIndex)
-                                .append(" with source region ")
-                                .append(sourceArea)
-                                .toString()));
+                LOGGER.fine((new StringBuffer("Loading level ")
+                        .append(imageIndex)
+                        .append(" with source region ")
+                        .append(sourceArea)
+                        .toString()));
             final int ssx = readParameters.getSourceXSubsampling();
             final int ssy = readParameters.getSourceYSubsampling();
             final int newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
             if (newSubSamplingFactor != 0) {
-                readParameters.setSourceSubsampling(
-                        newSubSamplingFactor, newSubSamplingFactor, 0, 0);
+                readParameters.setSourceSubsampling(newSubSamplingFactor, newSubSamplingFactor, 0, 0);
             }
 
             // set the source region
@@ -335,15 +315,14 @@ class Granule {
             final RenderedImage raster;
             try {
                 // read
-                raster =
-                        request.getReadType()
-                                .read(
-                                        readParameters,
-                                        imageIndex,
-                                        granuleFile,
-                                        selectedlevel.rasterDimensions,
-                                        tileDimension,
-                                        cachedSPI);
+                raster = request.getReadType()
+                        .read(
+                                readParameters,
+                                imageIndex,
+                                granuleFile,
+                                selectedlevel.rasterDimensions,
+                                tileDimension,
+                                cachedSPI);
                 if (raster == null) return null;
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE))
@@ -380,8 +359,7 @@ class Granule {
                     XAffineTransform.getTranslateInstance(sourceArea.x, sourceArea.y);
 
             // now we need to go back to the base level raster space
-            final AffineTransform backToBaseLevelScaleTransform =
-                    selectedlevel.baseToLevelTransform;
+            final AffineTransform backToBaseLevelScaleTransform = selectedlevel.baseToLevelTransform;
 
             // now create the overall transform
             final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
@@ -399,26 +377,21 @@ class Granule {
             final InterpolationNearest nearest = new InterpolationNearest();
             // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
             // images that are too small
-            Rectangle2D finalLayout =
-                    ImageUtilities.layoutHelper(
-                            raster,
-                            (float) finalRaster2Model.getScaleX(),
-                            (float) finalRaster2Model.getScaleY(),
-                            (float) finalRaster2Model.getTranslateX(),
-                            (float) finalRaster2Model.getTranslateY(),
-                            nearest);
+            Rectangle2D finalLayout = ImageUtilities.layoutHelper(
+                    raster,
+                    (float) finalRaster2Model.getScaleX(),
+                    (float) finalRaster2Model.getScaleY(),
+                    (float) finalRaster2Model.getTranslateX(),
+                    (float) finalRaster2Model.getTranslateY(),
+                    nearest);
             if (finalLayout.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-                    LOGGER.fine(
-                            "Unable to create a granule "
-                                    + this.toString()
-                                    + " due to jai scale bug");
+                    LOGGER.fine("Unable to create a granule " + this.toString() + " due to jai scale bug");
                 return null;
             }
 
             // apply the affine transform  conserving indexed color model
-            final RenderingHints localHints =
-                    new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
             if (XAffineTransform.isIdentity(finalRaster2Model, 10E-6)) return raster;
             else {
                 //
@@ -441,10 +414,7 @@ class Granule {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
                 LOGGER.log(
                         java.util.logging.Level.WARNING,
-                        "Unable to load raster for granule "
-                                + this.toString()
-                                + " with request "
-                                + request.toString(),
+                        "Unable to load raster for granule " + this.toString() + " with request " + request.toString(),
                         e);
             return null;
         } finally {
@@ -459,8 +429,7 @@ class Granule {
     @SuppressWarnings("PMD.UseTryWithResources") // the image input stream might be null
     public Level getLevel(final int index) {
         synchronized (granuleLevels) {
-            if (granuleLevels.containsKey(Integer.valueOf(index)))
-                return granuleLevels.get(Integer.valueOf(index));
+            if (granuleLevels.containsKey(Integer.valueOf(index))) return granuleLevels.get(Integer.valueOf(index));
             else {
                 // load level
                 // create the base grid to world transformation
@@ -482,19 +451,16 @@ class Granule {
                     } else reader = cachedSPI.createReaderInstance();
                     if (reader == null)
                         throw new IllegalArgumentException(
-                                "Unable to get an ImageReader for the provided file "
-                                        + granuleFile.getAbsolutePath());
+                                "Unable to get an ImageReader for the provided file " + granuleFile.getAbsolutePath());
 
                     // get selected level and base level dimensions
-                    final Rectangle levelDimension =
-                            ImageUtilities.getDimension(index, inStream, reader);
+                    final Rectangle levelDimension = ImageUtilities.getDimension(index, inStream, reader);
                     final Level baseLevel = granuleLevels.get(0);
                     final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
                     final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
 
                     // add the base level
-                    final Level newLevel =
-                            new Level(scaleX, scaleY, levelDimension.width, levelDimension.height);
+                    final Level newLevel = new Level(scaleX, scaleY, levelDimension.width, levelDimension.height);
                     this.granuleLevels.put(Integer.valueOf(index), newLevel);
                     return newLevel;
 

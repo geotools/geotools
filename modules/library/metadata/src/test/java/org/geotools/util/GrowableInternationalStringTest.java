@@ -15,8 +15,7 @@ public class GrowableInternationalStringTest {
     public void testCopyConstructor() {
         SimpleInternationalString simpleInternationalString =
                 new SimpleInternationalString("A simpleInternationalString");
-        GrowableInternationalString growable =
-                new GrowableInternationalString(simpleInternationalString);
+        GrowableInternationalString growable = new GrowableInternationalString(simpleInternationalString);
         assertEquals(1, growable.getLocales().size());
         assertEquals("A simpleInternationalString", growable.toString(Locale.getDefault()));
 

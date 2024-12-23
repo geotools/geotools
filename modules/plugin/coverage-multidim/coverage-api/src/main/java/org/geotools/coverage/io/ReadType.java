@@ -33,12 +33,11 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.factory.Hints;
 
 /**
- * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based
- * and Java2D direct read via ImageReader.
+ * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based and Java2D direct
+ * read via ImageReader.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
- *     jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
 public enum ReadType {
     DIRECT_READ {
@@ -65,28 +64,22 @@ public enum ReadType {
 
                 // checks on url
                 if (granuleUrl == null) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("Provided a null URL to this read method ");
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.warning("Provided a null URL to this read method ");
                     return null;
                 }
 
                 if (reader == null) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("Unable to get reader for URL " + granuleUrl);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.warning("Unable to get reader for URL " + granuleUrl);
                     return null;
                 }
 
-                if (LOGGER.isLoggable(Level.FINER))
-                    LOGGER.log(Level.FINER, "reading file: " + granuleUrl);
+                if (LOGGER.isLoggable(Level.FINER)) LOGGER.log(Level.FINER, "reading file: " + granuleUrl);
 
                 // read data
                 return reader.read(imageIndex, readParameters);
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(
-                            Level.WARNING,
-                            "Unable to compute source area for URL " + granuleUrl,
-                            e);
+                    LOGGER.log(Level.WARNING, "Unable to compute source area for URL " + granuleUrl, e);
                 return null;
             } finally {
                 // close everything
@@ -121,14 +114,12 @@ public enum ReadType {
 
                 // checks on url
                 if (granuleUrl == null) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("Provided a null URL to this read method ");
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.warning("Provided a null URL to this read method ");
                     return null;
                 }
 
                 if (reader == null) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("Unable to get reader for URL " + granuleUrl);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.warning("Unable to get reader for URL " + granuleUrl);
                     return null;
                 }
 
@@ -137,24 +128,13 @@ public enum ReadType {
                 final ImageInputStream inStream = (ImageInputStream) reader.getInput();
                 // read data
                 inStream.seek(0);
-                final RenderedOp raster =
-                        ImageReadDescriptor.create(
-                                inStream,
-                                imageIndex,
-                                false,
-                                false,
-                                false,
-                                null,
-                                null,
-                                readParameters,
-                                reader,
-                                hints);
+                final RenderedOp raster = ImageReadDescriptor.create(
+                        inStream, imageIndex, false, false, false, null, null, readParameters, reader, hints);
 
                 if (raster != null) raster.getWidth();
                 return raster;
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
                 return null;
             }
         }
@@ -170,20 +150,18 @@ public enum ReadType {
                 final ImageReader reader,
                 final Hints hints,
                 final boolean closeElements) {
-            throw new UnsupportedOperationException(
-                    MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "read"));
+            throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "read"));
         }
     };
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ReadType.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ReadType.class);
 
     /**
      * Default {@link ReadType} enumeration.
      *
-     * <p>We use the JAI ImageRead as the default type so that we can be sure that we can read very
-     * large mosaics with deferred loading.
+     * <p>We use the JAI ImageRead as the default type so that we can be sure that we can read very large mosaics with
+     * deferred loading.
      *
      * @return the default {@link ReadType}.
      */
@@ -195,8 +173,7 @@ public enum ReadType {
      * Load the raster data from the underlying source with the specified read type.
      *
      * @param hints {@link Hints} to control the read process
-     * @return a {@link RenderedImage} instance that matches the provided request parameters as
-     *     close as possible.
+     * @return a {@link RenderedImage} instance that matches the provided request parameters as close as possible.
      * @throws IOException in case something bad occurs during the decoding process.
      */
     public abstract RenderedImage read(

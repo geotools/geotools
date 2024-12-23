@@ -29,8 +29,8 @@ import org.geotools.util.XArray;
  */
 final class FactoryIteratorProviders {
     /**
-     * The system-wide configuration. This is the instance configured by the public static methods
-     * provided in this class.
+     * The system-wide configuration. This is the instance configured by the public static methods provided in this
+     * class.
      */
     private static final FactoryIteratorProviders GLOBAL = new FactoryIteratorProviders();
 
@@ -38,8 +38,8 @@ final class FactoryIteratorProviders {
     private int modifications = 0;
 
     /**
-     * Alternative scanning methods used by {@link FactoryRegistry#scanForPlugins(Collection,Class)}
-     * in addition of the default lookup mechanism. Will be created only when first needed.
+     * Alternative scanning methods used by {@link FactoryRegistry#scanForPlugins(Collection,Class)} in addition of the
+     * default lookup mechanism. Will be created only when first needed.
      */
     private Set<FactoryIteratorProvider> iteratorProviders;
 
@@ -47,13 +47,12 @@ final class FactoryIteratorProviders {
     FactoryIteratorProviders() {}
 
     /**
-     * Synchronizes the content of the {@link #iteratorProviders} map with the {@linkplain #GLOBAL
-     * global} one. New providers are returned for later {@linkplain FactoryRegistry#register
-     * registration}. Note that this method is typically invoked in a different thread than {@link
-     * FactoryIteratorProviders} public static method calls.
+     * Synchronizes the content of the {@link #iteratorProviders} map with the {@linkplain #GLOBAL global} one. New
+     * providers are returned for later {@linkplain FactoryRegistry#register registration}. Note that this method is
+     * typically invoked in a different thread than {@link FactoryIteratorProviders} public static method calls.
      *
-     * @return The new iterators providers {@linkplain #addFactoryIteratorProvider added} since the
-     *     last time this method was invoked, or {@code null} if none.
+     * @return The new iterators providers {@linkplain #addFactoryIteratorProvider added} since the last time this
+     *     method was invoked, or {@code null} if none.
      */
     final FactoryIteratorProvider[] synchronizeIteratorProviders() {
         FactoryIteratorProvider[] newProviders = null;
@@ -102,11 +101,10 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Adds an alternative way to search for factory implementations. {@link FactoryRegistry} has a
-     * default mechanism bundled in it, which uses the content of all {@code META-INF/services}
-     * directories found on the classpath. This {@code addFactoryIteratorProvider} method allows to
-     * specify additional discovery algorithms. It may be useful in the context of some frameworks
-     * that use the <cite>constructor injection</cite> pattern, like the <a
+     * Adds an alternative way to search for factory implementations. {@link FactoryRegistry} has a default mechanism
+     * bundled in it, which uses the content of all {@code META-INF/services} directories found on the classpath. This
+     * {@code addFactoryIteratorProvider} method allows to specify additional discovery algorithms. It may be useful in
+     * the context of some frameworks that use the <cite>constructor injection</cite> pattern, like the <a
      * href="http://www.springframework.org/">Spring framework</a>.
      */
     public static void addFactoryIteratorProvider(FactoryIteratorProvider provider) {
@@ -121,9 +119,9 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}. Note
-     * that factories already obtained from the specified provider will not be {@linkplain
-     * FactoryRegistry#deregisterFactory deregistered} by this method.
+     * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}. Note that factories
+     * already obtained from the specified provider will not be {@linkplain FactoryRegistry#deregisterFactory
+     * deregistered} by this method.
      */
     public static void removeFactoryIteratorProvider(FactoryIteratorProvider provider) {
         synchronized (GLOBAL) {
@@ -136,16 +134,15 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Returns all iterator providers. This method do not returns any live collection since the
-     * array will be used outside the synchronized block.
+     * Returns all iterator providers. This method do not returns any live collection since the array will be used
+     * outside the synchronized block.
      */
     static FactoryIteratorProvider[] getIteratorProviders() {
         synchronized (GLOBAL) {
             if (GLOBAL.iteratorProviders == null) {
                 return new FactoryIteratorProvider[0];
             }
-            return GLOBAL.iteratorProviders.toArray(
-                    new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
+            return GLOBAL.iteratorProviders.toArray(new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
         }
     }
 }

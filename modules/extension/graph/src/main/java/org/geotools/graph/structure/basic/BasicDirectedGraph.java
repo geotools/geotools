@@ -29,10 +29,9 @@ import org.geotools.graph.structure.Node;
 public class BasicDirectedGraph extends BasicGraph implements DirectedGraph {
 
     /**
-     * Creates a directed graph from a collection of directed nodes and a collection of directed
-     * edges. The relationships between the nodes (edges) are already assumed to be formed. Only the
-     * references to the node and edge collections are copied, not the underlying collections
-     * themselves.
+     * Creates a directed graph from a collection of directed nodes and a collection of directed edges. The
+     * relationships between the nodes (edges) are already assumed to be formed. Only the references to the node and
+     * edge collections are copied, not the underlying collections themselves.
      *
      * @param nodes Collection of DirectedNode objects contained by the graph.
      * @param edges Collection of DirectedEdge objects contained by the graph.

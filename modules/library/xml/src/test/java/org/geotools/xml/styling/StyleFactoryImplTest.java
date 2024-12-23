@@ -56,8 +56,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Capture the default values produce by the style factory in order to capture any regressions as we
- * move forward to SE 1.1 interfaces.
+ * Capture the default values produce by the style factory in order to capture any regressions as we move forward to SE
+ * 1.1 interfaces.
  *
  * @author iant
  */
@@ -65,8 +65,7 @@ public class StyleFactoryImplTest {
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     static SimpleFeature feature;
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyleFactoryImplTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyleFactoryImplTest.class);
 
     @Test
     public void testCommonFactoryFinder() {
@@ -140,37 +139,34 @@ public class StyleFactoryImplTest {
     public void testCreateStroke() {
         LOGGER.finer("testCreateStroke");
 
-        Stroke s =
-                styleFactory.createStroke(
-                        filterFactory.literal("#000000"), filterFactory.literal(2.0));
+        Stroke s = styleFactory.createStroke(filterFactory.literal("#000000"), filterFactory.literal(2.0));
 
         Assert.assertNotNull("Failed to build stroke ", s);
 
-        s =
-                styleFactory.createStroke(
-                        filterFactory.literal("#000000"),
-                        filterFactory.literal(2.0),
-                        filterFactory.literal(0.5));
+        s = styleFactory.createStroke(
+                filterFactory.literal("#000000"), filterFactory.literal(2.0), filterFactory.literal(0.5));
 
         Assert.assertNotNull("Failed to build stroke ", s);
 
-        s =
-                styleFactory.createStroke(
-                        filterFactory.literal("#000000"),
-                        filterFactory.literal(2.0),
-                        filterFactory.literal(0.5),
-                        filterFactory.literal("bevel"),
-                        filterFactory.literal("square"),
-                        new float[] {1.1f, 2.1f, 6f, 2.1f, 1.1f, 5f},
-                        filterFactory.literal(3),
-                        null,
-                        null);
+        s = styleFactory.createStroke(
+                filterFactory.literal("#000000"),
+                filterFactory.literal(2.0),
+                filterFactory.literal(0.5),
+                filterFactory.literal("bevel"),
+                filterFactory.literal("square"),
+                new float[] {1.1f, 2.1f, 6f, 2.1f, 1.1f, 5f},
+                filterFactory.literal(3),
+                null,
+                null);
 
         Assert.assertNotNull("Failed to build stroke ", s);
 
-        Assert.assertEquals("Wrong color ", "#000000", s.getColor().evaluate(feature).toString());
-        Assert.assertEquals("Wrong width ", "2.0", s.getWidth().evaluate(feature).toString());
-        Assert.assertEquals("Wrong opacity ", "0.5", s.getOpacity().evaluate(feature).toString());
+        Assert.assertEquals(
+                "Wrong color ", "#000000", s.getColor().evaluate(feature).toString());
+        Assert.assertEquals(
+                "Wrong width ", "2.0", s.getWidth().evaluate(feature).toString());
+        Assert.assertEquals(
+                "Wrong opacity ", "0.5", s.getOpacity().evaluate(feature).toString());
         Assert.assertEquals(
                 "Wrong linejoin ", "bevel", s.getLineJoin().evaluate(feature).toString());
         Assert.assertEquals(
@@ -244,17 +240,14 @@ public class StyleFactoryImplTest {
         LOGGER.finer("testCreateGraphic");
 
         ExternalGraphic[] externalGraphics = {
-            styleFactory.createExternalGraphic(
-                    "http://www.ccg.leeds.ac.uk/ian/geotools/icons/rail.gif", "image/gif")
+            styleFactory.createExternalGraphic("http://www.ccg.leeds.ac.uk/ian/geotools/icons/rail.gif", "image/gif")
         };
         Mark[] marks = {styleFactory.getCircleMark()};
         Mark[] symbols = new Mark[0];
         Expression opacity = filterFactory.literal(0.5);
         Expression size = filterFactory.literal(10);
         Expression rotation = filterFactory.literal(145.0);
-        Graphic g =
-                styleFactory.createGraphic(
-                        externalGraphics, marks, (Symbol[]) symbols, opacity, size, rotation);
+        Graphic g = styleFactory.createGraphic(externalGraphics, marks, (Symbol[]) symbols, opacity, size, rotation);
 
         Assert.assertNotNull("failed to build graphic ", g);
     }
@@ -273,12 +266,15 @@ public class StyleFactoryImplTest {
         Assert.assertNotNull("Failed to build font", f);
 
         Assert.assertEquals(
-                "Wrong font type ", "Times", f.getFamily().get(0).evaluate(feature).toString());
+                "Wrong font type ",
+                "Times",
+                f.getFamily().get(0).evaluate(feature).toString());
         Assert.assertEquals(
                 "Wrong font Style ", "Italic", f.getStyle().evaluate(feature).toString());
         Assert.assertEquals(
                 "Wrong font weight ", "Bold", f.getWeight().evaluate(feature).toString());
-        Assert.assertEquals("Wrong font size ", "12", f.getSize().evaluate(feature).toString());
+        Assert.assertEquals(
+                "Wrong font size ", "12", f.getSize().evaluate(feature).toString());
     }
 
     /** Test of createLinePlacement method, of class org.geotools.styling.StyleFactoryImpl. */
@@ -297,11 +293,9 @@ public class StyleFactoryImplTest {
         LOGGER.finer("testCreatePointPlacement");
 
         AnchorPoint anchorPoint =
-                styleFactory.createAnchorPoint(
-                        filterFactory.literal(1.0), filterFactory.literal(0.5));
+                styleFactory.createAnchorPoint(filterFactory.literal(1.0), filterFactory.literal(0.5));
         Displacement displacement =
-                styleFactory.createDisplacement(
-                        filterFactory.literal(10.0), filterFactory.literal(5.0));
+                styleFactory.createDisplacement(filterFactory.literal(10.0), filterFactory.literal(5.0));
         Expression rotation = filterFactory.literal(90.0);
         PointPlacement pp = styleFactory.createPointPlacement(anchorPoint, displacement, rotation);
 
@@ -336,8 +330,7 @@ public class StyleFactoryImplTest {
 
         Assert.assertNotNull("Failed to build halo", h);
 
-        Assert.assertEquals(
-                "Wrong radius", 4, ((Number) h.getRadius().evaluate(feature)).intValue());
+        Assert.assertEquals("Wrong radius", 4, ((Number) h.getRadius().evaluate(feature)).intValue());
     }
 
     @Test
@@ -372,10 +365,7 @@ public class StyleFactoryImplTest {
         Assert.assertNotNull(out);
     }
 
-    /**
-     * Test comparing the behaviors of styleFactory.createFill() with a null color and the DEFAULT
-     * fill.
-     */
+    /** Test comparing the behaviors of styleFactory.createFill() with a null color and the DEFAULT fill. */
     @Test
     public void testCreateFillVsDefaultFill() {
         Fill f1 = styleFactory.createFill(null);
@@ -393,16 +383,15 @@ public class StyleFactoryImplTest {
     // Test Expression usage in SelectedChannel for styleFactory
     @Test
     public void testSelectedChannelExpression() {
-        SelectedChannelType sct =
-                styleFactory.selectedChannelType(
-                        filterFactory.function(
-                                "env", filterFactory.literal("B1"), filterFactory.literal("1")),
-                        null);
+        SelectedChannelType sct = styleFactory.selectedChannelType(
+                filterFactory.function("env", filterFactory.literal("B1"), filterFactory.literal("1")), null);
         final String b1 = "B1";
         EnvFunction.removeLocalValue("B1");
-        Assert.assertEquals(1, sct.getChannelName().evaluate(null, Integer.class).intValue());
+        Assert.assertEquals(
+                1, sct.getChannelName().evaluate(null, Integer.class).intValue());
         EnvFunction.setLocalValue(b1, "20");
-        Assert.assertEquals(20, sct.getChannelName().evaluate(null, Integer.class).intValue());
+        Assert.assertEquals(
+                20, sct.getChannelName().evaluate(null, Integer.class).intValue());
         EnvFunction.removeLocalValue("B1");
     }
 }

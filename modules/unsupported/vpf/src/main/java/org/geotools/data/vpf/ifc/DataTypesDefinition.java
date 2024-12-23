@@ -29,8 +29,8 @@ public interface DataTypesDefinition {
 
     /**
      * <code>LEAST_SIGNIF_FIRST</code> stores code for indicator of byte order <code>
-     * least-significant-byte-first</code> used during creating table. It is little-endian byte
-     * order used on Intel x86 based PCs but not in JVM.
+     * least-significant-byte-first</code> used during creating table. It is little-endian byte order used on Intel x86
+     * based PCs but not in JVM.
      */
     public static final char LEAST_SIGNIF_FIRST = 'L';
 
@@ -39,8 +39,8 @@ public interface DataTypesDefinition {
 
     /**
      * <code>MOST_SIGNIF_FIRST</code> stores code for indicator of byte order <code>
-     * most-significant-byte-first</code> used during creating table. It is big-endian byte order
-     * used on Motorola CPU based machines and in JVM.
+     * most-significant-byte-first</code> used during creating table. It is big-endian byte order used on Motorola CPU
+     * based machines and in JVM.
      */
     public static final char MOST_SIGNIF_FIRST = 'M';
 

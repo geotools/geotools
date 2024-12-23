@@ -39,25 +39,16 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
         return ff;
     }
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
+    public static FunctionName NAME = new FunctionNameImpl(
+            "equalTo",
+            parameter(
                     "equalTo",
-                    parameter(
-                            "equalTo",
-                            Boolean.class,
-                            "equal to",
-                            "Can be used to compare for equality two numbers, two strings, two dates, and so on."),
-                    parameter(
-                            "a",
-                            Object.class,
-                            "a",
-                            "Can be any object type: date, string, number, etc..."),
-                    parameter(
-                            "b",
-                            Object.class,
-                            "b",
-                            "Can be any object type: date, string, number, etc..."),
-                    parameter("matchAction", String.class, 0, 1));
+                    Boolean.class,
+                    "equal to",
+                    "Can be used to compare for equality two numbers, two strings, two dates, and so on."),
+            parameter("a", Object.class, "a", "Can be any object type: date, string, number, etc..."),
+            parameter("b", Object.class, "b", "Can be any object type: date, string, number, etc..."),
+            parameter("matchAction", String.class, 0, 1));
 
     public FilterFunction_equalTo() {
         super(NAME);
@@ -78,10 +69,9 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
                         "Filter Function problem for function equalTo argument #2 - expected one of ANY, ONE or ALL");
             }
         }
-        Filter equalTo =
-                matchAction == null
-                        ? getFilterFactory().equal(arg0, arg1, false)
-                        : getFilterFactory().equal(arg0, arg1, false, matchAction);
+        Filter equalTo = matchAction == null
+                ? getFilterFactory().equal(arg0, arg1, false)
+                : getFilterFactory().equal(arg0, arg1, false, matchAction);
 
         return equalTo.evaluate(feature);
     }

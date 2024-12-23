@@ -19,24 +19,23 @@ import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Base interface for all factories of {@linkplain IdentifiedObject identified objects}. Factories
- * build up complex objects from simpler objects or values. This factory allows applications to make
- * {@linkplain org.geotools.api.referencing.cs.CoordinateSystem coordinate systems}, {@linkplain
- * org.geotools.api.referencing.datum.Datum datum} or {@linkplain
- * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference systems} that
- * cannot be created by an {@linkplain AuthorityFactory authority factory}. This factory is very
- * flexible, whereas the authority factory is easier to use.
+ * Base interface for all factories of {@linkplain IdentifiedObject identified objects}. Factories build up complex
+ * objects from simpler objects or values. This factory allows applications to make
+ * {@linkplain org.geotools.api.referencing.cs.CoordinateSystem coordinate systems},
+ * {@linkplain org.geotools.api.referencing.datum.Datum datum} or
+ * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference systems} that cannot be
+ * created by an {@linkplain AuthorityFactory authority factory}. This factory is very flexible, whereas the authority
+ * factory is easier to use.
  *
  * <p><b>Object properties</b><br>
- * Most factory methods expect a {@link Map} argument. The map can be a {@link Properties} instance.
- * The map shall contains at least a {@code "name"} property. In the common case where the name is
- * the only property, the map may be constructed with <code>
- * Collections.{@linkplain Collections#singletonMap singletonMap}("name", <var>theName</var>)</code>
- * where <var>theName</var> is an arbitrary name as free text.
+ * Most factory methods expect a {@link Map} argument. The map can be a {@link Properties} instance. The map shall
+ * contains at least a {@code "name"} property. In the common case where the name is the only property, the map may be
+ * constructed with <code>
+ * Collections.{@linkplain Collections#singletonMap singletonMap}("name", <var>theName</var>)</code> where
+ * <var>theName</var> is an arbitrary name as free text.
  *
- * <p>Implementations are encouraged to recognize at least the properties listed in the following
- * table. Additional implementation-specific properties can be added. Unknown properties shall be
- * ignored.
+ * <p>Implementations are encouraged to recognize at least the properties listed in the following table. Additional
+ * implementation-specific properties can be added. Unknown properties shall be ignored.
  *
  * <p>
  *
@@ -84,11 +83,10 @@ import org.geotools.api.util.InternationalString;
  *   </tr>
  * </table>
  *
- * <p>The {@code "name"} property is mandatory. All others are optional. All localizable attributes
- * like {@code "remarks"} can have a language and country code suffix. For example the {@code
- * "remarks_fr"} property stands for remarks in {@linkplain Locale#FRENCH French} and the {@code
- * "remarks_fr_CA"} property stands for remarks in {@linkplain Locale#CANADA_FRENCH French
- * Canadian}.
+ * <p>The {@code "name"} property is mandatory. All others are optional. All localizable attributes like
+ * {@code "remarks"} can have a language and country code suffix. For example the {@code "remarks_fr"} property stands
+ * for remarks in {@linkplain Locale#FRENCH French} and the {@code "remarks_fr_CA"} property stands for remarks in
+ * {@linkplain Locale#CANADA_FRENCH French Canadian}.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)

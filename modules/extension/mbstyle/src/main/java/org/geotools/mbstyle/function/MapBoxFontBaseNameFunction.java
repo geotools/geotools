@@ -25,11 +25,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 /** Returns a font base name */
 public class MapBoxFontBaseNameFunction extends FunctionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "mbFontBaseName",
-                    parameter("baseName", Boolean.class),
-                    parameter("fontName", Integer.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "mbFontBaseName", parameter("baseName", Boolean.class), parameter("fontName", Integer.class));
 
     public MapBoxFontBaseNameFunction() {
         this.functionName = NAME;

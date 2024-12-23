@@ -63,18 +63,14 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
     private File testDirectory;
 
     @Test
-    public void geoToolsReader()
-            throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
+    public void geoToolsReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
         boolean isInteractiveTest = TestData.isInteractiveTest();
 
         // create a base driver
         final DefaultFileDriver driver = new NetCDFDriver();
-        final File[] files =
-                TestData.file(this, ".")
-                        .listFiles(
-                                pathname ->
-                                        FilenameUtils.getName(pathname.getAbsolutePath())
-                                                .equalsIgnoreCase("O3-NO2.nc"));
+        final File[] files = TestData.file(this, ".")
+                .listFiles(pathname ->
+                        FilenameUtils.getName(pathname.getAbsolutePath()).equalsIgnoreCase("O3-NO2.nc"));
 
         for (File f : files) {
 
@@ -100,8 +96,7 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                 final List<Name> names = access.getNames(null);
                 for (Name name : names) {
                     // get a source
-                    final CoverageSource gridSource =
-                            access.access(name, null, AccessType.READ_ONLY, null, null);
+                    final CoverageSource gridSource = access.access(name, null, AccessType.READ_ONLY, null, null);
                     if (gridSource == null) {
                         throw new IOException("Unable to access");
                     }
@@ -113,8 +108,7 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                         LOGGER.info("Temporal domain is null");
                     } else {
                         // temporal crs
-                        LOGGER.info(
-                                "TemporalCRS: " + temporalDomain.getCoordinateReferenceSystem());
+                        LOGGER.info("TemporalCRS: " + temporalDomain.getCoordinateReferenceSystem());
 
                         // print the temporal domain elements
                         for (DateRange tg : temporalDomain.getTemporalElements(true, null)) {
@@ -136,20 +130,17 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                         LOGGER.info("Vertical domain is null");
                     } else {
                         // vertical crs
-                        LOGGER.info(
-                                "VerticalCRS: " + verticalDomain.getCoordinateReferenceSystem());
+                        LOGGER.info("VerticalCRS: " + verticalDomain.getCoordinateReferenceSystem());
 
                         // print the Vertical domain elements
-                        for (NumberRange<Double> vg :
-                                verticalDomain.getVerticalElements(true, null)) {
+                        for (NumberRange<Double> vg : verticalDomain.getVerticalElements(true, null)) {
                             LOGGER.info("Vertical domain element: " + vg.toString());
                         }
 
                         // print the Vertical domain elements with overall = true
                         StringBuilder overallVertical =
                                 new StringBuilder("Vertical domain element (overall = true):\n");
-                        for (NumberRange<Double> vg :
-                                verticalDomain.getVerticalElements(false, null)) {
+                        for (NumberRange<Double> vg : verticalDomain.getVerticalElements(false, null)) {
                             overallVertical.append(vg.toString()).append("\n");
                         }
                         LOGGER.info(overallVertical.toString());
@@ -161,13 +152,11 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                         LOGGER.info("Horizontal domain is null");
                     } else {
                         // print the horizontal domain elements
-                        final CoordinateReferenceSystem crs2D =
-                                spatialDomain.getCoordinateReferenceSystem2D();
+                        final CoordinateReferenceSystem crs2D = spatialDomain.getCoordinateReferenceSystem2D();
                         assert crs2D != null;
                         final MathTransform2D g2w = spatialDomain.getGridToWorldTransform(null);
                         assert g2w != null;
-                        final Set<? extends BoundingBox> spatialElements =
-                                spatialDomain.getSpatialElements(true, null);
+                        final Set<? extends BoundingBox> spatialElements = spatialDomain.getSpatialElements(true, null);
                         assert spatialElements != null && !spatialElements.isEmpty();
 
                         final StringBuilder buf = new StringBuilder();
@@ -187,13 +176,11 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                     //
                     // //
 
-                    LinkedHashSet<NumberRange<Double>> requestedVerticalSubset =
-                            new LinkedHashSet<>();
+                    LinkedHashSet<NumberRange<Double>> requestedVerticalSubset = new LinkedHashSet<>();
                     SortedSet<? extends NumberRange<Double>> verticalElements =
                             verticalDomain.getVerticalElements(false, null);
                     final int numLevels = verticalElements.size();
-                    final Iterator<? extends NumberRange<Double>> iterator =
-                            verticalElements.iterator();
+                    final Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
                     int step = ((numLevels / 5) > 0) ? (numLevels / 5) : 1;
                     for (int i = 0; i < numLevels; i++) {
                         NumberRange<Double> level = iterator.next();
@@ -204,8 +191,7 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                     readRequest.setVerticalSubset(requestedVerticalSubset);
 
                     SortedSet<DateRange> requestedTemporalSubset = new DateRangeTreeSet();
-                    SortedSet<? extends DateRange> temporalElements =
-                            temporalDomain.getTemporalElements(false, null);
+                    SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(false, null);
                     final int numTimes = temporalElements.size();
                     Iterator<? extends DateRange> iteratorT = temporalElements.iterator();
                     step = ((numTimes / 5) > 0) ? (numTimes / 5) : 1;
@@ -229,18 +215,21 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                     for (Coverage c : results) {
                         GridCoverageResponse resp = (GridCoverageResponse) c;
                         GridCoverage2D coverage = resp.getGridCoverage2D();
-                        String title = coverage.getSampleDimension(0).getDescription().toString();
+                        String title =
+                                coverage.getSampleDimension(0).getDescription().toString();
                         // Crs and envelope
                         if (isInteractiveTest) {
                             // ImageIOUtilities.visualize(coverage.getRenderedImage(), "tt",true);
                             coverage.show(title + " " + index++);
                         } else {
-                            PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+                            PlanarImage.wrapRenderedImage(coverage.getRenderedImage())
+                                    .getTiles();
                         }
 
                         final StringBuilder buffer = new StringBuilder();
                         buffer.append("GridCoverage CRS: ")
-                                .append(coverage.getCoordinateReferenceSystem2D().toWKT())
+                                .append(coverage.getCoordinateReferenceSystem2D()
+                                        .toWKT())
                                 .append("\n");
                         buffer.append("GridCoverage GG: ")
                                 .append(coverage.getGridGeometry().toString())

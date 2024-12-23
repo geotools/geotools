@@ -96,8 +96,7 @@ public class SimpleFeatureBuilderTest {
         SimpleFeature invalidFeature = builder.buildFeature("invalid");
 
         Assert.assertTrue("valid", Types.isValid((Attribute) invalidFeature.getProperty("point")));
-        Assert.assertFalse(
-                "valid", Types.isValid((Attribute) invalidFeature.getProperty("integer")));
+        Assert.assertFalse("valid", Types.isValid((Attribute) invalidFeature.getProperty("integer")));
         Assert.assertTrue("valid", Types.isValid((Attribute) invalidFeature.getProperty("float")));
         Assert.assertFalse("invalid", Types.isValid(invalidFeature));
 
@@ -105,8 +104,7 @@ public class SimpleFeatureBuilderTest {
         builder.add(point);
         try {
             builder.add(-1);
-            Assert.fail(
-                    "Builder with validation enabled should not be able to add an invalid value");
+            Assert.fail("Builder with validation enabled should not be able to add an invalid value");
         } catch (IllegalAttributeException huh) {
             // expected error
         }
@@ -254,14 +252,12 @@ public class SimpleFeatureBuilderTest {
         builder.restriction(filter).add(attributeName, String.class);
 
         SimpleFeatureType featureType = builder.buildFeatureType();
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(featureType, new Object[] {"Value"}, "ID");
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {"Value"}, "ID");
 
         Assert.assertNotNull(feature);
 
         try {
-            SimpleFeature sf =
-                    SimpleFeatureBuilder.build(featureType, new Object[] {"NotValue"}, "ID");
+            SimpleFeature sf = SimpleFeatureBuilder.build(featureType, new Object[] {"NotValue"}, "ID");
             sf.validate();
             Assert.fail("PropertyIsEqualTo filter should have failed");
         } catch (Exception e) {

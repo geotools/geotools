@@ -53,8 +53,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
 
     private Filter unrolledFilter = null;
 
-    public MappingFeatureCollection(
-            AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) {
+    public MappingFeatureCollection(AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) {
         this.store = store;
         this.mapping = mapping;
         this.query = query;
@@ -172,13 +171,12 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
     }
 
     /**
-     * This overload allows client code to explicitly specify the transaction that the created
-     * iterator will be working against.
+     * This overload allows client code to explicitly specify the transaction that the created iterator will be working
+     * against.
      *
-     * <p>Passing <code>null</code> is equivalent to calling {@link #features()} and lets the
-     * iterator decide whether a new transaction should be created (and closed when the iterator is
-     * closed) or not. Currently, a new transaction is created by {@link
-     * DataAccessMappingFeatureIterator} only if a database backend is available and joining is
+     * <p>Passing <code>null</code> is equivalent to calling {@link #features()} and lets the iterator decide whether a
+     * new transaction should be created (and closed when the iterator is closed) or not. Currently, a new transaction
+     * is created by {@link DataAccessMappingFeatureIterator} only if a database backend is available and joining is
      * enabled, to reduce the number of concurrent connections opened due to feature chaining.
      *
      * @see org.geotools.feature.FeatureCollection#features()
@@ -186,8 +184,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      */
     public FeatureIterator<Feature> features(Transaction transaction) {
         try {
-            return MappingFeatureIteratorFactory.getInstance(
-                    store, mapping, query, unrolledFilter, transaction);
+            return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter, transaction);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -210,10 +207,9 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             Feature feature;
             while (features.hasNext()) {
                 feature = features.next();
-                final Geometry geometry =
-                        feature.getDefaultGeometryProperty() != null
-                                ? ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                                : null;
+                final Geometry geometry = feature.getDefaultGeometryProperty() != null
+                        ? ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                        : null;
                 if (geometry != null) {
                     internal = geometry.getEnvelopeInternal();
                     newBBox.expandToInclude(internal);

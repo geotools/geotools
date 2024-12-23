@@ -44,16 +44,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * parses short sections of gml for use in expressions and filters. Hopefully we can get away
- * without a full parser here.
+ * parses short sections of gml for use in expressions and filters. Hopefully we can get away without a full parser
+ * here.
  *
  * @author iant
  * @author Niels Charlier
  */
 public final class ExpressionDOMParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ExpressionDOMParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpressionDOMParser.class);
 
     /** Factory for creating filters. */
     private FilterFactory ff;
@@ -131,8 +130,7 @@ public final class ExpressionDOMParser {
 
         Node child = root;
 
-        String childName =
-                (child.getLocalName() != null) ? child.getLocalName() : child.getNodeName();
+        String childName = (child.getLocalName() != null) ? child.getLocalName() : child.getNodeName();
 
         if (childName.indexOf(':') != -1) {
             // the DOM parser wasnt properly set to handle namespaces...
@@ -160,8 +158,7 @@ public final class ExpressionDOMParser {
                      * a geometry this is a bit tricky since our standard
                      * gml parser is SAX based and we're a DOM here.
                      */
-                    LOGGER.finer(
-                            "node " + kid.getNodeValue() + " namespace " + kid.getNamespaceURI());
+                    LOGGER.finer("node " + kid.getNodeValue() + " namespace " + kid.getNamespaceURI());
                     LOGGER.fine("a literal gml string?");
 
                     try {
@@ -481,8 +478,7 @@ public final class ExpressionDOMParser {
         }
 
         if (childName.equalsIgnoreCase("gml:box")) {
-            coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
+            coordList = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
@@ -564,8 +560,7 @@ public final class ExpressionDOMParser {
             }
         }
 
-        if (childName.equalsIgnoreCase("gml:outerBoundaryIs")
-                || childName.equalsIgnoreCase("gml:innerBoundaryIs")) {
+        if (childName.equalsIgnoreCase("gml:outerBoundaryIs") || childName.equalsIgnoreCase("gml:innerBoundaryIs")) {
             LOGGER.finer("Boundary layer");
 
             NodeList kids = ((Element) child).getElementsByTagName("gml:LinearRing");
@@ -575,8 +570,7 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:linearRing")) {
             LOGGER.finer("LinearRing");
-            coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
+            coordList = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             org.locationtech.jts.geom.LinearRing ring = null;
 
@@ -593,8 +587,7 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:linestring")) {
             LOGGER.finer("linestring");
-            coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
+            coordList = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             LineString line = gfac.createLineString(coordList.toArray(new Coordinate[] {}));
 
@@ -603,8 +596,7 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:point")) {
             LOGGER.finer("point");
-            coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
+            coordList = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             Point point = gfac.createPoint(coordList.get(0));
 
@@ -678,21 +670,26 @@ public final class ExpressionDOMParser {
                     Node grandChild = grandChildren.item(t);
                     String grandChildName = grandChild.getNodeName();
                     if (grandChildName == null) grandChildName = grandChild.getLocalName();
-                    if (!grandChildName.startsWith("gml:"))
-                        grandChildName = "gml:" + grandChildName;
+                    if (!grandChildName.startsWith("gml:")) grandChildName = "gml:" + grandChildName;
 
                     if (grandChildName.equalsIgnoreCase("gml:x")) {
-                        c.x =
-                                Double.parseDouble(
-                                        grandChild.getChildNodes().item(0).getNodeValue().trim());
+                        c.x = Double.parseDouble(grandChild
+                                .getChildNodes()
+                                .item(0)
+                                .getNodeValue()
+                                .trim());
                     } else if (grandChildName.equalsIgnoreCase("gml:y")) {
-                        c.y =
-                                Double.parseDouble(
-                                        grandChild.getChildNodes().item(0).getNodeValue().trim());
+                        c.y = Double.parseDouble(grandChild
+                                .getChildNodes()
+                                .item(0)
+                                .getNodeValue()
+                                .trim());
                     } else if (grandChildName.equalsIgnoreCase("gml:z")) {
-                        c.setZ(
-                                Double.parseDouble(
-                                        grandChild.getChildNodes().item(0).getNodeValue().trim()));
+                        c.setZ(Double.parseDouble(grandChild
+                                .getChildNodes()
+                                .item(0)
+                                .getNodeValue()
+                                .trim()));
                     }
                 }
                 clist.add(c);

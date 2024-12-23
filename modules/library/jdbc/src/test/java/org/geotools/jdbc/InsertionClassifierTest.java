@@ -75,8 +75,7 @@ public class InsertionClassifierTest {
             geom2Classes.add(kind.geometryTypes.get("geom2"));
             Assert.assertEquals(1, actual.get(kind).size());
         }
-        Assert.assertEquals(
-                new HashSet<>(Arrays.asList(LineString.class, Polygon.class)), geom2Classes);
+        Assert.assertEquals(new HashSet<>(Arrays.asList(LineString.class, Polygon.class)), geom2Classes);
     }
 
     @Test
@@ -129,8 +128,7 @@ public class InsertionClassifierTest {
         return createLineString(0, 1, 2, 3);
     }
 
-    private SimpleFeature createFeature(
-            SimpleFeatureType featureType, String name, LineString geom1, Geometry geom2) {
+    private SimpleFeature createFeature(SimpleFeatureType featureType, String name, LineString geom1, Geometry geom2) {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         builder.add(name);
         builder.add(geom1);

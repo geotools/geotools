@@ -22,8 +22,8 @@ import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.SchemaLocationResolver;
 
 /**
- * A {@link SchemaLocationResolver} that uses {@link SchemaResolver} to locate schema resources in a
- * catalog, on the classpath, or in a cache..
+ * A {@link SchemaLocationResolver} that uses {@link SchemaResolver} to locate schema resources in a catalog, on the
+ * classpath, or in a cache..
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
@@ -48,12 +48,10 @@ public class AppSchemaLocationResolver extends SchemaLocationResolver {
      * @param schema the parent schema from which the import/include originates
      * @param uri the namespace of an import (ignored in this implementation)
      * @param location the URL of the import or include (may be relative)
-     * @see SchemaLocationResolver#resolveSchemaLocation(org.eclipse.xsd.XSDSchema,
-     *     java.lang.String, java.lang.String)
+     * @see SchemaLocationResolver#resolveSchemaLocation(org.eclipse.xsd.XSDSchema, java.lang.String, java.lang.String)
      */
     @Override
-    public String resolveSchemaLocation(
-            final XSDSchema schema, final String uri, final String location) {
+    public String resolveSchemaLocation(final XSDSchema schema, final String uri, final String location) {
         return resolver.resolve(location, schema.getSchemaLocation());
     }
 

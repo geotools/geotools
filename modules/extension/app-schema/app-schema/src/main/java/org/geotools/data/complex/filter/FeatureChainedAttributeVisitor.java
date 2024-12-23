@@ -43,15 +43,15 @@ import org.geotools.xlink.XLINK;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Expression visitor that uses the attribute and mapping information provided by a {@link
- * FeatureTypeMapping} object to determine which nested feature types / attributes must be traversed
- * to reach the attribute identified by the provided {@link PropertyName} expression.
+ * Expression visitor that uses the attribute and mapping information provided by a {@link FeatureTypeMapping} object to
+ * determine which nested feature types / attributes must be traversed to reach the attribute identified by the provided
+ * {@link PropertyName} expression.
  *
- * <p>The provided {@link FeatureTypeMapping} object is regarded as the root mapping against which
- * the expression is evaluated.
+ * <p>The provided {@link FeatureTypeMapping} object is regarded as the root mapping against which the expression is
+ * evaluated.
  *
- * <p>The nested attribute mappings are returned as a list of {@link FeatureChainLink} objects; the
- * first one in the list always refers to the root mapping.
+ * <p>The nested attribute mappings are returned as a list of {@link FeatureChainLink} objects; the first one in the
+ * list always refers to the root mapping.
  *
  * @author Stefano Costa, GeoSolutions
  */
@@ -91,8 +91,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         try {
             walkXPath(expression.getPropertyName(), feature);
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Exception occurred splitting XPath expression into mapping steps", e);
+            throw new RuntimeException("Exception occurred splitting XPath expression into mapping steps", e);
         }
 
         return getFeatureChainedAttributes();
@@ -100,8 +99,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
     void walkXPath(String xpath, Feature feature) throws IOException {
         FeatureTypeMapping currentType = rootMapping;
-        StepList currentXPath =
-                XPath.steps(rootMapping.getTargetFeature(), xpath, rootMapping.getNamespaces());
+        StepList currentXPath = XPath.steps(rootMapping.getTargetFeature(), xpath, rootMapping.getNamespaces());
         FeatureChainedAttributeDescriptor attrDescr = new FeatureChainedAttributeDescriptor();
         walkXPathRecursive(currentXPath, currentType, attrDescr, feature);
     }
@@ -128,7 +126,8 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                 } else {
                     FeatureTypeMapping nestedType = nestedAttr.getFeatureTypeMapping(feature);
                     if (nestedType != null) {
-                        AttributeType nestedPropertyType = nestedType.getTargetFeature().getType();
+                        AttributeType nestedPropertyType =
+                                nestedType.getTargetFeature().getType();
                         QName nestedTypeQName = getFeatureTypeQName(nestedType);
                         Step nestedTypeStep = new Step(nestedTypeQName, 1);
                         StepList nestedTypeXPath = targetXPath.clone();
@@ -152,10 +151,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
                             // new xpath
                             StepList newXPath = currentXPath.clone();
-                            int startIdx =
-                                    (xpathContainsNestedType)
-                                            ? nestedTypeXPath.size()
-                                            : currentXPath.size();
+                            int startIdx = (xpathContainsNestedType) ? nestedTypeXPath.size() : currentXPath.size();
                             newXPath = newXPath.subList(startIdx, currentXPath.size());
 
                             // if nested type has simple content, XPath expression may point
@@ -199,16 +195,14 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                             // abort search
                             return;
                         } else {
-                            FeatureTypeMapping nestedType =
-                                    nestedAttr.getFeatureTypeMapping(feature);
+                            FeatureTypeMapping nestedType = nestedAttr.getFeatureTypeMapping(feature);
                             if (nestedType != null) {
                                 FeatureChainLink lastLink = new FeatureChainLink(nestedType, true);
                                 attrDescr.addLink(lastLink);
                                 // search was successful, add attribute to collection
                                 attributes.add(attrDescr);
                             } else {
-                                logNestedFeatureTypeNotFound(
-                                        currentType, nestedAttr.getTargetXPath());
+                                logNestedFeatureTypeNotFound(currentType, nestedAttr.getTargetXPath());
                             }
                         }
                     }
@@ -229,15 +223,12 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                     final ComplexNameImpl complexQname = (ComplexNameImpl) entry.getKey();
                     final StepList unboundedElementStepList =
                             attributeMapping.getTargetXPath().clone();
-                    Step step =
-                            new Step(
-                                    new QName(
-                                            complexQname.getNamespaceURI(),
-                                            complexQname.getLocalPart(),
-                                            currentType
-                                                    .getNamespaces()
-                                                    .getPrefix(complexQname.getNamespaceURI())),
-                                    unboundedElementStepList.size() + 1);
+                    Step step = new Step(
+                            new QName(
+                                    complexQname.getNamespaceURI(),
+                                    complexQname.getLocalPart(),
+                                    currentType.getNamespaces().getPrefix(complexQname.getNamespaceURI())),
+                            unboundedElementStepList.size() + 1);
                     unboundedElementStepList.add(step);
                     if (currentXPath.equalsIgnoreIndex(unboundedElementStepList)) {
                         this.unboundedNestedElementFound = true;
@@ -252,13 +243,12 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         if (LOGGER.isLoggable(Level.FINE)) {
             QName qname = getFeatureTypeQName(containerType);
             String prefixedName = qname.getPrefix() + ":" + qname.getLocalPart();
-            LOGGER.fine(
-                    "Conditional nested mapping found, but no feature to evaluate "
-                            + "against was provided: nested feature type cannot be determined for "
-                            + "container type \""
-                            + prefixedName
-                            + "\" and target attribute \""
-                            + xpath);
+            LOGGER.fine("Conditional nested mapping found, but no feature to evaluate "
+                    + "against was provided: nested feature type cannot be determined for "
+                    + "container type \""
+                    + prefixedName
+                    + "\" and target attribute \""
+                    + xpath);
         }
     }
 
@@ -270,11 +260,10 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         if (LOGGER.isLoggable(Level.FINE)) {
             QName qname = getFeatureTypeQName(containerType);
             String prefixedName = qname.getPrefix() + ":" + qname.getLocalPart();
-            LOGGER.fine(
-                    "Nested type could not be determined for container type \""
-                            + prefixedName
-                            + "\" and target attribute \""
-                            + xpath);
+            LOGGER.fine("Nested type could not be determined for container type \""
+                    + prefixedName
+                    + "\" and target attribute \""
+                    + xpath);
         }
     }
 
@@ -313,8 +302,8 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
     }
 
     /**
-     * Returns an object describing the sequence of feature chaining links that must be traversed to
-     * reach the attribute specified by the visited expression.
+     * Returns an object describing the sequence of feature chaining links that must be traversed to reach the attribute
+     * specified by the visited expression.
      *
      * @return a feature chained attribute descriptor, or <code>null</code> if none was found
      */
@@ -323,11 +312,10 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
     }
 
     /**
-     * Tells clients whether or not a conditional mapping was found in the feature chain when the
-     * latest expression was visited.
+     * Tells clients whether or not a conditional mapping was found in the feature chain when the latest expression was
+     * visited.
      *
-     * @return {@code true} if a conditional mapping was found in the feature chain, {@code false}
-     *     otherwise
+     * @return {@code true} if a conditional mapping was found in the feature chain, {@code false} otherwise
      */
     public boolean conditionalMappingWasFound() {
         return conditionalMappingFound;
@@ -338,17 +326,15 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
     }
 
     /**
-     * Descriptor class holding information about a feature chained attribute, i.e. an attribute
-     * belonging to a feature type that is linked to a root feature type via feature chaining.
+     * Descriptor class holding information about a feature chained attribute, i.e. an attribute belonging to a feature
+     * type that is linked to a root feature type via feature chaining.
      *
      * <p>In more detail, purpose of this class is to store:
      *
      * <ol>
-     *   <li>the sequence of nested attribute mappings describing how from top to bottom in the
-     *       feature types chain
-     *   <li>the path of the attribute, relative to the last linked feature type in the chain
-     *       (except when the last chaining is done by reference, in which case the path refers to
-     *       the second last feature type)
+     *   <li>the sequence of nested attribute mappings describing how from top to bottom in the feature types chain
+     *   <li>the path of the attribute, relative to the last linked feature type in the chain (except when the last
+     *       chaining is done by reference, in which case the path refers to the second last feature type)
      * </ol>
      *
      * @author Stefano Costa, GeoSolutions
@@ -437,20 +423,17 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         }
 
         /**
-         * Checks whether all nested attribute mappings are instances of {@link
-         * JoiningNestedAttributeMapping}.
+         * Checks whether all nested attribute mappings are instances of {@link JoiningNestedAttributeMapping}.
          *
-         * @return <code>true</code> if all nested attribute mappings in the chain support joining,
-         *     <code>false</code> otherwise
+         * @return <code>true</code> if all nested attribute mappings in the chain support joining, <code>false</code>
+         *     otherwise
          */
         public boolean isJoiningEnabled() {
             boolean joiningEnabled = true;
 
             for (FeatureChainLink mappingStep : featureChain) {
                 joiningEnabled =
-                        joiningEnabled
-                                && (!mappingStep.hasNestedFeature()
-                                        || mappingStep.isJoiningNestedMapping());
+                        joiningEnabled && (!mappingStep.hasNestedFeature() || mappingStep.isJoiningNestedMapping());
             }
 
             return joiningEnabled;
@@ -489,12 +472,10 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         }
 
         /**
-         * Returns the feature type where the mapping configuration of the nested attribute is
-         * defined.
+         * Returns the feature type where the mapping configuration of the nested attribute is defined.
          *
-         * <p>In practice, this is the last linked feature type in the chain, except when the last
-         * chaining is done by reference (via an xlink:href attribute), in which case the second
-         * last feature type is returned.
+         * <p>In practice, this is the last linked feature type in the chain, except when the last chaining is done by
+         * reference (via an xlink:href attribute), in which case the second last feature type is returned.
          */
         public FeatureTypeMapping getFeatureTypeOwningAttribute() {
             FeatureChainLink lastLink = getLastLink();
@@ -522,11 +503,11 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
     }
 
     /**
-     * Represents a single link in the "chain" of feature types that need to be linked to go from
-     * the root type to a nested attribute.
+     * Represents a single link in the "chain" of feature types that need to be linked to go from the root type to a
+     * nested attribute.
      *
-     * <p>The class is <code>public</code> as its purpose is to convey information to clients, but
-     * instantiation and manipulation of its internal state is <code>private</code>.
+     * <p>The class is <code>public</code> as its purpose is to convey information to clients, but instantiation and
+     * manipulation of its internal state is <code>private</code>.
      *
      * @author Stefano Costa, GeoSolutions
      */
@@ -556,8 +537,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
             this.previousStep = null;
         }
 
-        private FeatureChainLink(
-                FeatureTypeMapping featureType, NestedAttributeMapping nestedFeatureAttribute) {
+        private FeatureChainLink(FeatureTypeMapping featureType, NestedAttributeMapping nestedFeatureAttribute) {
             this(featureType);
             if (nestedFeatureAttribute == null) {
                 throw new NullPointerException("nestedFeatureAttribute is null");
@@ -580,32 +560,28 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         }
 
         /**
-         * Gets the mapping configuration of the attribute holding the next nested feature in the
-         * chain.
+         * Gets the mapping configuration of the attribute holding the next nested feature in the chain.
          *
-         * @return the nested attribute mapping, or <code>null</code> if there are no more nested
-         *     features in the chain
+         * @return the nested attribute mapping, or <code>null</code> if there are no more nested features in the chain
          */
         public NestedAttributeMapping getNestedFeatureAttribute() {
             return nestedFeatureAttribute;
         }
 
         /**
-         * Gets the mapping configuration of the attribute holding the next nested feature in the
-         * chain, cast to the specified {@link NestedAttributeMapping} subclass.
+         * Gets the mapping configuration of the attribute holding the next nested feature in the chain, cast to the
+         * specified {@link NestedAttributeMapping} subclass.
          *
          * @see #getNestedFeatureAttribute()
          * @param attributeMappingClass the {@link NestedAttributeMapping} subclass to cast to
          */
-        public <T extends NestedAttributeMapping> T getNestedFeatureAttribute(
-                Class<T> attributeMappingClass) {
+        public <T extends NestedAttributeMapping> T getNestedFeatureAttribute(Class<T> attributeMappingClass) {
             return attributeMappingClass.cast(nestedFeatureAttribute);
         }
 
         /**
-         * Returns <code>true</code> if this {@link FeatureChainLink} instance represents a
-         * chaining-by-reference mapping, i.e. nested feature is not fully encoded inline, only
-         * <code>xlink:href</code> attribute is set.
+         * Returns <code>true</code> if this {@link FeatureChainLink} instance represents a chaining-by-reference
+         * mapping, i.e. nested feature is not fully encoded inline, only <code>xlink:href</code> attribute is set.
          *
          * @return <code>true</code> if this is chaining by reference, <code>false</code> otherwise
          */
@@ -620,13 +596,12 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
          *     </code> otherwise
          */
         public boolean isJoiningNestedMapping() {
-            return nestedFeatureAttribute != null
-                    && nestedFeatureAttribute instanceof JoiningNestedAttributeMapping;
+            return nestedFeatureAttribute != null && nestedFeatureAttribute instanceof JoiningNestedAttributeMapping;
         }
 
         /**
-         * Returns <code>true</code> if this link refers to a nested feature type which in turn
-         * contains another nested feature.
+         * Returns <code>true</code> if this link refers to a nested feature type which in turn contains another nested
+         * feature.
          *
          * @return <code>true</code> if there is another nested feature in the chain, <code>false
          *     </code> otherwise
@@ -636,8 +611,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         }
 
         /**
-         * Unique identifier of a link in the chain; mainly useful when SQL encoding the feature
-         * chained attribute.
+         * Unique identifier of a link in the chain; mainly useful when SQL encoding the feature chained attribute.
          *
          * @return a unique identifier of the link
          */

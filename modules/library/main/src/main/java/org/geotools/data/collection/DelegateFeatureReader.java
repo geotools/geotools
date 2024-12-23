@@ -28,14 +28,12 @@ import org.geotools.feature.FeatureIterator;
 /**
  * A FeatureReader that wraps up a normal FeatureIterator.
  *
- * <p>This class is useful for faking (and testing) the Resource based API against in memory
- * datastructures. You are warned that to complete the illusion that Resource based IO is occuring
- * content will be duplicated.
+ * <p>This class is useful for faking (and testing) the Resource based API against in memory datastructures. You are
+ * warned that to complete the illusion that Resource based IO is occuring content will be duplicated.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */
-public class DelegateFeatureReader<T extends FeatureType, F extends Feature>
-        implements FeatureReader<T, F> {
+public class DelegateFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F> {
     FeatureIterator<F> delegate;
     T schema;
 

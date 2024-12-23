@@ -47,8 +47,8 @@ public interface GranuleStore extends GranuleSource {
     int removeGranules(Filter filter);
 
     /**
-     * Removes granules selected by the given filter, controlled by a set of hints (might be
-     * implementation dependent and eventually ignored).
+     * Removes granules selected by the given filter, controlled by a set of hints (might be implementation dependent
+     * and eventually ignored).
      *
      * @param filter an OpenGIS filter
      * @param hints a set of hints to control how the removal is performed
@@ -60,15 +60,13 @@ public interface GranuleStore extends GranuleSource {
     }
 
     /**
-     * Modifies the attributes with the supplied values in all granules selected by the given
-     * filter.
+     * Modifies the attributes with the supplied values in all granules selected by the given filter.
      *
      * @param attributeNames the attributes to modify
      * @param attributeValues the new values for the attributes
      * @param filter an OpenGIS filter
-     * @throws IOException if the attribute and object arrays are not equal in length; if the value
-     *     types do not match the attribute types; if modification is not supported; or if there
-     *     errors accessing the data source
+     * @throws IOException if the attribute and object arrays are not equal in length; if the value types do not match
+     *     the attribute types; if modification is not supported; or if there errors accessing the data source
      */
     void updateGranules(String[] attributeNames, Object[] attributeValues, Filter filter);
 
@@ -93,8 +91,7 @@ public interface GranuleStore extends GranuleSource {
     Transaction getTransaction();
 
     /**
-     * Provide a transaction for commit/rollback control of a modifying operation on this {@code
-     * GranuleStore}.
+     * Provide a transaction for commit/rollback control of a modifying operation on this {@code GranuleStore}.
      *
      * <pre>
      * <code>

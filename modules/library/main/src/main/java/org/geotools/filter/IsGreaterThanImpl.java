@@ -27,8 +27,7 @@ public class IsGreaterThanImpl extends MultiCompareFilterImpl implements Propert
         super(expression1, expression2);
     }
 
-    protected IsGreaterThanImpl(
-            Expression expression1, Expression expression2, MatchAction matchAction) {
+    protected IsGreaterThanImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
         super(expression1, expression2, matchAction);
     }
 

@@ -92,8 +92,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
     @Override
     public synchronized BoundingBox getBounds() {
         if (bounds == null) {
-            ReferencedEnvelope bbox =
-                    new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
+            ReferencedEnvelope bbox = new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
             Geometry geom = getValue();
             if (geom != null) {
                 bbox.expandToInclude(geom.getEnvelopeInternal());

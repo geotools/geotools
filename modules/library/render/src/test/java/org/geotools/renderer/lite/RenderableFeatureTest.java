@@ -59,16 +59,14 @@ public class RenderableFeatureTest {
         when(feature.getType()).thenReturn(type);
         Symbolizer symbolizer = Mockito.mock(Symbolizer.class);
         when(symbolizer.getGeometry()).thenReturn(null);
-        StreamingRenderer.RenderableFeature rf =
-                new StreamingRenderer().new RenderableFeature("layerId", false) {
-                    @Override
-                    public LiteShape2 getShape(
-                            Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)
-                            throws FactoryException {
-                        assertEquals(point, g);
-                        return null;
-                    }
-                };
+        StreamingRenderer.RenderableFeature rf = new StreamingRenderer().new RenderableFeature("layerId", false) {
+            @Override
+            public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)
+                    throws FactoryException {
+                assertEquals(point, g);
+                return null;
+            }
+        };
         rf.setFeature(feature);
         rf.getShape(symbolizer, null);
     }

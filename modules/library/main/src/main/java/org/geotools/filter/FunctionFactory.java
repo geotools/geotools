@@ -26,14 +26,13 @@ import org.geotools.api.filter.expression.Literal;
 /**
  * Factory interface for filter functions.
  *
- * <p>The factory provides a list of {#link FunctionName} describing the available functions. Each
- * FunctionName provides details of the name, expected arguments and return type.
+ * <p>The factory provides a list of {#link FunctionName} describing the available functions. Each FunctionName provides
+ * details of the name, expected arguments and return type.
  *
- * <p>Individual functions can be created using a name from this list, along with the required
- * number of arguments and a fallback value.
+ * <p>Individual functions can be created using a name from this list, along with the required number of arguments and a
+ * fallback value.
  *
- * <p>Prior to GeoTools 2.7 functions were made available as individual factories using {@link
- * FunctionExpression}.
+ * <p>Prior to GeoTools 2.7 functions were made available as individual factories using {@link FunctionExpression}.
  *
  * @author Justin Deoliveira (Boundless)
  * @since 2.7
@@ -53,8 +52,8 @@ public interface FunctionFactory {
      *
      * @param name The name of the function
      * @param args Variable list of expression arguments for the function.
-     * @param fallback A fallback literal to use in cases where the function does not exist or can
-     *     not be created. This argument may be {@code null}.
+     * @param fallback A fallback literal to use in cases where the function does not exist or can not be created. This
+     *     argument may be {@code null}.
      */
     Function function(String name, List<Expression> args, Literal fallback);
 
@@ -63,8 +62,8 @@ public interface FunctionFactory {
      *
      * @param name The name of the function
      * @param args Variable list of expression arguments for the function.
-     * @param fallback A fallback literal to use in cases where the function does not exist or can
-     *     not be created. This argument may be {@code null}.
+     * @param fallback A fallback literal to use in cases where the function does not exist or can not be created. This
+     *     argument may be {@code null}.
      */
     Function function(Name name, List<Expression> args, Literal fallback);
 }

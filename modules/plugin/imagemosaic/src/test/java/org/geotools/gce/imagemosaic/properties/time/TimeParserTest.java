@@ -26,8 +26,8 @@ import org.junit.Test;
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
- * @deprecated This test classes test that the Deprecated TimeParser is still working properly. An
- *     updated TimeParserTest has been moved to gt-metadata testing the new DateTimeParser class
+ * @deprecated This test classes test that the Deprecated TimeParser is still working properly. An updated
+ *     TimeParserTest has been moved to gt-metadata testing the new DateTimeParser class
  */
 @Deprecated
 public class TimeParserTest extends Assert {
@@ -476,7 +476,8 @@ public class TimeParserTest extends Assert {
         List<Date> time = PARSER.parse(timeInterval);
         assertEquals(5, time.size());
         assertEquals(1318241472000l, time.get(0).getTime());
-        assertEquals(1318241472000l + (3600 * 1000 * 4), time.get(time.size() - 1).getTime());
+        assertEquals(
+                1318241472000l + (3600 * 1000 * 4), time.get(time.size() - 1).getTime());
     }
 
     @Test

@@ -28,9 +28,8 @@ import org.geotools.util.factory.Hints;
  *
  * <p>This implementation gathers up expression1, expression2 and match action support.
  *
- * <p>For the SAX parsers setExpression1 and setExpression2 can be used to fill in the filter after
- * creation. Everyone else is asked to treat the filter as immutable and use the appropriate
- * FilterFactory creation method.
+ * <p>For the SAX parsers setExpression1 and setExpression2 can be used to fill in the filter after creation. Everyone
+ * else is asked to treat the filter as immutable and use the appropriate FilterFactory creation method.
  *
  * @author Justin Deoliveira (Boundless)
  */
@@ -51,8 +50,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
         this(expression1, expression2, true);
     }
     /** Immutable constructor for use by FilterFactory */
-    protected BinaryComparisonAbstract(
-            Expression expression1, Expression expression2, boolean matchingCase) {
+    protected BinaryComparisonAbstract(Expression expression1, Expression expression2, boolean matchingCase) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.matchingCase = matchingCase;
@@ -83,8 +81,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
         return MatchAction.ANY; // default
     }
     /**
-     * Convenience method which evaluates the expressions and trys to align the values to be of the
-     * same type.
+     * Convenience method which evaluates the expressions and trys to align the values to be of the same type.
      *
      * <p>If the values can not be aligned, the original values are returned.
      */
@@ -96,8 +93,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
     }
 
     /**
-     * Convenience method which evaluates the expressions and trys to align the values to be of the
-     * same type.
+     * Convenience method which evaluates the expressions and trys to align the values to be of the same type.
      *
      * <p>If the values can not be aligned, the original values are returned.
      */

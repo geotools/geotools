@@ -34,16 +34,15 @@ import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.SourceDataStore;
 
 /**
- * This interface allows data stores to take advantage of certain App-Schema extension points
- * allowing them to provided the necessary customizations. Is up to each store, based on the
- * context, to decide if it wants to contribute with anything.
+ * This interface allows data stores to take advantage of certain App-Schema extension points allowing them to provided
+ * the necessary customizations. Is up to each store, based on the context, to decide if it wants to contribute with
+ * anything.
  */
 public interface CustomSourceDataStore {
 
     /**
-     * Builds a data store based on the provided App-Schema data store configuration. If the
-     * extension is NOT capable of building a data store based on the provided configuration NULL
-     * should be returned.
+     * Builds a data store based on the provided App-Schema data store configuration. If the extension is NOT capable of
+     * building a data store based on the provided configuration NULL should be returned.
      *
      * @param dataStoreConfig App-Schema data store configuration
      * @param appSchemaConfig App-Schema full configuration
@@ -53,25 +52,23 @@ public interface CustomSourceDataStore {
             SourceDataStore dataStoreConfig, AppSchemaDataAccessDTO appSchemaConfig);
 
     /**
-     * Allows a data store to provide its own configuration to the XML parser \ digester for data
-     * sources.
+     * Allows a data store to provide its own configuration to the XML parser \ digester for data sources.
      *
      * @param digester XML parser \ digester
      */
     void configXmlDigesterDataSources(Digester digester);
 
     /**
-     * Allows a data store to provide its own configuration to the XML parser \ digester for
-     * attributes mappings.
+     * Allows a data store to provide its own configuration to the XML parser \ digester for attributes mappings.
      *
      * @param digester XML parser \ digester
      */
     void configXmlDigesterAttributesMappings(Digester digester);
 
     /**
-     * Allows a data store to build its own iterator that will be used by App-Schema core to
-     * retrieve the necessary attributes from the data store to build the mapped feature types.
-     * Stores can also if need change the current App-Schema query.
+     * Allows a data store to build its own iterator that will be used by App-Schema core to retrieve the necessary
+     * attributes from the data store to build the mapped feature types. Stores can also if need change the current
+     * App-Schema query.
      *
      * @param store the data store from where App-Schema will retrieve the necessary values
      * @param featureTypeMapping the feature typ mapping that is being build by App-Schema core
@@ -80,13 +77,9 @@ public interface CustomSourceDataStore {
      * @return a custom iterator or NULL
      */
     DataAccessMappingFeatureIterator buildIterator(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping featureTypeMapping,
-            Query query,
-            Transaction transaction);
+            AppSchemaDataAccess store, FeatureTypeMapping featureTypeMapping, Query query, Transaction transaction);
 
-    default List<PropertyName> getSurrogatePropertyNames(
-            List<PropertyName> requested, FeatureTypeMapping mapping) {
+    default List<PropertyName> getSurrogatePropertyNames(List<PropertyName> requested, FeatureTypeMapping mapping) {
         return Collections.emptyList();
     }
 
@@ -96,8 +89,7 @@ public interface CustomSourceDataStore {
      * @return the list of found custom data store extensions
      */
     static List<CustomSourceDataStore> loadExtensions() {
-        ServiceLoader<CustomSourceDataStore> loader =
-                ServiceLoader.load(CustomSourceDataStore.class);
+        ServiceLoader<CustomSourceDataStore> loader = ServiceLoader.load(CustomSourceDataStore.class);
         loader.reload();
         // get the custom data store extensions from the loader
         List<CustomSourceDataStore> extensions = new ArrayList<>();

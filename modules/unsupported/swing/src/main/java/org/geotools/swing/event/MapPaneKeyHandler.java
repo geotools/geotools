@@ -28,15 +28,13 @@ import org.geotools.swing.MapPane;
 
 /**
  * Handles keyboard events for a map pane. This is the default handler for classes derived from
- * {@linkplain org.geotools.swing.AbstractMapPane}. It provides for keyboard-controlled scrolling
- * and zooming of the display. The default key bindings for actions should be suitable for most
- * keyboards.
+ * {@linkplain org.geotools.swing.AbstractMapPane}. It provides for keyboard-controlled scrolling and zooming of the
+ * display. The default key bindings for actions should be suitable for most keyboards.
  *
- * <p>While the Java Swing toolkit provides its own mechanism for linking key events to actions,
- * this class is somewhat easier to use and provides a model that could be implemented in other
- * toolkits such as SWT. However, you are free to ignore this class and use your own key handler
- * instead since the map pane classes only require that the handler implements the {@linkplain
- * java.awt.event.KeyListener} interface.
+ * <p>While the Java Swing toolkit provides its own mechanism for linking key events to actions, this class is somewhat
+ * easier to use and provides a model that could be implemented in other toolkits such as SWT. However, you are free to
+ * ignore this class and use your own key handler instead since the map pane classes only require that the handler
+ * implements the {@linkplain java.awt.event.KeyListener} interface.
  *
  * <p>Key bindings for an individual action can be set like this:
  *
@@ -46,8 +44,7 @@ import org.geotools.swing.MapPane;
  * mapPaneKeyHandler.setBinding(key, MapPaneKeyHandler.Action.SCROLL_LEFT);
  * </code></pre>
  *
- * Multiple bindings can be set with the {@linkplain #setBindings(Map)} or {@linkplain
- * #setAllBindings(Map)} methods:
+ * Multiple bindings can be set with the {@linkplain #setBindings(Map)} or {@linkplain #setAllBindings(Map)} methods:
  *
  * <pre><code>
  * Map&lt;KeyInfo, MapPaneKeyHandler.Action&gt; bindings =
@@ -97,12 +94,9 @@ public class MapPaneKeyHandler extends KeyAdapter {
 
         defaultBindings.put(new KeyInfo(KeyEvent.VK_DOWN, 0, "Down"), Action.SCROLL_DOWN);
 
-        defaultBindings.put(
-                new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"), Action.ZOOM_IN);
+        defaultBindings.put(new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"), Action.ZOOM_IN);
 
-        defaultBindings.put(
-                new KeyInfo(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"),
-                Action.ZOOM_OUT);
+        defaultBindings.put(new KeyInfo(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"), Action.ZOOM_OUT);
 
         defaultBindings.put(new KeyInfo(KeyEvent.VK_EQUALS, 0, "="), Action.ZOOM_FULL_EXTENT);
     }
@@ -127,8 +121,8 @@ public class MapPaneKeyHandler extends KeyAdapter {
     }
 
     /**
-     * Gets the current key bindings. The bindings are copied into the destination {@code Map}, so
-     * subsequent changes to it will not affect this handler.
+     * Gets the current key bindings. The bindings are copied into the destination {@code Map}, so subsequent changes to
+     * it will not affect this handler.
      *
      * @return the current key bindings
      */
@@ -184,8 +178,8 @@ public class MapPaneKeyHandler extends KeyAdapter {
     }
 
     /**
-     * Sets one or more key bindings for actions. This method can be used to set a subset of the key
-     * bindings while leaving others unchanged.
+     * Sets one or more key bindings for actions. This method can be used to set a subset of the key bindings while
+     * leaving others unchanged.
      *
      * @param newBindings new key bindings
      * @throws IllegalArgumentException if {@code newBindings} is {@code null}
@@ -202,8 +196,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
 
     /**
      * Sets the bindings to those specified in {@code newBindings}. This method differs to
-     * {@linkplain #setBindings(java.util.Map)} in that any actions which do not appear in the input
-     * map are disabled.
+     * {@linkplain #setBindings(java.util.Map)} in that any actions which do not appear in the input map are disabled.
      *
      * @param newBindings new key bindings
      * @throws IllegalArgumentException if {@code newBindings} is {@code null}
@@ -255,8 +248,8 @@ public class MapPaneKeyHandler extends KeyAdapter {
 
     /**
      * Scrolls the map pane image. We use {@linkplain MapPane#moveImage(int, int)} rather than
-     * {@linkplain MapPane#setDisplayArea(<any>)} in this method because it gives much smoother
-     * scrolling when the key is held down.
+     * {@linkplain MapPane#setDisplayArea(<any>)} in this method because it gives much smoother scrolling when the key
+     * is held down.
      *
      * @param action scroll direction
      */
@@ -323,13 +316,12 @@ public class MapPaneKeyHandler extends KeyAdapter {
             double w = env.getWidth() * zoom;
             double h = env.getHeight() * zoom;
 
-            ReferencedEnvelope newEnv =
-                    new ReferencedEnvelope(
-                            centreX - w / 2,
-                            centreX + w / 2,
-                            centreY - h / 2,
-                            centreY + h / 2,
-                            env.getCoordinateReferenceSystem());
+            ReferencedEnvelope newEnv = new ReferencedEnvelope(
+                    centreX - w / 2,
+                    centreX + w / 2,
+                    centreY - h / 2,
+                    centreY + h / 2,
+                    env.getCoordinateReferenceSystem());
 
             mapPane.setDisplayArea(newEnv);
         }

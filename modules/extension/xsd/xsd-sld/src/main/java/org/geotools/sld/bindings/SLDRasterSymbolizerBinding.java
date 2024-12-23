@@ -160,8 +160,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/&gt;
         if (node.hasChild("ContrastEnhancement")) {
-            rs.setContrastEnhancement(
-                    (ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
+            rs.setContrastEnhancement((ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
         }
 
         // &lt;xsd:element ref="sld:ShadedRelief" minOccurs="0"/&gt;
@@ -177,8 +176,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
         for (CssParameter param : node.getChildValues(CssParameter.class)) {
-            rs.getOptions()
-                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
+            rs.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return rs;

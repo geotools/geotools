@@ -20,17 +20,16 @@ import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * This interface defines the strategy that a ContrastEnhancement will use to execute the
- * ContrastMethod that it has defined. This allows uses to make use of VendorOptions in the SLD
- * (&amp; CSS) to specify an algorithm to apply and named parameters to control how that algorithm
- * operates.
+ * This interface defines the strategy that a ContrastEnhancement will use to execute the ContrastMethod that it has
+ * defined. This allows uses to make use of VendorOptions in the SLD (&amp; CSS) to specify an algorithm to apply and
+ * named parameters to control how that algorithm operates.
  *
  * @author Ian Turton.
  */
 public interface ContrastMethodStrategy {
     /**
-     * Add a VendorOption that controls how this strategy operates. All VendorOptions are optional
-     * and the strategy will operate using default values if missing.
+     * Add a VendorOption that controls how this strategy operates. All VendorOptions are optional and the strategy will
+     * operate using default values if missing.
      *
      * @param key the name of the Vendor Option
      * @param value an expression that evaluates to the value of the option.
@@ -38,8 +37,7 @@ public interface ContrastMethodStrategy {
     void addOption(String key, Expression value);
 
     /**
-     * Return the Map of VendorOptions used by this strategy. This may be empty but should not be
-     * null.
+     * Return the Map of VendorOptions used by this strategy. This may be empty but should not be null.
      *
      * @return the options a map of Expressions keyed by name.
      */

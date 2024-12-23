@@ -37,8 +37,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author Christian Mueller
- *     <p>The default implementation for GeneralizationInfosProvider, reading the info from an XML
- *     file.
+ *     <p>The default implementation for GeneralizationInfosProvider, reading the info from an XML file.
  *     <p>The xml schema file is "/geninfos_1.0.xsd"
  */
 public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvider {
@@ -143,18 +142,17 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
         NodeList nl = parentNode.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node generalisationInfoNode = nl.item(i);
-            if (GENERALIZATION_INFO_TAG.equals(generalisationInfoNode.getNodeName()) == false)
-                continue;
+            if (GENERALIZATION_INFO_TAG.equals(generalisationInfoNode.getNodeName()) == false) continue;
 
             NamedNodeMap attrMap = generalisationInfoNode.getAttributes();
 
-            String baseFeatureName = attrMap.getNamedItem(BASE_FEATURE_NAME_ATTR).getTextContent();
+            String baseFeatureName =
+                    attrMap.getNamedItem(BASE_FEATURE_NAME_ATTR).getTextContent();
             String featureName = attrMap.getNamedItem(FEATURE_NAME_ATTR).getTextContent();
             String geomPropertyName = null;
             if (attrMap.getNamedItem(GEOM_PROPERTY_NAME_ATTR) != null)
                 geomPropertyName = attrMap.getNamedItem(GEOM_PROPERTY_NAME_ATTR).getTextContent();
-            GeneralizationInfo gi =
-                    new GeneralizationInfo(baseFeatureName, featureName, geomPropertyName, gInfos);
+            GeneralizationInfo gi = new GeneralizationInfo(baseFeatureName, featureName, geomPropertyName, gInfos);
 
             if (attrMap.getNamedItem(DATASOURCE_NAME_ATTR) != null)
                 gi.setDataSourceName(attrMap.getNamedItem(DATASOURCE_NAME_ATTR).getTextContent());

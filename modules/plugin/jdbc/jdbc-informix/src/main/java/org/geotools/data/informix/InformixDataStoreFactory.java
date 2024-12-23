@@ -32,23 +32,18 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class InformixDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "informix-sqli",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype",
+            String.class,
+            "Type",
+            true,
+            "informix-sqli",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     /** Default port number for Informix */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 9088);
 
-    public static final Param JDBC_URL =
-            new Param(
-                    "jdbcUrl",
-                    String.class,
-                    "The JDBC url (check the JDBC driver docs to find out its format)",
-                    true);
+    public static final Param JDBC_URL = new Param(
+            "jdbcUrl", String.class, "The JDBC url (check the JDBC driver docs to find out its format)", true);
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {

@@ -23,10 +23,10 @@ import org.geotools.api.temporal.TemporalReferenceSystem;
 import org.geotools.util.Utilities;
 
 /**
- * A data type that shall be used to identify a temporal position within a day. Because {@linkplain
- * TemporalPosition temporal position} cannot by itself completely identify a single temporal
- * position; it shall be used with {@linkplain CalendarDate calendar date} for that purpose. It may
- * be also used to identify the time of occurrence of an event that recurs every day.
+ * A data type that shall be used to identify a temporal position within a day. Because {@linkplain TemporalPosition
+ * temporal position} cannot by itself completely identify a single temporal position; it shall be used with
+ * {@linkplain CalendarDate calendar date} for that purpose. It may be also used to identify the time of occurrence of
+ * an event that recurs every day.
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
@@ -36,19 +36,16 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     private Number[] clockTime;
 
     public DefaultClockTime(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number... clockTime) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number... clockTime) {
         super(frame, indeterminatePosition);
         this.clockTime = clockTime;
     }
 
     /**
-     * A sequence of numbers with a structure similar to that of {@link CalendarDate#getCalendarDate
-     * CalendarDate}. The first number integer identifies a specific instance of the unit used at
-     * the highest level of the clock hierarchy, the second number identifies a specific instance of
-     * the unit used at the next lower level, and so on. All but the last number in the sequence
-     * shall be integers; the last number may be integer or real.
+     * A sequence of numbers with a structure similar to that of {@link CalendarDate#getCalendarDate CalendarDate}. The
+     * first number integer identifies a specific instance of the unit used at the highest level of the clock hierarchy,
+     * the second number identifies a specific instance of the unit used at the next lower level, and so on. All but the
+     * last number in the sequence shall be integers; the last number may be integer or real.
      */
     @Override
     public Number[] getClockTime() {

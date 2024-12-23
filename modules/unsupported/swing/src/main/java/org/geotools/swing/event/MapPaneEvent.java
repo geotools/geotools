@@ -35,8 +35,8 @@ public class MapPaneEvent extends EventObject {
         NEW_MAPCONTENT,
 
         /**
-         * The display area has been changed. This can include both changes in bounds and in the
-         * coordinate reference system.
+         * The display area has been changed. This can include both changes in bounds and in the coordinate reference
+         * system.
          */
         DISPLAY_AREA_CHANGED,
 
@@ -65,8 +65,7 @@ public class MapPaneEvent extends EventObject {
     }
 
     /**
-     * Constructor for an event with associated data. The new event object takes ownership of the
-     * data object.
+     * Constructor for an event with associated data. The new event object takes ownership of the data object.
      *
      * @param source the map pane issuing this event
      * @param type the type of event

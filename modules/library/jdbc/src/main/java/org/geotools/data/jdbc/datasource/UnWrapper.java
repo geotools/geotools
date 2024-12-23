@@ -20,9 +20,8 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 /**
- * Generic {@link Connection} unwrapper. A user can test if the unwrapper is able to unwrap a
- * certain connection, on positive answer he can call {@link #unwrap(Connection)} to get the native
- * connection
+ * Generic {@link Connection} unwrapper. A user can test if the unwrapper is able to unwrap a certain connection, on
+ * positive answer he can call {@link #unwrap(Connection)} to get the native connection
  *
  * @author Andrea Aime - TOPP
  */
@@ -34,8 +33,8 @@ public interface UnWrapper {
     boolean canUnwrap(Statement st);
 
     /**
-     * Returns the unwrapped connection, of throws {@link IllegalArgumentException} if the passed
-     * {@link Connection} is not supported ({@link #canUnwrap(Connection)} returns false}.
+     * Returns the unwrapped connection, of throws {@link IllegalArgumentException} if the passed {@link Connection} is
+     * not supported ({@link #canUnwrap(Connection)} returns false}.
      */
     Connection unwrap(Connection conn);
 

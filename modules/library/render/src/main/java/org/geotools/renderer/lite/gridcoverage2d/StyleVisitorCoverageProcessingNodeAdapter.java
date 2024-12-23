@@ -26,11 +26,11 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.util.factory.Hints;
 
 /**
- * This class implements an adapter to allow a {@link CoverageProcessingNode} to feed itself by
- * visiting an SLD {@link Style} .
+ * This class implements an adapter to allow a {@link CoverageProcessingNode} to feed itself by visiting an SLD
+ * {@link Style} .
  *
- * <p>This class can be used to tie together {@link CoverageProcessingNode} s built from a chains as
- * specified by the {@link RasterSymbolizer} SLd element.
+ * <p>This class can be used to tie together {@link CoverageProcessingNode} s built from a chains as specified by the
+ * {@link RasterSymbolizer} SLd element.
  *
  * @author Simone Giannecchini, GeoSolutions
  */
@@ -57,8 +57,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
     }
 
     /** Default constructor for {@link StyleVisitorCoverageProcessingNodeAdapter} */
-    public StyleVisitorCoverageProcessingNodeAdapter(
-            InternationalString name, InternationalString description) {
+    public StyleVisitorCoverageProcessingNodeAdapter(InternationalString name, InternationalString description) {
         this(-1, name, description);
     }
 
@@ -76,25 +75,20 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      * Default constructor that gives users the possibility
      *
      * @param maxSources maximum number of sources allowed for this node.
-     * @param hints instance of {@link Hints} class to control creation of internal factories. It
-     *     can be <code>null</code>.
+     * @param hints instance of {@link Hints} class to control creation of internal factories. It can be <code>null
+     *     </code>.
      */
     public StyleVisitorCoverageProcessingNodeAdapter(
-            int maxSources,
-            Hints hints,
-            InternationalString name,
-            InternationalString description) {
-        adaptee =
-                new BaseCoverageProcessingNode(
-                        maxSources, hints != null ? hints.clone() : null, name, description) {
+            int maxSources, Hints hints, InternationalString name, InternationalString description) {
+        adaptee = new BaseCoverageProcessingNode(maxSources, hints != null ? hints.clone() : null, name, description) {
 
-                    @Override
-                    protected GridCoverage execute() {
-                        synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {
-                            return StyleVisitorCoverageProcessingNodeAdapter.this.execute();
-                        }
-                    }
-                };
+            @Override
+            protected GridCoverage execute() {
+                synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {
+                    return StyleVisitorCoverageProcessingNodeAdapter.this.execute();
+                }
+            }
+        };
     }
 
     /** @see BaseCoverageProcessingNode#execute() */

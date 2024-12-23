@@ -13,10 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Identifier within a {@linkplain NameSpace name space} for a local object. Local names are names
- * which are directly accessible to and maintained by a {@linkplain NameSpace name space}. Names are
- * local to one and only one name space. The name space within which they are local is indicated by
- * the {@linkplain #scope scope}.
+ * Identifier within a {@linkplain NameSpace name space} for a local object. Local names are names which are directly
+ * accessible to and maintained by a {@linkplain NameSpace name space}. Names are local to one and only one name space.
+ * The name space within which they are local is indicated by the {@linkplain #scope scope}.
  *
  * @author Martin Desruisseaux (IRD)
  * @author Bryce Nordgren (USDA)
@@ -29,8 +28,8 @@ public interface LocalName extends GenericName {
     int depth();
 
     /**
-     * Returns the sequence of local name. Since this object is itself a locale name, this method
-     * always returns a {@linkplain Collections#singleton singleton} containing only {@code this}.
+     * Returns the sequence of local name. Since this object is itself a locale name, this method always returns a
+     * {@linkplain Collections#singleton singleton} containing only {@code this}.
      */
     @Override
     List<? extends LocalName> getParsedNames();

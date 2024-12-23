@@ -27,8 +27,8 @@ import org.junit.Test;
  */
 public final class MonolineFormatterTest {
     /**
-     * Run the test. This is only a visual test. This test is disabled by default in order to avoid
-     * polluting the output stream with logs during Maven builds.
+     * Run the test. This is only a visual test. This test is disabled by default in order to avoid polluting the output
+     * stream with logs during Maven builds.
      */
     @Test
     public void testInitialization() {

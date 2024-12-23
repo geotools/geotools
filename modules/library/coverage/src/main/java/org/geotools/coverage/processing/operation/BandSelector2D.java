@@ -36,10 +36,9 @@ import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * A grid coverage containing a subset of an other grid coverage's sample dimensions, and/or a
- * different {@link ColorModel}. A common reason for changing the color model is to select a
- * different visible band. Consequently, the {@code "SelectSampleDimension"} operation name still
- * appropriate in this context.
+ * A grid coverage containing a subset of an other grid coverage's sample dimensions, and/or a different
+ * {@link ColorModel}. A common reason for changing the color model is to select a different visible band. Consequently,
+ * the {@code "SelectSampleDimension"} operation name still appropriate in this context.
  *
  * @since 2.2
  * @version $Id$
@@ -50,25 +49,21 @@ final class BandSelector2D extends GridCoverage2D {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -2833594454437021628L;
-    /**
-     * The mapping to bands in the source grid coverage. May be {@code null} if all bands were
-     * keept.
-     */
+    /** The mapping to bands in the source grid coverage. May be {@code null} if all bands were keept. */
     @SuppressWarnings("PMD.UnusedPrivateField")
     private final int[] bandIndices;
 
     /**
-     * Constructs a new {@code BandSelect2D} grid coverage. This grid coverage will use the same
-     * coordinate reference system and the same geometry than the source grid coverage.
+     * Constructs a new {@code BandSelect2D} grid coverage. This grid coverage will use the same coordinate reference
+     * system and the same geometry than the source grid coverage.
      *
      * @param source The source coverage.
      * @param image The image to use.
      * @param bands The sample dimensions to use.
-     * @param bandIndices The mapping to bands in {@code source}. Not used by this constructor, but
-     *     keept for futur reference.
-     * @todo It would be nice if we could use always the "BandSelect" operation without the "Null"
-     *     one. But as of JAI-1.1.1, "BandSelect" do not detect by itself the case were no copy is
-     *     required.
+     * @param bandIndices The mapping to bands in {@code source}. Not used by this constructor, but keept for futur
+     *     reference.
+     * @todo It would be nice if we could use always the "BandSelect" operation without the "Null" one. But as of
+     *     JAI-1.1.1, "BandSelect" do not detect by itself the case were no copy is required.
      */
     private BandSelector2D(
             final GridCoverage2D source,
@@ -107,7 +102,8 @@ final class BandSelector2D extends GridCoverage2D {
         if (bandIndices != null) {
             bandIndices = bandIndices.clone();
         }
-        Integer visibleBand = (Integer) parameters.parameter("VisibleSampleDimension").getValue();
+        Integer visibleBand =
+                (Integer) parameters.parameter("VisibleSampleDimension").getValue();
         /*
          * Prepares the informations needed for JAI's "BandSelect" operation. The loop below
          * should be executed only once, except if the source grid coverage is itself an instance
@@ -145,8 +141,7 @@ final class BandSelector2D extends GridCoverage2D {
                 if (visibleSourceBand < 0) {
                     // TODO: localize
                     throw new IllegalArgumentException(
-                            "Visible sample dimension is "
-                                    + "not among the ones specified in SampleDimensions param");
+                            "Visible sample dimension is " + "not among the ones specified in SampleDimensions param");
                 }
             } else {
                 // Try to keep the original one, if it hasn't been selected, fall
@@ -206,13 +201,9 @@ final class BandSelector2D extends GridCoverage2D {
                 final IndexColorModel indexed = (IndexColorModel) colors;
                 final int[] ARGB = new int[indexed.getMapSize()];
                 indexed.getRGBs(ARGB);
-                colors =
-                        ColorUtilities.getIndexColorModel(
-                                ARGB, targetBands.length, visibleTargetBand);
+                colors = ColorUtilities.getIndexColorModel(ARGB, targetBands.length, visibleTargetBand);
             } else {
-                colors =
-                        targetBands[visibleTargetBand].getColorModel(
-                                visibleTargetBand, targetBands.length);
+                colors = targetBands[visibleTargetBand].getColorModel(visibleTargetBand, targetBands.length);
             }
             /*
              * If we are not able to provide a color model because our sample dimensions
@@ -248,10 +239,9 @@ final class BandSelector2D extends GridCoverage2D {
             // did we manage to create one?
             if (tempCM != null) {
                 layout.setColorModel(tempCM);
-                ImageWorker iw =
-                        new ImageWorker(image)
-                                .setRenderingHints(hints)
-                                .format(image.getSampleModel().getDataType());
+                ImageWorker iw = new ImageWorker(image)
+                        .setRenderingHints(hints)
+                        .format(image.getSampleModel().getDataType());
                 image = iw.getPlanarImage();
 
                 // Check the NOData properties
@@ -259,9 +249,8 @@ final class BandSelector2D extends GridCoverage2D {
                 Map<String, Object> properties = source.getProperties();
                 if (properties != null && CoverageUtilities.getNoDataProperty(source) != null) {
                     NoDataContainer noDataC = CoverageUtilities.getNoDataProperty(source);
-                    Range noData =
-                            RangeFactory.convert(
-                                    noDataC.getAsRange(), image.getSampleModel().getDataType());
+                    Range noData = RangeFactory.convert(
+                            noDataC.getAsRange(), image.getSampleModel().getDataType());
                     CoverageUtilities.setNoDataProperty(properties, noData);
                 }
             }
@@ -271,8 +260,8 @@ final class BandSelector2D extends GridCoverage2D {
     }
 
     /**
-     * Maps the specified source band number to the target band index after the selection/reordering
-     * process imposed by targetSampleDimensions is applied.
+     * Maps the specified source band number to the target band index after the selection/reordering process imposed by
+     * targetSampleDimensions is applied.
      *
      * @param sourceBand The indice of a source band.
      * @param bandIndices The indices of source bands to be retained for target, or {@code null}.

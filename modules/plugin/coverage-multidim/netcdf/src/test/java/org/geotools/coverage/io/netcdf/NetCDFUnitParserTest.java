@@ -58,74 +58,64 @@ public class NetCDFUnitParserTest {
 
         @Parameterized.Parameters(name = "{index}: {0} -> {1}")
         public static Collection<Object[]> data() {
-            return Arrays.asList(
-                    new Object[][] {
-                        {"microgram", MICRO(GRAM)},
-                        {"microgram/m3", MICRO(GRAM).divide(METRE.pow(3))},
-                        {"nanograms/m3", NANO(GRAM).divide(METRE.pow(3))},
-                        {"microgrammes per cubic meter", MICRO(GRAM).divide(METRE.pow(3))},
-                        {"m2", METRE.pow(2)},
-                        {"m3", METRE.pow(3)},
-                        {"µmol", MICRO(MOLE)},
-                        {"g m-3", GRAM.multiply(METRE.pow(-3))},
-                        {"mg", MILLI(GRAM)},
-                        {"mol m-2", MOLE.multiply(METRE.pow(-2))},
-                        {"Pa", SI.PASCAL},
-                        {"unitless", AbstractUnit.ONE},
-                        {"m/s", METRE.divide(SI.SECOND)},
-                        {"W m-2", WATT.multiply(METRE.pow(-2))},
-                        {
-                            "kg m-2 s-1",
-                            SI.KILOGRAM.multiply(METRE.pow(-2).multiply(SI.SECOND.pow(-1)))
-                        },
-                        {
-                            "mW m^-2 sr^-1 nm^-1",
-                            MILLI(WATT)
-                                    .multiply(METRE.pow(-2))
-                                    .multiply(STERADIAN.pow(-1))
-                                    .multiply(NANO(METRE).pow(-1))
-                        },
-                        {
-                            "mW m^-2 nm^-1",
-                            MILLI(WATT).multiply(METRE.pow(-2)).multiply(NANO(METRE).pow(-1))
-                        },
-                        {"mol cm-3", MOLE.divide(CENTI(METRE).pow(3))},
-                        {"Pa", SI.PASCAL},
-                        {"percentage", AbstractUnit.ONE.divide(100)},
-                        {"Meter", METRE},
-                        {"meter", METRE},
-                        {"dB", AbstractUnit.ONE.transform(new LogConverter(10)).divide(10)},
-                        {"degree", NonSI.DEGREE_ANGLE},
-                        {"m2/m2", METRE.pow(2).divide(METRE.pow(2))},
-                        {"m-1 s", METRE.pow(-1).multiply(SECOND)},
-                        {"kg m-3", KILOGRAM.multiply(METRE.pow(-3))},
-                        {"K m-1", KELVIN.multiply(METRE.pow(-1))},
-                        {"mol kg-1", MOLE.multiply(KILOGRAM.pow(-1))},
-                        {"J kg-1", JOULE.multiply(KILOGRAM.pow(-1))},
-                        {"kg m-2 s-1", KILOGRAM.multiply(METRE.pow(-2).multiply(SECOND.pow(-1)))},
-                        {"J m-2", JOULE.multiply(METRE.pow(-2))},
-                        {"m2 s-1", METRE.pow(2).multiply(SECOND.pow(-1))},
-                        {"kg m-2", KILOGRAM.multiply(METRE.pow(-2))},
-                        {"mol m-2", MOLE.multiply(METRE.pow(-2))},
-                        {"s-1 m-3", SECOND.pow(-1).multiply(METRE.pow(-3))},
-                        {"g kg-1", GRAM.multiply(KILOGRAM.pow(-1))},
-                        {"Pa m", PASCAL.multiply(METRE)},
-                        {"W m-2", WATT.multiply(METRE.pow(-2))},
-                        {
-                            "mol m-2 s-1 m-1 sr-1",
-                            MOLE.divide(
-                                    METRE.pow(2)
-                                            .multiply(SECOND)
-                                            .multiply(METRE)
-                                            .multiply(STERADIAN))
-                        },
-                        {
-                            "K m2 kg-1 s-1",
-                            KELVIN.multiply(METRE.pow(2))
-                                    .multiply(KILOGRAM.pow(-1))
-                                    .multiply(SECOND.pow(-1))
-                        }
-                    });
+            return Arrays.asList(new Object[][] {
+                {"microgram", MICRO(GRAM)},
+                {"microgram/m3", MICRO(GRAM).divide(METRE.pow(3))},
+                {"nanograms/m3", NANO(GRAM).divide(METRE.pow(3))},
+                {"microgrammes per cubic meter", MICRO(GRAM).divide(METRE.pow(3))},
+                {"m2", METRE.pow(2)},
+                {"m3", METRE.pow(3)},
+                {"µmol", MICRO(MOLE)},
+                {"g m-3", GRAM.multiply(METRE.pow(-3))},
+                {"mg", MILLI(GRAM)},
+                {"mol m-2", MOLE.multiply(METRE.pow(-2))},
+                {"Pa", SI.PASCAL},
+                {"unitless", AbstractUnit.ONE},
+                {"m/s", METRE.divide(SI.SECOND)},
+                {"W m-2", WATT.multiply(METRE.pow(-2))},
+                {"kg m-2 s-1", SI.KILOGRAM.multiply(METRE.pow(-2).multiply(SI.SECOND.pow(-1)))},
+                {
+                    "mW m^-2 sr^-1 nm^-1",
+                    MILLI(WATT)
+                            .multiply(METRE.pow(-2))
+                            .multiply(STERADIAN.pow(-1))
+                            .multiply(NANO(METRE).pow(-1))
+                },
+                {
+                    "mW m^-2 nm^-1",
+                    MILLI(WATT).multiply(METRE.pow(-2)).multiply(NANO(METRE).pow(-1))
+                },
+                {"mol cm-3", MOLE.divide(CENTI(METRE).pow(3))},
+                {"Pa", SI.PASCAL},
+                {"percentage", AbstractUnit.ONE.divide(100)},
+                {"Meter", METRE},
+                {"meter", METRE},
+                {"dB", AbstractUnit.ONE.transform(new LogConverter(10)).divide(10)},
+                {"degree", NonSI.DEGREE_ANGLE},
+                {"m2/m2", METRE.pow(2).divide(METRE.pow(2))},
+                {"m-1 s", METRE.pow(-1).multiply(SECOND)},
+                {"kg m-3", KILOGRAM.multiply(METRE.pow(-3))},
+                {"K m-1", KELVIN.multiply(METRE.pow(-1))},
+                {"mol kg-1", MOLE.multiply(KILOGRAM.pow(-1))},
+                {"J kg-1", JOULE.multiply(KILOGRAM.pow(-1))},
+                {"kg m-2 s-1", KILOGRAM.multiply(METRE.pow(-2).multiply(SECOND.pow(-1)))},
+                {"J m-2", JOULE.multiply(METRE.pow(-2))},
+                {"m2 s-1", METRE.pow(2).multiply(SECOND.pow(-1))},
+                {"kg m-2", KILOGRAM.multiply(METRE.pow(-2))},
+                {"mol m-2", MOLE.multiply(METRE.pow(-2))},
+                {"s-1 m-3", SECOND.pow(-1).multiply(METRE.pow(-3))},
+                {"g kg-1", GRAM.multiply(KILOGRAM.pow(-1))},
+                {"Pa m", PASCAL.multiply(METRE)},
+                {"W m-2", WATT.multiply(METRE.pow(-2))},
+                {
+                    "mol m-2 s-1 m-1 sr-1",
+                    MOLE.divide(METRE.pow(2).multiply(SECOND).multiply(METRE).multiply(STERADIAN))
+                },
+                {
+                    "K m2 kg-1 s-1",
+                    KELVIN.multiply(METRE.pow(2)).multiply(KILOGRAM.pow(-1)).multiply(SECOND.pow(-1))
+                }
+            });
         }
 
         private String input;

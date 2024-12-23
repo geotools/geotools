@@ -46,30 +46,27 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * A Process that uses a {@link HeatmapSurface} to compute a heatmap surface over a set of irregular
- * data points as a {@link GridCoverage}. Heatmaps are known more formally as <i>Multivariate Kernel
- * Density Estimation</i>.
+ * A Process that uses a {@link HeatmapSurface} to compute a heatmap surface over a set of irregular data points as a
+ * {@link GridCoverage}. Heatmaps are known more formally as <i>Multivariate Kernel Density Estimation</i>.
  *
- * <p>The appearance of the heatmap is controlled by the kernel radius, which determines the "radius
- * of influence" of input points. The radius is specified by the radiusPixels parameter, which is in
- * output pixels. Using pixels allows easy estimation of a value which will give a visually
- * effective result, and ensures the heatmap appearance changes to match the zoom level.
+ * <p>The appearance of the heatmap is controlled by the kernel radius, which determines the "radius of influence" of
+ * input points. The radius is specified by the radiusPixels parameter, which is in output pixels. Using pixels allows
+ * easy estimation of a value which will give a visually effective result, and ensures the heatmap appearance changes to
+ * match the zoom level.
  *
- * <p>By default each input point has weight 1. Optionally the weights of points may be supplied by
- * an attribute specified by the <code>weightAttr</code> parameter.
+ * <p>By default each input point has weight 1. Optionally the weights of points may be supplied by an attribute
+ * specified by the <code>weightAttr</code> parameter.
  *
  * <p>All geometry types are allowed as input. For non-point geometries the centroid is used.
  *
- * <p>To improve performance, the surface grid can be computed at a lower resolution than the
- * requested output image using the <code>pixelsPerCell</code> parameter. The grid is upsampled to
- * match the required image size. Upsampling uses Bilinear Interpolation to maintain visual quality.
- * This gives a large improvement in performance, with minimal impact on visual quality for small
- * cell sizes (for instance, 10 pixels or less).
+ * <p>To improve performance, the surface grid can be computed at a lower resolution than the requested output image
+ * using the <code>pixelsPerCell</code> parameter. The grid is upsampled to match the required image size. Upsampling
+ * uses Bilinear Interpolation to maintain visual quality. This gives a large improvement in performance, with minimal
+ * impact on visual quality for small cell sizes (for instance, 10 pixels or less).
  *
- * <p>To ensure that the computed surface is stable (i.e. does not display obvious edge artifacts
- * under zooming and panning), the data extent is expanded to be larger than the specified output
- * extent. The expansion distance is equal to the size of <code>radiusPixels</code> in the input
- * CRS.
+ * <p>To ensure that the computed surface is stable (i.e. does not display obvious edge artifacts under zooming and
+ * panning), the data extent is expanded to be larger than the specified output extent. The expansion distance is equal
+ * to the size of <code>radiusPixels</code> in the input CRS.
  *
  * <h3>Parameters</h3>
  *
@@ -79,26 +76,24 @@ import org.locationtech.jts.geom.Geometry;
  *   <li><b>data</b> (M) - the FeatureCollection containing the point observations
  *   <li><b>radiusPixels</b> (M)- the density kernel radius, in pixels
  *   <li><b>weightAttr</b> (M)- the feature type attribute containing the observed surface value
- *   <li><b>pixelsPerCell</b> (O) - The pixels-per-cell value determines the resolution of the
- *       computed grid. Larger values improve performance, but degrade appearance. (Default = 1)
+ *   <li><b>pixelsPerCell</b> (O) - The pixels-per-cell value determines the resolution of the computed grid. Larger
+ *       values improve performance, but degrade appearance. (Default = 1)
  *   <li><b>outputBBOX</b> (M) - The georeferenced bounding box of the output area
  *   <li><b>outputWidth</b> (M) - The width of the output raster
  *   <li><b>outputHeight</b> (M) - The height of the output raster
  * </ul>
  *
- * The output of the process is a {@linkplain GridCoverage2D} with a single band, with cell values
- * in the range [0, 1].
+ * The output of the process is a {@linkplain GridCoverage2D} with a single band, with cell values in the range [0, 1].
  *
- * <p>Computation of the surface takes places in the CRS of the output. If the data CRS is different
- * to the output CRS, the input points are transformed into the output CRS.
+ * <p>Computation of the surface takes places in the CRS of the output. If the data CRS is different to the output CRS,
+ * the input points are transformed into the output CRS.
  *
  * <h3>Using the process as a Rendering Transformation</h3>
  *
- * This process can be used as a RenderingTransformation, since it implements the
- * <tt>invertQuery(... Query, GridGeometry)</tt> method. In this case the <code>queryBuffer</code>
- * parameter should be specified to expand the query extent appropriately. The output raster
- * parameters may be provided from the request extents, using the following SLD environment
- * variables:
+ * This process can be used as a RenderingTransformation, since it implements the <tt>invertQuery(... Query,
+ * GridGeometry)</tt> method. In this case the <code>queryBuffer</code> parameter should be specified to expand the
+ * query extent appropriately. The output raster parameters may be provided from the request extents, using the
+ * following SLD environment variables:
  *
  * <ul>
  *   <li><b>outputBBOX</b> - env var = <tt>wms_bbox</tt>
@@ -106,9 +101,8 @@ import org.locationtech.jts.geom.Geometry;
  *   <li><b>outputHeight</b> - env var = <tt>wms_height</tt>
  * </ul>
  *
- * When used as an Rendering Transformation the data query is rewritten to expand the query BBOX, to
- * ensure that enough data points are queried to make the computed surface stable under panning and
- * zooming.
+ * When used as an Rendering Transformation the data query is rewritten to expand the query BBOX, to ensure that enough
+ * data points are queried to make the computed surface stable under panning and zooming.
  *
  * <p>
  *
@@ -116,21 +110,17 @@ import org.locationtech.jts.geom.Geometry;
  */
 @DescribeProcess(
         title = "Heatmap",
-        description =
-                "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
+        description = "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
 public class HeatmapProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input features")
-                    SimpleFeatureCollection obsFeatures,
+            @DescribeParameter(name = "data", description = "Input features") SimpleFeatureCollection obsFeatures,
 
             // process parameters
-            @DescribeParameter(
-                            name = "radiusPixels",
-                            description = "Radius of the density kernel in pixels")
+            @DescribeParameter(name = "radiusPixels", description = "Radius of the density kernel in pixels")
                     Integer argRadiusPixels,
             @DescribeParameter(
                             name = "weightAttr",
@@ -140,8 +130,7 @@ public class HeatmapProcess implements VectorProcess {
                     String valueAttr,
             @DescribeParameter(
                             name = "pixelsPerCell",
-                            description =
-                                    "Resolution at which to compute the heatmap (in pixels). Default = 1",
+                            description = "Resolution at which to compute the heatmap (in pixels). Default = 1",
                             defaultValue = "1",
                             min = 0,
                             max = 1)
@@ -150,13 +139,9 @@ public class HeatmapProcess implements VectorProcess {
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box of the output")
                     ReferencedEnvelope argOutputEnv,
-            @DescribeParameter(
-                            name = "outputWidth",
-                            description = "Width of output raster in pixels")
+            @DescribeParameter(name = "outputWidth", description = "Width of output raster in pixels")
                     Integer argOutputWidth,
-            @DescribeParameter(
-                            name = "outputHeight",
-                            description = "Height of output raster in pixels")
+            @DescribeParameter(name = "outputHeight", description = "Height of output raster in pixels")
                     Integer argOutputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -198,8 +183,7 @@ public class HeatmapProcess implements VectorProcess {
         }
 
         /** -------------- Extract the input observation points ----------- */
-        HeatmapSurface heatMap =
-                new HeatmapSurface(radiusCells, argOutputEnv, gridWidth, gridHeight);
+        HeatmapSurface heatMap = new HeatmapSurface(radiusCells, argOutputEnv, gridWidth, gridHeight);
         try {
             extractPoints(obsFeatures, valueAttr, trans, heatMap);
         } catch (CQLException e) {
@@ -219,8 +203,7 @@ public class HeatmapProcess implements VectorProcess {
         if (pixelsPerCell > 1) outGrid = upsample(heatMapGrid, -999, outputWidth, outputHeight);
 
         // convert to the GridCoverage2D required for output
-        GridCoverageFactory gcf =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         GridCoverage2D gridCov = gcf.create("Process Results", outGrid, argOutputEnv);
 
         // System.out.println("**************  Heatmap computed in " + sw.getTimeString());
@@ -229,10 +212,9 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     /**
-     * Flips an XY matrix along the X=Y axis, and inverts the Y axis. Used to convert from "map
-     * orientation" into the "image orientation" used by GridCoverageFactory. The surface
-     * interpolation is done on an XY grid, with Y=0 being the bottom of the space. GridCoverages
-     * are stored in an image format, in a YX grid with Y=0 being the top.
+     * Flips an XY matrix along the X=Y axis, and inverts the Y axis. Used to convert from "map orientation" into the
+     * "image orientation" used by GridCoverageFactory. The surface interpolation is done on an XY grid, with Y=0 being
+     * the bottom of the space. GridCoverages are stored in an image format, in a YX grid with Y=0 being the top.
      *
      * @param grid the grid to flip
      * @return the flipped grid
@@ -258,8 +240,8 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     /**
-     * Given a target query and a target grid geometry returns the query to be used to read the
-     * input data of the process involved in rendering. In this process this method is used to:
+     * Given a target query and a target grid geometry returns the query to be used to read the input data of the
+     * process involved in rendering. In this process this method is used to:
      *
      * <ul>
      *   <li>determine the extent & CRS of the output grid
@@ -267,8 +249,8 @@ public class HeatmapProcess implements VectorProcess {
      *   <li>modify the query hints to ensure point features are returned
      * </ul>
      *
-     * Note that in order to pass validation, all parameters named here must also appear in the
-     * parameter list of the <tt>execute</tt> method, even if they are not used there.
+     * Note that in order to pass validation, all parameters named here must also appear in the parameter list of the
+     * <tt>execute</tt> method, even if they are not used there.
      *
      * @param argRadiusPixels the feature type attribute that contains the observed surface value
      * @param targetQuery the query used against the data source
@@ -276,19 +258,12 @@ public class HeatmapProcess implements VectorProcess {
      * @return The transformed query
      */
     public Query invertQuery(
-            @DescribeParameter(
-                            name = "radiusPixels",
-                            description = "Radius to use for the kernel",
-                            min = 0,
-                            max = 1)
+            @DescribeParameter(name = "radiusPixels", description = "Radius to use for the kernel", min = 0, max = 1)
                     Integer argRadiusPixels,
             // output image parameters
-            @DescribeParameter(
-                            name = "outputBBOX",
-                            description = "Georeferenced bounding box of the output")
+            @DescribeParameter(name = "outputBBOX", description = "Georeferenced bounding box of the output")
                     ReferencedEnvelope argOutputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Width of the output raster")
-                    Integer argOutputWidth,
+            @DescribeParameter(name = "outputWidth", description = "Width of the output raster") Integer argOutputWidth,
             @DescribeParameter(name = "outputHeight", description = "Height of the output raster")
                     Integer argOutputHeight,
             Query targetQuery,
@@ -299,8 +274,7 @@ public class HeatmapProcess implements VectorProcess {
 
         int radiusPixels = argRadiusPixels > 0 ? argRadiusPixels : 0;
         // input parameters are required, so should be non-null
-        double queryBuffer =
-                radiusPixels / pixelSize(argOutputEnv, argOutputWidth, argOutputHeight);
+        double queryBuffer = radiusPixels / pixelSize(argOutputEnv, argOutputWidth, argOutputHeight);
         /*
          * if (argQueryBuffer != null) { queryBuffer = argQueryBuffer; }
          */
@@ -327,10 +301,7 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     protected Filter expandBBox(Filter filter, double distance) {
-        return (Filter)
-                filter.accept(
-                        new BBOXExpandingFilterVisitor(distance, distance, distance, distance),
-                        null);
+        return (Filter) filter.accept(new BBOXExpandingFilterVisitor(distance, distance, distance, distance), null);
     }
 
     /**
@@ -343,10 +314,7 @@ public class HeatmapProcess implements VectorProcess {
      * @throws CQLException if attrName can't be parsed
      */
     protected void extractPoints(
-            SimpleFeatureCollection obsPoints,
-            String attrName,
-            MathTransform trans,
-            HeatmapSurface heatMap)
+            SimpleFeatureCollection obsPoints, String attrName, MathTransform trans, HeatmapSurface heatMap)
             throws CQLException {
         Expression attrExpr = null;
         if (attrName != null) {
@@ -385,8 +353,8 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     /**
-     * Gets a point to represent the Geometry. If the Geometry is a point, this is returned.
-     * Otherwise, the centroid is used.
+     * Gets a point to represent the Geometry. If the Geometry is a point, this is returned. Otherwise, the centroid is
+     * used.
      *
      * @param g the geometry to find a point for
      * @return a point representing the Geometry
@@ -397,8 +365,8 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     /**
-     * Gets the value for a point from the supplied attribute. The value is checked for validity,
-     * and a default of 1 is used if necessary.
+     * Gets the value for a point from the supplied attribute. The value is checked for validity, and a default of 1 is
+     * used if necessary.
      *
      * @param feature the feature to extract the value from
      * @param attrExpr the expression specifying the attribute to read

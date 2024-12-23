@@ -21,8 +21,7 @@ import org.geotools.api.util.InternationalString;
  */
 public interface Address {
     /**
-     * Address line for the location (as described in ISO 11180, Annex A). Returns an empty
-     * collection if none.
+     * Address line for the location (as described in ISO 11180, Annex A). Returns an empty collection if none.
      *
      * @return Address line for the location.
      */
@@ -57,8 +56,8 @@ public interface Address {
     InternationalString getCountry();
 
     /**
-     * Address of the electronic mailbox of the responsible organization or individual. Returns an
-     * empty collection if none.
+     * Address of the electronic mailbox of the responsible organization or individual. Returns an empty collection if
+     * none.
      *
      * @return Address of the electronic mailbox of the responsible organization or individual.
      */

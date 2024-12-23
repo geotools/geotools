@@ -43,8 +43,8 @@ public interface FeatureIterator<F extends Feature> extends Closeable {
     /**
      * Does another Feature exist in this Iteration.
      *
-     * <p>Iterator defin: Returns true if the iteration has more elements. (In other words, returns
-     * true if next would return an element rather than throwing an exception.)
+     * <p>Iterator defin: Returns true if the iteration has more elements. (In other words, returns true if next would
+     * return an element rather than throwing an exception.)
      *
      * @return true if more Features exist, false otherwise.
      */

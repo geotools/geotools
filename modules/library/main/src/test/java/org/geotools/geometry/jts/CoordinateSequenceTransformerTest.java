@@ -53,11 +53,9 @@ public class CoordinateSequenceTransformerTest {
     public void testTransform() throws FactoryException, TransformException {
         final CoordinateReferenceSystem crs =
                 ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(JTSTest.UTM_ZONE_10N);
-        final MathTransform2D t =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                .createOperation(DefaultGeographicCRS.WGS84, crs)
-                                .getMathTransform();
+        final MathTransform2D t = (MathTransform2D) ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(DefaultGeographicCRS.WGS84, crs)
+                .getMathTransform();
         final Random random = new Random(546757437746704345L);
 
         // Tries with different coordinate sequence length.
@@ -65,11 +63,8 @@ public class CoordinateSequenceTransformerTest {
         for (int k : size) {
             final Coordinate[] source = new Coordinate[k];
             for (int i = 0; i < source.length; i++) {
-                source[i] =
-                        new Coordinate(
-                                -121 - 4 * random.nextDouble(),
-                                -45 + 90 * random.nextDouble(),
-                                500 * random.nextDouble());
+                source[i] = new Coordinate(
+                        -121 - 4 * random.nextDouble(), -45 + 90 * random.nextDouble(), 500 * random.nextDouble());
             }
             final CoordinateSequence sourceCS = csFactory.create(source);
             final CoordinateSequence targetCS = transform(sourceCS, t);
@@ -79,8 +74,7 @@ public class CoordinateSequenceTransformerTest {
                 assertNotEquals(sourceCS.getCoordinate(i), targetCS.getCoordinate(i));
             }
 
-            final CoordinateSequenceTransformer transformer =
-                    new DefaultCoordinateSequenceTransformer();
+            final CoordinateSequenceTransformer transformer = new DefaultCoordinateSequenceTransformer();
             final CoordinateSequence testCS = transformer.transform(sourceCS, t);
             assertNotSame(sourceCS, testCS);
             assertNotSame(targetCS, testCS);

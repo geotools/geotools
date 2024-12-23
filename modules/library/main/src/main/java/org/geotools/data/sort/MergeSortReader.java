@@ -26,8 +26,8 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
- * Reads from a list of {@link FeatureBlockReader} backed by a {@link RandomAccessFile} and performs
- * the classic merge-sort algorithm
+ * Reads from a list of {@link FeatureBlockReader} backed by a {@link RandomAccessFile} and performs the classic
+ * merge-sort algorithm
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -58,8 +58,7 @@ class MergeSortReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (readers.isEmpty()) {
             throw new NoSuchElementException();
         }

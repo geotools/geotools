@@ -29,15 +29,14 @@ import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 
 /**
- * Provides a representation of a PolygonSymbolizer in an SLD Document. A PolygonSymbolizer defines
- * how a polygon geometry should be rendered.
+ * Provides a representation of a PolygonSymbolizer in an SLD Document. A PolygonSymbolizer defines how a polygon
+ * geometry should be rendered.
  *
  * @author James Macgill, CCG
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class PolygonSymbolizerImpl extends AbstractSymbolizer
-        implements PolygonSymbolizer, Cloneable {
+public class PolygonSymbolizerImpl extends AbstractSymbolizer implements PolygonSymbolizer, Cloneable {
 
     private Expression offset;
     private DisplacementImpl disp;

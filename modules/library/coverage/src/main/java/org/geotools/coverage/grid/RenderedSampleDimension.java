@@ -63,8 +63,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
      * @param image The image to be wrapped by {@link GridCoverage}.
      * @param bandNumber The band number.
      */
-    private RenderedSampleDimension(
-            final GridSampleDimension band, final RenderedImage image, final int bandNumber) {
+    private RenderedSampleDimension(final GridSampleDimension band, final RenderedImage image, final int bandNumber) {
         super(band);
         final SampleModel model = image.getSampleModel();
         this.band = bandNumber;
@@ -73,15 +72,15 @@ final class RenderedSampleDimension extends GridSampleDimension {
     }
 
     /**
-     * Creates a set of sample dimensions for the given image. The array length of both arguments
-     * must matches the number of bands in the supplied {@code image}.
+     * Creates a set of sample dimensions for the given image. The array length of both arguments must matches the
+     * number of bands in the supplied {@code image}.
      *
      * @param name The name for data (e.g. "Elevation").
      * @param image The image for which to create a set of sample dimensions.
      * @param src User-provided sample dimensions, or {@code null} if none.
      * @param dst The array where to put sample dimensions.
-     * @return {@code true} if all sample dimensions are geophysics (quantitative), or {@code false}
-     *     if all sample dimensions are non-geophysics (qualitative).
+     * @return {@code true} if all sample dimensions are geophysics (quantitative), or {@code false} if all sample
+     *     dimensions are non-geophysics (qualitative).
      * @throws IllegalArgumentException if geophysics and non-geophysics dimensions are mixed.
      */
     static boolean create(
@@ -91,20 +90,12 @@ final class RenderedSampleDimension extends GridSampleDimension {
             final GridSampleDimension[] dst) {
         final int numBands = image.getSampleModel().getNumBands();
         if (src != null && src.length != numBands) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            src.length,
-                            "SampleDimension"));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, src.length, "SampleDimension"));
         }
         if (dst.length != numBands) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            dst.length,
-                            "SampleDimension"));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, dst.length, "SampleDimension"));
         }
         /*
          * Now, we know that the number of bands and the array length are consistent.
@@ -145,14 +136,13 @@ final class RenderedSampleDimension extends GridSampleDimension {
      * @param min The minimal value for each bands, or {@code null} for computing it automatically.
      * @param max The maximal value for each bands, or {@code null} for computing it automatically.
      * @param units The units of sample values, or {@code null} if unknow.
-     * @param colors The colors to use for values from {@code min} to {@code max} for each bands, or
-     *     {@code null} for a default color palette. If non-null, each arrays {@code colors[b]} may
-     *     have any length; colors will be interpolated as needed.
-     * @param hints An optional set of rendering hints, or {@code null} if none. Those hints will
-     *     not affect the sample dimensions to be created. The optional hint {@link
-     *     Hints#SAMPLE_DIMENSION_TYPE} specifies the {@link SampleDimensionType} to be used at
-     *     rendering time, which can be one of {@link SampleDimensionType#UBYTE UBYTE} or {@link
-     *     SampleDimensionType#USHORT USHORT}.
+     * @param colors The colors to use for values from {@code min} to {@code max} for each bands, or {@code null} for a
+     *     default color palette. If non-null, each arrays {@code colors[b]} may have any length; colors will be
+     *     interpolated as needed.
+     * @param hints An optional set of rendering hints, or {@code null} if none. Those hints will not affect the sample
+     *     dimensions to be created. The optional hint {@link Hints#SAMPLE_DIMENSION_TYPE} specifies the
+     *     {@link SampleDimensionType} to be used at rendering time, which can be one of
+     *     {@link SampleDimensionType#UBYTE UBYTE} or {@link SampleDimensionType#USHORT USHORT}.
      * @return The sample dimension for the given raster.
      */
     static GridSampleDimension[] create(
@@ -176,16 +166,14 @@ final class RenderedSampleDimension extends GridSampleDimension {
      * @param min The minimal value, or {@code null} for computing it automatically.
      * @param max The maximal value, or {@code null} for computing it automatically.
      * @param units The units of sample values, or {@code null} if unknow.
-     * @param colors The colors to use for values from {@code min} to {@code max} for each bands, or
-     *     {@code null} for a default color palette. If non-null, each arrays {@code colors[b]} may
-     *     have any length; colors will be interpolated as needed.
-     * @param dst The array where to store sample dimensions. The array length must matches the
-     *     number of bands.
-     * @param hints An optional set of rendering hints, or {@code null} if none. Those hints will
-     *     not affect the sample dimensions to be created. The optional hint {@link
-     *     Hints#SAMPLE_DIMENSION_TYPE} specifies the {@link SampleDimensionType} to be used at
-     *     rendering time, which can be one of {@link SampleDimensionType#UBYTE UBYTE} or {@link
-     *     SampleDimensionType#USHORT USHORT}.
+     * @param colors The colors to use for values from {@code min} to {@code max} for each bands, or {@code null} for a
+     *     default color palette. If non-null, each arrays {@code colors[b]} may have any length; colors will be
+     *     interpolated as needed.
+     * @param dst The array where to store sample dimensions. The array length must matches the number of bands.
+     * @param hints An optional set of rendering hints, or {@code null} if none. Those hints will not affect the sample
+     *     dimensions to be created. The optional hint {@link Hints#SAMPLE_DIMENSION_TYPE} specifies the
+     *     {@link SampleDimensionType} to be used at rendering time, which can be one of
+     *     {@link SampleDimensionType#UBYTE UBYTE} or {@link SampleDimensionType#USHORT USHORT}.
      */
     private static void create(
             final CharSequence name,
@@ -199,21 +187,15 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = dst.length;
         if (min != null && min.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
         }
         if (max != null && max.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
         }
         if (colors != null && colors.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            colors.length,
-                            "colors[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, colors.length, "colors[i]"));
         }
         /*
          * Arguments are know to be valids. We now need to compute two ranges:
@@ -254,8 +236,8 @@ final class RenderedSampleDimension extends GridSampleDimension {
     }
 
     /**
-     * Returns a code value indicating grid value data type. This will also indicate the number of
-     * bits for the data type.
+     * Returns a code value indicating grid value data type. This will also indicate the number of bits for the data
+     * type.
      *
      * @return a code value indicating grid value data type.
      */

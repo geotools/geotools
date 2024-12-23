@@ -30,24 +30,21 @@ public class DB2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     protected void createPersonTable() throws Exception {
         // set up table
         try (Connection con = getDataSource().getConnection()) {
-            con.prepareStatement(
-                            "CREATE TABLE "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"person\" (\"fid\" int  generated always as identity (start with 0, increment by 1) , "
-                                    + "\"id\" int , "
-                                    + " \"name\" varchar(255), \"age\" int, PRIMARY KEY (\"fid\") )")
+            con.prepareStatement("CREATE TABLE "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"person\" (\"fid\" int  generated always as identity (start with 0, increment by 1) , "
+                            + "\"id\" int , "
+                            + " \"name\" varchar(255), \"age\" int, PRIMARY KEY (\"fid\") )")
                     .execute();
 
             // insert data
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 0, 'Paul', 32)")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 0, 'Paul', 32)")
                     .execute();
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 1, 'Anne', 40)")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 1, 'Anne', 40)")
                     .execute();
         }
     }

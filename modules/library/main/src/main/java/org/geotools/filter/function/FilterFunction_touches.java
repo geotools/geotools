@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_touches extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "touches",
-                    parameter("touches", Boolean.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "touches",
+            parameter("touches", Boolean.class),
+            parameter("geometry", Geometry.class),
+            parameter("geometry", Geometry.class));
 
     public FilterFunction_touches() {
         super(NAME);

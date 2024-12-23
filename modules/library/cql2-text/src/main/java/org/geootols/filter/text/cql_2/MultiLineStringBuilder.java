@@ -25,8 +25,8 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
 /**
- * Builds a {@link #MultiLineString} using the {@link LineString} made in the parsing process.
- * Copied from gt-cql, should be removed once the modules * are merged.
+ * Builds a {@link #MultiLineString} using the {@link LineString} made in the parsing process. Copied from gt-cql,
+ * should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since
@@ -38,10 +38,7 @@ final class MultiLineStringBuilder extends GeometryBuilder {
         super(statement, resultStack);
     }
 
-    /**
-     * Makes a {@link #MultiLineString} geometry using the {@link LineString} presents in the result
-     * stack.
-     */
+    /** Makes a {@link #MultiLineString} geometry using the {@link LineString} presents in the result stack. */
     @Override
     public Geometry build(int linestringtextNode) throws CQLException {
 

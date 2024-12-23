@@ -41,8 +41,7 @@ public class VPFCovFeatureSource extends VPFFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new VPFFeatureReader(getState(), featureType);
     }
 
@@ -51,10 +50,7 @@ public class VPFCovFeatureSource extends VPFFeatureSource {
         return -1; // feature by feature scan required to count records
     }
 
-    /**
-     * Implementation that generates the total bounds (many file formats record this information in
-     * the header)
-     */
+    /** Implementation that generates the total bounds (many file formats record this information in the header) */
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         CoordinateReferenceSystem crs = this.featureType.getCoordinateReferenceSystem();

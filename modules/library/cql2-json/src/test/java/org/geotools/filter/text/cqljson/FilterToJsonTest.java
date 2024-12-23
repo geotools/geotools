@@ -39,8 +39,7 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertBinaryEqualsTest() throws IOException, CQLException {
         // {"op":"=","args":[{"property":"scene_id"},"LC82030282019133LGN00"]}
-        String line =
-                "{\"op\":\"=\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}";
+        String line = "{\"op\":\"=\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}";
         Filter equalsFilter = parse(line);
         Assert.assertEquals("scene_id = 'LC82030282019133LGN00'", ECQL.toCQL(equalsFilter));
         JsonNode node = serialize(equalsFilter);
@@ -50,8 +49,7 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertBinaryNotEqualsTest() throws IOException, CQLException {
         // {"op":"<>","args":[{"property":"scene_id"},"LC82030282019133LGN00"]}
-        String line =
-                "{\"op\":\"<>\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}";
+        String line = "{\"op\":\"<>\",\"args\":[{\"property\":\"scene_id\"},\"LC82030282019133LGN00\"]}";
         Filter notEqualsFilter = parse(line);
         Assert.assertEquals("scene_id <> 'LC82030282019133LGN00'", ECQL.toCQL(notEqualsFilter));
         JsonNode node = serialize(notEqualsFilter);
@@ -111,8 +109,7 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertInTest() throws IOException, CQLException {
         // {"op":"in","args":[{"property":"landsat:wrs_path"},["153","154","155"]]}
-        String line =
-                "{\"op\":\"in\",\"args\":[{\"property\":\"landsat:wrs_path\"},[\"153\",\"154\",\"155\"]]}";
+        String line = "{\"op\":\"in\",\"args\":[{\"property\":\"landsat:wrs_path\"},[\"153\",\"154\",\"155\"]]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals("\"landsat:wrs_path\" IN ('153','154','155')", ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
@@ -125,8 +122,7 @@ public class FilterToJsonTest extends CQLJsonTest {
         String line =
                 "{\"op\":\"or\",\"args\":[{\"op\":\">\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.1]},{\"op\":\"=\",\"args\":[{\"property\":\"ro:cloud_cover\"},0.2]}]}";
         Filter gtFilter = parse(line);
-        Assert.assertEquals(
-                "\"ro:cloud_cover\" > 0.1 OR \"ro:cloud_cover\" = 0.2", ECQL.toCQL(gtFilter));
+        Assert.assertEquals("\"ro:cloud_cover\" > 0.1 OR \"ro:cloud_cover\" = 0.2", ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
     }
@@ -298,8 +294,7 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertNotTest() throws IOException, CQLException {
         // {"op":"not","args":[{"op":"<","args":[{"property":"floors"},5]}]}
-        String line =
-                "{\"op\":\"not\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"floors\"},5]}]}";
+        String line = "{\"op\":\"not\",\"args\":[{\"op\":\"<\",\"args\":[{\"property\":\"floors\"},5]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals("NOT (floors < 5)", ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
@@ -308,8 +303,7 @@ public class FilterToJsonTest extends CQLJsonTest {
 
     @Test
     public void convertTimestampFilter() throws Exception {
-        String line =
-                "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}";
+        String line = "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(CQL.toFilter("date = '2022-04-16T00:00:00Z'"), gtFilter);
         JsonNode node = serialize(gtFilter);
@@ -327,27 +321,24 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertAfterTest() throws IOException, CQLException {
         // {"op":"t_after","args":[{"property":"built"},{"date":"2012-06-05"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
         Assert.assertEquals(ECQL.toFilter("built AFTER 2012-06-05T00:00:00Z"), gtFilter);
     }
 
     @Test
     public void convertBeforeTest() throws IOException, CQLException {
         // {"op":"t_before","args":[{"property":"built"},{"date":"2015-01-01"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2015-01-01T00:00:00Z\"}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2015-01-01T00:00:00Z\"}]}");
         Assert.assertEquals(ECQL.toFilter("built BEFORE 2015-01-01T00:00:00Z"), gtFilter);
     }
 
     @Test
     public void convertTDisjointTest() throws IOException, CQLException {
         // {"op":"t_disjoint","args":[{"property":"updated"},{"interval":["2017-06-10T07:30:00Z","2017-06-11T10:30:00Z"]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_disjoint\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"t_disjoint\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
         Assert.assertEquals(
                 "updated BEFORE '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]' AND updated AFTER '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'",
                 ECQL.toCQL(gtFilter));
@@ -356,20 +347,16 @@ public class FilterToJsonTest extends CQLJsonTest {
     @Test
     public void convertTEqualsTest() throws IOException, CQLException {
         // {"op":"t_equals","args":[{"property":"built"},{"date":"2012-06-05"}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
+        Filter gtFilter = parse(
+                "{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
         Assert.assertEquals(ECQL.toFilter("built = '2012-06-05T00:00:00Z'"), gtFilter);
     }
 
     @Test
     public void convertDuringTest() throws IOException, CQLException {
         // {"op":"t_during","args":[{"property":"updated"},{"interval":["2017-06-10T07:30:00Z","2017-06-11T10:30:00Z"]}]}
-        Filter gtFilter =
-                parse(
-                        "{\"op\":\"t_during\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
-        Assert.assertEquals(
-                "updated DURING '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'",
-                ECQL.toCQL(gtFilter));
+        Filter gtFilter = parse(
+                "{\"op\":\"t_during\",\"args\":[{\"property\":\"updated\"},{\"interval\":[\"2017-06-10T07:30:00Z\",\"2017-06-11T10:30:00Z\"]}]}");
+        Assert.assertEquals("updated DURING '[2017-06-10T07:30:00Z, 2017-06-10T07:30:00Z]'", ECQL.toCQL(gtFilter));
     }
 }

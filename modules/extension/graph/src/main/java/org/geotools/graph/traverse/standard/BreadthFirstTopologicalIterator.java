@@ -26,19 +26,17 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.AbstractGraphIterator;
 
 /**
- * Iterates over the nodes of a graph in <B>Breadth First Topological Sort</B> pattern. The
- * following is an illustration of the iteration.<br>
+ * Iterates over the nodes of a graph in <B>Breadth First Topological Sort</B> pattern. The following is an illustration
+ * of the iteration.<br>
  * <IMG src="doc-files/breadth_topo.gif"><br>
  * <br>
- * Initially all nodes of degree less than two are <B>active</B> (ready to be visited). As nodes are
- * visited, a node can become active when all but one of its related nodes have been visited (
- * degree = counter + 1). When a node becomes active it is placed into the <B>active node queue</B>
- * (queue of nodes to be visited). The Breadth First Topological iterator places nodes into the
- * queue in <B>First In First Out</B> order.<br>
+ * Initially all nodes of degree less than two are <B>active</B> (ready to be visited). As nodes are visited, a node can
+ * become active when all but one of its related nodes have been visited ( degree = counter + 1). When a node becomes
+ * active it is placed into the <B>active node queue</B> (queue of nodes to be visited). The Breadth First Topological
+ * iterator places nodes into the queue in <B>First In First Out</B> order.<br>
  * <br>
- * To determine when a node is to become active the iterator uses the counter associated with each
- * node. If these counters are modified by an entity other then the iterator, the iteration may be
- * affected in undefined ways.
+ * To determine when a node is to become active the iterator uses the counter associated with each node. If these
+ * counters are modified by an entity other then the iterator, the iteration may be affected in undefined ways.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -48,8 +46,8 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
     private Queue<Graphable> m_queue;
 
     /**
-     * Creates the active queue, and populates it with all nodes of degree less than 2. Counters of
-     * all nodes are also reset to 0.
+     * Creates the active queue, and populates it with all nodes of degree less than 2. Counters of all nodes are also
+     * reset to 0.
      *
      * @see org.geotools.graph.traverse.GraphIterator#init(Graph)
      */
@@ -59,17 +57,16 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
         m_queue = buildQueue(graph);
 
         // initialize nodes
-        graph.visitNodes(
-                component -> {
-                    Node node = (Node) component;
+        graph.visitNodes(component -> {
+            Node node = (Node) component;
 
-                    // reset counter to zero
-                    node.setCount(0);
+            // reset counter to zero
+            node.setCount(0);
 
-                    if (node.getDegree() < 2) m_queue.add(node);
+            if (node.getDegree() < 2) m_queue.add(node);
 
-                    return (0);
-                });
+            return (0);
+        });
     }
 
     /**
@@ -86,9 +83,8 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
     }
 
     /**
-     * Continues the iteration by incrementing the counters of any unvisited nodes related to the
-     * current node. If any related nodes have counters equal to degree of that node - 1, it is
-     * placed into the active queue.
+     * Continues the iteration by incrementing the counters of any unvisited nodes related to the current node. If any
+     * related nodes have counters equal to degree of that node - 1, it is placed into the active queue.
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
@@ -107,8 +103,7 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
     }
 
     /**
-     * Kills the current branch of the traversal by not incrementing the counters of any related
-     * nodes.
+     * Kills the current branch of the traversal by not incrementing the counters of any related nodes.
      *
      * @see org.geotools.graph.traverse.GraphIterator#killBranch(Graphable)
      */

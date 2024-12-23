@@ -62,8 +62,8 @@ public interface MapLayerListener extends EventListener {
     void layerDeselected(MapLayerEvent event);
 
     /**
-     * Invoked when the layer is scheduled for disposal to give listeners the chance to finish or
-     * cancel any tasks involving the layer.
+     * Invoked when the layer is scheduled for disposal to give listeners the chance to finish or cancel any tasks
+     * involving the layer.
      *
      * @param event encapsulating the event information
      */

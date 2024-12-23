@@ -32,14 +32,11 @@ import ucar.nc2.dataset.CoordinateAxis;
  * <code>e.g.
  * org.geotools.imageio.netcdf.cv.ClimatologicalTimeHandlerSPI</code>
  *
- * <p>The factories are never called directly by users, instead the CoordinateHandlerFinder class is
- * used.
+ * <p>The factories are never called directly by users, instead the CoordinateHandlerFinder class is used.
  */
 public interface CoordinateHandlerSpi {
 
-    /**
-     * Check if the specified spi can handle the provided axis through a {@link CoordinateHandler}
-     */
+    /** Check if the specified spi can handle the provided axis through a {@link CoordinateHandler} */
     public boolean canHandle(CoordinateAxis axis);
 
     /** Create a {@link CoordinateHandler} */

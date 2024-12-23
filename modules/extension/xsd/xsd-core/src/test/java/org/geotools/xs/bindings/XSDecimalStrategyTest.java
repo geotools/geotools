@@ -97,10 +97,7 @@ public class XSDecimalStrategyTest extends TestSchema {
         //		}
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues("", null);
@@ -108,22 +105,16 @@ public class XSDecimalStrategyTest extends TestSchema {
     }
 
     public void validateValues(
-            String elementText,
-            int totalDigits,
-            double minExc,
-            double minInc,
-            double maxInc,
-            double maxExc)
+            String elementText, int totalDigits, double minExc, double minInc, double maxInc, double maxExc)
             throws Exception {
         XSDecimalBinding strat = new XSDecimalBinding();
 
-        XSDElementDeclaration declaration =
-                makeDeclaration(
-                        totalDigits,
-                        BigDecimal.valueOf(minExc),
-                        BigDecimal.valueOf(minInc),
-                        BigDecimal.valueOf(maxInc),
-                        BigDecimal.valueOf(maxExc));
+        XSDElementDeclaration declaration = makeDeclaration(
+                totalDigits,
+                BigDecimal.valueOf(minExc),
+                BigDecimal.valueOf(minInc),
+                BigDecimal.valueOf(maxInc),
+                BigDecimal.valueOf(maxExc));
 
         ElementInstance element = new ElementImpl(declaration);
         element.setText(elementText);

@@ -60,12 +60,8 @@ public class ImageMosaicRATTest {
 
         // load the source PAM files
         PAMParser parser = new PAMParser();
-        PAMDataset pam1 =
-                parser.parsePAM(
-                        new File(mosaicDirectory, "BlueTopo_BH4JS577_20230918.tiff.aux.xml"));
-        PAMDataset pam2 =
-                parser.parsePAM(
-                        new File(mosaicDirectory, "BlueTopo_BH4JS578_20230918.tiff.aux.xml"));
+        PAMDataset pam1 = parser.parsePAM(new File(mosaicDirectory, "BlueTopo_BH4JS577_20230918.tiff.aux.xml"));
+        PAMDataset pam2 = parser.parsePAM(new File(mosaicDirectory, "BlueTopo_BH4JS578_20230918.tiff.aux.xml"));
         PAMDataset.PAMRasterBand band_1_2 = pam1.getPAMRasterBand().get(2);
         PAMDataset.PAMRasterBand band_2_2 = pam2.getPAMRasterBand().get(2);
 

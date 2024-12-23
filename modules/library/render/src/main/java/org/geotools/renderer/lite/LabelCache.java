@@ -38,8 +38,7 @@ public interface LabelCache {
     void start();
 
     /**
-     * Called by renderer to indication the start of rendering a layer. Will add the layer to the
-     * set of active layers.
+     * Called by renderer to indication the start of rendering a layer. Will add the layer to the set of active layers.
      *
      * @param layerId an id for the layer
      */
@@ -50,8 +49,8 @@ public interface LabelCache {
      *
      * @param layerId id indicating the layer the feature is part of
      * @param symbolizer The symbolizer containing the style information
-     * @param feature the feature that has the information required for the symbolizer to calculate
-     *     the required render information.
+     * @param feature the feature that has the information required for the symbolizer to calculate the required render
+     *     information.
      * @param shape the shape to be labeled. This is in screen coordinates.
      * @param scaleRange the scaleRange that the symbolizer is legal
      */
@@ -65,16 +64,16 @@ public interface LabelCache {
     /**
      * Reserve the provided geometry prior to sorting out where labels can go.
      *
-     * <p>This facility is used to reserve an area so that labels do not end up overlapping on
-     * screen constructs like scalebars or north arrows etc...
+     * <p>This facility is used to reserve an area so that labels do not end up overlapping on screen constructs like
+     * scalebars or north arrows etc...
      *
      * @param geometry The Area of the screen to reserve (in screen coordinates)
      */
     void put(Rectangle2D geometry);
 
     /**
-     * Called to indicate that a layer is done rendering. The method may draw labels if appropriate
-     * for the labeling algorithm
+     * Called to indicate that a layer is done rendering. The method may draw labels if appropriate for the labeling
+     * algorithm
      *
      * @param graphics the graphics to draw on.
      * @param displayArea The size of the display area
@@ -83,8 +82,8 @@ public interface LabelCache {
     void endLayer(String layerId, Graphics2D graphics, Rectangle displayArea);
 
     /**
-     * Called to indicate that the map is done rendering. The method may draw labels if appropriate
-     * for the labeling algorithm
+     * Called to indicate that the map is done rendering. The method may draw labels if appropriate for the labeling
+     * algorithm
      *
      * @param graphics the graphics to draw on.
      * @param displayArea The size of the display area.
@@ -105,16 +104,15 @@ public interface LabelCache {
     public void clear(String layerId);
 
     /**
-     * Leaves the label information in the cache but ignores it when calculating what labels are
-     * drawn.
+     * Leaves the label information in the cache but ignores it when calculating what labels are drawn.
      *
      * @param layerId id of the layer to disable.
      */
     public void disableLayer(String layerId);
 
     /**
-     * Enable a layer after being disabled. If startLayer is called this does not need to be called
-     * as start layer implicitely activates the layer.
+     * Enable a layer after being disabled. If startLayer is called this does not need to be called as start layer
+     * implicitely activates the layer.
      *
      * @param layerId layer to activate.
      */

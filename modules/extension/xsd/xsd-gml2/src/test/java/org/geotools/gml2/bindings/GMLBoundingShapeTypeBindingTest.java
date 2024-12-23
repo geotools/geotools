@@ -61,7 +61,9 @@ public class GMLBoundingShapeTypeBindingTest extends GMLTestSupport {
         Document doc = encode(envelope, GML.boundedBy);
 
         assertEquals(
-                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart())
+                        .getLength());
     }
 
     @Test

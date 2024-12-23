@@ -41,11 +41,7 @@ public class CssBaseTest {
     CssParser parser = CssParser.getInstance();
 
     protected void assertProperty(
-            CssRule r,
-            PseudoClass pseudoClass,
-            int propertyIdx,
-            String propertyName,
-            Value expectedValue) {
+            CssRule r, PseudoClass pseudoClass, int propertyIdx, String propertyName, Value expectedValue) {
         Property p = r.getProperties().get(pseudoClass).get(propertyIdx);
         assertEquals(propertyName, p.getName());
         assertEquals(1, p.getValues().size());
@@ -53,8 +49,7 @@ public class CssBaseTest {
         assertEquals(expectedValue, value);
     }
 
-    protected void assertProperty(
-            CssRule r, int propertyIdx, String propertyName, Value expectedValue) {
+    protected void assertProperty(CssRule r, int propertyIdx, String propertyName, Value expectedValue) {
         assertProperty(r, PseudoClass.ROOT, propertyIdx, propertyName, expectedValue);
     }
 
@@ -68,19 +63,16 @@ public class CssBaseTest {
             LOGGER.info(input + " = " + str + '\n');
         }
         if (value instanceof GraphNode) {
-            LOGGER.info(
-                    "\nAbstract Syntax Tree:\n"
-                            + GraphUtils.printTree(
-                                    (GraphNode) value, new ToStringFormatter<GraphNode>())
-                            + '\n');
+            LOGGER.info("\nAbstract Syntax Tree:\n"
+                    + GraphUtils.printTree((GraphNode) value, new ToStringFormatter<GraphNode>())
+                    + '\n');
         } else {
             LOGGER.info("\nParse Tree:\n" + ParseTreeUtils.printNodeTree(result) + '\n');
         }
     }
 
     protected String readResource(String resource) throws IOException {
-        return IOUtils.toString(
-                ParserSyntheticTest.class.getResourceAsStream(resource), StandardCharsets.UTF_8);
+        return IOUtils.toString(ParserSyntheticTest.class.getResourceAsStream(resource), StandardCharsets.UTF_8);
     }
 
     protected Style translate(String css) {

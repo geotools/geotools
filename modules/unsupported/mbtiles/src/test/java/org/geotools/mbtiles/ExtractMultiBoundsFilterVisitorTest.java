@@ -43,9 +43,7 @@ public class ExtractMultiBoundsFilterVisitorTest {
         BBOX bbox1 = FF.bbox(FF.property(""), -10, -10, 10, 10, CRS);
         BBOX bbox2 = FF.bbox(FF.property(""), 50, -10, 60, 10, CRS);
         List<Envelope> bounds = ExtractMultiBoundsFilterVisitor.getBounds(FF.or(bbox1, bbox2));
-        assertThat(
-                bounds,
-                Matchers.contains(new Envelope(-10, 10, -10, 10), new Envelope(50, 60, -10, 10)));
+        assertThat(bounds, Matchers.contains(new Envelope(-10, 10, -10, 10), new Envelope(50, 60, -10, 10)));
     }
 
     @Test
@@ -63,17 +61,13 @@ public class ExtractMultiBoundsFilterVisitorTest {
         BBOX bbox2 = FF.bbox(FF.property(""), 50, -10, 70, 10, CRS);
         BBOX bbox3 = FF.bbox(FF.property(""), 0, -10, 60, 10, CRS);
         // two separate or-ed bounds, and-ed with one that overlaps them partially both
-        List<Envelope> bounds =
-                ExtractMultiBoundsFilterVisitor.getBounds(FF.and(bbox3, FF.or(bbox1, bbox2)));
-        assertThat(
-                bounds,
-                Matchers.containsInAnyOrder(
-                        new Envelope(0, 10, -10, 10), new Envelope(50, 60, -10, 10)));
+        List<Envelope> bounds = ExtractMultiBoundsFilterVisitor.getBounds(FF.and(bbox3, FF.or(bbox1, bbox2)));
+        assertThat(bounds, Matchers.containsInAnyOrder(new Envelope(0, 10, -10, 10), new Envelope(50, 60, -10, 10)));
     }
 
     /**
-     * Same as {@link #testBoundsSeparateOrIntersect()}, but changing the order of the operands in a
-     * way that the result should be the same
+     * Same as {@link #testBoundsSeparateOrIntersect()}, but changing the order of the operands in a way that the result
+     * should be the same
      */
     @Test
     public void testBoundsSeparateOrIntersectFlipped() throws FactoryException {
@@ -81,12 +75,8 @@ public class ExtractMultiBoundsFilterVisitorTest {
         BBOX bbox2 = FF.bbox(FF.property(""), 50, -10, 70, 10, CRS);
         BBOX bbox3 = FF.bbox(FF.property(""), 0, -10, 60, 10, CRS);
         // two separate or-ed bounds, and-ed with one that overlaps them partially both
-        List<Envelope> bounds =
-                ExtractMultiBoundsFilterVisitor.getBounds(FF.and(FF.or(bbox2, bbox1), bbox3));
-        assertThat(
-                bounds,
-                Matchers.containsInAnyOrder(
-                        new Envelope(0, 10, -10, 10), new Envelope(50, 60, -10, 10)));
+        List<Envelope> bounds = ExtractMultiBoundsFilterVisitor.getBounds(FF.and(FF.or(bbox2, bbox1), bbox3));
+        assertThat(bounds, Matchers.containsInAnyOrder(new Envelope(0, 10, -10, 10), new Envelope(50, 60, -10, 10)));
     }
 
     @Test
@@ -96,11 +86,7 @@ public class ExtractMultiBoundsFilterVisitorTest {
         BBOX bbox3 = FF.bbox(FF.property(""), 0, -5, 5, 5, CRS);
         BBOX bbox4 = FF.bbox(FF.property(""), 45, 5, 55, 15, CRS);
         List<Envelope> bounds =
-                ExtractMultiBoundsFilterVisitor.getBounds(
-                        FF.and(FF.or(bbox2, bbox1), FF.or(bbox3, bbox4)));
-        assertThat(
-                bounds,
-                Matchers.containsInAnyOrder(
-                        new Envelope(0, 5, -5, 5), new Envelope(50, 55, 5, 10)));
+                ExtractMultiBoundsFilterVisitor.getBounds(FF.and(FF.or(bbox2, bbox1), FF.or(bbox3, bbox4)));
+        assertThat(bounds, Matchers.containsInAnyOrder(new Envelope(0, 5, -5, 5), new Envelope(50, 55, 5, 10)));
     }
 }

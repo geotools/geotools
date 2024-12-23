@@ -41,8 +41,7 @@ public class RemoteImageFormat extends AbstractGridFormat implements Format {
     public WorldImageReader getReader(Object source, Hints hints) {
         try {
             return /*new RemoteImageReader(*/ delegate.getReader(
-                    TestData.file(RemoteTest.class, "remote_test" + ((URL) source).getPath()),
-                    hints) /*)*/;
+                    TestData.file(RemoteTest.class, "remote_test" + ((URL) source).getPath()), hints) /*)*/;
         } catch (IOException e) {
             return null;
         }

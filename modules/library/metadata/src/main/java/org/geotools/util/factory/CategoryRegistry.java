@@ -32,12 +32,12 @@ import org.geotools.util.PartiallyOrderedSet;
 import org.geotools.util.logging.Logging;
 
 /**
- * The category registry holds multiple instances per category. Categories are {@link Class classes}
- * and instances are also accessible by the class they implement. Note that instances have to
- * implement/extend the category they are filed under.
+ * The category registry holds multiple instances per category. Categories are {@link Class classes} and instances are
+ * also accessible by the class they implement. Note that instances have to implement/extend the category they are filed
+ * under.
  *
- * <p>This class is not thread-safe and {@code null}-intolerant (throws an {@link
- * IllegalArgumentException} if an argument is {@code null}).
+ * <p>This class is not thread-safe and {@code null}-intolerant (throws an {@link IllegalArgumentException} if an
+ * argument is {@code null}).
  */
 class CategoryRegistry {
 
@@ -49,30 +49,23 @@ class CategoryRegistry {
     private final Map<Class<?>, InstanceRegistry<?>> categories;
 
     /**
-     * Creates a new registry with the specified Registers the specified category. If the same
-     * category is registered multiple times, all instances previously registered for that category
-     * are lost.
+     * Creates a new registry with the specified Registers the specified category. If the same category is registered
+     * multiple times, all instances previously registered for that category are lost.
      *
      * @param factoryRegistry The {@link FactoryRegistry} this registry belongs to.
-     * @param categories The categories to register; must not be {@code null} but can contain {@code
-     *     null}.
+     * @param categories The categories to register; must not be {@code null} but can contain {@code null}.
      */
-    public CategoryRegistry(
-            final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
+    public CategoryRegistry(final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
         ensureArgumentNonNull("factoryRegistry", factoryRegistry);
         ensureArgumentNonNull("categories", categories);
         // use an unmodifiable map to guarantee immutability
-        this.categories =
-                stream(categories)
-                        .collect(
-                                collectingAndThen(
-                                        toMap(
-                                                category -> category,
-                                                category ->
-                                                        new InstanceRegistry<>(
-                                                                factoryRegistry, category),
-                                                (firstRegistry, secondRegistry) -> secondRegistry),
-                                        Collections::unmodifiableMap));
+        this.categories = stream(categories)
+                .collect(collectingAndThen(
+                        toMap(
+                                category -> category,
+                                category -> new InstanceRegistry<>(factoryRegistry, category),
+                                (firstRegistry, secondRegistry) -> secondRegistry),
+                        Collections::unmodifiableMap));
     }
 
     /**
@@ -92,8 +85,7 @@ class CategoryRegistry {
     }
 
     /**
-     * Registers the specified instance under the specified category. The category itself must
-     * already be registered.
+     * Registers the specified instance under the specified category. The category itself must already be registered.
      *
      * @param instance The instance to register.
      * @param category The category to register the instance under.
@@ -120,9 +112,9 @@ class CategoryRegistry {
     }
 
     /**
-     * Deregisters all instances with the same type as the specified one from the specified
-     * category. The category must be registered. If instances of the same type are registered under
-     * other categories they remain available under them.
+     * Deregisters all instances with the same type as the specified one from the specified category. The category must
+     * be registered. If instances of the same type are registered under other categories they remain available under
+     * them.
      *
      * @param instance The instance to deregister.
      * @param category The category, from which the instance should be removed.
@@ -133,8 +125,7 @@ class CategoryRegistry {
     }
 
     /**
-     * Deregisters all instances registered under the specified category. The category itself remain
-     * registered.
+     * Deregisters all instances registered under the specified category. The category itself remain registered.
      *
      * @param category The category from which to deregister instances.
      */
@@ -148,8 +139,8 @@ class CategoryRegistry {
     }
 
     /**
-     * Finds the {@link InstanceRegistry} for the specified category. Throws an exception if that
-     * category was not registered.
+     * Finds the {@link InstanceRegistry} for the specified category. Throws an exception if that category was not
+     * registered.
      */
     private <T> InstanceRegistry<T> instanceRegistry(final Class<T> category) {
         ensureArgumentNonNull("category", category);
@@ -172,8 +163,7 @@ class CategoryRegistry {
      * Returns all instances that were registered with the specified category
      *
      * @param category The category for which instances are.
-     * @param useOrder whether to return instances in topological order as specified by {@link
-     *     #setOrder}
+     * @param useOrder whether to return instances in topological order as specified by {@link #setOrder}
      * @return The instances registered for the specified category.
      */
     public <T> Stream<T> streamInstances(final Class<T> category, final boolean useOrder) {
@@ -181,8 +171,8 @@ class CategoryRegistry {
     }
 
     /**
-     * Returns an arbitrary instance that extends/implements the specified type that is filed under
-     * a category that also extends/implements that type.
+     * Returns an arbitrary instance that extends/implements the specified type that is filed under a category that also
+     * extends/implements that type.
      *
      * @param type The type to look up.
      * @return An instance if one was found.
@@ -197,8 +187,8 @@ class CategoryRegistry {
     }
 
     /**
-     * Orders the specified instances, so that the first appears before the second when {@link
-     * #streamInstances(Class, boolean) iterateInstances} is called with {@code useOrder = true}.
+     * Orders the specified instances, so that the first appears before the second when {@link #streamInstances(Class,
+     * boolean) iterateInstances} is called with {@code useOrder = true}.
      *
      * @param category The category to order instances for.
      * @return {@code true} if this establishes a new order
@@ -210,9 +200,8 @@ class CategoryRegistry {
     }
 
     /**
-     * Removes the ordering between the specified instances, so that the first no longer appears
-     * before the second when {@link #streamInstances(Class, boolean) iterateInstances} is called
-     * with {@code useOrder = true}.
+     * Removes the ordering between the specified instances, so that the first no longer appears before the second when
+     * {@link #streamInstances(Class, boolean) iterateInstances} is called with {@code useOrder = true}.
      *
      * @param category The category to clear instance order for.
      * @return {@code true} if that ordering existed before
@@ -273,9 +262,7 @@ class CategoryRegistry {
                 ((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
             }
             if (REGISTERABLE_SERVICE != null && REGISTERABLE_SERVICE.isInstance(instance)) {
-                LOGGER.warning(
-                        "Migrate instances from RegisterableService to RegistrableFactory: "
-                                + instance);
+                LOGGER.warning("Migrate instances from RegisterableService to RegistrableFactory: " + instance);
             }
         }
 

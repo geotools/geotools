@@ -58,14 +58,12 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
 
     @Before
     public void setup() {
-        mapPane =
-                GuiActionRunner.execute(
-                        new GuiQuery<JMapPane>() {
-                            @Override
-                            protected JMapPane executeInEDT() throws Throwable {
-                                return new JMapPane();
-                            }
-                        });
+        mapPane = GuiActionRunner.execute(new GuiQuery<JMapPane>() {
+            @Override
+            protected JMapPane executeInEDT() throws Throwable {
+                return new JMapPane();
+            }
+        });
         listener = new WaitingMapPaneListener();
         mapPane.addMapPaneListener(listener);
     }
@@ -220,8 +218,7 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
      * @param requestedArea requested area
      * @param realizedArea realized area
      */
-    private void assertDisplayArea(
-            ReferencedEnvelope requestedArea, ReferencedEnvelope realizedArea) {
+    private void assertDisplayArea(ReferencedEnvelope requestedArea, ReferencedEnvelope realizedArea) {
         // realized area should not be empty
         assertFalse(realizedArea.isEmpty());
 

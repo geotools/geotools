@@ -26,17 +26,17 @@ import org.locationtech.jts.geom.Geometry;
 public interface FootprintGeometryProvider {
 
     /**
-     * Retrieves the footprint. If a feature is specified, return the footprint from the current
-     * granule representative feature as it comes from the index.
+     * Retrieves the footprint. If a feature is specified, return the footprint from the current granule representative
+     * feature as it comes from the index.
      *
-     * @param feature the granule representative feature (if any). Specifying a null feature will
-     *     return a default footprint (this is used in general for single-granule stores)
+     * @param feature the granule representative feature (if any). Specifying a null feature will return a default
+     *     footprint (this is used in general for single-granule stores)
      */
     Geometry getFootprint(SimpleFeature feature) throws IOException;
 
     /**
-     * Returns the list of sidecar files defining masks for the specified feature. The default
-     * implementation returns an empty list.
+     * Returns the list of sidecar files defining masks for the specified feature. The default implementation returns an
+     * empty list.
      *
      * @param feature the granule representative feature (if any)
      * @return A list of files defining the masks for this granule (might be more than one)
@@ -45,9 +45,6 @@ public interface FootprintGeometryProvider {
         return Collections.emptyList();
     }
 
-    /**
-     * Close up the provider (in case it holds onto persistent resources such as files or database
-     * connections)
-     */
+    /** Close up the provider (in case it holds onto persistent resources such as files or database connections) */
     void dispose();
 }

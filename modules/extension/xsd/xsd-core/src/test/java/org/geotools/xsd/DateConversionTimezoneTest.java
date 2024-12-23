@@ -29,8 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for time zone aspects of date conversion in {@link XmlConverterFactory} and {@link
- * XSDateBinding}.
+ * Tests for time zone aspects of date conversion in {@link XmlConverterFactory} and {@link XSDateBinding}.
  *
  * @author awaterme
  */
@@ -116,8 +115,7 @@ public class DateConversionTimezoneTest {
         assertDateTimeEquals("2015-09-03T04:00:00Z", 2015, 9, 2, 23, "EST");
     }
 
-    private void assertDateEquals(
-            String expected, int year, int month, int day, int hour, String timezoneId)
+    private void assertDateEquals(String expected, int year, int month, int day, int hour, String timezoneId)
             throws Exception {
         Calendar calendar = calendarOf(year, month, day, hour, timezoneId);
         java.util.Date utilDate = calendar.getTime();
@@ -138,8 +136,7 @@ public class DateConversionTimezoneTest {
         return calendar;
     }
 
-    private void assertDateTimeEquals(
-            String expected, int year, int month, int day, int hour, String timezoneId)
+    private void assertDateTimeEquals(String expected, int year, int month, int day, int hour, String timezoneId)
             throws Exception {
         Calendar calendar = calendarOf(year, month, day, hour, timezoneId);
         java.util.Date utilDate = calendar.getTime();

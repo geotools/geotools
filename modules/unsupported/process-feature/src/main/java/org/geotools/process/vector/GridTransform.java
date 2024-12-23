@@ -20,12 +20,12 @@ package org.geotools.process.vector;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * An affine transformation between two parallel coordinate systems, one defined by an {@link
- * Envelope} and one defined by a discrete zero-based grid representing the same area as the
- * envelope. The transformation incorporates an isotropic scaling and a translation.
+ * An affine transformation between two parallel coordinate systems, one defined by an {@link Envelope} and one defined
+ * by a discrete zero-based grid representing the same area as the envelope. The transformation incorporates an
+ * isotropic scaling and a translation.
  *
- * <p>By default output values are clamped to the input envelope. This behaviour can be disabled, in
- * which case the client must check that values are in an acceptable range.
+ * <p>By default output values are clamped to the input envelope. This behaviour can be disabled, in which case the
+ * client must check that values are in an acceptable range.
  *
  * @author Martin Davis - OpenGeo
  */
@@ -59,8 +59,7 @@ class GridTransform {
     }
 
     /**
-     * Sets whether to clamp outputs from transform to input envelope. Default is to clamp the
-     * outputs.
+     * Sets whether to clamp outputs from transform to input envelope. Default is to clamp the outputs.
      *
      * @param isClamped true if input is to be clamped
      */

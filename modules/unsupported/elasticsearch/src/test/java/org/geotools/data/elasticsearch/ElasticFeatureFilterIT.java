@@ -86,8 +86,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testSchemaWithoutLayerConfig() throws Exception {
         init();
         ElasticFeatureSource featureSource =
-                new ElasticFeatureSource(
-                        new ContentEntry(dataStore, new NameImpl("invalid")), null);
+                new ElasticFeatureSource(new ContentEntry(dataStore, new NameImpl("invalid")), null);
         SimpleFeatureType schema = featureSource.getSchema();
         assertNotNull(schema);
         assertEquals(0, schema.getAttributeCount());
@@ -97,7 +96,8 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     @Ignore
     public void testSchemaWithInvalidSrid() throws Exception {
         init();
-        ElasticLayerConfiguration layerConfig = dataStore.getLayerConfigurations().get("active");
+        ElasticLayerConfiguration layerConfig =
+                dataStore.getLayerConfigurations().get("active");
         for (ElasticAttribute attribute : layerConfig.getAttributes()) {
             attribute.setSrid(-1);
         }
@@ -157,8 +157,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testGetFeaturesWithAndLogicFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property =
-                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -1, -1, 10, 10, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -188,9 +187,8 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = iterator.next();
-                assertTrue(
-                        f.getAttribute("vendor_s").equals("D-Link")
-                                || f.getAttribute("vendor_s").equals("Linksys"));
+                assertTrue(f.getAttribute("vendor_s").equals("D-Link")
+                        || f.getAttribute("vendor_s").equals("Linksys"));
             }
         }
     }
@@ -224,8 +222,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testGetFeaturesWithBetweenFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsBetween between =
-                ff.between(ff.property("speed_is"), ff.literal(0), ff.literal(150));
+        PropertyIsBetween between = ff.between(ff.property("speed_is"), ff.literal(0), ff.literal(150));
         SimpleFeatureCollection features = featureSource.getFeatures(between);
         assertEquals(9, features.size());
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -299,13 +296,11 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         init();
 
         ElasticLayerConfiguration renaming = new ElasticLayerConfiguration(config);
-        renaming.getAttributes().stream()
-                .forEach(
-                        a -> {
-                            if ("standard_ss".equals(a.getName())) a.setCustomName("std");
-                            if ("security_ss".equals(a.getName())) a.setCustomName("sec");
-                            if ("modem_b".equals(a.getName())) a.setCustomName("mob");
-                        });
+        renaming.getAttributes().stream().forEach(a -> {
+            if ("standard_ss".equals(a.getName())) a.setCustomName("std");
+            if ("security_ss".equals(a.getName())) a.setCustomName("sec");
+            if ("modem_b".equals(a.getName())) a.setCustomName("mob");
+        });
         final String RENAMED_TYPE_NAME = "renamed";
         renaming.setLayerName(RENAMED_TYPE_NAME);
 
@@ -349,9 +344,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
             SimpleFeature feature = iterator.next();
             String st = (String) feature.getAttribute("standard_ss");
             // changed from "IEEE 802.11b" in SolrFeatureSourceTest
-            assertTrue(
-                    URLDecoder.decode(st, StandardCharsets.UTF_8.toString())
-                            .startsWith("IEEE 802.11"));
+            assertTrue(URLDecoder.decode(st, StandardCharsets.UTF_8.toString()).startsWith("IEEE 802.11"));
         }
     }
 
@@ -360,8 +353,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         init();
         dataStore.setArrayEncoding(ElasticDataStore.ArrayEncoding.CSV);
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsBetween between =
-                ff.between(ff.property("speed_is"), ff.literal(160), ff.literal(300));
+        PropertyIsBetween between = ff.between(ff.property("speed_is"), ff.literal(160), ff.literal(300));
         SimpleFeatureCollection features = featureSource.getFeatures(between);
         assertEquals(5, features.size());
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -476,8 +468,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testGetFeaturesWithIsGreaterThanOrEqualToFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsGreaterThanOrEqualTo f =
-                ff.greaterOrEqual(ff.property("speed_is"), ff.literal(300));
+        PropertyIsGreaterThanOrEqualTo f = ff.greaterOrEqual(ff.property("speed_is"), ff.literal(300));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
     }
@@ -609,9 +600,8 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     }
 
     /**
-     * This test ensures that when specifying properties in a query with source filtering enabled
-     * you only get back the properties specified. If properties are not specified or
-     * Query.ALL_PROPERTIES is used then you get everything.
+     * This test ensures that when specifying properties in a query with source filtering enabled you only get back the
+     * properties specified. If properties are not specified or Query.ALL_PROPERTIES is used then you get everything.
      */
     @Test
     public void testFieldsWithSourceFiltering() throws Exception {
@@ -644,11 +634,14 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
 
             Iterator<Property> propertyIterator = feature.getProperties().iterator();
 
-            Assert.assertEquals(query.getPropertyNames().length, feature.getProperties().size());
             Assert.assertEquals(
-                    query.getPropertyNames()[0], propertyIterator.next().getName().getLocalPart());
+                    query.getPropertyNames().length, feature.getProperties().size());
             Assert.assertEquals(
-                    query.getPropertyNames()[1], propertyIterator.next().getName().getLocalPart());
+                    query.getPropertyNames()[0],
+                    propertyIterator.next().getName().getLocalPart());
+            Assert.assertEquals(
+                    query.getPropertyNames()[1],
+                    propertyIterator.next().getName().getLocalPart());
         }
 
         // Specify All
@@ -686,8 +679,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     public void testGetFeaturesWithIsBetweenFilterOnObjectType() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsBetween f =
-                ff.between(ff.property("object.hejda"), ff.literal(5), ff.literal(15));
+        PropertyIsBetween f = ff.between(ff.property("object.hejda"), ff.literal(5), ff.literal(15));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
     }

@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_difference extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "difference",
-                    parameter("difference", Geometry.class),
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "difference",
+            parameter("difference", Geometry.class),
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class));
 
     public FilterFunction_difference() {
         super(NAME);

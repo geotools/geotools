@@ -36,13 +36,12 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Service object that takes a geometry and applies a {@link MathTransform} to the coordinates it
- * contains, creating a new geometry as the transformed output.
+ * Service object that takes a geometry and applies a {@link MathTransform} to the coordinates it contains, creating a
+ * new geometry as the transformed output.
  *
- * <p>The standard usage pattern is to supply a {@link MathTransform} and @link
- * CoordinateReferenceSystem} explicitly. The {@link #transform(Geometry)} method can then be used
- * to construct transformed geometries using the {@link GeometryFactory} and {@link
- * CoordinateSequenceFactory} of the input geometry.
+ * <p>The standard usage pattern is to supply a {@link MathTransform} and @link CoordinateReferenceSystem} explicitly.
+ * The {@link #transform(Geometry)} method can then be used to construct transformed geometries using the
+ * {@link GeometryFactory} and {@link CoordinateSequenceFactory} of the input geometry.
  *
  * @author Andrea Aime
  * @author Martin Davis
@@ -56,10 +55,7 @@ public class GeometryCoordinateSequenceTransformer {
 
     private boolean curveCompatible;
 
-    /**
-     * Creates a transformer which uses the {@link CoordinateSequenceFactory} of the source
-     * geometries.
-     */
+    /** Creates a transformer which uses the {@link CoordinateSequenceFactory} of the source geometries. */
     public GeometryCoordinateSequenceTransformer() {
         // the csTransformer is initialized from the first geometry
         // and the supplied transform
@@ -68,9 +64,8 @@ public class GeometryCoordinateSequenceTransformer {
     /**
      * Creates a transformer which uses a client-specified {@link CoordinateSequenceTransformer}.
      *
-     * <p><b>WARNING:</b> The CoordinateSequenceTransformer must use the same {@link
-     * CoordinateSequenceFactory} as the output GeometryFactory, so that geometries are constructed
-     * consistently.
+     * <p><b>WARNING:</b> The CoordinateSequenceTransformer must use the same {@link CoordinateSequenceFactory} as the
+     * output GeometryFactory, so that geometries are constructed consistently.
      */
     public GeometryCoordinateSequenceTransformer(CoordinateSequenceTransformer transformer) {
         inputCSTransformer = transformer;
@@ -86,8 +81,7 @@ public class GeometryCoordinateSequenceTransformer {
     /**
      * Sets the target coordinate reference system.
      *
-     * <p>This value is used to set the coordinate reference system of geometries after they have
-     * been transformed.
+     * <p>This value is used to set the coordinate reference system of geometries after they have been transformed.
      *
      * @param crs The target coordinate reference system.
      */
@@ -185,8 +179,7 @@ public class GeometryCoordinateSequenceTransformer {
     }
 
     /** @throws TransformException */
-    public LineString transformLineString(LineString ls, GeometryFactory gf)
-            throws TransformException {
+    public LineString transformLineString(LineString ls, GeometryFactory gf) throws TransformException {
         if (ls instanceof CurvedGeometry<?> && curveCompatible) {
             return transformCurvedLineString((CurvedGeometry) ls, gf);
         } else {
@@ -202,12 +195,10 @@ public class GeometryCoordinateSequenceTransformer {
         AffineTransform2D at = (AffineTransform2D) mt;
         // return true if we are scaling by the same amount, and the rotational
         // elements are equal in absolute value
-        return at.getScaleX() == at.getScaleY()
-                && Math.abs(at.getShearX()) == Math.abs(at.getShearY());
+        return at.getScaleX() == at.getScaleY() && Math.abs(at.getShearX()) == Math.abs(at.getShearY());
     }
 
-    private LineString transformStraightLineString(LineString ls, GeometryFactory gf)
-            throws TransformException {
+    private LineString transformStraightLineString(LineString ls, GeometryFactory gf) throws TransformException {
         // if required, init csTransformer using geometry's CSFactory
         init(gf);
 
@@ -257,8 +248,7 @@ public class GeometryCoordinateSequenceTransformer {
     }
 
     /** @param cs a CoordinateSequence */
-    private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs)
-            throws TransformException {
+    private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs) throws TransformException {
         return csTransformer.transform(cs, transform);
     }
 

@@ -70,39 +70,37 @@ public class FilterFunctionPropertyTest extends DataTestCase {
         // we add this one since the property caches the last PropertyName used as
         // an optimization
         final Function f = FF.function("property", FF.function("env", FF.literal("pname")));
-        Callable<Void> nameEvaluator =
-                () -> {
-                    try {
-                        EnvFunction.setLocalValue("pname", "name");
+        Callable<Void> nameEvaluator = () -> {
+            try {
+                EnvFunction.setLocalValue("pname", "name");
 
-                        for (int i = 0; i < 1000; i++) {
-                            String result = f.evaluate(roadFeatures[0], String.class);
-                            assertEquals("r1", result);
-                        }
+                for (int i = 0; i < 1000; i++) {
+                    String result = f.evaluate(roadFeatures[0], String.class);
+                    assertEquals("r1", result);
+                }
 
-                    } finally {
-                        EnvFunction.clearLocalValues();
-                    }
+            } finally {
+                EnvFunction.clearLocalValues();
+            }
 
-                    return null;
-                };
+            return null;
+        };
 
-        Callable<Void> geomEvaluator =
-                () -> {
-                    try {
-                        EnvFunction.setLocalValue("pname", "geom");
+        Callable<Void> geomEvaluator = () -> {
+            try {
+                EnvFunction.setLocalValue("pname", "geom");
 
-                        for (int i = 0; i < LOOPS; i++) {
-                            String result = f.evaluate(roadFeatures[0], String.class);
-                            assertEquals("LINESTRING (1 1, 2 2, 4 2, 5 1)", result);
-                        }
+                for (int i = 0; i < LOOPS; i++) {
+                    String result = f.evaluate(roadFeatures[0], String.class);
+                    assertEquals("LINESTRING (1 1, 2 2, 4 2, 5 1)", result);
+                }
 
-                    } finally {
-                        EnvFunction.clearLocalValues();
-                    }
+            } finally {
+                EnvFunction.clearLocalValues();
+            }
 
-                    return null;
-                };
+            return null;
+        };
 
         ExecutorService es = Executors.newCachedThreadPool();
         try {

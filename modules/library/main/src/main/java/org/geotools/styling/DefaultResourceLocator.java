@@ -23,8 +23,7 @@ import org.geotools.api.style.ResourceLocator;
 import org.geotools.util.URLs;
 
 /**
- * Default locator for online resources. Searches by absolute URL, relative path w.r.t. to SLD
- * document or classpath.
+ * Default locator for online resources. Searches by absolute URL, relative path w.r.t. to SLD document or classpath.
  *
  * @author Jan De Moerloose
  */
@@ -66,17 +65,15 @@ public class DefaultResourceLocator implements ResourceLocator {
             }
             if (url == null) {
                 url = getClass().getResource(uri);
-                if (url == null)
-                    LOGGER.warning(
-                            "can't parse " + uri + " as a java resource present in the classpath");
+                if (url == null) LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
             }
         }
         return url;
     }
 
     /**
-     * Variant to URL.getQuery() that won't balk at having # in the query (e.g., a color in a
-     * parametric SVG reference), e.g. <code>firestation.svg?fill=#FF0000</code>
+     * Variant to URL.getQuery() that won't balk at having # in the query (e.g., a color in a parametric SVG reference),
+     * e.g. <code>firestation.svg?fill=#FF0000</code>
      */
     private String getQueryPart(URL url) {
         String external = url.toExternalForm();

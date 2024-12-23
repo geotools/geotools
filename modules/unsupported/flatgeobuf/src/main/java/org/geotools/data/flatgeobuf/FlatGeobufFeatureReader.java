@@ -57,14 +57,12 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         File file;
         URL url;
         if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            file =
-                    ((FlatGeobufDirectoryDataStore) dataStore)
-                            .getDataStore(featureType.getTypeName())
-                            .getFile();
-            url =
-                    ((FlatGeobufDirectoryDataStore) dataStore)
-                            .getDataStore(featureType.getTypeName())
-                            .getURL();
+            file = ((FlatGeobufDirectoryDataStore) dataStore)
+                    .getDataStore(featureType.getTypeName())
+                    .getFile();
+            url = ((FlatGeobufDirectoryDataStore) dataStore)
+                    .getDataStore(featureType.getTypeName())
+                    .getURL();
         } else {
             file = ((FlatGeobufDataStore) dataStore).getFile();
             url = ((FlatGeobufDataStore) dataStore).getURL();
@@ -101,31 +99,23 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
             bbox = null;
         }
         if (bbox != null)
-            it =
-                    FeatureCollectionConversions.deserialize(
-                                    inputStream, headerMeta, featureType, bbox)
-                            .iterator();
+            it = FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType, bbox)
+                    .iterator();
         else if (id != null) {
             long featuresCount = headerMeta.featuresCount;
-            long[] fids =
-                    id.getIdentifiers().stream()
-                            .mapToLong(i -> extractFid(i))
-                            .filter(l -> l >= 0 && l < featuresCount)
-                            .toArray();
+            long[] fids = id.getIdentifiers().stream()
+                    .mapToLong(i -> extractFid(i))
+                    .filter(l -> l >= 0 && l < featuresCount)
+                    .toArray();
             Arrays.sort(fids);
-            it =
-                    FeatureCollectionConversions.deserialize(
-                                    inputStream, headerMeta, featureType, fids)
-                            .iterator();
+            it = FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType, fids)
+                    .iterator();
         } else if (startIndex != null && startIndex > 0) {
-            it =
-                    FeatureCollectionConversions.deserialize(
-                                    inputStream, headerMeta, featureType, q.getStartIndex())
-                            .iterator();
+            it = FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType, q.getStartIndex())
+                    .iterator();
         } else {
-            it =
-                    FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
-                            .iterator();
+            it = FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
+                    .iterator();
         }
     }
 
@@ -153,8 +143,7 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature feature = null;
         if (nextFeature != null) {
             feature = nextFeature;

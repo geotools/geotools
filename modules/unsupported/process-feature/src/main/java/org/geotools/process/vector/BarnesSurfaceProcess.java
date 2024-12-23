@@ -53,28 +53,25 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * A Process that uses a {@link BarnesSurfaceInterpolator} to compute an interpolated surface over a
- * set of irregular data points as a {@link GridCoverage}.
+ * A Process that uses a {@link BarnesSurfaceInterpolator} to compute an interpolated surface over a set of irregular
+ * data points as a {@link GridCoverage}.
  *
- * <p>The implementation allows limiting the radius of influence of observations, in order to
- * prevent extrapolation into unsupported areas, and to increase performance (by reducing the number
- * of observations considered).
+ * <p>The implementation allows limiting the radius of influence of observations, in order to prevent extrapolation into
+ * unsupported areas, and to increase performance (by reducing the number of observations considered).
  *
- * <p>To improve performance, the surface grid can be computed at a lower resolution than the
- * requested output image. The grid is upsampled to match the required image size. Upsampling uses
- * Bilinear Interpolation to maintain visual quality. This gives a large improvement in performance,
- * with minimal impact on visual quality for small cell sizes (for instance, 10 pixels or less).
+ * <p>To improve performance, the surface grid can be computed at a lower resolution than the requested output image.
+ * The grid is upsampled to match the required image size. Upsampling uses Bilinear Interpolation to maintain visual
+ * quality. This gives a large improvement in performance, with minimal impact on visual quality for small cell sizes
+ * (for instance, 10 pixels or less).
  *
- * <p>To ensure that the computed surface is stable (i.e. does not display obvious edge artifacts
- * during zooming, panning and tiling), the data query extent should be expanded to be larger than
- * the specified output extent. This includes "nearby" points which may affect the value of the
- * surface. The expansion distance depends on the length scale, convergence factor, and data spacing
- * in a complex way, so must be manually determined. It does NOT depend on the output window extent.
- * (A good heuristic is to set it to expand by at least the size of the length scale.)
+ * <p>To ensure that the computed surface is stable (i.e. does not display obvious edge artifacts during zooming,
+ * panning and tiling), the data query extent should be expanded to be larger than the specified output extent. This
+ * includes "nearby" points which may affect the value of the surface. The expansion distance depends on the length
+ * scale, convergence factor, and data spacing in a complex way, so must be manually determined. It does NOT depend on
+ * the output window extent. (A good heuristic is to set it to expand by at least the size of the length scale.)
  *
- * <p>To prevent excessive CPU consumption, the process allows limiting the number of data points to
- * process. If the limit is exceeded the output is computed consuming and using only the maximum
- * number of points specified.
+ * <p>To prevent excessive CPU consumption, the process allows limiting the number of data points to process. If the
+ * limit is exceeded the output is computed consuming and using only the maximum number of points specified.
  *
  * <h3>Parameters</h3>
  *
@@ -87,45 +84,41 @@ import si.uom.SI;
  *   <li><b>valueAttr</b> (M)- the feature type attribute containing the observed surface value
  *   <li><b>dataLimit</b> (O)- the maximum number of input points to process
  *   <li><b>scale</b> (M) - the Length Scale for the interpolation. In units of the input data CRS.
- *   <li><b>convergence</b> (O) - the convergence factor for refinement. Between 0 and 1 (values
- *       below 0.4 are safest). (Default = 0.3)
+ *   <li><b>convergence</b> (O) - the convergence factor for refinement. Between 0 and 1 (values below 0.4 are safest).
+ *       (Default = 0.3)
  *   <li><b>passes</b> (O) - the number of passes to compute. 1 or greater. (Default = 2)
- *   <li><b>minObservations</b> (O) - The minimum number of observations required to support a grid
- *       cell. (Default = 2)
- *   <li><b>maxObservationDistance</b> (O) - The maximum distance to an observation for it to
- *       support a grid cell. 0 means all observations are used. In units of the input data CRS.
- *       (Default = 0)
- *   <li><b>noDataValue</b> (O) - The NO_DATA value to use for unsupported grid cells in the output
- *       coverage. (Default = -999)
- *   <li><b>pixelsPerCell</b> (O) - The pixels-per-cell value determines the resolution of the
- *       computed grid. Larger values improve performance, but may degrade appearance. (Default = 1)
- *   <li><b>queryBuffer</b> (O) - The distance to expand the query envelope by. Larger values
- *       provide a more stable surface. In units of the input data CRS. (Default = 0)
+ *   <li><b>minObservations</b> (O) - The minimum number of observations required to support a grid cell. (Default = 2)
+ *   <li><b>maxObservationDistance</b> (O) - The maximum distance to an observation for it to support a grid cell. 0
+ *       means all observations are used. In units of the input data CRS. (Default = 0)
+ *   <li><b>noDataValue</b> (O) - The NO_DATA value to use for unsupported grid cells in the output coverage. (Default =
+ *       -999)
+ *   <li><b>pixelsPerCell</b> (O) - The pixels-per-cell value determines the resolution of the computed grid. Larger
+ *       values improve performance, but may degrade appearance. (Default = 1)
+ *   <li><b>queryBuffer</b> (O) - The distance to expand the query envelope by. Larger values provide a more stable
+ *       surface. In units of the input data CRS. (Default = 0)
  *   <li><b>outputBBOX</b> (M) - The georeferenced bounding box of the output area
  *   <li><b>outputWidth</b> (M) - The width of the output raster
  *   <li><b>outputHeight</b> (M) - The height of the output raster
  * </ul>
  *
- * The output of the process is a {@linkplain GridCoverage2D} with a single band, with cell values
- * in the same domain as the input observation field specified by <code>valueAttr</code>.
+ * The output of the process is a {@linkplain GridCoverage2D} with a single band, with cell values in the same domain as
+ * the input observation field specified by <code>valueAttr</code>.
  *
- * <p>Computation of the surface takes places in the CRS of the output. If the data CRS is geodetic
- * and the output CRS is planar, or vice-versa, the input points are transformed into the output
- * CRS. A simple technique is used to convert the surface distance parameters <code>scale</code> and
- * <code>maxObservationDistance</code> into the output CRS units.
+ * <p>Computation of the surface takes places in the CRS of the output. If the data CRS is geodetic and the output CRS
+ * is planar, or vice-versa, the input points are transformed into the output CRS. A simple technique is used to convert
+ * the surface distance parameters <code>scale</code> and <code>maxObservationDistance</code> into the output CRS units.
  *
  * <h3>Using the process as a Rendering Transformation</h3>
  *
- * This process can be used as a RenderingTransformation, since it implements the
- * <tt>invertQuery(... Query, GridGeometry)</tt> method.
+ * This process can be used as a RenderingTransformation, since it implements the <tt>invertQuery(... Query,
+ * GridGeometry)</tt> method.
  *
- * <p>When used as an Rendering Transformation the process rewrites data query to expand the query
- * BBOX. This includes "nearby" data points to make the computed surface stable under panning and
- * zooming. To support this the <code>queryBuffer</code> parameter should be specified to expand the
- * query extent appropriately.
+ * <p>When used as an Rendering Transformation the process rewrites data query to expand the query BBOX. This includes
+ * "nearby" data points to make the computed surface stable under panning and zooming. To support this the <code>
+ * queryBuffer</code> parameter should be specified to expand the query extent appropriately.
  *
- * <p>The output raster parameters can be determined from the request extents, using the following
- * SLD environment variables:
+ * <p>The output raster parameters can be determined from the request extents, using the following SLD environment
+ * variables:
  *
  * <p>
  *
@@ -141,8 +134,7 @@ import si.uom.SI;
  */
 @DescribeProcess(
         title = "BarnesSurface",
-        description =
-                "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
+        description = "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
 public class BarnesSurfaceProcess implements VectorProcess {
 
     // no process state is defined, since RenderingTransformation processes must be stateless
@@ -151,12 +143,10 @@ public class BarnesSurfaceProcess implements VectorProcess {
     public GridCoverage2D execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input features")
-                    SimpleFeatureCollection obsFeatures,
+            @DescribeParameter(name = "data", description = "Input features") SimpleFeatureCollection obsFeatures,
             @DescribeParameter(
                             name = "valueAttr",
-                            description =
-                                    "Name of attribute containing the data value to be interpolated")
+                            description = "Name of attribute containing the data value to be interpolated")
                     String valueAttr,
             @DescribeParameter(
                             name = "dataLimit",
@@ -168,15 +158,13 @@ public class BarnesSurfaceProcess implements VectorProcess {
             // process parameters
             @DescribeParameter(
                             name = "scale",
-                            description =
-                                    "Length scale for the interpolation, in units of the source data CRS",
+                            description = "Length scale for the interpolation, in units of the source data CRS",
                             min = 1,
                             max = 1)
                     Double argScale,
             @DescribeParameter(
                             name = "convergence",
-                            description =
-                                    "Convergence factor for refinement (between 0 and 1, default 0.3)",
+                            description = "Convergence factor for refinement (between 0 and 1, default 0.3)",
                             min = 0,
                             max = 1,
                             defaultValue = "0.3")
@@ -212,8 +200,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
                     Double argNoDataValue,
             @DescribeParameter(
                             name = "pixelsPerCell",
-                            description =
-                                    "Resolution of the computed grid in pixels per grid cell (default = 1)",
+                            description = "Resolution of the computed grid in pixels per grid cell (default = 1)",
                             defaultValue = "1",
                             min = 0,
                             max = 1)
@@ -231,13 +218,9 @@ public class BarnesSurfaceProcess implements VectorProcess {
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for output")
                     ReferencedEnvelope outputEnv,
-            @DescribeParameter(
-                            name = "outputWidth",
-                            description = "Width of the output raster in pixels")
+            @DescribeParameter(name = "outputWidth", description = "Width of the output raster in pixels")
                     Integer outputWidth,
-            @DescribeParameter(
-                            name = "outputHeight",
-                            description = "Height of the output raster in pixels")
+            @DescribeParameter(name = "outputHeight", description = "Height of the output raster in pixels")
                     Integer outputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -251,8 +234,8 @@ public class BarnesSurfaceProcess implements VectorProcess {
         }
 
         /**
-         * --------------------------------------------- Set up required information from process
-         * arguments. ---------------------------------------------
+         * --------------------------------------------- Set up required information from process arguments.
+         * ---------------------------------------------
          */
         int dataLimit = 0;
         if (argDataLimit != null) dataLimit = argDataLimit;
@@ -283,8 +266,8 @@ public class BarnesSurfaceProcess implements VectorProcess {
             throw new ProcessException(e);
         }
         /**
-         * --------------------------------------------- Convert distance parameters to units of the
-         * destination CRS. ---------------------------------------------
+         * --------------------------------------------- Convert distance parameters to units of the destination CRS.
+         * ---------------------------------------------
          */
         double distanceConversionFactor = distanceConversionFactor(srcCRS, dstCRS);
         double dstLengthScale = lengthScale * distanceConversionFactor;
@@ -302,35 +285,31 @@ public class BarnesSurfaceProcess implements VectorProcess {
         }
 
         /**
-         * --------------------------------------------- Do the processing
-         * ---------------------------------------------
+         * --------------------------------------------- Do the processing ---------------------------------------------
          */
         // Stopwatch sw = new Stopwatch();
         // interpolate the surface at the specified resolution
-        float[][] barnesGrid =
-                createBarnesGrid(
-                        pts,
-                        dstLengthScale,
-                        convergenceFactor,
-                        passes,
-                        minObsCount,
-                        dstMaxObsDistance,
-                        noDataValue,
-                        outputEnv,
-                        gridWidth,
-                        gridHeight);
+        float[][] barnesGrid = createBarnesGrid(
+                pts,
+                dstLengthScale,
+                convergenceFactor,
+                passes,
+                minObsCount,
+                dstMaxObsDistance,
+                noDataValue,
+                outputEnv,
+                gridWidth,
+                gridHeight);
 
         // flip now, since grid size may be smaller
         barnesGrid = flipXY(barnesGrid);
 
         // upsample to output resolution if necessary
         float[][] outGrid = barnesGrid;
-        if (pixelsPerCell > 1)
-            outGrid = upsample(barnesGrid, noDataValue, outputWidth, outputHeight);
+        if (pixelsPerCell > 1) outGrid = upsample(barnesGrid, noDataValue, outputWidth, outputHeight);
 
         // convert to the GridCoverage2D required for output
-        GridCoverageFactory gcf =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         GridCoverage2D gridCov = gcf.create("values", outGrid, outputEnv);
 
         // System.out.println("**************  Barnes Surface computed in " + sw.getTimeString());
@@ -345,8 +324,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
      */
     private static final double METRES_PER_DEGREE = 111320;
 
-    private static double distanceConversionFactor(
-            CoordinateReferenceSystem srcCRS, CoordinateReferenceSystem dstCRS) {
+    private static double distanceConversionFactor(CoordinateReferenceSystem srcCRS, CoordinateReferenceSystem dstCRS) {
         Unit<?> srcUnit = srcCRS.getCoordinateSystem().getAxis(0).getUnit();
         Unit<?> dstUnit = dstCRS.getCoordinateSystem().getAxis(0).getUnit();
         if (srcUnit == dstUnit) {
@@ -356,15 +334,13 @@ public class BarnesSurfaceProcess implements VectorProcess {
         } else if (srcUnit == SI.METRE && dstUnit == NonSI.DEGREE_ANGLE) {
             return 1.0 / METRES_PER_DEGREE;
         }
-        throw new IllegalStateException(
-                "Unable to convert distances from " + srcUnit + " to " + dstUnit);
+        throw new IllegalStateException("Unable to convert distances from " + srcUnit + " to " + dstUnit);
     }
 
     /**
-     * Flips an XY matrix along the X=Y axis, and inverts the Y axis. Used to convert from "map
-     * orientation" into the "image orientation" used by GridCoverageFactory. The surface
-     * interpolation is done on an XY grid, with Y=0 being the bottom of the space. GridCoverages
-     * are stored in an image format, in a YX grid with 0 being the top.
+     * Flips an XY matrix along the X=Y axis, and inverts the Y axis. Used to convert from "map orientation" into the
+     * "image orientation" used by GridCoverageFactory. The surface interpolation is done on an XY grid, with Y=0 being
+     * the bottom of the space. GridCoverages are stored in an image format, in a YX grid with 0 being the top.
      *
      * @param grid the grid to flip
      * @return the flipped grid
@@ -414,8 +390,8 @@ public class BarnesSurfaceProcess implements VectorProcess {
     }
 
     /**
-     * Given a target query and a target grid geometry returns the query to be used to read the
-     * input data of the process involved in rendering. In this process this method is used to:
+     * Given a target query and a target grid geometry returns the query to be used to read the input data of the
+     * process involved in rendering. In this process this method is used to:
      *
      * <ul>
      *   <li>determine the extent & CRS of the output grid
@@ -423,8 +399,8 @@ public class BarnesSurfaceProcess implements VectorProcess {
      *   <li>modify the query hints to ensure point features are returned
      * </ul>
      *
-     * Note that in order to pass validation, all parameters named here must also appear in the
-     * parameter list of the <tt>execute</tt> method, even if they are not used there.
+     * Note that in order to pass validation, all parameters named here must also appear in the parameter list of the
+     * <tt>execute</tt> method, even if they are not used there.
      *
      * @param argQueryBuffer the distance by which to expand the query window
      * @param targetQuery the query used against the data source
@@ -464,10 +440,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
     }
 
     private Filter expandBBox(Filter filter, double distance) {
-        return (Filter)
-                filter.accept(
-                        new BBOXExpandingFilterVisitor(distance, distance, distance, distance),
-                        null);
+        return (Filter) filter.accept(new BBOXExpandingFilterVisitor(distance, distance, distance, distance), null);
     }
 
     public static Coordinate[] extractPoints(

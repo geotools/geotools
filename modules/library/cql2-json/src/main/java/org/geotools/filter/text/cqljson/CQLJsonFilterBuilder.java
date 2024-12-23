@@ -69,8 +69,7 @@ final class CQLJsonFilterBuilder {
         }
     }
 
-    private Expression toCharacterExpression(JsonNode jsonNode)
-            throws CQLException, IOException, ParseException {
+    private Expression toCharacterExpression(JsonNode jsonNode) throws CQLException, IOException, ParseException {
         if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.STRING) {
             String stringExpression = jsonNode.textValue();
             return filterFactory.literal(stringExpression);
@@ -111,8 +110,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException if there is an error parsing the JSON
      * @throws ParseException if there is an error parsing the WKT
      */
-    public Expression getExpression(JsonNode node)
-            throws CQLException, IOException, ParseException {
+    public Expression getExpression(JsonNode node) throws CQLException, IOException, ParseException {
         Expression expression = null;
         ObjectMapper mapper = new ObjectMapper();
         if (node.getNodeType() != JsonNodeType.OBJECT) {
@@ -137,8 +135,7 @@ final class CQLJsonFilterBuilder {
         return expression;
     }
 
-    private List<Expression> getInterval(JsonNode node)
-            throws CQLException, IOException, ParseException {
+    private List<Expression> getInterval(JsonNode node) throws CQLException, IOException, ParseException {
         List<Expression> out = new ArrayList<>();
         Expression expression1 = getExpression(node.get("interval").get(0));
         Expression expression2 = getExpression(node.get("interval").get(0));
@@ -147,8 +144,7 @@ final class CQLJsonFilterBuilder {
         return out;
     }
 
-    private Expression getArithmetic(JsonNode node)
-            throws CQLException, IOException, ParseException {
+    private Expression getArithmetic(JsonNode node) throws CQLException, IOException, ParseException {
         String operator = node.get("op").textValue();
         List<Expression> expressions = new ArrayList<>();
         ArrayNode args = (ArrayNode) node.get("args");
@@ -156,8 +152,7 @@ final class CQLJsonFilterBuilder {
             expressions.add(getExpression(argNode));
         }
         if (expressions.size() != 2) {
-            throw new CQLException(
-                    "Was expecting two arguments for arithmetic operator: " + operator);
+            throw new CQLException("Was expecting two arguments for arithmetic operator: " + operator);
         }
         switch (operator) {
             case "+":
@@ -169,8 +164,7 @@ final class CQLJsonFilterBuilder {
             case "/":
                 return filterFactory.divide(expressions.get(0), expressions.get(1));
             case "%":
-                return filterFactory.function(
-                        "IEEEremainder", expressions.get(0), expressions.get(1));
+                return filterFactory.function("IEEEremainder", expressions.get(0), expressions.get(1));
             case "div":
                 return filterFactory.function("div", expressions.get(0), expressions.get(1));
             case "^":
@@ -195,8 +189,7 @@ final class CQLJsonFilterBuilder {
                 Envelope bbox2 = new Envelope(-180, maxX, minY, maxY);
                 Polygon g1 = JTS.toGeometry(bbox1);
                 Polygon g2 = JTS.toGeometry(bbox2);
-                MultiPolygon multiPolygon =
-                        g1.getFactory().createMultiPolygon(new Polygon[] {g1, g2});
+                MultiPolygon multiPolygon = g1.getFactory().createMultiPolygon(new Polygon[] {g1, g2});
                 return filterFactory.literal(multiPolygon);
             }
 
@@ -210,11 +203,10 @@ final class CQLJsonFilterBuilder {
     }
 
     /**
-     * From the spec: In cases where the bounding box spans the antimeridian of a geographic
-     * coordinate reference system, the lower-left value (west-most box edge) is larger than the //
-     * upper-right value (east-most box edge). Since with CQL2 we won't get the CRS (it's provided
-     * in a separate request parameter, not part of the CQL2 text), we'll just assume it's a
-     * geographic CRS
+     * From the spec: In cases where the bounding box spans the antimeridian of a geographic coordinate reference
+     * system, the lower-left value (west-most box edge) is larger than the // upper-right value (east-most box edge).
+     * Since with CQL2 we won't get the CRS (it's provided in a separate request parameter, not part of the CQL2 text),
+     * we'll just assume it's a geographic CRS
      */
     static boolean isWrappingDateline(double minLon, double maxLon) {
         return minLon > maxLon && validLongitude(minLon) && validLongitude(maxLon);
@@ -296,9 +288,7 @@ final class CQLJsonFilterBuilder {
 
     private boolean isFunction(JsonNode node) {
         boolean out = false;
-        if (node != null
-                && node.getNodeType() == JsonNodeType.OBJECT
-                && node.get("function") != null) {
+        if (node != null && node.getNodeType() == JsonNodeType.OBJECT && node.get("function") != null) {
             return true;
         }
         return out;
@@ -373,8 +363,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertNotEquals(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertNotEquals(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         return filterFactory.notEqual(expression1, expression2);
@@ -389,8 +378,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertGreaterThan(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertGreaterThan(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         return filterFactory.greater(expression1, expression2);
@@ -420,8 +408,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertGreaterThanOrEq(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertGreaterThanOrEq(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         return filterFactory.greaterOrEqual(expression1, expression2);
@@ -436,8 +423,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertLessThanOrEq(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertLessThanOrEq(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         return filterFactory.lessOrEqual(expression1, expression2);
@@ -627,8 +613,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertIntersects(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertIntersects(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         return filterFactory.intersects(expression1, expression2);
@@ -762,8 +747,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertTDisjoint(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertTDisjoint(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression expression1 = getExpression(args.get(0));
         Expression expression2 = getExpression(args.get(1));
         Filter before = convertBefore(expression1, expression2);
@@ -795,8 +779,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertFinishedBy(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertFinishedBy(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Finished by not supported by GeoTools filters");
     }
 
@@ -809,8 +792,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertFinishing(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertFinishing(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Finishing not supported by GeoTools filters");
     }
 
@@ -823,8 +805,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertTIntersects(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertTIntersects(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("TIntersects not supported by GeoTools filters");
     }
 
@@ -863,8 +844,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertOverlappedBy(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertOverlappedBy(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Overlapped by not supported by GeoTools filters");
     }
 
@@ -877,8 +857,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertTOverlaps(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertTOverlaps(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Time Overlaps not supported by GeoTools filters");
     }
 
@@ -891,8 +870,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertStartedBy(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertStartedBy(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Started by not supported by GeoTools filters");
     }
 
@@ -918,8 +896,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertAContainedBy(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertAContainedBy(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Array Contained By not supported by GeoTools filters");
     }
 
@@ -932,8 +909,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertAContaining(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertAContaining(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Array Containing not supported by GeoTools filters");
     }
 
@@ -946,8 +922,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertArrayEquals(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertArrayEquals(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Array Equals not supported by GeoTools filters");
     }
 
@@ -960,8 +935,7 @@ final class CQLJsonFilterBuilder {
      * @throws IOException
      * @throws ParseException
      */
-    public Filter convertAOverlaps(ArrayNode args)
-            throws CQLException, IOException, ParseException {
+    public Filter convertAOverlaps(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Array Overlaps not supported by GeoTools filters");
     }
 }

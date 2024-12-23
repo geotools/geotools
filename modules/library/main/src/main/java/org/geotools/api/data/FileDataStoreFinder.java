@@ -36,34 +36,31 @@ import org.geotools.factory.CommonFactoryFinder;
  */
 public class FileDataStoreFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FileDataStoreFinder.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FileDataStoreFinder.class);
 
     private FileDataStoreFinder() {}
 
     /**
-     * Checks each available datasource implementation in turn and returns the first one which
-     * claims to support the given file..
+     * Checks each available datasource implementation in turn and returns the first one which claims to support the
+     * given file..
      *
      * @param file the file
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     public static FileDataStore getDataStore(File file) throws IOException {
         return getDataStore(file.toURI().toURL());
     }
 
     /**
-     * Checks each available datasource implementation in turn and returns the first one which
-     * claims to support the resource identified by the params object.
+     * Checks each available datasource implementation in turn and returns the first one which claims to support the
+     * resource identified by the params object.
      *
      * @param url URL for the input resource
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     public static FileDataStore getDataStore(URL url) throws IOException {
         Iterator<FileDataStoreFactorySpi> ps = getAvailableDataStores();
@@ -130,8 +127,7 @@ public class FileDataStoreFinder {
     }
 
     /**
-     * Returns an iterator of FileDataStoreFactorySpi to allow for the easy creation of a
-     * FileDataStore
+     * Returns an iterator of FileDataStoreFactorySpi to allow for the easy creation of a FileDataStore
      *
      * @see FileDataStoreFactorySpi
      * @see FileDataStore

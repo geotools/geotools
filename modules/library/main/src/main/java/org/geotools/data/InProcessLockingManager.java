@@ -37,19 +37,17 @@ import org.geotools.util.SuppressFBWarnings;
 /**
  * Provides In-Process FeatureLocking support for DataStore implementations.
  *
- * <p>If at all possible DataStore implementations should provide a real Feature Locking support
- * that is persisted to disk or database and resepected by other processes.
+ * <p>If at all possible DataStore implementations should provide a real Feature Locking support that is persisted to
+ * disk or database and resepected by other processes.
  *
- * <p>This class provides a stop gap solution that implementations may use for GeoServer
- * compatability.
+ * <p>This class provides a stop gap solution that implementations may use for GeoServer compatability.
  *
  * @author Jody Garnett, Refractions Research
  * @author Chris Holmes, TOPP
- * @task REVISIT: I'm not sure that the map within a map is a good idea, it makes things perhaps too
- *     complicated. A nasty bug came about with releasing, as allLocks put locks into a new
- *     collection, and the iterator just removed them from that set instead of from the storage.
- *     This is now fixed, but the loop to do it is really damn complex. I'm not sure of the
- *     solution, but there should be something that is less confusing.
+ * @task REVISIT: I'm not sure that the map within a map is a good idea, it makes things perhaps too complicated. A
+ *     nasty bug came about with releasing, as allLocks put locks into a new collection, and the iterator just removed
+ *     them from that set instead of from the storage. This is now fixed, but the loop to do it is really damn complex.
+ *     I'm not sure of the solution, but there should be something that is less confusing.
  */
 public class InProcessLockingManager implements LockingManager {
     /** lockTable access by typeName stores Transactions or MemoryLocks */
@@ -84,8 +82,7 @@ public class InProcessLockingManager implements LockingManager {
                     // lock already held by this transacstion
                     // we could just consider returning here
                     //
-                    throw new FeatureLockException(
-                            "Transaction Lock is already held by this Transaction", featureID);
+                    throw new FeatureLockException("Transaction Lock is already held by this Transaction", featureID);
                 } else {
                     // we should wait till it is available and then grab
                     // the lock
@@ -97,15 +94,12 @@ public class InProcessLockingManager implements LockingManager {
                         lock = getLock(typeName, featureID);
                     } catch (InterruptedException interupted) {
                         throw new FeatureLockException(
-                                "Interupted while waiting for Transaction Lock",
-                                featureID,
-                                interupted);
+                                "Interupted while waiting for Transaction Lock", featureID, interupted);
                     }
                 }
             } else if (lock instanceof MemoryLock) {
                 MemoryLock mlock = (MemoryLock) lock;
-                throw new FeatureLockException(
-                        "Feature Lock is held by Authorization " + mlock.authID, featureID);
+                throw new FeatureLockException("Feature Lock is held by Authorization " + mlock.authID, featureID);
             } else {
                 throw new FeatureLockException("Lock is already held " + lock, featureID);
             }
@@ -156,16 +150,14 @@ public class InProcessLockingManager implements LockingManager {
      * Creates the right sort of In-Process Lock.
      *
      * @return In-Process Lock
-     * @throws FeatureLockException When a Transaction lock is requested against
-     *     Transaction.AUTO_COMMIT
+     * @throws FeatureLockException When a Transaction lock is requested against Transaction.AUTO_COMMIT
      */
     protected synchronized Lock createLock(Transaction transaction, FeatureLock featureLock)
             throws FeatureLockException {
         if (featureLock == FeatureLock.TRANSACTION) {
             // we need a Transacstion Lock
             if (transaction == Transaction.AUTO_COMMIT) {
-                throw new FeatureLockException(
-                        "We cannot issue a Transaction lock against AUTO_COMMIT");
+                throw new FeatureLockException("We cannot issue a Transaction lock against AUTO_COMMIT");
             }
 
             TransactionLock lock = (TransactionLock) transaction.getState(this);
@@ -228,13 +220,12 @@ public class InProcessLockingManager implements LockingManager {
      *
      * <ul>
      *   <li>TransactionLock (Blocking): lock held by a Transaction<br>
-     *       Authorization is granted to the Transaction holding the Lock. Conflict will result in a
-     *       block until the Transaction holding the lock completes. (This behavior is equivalent to
-     *       a Database row-lock, or a java synchronized statement)
+     *       Authorization is granted to the Transaction holding the Lock. Conflict will result in a block until the
+     *       Transaction holding the lock completes. (This behavior is equivalent to a Database row-lock, or a java
+     *       synchronized statement)
      *   <li>FeatureLock (Error): lock held by a FeatureLock<br>
-     *       Authorization is based on the set of Authorization IDs held by the provided
-     *       Transaction. Conflict will result in an error. (This behavior is equivalent to the WFS
-     *       locking specification)
+     *       Authorization is based on the set of Authorization IDs held by the provided Transaction. Conflict will
+     *       result in an error. (This behavior is equivalent to the WFS locking specification)
      * </ul>
      *
      * <p>Right now we are just going to error out with an exception
@@ -244,16 +235,14 @@ public class InProcessLockingManager implements LockingManager {
      * @param transaction Provides Authorization
      * @throws FeatureLockException If transaction does not have sufficient authroization
      */
-    public void assertAccess(String typeName, String featureID, Transaction transaction)
-            throws FeatureLockException {
+    public void assertAccess(String typeName, String featureID, Transaction transaction) throws FeatureLockException {
         Lock lock = getLock(typeName, featureID);
 
         // LOGGER.info("asserting access on lock for " + typeName + ", fid: "
         //  + featureID + ", transaction: " + transaction + ", lock " + lock);
 
         if ((lock != null) && !lock.isAuthorized(transaction)) {
-            throw new FeatureLockException(
-                    "Transaction does not have authorization for " + typeName + ":" + featureID);
+            throw new FeatureLockException("Transaction does not have authorization for " + typeName + ":" + featureID);
         }
     }
 
@@ -265,8 +254,7 @@ public class InProcessLockingManager implements LockingManager {
      * @return FeatureWriter with lock checking
      */
     public FeatureWriter<SimpleFeatureType, SimpleFeature> checkedWriter(
-            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer,
-            final Transaction transaction) {
+            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer, final Transaction transaction) {
         if (writer instanceof Flushable) {
             return new LockingFlushingFeatureWriter(writer, transaction);
         } else {
@@ -281,8 +269,7 @@ public class InProcessLockingManager implements LockingManager {
      */
     @Override
     public synchronized void unLockFeatureID(
-            String typeName, String featureID, Transaction transaction, FeatureLock featureLock)
-            throws IOException {
+            String typeName, String featureID, Transaction transaction, FeatureLock featureLock) throws IOException {
         assertAccess(typeName, featureID, transaction);
         locks(typeName).remove(featureID);
     }
@@ -305,8 +292,7 @@ public class InProcessLockingManager implements LockingManager {
         }
 
         if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + authID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
         Lock lock;
@@ -351,8 +337,7 @@ public class InProcessLockingManager implements LockingManager {
         }
 
         if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + authID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
         Lock lock;
@@ -477,11 +462,10 @@ public class InProcessLockingManager implements LockingManager {
     /**
      * Class representing TransactionDuration locks.
      *
-     * <p>Implements Transasction.State so it can remomve itself when commit() or rollback() is
-     * called.
+     * <p>Implements Transasction.State so it can remomve itself when commit() or rollback() is called.
      *
-     * <p>Threads may wait on this object, it will notify when it releases the lock due to a commit
-     * or rollback opperation
+     * <p>Threads may wait on this object, it will notify when it releases the lock due to a commit or rollback
+     * opperation
      *
      * @author Jody Garnett, Refractions Research
      */
@@ -662,8 +646,7 @@ public class InProcessLockingManager implements LockingManager {
         }
     }
 
-    class LockingFeatureWriter
-            implements DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature> {
+    class LockingFeatureWriter implements DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature> {
 
         private final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         private final Transaction transaction;
@@ -671,8 +654,7 @@ public class InProcessLockingManager implements LockingManager {
 
         protected SimpleFeature live = null;
 
-        public LockingFeatureWriter(
-                FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Transaction transaction) {
+        public LockingFeatureWriter(FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Transaction transaction) {
             this.writer = writer;
             this.transaction = transaction;
             this.typeName = writer.getFeatureType().getTypeName();

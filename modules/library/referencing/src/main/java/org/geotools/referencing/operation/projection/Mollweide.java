@@ -41,8 +41,7 @@ import org.geotools.util.SuppressFBWarnings;
  *
  * @see <A HREF="http://mathworld.wolfram.com/MollweideProjection.html">Mollweide</A>
  * @see <A HREF="http://en.wikipedia.org/wiki/Mollweide_projection">"Mollweide" on Wikipedia</A>
- * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mollweide.html">"Mollweide" on
- *     RemoteSensing.org</A>
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mollweide.html">"Mollweide" on RemoteSensing.org</A>
  * @since 2.7.0
  * @author Andrea Aime
  */
@@ -70,9 +69,7 @@ public class Mollweide extends MapProjection {
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
     protected Mollweide(
-            ProjectionMode mode,
-            final ParameterDescriptorGroup descriptors,
-            final ParameterValueGroup parameters)
+            ProjectionMode mode, final ParameterDescriptorGroup descriptors, final ParameterValueGroup parameters)
             throws ParameterNotFoundException {
         super(parameters, descriptors.descriptors());
         this.descriptors = descriptors;
@@ -105,12 +102,11 @@ public class Mollweide extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
-     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the
+     * result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst) throws ProjectionException {
 
         double k = C_p * sin(phi);
         int i = MAX_ITER;
@@ -132,13 +128,9 @@ public class Mollweide extends MapProjection {
         return ptDst;
     }
 
-    /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
-     * {@code ptDst}.
-     */
+    /** Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in {@code ptDst}. */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         double phi = aasin(y / C_y);
         double lam = x / (C_x * cos(phi));
@@ -171,8 +163,8 @@ public class Mollweide extends MapProjection {
     // ////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Mollweide projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the
+     * Mollweide projection (not part of the EPSG database).
      *
      * @since 2.7.0
      * @author Andrea Aime
@@ -183,16 +175,13 @@ public class Mollweide extends MapProjection {
         private static final long serialVersionUID = -2616680275771881688L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Mollweide"),
-                            new NamedIdentifier(Citations.ESRI, "Mollweide"),
-                            new NamedIdentifier(Citations.PROJ, "moll")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, FALSE_EASTING, FALSE_NORTHING, CENTRAL_MERIDIAN
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Mollweide"),
+                    new NamedIdentifier(Citations.ESRI, "Mollweide"),
+                    new NamedIdentifier(Citations.PROJ, "moll")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, FALSE_EASTING, FALSE_NORTHING, CENTRAL_MERIDIAN});
 
         /** Constructs a new provider. */
         public MollweideProvider() {
@@ -217,8 +206,8 @@ public class Mollweide extends MapProjection {
     }
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Wagner IV projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the Wagner
+     * IV projection (not part of the EPSG database).
      *
      * @since 2.7.0
      * @author Andrea Aime
@@ -229,12 +218,9 @@ public class Mollweide extends MapProjection {
         private static final long serialVersionUID = 1079407274370647753L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Wagner_IV")
-                        },
-                        new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.GEOTOOLS, "Wagner_IV")},
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
 
         /** Constructs a new provider. */
         public WagnerIVProvider() {
@@ -260,8 +246,8 @@ public class Mollweide extends MapProjection {
     }
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for the Wagner V projection (not part of the EPSG database).
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for the Wagner
+     * V projection (not part of the EPSG database).
      *
      * @since 2.7.0
      * @author Andrea Aime
@@ -272,10 +258,9 @@ public class Mollweide extends MapProjection {
         private static final long serialVersionUID = -3583284443974045930L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {new NamedIdentifier(Citations.GEOTOOLS, "Wagner_V")},
-                        new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.GEOTOOLS, "Wagner_V")},
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
 
         /** Constructs a new provider. */
         public WagnerVProvider() {

@@ -13,8 +13,8 @@ import java.net.URI;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Information about on-line sources from which the dataset, specification, or community profile
- * name and extended metadata elements can be obtained.
+ * Information about on-line sources from which the dataset, specification, or community profile name and extended
+ * metadata elements can be obtained.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
@@ -23,11 +23,10 @@ import org.geotools.api.util.InternationalString;
  */
 public interface OnLineResource {
     /**
-     * Location (address) for on-line access using a Uniform Resource Locator address or similar
-     * addressing scheme such as http://www.statkart.no/isotc211.
+     * Location (address) for on-line access using a Uniform Resource Locator address or similar addressing scheme such
+     * as http://www.statkart.no/isotc211.
      *
-     * @return Location for on-line access using a Uniform Resource Locator address or similar
-     *     scheme.
+     * @return Location for on-line access using a Uniform Resource Locator address or similar scheme.
      */
     URI getLinkage();
 
@@ -39,8 +38,7 @@ public interface OnLineResource {
     String getProtocol();
 
     /**
-     * Name of an application profile that can be used with the online resource. Returns {@code
-     * null} if none.
+     * Name of an application profile that can be used with the online resource. Returns {@code null} if none.
      *
      * @return Application profile that can be used with the online resource, or {@code null}.
      */

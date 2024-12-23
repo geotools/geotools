@@ -21,10 +21,9 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.util.DerivedMap;
 
 /**
- * A map without the <code>"conversion."</code> prefix in front of property keys. This
- * implementation performs a special processing for the <code>{@linkplain #prefix}.name</code> key:
- * if it doesn't exists, then the plain {@code name} key is used. In other words, this map inherits
- * the {@code "name"} property from the {@linkplain #base} map.
+ * A map without the <code>"conversion."</code> prefix in front of property keys. This implementation performs a special
+ * processing for the <code>{@linkplain #prefix}.name</code> key: if it doesn't exists, then the plain {@code name} key
+ * is used. In other words, this map inherits the {@code "name"} property from the {@linkplain #base} map.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -35,9 +34,9 @@ final class UnprefixedMap extends DerivedMap<String, String, Object> {
     private final String prefix;
 
     /**
-     * {@code true} if the <code>{@linkplain #prefix}.name</code> property exists in the {@linkplain
-     * #base base} map. This class will inherit the name and alias from the {@linkplain #base base}
-     * map only if this field is set to {@code false}.
+     * {@code true} if the <code>{@linkplain #prefix}.name</code> property exists in the {@linkplain #base base} map.
+     * This class will inherit the name and alias from the {@linkplain #base base} map only if this field is set to
+     * {@code false}.
      */
     private final boolean hasName, hasAlias;
 
@@ -69,8 +68,8 @@ final class UnprefixedMap extends DerivedMap<String, String, Object> {
     }
 
     /**
-     * Remove the prefix from the specified key. If the key doesn't begins with the prefix, then
-     * this method returns {@code null}.
+     * Remove the prefix from the specified key. If the key doesn't begins with the prefix, then this method returns
+     * {@code null}.
      *
      * @param key A key from the {@linkplain #base} map.
      * @return The key that this view should contains instead of {@code key}, or {@code null}.
@@ -104,8 +103,8 @@ final class UnprefixedMap extends DerivedMap<String, String, Object> {
     }
 
     /**
-     * Returns {@code true} if the specified candidate is {@code "name"} or {@code "alias"} without
-     * prefix. Key starting with {@code "name_"} or {@code "alias_"} are accepted as well.
+     * Returns {@code true} if the specified candidate is {@code "name"} or {@code "alias"} without prefix. Key starting
+     * with {@code "name_"} or {@code "alias_"} are accepted as well.
      */
     private boolean isPlainKey(final String key) {
         return (!hasName && keyMatches(IdentifiedObject.NAME_KEY, key))

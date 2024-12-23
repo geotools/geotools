@@ -39,10 +39,9 @@ import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * This is to demonstrate evaluating XPaths as attribute expressions when complex
- * attributes/features are passed in, instead of simple features. This is necessary since complex
- * features could contain nested properties, and we should be able to get properties of any level
- * from the features.
+ * This is to demonstrate evaluating XPaths as attribute expressions when complex attributes/features are passed in,
+ * instead of simple features. This is necessary since complex features could contain nested properties, and we should
+ * be able to get properties of any level from the features.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
@@ -54,13 +53,12 @@ public class AppSchemaFeaturePropertyAccessorTest extends AppSchemaTestSupport {
     private static final String schemaBase = "/test-data/";
 
     /** Gsml name space */
-    static final NamespaceSupport GSMLNAMESPACES =
-            new NamespaceSupport() {
-                {
-                    declarePrefix("gsml", GSMLNS);
-                    declarePrefix("xlink", XLINKNS);
-                }
-            };
+    static final NamespaceSupport GSMLNAMESPACES = new NamespaceSupport() {
+        {
+            declarePrefix("gsml", GSMLNS);
+            declarePrefix("xlink", XLINKNS);
+        }
+    };
 
     /**
      * Load schema
@@ -89,34 +87,25 @@ public class AppSchemaFeaturePropertyAccessorTest extends AppSchemaTestSupport {
             assertNotNull(mf);
             assertTrue(mf instanceof FeatureType);
 
-            AttributeExpressionImpl ex =
-                    new AttributeExpressionImpl(
-                            "gsml:specification/gsml:GeologicUnit/gsml:preferredAge/gsml:GeologicEvent/gsml:eventAge/gsml:CGI_TermRange/gsml:upper/gsml:CGI_TermValue/gsml:value",
-                            new Hints(
-                                    FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT,
-                                    GSMLNAMESPACES));
+            AttributeExpressionImpl ex = new AttributeExpressionImpl(
+                    "gsml:specification/gsml:GeologicUnit/gsml:preferredAge/gsml:GeologicEvent/gsml:eventAge/gsml:CGI_TermRange/gsml:upper/gsml:CGI_TermValue/gsml:value",
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
 
             Object o = ex.evaluate(mf);
             assertNotNull(o);
             assertTrue(o instanceof PropertyDescriptor);
 
-            ex =
-                    new AttributeExpressionImpl(
-                            "gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@xlink:href",
-                            new Hints(
-                                    FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT,
-                                    GSMLNAMESPACES));
+            ex = new AttributeExpressionImpl(
+                    "gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@xlink:href",
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
 
             o = ex.evaluate(mf);
             assertNotNull(o);
             assertEquals(o, Types.typeName(XLINKNS, "href"));
 
-            ex =
-                    new AttributeExpressionImpl(
-                            "gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@foo:bar",
-                            new Hints(
-                                    FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT,
-                                    GSMLNAMESPACES));
+            ex = new AttributeExpressionImpl(
+                    "gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@foo:bar",
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
 
             o = ex.evaluate(mf);
             assertNull(o);

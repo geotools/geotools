@@ -24,8 +24,8 @@ import org.junit.Test;
 
 public class XSIntegerStrategyTest extends TestSchema {
     /**
-     * integer has a lexical representation consisting of a finite-length sequence of decimal digits
-     * (#x30-#x39) with an optional leading sign. If the sign is omitted, "+" is assumed.
+     * integer has a lexical representation consisting of a finite-length sequence of decimal digits (#x30-#x39) with an
+     * optional leading sign. If the sign is omitted, "+" is assumed.
      *
      * <p>For example: -1, 0, 12678967543233, +100000.
      */
@@ -42,10 +42,7 @@ public class XSIntegerStrategyTest extends TestSchema {
         return XS.INTEGER;
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues("", null);

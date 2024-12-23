@@ -20,8 +20,7 @@ package org.geotools.grid;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * A helper class to create bounding envelopes with width and height that are simple multiples of a
- * given resolution.
+ * A helper class to create bounding envelopes with width and height that are simple multiples of a given resolution.
  *
  * <pre><code>
  * // Example of use: creating an envlope with 'neat' lat-lon bounds
@@ -46,10 +45,10 @@ public class Envelopes {
     private static final double EPS = 1.0E-8;
 
     /**
-     * Include the provided envelope, expanding as necessary and rounding the bounding coordinates
-     * such that they are multiples of the specified resolution. For example, if {@code resolution}
-     * is 100 then the min and max bounding coordinates of this envelope will set to mutliples of
-     * 100 by rounding down the min values and rounding up the max values if required.
+     * Include the provided envelope, expanding as necessary and rounding the bounding coordinates such that they are
+     * multiples of the specified resolution. For example, if {@code resolution} is 100 then the min and max bounding
+     * coordinates of this envelope will set to mutliples of 100 by rounding down the min values and rounding up the max
+     * values if required.
      *
      * <pre><code>
      * // Example, create a new envelope that cntains an input envlope and
@@ -77,8 +76,8 @@ public class Envelopes {
     }
 
     /**
-     * Helper method to round ordinate values up or down to a specified resolution. The returned
-     * value will be a multiple of the specified resolution.
+     * Helper method to round ordinate values up or down to a specified resolution. The returned value will be a
+     * multiple of the specified resolution.
      *
      * <pre><code>
      * double ordinate = 1234.56;

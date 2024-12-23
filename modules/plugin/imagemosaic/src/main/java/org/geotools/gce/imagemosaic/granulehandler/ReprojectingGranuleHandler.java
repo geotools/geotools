@@ -67,8 +67,7 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                     geometry = Utils.reprojectEnvelopeToGeometry(finalEnvelope, targetCRS, null);
                     if (geometry == null) {
                         throw new GranuleHandlingException(
-                                "Reprojection of source envelope failed, got back a null one "
-                                        + finalEnvelope);
+                                "Reprojection of source envelope failed, got back a null one " + finalEnvelope);
                     } else if (geometry instanceof GeometryCollection) {
                         // in case of wrapping only pick the first footprint
                         geometry = geometry.getGeometryN(0);
@@ -83,8 +82,7 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                 geometry = JTS.toGeometry(finalEnvelope);
             }
 
-            targetFeature.setAttribute(
-                    targetFeatureType.getGeometryDescriptor().getName(), geometry);
+            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometry);
         }
     }
 }

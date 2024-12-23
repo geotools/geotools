@@ -32,9 +32,8 @@ import org.geotools.util.CheckedHashSet;
 /**
  * Configuration object for a {@link org.geotools.data.complex.AppSchemaDataAccess}.
  *
- * <p>This configuration object contains all the needed elements for a AppSchemaDataAccess to aquire
- * the source and target FeatureTypes, and apply the mappings between attributes to serve community
- * schemas.
+ * <p>This configuration object contains all the needed elements for a AppSchemaDataAccess to aquire the source and
+ * target FeatureTypes, and apply the mappings between attributes to serve community schemas.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
@@ -50,23 +49,20 @@ public class AppSchemaDataAccessDTO implements Serializable {
     private Map<String, String> namespaces = Collections.emptyMap();
 
     /**
-     * List of configuration objects used to aquire the datastores that provides the source
-     * FeatureTypes. Source feature types are those internally defined whose Feature instances are
-     * converted to features of the target schemas by applying the FeatureTypeMappings.
+     * List of configuration objects used to aquire the datastores that provides the source FeatureTypes. Source feature
+     * types are those internally defined whose Feature instances are converted to features of the target schemas by
+     * applying the FeatureTypeMappings.
      */
     private List<SourceDataStore> sourceDataStores = Collections.emptyList();
 
     private Set<TypeMapping> typeMappings = Collections.emptySet();
 
-    /**
-     * List of file names, that may be fully qualified URL's, or paths relative to {@link
-     * #baseSchemasUrl}
-     */
+    /** List of file names, that may be fully qualified URL's, or paths relative to {@link #baseSchemasUrl} */
     private List<String> targetSchemasUris = Collections.emptyList();
 
     /**
-     * List of the paths of other related types that are mapped separately that shouldn't be visible
-     * on their own, thus included in "include" statement
+     * List of the paths of other related types that are mapped separately that shouldn't be visible on their own, thus
+     * included in "include" statement
      */
     private List<String> includes = Collections.emptyList();
 
@@ -144,16 +140,16 @@ public class AppSchemaDataAccessDTO implements Serializable {
     }
 
     /**
-     * @return a non null URL for the base location of the resource files in order to serve as the
-     *     base to resolve relative configuration paths.
+     * @return a non null URL for the base location of the resource files in order to serve as the base to resolve
+     *     relative configuration paths.
      */
     public String getBaseSchemasUrl() {
         return baseSchemasUrl;
     }
 
     /**
-     * @param baseSchemasUrl URL of a resource which's going to be taken as the base location to
-     *     resolve configuration path elements expressed as relative paths.
+     * @param baseSchemasUrl URL of a resource which's going to be taken as the base location to resolve configuration
+     *     path elements expressed as relative paths.
      */
     public void setBaseSchemasUrl(final String baseSchemasUrl) {
         this.baseSchemasUrl = baseSchemasUrl;

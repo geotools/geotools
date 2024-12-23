@@ -29,7 +29,8 @@ public class Spatial_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestS
 
     @Test
     public void testType() {
-        assertEquals(SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());
+        assertEquals(
+                SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());
     }
 
     @Test
@@ -48,11 +49,10 @@ public class Spatial_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestS
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.spatialCapabilities(),
-                        new QName(OGC.NAMESPACE, "Spatial_Capabilities"),
-                        OGC.Spatial_CapabilitiesType);
+        Document dom = encode(
+                FilterMockData.spatialCapabilities(),
+                new QName(OGC.NAMESPACE, "Spatial_Capabilities"),
+                OGC.Spatial_CapabilitiesType);
 
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Spatial_Operators")));
     }

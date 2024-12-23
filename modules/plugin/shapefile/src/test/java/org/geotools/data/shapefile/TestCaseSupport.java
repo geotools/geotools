@@ -35,9 +35,8 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 /**
- * Base class for test suite. This class is not abstract for the purpose of {@link
- * TestCaseSupportTest}, but should not be instantiated otherwise. It should be extented (which is
- * why the constructor is protected).
+ * Base class for test suite. This class is not abstract for the purpose of {@link TestCaseSupportTest}, but should not
+ * be instantiated otherwise. It should be extented (which is why the constructor is protected).
  *
  * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
@@ -66,16 +65,15 @@ public class TestCaseSupport {
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     /**
-     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply
-     * to message displayed in case of errors.
+     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply to message displayed
+     * in case of errors.
      */
     // protected static boolean verbose = false;
     /** Stores all temporary files here - delete on tear down. */
     private final List<File> tmpFiles = new ArrayList<>();
 
     /**
-     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
-     * after each test.
+     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run after each test.
      */
     @After
     public void tearDown() throws Exception {
@@ -168,44 +166,51 @@ public class TestCaseSupport {
     }
 
     /**
-     * Copies the specified shape file into the {@code test-data} directory, together with its
-     * sibling ({@code .dbf}, {@code .shp}, {@code .shx} and {@code .prj} files).
+     * Copies the specified shape file into the {@code test-data} directory, together with its sibling ({@code .dbf},
+     * {@code .shp}, {@code .shx} and {@code .prj} files).
      */
     protected File copyShapefiles(final String name) throws IOException {
         assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "dbf")).canRead());
         assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp")).canRead());
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shx")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "shx")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "prj")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "prj")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "fix")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "fix")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "qix")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "qix")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "grx")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "grx")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp.xml")).canRead());
+            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp.xml"))
+                    .canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "cpg")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "cpg")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }

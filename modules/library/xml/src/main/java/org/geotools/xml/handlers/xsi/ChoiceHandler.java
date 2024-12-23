@@ -49,8 +49,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-                + (minOccurs * maxOccurs);
+        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -124,8 +123,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
@@ -148,12 +146,9 @@ public class ChoiceHandler extends ElementGroupingHandler {
         }
 
         minOccurs = ((min == null) || "".equalsIgnoreCase(min)) ? 1 : Integer.parseInt(min);
-        maxOccurs =
-                ((max == null) || "".equalsIgnoreCase(max))
-                        ? 1
-                        : ("unbounded".equalsIgnoreCase(max)
-                                ? ElementGrouping.UNBOUNDED
-                                : Integer.parseInt(max));
+        maxOccurs = ((max == null) || "".equalsIgnoreCase(max))
+                ? 1
+                : ("unbounded".equalsIgnoreCase(max) ? ElementGrouping.UNBOUNDED : Integer.parseInt(max));
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
@@ -162,10 +157,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
         return LOCALNAME;
     }
 
-    /**
-     * @see
-     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
-     */
+    /** @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler) */
     @Override
     protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 

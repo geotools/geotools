@@ -29,13 +29,12 @@ import org.geotools.referencing.operation.matrix.Matrix1;
 import org.geotools.referencing.operation.matrix.Matrix2;
 
 /**
- * A one dimensional, linear transform. Input values <var>x</var> are converted into output values
- * <var>y</var> using the following equation:
+ * A one dimensional, linear transform. Input values <var>x</var> are converted into output values <var>y</var> using
+ * the following equation:
  *
- * <p align="center"><var>y</var> &nbsp;=&nbsp; {@linkplain #offset} + {@linkplain
- * #scale}&times;<var>x</var> This class is the same as a 2&times;2 affine transform. However, this
- * specialized {@code LinearTransform1D} class is faster. It is defined there because extensively
- * used by {@link org.geotools.coverage.grid.GridCoverage2D}.
+ * <p align="center"><var>y</var> &nbsp;=&nbsp; {@linkplain #offset} + {@linkplain #scale}&times;<var>x</var> This class
+ * is the same as a 2&times;2 affine transform. However, this specialized {@code LinearTransform1D} class is faster. It
+ * is defined there because extensively used by {@link org.geotools.coverage.grid.GridCoverage2D}.
  *
  * @since 2.0
  * @version $Id$
@@ -43,8 +42,7 @@ import org.geotools.referencing.operation.matrix.Matrix2;
  * @see LogarithmicTransform1D
  * @see ExponentialTransform1D
  */
-public class LinearTransform1D extends AbstractMathTransform
-        implements MathTransform1D, LinearTransform, Serializable {
+public class LinearTransform1D extends AbstractMathTransform implements MathTransform1D, LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7595037195668813000L;
 
@@ -61,9 +59,9 @@ public class LinearTransform1D extends AbstractMathTransform
     private transient MathTransform1D inverse;
 
     /**
-     * Constructs a new linear transform. This constructor is provided for subclasses only.
-     * Instances should be created using the {@linkplain #create factory method}, which may returns
-     * optimized implementations for some particular argument values.
+     * Constructs a new linear transform. This constructor is provided for subclasses only. Instances should be created
+     * using the {@linkplain #create factory method}, which may returns optimized implementations for some particular
+     * argument values.
      *
      * @param scale The {@code scale} term in the linear equation.
      * @param offset The {@code offset} term in the linear equation.
@@ -96,9 +94,8 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Returns the matrix elements as a group of parameters values. The number of parameters depends
-     * on the matrix size. Only matrix elements different from their default value will be included
-     * in this group.
+     * Returns the matrix elements as a group of parameters values. The number of parameters depends on the matrix size.
+     * Only matrix elements different from their default value will be included in this group.
      *
      * @return A copy of the parameter values for this math transform.
      */
@@ -149,9 +146,8 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Tests whether this transform does not move any points by using the provided tolerance. This
-     * method work in the same way than {@link
-     * org.geotools.referencing.operation.matrix.XMatrix#isIdentity(double)}.
+     * Tests whether this transform does not move any points by using the provided tolerance. This method work in the
+     * same way than {@link org.geotools.referencing.operation.matrix.XMatrix#isIdentity(double)}.
      *
      * @since 2.3.1
      */
@@ -162,9 +158,9 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Gets the derivative of this transform at a point. This implementation is different from the
-     * default {@link AbstractMathTransform#derivative} implementation in that no coordinate point
-     * is required and {@link Double#NaN} may be a legal output value for some users.
+     * Gets the derivative of this transform at a point. This implementation is different from the default
+     * {@link AbstractMathTransform#derivative} implementation in that no coordinate point is required and
+     * {@link Double#NaN} may be a legal output value for some users.
      */
     @Override
     public Matrix derivative(final Position point) throws TransformException {
@@ -185,8 +181,7 @@ public class LinearTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = (float) (offset + scale * srcPts[srcOff++]);
@@ -202,8 +197,7 @@ public class LinearTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = offset + scale * srcPts[srcOff++];
@@ -218,8 +212,8 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /**
-     * Returns a hash value for this transform. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this transform. This value need not remain consistent between different implementations
+     * of the same class.
      */
     @Override
     public int hashCode() {
@@ -239,8 +233,7 @@ public class LinearTransform1D extends AbstractMathTransform
         if (super.equals(object)) {
             final LinearTransform1D that = (LinearTransform1D) object;
             return Double.doubleToRawLongBits(this.scale) == Double.doubleToRawLongBits(that.scale)
-                    && Double.doubleToRawLongBits(this.offset)
-                            == Double.doubleToRawLongBits(that.offset);
+                    && Double.doubleToRawLongBits(this.offset) == Double.doubleToRawLongBits(that.offset);
             /*
              * NOTE: 'LinearTransform1D' and 'ConstantTransform1D' are heavily used by 'Category'
              *       from 'org.geotools.cv' package. It is essential for Cateory to differenciate

@@ -82,8 +82,7 @@ public class BindingWalker implements TypeWalker.Visitor {
                     // a named containing element
                     if (container.getName() == null) {
                         if (container.getContainer() instanceof XSDElementDeclaration) {
-                            XSDElementDeclaration e =
-                                    (XSDElementDeclaration) container.getContainer();
+                            XSDElementDeclaration e = (XSDElementDeclaration) container.getContainer();
 
                             // only do this if the containing element is global
                             if (e.isGlobal()) {
@@ -94,17 +93,12 @@ public class BindingWalker implements TypeWalker.Visitor {
 
                     // get the anonymous element, and look it up in the container type
                     if (type.getContainer() instanceof XSDElementDeclaration) {
-                        XSDElementDeclaration anonymous =
-                                (XSDElementDeclaration) type.getContainer();
-                        XSDParticle particle =
-                                Schemas.getChildElementParticle(
-                                        container, anonymous.getName(), true);
+                        XSDElementDeclaration anonymous = (XSDElementDeclaration) type.getContainer();
+                        XSDParticle particle = Schemas.getChildElementParticle(container, anonymous.getName(), true);
 
                         if (particle != null) {
                             bindingName =
-                                    new QName(
-                                            base.getTargetNamespace(),
-                                            base.getName() + "_" + anonymous.getName());
+                                    new QName(base.getTargetNamespace(), base.getName() + "_" + anonymous.getName());
                         }
                     }
                 }
@@ -113,8 +107,7 @@ public class BindingWalker implements TypeWalker.Visitor {
             if ((bindingName == null) || (loader.getBinding(bindingName) == null)) {
                 // special case check, look for an anonymous complex type
                 // with simple content
-                if (type instanceof XSDComplexTypeDefinition
-                        && type.getBaseType() instanceof XSDSimpleTypeDefinition) {
+                if (type instanceof XSDComplexTypeDefinition && type.getBaseType() instanceof XSDSimpleTypeDefinition) {
                     // we assign the default complex binding instread of
                     // delegating to parent, because if we dont, any attributes
                     // defined by the type will not be parsed because simple
@@ -142,11 +135,7 @@ public class BindingWalker implements TypeWalker.Visitor {
         return true;
     }
 
-    public void walk(
-            XSDFeature component,
-            Visitor visitor,
-            XSDTypeDefinition container,
-            MutablePicoContainer context) {
+    public void walk(XSDFeature component, Visitor visitor, XSDTypeDefinition container, MutablePicoContainer context) {
         BindingExecutionChain chain = chains.get(component);
 
         if (chain == null) {

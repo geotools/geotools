@@ -77,8 +77,10 @@ public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
                 1,
                 doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
                         .getLength());
-        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
-        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
     }
 
     @Test
@@ -89,7 +91,9 @@ public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
                 1,
                 doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
                         .getLength());
-        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
-        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
     }
 }

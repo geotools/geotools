@@ -53,8 +53,7 @@ public abstract class FilterAbstract implements org.geotools.api.filter.Filter {
 
         if (value instanceof org.geotools.api.feature.ComplexAttribute) {
             Property simpleContent =
-                    ((org.geotools.api.feature.ComplexAttribute) value)
-                            .getProperty(new NameImpl("simpleContent"));
+                    ((org.geotools.api.feature.ComplexAttribute) value).getProperty(new NameImpl("simpleContent"));
             if (simpleContent == null) {
                 return null;
             } else {
@@ -70,8 +69,8 @@ public abstract class FilterAbstract implements org.geotools.api.filter.Filter {
     }
 
     /**
-     * Helper method for subclasses to reduce null checks and automatically unpack values from
-     * attributes and collections
+     * Helper method for subclasses to reduce null checks and automatically unpack values from attributes and
+     * collections
      *
      * @return value or null
      */
@@ -96,10 +95,7 @@ public abstract class FilterAbstract implements org.geotools.api.filter.Filter {
      *
      * @return value or null
      */
-    protected Object eval(
-            org.geotools.api.filter.expression.Expression expression,
-            Object object,
-            Class<?> context) {
+    protected Object eval(org.geotools.api.filter.expression.Expression expression, Object object, Class<?> context) {
         if (expression == null) return null;
         return expression.evaluate(object, context);
     }

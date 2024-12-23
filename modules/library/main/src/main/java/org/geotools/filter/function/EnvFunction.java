@@ -34,8 +34,8 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Provides local to thread and global thread-independent lookup tables of named variables allowing
- * externally defined values to be access within a SLD document.
+ * Provides local to thread and global thread-independent lookup tables of named variables allowing externally defined
+ * values to be access within a SLD document.
  *
  * <p>Example: in the application, prior to rendering...
  *
@@ -60,14 +60,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
  *     ...
  * </code></pre>
  *
- * The function provides a lookup table that is local to the active thread so that a given variable
- * can hold different values in different threads. There is also a global lookup table, accessible
- * from all threads. When the function is given a variable to look up it first searches the thread's
- * local table and then, if the variable was not found, the global table. All lookups are
- * case-insensitive.
+ * The function provides a lookup table that is local to the active thread so that a given variable can hold different
+ * values in different threads. There is also a global lookup table, accessible from all threads. When the function is
+ * given a variable to look up it first searches the thread's local table and then, if the variable was not found, the
+ * global table. All lookups are case-insensitive.
  *
- * <p>Setting a fallback value is not supported in accordance with SLD 1.1 specification. However,
- * you can provide a default value when calling the function as in these examples:
+ * <p>Setting a fallback value is not supported in accordance with SLD 1.1 specification. However, you can provide a
+ * default value when calling the function as in these examples:
  *
  * <pre><code>
  *   &lt;!-- Here, if variable foo is not set the function returns null -->
@@ -148,7 +147,8 @@ public class EnvFunction extends FunctionExpressionImpl {
         public Map<String, Object> getTable() {
             return super.get();
         }
-    };
+    }
+    ;
 
     private static final LocalLookup localLookup = new LocalLookup();
 
@@ -157,8 +157,7 @@ public class EnvFunction extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("env","variable");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "env", parameter("value", Object.class), parameter("variable", String.class));
+            new FunctionNameImpl("env", parameter("value", Object.class), parameter("variable", String.class));
 
     /** Create a new instance of this function. */
     public EnvFunction() {
@@ -166,8 +165,8 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * Set the local (to this thread) table of lookup values, deleting any previously set table. The
-     * input {@code Map} is copied.
+     * Set the local (to this thread) table of lookup values, deleting any previously set table. The input {@code Map}
+     * is copied.
      *
      * @param values the lookup table; if {@code null} the existing lookup table will be cleared.
      */
@@ -198,8 +197,8 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * Set the table of global lookup values that is accessible from any thread, replacing the
-     * previously set table. The input {@code Map} is copied.
+     * Set the table of global lookup values that is accessible from any thread, replacing the previously set table. The
+     * input {@code Map} is copied.
      *
      * @param values the lookup table; if {@code null} the existing lookup table will be cleared.
      */
@@ -219,8 +218,8 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * Add a named value to the local (to this thread) lookup table. If the name is already present
-     * in the table it will be assigned the new value.
+     * Add a named value to the local (to this thread) lookup table. If the name is already present in the table it will
+     * be assigned the new value.
      *
      * @param name the name
      * @param value the value
@@ -241,9 +240,9 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * Add a named value to the global (accessible from any thread) lookup table. If the name is
-     * already present in the table it will be assigned the new value. to remove values from global
-     * lookup table please use {@link #removeGlobalValue(String)}
+     * Add a named value to the global (accessible from any thread) lookup table. If the name is already present in the
+     * table it will be assigned the new value. to remove values from global lookup table please use
+     * {@link #removeGlobalValue(String)}
      *
      * @param name the name
      * @param value the value, <b>null</b> is an allowed value
@@ -264,9 +263,8 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * {@inheritDoc} The variable name to search for is provided as the single argument to this
-     * function. The active thread's local lookup table is searched first. If the name is not found
-     * there the global table is searched.
+     * {@inheritDoc} The variable name to search for is provided as the single argument to this function. The active
+     * thread's local lookup table is searched first. If the name is not found there the global table is searched.
      *
      * @return the variable value or {@code null} if the variable was not found
      */
@@ -292,8 +290,8 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * {@inheritDoc} This method is overriden to allow for either a single parameter (variable name)
-     * or two parameters (variable name plus default value).
+     * {@inheritDoc} This method is overriden to allow for either a single parameter (variable name) or two parameters
+     * (variable name plus default value).
      */
     @Override
     public void setParameters(List<Expression> params) {
@@ -304,18 +302,16 @@ public class EnvFunction extends FunctionExpressionImpl {
         final int argCount = NAME.getArgumentCount();
         final int paramsSize = params.size();
         if (paramsSize < argCount || paramsSize > argCount + 1) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Function %s expected %d or %d arguments but got %d",
-                            name, argCount, argCount + 1, paramsSize));
+            throw new IllegalArgumentException(String.format(
+                    "Function %s expected %d or %d arguments but got %d", name, argCount, argCount + 1, paramsSize));
         }
         this.params = new ArrayList<>(params);
     }
 
     /**
-     * {@inheritDoc} This method is overriden to ignore the fallback value and log a warning
-     * message. If you want to set a default value it can be provided as a second argument when
-     * calling the function. See the class description for details.
+     * {@inheritDoc} This method is overriden to ignore the fallback value and log a warning message. If you want to set
+     * a default value it can be provided as a second argument when calling the function. See the class description for
+     * details.
      */
     @Override
     public void setFallbackValue(Literal fallback) {

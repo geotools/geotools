@@ -30,13 +30,12 @@ import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.logging.Logging;
 
 /**
- * Base class for metadata that may (or may not) be modifiable. Implementations will typically
- * provide {@code set*(...)} methods for each corresponding {@code get*()} method. An initially
- * modifiable metadata may become unmodifiable at a later stage (typically after its construction is
- * completed) by the call to the {@link #freeze} method.
+ * Base class for metadata that may (or may not) be modifiable. Implementations will typically provide {@code set*(...)}
+ * methods for each corresponding {@code get*()} method. An initially modifiable metadata may become unmodifiable at a
+ * later stage (typically after its construction is completed) by the call to the {@link #freeze} method.
  *
- * <p>Subclasses should follow the pattern below for every {@code get} and {@code set} methods, with
- * a special processing for {@linkplain Collection collections}:
+ * <p>Subclasses should follow the pattern below for every {@code get} and {@code set} methods, with a special
+ * processing for {@linkplain Collection collections}:
  *
  * <blockquote>
  *
@@ -86,15 +85,12 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
         }
     }
 
-    /**
-     * A flag used for {@link #unmodifiable} in order to specify that {@link #freeze} is under way.
-     */
+    /** A flag used for {@link #unmodifiable} in order to specify that {@link #freeze} is under way. */
     private static final ModifiableMetadata FREEZING = new Null();
 
     /**
-     * An unmodifiable copy of this metadata. Will be created only when first needed. If {@code
-     * null}, then no unmodifiable entity is available. If {@code this}, then this entity is itself
-     * unmodifiable.
+     * An unmodifiable copy of this metadata. Will be created only when first needed. If {@code null}, then no
+     * unmodifiable entity is available. If {@code this}, then this entity is itself unmodifiable.
      */
     private transient ModifiableMetadata unmodifiable;
 
@@ -104,25 +100,22 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Constructs a metadata entity initialized with the values from the specified metadata. This
-     * constructor behavior is as in {@linkplain AbstractMetadata#AbstractMetadata(Object)
-     * superclass constructor}.
+     * Constructs a metadata entity initialized with the values from the specified metadata. This constructor behavior
+     * is as in {@linkplain AbstractMetadata#AbstractMetadata(Object) superclass constructor}.
      *
      * @param source The metadata to copy values from.
-     * @throws ClassCastException if the specified metadata don't implements the expected metadata
-     *     interface.
-     * @throws UnmodifiableMetadataException if this class don't define {@code set} methods
-     *     corresponding to the {@code get} methods found in the implemented interface, or if this
-     *     instance is not modifiable for some other reason.
+     * @throws ClassCastException if the specified metadata don't implements the expected metadata interface.
+     * @throws UnmodifiableMetadataException if this class don't define {@code set} methods corresponding to the
+     *     {@code get} methods found in the implemented interface, or if this instance is not modifiable for some other
+     *     reason.
      */
-    protected ModifiableMetadata(final Object source)
-            throws ClassCastException, UnmodifiableMetadataException {
+    protected ModifiableMetadata(final Object source) throws ClassCastException, UnmodifiableMetadataException {
         super(source);
     }
 
     /**
-     * Returns {@code true} if this metadata is modifiable. This method returns {@code false} if
-     * {@link #freeze()} has been invoked on this object.
+     * Returns {@code true} if this metadata is modifiable. This method returns {@code false} if {@link #freeze()} has
+     * been invoked on this object.
      *
      * @return {@code true} if this metadata is modifiable.
      */
@@ -132,12 +125,12 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Returns an unmodifiable copy of this metadata. Any attempt to modify an attribute of the
-     * returned object will throw an {@link UnmodifiableMetadataException}. If this metadata is
-     * already unmodifiable, then this method returns {@code this}.
+     * Returns an unmodifiable copy of this metadata. Any attempt to modify an attribute of the returned object will
+     * throw an {@link UnmodifiableMetadataException}. If this metadata is already unmodifiable, then this method
+     * returns {@code this}.
      *
-     * <p>The default implementation {@linkplain #clone() clone} this metadata and {@linkplain
-     * #freeze() freeze} the clone before to return it.
+     * <p>The default implementation {@linkplain #clone() clone} this metadata and {@linkplain #freeze() freeze} the
+     * clone before to return it.
      *
      * @return An unmodifiable copy of this metadata.
      */
@@ -170,19 +163,17 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Returns an unmodifiable copy of the specified object. This method performs the following
-     * heuristic tests:
+     * Returns an unmodifiable copy of the specified object. This method performs the following heuristic tests:
      *
      * <p>
      *
      * <ul>
-     *   <li>If the specified object is an instance of {@code ModifiableMetadata}, then {@link
-     *       #unmodifiable()} is invoked on this object.
-     *   <li>Otherwise, if the object is a {@linkplain Collection collection}, then the content is
-     *       copied into a new collection of similar type, with values replaced by their
-     *       unmodifiable variant.
-     *   <li>Otherwise, if the object implements the {@link org.geotools.api.util.Cloneable}
-     *       interface, then a clone is returned.
+     *   <li>If the specified object is an instance of {@code ModifiableMetadata}, then {@link #unmodifiable()} is
+     *       invoked on this object.
+     *   <li>Otherwise, if the object is a {@linkplain Collection collection}, then the content is copied into a new
+     *       collection of similar type, with values replaced by their unmodifiable variant.
+     *   <li>Otherwise, if the object implements the {@link org.geotools.api.util.Cloneable} interface, then a clone is
+     *       returned.
      *   <li>Otherwise, the object is assumed immutable and returned unchanged.
      * </ul>
      *
@@ -255,9 +246,9 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Declares this metadata and all its attributes as unmodifiable. This method is invoked
-     * automatically by the {@link #unmodifiable()} method. Subclasses usually don't need to
-     * override it since the default implementation performs its work using Java reflection.
+     * Declares this metadata and all its attributes as unmodifiable. This method is invoked automatically by the
+     * {@link #unmodifiable()} method. Subclasses usually don't need to override it since the default implementation
+     * performs its work using Java reflection.
      */
     public synchronized void freeze() {
         ModifiableMetadata success = null;
@@ -271,8 +262,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Checks if changes in the metadata are allowed. All {@code setFoo(...)} methods in subclasses
-     * should invoke this method (directly or indirectly) before to apply any change.
+     * Checks if changes in the metadata are allowed. All {@code setFoo(...)} methods in subclasses should invoke this
+     * method (directly or indirectly) before to apply any change.
      *
      * @throws UnmodifiableMetadataException if this metadata is unmodifiable.
      */
@@ -284,8 +275,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Tests if the specified collection is modifiable. This method should be used for assertions
-     * only since it destroy the collection content in case of assertion failure.
+     * Tests if the specified collection is modifiable. This method should be used for assertions only since it destroy
+     * the collection content in case of assertion failure.
      */
     private static boolean isModifiable(final Collection collection) {
         if (!collection.isEmpty())
@@ -299,8 +290,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Copies the content of one list ({@code source}) into an other ({@code target}). If the target
-     * list is {@code null}, a new target list is created.
+     * Copies the content of one list ({@code source}) into an other ({@code target}). If the target list is
+     * {@code null}, a new target list is created.
      *
      * <p>A call to {@link #checkWritePermission} is implicit before the copy is performed.
      *
@@ -350,9 +341,9 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Copies the content of one collection ({@code source}) into an other ({@code target}). If the
-     * target collection is {@code null}, or if its type ({@link List} vs {@link Set}) doesn't
-     * matches the type of the source collection, a new target collection is created.
+     * Copies the content of one collection ({@code source}) into an other ({@code target}). If the target collection is
+     * {@code null}, or if its type ({@link List} vs {@link Set}) doesn't matches the type of the source collection, a
+     * new target collection is created.
      *
      * <p>A call to {@link #checkWritePermission} is implicit before the copy is performed.
      *
@@ -407,16 +398,15 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Returns the specified collection, or a new one if {@code c} is null. This is a convenience
-     * method for implementation of {@code getFoo()} methods.
+     * Returns the specified collection, or a new one if {@code c} is null. This is a convenience method for
+     * implementation of {@code getFoo()} methods.
      *
      * @param  <E> The type of elements in the collection.
      * @param c The collection to checks.
      * @param elementType The element type (used only if {@code c} is null).
      * @return {@code c}, or a new collection if {@code c} is null.
      */
-    protected final <E> Collection<E> nonNullCollection(
-            final Collection<E> c, final Class<E> elementType) {
+    protected final <E> Collection<E> nonNullCollection(final Collection<E> c, final Class<E> elementType) {
         if (c != null) {
             return c;
         }
@@ -427,8 +417,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Returns the specified set, or a new one if {@code c} is null. This is a convenience method
-     * for implementation of {@code getFoo()} methods.
+     * Returns the specified set, or a new one if {@code c} is null. This is a convenience method for implementation of
+     * {@code getFoo()} methods.
      *
      * @param  <E> The type of elements in the set.
      * @param c The set to checks.
@@ -447,8 +437,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * Returns the specified list, or a new one if {@code c} is null. This is a convenience method
-     * for implementation of {@code getFoo()} methods.
+     * Returns the specified list, or a new one if {@code c} is null. This is a convenience method for implementation of
+     * {@code getFoo()} methods.
      *
      * @param  <E> The type of elements in the list.
      * @param c The list to checks.
@@ -466,9 +456,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * A checked set synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable sets
-     * only. Note that the lock most be modified after {@link #clone}. This is currently done in
-     * {@link #unmodifiable(Object)}.
+     * A checked set synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable sets only. Note that the
+     * lock most be modified after {@link #clone}. This is currently done in {@link #unmodifiable(Object)}.
      */
     private final class MutableSet<E> extends CheckedHashSet<E> {
         private static final long serialVersionUID = 2337350768744454264L;
@@ -493,9 +482,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     }
 
     /**
-     * A checked list synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable
-     * lists only. Note that the lock most be modified after {@link #clone}. This is currently done
-     * in {@link #unmodifiable(Object)}.
+     * A checked list synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable lists only. Note that
+     * the lock most be modified after {@link #clone}. This is currently done in {@link #unmodifiable(Object)}.
      */
     private final class MutableList<E> extends CheckedArrayList<E> {
         private static final long serialVersionUID = -5016778173550153002L;
@@ -522,11 +510,10 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     /**
      * Returns a shallow copy of this metadata.
      *
-     * <p>While {@linkplain Cloneable cloneable}, this class do not provides the {@code clone()}
-     * operation as part of the public API. The clone operation is required for the internal working
-     * of the {@link #unmodifiable()} method, which expect from {@code clone()} a
-     * <strong>shallow</strong> copy of this metadata entity. The default implementation of {@link
-     * Object#clone()} is suffisient for most use.
+     * <p>While {@linkplain Cloneable cloneable}, this class do not provides the {@code clone()} operation as part of
+     * the public API. The clone operation is required for the internal working of the {@link #unmodifiable()} method,
+     * which expect from {@code clone()} a <strong>shallow</strong> copy of this metadata entity. The default
+     * implementation of {@link Object#clone()} is suffisient for most use.
      *
      * @return A <strong>shallow</strong> copy of this metadata.
      * @throws CloneNotSupportedException if the clone is not supported.

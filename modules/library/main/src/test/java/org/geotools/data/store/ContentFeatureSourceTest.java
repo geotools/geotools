@@ -95,59 +95,56 @@ public class ContentFeatureSourceTest {
     }
 
     public void checkRetypeCannotSort(Query query, final Query expected) throws IOException {
-        DataStore store =
-                new ContentDataStore() {
+        DataStore store = new ContentDataStore() {
 
-                    {
-                        namespaceURI = TYPE.getName().getNamespaceURI();
+            {
+                namespaceURI = TYPE.getName().getNamespaceURI();
+            }
+
+            @SuppressWarnings("serial")
+            @Override
+            protected List<Name> createTypeNames() throws IOException {
+                return List.of(TYPENAME);
+            }
+
+            @Override
+            protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+                return new ContentFeatureSource(entry, null) {
+
+                    @Override
+                    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+                        throw new RuntimeException("Unexpected call");
                     }
 
-                    @SuppressWarnings("serial")
                     @Override
-                    protected List<Name> createTypeNames() throws IOException {
-                        return List.of(TYPENAME);
+                    protected int getCountInternal(Query query) throws IOException {
+                        throw new RuntimeException("Unexpected call");
                     }
 
                     @Override
-                    protected ContentFeatureSource createFeatureSource(ContentEntry entry)
+                    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
                             throws IOException {
-                        return new ContentFeatureSource(entry, null) {
+                        assertEquals(expected, query);
+                        return new EmptyFeatureReader<>(TYPE);
+                    }
 
-                            @Override
-                            protected ReferencedEnvelope getBoundsInternal(Query query)
-                                    throws IOException {
-                                throw new RuntimeException("Unexpected call");
-                            }
+                    @Override
+                    protected SimpleFeatureType buildFeatureType() throws IOException {
+                        return TYPE;
+                    }
 
-                            @Override
-                            protected int getCountInternal(Query query) throws IOException {
-                                throw new RuntimeException("Unexpected call");
-                            }
+                    @Override
+                    protected boolean canRetype(Query query) {
+                        return true;
+                    }
 
-                            @Override
-                            protected FeatureReader<SimpleFeatureType, SimpleFeature>
-                                    getReaderInternal(Query query) throws IOException {
-                                assertEquals(expected, query);
-                                return new EmptyFeatureReader<>(TYPE);
-                            }
-
-                            @Override
-                            protected SimpleFeatureType buildFeatureType() throws IOException {
-                                return TYPE;
-                            }
-
-                            @Override
-                            protected boolean canRetype(Query query) {
-                                return true;
-                            }
-
-                            @Override
-                            protected boolean canSort(Query query) {
-                                return false;
-                            }
-                        };
+                    @Override
+                    protected boolean canSort(Query query) {
+                        return false;
                     }
                 };
+            }
+        };
 
         SimpleFeatureSource fs = store.getFeatureSource(TYPE.getName());
         SimpleFeatureCollection features = fs.getFeatures(query);

@@ -45,8 +45,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataSourceFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
@@ -55,15 +54,14 @@ public final class DataSourceFinder {
     private DataSourceFinder() {}
 
     /**
-     * Checks each available datasource implementation in turn and returns the first one which
-     * claims to support the resource identified by the params object.
+     * Checks each available datasource implementation in turn and returns the first one which claims to support the
+     * resource identified by the params object.
      *
-     * @param params A Map object which contains a defenition of the resource to connect to. for
-     *     file based resources the property 'url' should be set within this Map.
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @param params A Map object which contains a defenition of the resource to connect to. for file based resources
+     *     the property 'url' should be set within this Map.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     public static synchronized DataSource getDataSource(Map<String, ?> params) throws IOException {
         Iterator ps = getAvailableDataSources();
@@ -88,13 +86,12 @@ public final class DataSourceFinder {
     }
 
     /**
-     * Checks each available datasource implementation in turn and returns the first one which
-     * claims to support the resource identified by the params object.
+     * Checks each available datasource implementation in turn and returns the first one which claims to support the
+     * resource identified by the params object.
      *
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     public static synchronized UnWrapper getUnWrapper(Connection conn) throws IOException {
         Iterator ps = getUnWrappers();
@@ -108,10 +105,7 @@ public final class DataSourceFinder {
                 }
             } catch (Throwable t) {
                 /** The logger for the filter module. */
-                LOGGER.log(
-                        Level.WARNING,
-                        "Could not test  " + uw + " for unwrapping abilities agaist " + conn,
-                        t);
+                LOGGER.log(Level.WARNING, "Could not test  " + uw + " for unwrapping abilities agaist " + conn, t);
                 // Protect against DataStores that don't carefully
                 // code canProcess
 
@@ -122,13 +116,12 @@ public final class DataSourceFinder {
     }
 
     /**
-     * Checks each available {@link UnWrapper} implementation in turn and returns the first one
-     * which claims to support the resource identified by the params object.
+     * Checks each available {@link UnWrapper} implementation in turn and returns the first one which claims to support
+     * the resource identified by the params object.
      *
-     * @return The first datasource which claims to process the required resource, returns null if
-     *     none can be found.
-     * @throws IOException If a suitable loader can be found, but it can not be attached to the
-     *     specified resource without errors.
+     * @return The first datasource which claims to process the required resource, returns null if none can be found.
+     * @throws IOException If a suitable loader can be found, but it can not be attached to the specified resource
+     *     without errors.
      */
     public static synchronized UnWrapper getUnWrapper(Statement st) throws IOException {
         Iterator ps = getUnWrappers();
@@ -142,10 +135,7 @@ public final class DataSourceFinder {
                 }
             } catch (Throwable t) {
                 /** The logger for the filter module. */
-                LOGGER.log(
-                        Level.WARNING,
-                        "Could not test  " + uw + " for unwrapping abilities agaist " + st,
-                        t);
+                LOGGER.log(Level.WARNING, "Could not test  " + uw + " for unwrapping abilities agaist " + st, t);
                 // Protect against DataStores that don't carefully
                 // code canProcess
 
@@ -156,11 +146,11 @@ public final class DataSourceFinder {
     }
 
     /**
-     * Finds all implementations of DataStoreFactory which have registered using the services
-     * mechanism, and that have the appropriate libraries on the classpath.
+     * Finds all implementations of DataStoreFactory which have registered using the services mechanism, and that have
+     * the appropriate libraries on the classpath.
      *
-     * @return An iterator over all discovered DataStores which have registered factories, and whose
-     *     available method returns true.
+     * @return An iterator over all discovered DataStores which have registered factories, and whose available method
+     *     returns true.
      */
     public static synchronized Iterator<DataSourceFactorySpi> getAvailableDataSources() {
         Stream<DataSourceFactorySpi> factories =
@@ -169,15 +159,13 @@ public final class DataSourceFinder {
         // results are collected into HashSet (even though iterator is returned)
         // to find broken implementations early rather than later caller code
         Set<DataSourceFactorySpi> availableDS =
-                factories
-                        .filter(dsFactory -> dsFactory.isAvailable())
-                        .collect(Collectors.toCollection(HashSet::new));
+                factories.filter(dsFactory -> dsFactory.isAvailable()).collect(Collectors.toCollection(HashSet::new));
         return availableDS.iterator();
     }
 
     /**
-     * Finds all implementations of UnWrapper which have registered using the services mechanism,
-     * and that have the appropriate libraries on the classpath.
+     * Finds all implementations of UnWrapper which have registered using the services mechanism, and that have the
+     * appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered UnWrapper which have registered factories
      */
@@ -185,27 +173,20 @@ public final class DataSourceFinder {
         return getServiceRegistry().getFactories(UnWrapper.class, null, null).iterator();
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(DataSourceFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {DataSourceFactorySpi.class, UnWrapper.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {DataSourceFactorySpi.class, UnWrapper.class}));
         }
         return registry;
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {

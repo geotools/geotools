@@ -36,10 +36,10 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.logging.Logging;
 
 /**
- * An implementation of international string using a {@linkplain Map map} of strings for different
- * {@linkplain Locale locales}. Strings for new locales can be {@linkplain #add(Locale,String)
- * added}, but existing strings can't be removed or modified. This behavior is a compromise between
- * making constructionss easier, and being suitable for use in immutable objects.
+ * An implementation of international string using a {@linkplain Map map} of strings for different {@linkplain Locale
+ * locales}. Strings for new locales can be {@linkplain #add(Locale,String) added}, but existing strings can't be
+ * removed or modified. This behavior is a compromise between making constructionss easier, and being suitable for use
+ * in immutable objects.
  *
  * <p>This class is mutable and not thread-safe.
  *
@@ -47,36 +47,35 @@ import org.geotools.util.logging.Logging;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class GrowableInternationalString extends AbstractInternationalString
-        implements Serializable {
+public class GrowableInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 5760033376627376937L;
 
     /**
-     * The set of locales created in this virtual machine through methods of this class. Used in
-     * order to get a {@linkplain #unique unique} instance of {@link Locale} objects.
+     * The set of locales created in this virtual machine through methods of this class. Used in order to get a
+     * {@linkplain #unique unique} instance of {@link Locale} objects.
      */
     private static final Map<Locale, Locale> LOCALES = new HashMap<>();
 
     /**
-     * The string values in different locales (never {@code null}). Keys are {@link Locale} objects
-     * and values are {@link String}s.
+     * The string values in different locales (never {@code null}). Keys are {@link Locale} objects and values are
+     * {@link String}s.
      */
     private Map<Locale, String> localMap;
 
     /**
-     * Constructs an initially empty international string. Localized strings can been added using
-     * one of {@link #add add(...)} methods.
+     * Constructs an initially empty international string. Localized strings can been added using one of {@link #add
+     * add(...)} methods.
      */
     public GrowableInternationalString() {
         localMap = Collections.emptyMap();
     }
 
     /**
-     * Constructs an international string initialized with the specified string. Additional
-     * localized strings can been added using one of {@link #add add(...)} methods. The string
-     * specified to this constructor is the one that will be returned if no localized string is
-     * found for the {@link Locale} argument in a call to {@link #toString(Locale)}.
+     * Constructs an international string initialized with the specified string. Additional localized strings can been
+     * added using one of {@link #add add(...)} methods. The string specified to this constructor is the one that will
+     * be returned if no localized string is found for the {@link Locale} argument in a call to
+     * {@link #toString(Locale)}.
      *
      * @param string The string in no specific locale.
      */
@@ -89,10 +88,9 @@ public class GrowableInternationalString extends AbstractInternationalString
     }
 
     /**
-     * Constructs an international string from the specified InternationalString. It avoids to add
-     * an entry for each locales in cases where {@link InternationalString#toString(Locale)} returns
-     * always the same string, by considering the result returned by {@link
-     * InternationalString#toString()} as the default value.
+     * Constructs an international string from the specified InternationalString. It avoids to add an entry for each
+     * locales in cases where {@link InternationalString#toString(Locale)} returns always the same string, by
+     * considering the result returned by {@link InternationalString#toString()} as the default value.
      *
      * @param internationalString the internationalString from which construct a new instance.
      */
@@ -101,10 +99,9 @@ public class GrowableInternationalString extends AbstractInternationalString
         boolean isGrowable = internationalString instanceof GrowableInternationalString;
         String defaultValue = null;
         if (!isGrowable) defaultValue = internationalString.toString();
-        Set<Locale> locales =
-                isGrowable
-                        ? ((GrowableInternationalString) internationalString).getLocales()
-                        : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
+        Set<Locale> locales = isGrowable
+                ? ((GrowableInternationalString) internationalString).getLocales()
+                : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
         for (Locale locale : locales) {
             String value = internationalString.toString(locale);
             if (value != null && !value.equals(defaultValue)) localMap.put(locale, value);
@@ -117,24 +114,20 @@ public class GrowableInternationalString extends AbstractInternationalString
      *
      * @param locale The locale for the {@code string} value, or {@code null}.
      * @param string The localized string.
-     * @throws IllegalArgumentException if a different string value was already set for the given
-     *     locale.
+     * @throws IllegalArgumentException if a different string value was already set for the given locale.
      */
-    public synchronized void add(final Locale locale, final String string)
-            throws IllegalArgumentException {
+    public synchronized void add(final Locale locale, final String string) throws IllegalArgumentException {
         if (string != null) {
             switch (localMap.size()) {
-                case 0:
-                    {
-                        localMap = Collections.singletonMap(locale, string);
-                        defaultValue = null; // Will be recomputed when first needed.
-                        return;
-                    }
-                case 1:
-                    {
-                        localMap = new LinkedHashMap<>(localMap);
-                        break;
-                    }
+                case 0: {
+                    localMap = Collections.singletonMap(locale, string);
+                    defaultValue = null; // Will be recomputed when first needed.
+                    return;
+                }
+                case 1: {
+                    localMap = new LinkedHashMap<>(localMap);
+                    break;
+                }
             }
             String old = localMap.get(locale);
 
@@ -153,31 +146,28 @@ public class GrowableInternationalString extends AbstractInternationalString
 
     /**
      * Adds a string for the given property key. This is a convenience method for constructing an
-     * {@code AbstractInternationalString} during iteration through the {@linkplain
-     * java.util.Map.Entry entries} in a {@link Map}. It infers the {@link Locale} from the property
-     * {@code key}, using the following steps:
+     * {@code AbstractInternationalString} during iteration through the {@linkplain java.util.Map.Entry entries} in a
+     * {@link Map}. It infers the {@link Locale} from the property {@code key}, using the following steps:
      *
      * <ul>
-     *   <li>If the {@code key} do not starts with the specified {@code prefix}, then this method do
-     *       nothing and returns {@code false}.
-     *   <li>Otherwise, the characters after the {@code prefix} are parsed as an ISO language and
-     *       country code, and the {@link #add(Locale,String)} method is invoked.
+     *   <li>If the {@code key} do not starts with the specified {@code prefix}, then this method do nothing and returns
+     *       {@code false}.
+     *   <li>Otherwise, the characters after the {@code prefix} are parsed as an ISO language and country code, and the
+     *       {@link #add(Locale,String)} method is invoked.
      * </ul>
      *
-     * <p>For example if the prefix is <code>"remarks"</code>, then the <code>"remarks_fr"</code>
-     * property key stands for remarks in {@linkplain Locale#FRENCH French} while the <code>
-     * "remarks_fr_CA"</code> property key stands for remarks in {@linkplain Locale#CANADA_FRENCH
-     * French Canadian}.
+     * <p>For example if the prefix is <code>"remarks"</code>, then the <code>"remarks_fr"</code> property key stands
+     * for remarks in {@linkplain Locale#FRENCH French} while the <code>
+     * "remarks_fr_CA"</code> property key stands for remarks in {@linkplain Locale#CANADA_FRENCH French Canadian}.
      *
      * @param prefix The prefix to skip at the begining of the {@code key}.
      * @param key The property key.
      * @param string The localized string for the specified {@code key}.
      * @return {@code true} if the key has been recognized, or {@code false} otherwise.
-     * @throws IllegalArgumentException if the locale after the prefix is an illegal code, or a
-     *     different string value was already set for the given locale.
+     * @throws IllegalArgumentException if the locale after the prefix is an illegal code, or a different string value
+     *     was already set for the given locale.
      */
-    public boolean add(final String prefix, final String key, final String string)
-            throws IllegalArgumentException {
+    public boolean add(final String prefix, final String key, final String string) throws IllegalArgumentException {
         if (!key.startsWith(prefix)) {
             return false;
         }
@@ -186,14 +176,9 @@ public class GrowableInternationalString extends AbstractInternationalString
         final String[] parts = {"", "", ""};
         for (int i = 0; /*break condition inside*/ ; i++) {
             if (position == length) {
-                final Locale locale =
-                        (i == 0)
-                                ? null
-                                : unique(
-                                        new Locale(
-                                                parts[0] /* language */,
-                                                parts[1] /* country  */,
-                                                parts[2] /* variant  */));
+                final Locale locale = (i == 0)
+                        ? null
+                        : unique(new Locale(parts[0] /* language */, parts[1] /* country  */, parts[2] /* variant  */));
                 add(locale, string);
                 return true;
             }
@@ -211,8 +196,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             parts[i] = key.substring(position, position = next);
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(
-                        ErrorKeys.ILLEGAL_ARGUMENT_$2, "locale", key.substring(prefix.length())));
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "locale", key.substring(prefix.length())));
     }
 
     /**
@@ -223,8 +207,8 @@ public class GrowableInternationalString extends AbstractInternationalString
      */
     private static synchronized Locale unique(final Locale locale) {
         /**
-         * Initialize the LOCALES map with the set of locales defined in the Locale class. This
-         * operation is done only once.
+         * Initialize the LOCALES map with the set of locales defined in the Locale class. This operation is done only
+         * once.
          */
         if (LOCALES.isEmpty())
             try {
@@ -258,10 +242,9 @@ public class GrowableInternationalString extends AbstractInternationalString
     /**
      * Returns the set of locales defined in this international string.
      *
-     * <p>The returned set may contain a {@code null} object, signifying there's a "default" value
-     * (as created wither through the {@link
-     * GrowableInternationalString#GrowableInternationalString(String) single-string} constructor,
-     * or with a {@code null} "locale" parameter to {@link #add(Locale, String)}
+     * <p>The returned set may contain a {@code null} object, signifying there's a "default" value (as created wither
+     * through the {@link GrowableInternationalString#GrowableInternationalString(String) single-string} constructor, or
+     * with a {@code null} "locale" parameter to {@link #add(Locale, String)}
      *
      * @return The set of locales.
      */
@@ -270,12 +253,11 @@ public class GrowableInternationalString extends AbstractInternationalString
     }
 
     /**
-     * Returns a string in the specified locale. If there is no string for the specified {@code
-     * locale}, then this method search for a locale without the {@linkplain Locale#getVariant
-     * variant} part. If no string are found, then this method search for a locale without the
-     * {@linkplain Locale#getCountry country} part. For example if the <code>"fr_CA"</code> locale
-     * was requested but not found, then this method looks for the <code>"fr"</code> locale. The
-     * {@code null} locale (which stand for unlocalized message) is tried last.
+     * Returns a string in the specified locale. If there is no string for the specified {@code locale}, then this
+     * method search for a locale without the {@linkplain Locale#getVariant variant} part. If no string are found, then
+     * this method search for a locale without the {@linkplain Locale#getCountry country} part. For example if the
+     * <code>"fr_CA"</code> locale was requested but not found, then this method looks for the <code>"fr"</code> locale.
+     * The {@code null} locale (which stand for unlocalized message) is tried last.
      *
      * @param locale The locale to look for, or {@code null}.
      * @return The string in the specified locale, or in a default locale.
@@ -315,32 +297,31 @@ public class GrowableInternationalString extends AbstractInternationalString
     }
 
     /**
-     * Returns {@code true} if all localized texts stored in this international string are contained
-     * in the specified object. More specifically:
+     * Returns {@code true} if all localized texts stored in this international string are contained in the specified
+     * object. More specifically:
      *
      * <ul>
      *   <li>
-     *       <p>If {@code candidate} is an instance of {@link InternationalString}, then this method
-     *       returns {@code true} if, for all <var>{@linkplain Locale locale}</var>-<var>{@linkplain
-     *       String string}</var> pairs contained in {@code this}, <code>candidate.{@linkplain
-     *       InternationalString#toString(Locale) toString}(locale)</code> returns a string
-     *       {@linkplain String#equals equals} to {@code string}.
+     *       <p>If {@code candidate} is an instance of {@link InternationalString}, then this method returns
+     *       {@code true} if, for all <var>{@linkplain Locale locale}</var>-<var>{@linkplain String string}</var> pairs
+     *       contained in {@code this}, <code>candidate.{@linkplain
+     *       InternationalString#toString(Locale) toString}(locale)</code> returns a string {@linkplain String#equals
+     *       equals} to {@code string}.
      *   <li>
-     *       <p>If {@code candidate} is an instance of {@link CharSequence}, then this method
-     *       returns {@code true} if {@link #toString(Locale)} returns a string {@linkplain
-     *       String#equals equals} to <code>candidate.{@linkplain CharSequence#toString()
+     *       <p>If {@code candidate} is an instance of {@link CharSequence}, then this method returns {@code true} if
+     *       {@link #toString(Locale)} returns a string {@linkplain String#equals equals} to <code>
+     *       candidate.{@linkplain CharSequence#toString()
      *       toString()}</code> for all locales.
      *   <li>
-     *       <p>If {@code candidate} is an instance of {@link Map}, then this methods returns {@code
-     *       true} if all <var>{@linkplain Locale locale}</var>-<var>{@linkplain String
-     *       string}</var> pairs are contained into {@code candidate}.
+     *       <p>If {@code candidate} is an instance of {@link Map}, then this methods returns {@code true} if all
+     *       <var>{@linkplain Locale locale}</var>-<var>{@linkplain String string}</var> pairs are contained into
+     *       {@code candidate}.
      *   <li>
      *       <p>Otherwise, this method returns {@code false}.
      * </ul>
      *
      * @param candidate The object which may contains this international string.
-     * @return {@code true} if the given object contains all localized strings found in this
-     *     international string.
+     * @return {@code true} if the given object contains all localized strings found in this international string.
      * @since 2.3
      */
     public boolean isSubsetOf(final Object candidate) {

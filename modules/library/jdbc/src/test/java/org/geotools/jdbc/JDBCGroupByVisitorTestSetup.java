@@ -42,9 +42,8 @@ public abstract class JDBCGroupByVisitorTestSetup extends JDBCDelegatingTestSetu
     protected abstract void dropBuildingsTable() throws Exception;
 
     /**
-     * It's unclear if all databases support grouping on geometry attributes. The default for this
-     * method returns false. When returning true, also implement the creation/drop of the
-     * ft1_group_by table.
+     * It's unclear if all databases support grouping on geometry attributes. The default for this method returns false.
+     * When returning true, also implement the creation/drop of the ft1_group_by table.
      *
      * @return True if the database supports grouping on geometry attributes.
      */

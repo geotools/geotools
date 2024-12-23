@@ -39,8 +39,8 @@ public class ReIcon {
     /**
      * Produce an icon of the required size.
      *
-     * <p>The returned icon is not always an ImageIcon; and may in fact pay attention to your
-     * component foreground and background color.
+     * <p>The returned icon is not always an ImageIcon; and may in fact pay attention to your component foreground and
+     * background color.
      *
      * @param size Size of the icon (usually 16,32 and 48 are supported)
      * @return A square icon of the requested size
@@ -63,10 +63,7 @@ public class ReIcon {
                 @Override
                 public void paintIcon(Component c, Graphics g, int x, int y) {
                     BufferedImage img =
-                            new BufferedImage(
-                                    icon.getIconWidth(),
-                                    icon.getIconHeight(),
-                                    BufferedImage.TYPE_INT_ARGB);
+                            new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
                     // we can cache the img when aaime gets out a profiler and tells us it is
                     // worthwhile
                     icon.paintIcon(c, img.getGraphics(), 0, 0);

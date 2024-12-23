@@ -42,11 +42,11 @@ import org.geotools.util.logging.Logging;
 
 /**
  * A simple implementation of <code>TileFactory</code> wherein the tiles returned from <code>
- * createTile()</code> attempt to re-use primitive arrays provided by the <code>TileRecycler</code>
- * method <code>recycleTile()</code>.
+ * createTile()</code> attempt to re-use primitive arrays provided by the <code>TileRecycler</code> method <code>
+ * recycleTile()</code>.
  *
- * <p>A simple example of the use of this class is as follows wherein image files are read, each
- * image is filtered, and each output written to a file:
+ * <p>A simple example of the use of this class is as follows wherein image files are read, each image is filtered, and
+ * each output written to a file:
  *
  * <pre>
  * String[] sourceFiles; // source file paths
@@ -77,8 +77,8 @@ import org.geotools.util.logging.Logging;
  * }
  * </pre>
  *
- * In the above code, if the <code>SampleModel</code> of all source images is identical, then data
- * arrays should only be created in the first iteration.
+ * In the above code, if the <code>SampleModel</code> of all source images is identical, then data arrays should only be
+ * created in the first iteration.
  *
  * @since JAI 1.1.2
  */
@@ -91,8 +91,8 @@ public class RecyclingTileFactory extends java.util.Observable
     static final Logger LOGGER = Logging.getLogger(RecyclingTileFactory.class);
 
     /**
-     * Cache of recycled arrays. The key in this mapping is a <code>Long</code> which is formed for
-     * a given two-dimensional array as
+     * Cache of recycled arrays. The key in this mapping is a <code>Long</code> which is formed for a given
+     * two-dimensional array as
      *
      * <pre>
      * long type; // DataBuffer.TYPE_*
@@ -104,10 +104,10 @@ public class RecyclingTileFactory extends java.util.Observable
      * Long key = Long.valueOf((type &lt;&lt; 56) | (numBanks &lt;&lt; 32) | size);
      * </pre>
      *
-     * where the value of <code>type</code> is one of the constants <code>DataBuffer.TYPE_*</code>.
-     * The value corresponding to each key is an <code>ArrayList</code> of <code>SoftReferences
-     * </code> to the internal data banks of <code>DataBuffer</code>s of tiles wherein the data bank
-     * array has the type and dimensions implied by the key.
+     * where the value of <code>type</code> is one of the constants <code>DataBuffer.TYPE_*</code>. The value
+     * corresponding to each key is an <code>ArrayList</code> of <code>SoftReferences
+     * </code> to the internal data banks of <code>DataBuffer</code>s of tiles wherein the data bank array has the type
+     * and dimensions implied by the key.
      */
     private HashMap<Long, ArrayList> recycledArrays = new HashMap<>(32);
 
@@ -118,8 +118,7 @@ public class RecyclingTileFactory extends java.util.Observable
     private static long getBufferSizeCSM(ComponentSampleModel csm) {
         int[] bandOffsets = csm.getBandOffsets();
         int maxBandOff = bandOffsets[0];
-        for (int i = 1; i < bandOffsets.length; i++)
-            maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
+        for (int i = 1; i < bandOffsets.length; i++) maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
 
         long size = 0;
         if (maxBandOff >= 0) size += maxBandOff + 1;
@@ -146,10 +145,7 @@ public class RecyclingTileFactory extends java.util.Observable
     /** Tile cache I observe. */
     private final java.util.Observable tileCache;
 
-    /**
-     * Returns a <code>SoftReference</code> to the internal bank data of the <code>DataBuffer</code>
-     * .
-     */
+    /** Returns a <code>SoftReference</code> to the internal bank data of the <code>DataBuffer</code> . */
     private static Object getBankReference(DataBuffer db) {
         Object array = null;
 
@@ -261,9 +257,8 @@ public class RecyclingTileFactory extends java.util.Observable
             MultiPixelPackedSampleModel mppsm = (MultiPixelPackedSampleModel) sampleModel;
             numBanks = 1;
             int dataTypeSize = DataBuffer.getDataTypeSize(type);
-            size =
-                    mppsm.getScanlineStride() * mppsm.getHeight()
-                            + (mppsm.getDataBitOffset() + dataTypeSize - 1) / dataTypeSize;
+            size = mppsm.getScanlineStride() * mppsm.getHeight()
+                    + (mppsm.getDataBitOffset() + dataTypeSize - 1) / dataTypeSize;
         } else if (sampleModel instanceof SinglePixelPackedSampleModel) {
             SinglePixelPackedSampleModel sppsm = (SinglePixelPackedSampleModel) sampleModel;
             numBanks = 1;
@@ -337,14 +332,7 @@ public class RecyclingTileFactory extends java.util.Observable
                 }
             } else if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(
-                        getClass().getName()
-                                + " No type "
-                                + type
-                                + " array["
-                                + numBanks
-                                + "]["
-                                + size
-                                + "] available");
+                        getClass().getName() + " No type " + type + " array[" + numBanks + "][" + size + "] available");
             }
         } else if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(getClass().getName() + " Size is zero");
@@ -367,19 +355,10 @@ public class RecyclingTileFactory extends java.util.Observable
         DataBuffer db = tile.getDataBuffer();
 
         Long key =
-                Long.valueOf(
-                        ((long) db.getDataType() << 56)
-                                | ((long) db.getNumBanks() << 32)
-                                | (long) db.getSize());
+                Long.valueOf(((long) db.getDataType() << 56) | ((long) db.getNumBanks() << 32) | (long) db.getSize());
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Recycling array for: "
-                            + db.getDataType()
-                            + " "
-                            + db.getNumBanks()
-                            + " "
-                            + db.getSize());
+            LOGGER.fine("Recycling array for: " + db.getDataType() + " " + db.getNumBanks() + " " + db.getSize());
             LOGGER.fine("recycleTile(); key = " + key);
         }
 
@@ -409,13 +388,7 @@ public class RecyclingTileFactory extends java.util.Observable
         Long key = Long.valueOf(((long) arrayType << 56) | numBanks << 32 | arrayLength);
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Attempting to get array for: "
-                            + arrayType
-                            + " "
-                            + numBanks
-                            + " "
-                            + arrayLength);
+            LOGGER.fine("Attempting to get array for: " + arrayType + " " + numBanks + " " + arrayLength);
             LOGGER.fine("Attempting to get array for key " + key);
         }
 

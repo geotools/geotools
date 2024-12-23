@@ -26,8 +26,8 @@ import org.geotools.api.style.TraversingStyleVisitor;
 /**
  * ExtensioSymbolizer capturing a vendor specific extension.
  *
- * <p>This is a default placeholder to record a vendor specific extension; in case an implementation
- * could not be found on the classpath.
+ * <p>This is a default placeholder to record a vendor specific extension; in case an implementation could not be found
+ * on the classpath.
  *
  * @author James Macgill, CCG
  * @author Johann Sorel (Geomatys)

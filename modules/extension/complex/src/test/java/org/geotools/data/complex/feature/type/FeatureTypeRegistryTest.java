@@ -32,11 +32,9 @@ import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
 import org.junit.Test;
 
 public class FeatureTypeRegistryTest {
-    private static final Name PolygonPropertyType =
-            new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType");
+    private static final Name PolygonPropertyType = new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType");
 
-    private class EmptyFeatureTypeRegistryConfiguration
-            implements FeatureTypeRegistryConfiguration {
+    private class EmptyFeatureTypeRegistryConfiguration implements FeatureTypeRegistryConfiguration {
 
         @Override
         public Collection<Schema> getSchemas() {
@@ -67,17 +65,14 @@ public class FeatureTypeRegistryTest {
     @Test
     public void testMultiple() {
 
-        FeatureTypeRegistry registry1 =
-                new FeatureTypeRegistry(
-                        new ComplexFeatureTypeFactoryImpl(),
-                        new GmlFeatureTypeRegistryConfiguration("http://www.opengis.net/gml"));
+        FeatureTypeRegistry registry1 = new FeatureTypeRegistry(
+                new ComplexFeatureTypeFactoryImpl(),
+                new GmlFeatureTypeRegistryConfiguration("http://www.opengis.net/gml"));
 
         assertNotNull(registry1.getAttributeType(PolygonPropertyType));
 
-        FeatureTypeRegistry registry2 =
-                new FeatureTypeRegistry(
-                        new ComplexFeatureTypeFactoryImpl(),
-                        new EmptyFeatureTypeRegistryConfiguration());
+        FeatureTypeRegistry registry2 = new FeatureTypeRegistry(
+                new ComplexFeatureTypeFactoryImpl(), new EmptyFeatureTypeRegistryConfiguration());
 
         boolean exception;
         try {

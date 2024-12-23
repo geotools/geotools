@@ -22,8 +22,8 @@ import org.geotools.api.filter.Filter;
  * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.
  *
  * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor Report (OGC 02-070)
+ * version 1.0.0.</a>:
  *
  * <pre><code>
  * &lt;xsd:element name="FeatureTypeConstraint"&gt;

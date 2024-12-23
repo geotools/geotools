@@ -32,31 +32,28 @@ public class DataSourceUtil {
     }
 
     /**
-     * Builds up a default DBCP DataSource that easy to use connection factories can use to setup a
-     * connection pool.
+     * Builds up a default DBCP DataSource that easy to use connection factories can use to setup a connection pool.
      *
      * @param url the jdbc url
      * @param driverName the jdbc driver full qualified class name
-     * @param validationQuery the validation query to be used for connection liveliness on borrow,
-     *     or null, if no check is to be performed
+     * @param validationQuery the validation query to be used for connection liveliness on borrow, or null, if no check
+     *     is to be performed
      */
     public static ManageableDataSource buildDefaultDataSource(
             String url, String driverName, String username, String password, String validationQuery)
             throws DataSourceException {
-        return buildDefaultDataSource(
-                url, driverName, username, password, 10, 1, validationQuery, false, 0);
+        return buildDefaultDataSource(url, driverName, username, password, 10, 1, validationQuery, false, 0);
     }
 
     /**
-     * Builds up a default DBCP DataSource that easy to use connection factories can use to setup a
-     * connection pool.
+     * Builds up a default DBCP DataSource that easy to use connection factories can use to setup a connection pool.
      *
      * @param url the jdbc url
      * @param driverName the jdbc driver full qualified class name
      * @param maxActive maximum number of concurrent connections in the pool
      * @param minIdle minimum number of concurrent connections in the pool
-     * @param validationQuery the validation query to be used for connection liveliness on borrow,
-     *     or null, if no check is to be performed
+     * @param validationQuery the validation query to be used for connection liveliness on borrow, or null, if no check
+     *     is to be performed
      * @param cachePreparedStatements wheter to cache prepared statements or not
      */
     @SuppressWarnings("PMD.UseTryWithResources") // just a conn. test, we want to manage closing

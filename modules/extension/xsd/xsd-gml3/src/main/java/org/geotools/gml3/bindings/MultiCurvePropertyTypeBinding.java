@@ -49,8 +49,7 @@ import org.locationtech.jts.geom.MultiLineString;
  */
 public class MultiCurvePropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public MultiCurvePropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public MultiCurvePropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 

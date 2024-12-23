@@ -21,8 +21,7 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * MapBox Expression function that computes the remainder operation on two {@link
- * java.lang.Integer}s.
+ * MapBox Expression function that computes the remainder operation on two {@link java.lang.Integer}s.
  *
  * <p>Format:
  *
@@ -66,15 +65,13 @@ class RemainderFunction extends FunctionExpressionImpl {
             dividend = getExpression(0).evaluate(feature, Integer.class);
         } catch (Exception ex) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function remainder argument #0 - expected type Integer",
-                    ex);
+                    "Filter Function problem for function remainder argument #0 - expected type Integer", ex);
         }
         try {
             divisor = getExpression(1).evaluate(feature, Integer.class);
         } catch (Exception ex) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function remainder argument #1 - expected type Integer",
-                    ex);
+                    "Filter Function problem for function remainder argument #1 - expected type Integer", ex);
         }
         // can't divide by 0
         if (divisor.compareTo(0) == 0) {

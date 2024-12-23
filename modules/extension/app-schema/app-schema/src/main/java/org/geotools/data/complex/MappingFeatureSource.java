@@ -43,18 +43,15 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.util.factory.Hints;
 
 /**
- * A FeatureSource that uses a {@linkplain org.geotools.data.complex.FeatureTypeMapping} to perform
- * Feature fetching.
+ * A FeatureSource that uses a {@linkplain org.geotools.data.complex.FeatureTypeMapping} to perform Feature fetching.
  *
- * <p>Note that the number of Features available from a MappingFeatureReader may not match the
- * number of features that resulted of executing the incoming query over the surrogate
- * FeatureSource. This will be the case when grouping attributes has configured on the
- * FeatureTypeMapping this reader is based on.
+ * <p>Note that the number of Features available from a MappingFeatureReader may not match the number of features that
+ * resulted of executing the incoming query over the surrogate FeatureSource. This will be the case when grouping
+ * attributes has configured on the FeatureTypeMapping this reader is based on.
  *
- * <p>When a MappingFeatureReader is created, a delegated FeatureIterator will be created based on
- * the information provided by the FeatureTypeMapping object. That delegate reader will be
- * specialized in applying the appropiate mapping stratagy based on wether grouping has to be
- * performed or not.
+ * <p>When a MappingFeatureReader is created, a delegated FeatureIterator will be created based on the information
+ * provided by the FeatureTypeMapping object. That delegate reader will be specialized in applying the appropiate
+ * mapping stratagy based on wether grouping has to be performed or not.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -111,9 +108,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
     }
 
     private Query namedQuery(Query query) {
-        Query namedQuery =
-                namedQuery(
-                        query.getFilter(), query.getMaxFeatures(), query instanceof JoiningQuery);
+        Query namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures(), query instanceof JoiningQuery);
         namedQuery.setProperties(query.getProperties());
         namedQuery.setCoordinateSystem(query.getCoordinateSystem());
         namedQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
@@ -140,8 +135,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         int count = 0;
         Query namedQuery = namedQuery(query);
         FeatureSource mappedSource = mapping.getSource();
-        if (!(mappedSource instanceof JDBCFeatureSource
-                || mappedSource instanceof JDBCFeatureStore)) {
+        if (!(mappedSource instanceof JDBCFeatureSource || mappedSource instanceof JDBCFeatureStore)) {
             count = store.getCount(namedQuery);
         }
         if (count >= 0) {
@@ -182,16 +176,13 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         return new MappingFeatureCollection(store, mapping, namedQuery(filter, Integer.MAX_VALUE));
     }
 
-    public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter, Hints hints)
-            throws IOException {
-        return new MappingFeatureCollection(
-                store, mapping, namedQuery(filter, Integer.MAX_VALUE, hints));
+    public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter, Hints hints) throws IOException {
+        return new MappingFeatureCollection(store, mapping, namedQuery(filter, Integer.MAX_VALUE, hints));
     }
 
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
-        return new MappingFeatureCollection(
-                store, mapping, namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
+        return new MappingFeatureCollection(store, mapping, namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
 
     @Override

@@ -93,15 +93,10 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
             if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator(
-                        (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }
@@ -112,11 +107,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
     }
 
     void visitDistanceSpatialOperator(
-            DistanceBufferOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData)
+            DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
 
         if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
@@ -141,11 +132,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
     }
 
     void visitComparisonSpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData)
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
 
         if (!(filter instanceof Disjoint)) {
@@ -196,26 +183,22 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         TessellationInfo tinfo =
                 (TessellationInfo) currentGeometry.getUserData().get(TessellationInfo.KEY);
         if (tinfo == null) {
-            LOGGER.info(
-                    "Tessellation info not available for "
-                            + currentGeometry.getLocalName()
-                            + ", unable to perform spatially indexed query");
+            LOGGER.info("Tessellation info not available for "
+                    + currentGeometry.getLocalName()
+                    + ", unable to perform spatially indexed query");
             return false;
         }
 
         if (tinfo.getIndexTableName() == null) {
-            LOGGER.info(
-                    "Tessellation info available for "
-                            + currentGeometry.getLocalName()
-                            + ", but index table does not exist, unable to perform spatially index query.");
+            LOGGER.info("Tessellation info available for "
+                    + currentGeometry.getLocalName()
+                    + ", but index table does not exist, unable to perform spatially index query.");
             return false;
         }
 
         if (primaryKey == null || primaryKey.getColumns().isEmpty()) {
             LOGGER.info(
-                    "No primary key for "
-                            + featureType.getTypeName()
-                            + ", unable to perform spatially indexed query");
+                    "No primary key for " + featureType.getTypeName() + ", unable to perform spatially indexed query");
             return false;
         }
 
@@ -228,12 +211,11 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
         if (!uenv.contains(oenv)) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Bounds:"
-                                + oenv
-                                + " falls outside of univerise bounds: "
-                                + uenv
-                                + ". Unable to perform index query.");
+                LOGGER.fine("Bounds:"
+                        + oenv
+                        + " falls outside of univerise bounds: "
+                        + uenv
+                        + ". Unable to perform index query.");
             }
             return false;
         }
@@ -245,14 +227,13 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         double coverage = uenv.intersection(oenv).getArea() / uenv.getArea();
         if (coverage > 0.5) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Bounds:"
-                                + oenv
-                                + " covers "
-                                + (coverage * 100)
-                                + " of universe bounds: "
-                                + uenv
-                                + ". Forgoing index query.");
+                LOGGER.fine("Bounds:"
+                        + oenv
+                        + " covers "
+                        + (coverage * 100)
+                        + " of universe bounds: "
+                        + uenv
+                        + ". Forgoing index query.");
             }
             return false;
         }
@@ -282,22 +263,21 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         out.write(escapeName(tinfo.getIndexTableName()));
         out.write(" t, TABLE (SYSSPATIAL.tessellate_search(1,");
 
-        out.write(
-                String.format(
-                        "%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ",
-                        oenv.getMinX(),
-                        oenv.getMinY(),
-                        oenv.getMaxX(),
-                        oenv.getMaxY(),
-                        uenv.getMinX(),
-                        uenv.getMinY(),
-                        uenv.getMaxX(),
-                        uenv.getMaxY(),
-                        tinfo.getNx(),
-                        tinfo.getNy(),
-                        tinfo.getLevels(),
-                        tinfo.getScale(),
-                        tinfo.getShift()));
+        out.write(String.format(
+                "%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ",
+                oenv.getMinX(),
+                oenv.getMinY(),
+                oenv.getMaxX(),
+                oenv.getMaxY(),
+                uenv.getMinX(),
+                uenv.getMinY(),
+                uenv.getMaxX(),
+                uenv.getMaxY(),
+                tinfo.getNx(),
+                tinfo.getNy(),
+                tinfo.getLevels(),
+                tinfo.getScale(),
+                tinfo.getShift()));
 
         out.write(" WHERE t.cellid = i.cellid)");
         return true;

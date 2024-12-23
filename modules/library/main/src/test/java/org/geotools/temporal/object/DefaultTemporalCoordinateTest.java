@@ -43,24 +43,18 @@ public class DefaultTemporalCoordinateTest {
     public void setUp() {
         GregorianCalendar gc = new GregorianCalendar(-4713, 1, 1);
         Number coordinateValue = 100;
-        TemporalCoordinateSystem frame1 =
-                new DefaultTemporalCoordinateSystem(
-                        new NamedIdentifier(
-                                Citations.CRS, new SimpleInternationalString("Julian calendar")),
-                        null,
-                        gc.getTime(),
-                        new SimpleInternationalString("day"));
-        TemporalCoordinateSystem frame2 =
-                new DefaultTemporalCoordinateSystem(
-                        new NamedIdentifier(
-                                Citations.CRS, new SimpleInternationalString("Julian calendar")),
-                        null,
-                        gc.getTime(),
-                        new SimpleInternationalString("hour"));
-        temporalCoordinate1 =
-                new DefaultTemporalCoordinate(frame1, IndeterminateValue.NOW, coordinateValue);
-        temporalCoordinate2 =
-                new DefaultTemporalCoordinate(frame2, IndeterminateValue.AFTER, coordinateValue);
+        TemporalCoordinateSystem frame1 = new DefaultTemporalCoordinateSystem(
+                new NamedIdentifier(Citations.CRS, new SimpleInternationalString("Julian calendar")),
+                null,
+                gc.getTime(),
+                new SimpleInternationalString("day"));
+        TemporalCoordinateSystem frame2 = new DefaultTemporalCoordinateSystem(
+                new NamedIdentifier(Citations.CRS, new SimpleInternationalString("Julian calendar")),
+                null,
+                gc.getTime(),
+                new SimpleInternationalString("hour"));
+        temporalCoordinate1 = new DefaultTemporalCoordinate(frame1, IndeterminateValue.NOW, coordinateValue);
+        temporalCoordinate2 = new DefaultTemporalCoordinate(frame2, IndeterminateValue.AFTER, coordinateValue);
     }
 
     @After

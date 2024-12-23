@@ -28,10 +28,9 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.referencing.wkt.Formatter;
 
 /**
- * A conversion used for the definition of a {@linkplain
- * org.geotools.api.referencing.crs.GeneralDerivedCRS derived CRS} (including projections). This
- * conversion has no source and target CRS, and no math transform. Those elements are created by the
- * derived CRS itself.
+ * A conversion used for the definition of a {@linkplain org.geotools.api.referencing.crs.GeneralDerivedCRS derived CRS}
+ * (including projections). This conversion has no source and target CRS, and no math transform. Those elements are
+ * created by the derived CRS itself.
  *
  * @since 2.1
  * @version $Id$
@@ -47,8 +46,8 @@ public class DefiningConversion extends DefaultConversion {
     private final ParameterValueGroup parameters;
 
     /**
-     * Convenience constructor for creating a defining conversion with a default operation method.
-     * The operation method is assumed two-dimensional.
+     * Convenience constructor for creating a defining conversion with a default operation method. The operation method
+     * is assumed two-dimensional.
      *
      * @param name The conversion name.
      * @param parameters The parameter values.
@@ -59,8 +58,8 @@ public class DefiningConversion extends DefaultConversion {
     }
 
     /**
-     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
-     * this()/super() call in constructors").
+     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of this()/super() call in
+     * constructors").
      */
     private static OperationMethod getOperationMethod(final ParameterValueGroup parameters) {
         ensureNonNull("parameters", parameters);
@@ -69,44 +68,39 @@ public class DefiningConversion extends DefaultConversion {
     }
 
     /**
-     * Constructs a conversion from a set of parameters. The properties given in argument follow the
-     * same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a conversion from a set of parameters. The properties given in argument follow the same rules than for
+     * the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param method The operation method.
      * @param parameters The parameter values.
      */
     public DefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final ParameterValueGroup parameters) {
+            final Map<String, ?> properties, final OperationMethod method, final ParameterValueGroup parameters) {
         super(properties, null, null, null, method);
         ensureNonNull("parameters", parameters);
         this.parameters = parameters.clone();
     }
 
     /**
-     * Constructs a conversion from a math transform. The properties given in argument follow the
-     * same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a conversion from a math transform. The properties given in argument follow the same rules than for
+     * the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param method The operation method.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      * @since 2.5
      */
     public DefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final MathTransform transform) {
+            final Map<String, ?> properties, final OperationMethod method, final MathTransform transform) {
         super(properties, null, null, transform, method);
         parameters = null;
     }
 
     /**
-     * Invoked by the super-class constructor for checking argument validity. This special kind of
-     * conversion accepts non-null {@code transform} even if {@code sourceCRS} and {@code targetCRS}
-     * are non-null.
+     * Invoked by the super-class constructor for checking argument validity. This special kind of conversion accepts
+     * non-null {@code transform} even if {@code sourceCRS} and {@code targetCRS} are non-null.
      */
     @Override
     void validate() throws IllegalArgumentException {

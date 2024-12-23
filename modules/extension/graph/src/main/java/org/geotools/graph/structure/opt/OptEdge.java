@@ -75,8 +75,7 @@ public class OptEdge extends OptGraphable implements Edge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
-            return (Edge.EQUAL_NODE_ORIENTATION);
+        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return (Edge.EQUAL_NODE_ORIENTATION);
 
         if (m_nodeB.equals(other.getNodeA()) && m_nodeA.equals(other.getNodeB()))
             return (Edge.OPPOSITE_NODE_ORIENTATION);
@@ -95,12 +94,10 @@ public class OptEdge extends OptGraphable implements Edge {
         private Iterator<Edge> m_itr;
 
         public RelatedIterator(OptEdge edge) {
-            ArrayList<Edge> edges =
-                    new ArrayList<>(
-                            m_nodeA.getDegree()
-                                    + m_nodeB.getDegree()
-                                    - 2
-                                    - m_nodeA.getEdges(m_nodeB).size());
+            ArrayList<Edge> edges = new ArrayList<>(m_nodeA.getDegree()
+                    + m_nodeB.getDegree()
+                    - 2
+                    - m_nodeA.getEdges(m_nodeB).size());
 
             // add all edges of node A except this edge
             for (int i = 0; i < m_nodeA.getEdgeArray().length; i++) {
@@ -119,8 +116,7 @@ public class OptEdge extends OptGraphable implements Edge {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException(
-                    getClass().getName() + "#remove() not supported.");
+            throw new UnsupportedOperationException(getClass().getName() + "#remove() not supported.");
         }
 
         @Override

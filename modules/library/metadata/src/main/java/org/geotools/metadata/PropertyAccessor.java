@@ -43,8 +43,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 
 /**
- * The getters declared in a GeoAPI interface, together with setters (if any) declared in the
- * Geotools implementation.
+ * The getters declared in a GeoAPI interface, together with setters (if any) declared in the Geotools implementation.
  *
  * @version $Id$
  * @author Martin Desruisseaux
@@ -63,18 +62,18 @@ final class PropertyAccessor {
     private static final String SET = "set";
 
     /**
-     * Methods to exclude from {@link #getGetters}. They are method inherited from {@link
-     * java.lang.Object}. Some of them, especially {@link Object#hashCode()} {@link
-     * Object#toString()} and {@link Object#clone()}, may be declared explicitly in some interface
-     * with a formal contract. Note: only no-argument methods need to be declared in this list.
+     * Methods to exclude from {@link #getGetters}. They are method inherited from {@link java.lang.Object}. Some of
+     * them, especially {@link Object#hashCode()} {@link Object#toString()} and {@link Object#clone()}, may be declared
+     * explicitly in some interface with a formal contract. Note: only no-argument methods need to be declared in this
+     * list.
      */
     private static final String[] EXCLUDES = {
         "clone", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait"
     };
 
     /**
-     * Getters shared between many instances of this class. Two different implementations may share
-     * the same getters but different setters.
+     * Getters shared between many instances of this class. Two different implementations may share the same getters but
+     * different setters.
      */
     private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<>();
 
@@ -98,15 +97,15 @@ final class PropertyAccessor {
     private final Method[] getters;
 
     /**
-     * The corresponding setter methods, or {@code null} if none. This array must have the same
-     * length than {@link #getters}. For every {@code getters[i]} element, {@code setters[i]} is the
-     * corresponding setter or {@code null} if there is none.
+     * The corresponding setter methods, or {@code null} if none. This array must have the same length than
+     * {@link #getters}. For every {@code getters[i]} element, {@code setters[i]} is the corresponding setter or
+     * {@code null} if there is none.
      */
     private final Method[] setters;
 
     /**
-     * Index of getter or setter for a given name. The name must be all lower cases with conversion
-     * done using {@link #LOCALE}. This map must be considered as immutable after construction.
+     * Index of getter or setter for a given name. The name must be all lower cases with conversion done using
+     * {@link #LOCALE}. This map must be considered as immutable after construction.
      */
     private final Map<String, Integer> mapping;
 
@@ -114,8 +113,7 @@ final class PropertyAccessor {
      * Creates a new property reader for the specified metadata implementation.
      *
      * @param implementation The metadata implementation to wrap.
-     * @param type The interface implemented by the metadata. Should be the value returned by {@link
-     *     #getType}.
+     * @param type The interface implemented by the metadata. Should be the value returned by {@link #getType}.
      */
     PropertyAccessor(final Class<?> implementation, final Class<?> type) {
         this.implementation = implementation;
@@ -190,8 +188,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Adds the given (name, index) pair to {@link #mapping}, making sure we don't overwrite an
-     * existing entry with different value.
+     * Adds the given (name, index) pair to {@link #mapping}, making sure we don't overwrite an existing entry with
+     * different value.
      */
     private void addMapping(String name, final Integer index) throws IllegalArgumentException {
         name = name.trim();
@@ -200,15 +198,14 @@ final class PropertyAccessor {
             final Integer old = mapping.put(lower, index);
             if (old != null && !old.equals(index)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
+                        MessageFormat.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
             }
         }
     }
 
     /**
-     * Returns the metadata interface implemented by the specified implementation. Only one metadata
-     * interface can be implemented.
+     * Returns the metadata interface implemented by the specified implementation. Only one metadata interface can be
+     * implemented.
      *
      * @param implementation The metadata implementation to wraps.
      * @param interfacePackage The root package for metadata interfaces.
@@ -252,13 +249,11 @@ final class PropertyAccessor {
     }
 
     /**
-     * Puts every interfaces for the given type in the specified collection. This method invokes
-     * itself recursively for scanning parent interfaces.
+     * Puts every interfaces for the given type in the specified collection. This method invokes itself recursively for
+     * scanning parent interfaces.
      */
     private static void getInterfaces(
-            final Class<?> type,
-            final String interfacePackage,
-            final Collection<Class<?>> interfaces) {
+            final Class<?> type, final String interfacePackage, final Collection<Class<?>> interfaces) {
         for (final Class<?> candidate : type.getInterfaces()) {
             if (candidate.getName().startsWith(interfacePackage)) {
                 interfaces.add(candidate);
@@ -268,8 +263,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns the getters. The returned array should never be modified, since it may be shared
-     * among many instances of {@code PropertyAccessor}.
+     * Returns the getters. The returned array should never be modified, since it may be shared among many instances of
+     * {@code PropertyAccessor}.
      *
      * @param type The metadata interface.
      * @return The getters declared in the given interface (never {@code null}).
@@ -285,8 +280,7 @@ final class PropertyAccessor {
                         // Ignores deprecated methods.
                         continue;
                     }
-                    if (!candidate.getReturnType().equals(Void.TYPE)
-                            && candidate.getParameterTypes().length == 0) {
+                    if (!candidate.getReturnType().equals(Void.TYPE) && candidate.getParameterTypes().length == 0) {
                         /*
                          * We do not require a name starting with "get" or "is" prefix because some
                          * methods do not begin with such prefix, as in "ConformanceResult.pass()".
@@ -321,9 +315,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns the prefix of the specified method name. If the method name don't starts with a
-     * prefix (for example {@link org.geotools.api.metadata.quality.ConformanceResult#pass()}), then
-     * this method returns an empty string.
+     * Returns the prefix of the specified method name. If the method name don't starts with a prefix (for example
+     * {@link org.geotools.api.metadata.quality.ConformanceResult#pass()}), then this method returns an empty string.
      */
     private static String prefix(final String name) {
         if (name.startsWith(GET)) {
@@ -356,8 +349,7 @@ final class PropertyAccessor {
     }
 
     /**
-     * Always returns the index of the specified property (never -1). The search is
-     * case-insensitive.
+     * Always returns the index of the specified property (never -1). The search is case-insensitive.
      *
      * @param key The property to search.
      * @return The index of the given key.
@@ -369,14 +361,12 @@ final class PropertyAccessor {
         if (index != null) {
             return index;
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, key));
     }
 
     /**
-     * Returns {@code true} if the specified string starting at the specified index contains no
-     * lower case characters. The characters don't have to be in upper case however (e.g.
-     * non-alphabetic characters)
+     * Returns {@code true} if the specified string starting at the specified index contains no lower case characters.
+     * The characters don't have to be in upper case however (e.g. non-alphabetic characters)
      */
     private static boolean isAcronym(final String name, int offset) {
         final int length = name.length();
@@ -427,10 +417,7 @@ final class PropertyAccessor {
 
     /** Returns {@code true} if the property at the given index is writable. */
     final boolean isWritable(final int index) {
-        return (index >= 0)
-                && (index < getters.length)
-                && (setters != null)
-                && (setters[index] != null);
+        return (index >= 0) && (index < getters.length) && (setters != null) && (setters[index] != null);
     }
 
     /** Returns the value for the specified metadata, or {@code null} if none. */
@@ -439,8 +426,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Gets a value from the specified metadata. We do not expect any checked exception to be
-     * thrown, since {@code org.geotools.api.metadata} do not declare any.
+     * Gets a value from the specified metadata. We do not expect any checked exception to be thrown, since
+     * {@code org.geotools.api.metadata} do not declare any.
      *
      * @param method The method to use for the query.
      * @param metadata The metadata object to query.
@@ -491,8 +478,7 @@ final class PropertyAccessor {
         } else {
             key = String.valueOf(index);
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, key));
     }
 
     /**
@@ -502,14 +488,9 @@ final class PropertyAccessor {
      * @param setter The method to use for setting the new value.
      * @param metadata The metadata object to query.
      * @param arguments The argument to give to the method to be invoked.
-     * @throws ClassCastException if at least one element of the {@code arguments} array is not of
-     *     the expected type.
+     * @throws ClassCastException if at least one element of the {@code arguments} array is not of the expected type.
      */
-    private static void set(
-            final Method getter,
-            final Method setter,
-            final Object metadata,
-            final Object... arguments)
+    private static void set(final Method getter, final Method setter, final Object metadata, final Object... arguments)
             throws ClassCastException {
         final Class<?>[] paramTypes = setter.getParameterTypes();
         for (int i = 0; i < paramTypes.length; i++) {
@@ -601,12 +582,8 @@ final class PropertyAccessor {
              * since we get here because the argument was not of the expected type.
              */
             if (parsed == null) {
-                final ClassCastException e =
-                        new ClassCastException(
-                                MessageFormat.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        argument.getClass(),
-                                        elementType));
+                final ClassCastException e = new ClassCastException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, argument.getClass(), elementType));
                 e.initCause(failure);
                 throw e;
             }
@@ -642,9 +619,9 @@ final class PropertyAccessor {
     }
 
     /**
-     * Unsafe addition into a collection. In GeoTools implementation, the collection is actually an
-     * instance of {@link CheckedCollection}, so the check will be performed at runtime. However
-     * other implementations could use unchecked collection. There is not much we can do.
+     * Unsafe addition into a collection. In GeoTools implementation, the collection is actually an instance of
+     * {@link CheckedCollection}, so the check will be performed at runtime. However other implementations could use
+     * unchecked collection. There is not much we can do.
      */
     @SuppressWarnings("unchecked")
     private static void addUnsafe(final Collection<?> addTo, final Object element) {
@@ -652,20 +629,19 @@ final class PropertyAccessor {
     }
 
     /**
-     * Compares the two specified metadata objects. The comparaison is <cite>shallow</cite>, i.e.
-     * all metadata attributes are compared using the {@link Object#equals} method without recursive
-     * call to this {@code shallowEquals} method for other metadata.
+     * Compares the two specified metadata objects. The comparaison is <cite>shallow</cite>, i.e. all metadata
+     * attributes are compared using the {@link Object#equals} method without recursive call to this
+     * {@code shallowEquals} method for other metadata.
      *
-     * <p>This method can optionaly excludes null values from the comparaison. In metadata, null
-     * value often means "don't know", so in some occasion we want to consider two metadata as
-     * different only if an attribute value is know for sure to be different.
+     * <p>This method can optionaly excludes null values from the comparaison. In metadata, null value often means
+     * "don't know", so in some occasion we want to consider two metadata as different only if an attribute value is
+     * know for sure to be different.
      *
      * @param metadata1 The first metadata object to compare.
      * @param metadata2 The second metadata object to compare.
      * @param skipNulls If {@code true}, only non-null values will be compared.
      */
-    public boolean shallowEquals(
-            final Object metadata1, final Object metadata2, final boolean skipNulls) {
+    public boolean shallowEquals(final Object metadata1, final Object metadata2, final boolean skipNulls) {
         assert type.isInstance(metadata1) : metadata1;
         assert type.isInstance(metadata2) : metadata2;
         for (final Method method : getters) {
@@ -686,14 +662,13 @@ final class PropertyAccessor {
     }
 
     /**
-     * Copies all metadata from source to target. The source can be any implementation of the
-     * metadata interface, but the target must be the implementation expected by this class.
+     * Copies all metadata from source to target. The source can be any implementation of the metadata interface, but
+     * the target must be the implementation expected by this class.
      *
      * @param source The metadata to copy.
      * @param target The target metadata.
      * @param skipNulls If {@code true}, only non-null values will be copied.
-     * @return {@code true} in case of success, or {@code false} if at least one setter method was
-     *     not found.
+     * @return {@code true} in case of success, or {@code false} if at least one setter method was not found.
      * @throws UnmodifiableMetadataException if the target metadata is unmodifiable.
      */
     public boolean shallowCopy(final Object source, final Object target, final boolean skipNulls)
@@ -744,8 +719,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns {@code true} if the metadata is modifiable. This method is not public because it uses
-     * heuristic rules. In case of doubt, this method conservatively returns {@code true}.
+     * Returns {@code true} if the metadata is modifiable. This method is not public because it uses heuristic rules. In
+     * case of doubt, this method conservatively returns {@code true}.
      */
     final boolean isModifiable() {
         if (setters != null) {
@@ -762,10 +737,9 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns a hash code for the specified metadata. The hash code is defined as the sum of hash
-     * code values of all non-null properties. This is the same contract than {@link
-     * java.util.Set#hashCode} and ensure that the hash code value is insensitive to the ordering of
-     * properties.
+     * Returns a hash code for the specified metadata. The hash code is defined as the sum of hash code values of all
+     * non-null properties. This is the same contract than {@link java.util.Set#hashCode} and ensure that the hash code
+     * value is insensitive to the ordering of properties.
      */
     public int hashCode(final Object metadata) {
         assert type.isInstance(metadata) : metadata;
@@ -793,9 +767,7 @@ final class PropertyAccessor {
         return count;
     }
 
-    /**
-     * Returns {@code true} if the specified object is null or an empty collection, array or string.
-     */
+    /** Returns {@code true} if the specified object is null or an empty collection, array or string. */
     static boolean isEmpty(final Object value) {
         return value == null
                 || ((value instanceof Collection) && ((Collection) value).isEmpty())

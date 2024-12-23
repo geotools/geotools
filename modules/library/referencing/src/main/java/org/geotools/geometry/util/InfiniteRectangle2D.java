@@ -23,12 +23,10 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * An immutable subclass of a {@link Rectangle2D} with bounds extending toward infinities. The
- * {@link #getMinX} and {@link #getMinY} methods return always {@link
- * java.lang.Double#NEGATIVE_INFINITY}, while the {@link #getMaxX} and {@link #getMaxY} methods
- * return always {@link java.lang.Double#POSITIVE_INFINITY}. This rectangle can be used as argument
- * in the {@link XRectangle2D} constructor for initializing a new {@code XRectangle2D} to infinite
- * bounds.
+ * An immutable subclass of a {@link Rectangle2D} with bounds extending toward infinities. The {@link #getMinX} and
+ * {@link #getMinY} methods return always {@link java.lang.Double#NEGATIVE_INFINITY}, while the {@link #getMaxX} and
+ * {@link #getMaxY} methods return always {@link java.lang.Double#POSITIVE_INFINITY}. This rectangle can be used as
+ * argument in the {@link XRectangle2D} constructor for initializing a new {@code XRectangle2D} to infinite bounds.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -194,8 +192,8 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     }
 
     /**
-     * Returns {@code this}, since this rectangle can't be extended. No need to returns a clone,
-     * since this rectangle is immutable.
+     * Returns {@code this}, since this rectangle can't be extended. No need to returns a clone, since this rectangle is
+     * immutable.
      */
     @Override
     public Rectangle2D createUnion(Rectangle2D rect) {

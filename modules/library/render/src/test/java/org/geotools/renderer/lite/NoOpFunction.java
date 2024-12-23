@@ -25,8 +25,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class NoOpFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "NoOp", FunctionNameImpl.parameter("coverage", GridCoverage2D.class));
+            new FunctionNameImpl("NoOp", FunctionNameImpl.parameter("coverage", GridCoverage2D.class));
 
     public NoOpFunction() {
         super(NAME);

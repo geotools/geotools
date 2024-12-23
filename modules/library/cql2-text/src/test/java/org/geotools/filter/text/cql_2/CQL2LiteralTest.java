@@ -39,8 +39,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 
 /**
- * Fully copied instead of inherited, as the base tests are too dirty (parse filters as an excuse to
- * parse an expression, do encoding tests as well).
+ * Fully copied instead of inherited, as the base tests are too dirty (parse filters as an excuse to parse an
+ * expression, do encoding tests as well).
  *
  * <p>Changes compared to (E)CQL:
  *
@@ -72,8 +72,7 @@ public class CQL2LiteralTest {
 
     @Test
     public void polygonWithHole() throws Exception {
-        String wkt =
-                "POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))";
+        String wkt = "POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))";
         assertParseGeometry(wkt, Polygon.class);
     }
 
@@ -98,8 +97,7 @@ public class CQL2LiteralTest {
 
     @Test
     public void multiPolygon() throws Exception {
-        String wkt =
-                "MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )";
+        String wkt = "MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )";
         assertParseGeometry(wkt, MultiPolygon.class);
     }
 
@@ -108,8 +106,7 @@ public class CQL2LiteralTest {
         assertParseGeometry(wkt, wkt, type);
     }
 
-    private void assertParseGeometry(String wkt, String expectedWkt, Class expectedGeometryClass)
-            throws Exception {
+    private void assertParseGeometry(String wkt, String expectedWkt, Class expectedGeometryClass) throws Exception {
         Expression expression = CQL2.toExpression(wkt);
 
         assertThat(expression, instanceOf(Literal.class));
@@ -121,8 +118,8 @@ public class CQL2LiteralTest {
     }
 
     /** Asserts that the geometries are equals */
-    protected void assertEqualsGeometries(
-            final String strGeomExpected, final Geometry actualGeometry) throws Exception {
+    protected void assertEqualsGeometries(final String strGeomExpected, final Geometry actualGeometry)
+            throws Exception {
 
         WKTReader reader = new WKTReader();
         Geometry expectedGeometry = reader.read(strGeomExpected);
@@ -184,8 +181,7 @@ public class CQL2LiteralTest {
         // character string without quote
         final String expectedWithout = "ab";
 
-        Filter filterWithoutQuote =
-                CQL2.toFilter("MAJOR_WATERSHED_SYSTEM = '" + expectedWithout + "'");
+        Filter filterWithoutQuote = CQL2.toFilter("MAJOR_WATERSHED_SYSTEM = '" + expectedWithout + "'");
 
         Assert.assertNotNull(filterWithoutQuote);
         Assert.assertTrue(filterWithoutQuote instanceof PropertyIsEqualTo);

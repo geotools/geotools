@@ -10,16 +10,15 @@
 package org.geotools.api.temporal;
 
 /**
- * A data type that shall be used for identifying temporal position within a temporal coordinate
- * system.
+ * A data type that shall be used for identifying temporal position within a temporal coordinate system.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
 public interface TemporalCoordinate extends TemporalPosition {
     /**
-     * Returns the distance from the scale origin expressed as a multiple of the standard interval
-     * associated with the temporal coordinate system.
+     * Returns the distance from the scale origin expressed as a multiple of the standard interval associated with the
+     * temporal coordinate system.
      *
      * @todo Should we return a primitive type?
      */

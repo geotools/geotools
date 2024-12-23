@@ -30,8 +30,8 @@ public class OracleFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExpo
     }
 
     /**
-     * Because Oracle uses "Bigdecimal" for any number we need to change the type of the objects
-     * that are in the list of expected objects.
+     * Because Oracle uses "Bigdecimal" for any number we need to change the type of the objects that are in the list of
+     * expected objects.
      *
      * @return expected list for {@link #testMixedEncodeIn()}
      */

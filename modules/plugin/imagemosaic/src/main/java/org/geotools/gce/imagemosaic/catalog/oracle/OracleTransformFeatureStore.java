@@ -32,8 +32,7 @@ public class OracleTransformFeatureStore extends TransformFeatureStore {
     DataStore datastore;
 
     public OracleTransformFeatureStore(
-            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore)
-            throws IOException {
+            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore) throws IOException {
         super(store, name, definitions);
         this.datastore = datastore;
     }

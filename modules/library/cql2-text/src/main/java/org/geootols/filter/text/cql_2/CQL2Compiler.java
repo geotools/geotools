@@ -65,10 +65,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         this.builder = new CQL2FilterBuilder(txtSource, filterFactory);
     }
 
-    /**
-     * compile source to produce a Filter. The filter result must be retrieved with {@link
-     * #getFilter()}.
-     */
+    /** compile source to produce a Filter. The filter result must be retrieved with {@link #getFilter()}. */
     @Override
     public void compileFilter() throws CQLException {
         try {
@@ -76,8 +73,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         } catch (TokenMgrError tokenError) {
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -89,8 +85,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         } catch (TokenMgrError tokenError) {
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -102,8 +97,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         } catch (TokenMgrError tokenError) {
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -140,8 +134,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
     }
 
     /**
-     * Returns the list of Filters built as the result of calling {@link
-     * #FilterListCompilationUnit()()}
+     * Returns the list of Filters built as the result of calling {@link #FilterListCompilationUnit()()}
      *
      * @return List<Filter>
      * @throws CQLException if a ClassCastException occurs while casting a built item to a Filter.
@@ -174,8 +167,8 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
     }
 
     /**
-     * This method is called when the parser close a node. Here is built the filters an expressions
-     * recognized in the parsing process.
+     * This method is called when the parser close a node. Here is built the filters an expressions recognized in the
+     * parsing process.
      *
      * @param n a Node instance
      * @return Filter or Expression
@@ -216,8 +209,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
                 return this.builder.buildSimpleAttribute();
 
             case JJTCOMPOUND_ATTRIBUTE_NODE:
-                return this.builder.buildCompoundAttribute(
-                        JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
+                return this.builder.buildCompoundAttribute(JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
 
                 // ----------------------------------------
                 // function
@@ -453,15 +445,12 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
 
                 default:
                     throw new CQLException(
-                            "Expression not supported. And, Or, Not is required",
-                            getTokenInPosition(0),
-                            this.source);
+                            "Expression not supported. And, Or, Not is required", getTokenInPosition(0), this.source);
             }
 
             return logicFilter;
         } catch (IllegalFilterException ife) {
-            throw new CQLException(
-                    "Exception building LogicFilter", getTokenInPosition(0), ife, this.source);
+            throw new CQLException("Exception building LogicFilter", getTokenInPosition(0), ife, this.source);
         }
     }
 
@@ -470,8 +459,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
      *
      * @return BinarySpatialOperator
      */
-    private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType)
-            throws CQLException {
+    private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType) throws CQLException {
 
         BinarySpatialOperator filter = null;
 
@@ -539,8 +527,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
      *
      * @return BinaryComparisonOperator
      */
-    private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType)
-            throws CQLException {
+    private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType) throws CQLException {
 
         switch (filterType) {
             case JJTCOMPARISONPREDICATE_EQ_NODE:

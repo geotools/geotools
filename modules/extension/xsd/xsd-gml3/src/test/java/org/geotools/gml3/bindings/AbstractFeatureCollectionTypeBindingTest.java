@@ -45,11 +45,9 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
     @Test
     public void testFeatureMember() throws Exception {
-        Element featureCollection =
-                GML3MockData.element(TEST.TestFeatureCollection, document, document);
+        Element featureCollection = GML3MockData.element(TEST.TestFeatureCollection, document, document);
 
-        Element featureMember =
-                GML3MockData.element(GML.featureMember, document, featureCollection);
+        Element featureMember = GML3MockData.element(GML.featureMember, document, featureCollection);
 
         Element feature = GML3MockData.feature(document, featureMember);
         feature.setAttributeNS(GML.NAMESPACE, "id", "fid.1");
@@ -75,11 +73,9 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
     @Test
     public void testFeatureMembers() throws Exception {
-        Element featureCollection =
-                GML3MockData.element(TEST.TestFeatureCollection, document, document);
+        Element featureCollection = GML3MockData.element(TEST.TestFeatureCollection, document, document);
 
-        Element featureMember =
-                GML3MockData.element(GML.featureMembers, document, featureCollection);
+        Element featureMember = GML3MockData.element(GML.featureMembers, document, featureCollection);
 
         Element feature = GML3MockData.feature(document, featureMember);
         feature.setAttributeNS(GML.NAMESPACE, "id", "fid.1");

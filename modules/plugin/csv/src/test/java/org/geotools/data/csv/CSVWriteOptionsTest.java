@@ -126,8 +126,7 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
 
         String contents = createOutputFile(file2, params2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
             assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
@@ -148,8 +147,7 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.QUOTEALL.key, true);
         String contents = createOutputFile(file2, params2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -173,8 +171,7 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.QUOTEALL.key, true);
         params2.put(CSVDataStoreFactory.QUOTECHAR.key, '\'');
         String contents = createOutputFile(file2, params2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -197,8 +194,7 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.SEPERATORCHAR.key, '\t');
         String contents = createOutputFile(file2, params2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -221,8 +217,7 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.LINESEPSTRING.key, "EOL;\n");
         String contents = createOutputFile(file2, params2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -237,12 +232,11 @@ public class CSVWriteOptionsTest {
 
     @Test
     public void testReadEscapeChars() throws IOException {
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "doubleval,\"int'val\",lat,stringval,lon",
-                        "3.8,7,73.28,\"f'oo\",-14.39",
-                        "9.12,-38,0,bar,29",
-                        "-37,0,49,baz,0");
+        String input = CSVTestStrategySupport.buildInputString(
+                "doubleval,\"int'val\",lat,stringval,lon",
+                "3.8,7,73.28,\"f'oo\",-14.39",
+                "9.12,-38,0,bar,29",
+                "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
 
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
@@ -294,20 +288,18 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.QUOTECHAR.key, '\'');
         params2.put(CSVDataStoreFactory.ESCAPECHAR.key, '#');
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "doubleval,\"int'val\",lat,stringval,lon",
-                        "3.8,7,73.28,\"f'oo\",-14.39",
-                        "9.12,-38,0,bar,29",
-                        "-37,0,49,baz,0");
+        String input = CSVTestStrategySupport.buildInputString(
+                "doubleval,\"int'val\",lat,stringval,lon",
+                "3.8,7,73.28,\"f'oo\",-14.39",
+                "9.12,-38,0,bar,29",
+                "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
         fileState.setQuotechar('"');
         fileState.setEscapechar('#');
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         CSVDataStore escapeStore = new CSVDataStore(fileState, strategy);
         String contents = createOutputFile(file2, params2, escapeStore);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -332,19 +324,17 @@ public class CSVWriteOptionsTest {
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
         params2.put(CSVDataStoreFactory.QUOTECHAR.key, '\'');
         params2.put(CSVDataStoreFactory.ESCAPECHAR.key, '!');
-        String input =
-                CSVTestStrategySupport.buildInputString(
-                        "doubleval,\"int'val\",lat,stringval,lon",
-                        "3.8,7,73.28,\"f'oo\",-14.39",
-                        "9.12,-38,0,bar,29",
-                        "-37,0,49,baz,0");
+        String input = CSVTestStrategySupport.buildInputString(
+                "doubleval,\"int'val\",lat,stringval,lon",
+                "3.8,7,73.28,\"f'oo\",-14.39",
+                "9.12,-38,0,bar,29",
+                "-37,0,49,baz,0");
         CSVFileState fileState = new CSVFileState(input, "typename");
 
         CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
         CSVDataStore escapeStore = new CSVDataStore(fileState, strategy);
         String contents = createOutputFile(file2, params2, escapeStore);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
 
@@ -358,13 +348,12 @@ public class CSVWriteOptionsTest {
         }
     }
 
-    private String createOutputFile(File file2, Map<String, Serializable> params2)
-            throws IOException {
+    private String createOutputFile(File file2, Map<String, Serializable> params2) throws IOException {
         return createOutputFile(file2, params2, store);
     }
 
-    private String createOutputFile(
-            File file2, Map<String, Serializable> params2, FileDataStore input) throws IOException {
+    private String createOutputFile(File file2, Map<String, Serializable> params2, FileDataStore input)
+            throws IOException {
         DataStore datastore = factory.createNewDataStore(params2);
 
         SimpleFeatureType featureType = input.getSchema();

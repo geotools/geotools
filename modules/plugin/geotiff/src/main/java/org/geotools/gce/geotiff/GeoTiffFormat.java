@@ -67,9 +67,8 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /**
- * Provides basic information about the GeoTIFF format IO. This is currently an extension of the
- * Geotools AbstractGridFormat because the stream and file GCEs will pick it up if it extends
- * AbstractGridFormat.
+ * Provides basic information about the GeoTIFF format IO. This is currently an extension of the Geotools
+ * AbstractGridFormat because the stream and file GCEs will pick it up if it extends AbstractGridFormat.
  *
  * @author Bryce Nordgren, USDA Forest Service
  * @author Simone Giannecchini
@@ -86,30 +85,22 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     }
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffFormat.class);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to
-     * force the writer to write a tfw file.
+     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to force the writer to
+     * write a tfw file.
      */
-    public static final DefaultParameterDescriptor<Boolean> WRITE_TFW =
-            new DefaultParameterDescriptor<>(
-                    "WRITE_TFW",
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.FALSE);
+    public static final DefaultParameterDescriptor<Boolean> WRITE_TFW = new DefaultParameterDescriptor<>(
+            "WRITE_TFW", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s to specify
-     * whether NoData should be written when available. Default or missing parameter means true.
+     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s to specify whether NoData should
+     * be written when available. Default or missing parameter means true.
      */
     public static final DefaultParameterDescriptor<Boolean> WRITE_NODATA =
             new DefaultParameterDescriptor<Boolean>(
-                    "WRITE_NODATA",
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    DEFAULT_WRITE_NODATA) {
+                    "WRITE_NODATA", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, DEFAULT_WRITE_NODATA) {
                 private static final long serialVersionUID = 476944281037266742L;
 
                 public @Override Boolean getDefaultValue() {
@@ -118,15 +109,11 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
             };
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to
-     * force the writer to retain the axes order.
+     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to force the writer to
+     * retain the axes order.
      */
-    public static final DefaultParameterDescriptor<Boolean> RETAIN_AXES_ORDER =
-            new DefaultParameterDescriptor<>(
-                    "RETAIN_AXES_ORDER",
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.FALSE);
+    public static final DefaultParameterDescriptor<Boolean> RETAIN_AXES_ORDER = new DefaultParameterDescriptor<>(
+            "RETAIN_AXES_ORDER", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
     /** factory for getting tiff writers. */
     static final TIFFImageWriterSpi IMAGEIO_WRITER_FACTORY = new TIFFImageWriterSpi();
@@ -148,38 +135,26 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 
         // reading parameters
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D,
-                                    INPUT_TRANSPARENT_COLOR,
-                                    SUGGESTED_TILE_SIZE,
-                                    RESCALE_PIXELS,
-                                    BANDS
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D, INPUT_TRANSPARENT_COLOR, SUGGESTED_TILE_SIZE, RESCALE_PIXELS, BANDS
+                }));
 
         // writing parameters
         writeParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    RETAIN_AXES_ORDER,
-                                    WRITE_NODATA,
-                                    AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,
-                                    AbstractGridFormat.PROGRESS_LISTENER
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    RETAIN_AXES_ORDER,
+                    WRITE_NODATA,
+                    AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,
+                    AbstractGridFormat.PROGRESS_LISTENER
+                }));
     }
 
     /**
-     * Currently, we only accept files, and we open the file to verify that it has a GeoKeyDirectory
-     * tag. If anything more subtle is wrong with the file, we deal with that when we try and read
-     * it.
+     * Currently, we only accept files, and we open the file to verify that it has a GeoKeyDirectory tag. If anything
+     * more subtle is wrong with the file, we deal with that when we try and read it.
      *
      * @param o the source object to test for compatibility with this format.
-     * @return true if "o" is a File or a URL that points to a GeoTiff with a GeoTiff file as a
-     *     resource.
+     * @return true if "o" is a File or a URL that points to a GeoTiff with a GeoTiff file as a resource.
      */
     @Override
     @SuppressWarnings({
@@ -236,8 +211,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
             //
             // parse metadata and be resilient with CRS
             //
-            final GeoTiffIIOMetadataDecoder metadataAdapter =
-                    new GeoTiffIIOMetadataDecoder(metadata);
+            final GeoTiffIIOMetadataDecoder metadataAdapter = new GeoTiffIIOMetadataDecoder(metadata);
             if (!metadataAdapter.hasGeoKey() && LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Unable to find geokey directory for this tif file");
 
@@ -246,8 +220,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
             //
             // do we have verything as geotiff?
             if (metadataAdapter.hasModelTrasformation()
-                    || (metadataAdapter.hasPixelScales() && metadataAdapter.hasTiePoints()))
-                return true;
+                    || (metadataAdapter.hasPixelScales() && metadataAdapter.hasTiePoints())) return true;
 
             // now look for info into a WLD file or TAB file
             MathTransform raster2Model = GeoTiffReader.parseWorldFile(o);
@@ -266,8 +239,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                     return true;
                 }
 
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Unable to find georeferencing for this tif file");
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Unable to find georeferencing for this tif file");
                 return false;
             }
 
@@ -293,8 +265,8 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * If <CODE>source</CODE> is a file, this will return a reader object. This file does not use
-     * hints in the construction of the geotiff reader.
+     * If <CODE>source</CODE> is a file, this will return a reader object. This file does not use hints in the
+     * construction of the geotiff reader.
      *
      * @param source must be a GeoTiff File
      * @return a GeoTiffReader object initialized to the specified File.
@@ -305,12 +277,11 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * If <CODE>source</CODE> is a file, this will return a reader object. This file does not use
-     * hints in the construction of the geotiff reader.
+     * If <CODE>source</CODE> is a file, this will return a reader object. This file does not use hints in the
+     * construction of the geotiff reader.
      *
      * @param source must be a GeoTiff File
-     * @param hints Hints to pass the hypothetic {@link GridCoverageReader} to control its
-     *     behaviour.
+     * @param hints Hints to pass the hypothetic {@link GridCoverageReader} to control its behaviour.
      * @return a GeoTiffReader object initialized to the specified File.
      */
     @Override
@@ -326,16 +297,14 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                 final File file = URLs.urlToFile(url);
                 return new GeoTiffReader(file, hints);
             } catch (DataSourceException e) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 return null;
             }
         }
         try {
             return new GeoTiffReader(source, hints);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -347,8 +316,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * <p>This file does not use hints in the construction of the geotiff reader.
      *
      * @param destination must be a GeoTiff File
-     * @param hints Hints to pass the hypothetic {@link GridCoverageReader} to control its
-     *     behaviour.
+     * @param hints Hints to pass the hypothetic {@link GridCoverageReader} to control its behaviour.
      * @return a GeoTiffReader object initialized to the specified File.
      */
     @Override
@@ -356,8 +324,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
         try {
             return new GeoTiffWriter(destination, hints);
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -376,15 +343,13 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
         try {
             return new GeoTiffWriter(destination);
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
 
     /**
-     * Returns an instance of {@link GeoTiffWriteParams} for controlling an hypothetic writing
-     * process.
+     * Returns an instance of {@link GeoTiffWriteParams} for controlling an hypothetic writing process.
      *
      * @return an instance of {@link GeoTiffWriteParams}.
      */

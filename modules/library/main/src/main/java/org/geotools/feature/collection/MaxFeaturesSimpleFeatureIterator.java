@@ -20,8 +20,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
- * SimpleFeatureIterator wrapper which can use a start and end bounds to cap the number of returned
- * features.
+ * SimpleFeatureIterator wrapper which can use a start and end bounds to cap the number of returned features.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

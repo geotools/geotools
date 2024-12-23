@@ -68,8 +68,7 @@ public class FilterExamples {
     /**
      * How to find Features using IDs?
      *
-     * <p>Each Feature has a FeatureID; you can use these FeatureIDs to request the feature again
-     * later.
+     * <p>Each Feature has a FeatureID; you can use these FeatureIDs to request the feature again later.
      *
      * <p>If you have a Set<String> of feature IDs, which you would like to query from a shapefile:
      *
@@ -102,10 +101,7 @@ public class FilterExamples {
 
     // grabSelectedName end
 
-    /**
-     * To select this feature while ignoring case we are going to have to use the FilterFactory
-     * (rather than CQL):
-     */
+    /** To select this feature while ignoring case we are going to have to use the FilterFactory (rather than CQL): */
     // grabSelectedNameIgnoreCase start
     SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -119,8 +115,8 @@ public class FilterExamples {
     /**
      * How to find Features using a Set of Names?
      *
-     * <p>If you have a Set<String> of "names" which you would like to query from PostGIS. In this
-     * case we are doing a check for an attribute called "Name".
+     * <p>If you have a Set<String> of "names" which you would like to query from PostGIS. In this case we are doing a
+     * check for an attribute called "Name".
      */
     // grabSelectedNames start
     SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exception {
@@ -143,15 +139,13 @@ public class FilterExamples {
      * <p>You can make a bounding box query as shown below:
      */
     // grabFeaturesInBoundingBox start
-    SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2)
-            throws Exception {
+    SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2) throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
 
         // usually "THE_GEOM" for shapefiles
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-        CoordinateReferenceSystem targetCRS =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
 
         ReferencedEnvelope bbox = new ReferencedEnvelope(x1, y1, x2, y2, targetCRS);
 
@@ -162,16 +156,14 @@ public class FilterExamples {
     // grabFeaturesInBoundingBox end
 
     // grabFeaturesInPolygon start
-    SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, double y2)
-            throws Exception {
+    SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, double y2) throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
         CoordinateReferenceSystem worldCRS = DefaultGeographicCRS.WGS84;
 
         // usually "THE_GEOM" for shapefiles
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-        CoordinateReferenceSystem targetCRS =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
 
         ReferencedEnvelope click = new ReferencedEnvelope(x1, y1, x2, y2, worldCRS);
 
@@ -197,8 +189,7 @@ public class FilterExamples {
 
         // usually "THE_GEOM" for shapefiles
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-        CoordinateReferenceSystem targetCRS =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         CoordinateReferenceSystem worldCRS = screen.getCoordinateReferenceSystem();
 
         // will result in a slight larger BBOX then the original click
@@ -228,8 +219,7 @@ public class FilterExamples {
         java.awt.Point screenPos = ev.getPoint();
 
         Rectangle screenRect = new Rectangle(screenPos.x - 1, screenPos.y - 1, 3, 3);
-        CoordinateReferenceSystem worldCRS =
-                mapFrame.getMapContent().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem worldCRS = mapFrame.getMapContent().getCoordinateReferenceSystem();
         // Transform the screen rectangle into a bounding box in the
         // coordinate reference system of our map content.
         AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();
@@ -262,12 +252,10 @@ public class FilterExamples {
 
         // get the unit of measurement
         SimpleFeatureType schema = featureSource.getSchema();
-        CoordinateReferenceSystem crs =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         Unit<?> uom = crs.getCoordinateSystem().getAxis(0).getUnit();
 
-        MathTransform transform =
-                CRS.findMathTransform(worldPosition.getCoordinateReferenceSystem(), crs, true);
+        MathTransform transform = CRS.findMathTransform(worldPosition.getCoordinateReferenceSystem(), crs, true);
 
         Position dataPosition = transform.transform(worldPosition, null);
 
@@ -277,8 +265,7 @@ public class FilterExamples {
         double distance = 10.0d;
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.dwithin(ff.property("POLYGON"), ff.literal(point), distance, uom.toString());
+        Filter filter = ff.dwithin(ff.property("POLYGON"), ff.literal(point), distance, uom.toString());
 
         return featureSource.getFeatures(filter);
     }
@@ -351,17 +338,15 @@ public class FilterExamples {
             System.out.println(factory.getClass().getName());
             List<FunctionName> functionNames = factory.getFunctionNames();
             ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
-            Collections.sort(
-                    sorted,
-                    new Comparator<FunctionName>() {
-                        public int compare(FunctionName o1, FunctionName o2) {
-                            if (o1 == null && o2 == null) return 0;
-                            if (o1 == null && o2 != null) return 1;
-                            if (o1 != null && o2 == null) return -1;
+            Collections.sort(sorted, new Comparator<FunctionName>() {
+                public int compare(FunctionName o1, FunctionName o2) {
+                    if (o1 == null && o2 == null) return 0;
+                    if (o1 == null && o2 != null) return 1;
+                    if (o1 != null && o2 == null) return -1;
 
-                            return o1.getName().compareTo(o2.getName());
-                        }
-                    });
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
             for (FunctionName functionName : sorted) {
                 System.out.print("    ");
                 System.out.print(functionName.getName());
@@ -418,24 +403,21 @@ public class FilterExamples {
         for (FunctionFactory factory : functionFactories) {
             String factoryName = factory.getClass().getSimpleName();
             System.out.println(codeBlock + factoryName + codeBlock);
-            System.out.println(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-                            .substring(0, factoryName.length() + 4));
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                    .substring(0, factoryName.length() + 4));
             System.out.println();
 
             List<FunctionName> functionNames = factory.getFunctionNames();
             ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
-            Collections.sort(
-                    sorted,
-                    new Comparator<FunctionName>() {
-                        public int compare(FunctionName o1, FunctionName o2) {
-                            if (o1 == null && o2 == null) return 0;
-                            if (o1 == null && o2 != null) return 1;
-                            if (o1 != null && o2 == null) return -1;
+            Collections.sort(sorted, new Comparator<FunctionName>() {
+                public int compare(FunctionName o1, FunctionName o2) {
+                    if (o1 == null && o2 == null) return 0;
+                    if (o1 == null && o2 != null) return 1;
+                    if (o1 != null && o2 == null) return -1;
 
-                            return o1.getName().compareTo(o2.getName());
-                        }
-                    });
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
 
             System.out.println("Contains " + sorted.size() + " functions.");
             System.out.println();

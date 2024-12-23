@@ -21,8 +21,8 @@ package org.geotools.referencing.factory;
 import org.geotools.api.referencing.FactoryException;
 
 /**
- * Thrown when a requested factory has not been found. This exception may be thrown by {@link
- * DeferredAuthorityFactory#createBackingStore}.
+ * Thrown when a requested factory has not been found. This exception may be thrown by
+ * {@link DeferredAuthorityFactory#createBackingStore}.
  *
  * @since 2.3
  * @version $Id$
@@ -38,8 +38,8 @@ public class FactoryNotFoundException extends FactoryException {
     /**
      * Construct an exception with the specified detail message.
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
      */
     public FactoryNotFoundException(String message) {
         super(message);
@@ -49,22 +49,21 @@ public class FactoryNotFoundException extends FactoryException {
      * Construct an exception with the specified cause. The detail message is copied from the cause
      * {@linkplain Exception#getLocalizedMessage localized message}.
      *
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public FactoryNotFoundException(Exception cause) {
         super(cause.getLocalizedMessage(), cause);
     }
 
     /**
-     * Construct an exception with the specified detail message and cause. The cause is the
-     * exception thrown in the underlying database (e.g. {@link java.io.IOException} or {@link
-     * java.sql.SQLException}).
+     * Construct an exception with the specified detail message and cause. The cause is the exception thrown in the
+     * underlying database (e.g. {@link java.io.IOException} or {@link java.sql.SQLException}).
      *
-     * @param message The detail message. The detail message is saved for later retrieval by the
-     *     {@link #getMessage()} method.
-     * @param cause The cause for this exception. The cause is saved for later retrieval by the
-     *     {@link #getCause()} method.
+     * @param message The detail message. The detail message is saved for later retrieval by the {@link #getMessage()}
+     *     method.
+     * @param cause The cause for this exception. The cause is saved for later retrieval by the {@link #getCause()}
+     *     method.
      */
     public FactoryNotFoundException(String message, Throwable cause) {
         super(message, cause);

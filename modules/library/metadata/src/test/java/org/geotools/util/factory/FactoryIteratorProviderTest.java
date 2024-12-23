@@ -25,8 +25,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link org.geotools.util.factory.FactoryIteratorProvider} addition in {@link
- * org.geotools.util.factory.FactoryIteratorProviders}.
+ * Tests {@link org.geotools.util.factory.FactoryIteratorProvider} addition in
+ * {@link org.geotools.util.factory.FactoryIteratorProviders}.
  *
  * @version $Id$
  * @author Martin Desruisseaux
@@ -45,11 +45,9 @@ public final class FactoryIteratorProviderTest {
      * Returns a factory from the specified registry.
      *
      * @throws org.geotools.util.factory.FactoryNotFoundException if no factory was found.
-     * @throws org.geotools.util.factory.FactoryRegistryException if a factory can't be returned for
-     *     some other reason.
+     * @throws org.geotools.util.factory.FactoryRegistryException if a factory can't be returned for some other reason.
      */
-    private static DummyFactory getFactory(
-            final FactoryRegistry registry, final Class<? extends DummyFactory> type)
+    private static DummyFactory getFactory(final FactoryRegistry registry, final Class<? extends DummyFactory> type)
             throws FactoryRegistryException {
         Hints hints = null;
         if (type != null) {
@@ -58,10 +56,7 @@ public final class FactoryIteratorProviderTest {
         return registry.getFactory(DummyFactory.class, null, hints, DummyFactory.DUMMY_FACTORY);
     }
 
-    /**
-     * Tests the registration of {@link DummyFactory} instances from {@link
-     * DummyFactoryIteratorProvider}.
-     */
+    /** Tests the registration of {@link DummyFactory} instances from {@link DummyFactoryIteratorProvider}. */
     @Test
     public void testRegistration() {
         /*

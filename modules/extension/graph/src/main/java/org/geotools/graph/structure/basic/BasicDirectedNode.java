@@ -47,8 +47,8 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /**
-     * Unsupported operation. Directed nodes classify edges as <B>in</B> and <B>out</B>. addIn(Edge)
-     * and addOut(Edge) should be used instead of this method.
+     * Unsupported operation. Directed nodes classify edges as <B>in</B> and <B>out</B>. addIn(Edge) and addOut(Edge)
+     * should be used instead of this method.
      *
      * @see DirectedNode#addIn(DirectedEdge)
      * @see DirectedNode#addOut(DirectedEdge)
@@ -59,9 +59,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /**
-     * Adds an edge to the <B>in</B> adjacency list of the node which is an underlying List
-     * implementation. No checking is done on the edge (duplication, looping...), it is simply added
-     * to the list. It is also assumed that the edge being added has the node as its out node.
+     * Adds an edge to the <B>in</B> adjacency list of the node which is an underlying List implementation. No checking
+     * is done on the edge (duplication, looping...), it is simply added to the list. It is also assumed that the edge
+     * being added has the node as its out node.
      *
      * @see DirectedNode#addIn(DirectedEdge)
      * @see DirectedEdge#getOutNode()
@@ -72,9 +72,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /**
-     * Adds an edge to the <B>ou</B> adjacency list of the node which is an underlying List
-     * implementation. No checking is done on the edge (duplication, looping...), it is simply added
-     * to the list. It is also assumed that the edge being added has the node as its in node.
+     * Adds an edge to the <B>ou</B> adjacency list of the node which is an underlying List implementation. No checking
+     * is done on the edge (duplication, looping...), it is simply added to the list. It is also assumed that the edge
+     * being added has the node as its in node.
      *
      * @see DirectedNode#addOut(DirectedEdge)
      * @see DirectedEdge#getInNode()
@@ -108,8 +108,8 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /**
-     * First searches for an in edge with an out node == this, and in node == other. If none is
-     * found an edge with out node == other, and in node == this is searched for.
+     * First searches for an in edge with an out node == this, and in node == other. If none is found an edge with out
+     * node == other, and in node == this is searched for.
      *
      * @see Node#remove(Edge)
      */
@@ -267,9 +267,8 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /**
-     * Overides the default deserialization operation. The edge adjacency lists of a
-     * BasicDirectedNode is not written out when the node is serialized so they must be recreated
-     * upon deserialization.
+     * Overides the default deserialization operation. The edge adjacency lists of a BasicDirectedNode is not written
+     * out when the node is serialized so they must be recreated upon deserialization.
      *
      * @param in Object input stream containing serialized object.
      */

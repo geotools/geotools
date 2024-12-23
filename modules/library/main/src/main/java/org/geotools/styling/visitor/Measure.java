@@ -32,8 +32,8 @@ import si.uom.SI;
 import systems.uom.common.USCustomary;
 
 /**
- * Helper class that parses a measure with eventual local unit of measure and helps the {@link
- * RescalingMode} enumeration to perfom its scaling job
+ * Helper class that parses a measure with eventual local unit of measure and helps the {@link RescalingMode}
+ * enumeration to perfom its scaling job
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -116,9 +116,7 @@ class Measure {
         Double measure = Converters.convert(unitless, Double.class);
         if (measure == null) {
             throw new IllegalArgumentException(
-                    "Invalid measure '"
-                            + value
-                            + "', was expecting a number, eventually followed by px, m or ft");
+                    "Invalid measure '" + value + "', was expecting a number, eventually followed by px, m or ft");
         }
         this.expression = ff.literal(value);
         this.value = measure;
@@ -132,14 +130,10 @@ class Measure {
 
     /** Returns true if the uom is pixel within a symbolizer whose default unit is also pixel */
     boolean isPixelInPixelDefault() {
-        return (uom == null || uom == defaultUnit)
-                && (defaultUnit == null || defaultUnit == Units.PIXEL);
+        return (uom == null || uom == defaultUnit) && (defaultUnit == null || defaultUnit == Units.PIXEL);
     }
 
-    /**
-     * @return true, if the uom is a real world unit within a symbolizer whose default unit is
-     *     pixel.
-     */
+    /** @return true, if the uom is a real world unit within a symbolizer whose default unit is pixel. */
     public boolean isRealWorldUnitInPixelDefault() {
         return isRealWorldUnit() && (defaultUnit == null || defaultUnit == Units.PIXEL);
     }

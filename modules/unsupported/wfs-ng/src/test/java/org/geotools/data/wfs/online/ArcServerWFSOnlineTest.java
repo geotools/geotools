@@ -137,8 +137,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
 
         // set up an un-encodable filter using property selection
         query.setPropertyNames(Arrays.asList("NBAFR"));
-        Filter functionFilter =
-                ff.greater(ff.function("abs", ff.property("OBJECTID")), ff.literal(50));
+        Filter functionFilter = ff.greater(ff.function("abs", ff.property("OBJECTID")), ff.literal(50));
         query.setFilter(ff.and(filter, functionFilter));
         features = source.getFeatures(query);
         SimpleFeatureType schema = features.getSchema();

@@ -23,28 +23,26 @@ import java.util.List;
  *
  * <p>This interface is bound to version 1.0 of the SLD specification.
  *
- * <p>For many of us in geotools this is the reason we came along for the ride - a pretty picture.
- * For documentation on the use of this class please consult the SLD 1.0 specification.
+ * <p>For many of us in geotools this is the reason we came along for the ride - a pretty picture. For documentation on
+ * the use of this class please consult the SLD 1.0 specification.
  *
- * <p>We may experiment with our own (or SLD 1.1) ideas but will mark such experiments for you. This
- * is only an issue of you are considering writing out these objects for interoptability with other
- * systems.
+ * <p>We may experiment with our own (or SLD 1.1) ideas but will mark such experiments for you. This is only an issue of
+ * you are considering writing out these objects for interoptability with other systems.
  *
  * <p>General stratagy for supporting multiple SLD versions (and experiments):
  *
  * <ul>
  *   <li>These interfaces will reflect the current published specification
  *   <li>Our implementations will be <b>BIGGER</b> and more capabile then any one specification
- *   <li>We cannot defined explicit interfaces tracking each version until we move to Java 5
- *       (perferably GeoAPI would hold these anyways)
- *   <li>We can provided javadocs indicating extentions, and isolate these using the normal java
- *       convention: TextSymbolizer and TextSymbolizer2 (In short you will have to go out of your
- *       way to work with a hack or experiment, you won't depend on one by accident)
- *   <li>We can use Factories (aka SLD1Factory and SLD1_1Factory and SEFactory) to support the
- *       creation of conformant datastructures. Code (such as user interfaces) can be parameratized
- *       with these factories when they need to confirm to an exact version supported by an
- *       individual service. We hope that specifications are always adative, and will be forced to
- *       throw unsupported exceptions when functionality is removed from a specification.
+ *   <li>We cannot defined explicit interfaces tracking each version until we move to Java 5 (perferably GeoAPI would
+ *       hold these anyways)
+ *   <li>We can provided javadocs indicating extentions, and isolate these using the normal java convention:
+ *       TextSymbolizer and TextSymbolizer2 (In short you will have to go out of your way to work with a hack or
+ *       experiment, you won't depend on one by accident)
+ *   <li>We can use Factories (aka SLD1Factory and SLD1_1Factory and SEFactory) to support the creation of conformant
+ *       datastructures. Code (such as user interfaces) can be parameratized with these factories when they need to
+ *       confirm to an exact version supported by an individual service. We hope that specifications are always adative,
+ *       and will be forced to throw unsupported exceptions when functionality is removed from a specification.
  * </ul>
  *
  * @author Ian Turton, CCG

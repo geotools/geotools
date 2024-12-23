@@ -20,8 +20,8 @@ package org.geotools.ysld.parse;
 import org.geotools.ysld.YamlObject;
 
 /**
- * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the
- * "entrypoint" for parsing a {@link YamlObject} into GeoTools-style objects.
+ * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the "entrypoint" for parsing a
+ * {@link YamlObject} into GeoTools-style objects.
  */
 public abstract class YamlParseHandler {
 

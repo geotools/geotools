@@ -313,9 +313,8 @@ public class EnvFunctionTest {
 
         int defaultValue = 42;
 
-        Object result =
-                ff.function("env", ff.literal("doesnotexist"), ff.literal(defaultValue))
-                        .evaluate(null);
+        Object result = ff.function("env", ff.literal("doesnotexist"), ff.literal(defaultValue))
+                .evaluate(null);
         int value = ((Number) result).intValue();
         assertEquals(defaultValue, value);
     }
@@ -327,7 +326,8 @@ public class EnvFunctionTest {
         int x = 21;
         Expression defaultExpr = ff.add(ff.literal(x), ff.literal(x));
 
-        Object result = ff.function("env", ff.literal("doesnotexist"), defaultExpr).evaluate(null);
+        Object result =
+                ff.function("env", ff.literal("doesnotexist"), defaultExpr).evaluate(null);
         int value = ((Number) result).intValue();
         assertEquals(x + x, value);
     }
@@ -371,9 +371,7 @@ public class EnvFunctionTest {
         // remove from global lookup table
         String expectedFallback = "does not exist";
         EnvFunction.removeGlobalValue("foo");
-        assertEvalStringEquals(
-                expectedFallback,
-                ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
     }
 
     @Test
@@ -385,15 +383,13 @@ public class EnvFunctionTest {
         // remove from local lookup table
         String expectedFallback = "does not exist";
         EnvFunction.removeLocalValue("foo");
-        assertEvalStringEquals(
-                expectedFallback,
-                ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
     }
 
     @Test
     public void testNonExistingKeyEvalIsNilWithoutDefault() {
-        boolean isNil =
-                ff.isNil(ff.function("env", ff.literal("not existig key")), null).evaluate(null);
+        boolean isNil = ff.isNil(ff.function("env", ff.literal("not existig key")), null)
+                .evaluate(null);
         assertTrue(isNil);
     }
 

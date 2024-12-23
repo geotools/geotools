@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * This one checks proper wrapping and some api methods. For a test of proper listing and updates
- * see the DataStoreCache test
+ * This one checks proper wrapping and some api methods. For a test of proper listing and updates see the DataStoreCache
+ * test
  *
  * @author Andrea Aime - OpenGeo
  */

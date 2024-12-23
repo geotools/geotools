@@ -73,9 +73,9 @@ public class Position1D extends AbstractPosition implements Serializable, Clonea
     }
 
     /**
-     * Returns the coordinate reference system in which the coordinate is given. May be {@code null}
-     * if this particular {@code DirectPosition} is included in a larger object with such a
-     * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}.
+     * Returns the coordinate reference system in which the coordinate is given. May be {@code null} if this particular
+     * {@code DirectPosition} is included in a larger object with such a reference to a
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}.
      *
      * @return The coordinate reference system, or {@code null}.
      */
@@ -106,8 +106,7 @@ public class Position1D extends AbstractPosition implements Serializable, Clonea
     }
 
     /**
-     * Returns a sequence of numbers that hold the coordinate of this position in its reference
-     * system.
+     * Returns a sequence of numbers that hold the coordinate of this position in its reference system.
      *
      * @return The coordinates.
      */
@@ -152,8 +151,8 @@ public class Position1D extends AbstractPosition implements Serializable, Clonea
 
     /**
      * Set this coordinate to the specified direct position. If the specified position contains a
-     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this
-     * position will be set to the CRS of the specified position.
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this position will be set to
+     * the CRS of the specified position.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.

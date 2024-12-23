@@ -30,13 +30,7 @@ public class TPKTile {
     public TileInfo tileInfo; // data length and offset for read
     public int bundleNum; // index into the zoom level bundles list
 
-    public TPKTile(
-            long zoomLevel,
-            long col,
-            long row,
-            String imageFormat,
-            TileInfo tileInfo,
-            int bundleNum) {
+    public TPKTile(long zoomLevel, long col, long row, String imageFormat, TileInfo tileInfo, int bundleNum) {
         this.zoomLevel = zoomLevel;
         this.col = col;
         this.row = row;
@@ -65,8 +59,8 @@ public class TPKTile {
     /**
      * Temporary utility object to keep tile location/length info
      *
-     * <p>Note that in a V1 cache only the tileDataOffset field is utilized as the length is stored
-     * at that location (32-bit int) and the actual tile data is at tileDataOffset+4
+     * <p>Note that in a V1 cache only the tileDataOffset field is utilized as the length is stored at that location
+     * (32-bit int) and the actual tile data is at tileDataOffset+4
      *
      * <p>In a V2 cache both fields are used and populated directly from the tile's index entry
      */

@@ -46,9 +46,7 @@ final class ReadHitsIterable implements Iterable<SimpleFeature> {
                 pos += skip;
                 int featureSize = data.readInt();
                 pos += 4;
-                SimpleFeature feature =
-                        FeatureConversions.deserialize(
-                                data, fb, headerMeta, hit.index, featureSize);
+                SimpleFeature feature = FeatureConversions.deserialize(data, fb, headerMeta, hit.index, featureSize);
                 pos += featureSize;
                 i++;
                 return feature;

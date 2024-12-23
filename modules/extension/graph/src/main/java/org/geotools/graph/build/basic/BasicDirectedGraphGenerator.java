@@ -17,8 +17,7 @@
 package org.geotools.graph.build.basic;
 
 /**
- * An implementation of GraphGenerator used to generate directed graphs. Graphs are generated as
- * follows:<br>
+ * An implementation of GraphGenerator used to generate directed graphs. Graphs are generated as follows:<br>
  *
  * <UL>
  *   <LI>Objects added to the generator are 2 element object arrays.

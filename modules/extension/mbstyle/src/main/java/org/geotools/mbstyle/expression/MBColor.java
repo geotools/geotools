@@ -30,9 +30,9 @@ public class MBColor extends MBExpression {
     }
 
     /**
-     * Creates a color value from red, green, and blue components, which must range between 0 and
-     * 255, and an alpha component of 1. If any component is out of range, the expression is an
-     * error. Example: ["rgb", number, number, number]: color
+     * Creates a color value from red, green, and blue components, which must range between 0 and 255, and an alpha
+     * component of 1. If any component is out of range, the expression is an error. Example: ["rgb", number, number,
+     * number]: color
      *
      * @return Color expression
      */
@@ -58,9 +58,9 @@ public class MBColor extends MBExpression {
     }
 
     /**
-     * Creates a color value from red, green, blue components, which must range between 0 and 255,
-     * and an alpha component which must range between 0 and 1. If any component is out of range,
-     * the expression is an error. Example: ["rgba", number, number, number, number]: color
+     * Creates a color value from red, green, blue components, which must range between 0 and 255, and an alpha
+     * component which must range between 0 and 1. If any component is out of range, the expression is an error.
+     * Example: ["rgba", number, number, number, number]: color
      *
      * @return Color expression
      */
@@ -70,8 +70,8 @@ public class MBColor extends MBExpression {
     }
 
     /**
-     * Returns a four-element array containing the input color's red, green, blue, and alpha
-     * components, in that order. Example: ["to-rgba", color]: array&lt;number, 4&gt;
+     * Returns a four-element array containing the input color's red, green, blue, and alpha components, in that order.
+     * Example: ["to-rgba", color]: array&lt;number, 4&gt;
      *
      * @return color expression
      */

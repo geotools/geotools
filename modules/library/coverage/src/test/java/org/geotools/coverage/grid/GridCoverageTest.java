@@ -62,8 +62,7 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         final GridCoverage2D coverage = getRandomCoverage(crs);
         assertRasterEquals(coverage, coverage); // Actually a test of assertEqualRasters(...).
         assertSame(
-                coverage.getRenderedImage(),
-                coverage.getRenderableImage(0, 1).createDefaultRendering());
+                coverage.getRenderedImage(), coverage.getRenderableImage(0, 1).createDefaultRendering());
     }
 
     /**
@@ -113,8 +112,7 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         // select much larger geographical area for same screen size
         requestedEnvelopeZoomOut.setEnvelope(
                 -517.2704081632651, -353.2270408163266, 697.7295918367349, 350.3571428571428);
-        reader.setReadParams(
-                "geotools_coverage", null, readP, requestedEnvelopeZoomOut, requestedDim);
+        reader.setReadParams("geotools_coverage", null, readP, requestedEnvelopeZoomOut, requestedDim);
         assertNotNull(readP);
         // above 1 means do sub-sampling
         assertTrue(readP.getSourceXSubsampling() > 1);

@@ -33,8 +33,7 @@ import org.junit.Test;
 
 public class DataStoreFinderTest {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataStoreFinderTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataStoreFinderTest.class);
 
     /** Should find at least the {@link org.geotools.data.DataAccessFinderTest} mock store */
     @Test
@@ -69,8 +68,7 @@ public class DataStoreFinderTest {
     }
 
     /**
-     * Test that synchronization between calling DataStoreFinder and DataAccessFinder does not
-     * result in a deadlock.
+     * Test that synchronization between calling DataStoreFinder and DataAccessFinder does not result in a deadlock.
      *
      * @throws Exception unhandled exceptions during test run
      */
@@ -79,24 +77,22 @@ public class DataStoreFinderTest {
         SlowFactory slowFactory = new SlowFactory();
 
         CountDownLatch latch = new CountDownLatch(2);
-        Runnable t1 =
-                () -> {
-                    try {
-                        DataAccessFinder.getDataStore(new HashMap<>());
-                        latch.countDown();
-                    } catch (IOException e) {
-                        LOGGER.log(Level.WARNING, "Error calling DataAccessFinder.getDataStore", e);
-                    }
-                };
-        Runnable t2 =
-                () -> {
-                    try {
-                        DataStoreFinder.getDataStore(new HashMap<>());
-                        latch.countDown();
-                    } catch (IOException e) {
-                        LOGGER.log(Level.WARNING, "Error calling DataStoreFinder.getDataStore", e);
-                    }
-                };
+        Runnable t1 = () -> {
+            try {
+                DataAccessFinder.getDataStore(new HashMap<>());
+                latch.countDown();
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error calling DataAccessFinder.getDataStore", e);
+            }
+        };
+        Runnable t2 = () -> {
+            try {
+                DataStoreFinder.getDataStore(new HashMap<>());
+                latch.countDown();
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error calling DataStoreFinder.getDataStore", e);
+            }
+        };
         ExecutorService es = Executors.newFixedThreadPool(3);
         try {
             DataAccessFinder.registerFactory(slowFactory);
@@ -180,9 +176,7 @@ public class DataStoreFinderTest {
         @Override
         public boolean isAvailable() {
             LOGGER.log(
-                    Level.FINEST,
-                    "call isAvailable " + Thread.currentThread().getId(),
-                    new Exception());
+                    Level.FINEST, "call isAvailable " + Thread.currentThread().getId(), new Exception());
             try {
                 isAvailableNotifier.offer(false, 10, TimeUnit.SECONDS);
                 isAvailableGate.poll(10, TimeUnit.SECONDS);

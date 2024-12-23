@@ -31,8 +31,7 @@ import java.util.TreeMap;
 /**
  * List of elements sorted by a key which is not the element itself.
  *
- * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's
- * reponsability.
+ * <p>This class is <strong>not</strong> thread-safe. Synchronizations (if wanted) are user's reponsability.
  *
  * @param <K> The type of keys in the sorted list, to be used for sorting.
  * @param <V> The type of elements in the list.
@@ -41,8 +40,7 @@ import java.util.TreeMap;
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */
-public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentialList<V>
-        implements Serializable {
+public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentialList<V> implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6969483179756527012L;
 
@@ -76,9 +74,9 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Inserts the specified element at a position determined by the specified key. If some elements
-     * were already inserted for the specified key, then this method do not replaces the old value
-     * (like what a {@link Map} would do), but instead add the new element with the same key.
+     * Inserts the specified element at a position determined by the specified key. If some elements were already
+     * inserted for the specified key, then this method do not replaces the old value (like what a {@link Map} would
+     * do), but instead add the new element with the same key.
      *
      * @param key Key to be used to find the right location.
      * @param element Object to be inserted.
@@ -93,8 +91,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Removes all values that were {@linkplain #add(Comparable,Object) added} with the specified
-     * key.
+     * Removes all values that were {@linkplain #add(Comparable,Object) added} with the specified key.
      *
      * @param key The key of values to remove.
      * @return The number of elements removed.
@@ -105,8 +102,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns the number of elements {@linkplain #add(Comparable,Object) added} with the specified
-     * key.
+     * Returns the number of elements {@linkplain #add(Comparable,Object) added} with the specified key.
      *
      * @param key The key of elements to count.
      * @return The number of elements inserted with the given key.
@@ -117,8 +113,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns {@code true} if the list contains an element {@linkplain #add(Comparable,Object)
-     * added} with the specified key. This is equivalent to testing <code>
+     * Returns {@code true} if the list contains an element {@linkplain #add(Comparable,Object) added} with the
+     * specified key. This is equivalent to testing <code>
      * {@linkplain #count count}(key) != 0</code>.
      */
     public boolean containsKey(final K key) {
@@ -156,8 +152,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns a list iterator of the elements in this list (in proper sequence), starting at the
-     * elements {@linkplain #add(Comparable,Object) added} with the specified key.
+     * Returns a list iterator of the elements in this list (in proper sequence), starting at the elements
+     * {@linkplain #add(Comparable,Object) added} with the specified key.
      *
      * @param fromKey The key of the first element to returns.
      * @return A list iterator of the elements in this list (in proper sequence).
@@ -168,9 +164,9 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns a list iterator of the elements in this list (in proper sequence), starting at the
-     * specified position. The specified index indicates the first element that would be returned by
-     * an initial call to the {@link ListIterator#next next()} method.
+     * Returns a list iterator of the elements in this list (in proper sequence), starting at the specified position.
+     * The specified index indicates the first element that would be returned by an initial call to the
+     * {@link ListIterator#next next()} method.
      *
      * @param index Index of first element to be returned from the list iterator.
      * @return A list iterator of the elements in this list (in proper sequence).
@@ -241,8 +237,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
         }
 
         /**
-         * Returns {@code true} if this list iterator has more elements when traversing the list in
-         * the forward direction.
+         * Returns {@code true} if this list iterator has more elements when traversing the list in the forward
+         * direction.
          */
         @Override
         public boolean hasNext() {
@@ -270,8 +266,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
         }
 
         /**
-         * Returns {@code true} if this list iterator has more elements when traversing the list in
-         * the reverse direction.
+         * Returns {@code true} if this list iterator has more elements when traversing the list in the reverse
+         * direction.
          */
         @Override
         public boolean hasPrevious() {
@@ -305,45 +301,33 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
             return valuesIter.previous();
         }
 
-        /**
-         * Returns the index of the element that would be returned by a subsequent call to {@link
-         * #next}.
-         */
+        /** Returns the index of the element that would be returned by a subsequent call to {@link #next}. */
         @Override
         public int nextIndex() {
             return base + valuesIter.nextIndex();
         }
 
-        /**
-         * Returns the index of the element that would be returned by a subsequent call to {@link
-         * #previous}.
-         */
+        /** Returns the index of the element that would be returned by a subsequent call to {@link #previous}. */
         @Override
         public int previousIndex() {
             return base + valuesIter.previousIndex();
         }
 
-        /**
-         * Removes from the list the last element that was returned by {@link #next} or {@link
-         * #previous}
-         */
+        /** Removes from the list the last element that was returned by {@link #next} or {@link #previous} */
         @Override
         public void remove() {
             valuesIter.remove();
         }
 
-        /**
-         * Replaces the last element returned by {@link #next} or {@link #previous} with the
-         * specified element.
-         */
+        /** Replaces the last element returned by {@link #next} or {@link #previous} with the specified element. */
         @Override
         public void set(final V o) {
             valuesIter.set(o);
         }
 
         /**
-         * Inserts the specified element into the list. The element will have the same key than the
-         * one from the previous call to {@link #next} or {@link #previous}.
+         * Inserts the specified element into the list. The element will have the same key than the one from the
+         * previous call to {@link #next} or {@link #previous}.
          */
         @Override
         public void add(final V o) {
@@ -351,8 +335,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
         }
 
         /**
-         * Compares two iterators for equality, assuming that they are iterator for the same {@link
-         * KeySortedList} (this is not verified). This method is used for assertions only.
+         * Compares two iterators for equality, assuming that they are iterator for the same {@link KeySortedList} (this
+         * is not verified). This method is used for assertions only.
          */
         private boolean equals(final Iter that) {
             return this.key == that.key
@@ -363,9 +347,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns a view of the portion of this list whose keys are strictly less than {@code toKey}.
-     * The returned list is backed by this list, so changes in the returned list are reflected in
-     * this list, and vice-versa.
+     * Returns a view of the portion of this list whose keys are strictly less than {@code toKey}. The returned list is
+     * backed by this list, so changes in the returned list are reflected in this list, and vice-versa.
      *
      * @param toKey high endpoint (exclusive) of the sub list.
      * @return A view of the specified initial range of this list.
@@ -375,9 +358,8 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /**
-     * Returns a view of the portion of this list whose keys are greater than or equal to {@code
-     * fromKey}. The returned list is backed by this list, so changes in the returned list are
-     * reflected in this list, and vice-versa.
+     * Returns a view of the portion of this list whose keys are greater than or equal to {@code fromKey}. The returned
+     * list is backed by this list, so changes in the returned list are reflected in this list, and vice-versa.
      *
      * @param fromKey low endpoint (inclusive) of the sub list.
      * @return A view of the specified final range of this list.

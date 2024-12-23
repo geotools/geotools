@@ -50,8 +50,8 @@ import org.locationtech.jts.io.WKTWriter;
 class FootprintUtils {
 
     /**
-     * A set of properties to be ignored when parsing the properties file. It is used to get only
-     * the FootprintManagement property, avoiding by this way to load and compute useless elements.
+     * A set of properties to be ignored when parsing the properties file. It is used to get only the
+     * FootprintManagement property, avoiding by this way to load and compute useless elements.
      */
     static final Set<String> IGNORE_PROPS = new HashSet<>();
 
@@ -73,12 +73,10 @@ class FootprintUtils {
 
     private FootprintUtils() {}
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FootprintUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FootprintUtils.class);
 
     /**
-     * Given a footprint summary file (.fpt), populate the provided footprints <ID-Geometry> pairs
-     * Map
+     * Given a footprint summary file (.fpt), populate the provided footprints <ID-Geometry> pairs Map
      *
      * @param footprintSummaryFile the footprint summary file.
      * @param footprintsIDGeometryMap the Map to be populated
@@ -88,8 +86,7 @@ class FootprintUtils {
         Utilities.ensureNonNull("footprintSummaryFile", footprintSummaryFile);
         if (!footprintSummaryFile.exists() || !footprintSummaryFile.canRead()) {
             throw new IllegalArgumentException(
-                    "Unable to access to the provided footprint file "
-                            + footprintSummaryFile.getAbsolutePath());
+                    "Unable to access to the provided footprint file " + footprintSummaryFile.getAbsolutePath());
         }
         Utilities.ensureNonNull("footprintsID_GeometryMap", footprintsIDGeometryMap);
 
@@ -119,14 +116,12 @@ class FootprintUtils {
      * @param footprintsMap the map containing <.ID,Geometry> pairs
      * @return the related {@link Geometry} if found, or null otherwise.
      */
-    static Geometry lookupFootprintGeometry(
-            final String featureID, final Map<String, Geometry> footprintsMap) {
+    static Geometry lookupFootprintGeometry(final String featureID, final Map<String, Geometry> footprintsMap) {
         Utilities.ensureNonNull("featureID", featureID);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
 
         if (footprintsMap != null && !footprintsMap.isEmpty()) {
-            final String id =
-                    featureID.substring(featureID.lastIndexOf(".") + 1, featureID.length());
+            final String id = featureID.substring(featureID.lastIndexOf(".") + 1, featureID.length());
             return footprintsMap.containsKey(id) ? footprintsMap.get(id) : null;
         }
         return null;
@@ -134,8 +129,7 @@ class FootprintUtils {
 
     /** Init the provided footprint map containing <String(location), Geometry(footprint)> pairs. */
     static void initFootprintsLocationGeometryMap(
-            final ShapefileDataStore footprintStore, final Map<String, Geometry> footprintsMap)
-            throws IOException {
+            final ShapefileDataStore footprintStore, final Map<String, Geometry> footprintsMap) throws IOException {
         Utilities.ensureNonNull("footprintStore", footprintStore);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
 
@@ -145,10 +139,8 @@ class FootprintUtils {
                     "Problems when opening the footprint, no typenames for the schema are defined");
 
         final String typeName = typeNames[0];
-        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource =
-                footprintStore.getFeatureSource(typeName);
-        final FeatureCollection<SimpleFeatureType, SimpleFeature> features =
-                featureSource.getFeatures();
+        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = footprintStore.getFeatureSource(typeName);
+        final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
         if (features == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No features found in the footprint");
@@ -175,8 +167,8 @@ class FootprintUtils {
     }
 
     /**
-     * Build a "ID=Geometry" pair for the provided feature ID, by looking for a geometry in the
-     * provided footprintsMap for the specified locationKey
+     * Build a "ID=Geometry" pair for the provided feature ID, by looking for a geometry in the provided footprintsMap
+     * for the specified locationKey
      */
     private static String buildIDGeometryPair(
             final Map<String, Geometry> footprintGeometryMap,
@@ -203,15 +195,13 @@ class FootprintUtils {
     }
 
     /**
-     * Write a footprint summary file (".fpt") given an input <String,Geometry> map containing
-     * granule location and related geometry, and the index shapefile store to associate footprints
-     * to granules.
+     * Write a footprint summary file (".fpt") given an input <String,Geometry> map containing granule location and
+     * related geometry, and the index shapefile store to associate footprints to granules.
      *
      * @param footprintSummaryFile the output footprint summary file
-     * @param footprintsLocationGeometryMap the map containing <granuleLocation,footprintGeometry>
-     *     pairs
-     * @throws MalformedURLException In case the url we create internally for the mosaic index is
-     *     wrong (should never happen)
+     * @param footprintsLocationGeometryMap the map containing <granuleLocation,footprintGeometry> pairs
+     * @throws MalformedURLException In case the url we create internally for the mosaic index is wrong (should never
+     *     happen)
      */
     static void writeFootprintSummary(
             final File footprintSummaryFile,
@@ -234,10 +224,8 @@ class FootprintUtils {
             }
             final String typeName = typeNames[0];
 
-            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource =
-                    store.getFeatureSource(typeName);
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> features =
-                    featureSource.getFeatures();
+            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store.getFeatureSource(typeName);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
 
             if (features == null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -266,12 +254,8 @@ class FootprintUtils {
 
                             // Build a featureID=Geometry pair and write it in
                             // the Footprint summary file
-                            final String idGeometryPair =
-                                    FootprintUtils.buildIDGeometryPair(
-                                            footprintsLocationGeometryMap,
-                                            feature.getID(),
-                                            locationKey,
-                                            geometryWriter);
+                            final String idGeometryPair = FootprintUtils.buildIDGeometryPair(
+                                    footprintsLocationGeometryMap, feature.getID(), locationKey, geometryWriter);
                             writer.write(idGeometryPair);
                         }
                     }
@@ -281,14 +265,12 @@ class FootprintUtils {
             }
         } catch (Throwable e) {
             // ignore exception
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
         } finally {
             try {
                 store.dispose();
             } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
             }
         }
     }

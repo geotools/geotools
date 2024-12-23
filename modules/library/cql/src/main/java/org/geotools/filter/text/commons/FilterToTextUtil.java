@@ -40,11 +40,10 @@ import org.geotools.api.filter.temporal.During;
 import org.geotools.api.geometry.BoundingBox;
 
 /**
- * The method of this utility class allows to build the CQL/ECQL predicate associated to a {@link
- * Filter}.
+ * The method of this utility class allows to build the CQL/ECQL predicate associated to a {@link Filter}.
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos
  */
@@ -78,10 +77,7 @@ public final class FilterToTextUtil {
 
     /** builds: left predicate AND right predicate */
     public static Object buildBinaryLogicalOperator(
-            final String operator,
-            FilterVisitor visitor,
-            BinaryLogicOperator filter,
-            Object extraData) {
+            final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
 
         LOGGER.finer("exporting binary logic filter");
 
@@ -130,14 +126,13 @@ public final class FilterToTextUtil {
     }
 
     /**
-     * Builds a comparison predicate inserting the operato1 or operator2 taking into account the
-     * PropertyName position in the comparison filter.
+     * Builds a comparison predicate inserting the operato1 or operator2 taking into account the PropertyName position
+     * in the comparison filter.
      *
      * @param operator an operator
      * @return SringBuffer
      */
-    public static Object buildComparison(
-            BinaryComparisonOperator filter, Object extraData, String operator) {
+    public static Object buildComparison(BinaryComparisonOperator filter, Object extraData, String operator) {
 
         StringBuilder output = asStringBuilder(extraData);
 
@@ -208,10 +203,7 @@ public final class FilterToTextUtil {
     }
 
     public static Object buildDistanceBufferOperation(
-            String geoOperation,
-            DistanceBufferOperator filter,
-            Object extraData,
-            ExpressionToText visitor) {
+            String geoOperation, DistanceBufferOperator filter, Object extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + geoOperation);
         StringBuilder output = asStringBuilder(extraData);
 
@@ -262,10 +254,7 @@ public final class FilterToTextUtil {
     }
 
     public static Object buildBinarySpatialOperator(
-            String spatialOperator,
-            BinarySpatialOperator filter,
-            Object extraData,
-            ExpressionToText visitor) {
+            String spatialOperator, BinarySpatialOperator filter, Object extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + spatialOperator);
         StringBuilder output = asStringBuilder(extraData);
 

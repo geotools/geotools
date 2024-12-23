@@ -35,30 +35,22 @@ public class AppSchemaValidatorTest {
         AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence.xml", null);
     }
 
-    /**
-     * Test that validation fails with an expected error message for a known-invalid XML instance
-     * document.
-     */
+    /** Test that validation fails with an expected error message for a known-invalid XML instance document. */
     @Test
     public void validateErMineralOccurrenceWithErrors() {
         try {
-            AppSchemaValidator.validateResource(
-                    "/test-data/er_MineralOccurrence_with_errors.xml", null);
-            Assert.fail(
-                    "Unexpected schema validation success for known-invalid XML instance document");
+            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml", null);
+            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage()
-                            .startsWith(
-                                    "Schema validation failures: 2"
-                                            + System.getProperty("line.separator")));
+                    e.getMessage().startsWith("Schema validation failures: 2" + System.getProperty("line.separator")));
         }
     }
 
     /**
-     * Test that validation succeeds for a WFS 2.0 / GML 3.2 example from an annex of a draft of the
-     * WFS 2.0 specification.
+     * Test that validation succeeds for a WFS 2.0 / GML 3.2 example from an annex of a draft of the WFS 2.0
+     * specification.
      */
     @Test
     public void validateWfs20Example01() throws IOException {
@@ -72,28 +64,19 @@ public class AppSchemaValidatorTest {
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?>"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"? >"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?><root/>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         Assert.assertEquals(
                 "UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
         Assert.assertEquals(
-                "UTF-8", AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
+                "UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
     }
 
     /**
-     * Test support for testing {@link AppSchemaValidator#validate(String)}. This method converts
-     * reads a classpath resource into a string (using the default platform encoding) before
-     * applying string schema validation.
+     * Test support for testing {@link AppSchemaValidator#validate(String)}. This method converts reads a classpath
+     * resource into a string (using the default platform encoding) before applying string schema validation.
      */
     public static void validateResourceAsString(String name) {
         try (InputStream input = AppSchemaValidatorTest.class.getResourceAsStream(name)) {
@@ -108,8 +91,8 @@ public class AppSchemaValidatorTest {
     }
 
     /**
-     * Test that validation succeeds for a known-valid XML instance document. This version converts
-     * the resource to a string and back before validation.
+     * Test that validation succeeds for a known-valid XML instance document. This version converts the resource to a
+     * string and back before validation.
      */
     @Test
     public void validateErMineralOccurrenceAsString() {
@@ -117,29 +100,24 @@ public class AppSchemaValidatorTest {
     }
 
     /**
-     * Test that validation fails with an expected error message for a known-invalid XML instance
-     * document. This version converts the resource to a string and back before validation.
+     * Test that validation fails with an expected error message for a known-invalid XML instance document. This version
+     * converts the resource to a string and back before validation.
      */
     @Test
     public void validateErMineralOccurrenceWithErrorsAsString() {
         try {
             validateResourceAsString("/test-data/er_MineralOccurrence_with_errors.xml");
-            Assert.fail(
-                    "Unexpected schema validation success for known-invalid XML instance document");
+            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage()
-                            .startsWith(
-                                    "Schema validation failures: 2"
-                                            + System.getProperty("line.separator")));
+                    e.getMessage().startsWith("Schema validation failures: 2" + System.getProperty("line.separator")));
         }
     }
 
     /**
-     * Test that validation succeeds for a WFS 2.0 / GML 3.2 example from an annex of a draft of the
-     * WFS 2.0 specification. This version converts the resource to a string and back before
-     * validation.
+     * Test that validation succeeds for a WFS 2.0 / GML 3.2 example from an annex of a draft of the WFS 2.0
+     * specification. This version converts the resource to a string and back before validation.
      */
     @Test
     public void validateWfs20Example01AsString() {

@@ -36,11 +36,7 @@ public class DefaultDimensionDescriptor implements DimensionDescriptor {
     private String endAttribute;
 
     public DefaultDimensionDescriptor(
-            String name,
-            String units,
-            String unitSymbol,
-            String startAttribute,
-            String endAttribute) {
+            String name, String units, String unitSymbol, String startAttribute, String endAttribute) {
         super();
         this.name = name;
         this.unitSymbol = unitSymbol;

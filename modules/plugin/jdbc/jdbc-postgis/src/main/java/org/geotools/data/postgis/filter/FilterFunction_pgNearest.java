@@ -33,13 +33,12 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class FilterFunction_pgNearest extends FunctionExpressionImpl implements VolatileFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "pgNearest",
-                    Boolean.class,
-                    // required parameters:
-                    FunctionNameImpl.parameter("geometry", Geometry.class),
-                    FunctionNameImpl.parameter("num_features", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "pgNearest",
+            Boolean.class,
+            // required parameters:
+            FunctionNameImpl.parameter("geometry", Geometry.class),
+            FunctionNameImpl.parameter("num_features", Integer.class));
 
     public FilterFunction_pgNearest() {
         super(NAME);

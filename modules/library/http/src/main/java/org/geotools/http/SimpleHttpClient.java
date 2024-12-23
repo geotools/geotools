@@ -35,8 +35,7 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
- * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each
- * request.
+ * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each request.
  *
  * @author groldan
  */
@@ -50,10 +49,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
     private static final int MAX_FOLLOW_REDIRECT =
             Integer.getInteger("org.geotools.http.simpleHttpClient.maxFollowRedirect", 16);
 
-    /**
-     * A SimpleHttpClient should be initiated by a call to
-     * HTTPFactoryFinder.getHttpClientFactory().getClient();
-     */
+    /** A SimpleHttpClient should be initiated by a call to HTTPFactoryFinder.getHttpClientFactory().getClient(); */
     public SimpleHttpClient() {
         this.connectTimeout = DEFAULT_TIMEOUT;
         this.readTimeout = DEFAULT_TIMEOUT;
@@ -90,10 +86,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
     /** @see org.geotools.http.HTTPClient#post(URL, InputStream, String) */
     @Override
     public HTTPResponse post(
-            final URL url,
-            final InputStream postContent,
-            final String postContentType,
-            Map<String, String> headers)
+            final URL url, final InputStream postContent, final String postContentType, Map<String, String> headers)
             throws IOException {
 
         if (headers == null) {
@@ -124,8 +117,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         return new DefaultHttpResponse(connection);
     }
 
-    private URLConnection get(URL url, Map<String, String> headers, int redirectionCount)
-            throws IOException {
+    private URLConnection get(URL url, Map<String, String> headers, int redirectionCount) throws IOException {
 
         URLConnection connection = openConnection(url, headers);
         if (connection instanceof HttpURLConnection) {
@@ -143,8 +135,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         return connection;
     }
 
-    private URLConnection openConnection(URL finalURL, Map<String, String> headers)
-            throws IOException {
+    private URLConnection openConnection(URL finalURL, Map<String, String> headers) throws IOException {
         Map<String, String> extraParams = getExtraParams();
         if (!extraParams.isEmpty()) {
             finalURL = appendURL(finalURL, extraParams);
@@ -175,8 +166,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
             String encodedAuthorization =
-                    Base64.encodeBytes(
-                            userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
+                    Base64.encodeBytes(userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
             headers.put("Authorization", "Basic " + encodedAuthorization);
         }
 
@@ -186,11 +176,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(
-                        Level.FINE,
-                        "Setting header "
-                                + headerNameValue.getKey()
-                                + " = "
-                                + headerNameValue.getValue());
+                        Level.FINE, "Setting header " + headerNameValue.getKey() + " = " + headerNameValue.getValue());
             }
             connection.setRequestProperty(headerNameValue.getKey(), headerNameValue.getValue());
         }
@@ -204,8 +190,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
     }
 
     private URLConnection followRedirect(
-            HttpURLConnection connection, Map<String, String> headers, int redirectionCount)
-            throws IOException {
+            HttpURLConnection connection, Map<String, String> headers, int redirectionCount) throws IOException {
         String redirect = connection.getHeaderField("Location");
         if (redirect == null) {
             LOGGER.warning("Tried to follow redirect but no url was provided in Location header");
@@ -216,15 +201,11 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
                 LOGGER.fine("Following redirect to " + redirect);
                 return this.get(redirectURL, headers, redirectionCount);
             } catch (URISyntaxException | MalformedURLException uri) {
-                LOGGER.warning(
-                        "Tried to follow redirect but invalid url was provided in Location header: "
-                                + redirect);
+                LOGGER.warning("Tried to follow redirect but invalid url was provided in Location header: " + redirect);
             }
         } else {
             LOGGER.warning(
-                    "Max number of follow redirect attempts ("
-                            + MAX_FOLLOW_REDIRECT
-                            + ") reached. Returning null");
+                    "Max number of follow redirect attempts (" + MAX_FOLLOW_REDIRECT + ") reached. Returning null");
         }
         return null;
     }

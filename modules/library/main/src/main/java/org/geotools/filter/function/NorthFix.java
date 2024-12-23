@@ -55,9 +55,9 @@ import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.geom.Point;
 
 /**
- * Function that allows correcting a heading angle based on the north direction in the point and CRS
- * provided. Useful to perform mapping with vectors (wind, currents) on CRSs that do not typically
- * have the north up (e.g. Polar Stereographic).
+ * Function that allows correcting a heading angle based on the north direction in the point and CRS provided. Useful to
+ * perform mapping with vectors (wind, currents) on CRSs that do not typically have the north up (e.g. Polar
+ * Stereographic).
  */
 public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunction {
 
@@ -65,52 +65,45 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
 
     public static final String FUNCTION_NAME = "northFix";
 
-    public static final org.geotools.api.parameter.Parameter<Double> RESULT =
-            parameter(
-                    "angle",
-                    Double.class,
-                    "North fix",
-                    "Returns the fixed angle, given the current CRS and position (in case the angle is missing, the result is the offset that needs to be added to the angle.");
+    public static final org.geotools.api.parameter.Parameter<Double> RESULT = parameter(
+            "angle",
+            Double.class,
+            "North fix",
+            "Returns the fixed angle, given the current CRS and position (in case the angle is missing, the result is the offset that needs to be added to the angle.");
 
-    public static final org.geotools.api.parameter.Parameter<CoordinateReferenceSystem> TARGET_CRS =
-            parameter(
-                    "targetCRS",
-                    CoordinateReferenceSystem.class,
-                    "Target coordinate reference system",
-                    "The target coordinate reference system used to paint the map");
+    public static final org.geotools.api.parameter.Parameter<CoordinateReferenceSystem> TARGET_CRS = parameter(
+            "targetCRS",
+            CoordinateReferenceSystem.class,
+            "Target coordinate reference system",
+            "The target coordinate reference system used to paint the map");
 
     public static final org.geotools.api.parameter.Parameter<Point> POINT =
-            parameter(
-                    "point", Point.class, "point", "The point at which to perform the calculation");
-    public static final Parameter<Double> ANGLE =
-            new Parameter<>(
-                    "angle",
-                    Double.class,
-                    new SimpleInternationalString("angle"),
-                    new SimpleInternationalString(
-                            "The angle to be fixed (optional, defaults to 0)"),
-                    false,
-                    0,
-                    1,
-                    null,
-                    null);
+            parameter("point", Point.class, "point", "The point at which to perform the calculation");
+    public static final Parameter<Double> ANGLE = new Parameter<>(
+            "angle",
+            Double.class,
+            new SimpleInternationalString("angle"),
+            new SimpleInternationalString("The angle to be fixed (optional, defaults to 0)"),
+            false,
+            0,
+            1,
+            null,
+            null);
 
-    public static final org.geotools.api.parameter.Parameter<CoordinateReferenceSystem> SOURCE_CRS =
-            new Parameter<>(
-                    "sourceCRS",
-                    CoordinateReferenceSystem.class,
-                    new SimpleInternationalString("Source Coordinate Reference System"),
-                    new SimpleInternationalString(
-                            "The CRS of the provided point. Optional, the function will look up the CRS of the point, and if the source is a simple feature, use its CRS instead. If none of the above is available, then the target and source CRS are assumed to be the same"),
-                    false,
-                    0,
-                    1,
-                    null,
-                    null);
+    public static final org.geotools.api.parameter.Parameter<CoordinateReferenceSystem> SOURCE_CRS = new Parameter<>(
+            "sourceCRS",
+            CoordinateReferenceSystem.class,
+            new SimpleInternationalString("Source Coordinate Reference System"),
+            new SimpleInternationalString(
+                    "The CRS of the provided point. Optional, the function will look up the CRS of the point, and if the source is a simple feature, use its CRS instead. If none of the above is available, then the target and source CRS are assumed to be the same"),
+            false,
+            0,
+            1,
+            null,
+            null);
     public static final int FULL_CIRCLE = 360;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(FUNCTION_NAME, RESULT, TARGET_CRS, POINT, ANGLE, SOURCE_CRS);
+    public static FunctionName NAME = new FunctionNameImpl(FUNCTION_NAME, RESULT, TARGET_CRS, POINT, ANGLE, SOURCE_CRS);
 
     public NorthFix() {
         super(NAME);
@@ -119,8 +112,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
     @Override
     public Object evaluate(Object feature) {
         // hopefully the input is already a CRS
-        CoordinateReferenceSystem targetCRS =
-                getExpression(0).evaluate(feature, CoordinateReferenceSystem.class);
+        CoordinateReferenceSystem targetCRS = getExpression(0).evaluate(feature, CoordinateReferenceSystem.class);
         // check if any fix is required, otherwise return the angle as is
         double angle = 0d;
         if (getParameters().size() >= 3) {
@@ -147,8 +139,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
                 y = pt[1];
             }
             // go to WGS84, safe way to compute a second point north of the original one
-            MathTransform step2 =
-                    CRS.findMathTransform(targetCRS, DefaultGeographicCRS.WGS84, true);
+            MathTransform step2 = CRS.findMathTransform(targetCRS, DefaultGeographicCRS.WGS84, true);
             step2.transform(pt, 0, pt, 0, 1);
             // move north and then back to target CRS
             pt[1] += 1e-2;
@@ -223,15 +214,12 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
     }
 
     /**
-     * Checks for the known north up projections implemented by GeoTools, see also a visual
-     * reference at <a href="https://en.wikipedia.org/wiki/List_of_map_projections">Wikipedia</a>.
-     * If a north-up projection is not listed here, that will result in a slower execution, but the
-     * result will be the same.
+     * Checks for the known north up projections implemented by GeoTools, see also a visual reference at <a
+     * href="https://en.wikipedia.org/wiki/List_of_map_projections">Wikipedia</a>. If a north-up projection is not
+     * listed here, that will result in a slower execution, but the result will be the same.
      */
     private static boolean isNorthUpProjection(MathTransform mt) {
-        return mt instanceof Mercator
-                || mt instanceof CylindricalEqualArea
-                || mt instanceof EquidistantCylindrical;
+        return mt instanceof Mercator || mt instanceof CylindricalEqualArea || mt instanceof EquidistantCylindrical;
     }
 
     @Override
@@ -240,8 +228,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
 
         // if target CRS is a literal it's possible to do useful optimizations
         if (parameters.get(0) instanceof Literal) {
-            CoordinateReferenceSystem crs =
-                    parameters.get(0).evaluate(null, CoordinateReferenceSystem.class);
+            CoordinateReferenceSystem crs = parameters.get(0).evaluate(null, CoordinateReferenceSystem.class);
 
             if (!fixRequired(crs)) {
                 // no fix required, remove the function, just return the angle as-is
@@ -256,16 +243,14 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
         // if the source CRS is a literal, we can try to pre-convert
         if (parameters.size() == 4) {
             if (parameters.get(3) instanceof Literal) {
-                CoordinateReferenceSystem crs =
-                        parameters.get(3).evaluate(null, CoordinateReferenceSystem.class);
+                CoordinateReferenceSystem crs = parameters.get(3).evaluate(null, CoordinateReferenceSystem.class);
                 if (crs != null) {
                     parameters.set(3, ff.literal(crs));
                 }
             }
         } else if (featureType != null && parameters.get(2) instanceof PropertyName) {
             // otherwise, see if we can lookup the source CRS by looking up a geometry descriptor
-            PropertyDescriptor pd =
-                    parameters.get(1).evaluate(featureType, PropertyDescriptor.class);
+            PropertyDescriptor pd = parameters.get(1).evaluate(featureType, PropertyDescriptor.class);
             if (pd instanceof GeometryDescriptor) {
                 GeometryDescriptor gd = (GeometryDescriptor) pd;
                 CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();

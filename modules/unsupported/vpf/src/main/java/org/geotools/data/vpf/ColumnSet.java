@@ -87,8 +87,7 @@ class ColumnSet {
     }
     */
 
-    public void setGeometry(
-            boolean b, VPFGeometryFactory geometryFactory, VPFColumn geometryColumn) {
+    public void setGeometry(boolean b, VPFGeometryFactory geometryFactory, VPFColumn geometryColumn) {
         this.isGeometryTable = b;
         this.geometryFactory = geometryFactory;
         this.geometryColumn = geometryColumn;

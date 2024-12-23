@@ -28,10 +28,7 @@ import org.geotools.util.SimpleInternationalString;
  * @author gdavis
  */
 public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
-    /**
-     * This is the key (ie machine readable text) used to represent this parameter in a
-     * java.util.Map.
-     */
+    /** This is the key (ie machine readable text) used to represent this parameter in a java.util.Map. */
     public final String key;
 
     /** Human readable title/name of this parameter. */
@@ -48,25 +45,25 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public final Class<T> type;
 
     /**
-     * Can the value be missing? Or is null allowed... Return true if a value is required to be both
-     * present and non null
+     * Can the value be missing? Or is null allowed... Return true if a value is required to be both present and non
+     * null
      */
     public final boolean required;
 
     /**
-     * What is the min and max number of this paramter there can be ( a value of -1 for min means 0
-     * or more, a value of -1 for max means any number greater than or equal to the min value )
+     * What is the min and max number of this paramter there can be ( a value of -1 for min means 0 or more, a value of
+     * -1 for max means any number greater than or equal to the min value )
      *
-     * <p>eg: a geometry union process can have any number of geom parameters, so by setting the max
-     * to -1 and the min to 2 we accomplish that.
+     * <p>eg: a geometry union process can have any number of geom parameters, so by setting the max to -1 and the min
+     * to 2 we accomplish that.
      */
     public final int minOccurs;
 
     public final int maxOccurs;
 
     /**
-     * A sample value; often used as a default when prompting the end-user to fill in the details
-     * before executing a process.
+     * A sample value; often used as a default when prompting the end-user to fill in the details before executing a
+     * process.
      */
     public final T sample;
 
@@ -76,14 +73,14 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public static final String FEATURE_TYPE = "featureType";
 
     /**
-     * Boolean indicating whether the parameter shall be used as a password field, provides a hint
-     * for UI's to mask text fields, configuration systems to encrypt content, etc
+     * Boolean indicating whether the parameter shall be used as a password field, provides a hint for UI's to mask text
+     * fields, configuration systems to encrypt content, etc
      */
     public static final String IS_PASSWORD = "isPassword";
 
     /**
-     * Boolean indicating whether the parameter is meant to be a long text, provides a hint for UI's
-     * use long text fields, textareas and the like
+     * Boolean indicating whether the parameter is meant to be a long text, provides a hint for UI's use long text
+     * fields, textareas and the like
      */
     public static final String IS_LARGE_TEXT = "isLargeText";
 
@@ -94,9 +91,9 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public static final String CRS = "crs";
 
     /**
-     * "element": Class to use as the Element type for List<Element>. Please restrict your use of
-     * this facility to simple types; for most higher order data structures multiplicity is already
-     * accounted for - example MultiGeometry.
+     * "element": Class to use as the Element type for List<Element>. Please restrict your use of this facility to
+     * simple types; for most higher order data structures multiplicity is already accounted for - example
+     * MultiGeometry.
      */
     public static final String ELEMENT = "element";
 
@@ -107,13 +104,13 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public static final String MAX = "max";
 
     /**
-     * As an alternative to "min" and "max" a speciifc List<T> of options can be provided for a user
-     * to choose between. The description should explain what the options mean.
+     * As an alternative to "min" and "max" a speciifc List<T> of options can be provided for a user to choose between.
+     * The description should explain what the options mean.
      *
      * <p>Example: a compliance level of (0-low,1-medium,2-high)
      *
-     * <p>Although a List<T> is used here (so you can specifiy order) it is assumed you will not
-     * confuse your users by placing duplicates in the list.
+     * <p>Although a List<T> is used here (so you can specifiy order) it is assumed you will not confuse your users by
+     * placing duplicates in the list.
      */
     public static final String OPTIONS = "options";
 
@@ -137,24 +134,23 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public static final String LEVEL = "level";
 
     /**
-     * Set parameter to deprecated - true, false ;can be used to conditional show the parameter
-     * based on deprecated value
+     * Set parameter to deprecated - true, false ;can be used to conditional show the parameter based on deprecated
+     * value
      */
     public static final String DEPRECATED = "deprecated";
 
     /**
-     * Refinement of type; such as the FeatureType of a FeatureCollection, or component type of a
-     * List.
+     * Refinement of type; such as the FeatureType of a FeatureCollection, or component type of a List.
      *
-     * <p>This information is supplied (along with type) to allow a process implementor communicate
-     * additional restrictions on the allowed value beyond the strict type.
+     * <p>This information is supplied (along with type) to allow a process implementor communicate additional
+     * restrictions on the allowed value beyond the strict type.
      *
-     * <p>The following keys are understood at this time: LENGTH, FEATURE_TYPE, CRS, ELEMENT ..
-     * additional keys will be documented as static final fields over time.
+     * <p>The following keys are understood at this time: LENGTH, FEATURE_TYPE, CRS, ELEMENT .. additional keys will be
+     * documented as static final fields over time.
      *
-     * <p>Any restrictions mentioned here should be mentioned as part of your parameter description.
-     * This metadata is only used to help restrict what the user enters; not all client application
-     * will understand and respect these keys - please communicate with your end-user.
+     * <p>Any restrictions mentioned here should be mentioned as part of your parameter description. This metadata is
+     * only used to help restrict what the user enters; not all client application will understand and respect these
+     * keys - please communicate with your end-user.
      *
      * @see CRS
      * @see ELEMENT
@@ -167,8 +163,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public final Map<String, Object> metadata;
 
     /**
-     * Mandatory parameter - quickly constructed with out a properly internationalized title and
-     * description.
+     * Mandatory parameter - quickly constructed with out a properly internationalized title and description.
      *
      * @param key machine readable key for use in a java.util.Map
      * @param type Java class for the expected value
@@ -176,34 +171,19 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
      * @param description Human readable description
      */
     public Parameter(String key, Class<T> type, String title, String description) {
-        this(
-                key,
-                type,
-                new SimpleInternationalString(title),
-                new SimpleInternationalString(description));
+        this(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description));
     }
 
     /**
-     * Mandatory parameter - quickly constructed with out a properly internationalized title and
-     * description.
+     * Mandatory parameter - quickly constructed with out a properly internationalized title and description.
      *
      * @param key machine readable key for use in a java.util.Map
      * @param type Java class for the expected value
      * @param title Human readable title used for use in a user interface
      * @param description Human readable description
      */
-    public Parameter(
-            String key,
-            Class<T> type,
-            String title,
-            String description,
-            Map<String, Object> metadata) {
-        this(
-                key,
-                type,
-                new SimpleInternationalString(title),
-                new SimpleInternationalString(description),
-                metadata);
+    public Parameter(String key, Class<T> type, String title, String description, Map<String, Object> metadata) {
+        this(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description), metadata);
     }
     /**
      * Mandatory parameter
@@ -213,8 +193,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
      * @param title Human readable title used for use in a user interface
      * @param description Human readable description
      */
-    public Parameter(
-            String key, Class<T> type, InternationalString title, InternationalString description) {
+    public Parameter(String key, Class<T> type, InternationalString title, InternationalString description) {
         this(key, type, title, description, true, 1, 1, null, null);
     }
 
@@ -280,8 +259,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
         this.minOccurs = min;
         this.maxOccurs = max;
         this.sample = sample;
-        this.metadata =
-                metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
+        this.metadata = metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
     }
 
     /**

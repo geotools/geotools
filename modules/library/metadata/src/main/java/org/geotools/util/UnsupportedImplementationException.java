@@ -20,9 +20,9 @@ import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Throws when an operation can't use arbitrary implementation of an interface, and a given instance
- * doesn't meet the requirement. For example this exception may be thrown when an operation requires
- * a Geotools implementation of a <A HREF="http://geoapi.sourceforge.net">GeoAPI</A> interface.
+ * Throws when an operation can't use arbitrary implementation of an interface, and a given instance doesn't meet the
+ * requirement. For example this exception may be thrown when an operation requires a Geotools implementation of a <A
+ * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interface.
  *
  * @since 2.0
  * @version $Id$

@@ -55,18 +55,15 @@ public class MarkTest {
         arrowBounds = new ReferencedEnvelope(-1, 5, -1, 11, CRS.decode("EPSG:4326"));
 
         // load font
-        Font f =
-                Font.createFont(
-                        Font.TRUETYPE_FONT,
-                        TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(
+                Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
     }
 
     File file(String name) {
-        return new File(
-                "src/test/resources/org/geotools/renderer/lite/test-data/mark/" + name + ".png");
+        return new File("src/test/resources/org/geotools/renderer/lite/test-data/mark/" + name + ".png");
     }
 
     @Test
@@ -82,8 +79,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("circle"), image, 150);
     }
 
@@ -100,8 +96,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("markAnchor"), image, 50);
     }
 
@@ -118,8 +113,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("rotatePenIcon"), image, 100);
     }
 
@@ -204,8 +198,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("rotateArrow"), image, 240);
     }
 
@@ -218,14 +211,11 @@ public class MarkTest {
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
-        renderer.setRendererHints(
-                Collections.singletonMap(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true));
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true));
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         bounds = new ReferencedEnvelope(-10, -0.1, -10, -0.1, DefaultGeographicCRS.WGS84);
 
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "Decorative marks in the corner", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks in the corner", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("bufferCircle"), image, 50);
     }
 
@@ -238,16 +228,12 @@ public class MarkTest {
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
-        renderer.setRendererHints(
-                Collections.singletonMap(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true));
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true));
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.RENDERING_BUFFER, 64));
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(-10, -0.5, -10, -0.5, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(-10, -0.5, -10, -0.5, DefaultGeographicCRS.WGS84);
 
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "Decorative marks in the corner", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks in the corner", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("bufferCircleLarge"), image, 50);
     }
 
@@ -264,8 +250,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("triangle"), image, 50);
     }
 
@@ -282,8 +267,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("decorative"), image, 50);
     }
 
@@ -300,8 +284,7 @@ public class MarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image =
-                RendererBaseTest.showRender("External mark reference", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("External mark reference", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("externalMark"), image, 50);
     }
 }

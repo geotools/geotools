@@ -20,41 +20,38 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 
 /**
- * Defines an algorithm in which to traverse the components of a graph. A graph iterator operates by
- * repeatedly returing graph components to the caller. The order in which to return the components
- * is specific to the iterator. However, <B>most</B> iterators follow the following conventions:<br>
+ * Defines an algorithm in which to traverse the components of a graph. A graph iterator operates by repeatedly returing
+ * graph components to the caller. The order in which to return the components is specific to the iterator. However,
+ * <B>most</B> iterators follow the following conventions:<br>
  * <br>
  *
  * <UL>
  *   <LI>Components are visited only once
- *   <LI>The next component to be returned is determined by the components that have been previously
- *       visited
+ *   <LI>The next component to be returned is determined by the components that have been previously visited
  * </UL>
  *
- * The following is an example of a GraphIterator. It returns nodes of a graph in a standard
- * <B>Depth First Search</B> order, starting from a specified node. The nodes have been numbered to
- * correspond to the iteration pattern. <br>
+ * The following is an example of a GraphIterator. It returns nodes of a graph in a standard <B>Depth First Search</B>
+ * order, starting from a specified node. The nodes have been numbered to correspond to the iteration pattern. <br>
  * <br>
  * <IMG src="doc-files/dfs.gif"/> * indicates source of traversal<br>
  * <br>
  * <br>
  * In order to analyze the traversal, the following terms are defined:<br>
  * <br>
- * The <B>Next Set</B> of a traversal is the set of components that will be visited in a later stage
- * of the traversal.<br>
- * The <B>Branch Set</B> of an component <B>e</B> is defined as the set of components that can be
- * visited in a later stage of the traversal as a direct result of visiting <B>e</B>. <br>
+ * The <B>Next Set</B> of a traversal is the set of components that will be visited in a later stage of the traversal.
  * <br>
- * In most traversals, the two sets are related. The Next Set is built by analyzing the Branch Set
- * of the component being visited in the current stage of the traversal. Revisiting the above
- * example, a Depth First Search Traversal operates as follows:<br>
+ * The <B>Branch Set</B> of an component <B>e</B> is defined as the set of components that can be visited in a later
+ * stage of the traversal as a direct result of visiting <B>e</B>. <br>
+ * <br>
+ * In most traversals, the two sets are related. The Next Set is built by analyzing the Branch Set of the component
+ * being visited in the current stage of the traversal. Revisiting the above example, a Depth First Search Traversal
+ * operates as follows:<br>
  * <br>
  *
  * <UL>
  *   <LI>Each node is visited only once.
  *   <LI>The Next Set is organized as a <B>Last In First Out</B> Queue (Stack).
- *   <LI>At each stage, every node in the Branch Set that has not yet been visited is added to the
- *       Next Set.
+ *   <LI>At each stage, every node in the Branch Set that has not yet been visited is added to the Next Set.
  * </UL>
  *
  * As well it is assumed that nodes related to a node are sorted in alphabetic order. <br>
@@ -116,10 +113,10 @@ import org.geotools.graph.structure.Graphable;
  *
  * <br>
  * <br>
- * At any stage of a travesal a branch may be <B>killed</B>.When a branch is killed at a stage of an
- * iteration, no elements in the current <B>Branch Set</B> are added to the <B>Next Set</B>. This is
- * illustrated by revisiting the Depth First Search Iteration, but this time killing the branch at
- * node B. The following table summarizes the stages of the traversal:<br>
+ * At any stage of a travesal a branch may be <B>killed</B>.When a branch is killed at a stage of an iteration, no
+ * elements in the current <B>Branch Set</B> are added to the <B>Next Set</B>. This is illustrated by revisiting the
+ * Depth First Search Iteration, but this time killing the branch at node B. The following table summarizes the stages
+ * of the traversal:<br>
  * <br>
  *
  * <TABLE border="1" style="font-family:Arial;font-size:10pt;" width="80%">
@@ -159,8 +156,7 @@ import org.geotools.graph.structure.Graphable;
  * </TABLE>
  *
  * <br>
- * In this example, killing the branch at node B results in nodes C, D, and E never being visited.
- * <br>
+ * In this example, killing the branch at node B results in nodes C, D, and E never being visited. <br>
  *
  * @see GraphWalker
  * @see GraphTraversal
@@ -183,24 +179,23 @@ public interface GraphIterator {
     public GraphTraversal getTraversal();
 
     /**
-     * Signals to the itereator that iteration is about to begin. This often results in the
-     * creation/initialization of any internal data structures used by the iterator.
+     * Signals to the itereator that iteration is about to begin. This often results in the creation/initialization of
+     * any internal data structures used by the iterator.
      *
      * @param graph The graph being whose components are being iterated over.
      */
     public void init(Graph graph, GraphTraversal traversal);
 
     /**
-     * Returns the next graph component in the iteration. To signal to the caller that the iteration
-     * is complete, null should be returned.
+     * Returns the next graph component in the iteration. To signal to the caller that the iteration is complete, null
+     * should be returned.
      *
      * @return The next component in the iteration, or null if iteration is complete.
      */
     public Graphable next(GraphTraversal traversal);
 
     /**
-     * Signals to the iterator that iteration should continue from the current component in the
-     * traversal.
+     * Signals to the iterator that iteration should continue from the current component in the traversal.
      *
      * @param current The current component of the traversal.
      */

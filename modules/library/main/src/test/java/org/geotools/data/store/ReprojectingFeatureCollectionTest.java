@@ -64,11 +64,9 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         super.setUp();
         target = CRS.decode("EPSG:3005");
 
-        MathTransform2D tx =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                .createOperation(crs, target)
-                                .getMathTransform();
+        MathTransform2D tx = (MathTransform2D) ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(crs, target)
+                .getMathTransform();
         transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(tx);
     }
@@ -76,8 +74,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
     @Test
     public void testNormal() throws Exception {
 
-        try (SimpleFeatureIterator reproject =
-                        new ReprojectingFeatureCollection(delegate, target).features();
+        try (SimpleFeatureIterator reproject = new ReprojectingFeatureCollection(delegate, target).features();
                 SimpleFeatureIterator reader = delegate.features()) {
             while (reader.hasNext()) {
                 SimpleFeature normal = reader.next();
@@ -123,45 +120,38 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         ReferencedEnvelope rbounds = bounds.transform(target, true);
 
         // check the bounds filtering works the same way in the standard and reprojected case
-        BBOX filter =
-                ff.bbox(
-                        "",
-                        bounds.getMinX(),
-                        bounds.getMinY(),
-                        bounds.getMaxX(),
-                        bounds.getMaxY(),
-                        CRS.toSRS(delegate.getSchema().getCoordinateReferenceSystem()));
-        BBOX rfilter =
-                ff.bbox(
-                        "",
-                        rbounds.getMinX(),
-                        rbounds.getMinY(),
-                        rbounds.getMaxX(),
-                        rbounds.getMaxY(),
-                        CRS.toSRS(target));
-        assertEquals(delegate.subCollection(filter).size(), rfc.subCollection(rfilter).size());
+        BBOX filter = ff.bbox(
+                "",
+                bounds.getMinX(),
+                bounds.getMinY(),
+                bounds.getMaxX(),
+                bounds.getMaxY(),
+                CRS.toSRS(delegate.getSchema().getCoordinateReferenceSystem()));
+        BBOX rfilter = ff.bbox(
+                "", rbounds.getMinX(), rbounds.getMinY(), rbounds.getMaxX(), rbounds.getMaxY(), CRS.toSRS(target));
+        assertEquals(
+                delegate.subCollection(filter).size(),
+                rfc.subCollection(rfilter).size());
     }
 
     @Test
     public void testLenient() throws Exception {
 
         CoordinateReferenceSystem lenientTarget =
-                CRS.parseWKT(
-                        "PROJCS[\"MGI (Ferro) / Austria GK West Zone\",GEOGCS[\"MGI (Ferro)\","
-                                + "DATUM[\"Militar_Geographische_Institut_Ferro\",SPHEROID[\"Bessel 1841\","
-                                + "6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],"
-                                + "AUTHORITY[\"EPSG\",\"6805\"]],PRIMEM[\"Ferro\",-17.66666666666667,"
-                                + "AUTHORITY[\"EPSG\",\"8909\"]],UNIT[\"degree\",0.01745329251994328,"
-                                + "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4805\"]],"
-                                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
-                                + "PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],"
-                                + "PARAMETER[\"central_meridian\",28],PARAMETER[\"scale_factor\",1],"
-                                + "PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",-5000000],"
-                                + "AUTHORITY[\"EPSG\",\"31251\"],AXIS[\"Y\",EAST],AXIS[\"X\",NORTH]]");
+                CRS.parseWKT("PROJCS[\"MGI (Ferro) / Austria GK West Zone\",GEOGCS[\"MGI (Ferro)\","
+                        + "DATUM[\"Militar_Geographische_Institut_Ferro\",SPHEROID[\"Bessel 1841\","
+                        + "6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],"
+                        + "AUTHORITY[\"EPSG\",\"6805\"]],PRIMEM[\"Ferro\",-17.66666666666667,"
+                        + "AUTHORITY[\"EPSG\",\"8909\"]],UNIT[\"degree\",0.01745329251994328,"
+                        + "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4805\"]],"
+                        + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
+                        + "PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],"
+                        + "PARAMETER[\"central_meridian\",28],PARAMETER[\"scale_factor\",1],"
+                        + "PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",-5000000],"
+                        + "AUTHORITY[\"EPSG\",\"31251\"],AXIS[\"Y\",EAST],AXIS[\"X\",NORTH]]");
 
         @SuppressWarnings("PMD.CloseResource")
-        SimpleFeatureIterator reproject =
-                new ReprojectingFeatureCollection(delegate, lenientTarget).features();
+        SimpleFeatureIterator reproject = new ReprojectingFeatureCollection(delegate, lenientTarget).features();
         reproject.close();
     }
 

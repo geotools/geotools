@@ -40,10 +40,9 @@ public class H2GISViewTestSetup extends JDBCViewTestSetup {
         run("DROP TABLE IF EXISTS \"lakes\"");
         run(
                 "CREATE TABLE \"lakes\"(\"fid\" int primary key, \"id\" int, \"geom\" GEOMETRY(POLYGON, 4326), \"name\" varchar )");
-        run(
-                "INSERT INTO \"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                        + "'muddy')");
+        run("INSERT INTO \"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES ( 0, 0,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy')");
     }
 
     @Override

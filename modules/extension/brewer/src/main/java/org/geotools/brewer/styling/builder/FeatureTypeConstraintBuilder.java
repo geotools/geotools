@@ -64,8 +64,7 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
         }
 
         Extent[] ea = extents.toArray(new Extent[extents.size()]);
-        FeatureTypeConstraint constraint =
-                sf.createFeatureTypeConstraint(featureTypeName, filter, ea);
+        FeatureTypeConstraint constraint = sf.createFeatureTypeConstraint(featureTypeName, filter, ea);
 
         if (parent == null) {
             reset();
@@ -103,7 +102,6 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
 
     @Override
     protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
-        throw new UnsupportedOperationException(
-                "Can't build a SLD out of a feature type contraint");
+        throw new UnsupportedOperationException("Can't build a SLD out of a feature type contraint");
     }
 }

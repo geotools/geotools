@@ -30,8 +30,8 @@ public interface CSBuilder {
      * Starts the building of a new coordinate sequence
      *
      * @param size - the number of coordinates in the coordinate sequence
-     * @param dimensions - the dimension of the coordinates in the coordinate sequence, may be
-     *     ignored if the coordinate sequence does not support variabile dimensions
+     * @param dimensions - the dimension of the coordinates in the coordinate sequence, may be ignored if the coordinate
+     *     sequence does not support variabile dimensions
      */
     public void start(int size, int dimensions);
 
@@ -42,11 +42,10 @@ public interface CSBuilder {
     public void setOrdinate(double value, int ordinateIndex, int coordinateIndex);
 
     /**
-     * Utility method that allows to set an ordinate in an already built coordinate sequence Needed
-     * because the CoordinateSequence interface does not expose it
+     * Utility method that allows to set an ordinate in an already built coordinate sequence Needed because the
+     * CoordinateSequence interface does not expose it
      */
-    public void setOrdinate(
-            CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex);
+    public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex);
 
     /** Gets an ordinate in the specified coordinate */
     public double getOrdinate(int ordinateIndex, int coordinateIndex);

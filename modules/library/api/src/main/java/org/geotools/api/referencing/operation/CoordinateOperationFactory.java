@@ -17,9 +17,9 @@ import org.geotools.api.referencing.ObjectFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Creates {@linkplain CoordinateOperation coordinate operations}. This factory is capable to find
- * coordinate {@linkplain Transformation transformations} or {@linkplain Conversion conversions}
- * between two {@linkplain CoordinateReferenceSystem coordinate reference systems}.
+ * Creates {@linkplain CoordinateOperation coordinate operations}. This factory is capable to find coordinate
+ * {@linkplain Transformation transformations} or {@linkplain Conversion conversions} between two
+ * {@linkplain CoordinateReferenceSystem coordinate reference systems}.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
@@ -27,8 +27,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  */
 public interface CoordinateOperationFactory extends ObjectFactory {
     /**
-     * Returns an operation for conversion or transformation between two coordinate reference
-     * systems.
+     * Returns an operation for conversion or transformation between two coordinate reference systems.
      *
      * <ul>
      *   <li>If an operation exists, it is returned.
@@ -36,80 +35,71 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *   <li>If no operation exists, then the exception is thrown.
      * </ul>
      *
-     * <p>Implementations may try to {@linkplain
-     * CoordinateOperationAuthorityFactory#createFromCoordinateReferenceSystemCodes query an
-     * authority factory} first, and compute the operation next if no operation from {@code source}
-     * to {@code target} code was explicitly defined by the authority.
+     * <p>Implementations may try to
+     * {@linkplain CoordinateOperationAuthorityFactory#createFromCoordinateReferenceSystemCodes query an authority
+     * factory} first, and compute the operation next if no operation from {@code source} to {@code target} code was
+     * explicitly defined by the authority.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
      * @return A coordinate operation from {@code sourceCRS} to {@code targetCRS}.
-     * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
-     *     {@code targetCRS}.
+     * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
-    CoordinateOperation createOperation(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+    CoordinateOperation createOperation(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws OperationNotFoundException, FactoryException;
 
     /**
-     * Returns an operation using a particular method for conversion or transformation between two
-     * coordinate reference systems.
+     * Returns an operation using a particular method for conversion or transformation between two coordinate reference
+     * systems.
      *
      * <ul>
      *   <li>If the operation exists on the implementation, then it is returned.
-     *   <li>If the operation does not exist on the implementation, then the implementation has the
-     *       option of inferring the operation from the argument objects.
-     *   <li>If for whatever reason the specified operation will not be returned, then the exception
-     *       is thrown.
+     *   <li>If the operation does not exist on the implementation, then the implementation has the option of inferring
+     *       the operation from the argument objects.
+     *   <li>If for whatever reason the specified operation will not be returned, then the exception is thrown.
      * </ul>
      *
-     * <p><b>Example:</b> A transformation between two {@linkplain
-     * org.geotools.api.referencing.crs.GeographicCRS geographic CRS} using different {@linkplain
-     * org.geotools.api.referencing.datum.GeodeticDatum datum} requires a <cite>datum shift</cite>.
-     * Many methods exist for this purpose, including interpolations in a grid, a
-     * scale/rotation/translation in geocentric coordinates or the Molodenski approximation. When
-     * invoking {@code createOperation} without operation method, this factory may select by default
-     * the most accurate transformation (typically interpolation in a grid). When invoking {@code
-     * createOperation} with an operation method, user can force usage of Molodenski approximation
-     * for instance.
+     * <p><b>Example:</b> A transformation between two {@linkplain org.geotools.api.referencing.crs.GeographicCRS
+     * geographic CRS} using different {@linkplain org.geotools.api.referencing.datum.GeodeticDatum datum} requires a
+     * <cite>datum shift</cite>. Many methods exist for this purpose, including interpolations in a grid, a
+     * scale/rotation/translation in geocentric coordinates or the Molodenski approximation. When invoking
+     * {@code createOperation} without operation method, this factory may select by default the most accurate
+     * transformation (typically interpolation in a grid). When invoking {@code createOperation} with an operation
+     * method, user can force usage of Molodenski approximation for instance.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
      * @param method The algorithmic method for conversion or transformation.
      * @return A coordinate operation from {@code sourceCRS} to {@code targetCRS}.
-     * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
-     *     {@code targetCRS}.
+     * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
     CoordinateOperation createOperation(
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS,
-            OperationMethod method)
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, OperationMethod method)
             throws OperationNotFoundException, FactoryException;
 
     /**
      * Creates a concatenated operation from a sequence of operations.
      *
-     * @param properties Name and other properties to give to the new object. Available properties
-     *     are {@linkplain ObjectFactory listed there}.
+     * @param properties Name and other properties to give to the new object. Available properties are
+     *     {@linkplain ObjectFactory listed there}.
      * @param operations The sequence of operations.
      * @return The concatenated operation.
      * @throws FactoryException if the object creation failed.
      */
-    CoordinateOperation createConcatenatedOperation(
-            Map<String, ?> properties, CoordinateOperation... operations) throws FactoryException;
+    CoordinateOperation createConcatenatedOperation(Map<String, ?> properties, CoordinateOperation... operations)
+            throws FactoryException;
 
     /**
      * Constructs a defining conversion from a set of properties. Defining conversions have no
-     * {@linkplain Conversion#getSourceCRS source} and {@linkplain Conversion#getTargetCRS target
-     * CRS}, and do not need to have a {@linkplain Conversion#getMathTransform math transform}.
-     * Their sole purpose is to be given as an argument to {@linkplain
-     * org.geotools.api.referencing.crs.CRSFactory#createDerivedCRS derived CRS} and {@linkplain
-     * org.geotools.api.referencing.crs.CRSFactory#createProjectedCRS projected CRS} constructors.
+     * {@linkplain Conversion#getSourceCRS source} and {@linkplain Conversion#getTargetCRS target CRS}, and do not need
+     * to have a {@linkplain Conversion#getMathTransform math transform}. Their sole purpose is to be given as an
+     * argument to {@linkplain org.geotools.api.referencing.crs.CRSFactory#createDerivedCRS derived CRS} and
+     * {@linkplain org.geotools.api.referencing.crs.CRSFactory#createProjectedCRS projected CRS} constructors.
      *
-     * <p>Some available properties are {@linkplain ObjectFactory listed there}. Additionally, the
-     * following properties are understood by this construtor:
+     * <p>Some available properties are {@linkplain ObjectFactory listed there}. Additionally, the following properties
+     * are understood by this construtor:
      *
      * <p>
      *
@@ -151,19 +141,17 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @since GeoAPI 2.1
      */
     Conversion createDefiningConversion(
-            Map<String, ?> properties, OperationMethod method, ParameterValueGroup parameters)
-            throws FactoryException;
+            Map<String, ?> properties, OperationMethod method, ParameterValueGroup parameters) throws FactoryException;
 
     /**
-     * Returns all the available operations for conversion or transformation between two coordinate
-     * reference systems. An empty set is returned if no operation exists.
+     * Returns all the available operations for conversion or transformation between two coordinate reference systems.
+     * An empty set is returned if no operation exists.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
      * @return A set of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if there was a failure retrieving or creating the operations.
      */
-    Set<CoordinateOperation> findOperations(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+    Set<CoordinateOperation> findOperations(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException;
 }

@@ -20,8 +20,8 @@ package org.geotools.filter.text.commons;
 /**
  * Languages supported by this module
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

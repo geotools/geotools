@@ -290,10 +290,7 @@ public class XSISimpleTypesTest {
         Assert.assertNull(actual);
     }
 
-    /**
-     * Tests encoding of java.util.Date as {@link XSISimpleTypes.Date} and {@link
-     * XSISimpleTypes.DateTime}
-     */
+    /** Tests encoding of java.util.Date as {@link XSISimpleTypes.Date} and {@link XSISimpleTypes.DateTime} */
     @Test
     public void testDateEncode() throws Exception {
         // given: 2016-09-02, 12:00h in GMT

@@ -28,8 +28,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_geometryType extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "geometryType", String.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("geometryType", String.class, parameter("geometry", Geometry.class));
 
     public FilterFunction_geometryType() {
         super(NAME);

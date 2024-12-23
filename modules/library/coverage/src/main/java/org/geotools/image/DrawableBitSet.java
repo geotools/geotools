@@ -27,8 +27,8 @@ import org.locationtech.jts.awt.ShapeWriter;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * An analogous of {@link BitSet} which is explicitly 2 dimensional and allows drawing a shape to
- * quickly turn on a large area of the map. This class is not thread safe.
+ * An analogous of {@link BitSet} which is explicitly 2 dimensional and allows drawing a shape to quickly turn on a
+ * large area of the map. This class is not thread safe.
  *
  * @author Andrea Aime - GeoSolutions
  */

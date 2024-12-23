@@ -30,8 +30,8 @@ import org.geotools.api.feature.type.Name;
  *
  * <h3>Attribute Access</h3>
  *
- * The order and multiplicity restrictions on simple feature make attribute values accessible via an
- * index. For example consider the following shapefile entry:
+ * The order and multiplicity restrictions on simple feature make attribute values accessible via an index. For example
+ * consider the following shapefile entry:
  *
  * <pre>
  *  | GEOMETRY   | INT | STRING |
@@ -58,9 +58,8 @@ import org.geotools.api.feature.type.Name;
  *  String s = (String) feature.getAttribute( "STRING" );
  *  </pre>
  *
- * <p><b>Note:</b> Attribute access via getAttribute() methods returns attribute values, and not the
- * attributes themselves. For access to the actual attributes {@link
- * ComplexAttribute#getProperty(String)} can be used.
+ * <p><b>Note:</b> Attribute access via getAttribute() methods returns attribute values, and not the attributes
+ * themselves. For access to the actual attributes {@link ComplexAttribute#getProperty(String)} can be used.
  *
  * @see SimpleFeatureType
  * @author Jody Garnett (LISAsoft)
@@ -72,11 +71,10 @@ public interface SimpleFeature extends Feature {
     /**
      * Unique Identifier for the SimpleFeature
      *
-     * <p>This value is non-null and should be the same as getIdentifier().toString(). Please note
-     * that an ID may be provided
+     * <p>This value is non-null and should be the same as getIdentifier().toString(). Please note that an ID may be
+     * provided
      *
-     * @return A unique identifier for the attribute, or <code>null</code> if the attribute is
-     *     non-identifiable.
+     * @return A unique identifier for the attribute, or <code>null</code> if the attribute is non-identifiable.
      */
     String getID();
 
@@ -157,8 +155,7 @@ public interface SimpleFeature extends Feature {
      * </pre>
      *
      * @param name The name of the attribute whose value to retrieve.
-     * @return The attribute value, or <code>null</code> if no such attribute exists with the
-     *     specified name.
+     * @return The attribute value, or <code>null</code> if no such attribute exists with the specified name.
      */
     Object getAttribute(String name);
 
@@ -187,12 +184,11 @@ public interface SimpleFeature extends Feature {
      * return p.getValue();
      * </pre>
      *
-     * <p>Since attribute names in simple features do not have a namespace uri this method is
-     * equivalent to calling <code>getAttribute(name.getLocalPart())</code>.
+     * <p>Since attribute names in simple features do not have a namespace uri this method is equivalent to calling
+     * <code>getAttribute(name.getLocalPart())</code>.
      *
      * @param name The name of the attribute whose value to retrieve.
-     * @return The attribute value, or <code>null</code> if no such attribute exists with the
-     *     specified name.
+     * @return The attribute value, or <code>null</code> if no such attribute exists with the specified name.
      */
     Object getAttribute(Name name);
 
@@ -206,8 +202,8 @@ public interface SimpleFeature extends Feature {
      * p.setValue(value);
      * </pre>
      *
-     * <p>Since attribute names in simple features do not have a namespace uri this method is
-     * equivalent to calling <code>setAttribute(name.getLocalPart(), value)</code>.
+     * <p>Since attribute names in simple features do not have a namespace uri this method is equivalent to calling
+     * <code>setAttribute(name.getLocalPart(), value)</code>.
      *
      * @param name The name of the attribute whose value to set.
      * @param value The new value of the attribute.

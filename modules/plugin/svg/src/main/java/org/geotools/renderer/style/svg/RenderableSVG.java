@@ -43,8 +43,8 @@ class RenderableSVG {
     /**
      * Retrieves an SVG document's specified bounds.
      *
-     * @return a {@link Rectangle2D} with the corresponding bounds. If the SVG document does not
-     *     specify any bounds, then null is returned.
+     * @return a {@link Rectangle2D} with the corresponding bounds. If the SVG document does not specify any bounds,
+     *     then null is returned.
      */
     private Rectangle2D getSvgDocBounds(Document doc) {
         NodeList list = doc.getElementsByTagName("svg");

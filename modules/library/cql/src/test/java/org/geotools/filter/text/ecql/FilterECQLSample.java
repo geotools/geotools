@@ -79,11 +79,9 @@ public final class FilterECQLSample {
 
     public static final String LITERAL_BETWEEN_TWO_EXPRESSIONS = "2 BETWEEN (2-1) AND (2+1)";
 
-    public static final String FUNCTION_BETWEEN_LITERALS =
-            "area( the_geom ) BETWEEN 10000 AND 30000";
+    public static final String FUNCTION_BETWEEN_LITERALS = "area( the_geom ) BETWEEN 10000 AND 30000";
 
-    public static final String FUNCTION_BETWEEN_FUNCTIONS =
-            "area( the_geom ) BETWEEN abs(10000) AND abs(30000)";
+    public static final String FUNCTION_BETWEEN_FUNCTIONS = "area( the_geom ) BETWEEN abs(10000) AND abs(30000)";
 
     public static final String FUNCTION_IS_NULL = "centroid( the_geom ) IS NULL";
 
@@ -135,8 +133,7 @@ public final class FilterECQLSample {
         SAMPLES.put(FUNC_AREA_LESS_FUNC_ABS, filter);
 
         // (1+3) > (4-5)
-        Subtract simpleSubtractExpression =
-                FACTORY.subtract(FACTORY.literal(4), FACTORY.literal(5));
+        Subtract simpleSubtractExpression = FACTORY.subtract(FACTORY.literal(4), FACTORY.literal(5));
 
         filter = FACTORY.greater(simpleAddExpression, simpleSubtractExpression);
 
@@ -192,9 +189,7 @@ public final class FilterECQLSample {
 
         // -1.05 + (-4.6* -10) > aPrpoerty
         Add nestedExpr =
-                FACTORY.add(
-                        FACTORY.literal(-1.05),
-                        FACTORY.multiply(FACTORY.literal(-4.6), FACTORY.literal(-10)));
+                FACTORY.add(FACTORY.literal(-1.05), FACTORY.multiply(FACTORY.literal(-4.6), FACTORY.literal(-10)));
 
         filter = FACTORY.greater(nestedExpr, aProperty);
 
@@ -236,11 +231,10 @@ public final class FilterECQLSample {
         SAMPLES.put(LITERAL_BETWEEN_TWO_LITERALS, filter);
 
         // 2 BETWEEN (2-1) AND (2+1)
-        filter =
-                FACTORY.between(
-                        FACTORY.literal(2),
-                        FACTORY.subtract(FACTORY.literal(2), FACTORY.literal(1)),
-                        FACTORY.add(FACTORY.literal(2), FACTORY.literal(1)));
+        filter = FACTORY.between(
+                FACTORY.literal(2),
+                FACTORY.subtract(FACTORY.literal(2), FACTORY.literal(1)),
+                FACTORY.add(FACTORY.literal(2), FACTORY.literal(1)));
 
         SAMPLES.put(LITERAL_BETWEEN_TWO_EXPRESSIONS, filter);
 

@@ -17,18 +17,17 @@
 package org.geotools.xml.schema;
 
 /**
- * This interface is intended to represent a Sequence in an XML Schema. This shildren of this
- * sequence are ElementGroupings which may involve Element declarations, Choices, Groups ... or even
- * another Sequence. We recommend flattening child Sequences with the parent, creating a
- * semantically equivalent sequence in it's place.
+ * This interface is intended to represent a Sequence in an XML Schema. This shildren of this sequence are
+ * ElementGroupings which may involve Element declarations, Choices, Groups ... or even another Sequence. We recommend
+ * flattening child Sequences with the parent, creating a semantically equivalent sequence in it's place.
  *
  * @author dzwiers www.refractions.net
  * @see ElementGrouping
  */
 public interface Sequence extends ElementGrouping {
     /**
-     * This method returns an ORDERED list of children. The children in the list may be singular
-     * elements, sequences, choices, ... , or groups.
+     * This method returns an ORDERED list of children. The children in the list may be singular elements, sequences,
+     * choices, ... , or groups.
      */
     public ElementGrouping[] getChildren();
 

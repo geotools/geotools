@@ -40,8 +40,7 @@ import org.geotools.api.parameter.Parameter;
  *  &lt;/xsd:complexType>
  * </pre>
  *
- * <p>We have extended this idea to include a list of argument names to better serve interactive
- * clients.
+ * <p>We have extended this idea to include a list of argument names to better serve interactive clients.
  *
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe </A>
  * @author Justin Deoliveira, The Open Planning Project

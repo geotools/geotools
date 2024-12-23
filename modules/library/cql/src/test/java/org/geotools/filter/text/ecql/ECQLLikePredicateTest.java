@@ -67,8 +67,7 @@ public class ECQLLikePredicateTest extends CQLLikePredicateTest {
         Assert.assertTrue(resultFilter instanceof PropertyIsLike);
 
         PropertyIsLike expected =
-                (PropertyIsLike)
-                        FilterECQLSample.getSample(FilterECQLSample.FUNCTION_LIKE_ECQL_PATTERN);
+                (PropertyIsLike) FilterECQLSample.getSample(FilterECQLSample.FUNCTION_LIKE_ECQL_PATTERN);
 
         Assert.assertEquals("like filter was expected", expected, resultFilter);
 
@@ -162,8 +161,7 @@ public class ECQLLikePredicateTest extends CQLLikePredicateTest {
         Assert.assertTrue(resultFilter instanceof PropertyIsLike);
 
         PropertyIsLike expected =
-                (PropertyIsLike)
-                        FilterECQLSample.getSample(FilterECQLSample.LITERAL_LIKE_ECQL_PATTERN);
+                (PropertyIsLike) FilterECQLSample.getSample(FilterECQLSample.LITERAL_LIKE_ECQL_PATTERN);
 
         Assert.assertEquals("like filter was expected", expected, resultFilter);
     }
@@ -177,8 +175,7 @@ public class ECQLLikePredicateTest extends CQLLikePredicateTest {
 
         Assert.assertTrue(resultFilter instanceof Not);
 
-        Not expected =
-                (Not) FilterECQLSample.getSample(FilterECQLSample.LITERAL_NOT_LIKE_ECQL_PATTERN);
+        Not expected = (Not) FilterECQLSample.getSample(FilterECQLSample.LITERAL_NOT_LIKE_ECQL_PATTERN);
 
         Assert.assertTrue(expected.getFilter() instanceof PropertyIsLike);
 

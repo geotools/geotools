@@ -33,8 +33,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 /**
  * Abstract class for a function expression implementation
  *
- * <p>By default this implementation returns the provided {@link #fallback} value. To implement a
- * function please override the {@link #evaluate(Object)} method.
+ * <p>By default this implementation returns the provided {@link #fallback} value. To implement a function please
+ * override the {@link #evaluate(Object)} method.
  *
  * @author James Macgill, PSU
  */
@@ -166,8 +166,8 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
     }
 
     /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     * The String created should be good for most subclasses
+     * Creates a String representation of this Function with the function name and the arguments. The String created
+     * should be good for most subclasses
      */
     @Override
     public String toString() {
@@ -177,8 +177,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);

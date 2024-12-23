@@ -63,49 +63,44 @@ public class SchemasTest {
         sub.deleteOnExit();
 
         File f = new File(tmp, "root.xsd");
-        String xsd =
-                "<xsd:schema xmlns='http://geotools.org/test' "
-                        + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
-                        + "targetNamespace='http://geotools.org/test'> "
-                        + "<xsd:import namespace='http://geotools/org/import1' "
-                        + "schemaLocation='import1.xsd'/>"
-                        + "<xsd:import namespace='http://geotools/org/import2' "
-                        + "schemaLocation='import2.xsd'/>"
-                        + "<xsd:include location='include1.xsd'/>"
-                        + "<xsd:include location='include2.xsd'/>"
-                        + "</xsd:schema>";
+        String xsd = "<xsd:schema xmlns='http://geotools.org/test' "
+                + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+                + "targetNamespace='http://geotools.org/test'> "
+                + "<xsd:import namespace='http://geotools/org/import1' "
+                + "schemaLocation='import1.xsd'/>"
+                + "<xsd:import namespace='http://geotools/org/import2' "
+                + "schemaLocation='import2.xsd'/>"
+                + "<xsd:include location='include1.xsd'/>"
+                + "<xsd:include location='include2.xsd'/>"
+                + "</xsd:schema>";
         write(f, xsd);
 
         f = new File(tmp, "import1.xsd");
-        xsd =
-                "<xsd:schema xmlns='http://geotools.org/import1' "
-                        + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
-                        + "targetNamespace='http://geotools.org/import1'> "
-                        + "</xsd:schema>";
+        xsd = "<xsd:schema xmlns='http://geotools.org/import1' "
+                + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+                + "targetNamespace='http://geotools.org/import1'> "
+                + "</xsd:schema>";
         write(f, xsd);
 
         f = new File(sub, "import2.xsd");
-        xsd =
-                "<xsd:schema xmlns='http://geotools.org/import2' "
-                        + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
-                        + "targetNamespace='http://geotools.org/import2'> "
-                        + "</xsd:schema>";
+        xsd = "<xsd:schema xmlns='http://geotools.org/import2' "
+                + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+                + "targetNamespace='http://geotools.org/import2'> "
+                + "</xsd:schema>";
         write(f, xsd);
 
         f = new File(tmp, "include1.xsd");
-        xsd =
-                "<xsd:schema xmlns='http://geotools.org/test' "
-                        + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
-                        + "targetNamespace='http://geotools.org/test'> "
-                        + "</xsd:schema>";
+        xsd = "<xsd:schema xmlns='http://geotools.org/test' "
+                + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+                + "targetNamespace='http://geotools.org/test'> "
+                + "</xsd:schema>";
         write(f, xsd);
 
         f = new File(sub, "include2.xsd");
-        xsd =
-                "<xsd:schema xmlns='http://geotools.org/test' "
-                        + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
-                        + "targetNamespace='http://geotools.org/test'> "
-                        + "</xsd:schema>";
+        xsd = "<xsd:schema xmlns='http://geotools.org/test' "
+                + "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+                + "targetNamespace='http://geotools.org/test'> "
+                + "</xsd:schema>";
         write(f, xsd);
 
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
@@ -143,52 +138,47 @@ public class SchemasTest {
         List errors = Schemas.validateImportsIncludes(location);
         Assert.assertEquals(2, errors.size());
 
-        SchemaLocationResolver resolver1 =
-                new SchemaLocationResolver(XS.getInstance()) {
+        SchemaLocationResolver resolver1 = new SchemaLocationResolver(XS.getInstance()) {
 
-                    @Override
-                    public boolean canHandle(XSDSchema schema, String uri, String location) {
-                        if (location.endsWith("import2.xsd")) {
-                            return true;
-                        }
+            @Override
+            public boolean canHandle(XSDSchema schema, String uri, String location) {
+                if (location.endsWith("import2.xsd")) {
+                    return true;
+                }
 
-                        return false;
-                    }
+                return false;
+            }
 
-                    @Override
-                    public String resolveSchemaLocation(
-                            XSDSchema schema, String uri, String location) {
-                        return new File(sub, "import2.xsd").getAbsolutePath();
-                    }
-                };
-        SchemaLocationResolver resolver2 =
-                new SchemaLocationResolver(XS.getInstance()) {
+            @Override
+            public String resolveSchemaLocation(XSDSchema schema, String uri, String location) {
+                return new File(sub, "import2.xsd").getAbsolutePath();
+            }
+        };
+        SchemaLocationResolver resolver2 = new SchemaLocationResolver(XS.getInstance()) {
 
-                    @Override
-                    public boolean canHandle(XSDSchema schema, String uri, String location) {
-                        if (location.endsWith("include2.xsd")) {
-                            return true;
-                        }
+            @Override
+            public boolean canHandle(XSDSchema schema, String uri, String location) {
+                if (location.endsWith("include2.xsd")) {
+                    return true;
+                }
 
-                        return false;
-                    }
+                return false;
+            }
 
-                    @Override
-                    public String resolveSchemaLocation(
-                            XSDSchema schema, String uri, String location) {
-                        return new File(sub, "include2.xsd").getAbsolutePath();
-                    }
-                };
+            @Override
+            public String resolveSchemaLocation(XSDSchema schema, String uri, String location) {
+                return new File(sub, "include2.xsd").getAbsolutePath();
+            }
+        };
 
         errors =
-                Schemas.validateImportsIncludes(
-                        location, null, new XSDSchemaLocationResolver[] {resolver1, resolver2});
+                Schemas.validateImportsIncludes(location, null, new XSDSchemaLocationResolver[] {resolver1, resolver2});
         Assert.assertEquals(0, errors.size());
     }
 
     /**
-     * Tests that element declarations and type definitions from imported schemas are parsed, even
-     * if the importing schema itself contains no element nor type.
+     * Tests that element declarations and type definitions from imported schemas are parsed, even if the importing
+     * schema itself contains no element nor type.
      */
     @Test
     public void testImportsOnly() throws IOException {
@@ -200,14 +190,11 @@ public class SchemasTest {
         Assert.assertTrue(elFound);
     }
 
-    /**
-     * Tests that system property "org.geotools.xml.forceSchemaImport" is properly taken into
-     * account.
-     */
+    /** Tests that system property "org.geotools.xml.forceSchemaImport" is properly taken into account. */
     @Test
     public void testForcedSchemaImport() throws IOException {
-        XSDSchema schema =
-                Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
+        XSDSchema schema = Schemas.parse(
+                Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
         Assert.assertNotNull(schema);
 
         // importing schema is not empty and system property "org.geotools.xml.forceSchemaImport" is
@@ -219,7 +206,8 @@ public class SchemasTest {
         // force import of external schemas in any case
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "true");
 
-        schema = Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
+        schema = Schemas.parse(
+                Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
         Assert.assertNotNull(schema);
 
         elFound = hasElement(schema, "collapsedString");
@@ -239,22 +227,20 @@ public class SchemasTest {
     }
 
     /**
-     * {@link HTTPURIHandler} implementation mocks a remote GeoServer which synchronizes on {@link
-     * org.geotools.xsd.Schemas} class, as GeoServer does. The mock uses a timeout, to avoid the
-     * test to hang for ever in case of future implementation changes.
+     * {@link HTTPURIHandler} implementation mocks a remote GeoServer which synchronizes on
+     * {@link org.geotools.xsd.Schemas} class, as GeoServer does. The mock uses a timeout, to avoid the test to hang for
+     * ever in case of future implementation changes.
      */
     private final class MockServerBehaviour extends HTTPURIHandler {
         @Override
         public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
             try {
                 return executorService.invokeAny(
-                        Collections.singletonList(
-                                () -> {
-                                    synchronized (Schemas.class) {
-                                        return Schemas.class.getResourceAsStream(
-                                                "remoteSchemaLocation.xsd");
-                                    }
-                                }),
+                        Collections.singletonList(() -> {
+                            synchronized (Schemas.class) {
+                                return Schemas.class.getResourceAsStream("remoteSchemaLocation.xsd");
+                            }
+                        }),
                         3,
                         TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException e) {
@@ -266,21 +252,17 @@ public class SchemasTest {
     }
 
     /**
-     * Test ensures no deadlock occurs when a remote schema is loaded, which resolves to the same
-     * JVM. Deadlock used to occur in GeoServer, when schema was loaded from same GeoServer
-     * instance, because schema consumer and schema server both synchronized on same {@link
-     * org.geotools.xsd.Schemas} class instance.
+     * Test ensures no deadlock occurs when a remote schema is loaded, which resolves to the same JVM. Deadlock used to
+     * occur in GeoServer, when schema was loaded from same GeoServer instance, because schema consumer and schema
+     * server both synchronized on same {@link org.geotools.xsd.Schemas} class instance.
      */
     @Test
     public void testParseRemoteDoesNotBlock() throws IOException {
-        URIConverter converter =
-                new ExtensibleURIConverterImpl(
-                        Collections.singletonList(new MockServerBehaviour()),
-                        Collections.emptyList());
+        URIConverter converter = new ExtensibleURIConverterImpl(
+                Collections.singletonList(new MockServerBehaviour()), Collections.emptyList());
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setURIConverter(converter);
-        XSDSchema schema =
-                Schemas.parse("http://www.foo.bar/remoteSchemaLocation.xsd", resourceSet);
+        XSDSchema schema = Schemas.parse("http://www.foo.bar/remoteSchemaLocation.xsd", resourceSet);
         Assert.assertNotNull(schema);
     }
 }

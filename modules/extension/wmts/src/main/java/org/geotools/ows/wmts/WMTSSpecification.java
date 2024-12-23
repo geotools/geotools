@@ -51,8 +51,7 @@ import org.geotools.util.logging.Logging;
  * <ul>
  *   <li>GetMultiTileRequest - Used to get a set of tiles within an extent
  *   <li>GetKVPTileRequest - Used to get a tile request with query string parameters
- *   <li>GetRestTileRequest - Used to get a tile request with url based on resourceurl in
- *       capabilities
+ *   <li>GetRestTileRequest - Used to get a tile request with url based on resourceurl in capabilities
  * </ul>
  *
  * @author ian
@@ -92,16 +91,12 @@ public class WMTSSpecification extends Specification {
         public static final String DIMENSION_ELEVATION = "elevation";
 
         /** */
-        public GetMultiTileRequest(
-                URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
+        public GetMultiTileRequest(URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
             this(onlineResource, properties, capabilities, HTTPClientFinder.createClient());
         }
 
         public GetMultiTileRequest(
-                URL onlineResource,
-                Properties properties,
-                WMTSCapabilities capabilities,
-                HTTPClient client) {
+                URL onlineResource, Properties properties, WMTSCapabilities capabilities, HTTPClient client) {
             super(onlineResource, properties, client);
             if (properties.containsKey("type")) {
                 String t = (String) properties.get("type");
@@ -140,19 +135,17 @@ public class WMTSSpecification extends Specification {
                 if (!layer.getFormats().isEmpty()) {
                     format = layer.getFormats().get(0);
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Format is not set, available formats: "
-                                        + layer.getFormats()
-                                        + " -- Selecting "
-                                        + format);
+                        LOGGER.fine("Format is not set, available formats: "
+                                + layer.getFormats()
+                                + " -- Selecting "
+                                + format);
                     }
                 }
             }
 
             if (StringUtils.isEmpty(format)) {
                 format = "image/png";
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Format not set, trying with " + format);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Format not set, trying with " + format);
             }
             setFormat(format);
 
@@ -164,35 +157,28 @@ public class WMTSSpecification extends Specification {
                 case KVP:
                     return WMTSHelper.appendQueryString(
                             getFinalURL().toExternalForm(),
-                            getKVPparams(
-                                    layer.getName(), this.styleName, tileMatrixSetName, format));
+                            getKVPparams(layer.getName(), this.styleName, tileMatrixSetName, format));
                 case REST:
-                    return getRESTurl(
-                            getTemplateUrl(), layerString, styleString, tileMatrixSetString);
+                    return getRESTurl(getTemplateUrl(), layerString, styleString, tileMatrixSetString);
                 default:
                     throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
             }
         }
 
         /**
-         * Creates a URL from the baseURL. The baseURL is expected to contain the {layer}, {style}
-         * and {tilematrixset} placeholders and these will be replaced with the values passed in. If
-         * a null value is passed in then a blank string will replace the placeholder. Values need
-         * to be UTF-8 encoded.
+         * Creates a URL from the baseURL. The baseURL is expected to contain the {layer}, {style} and {tilematrixset}
+         * placeholders and these will be replaced with the values passed in. If a null value is passed in then a blank
+         * string will replace the placeholder. Values need to be UTF-8 encoded.
          *
          * @param baseUrl the template URL that contains the placeholders
          * @param layerString the value that will replace {layer} in UTF-8 encoded format
          * @param styleString the value that will replace {style} in UTF-8 encoded format
-         * @param tileMatrixSetNameString the value that will replace {tilematrixset} in UTF-8
-         *     encoded format
+         * @param tileMatrixSetNameString the value that will replace {tilematrixset} in UTF-8 encoded format
          * @return the resulting url
          * @see WMTSHelper#encodeParameter(String)
          */
         private String getRESTurl(
-                String baseUrl,
-                String layerString,
-                String styleString,
-                String tileMatrixSetNameString) {
+                String baseUrl, String layerString, String styleString, String tileMatrixSetNameString) {
             baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetNameString);
@@ -200,16 +186,16 @@ public class WMTSSpecification extends Specification {
         }
 
         /**
-         * Returns the properties for KVP WMTS, as well as placeholder's for the specific parameters
-         * of GetTile. Values passed in are expected to be already encoded appropriately for use in
-         * URLs. See {@link WMTSHelper#encodeParameter(String)}
+         * Returns the properties for KVP WMTS, as well as placeholder's for the specific parameters of GetTile. Values
+         * passed in are expected to be already encoded appropriately for use in URLs. See
+         * {@link WMTSHelper#encodeParameter(String)}
          *
          * @param layerString layer
          * @param styleString style
          * @param tileMatrixSetName tilematrixSet name
          * @param format format
-         * @return a hashmap containing the properties for the KVP WMTS including placeholders for
-         *     specific parameters of GetTile
+         * @return a hashmap containing the properties for the KVP WMTS including placeholders for specific parameters
+         *     of GetTile
          * @see WMTSHelper#encodeParameter(String)
          */
         public static HashMap<String, String> getKVPparams(
@@ -244,8 +230,7 @@ public class WMTSSpecification extends Specification {
 
         @Override
         protected String createTemplateUrl(String tileMatrixSetName) {
-            throw new UnsupportedOperationException(
-                    "Single tile request's shouldn't use a template url.");
+            throw new UnsupportedOperationException("Single tile request's shouldn't use a template url.");
         }
     }
 
@@ -266,8 +251,7 @@ public class WMTSSpecification extends Specification {
                     || this.getTileMatrix() == null
                     || this.getTileCol() == null
                     || this.getTileRow() == null) {
-                throw new IllegalStateException(
-                        "Missing some properties for a proper GetTile-request.");
+                throw new IllegalStateException("Missing some properties for a proper GetTile-request.");
             }
 
             String layerString = WMTSHelper.encodeParameter(layer.getName());
@@ -287,8 +271,7 @@ public class WMTSSpecification extends Specification {
 
         /** Creating a GetTileResponse */
         @Override
-        public GetTileResponse createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public GetTileResponse createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetTileResponse(httpResponse, WMTSServiceType.KVP);
         }
     }
@@ -313,15 +296,12 @@ public class WMTSSpecification extends Specification {
                     || this.getTileMatrix() == null
                     || this.getTileCol() == null
                     || this.getTileRow() == null) {
-                throw new IllegalStateException(
-                        "Missing some properties for a proper GetTile-request.");
+                throw new IllegalStateException("Missing some properties for a proper GetTile-request.");
             }
             String baseUrl = getTemplateUrl();
             if (baseUrl == null) {
                 throw new IllegalStateException(
-                        String.format(
-                                "ResourceUrl wasn't given for layer {%s} and format {%s}",
-                                layer, getFormat()));
+                        String.format("ResourceUrl wasn't given for layer {%s} and format {%s}", layer, getFormat()));
             }
 
             String layerString = WMTSHelper.encodeParameter(layer.getName());
@@ -332,8 +312,10 @@ public class WMTSSpecification extends Specification {
             baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrix", this.getTileMatrix());
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilerow", this.getTileRow().toString());
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilecol", this.getTileCol().toString());
+            baseUrl = WMTSHelper.replaceToken(
+                    baseUrl, "tilerow", this.getTileRow().toString());
+            baseUrl = WMTSHelper.replaceToken(
+                    baseUrl, "tilecol", this.getTileCol().toString());
 
             try {
                 return new URL(baseUrl);
@@ -344,8 +326,7 @@ public class WMTSSpecification extends Specification {
 
         /** Creating a GetTileResponse */
         @Override
-        public GetTileResponse createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public GetTileResponse createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetTileResponse(httpResponse, WMTSServiceType.REST);
         }
     }

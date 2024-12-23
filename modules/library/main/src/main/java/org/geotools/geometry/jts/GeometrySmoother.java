@@ -62,23 +62,23 @@ import org.locationtech.jts.geom.Polygon;
 class GeometrySmoother {
 
     /**
-     * Defines methods to control the smoothing process. {@code LineSmoother} has a default
-     * implementation that specifies a constant number of vertices in smoothed segments and no lower
-     * bound on the distance between input vertices for smoothing.
+     * Defines methods to control the smoothing process. {@code LineSmoother} has a default implementation that
+     * specifies a constant number of vertices in smoothed segments and no lower bound on the distance between input
+     * vertices for smoothing.
      */
     private interface SmootherControl {
 
         /**
-         * Gets the minimum distance between input vertices for the segment to be smoothed. Segments
-         * smaller than this will be copied to the output unchanged.
+         * Gets the minimum distance between input vertices for the segment to be smoothed. Segments smaller than this
+         * will be copied to the output unchanged.
          *
          * @return minimum segment length for smoothing
          */
         double getMinLength();
 
         /**
-         * Given an input segment length, returns the number of vertices to use for the smoothed
-         * segment. This number includes the segment end-points.
+         * Given an input segment length, returns the number of vertices to use for the smoothed segment. This number
+         * includes the segment end-points.
          *
          * @param length input segment length
          * @return number of vertices in the smoothed segment including the end-points
@@ -87,24 +87,24 @@ class GeometrySmoother {
     }
 
     /**
-     * Default smoothing control. Specifies no minimum vertex distance and a constant number of
-     * points per smoothed segment.
+     * Default smoothing control. Specifies no minimum vertex distance and a constant number of points per smoothed
+     * segment.
      */
-    private SmootherControl DEFAULT_CONTROL =
-            new SmootherControl() {
-                @Override
-                public double getMinLength() {
-                    return 0.0;
-                }
+    private SmootherControl DEFAULT_CONTROL = new SmootherControl() {
+        @Override
+        public double getMinLength() {
+            return 0.0;
+        }
 
-                @Override
-                public int getNumVertices(double length) {
-                    return 10;
-                }
-            };
+        @Override
+        public int getNumVertices(double length) {
+            return 10;
+        }
+    };
 
     /** The current SmootherControl instance. */
-    private SmootherControl control;;
+    private SmootherControl control;
+    ;
 
     /** The current {@code GeometryFactory} being used. */
     private final GeometryFactory geomFactory;
@@ -137,8 +137,8 @@ class GeometrySmoother {
      * Creates a new {@code LineString} which is a smoothed version of the input {@code LineString}.
      *
      * @param ls the input {@code LineString}
-     * @param alpha a value between 0 and 1 (inclusive) specifying the tightness of fit of the
-     *     smoothed boundary (0 is loose)
+     * @param alpha a value between 0 and 1 (inclusive) specifying the tightness of fit of the smoothed boundary (0 is
+     *     loose)
      * @return the smoothed {@code LineString}
      */
     LineString smooth(LineString ls, double alpha) {
@@ -158,12 +158,7 @@ class GeometrySmoother {
             } else {
                 int smoothN = control.getNumVertices(dist);
                 Coordinate[] segment =
-                        cubicBezier(
-                                coords[i],
-                                coords[i + 1],
-                                controlPoints[i][1],
-                                controlPoints[i + 1][0],
-                                smoothN);
+                        cubicBezier(coords[i], coords[i + 1], controlPoints[i][1], controlPoints[i + 1][0], smoothN);
 
                 int copyN = i < N - 1 ? segment.length - 1 : segment.length;
                 for (int k = 0; k < copyN; k++) {
@@ -177,14 +172,13 @@ class GeometrySmoother {
     }
 
     /**
-     * Creates a new {@code Polygon} whose exterior shell is a smoothed version of the input {@code
-     * Polygon}.
+     * Creates a new {@code Polygon} whose exterior shell is a smoothed version of the input {@code Polygon}.
      *
      * <p>Note: this method presently ignores holes.
      *
      * @param p the input {@code Polygon}
-     * @param alpha a value between 0 and 1 (inclusive) specifying the tightness of fit of the
-     *     smoothed boundary (0 is loose)
+     * @param alpha a value between 0 and 1 (inclusive) specifying the tightness of fit of the smoothed boundary (0 is
+     *     loose)
      * @return the smoothed {@code Polygon}
      */
     public Polygon smooth(Polygon p, double alpha) {
@@ -206,12 +200,7 @@ class GeometrySmoother {
             } else {
                 int smoothN = control.getNumVertices(dist);
                 Coordinate[] segment =
-                        cubicBezier(
-                                coords[i],
-                                coords[next],
-                                controlPoints[i][1],
-                                controlPoints[next][0],
-                                smoothN);
+                        cubicBezier(coords[i], coords[next], controlPoints[i][1], controlPoints[next][0], smoothN);
 
                 int copyN = i < N - 1 ? segment.length - 1 : segment.length;
                 for (int k = 0; k < copyN; k++) {
@@ -227,21 +216,18 @@ class GeometrySmoother {
     /**
      * Sets a new {@code Control} object to for smoothing.
      *
-     * @param control the control to use for smoothing; if {@code null} the default control will be
-     *     set
+     * @param control the control to use for smoothing; if {@code null} the default control will be set
      */
     void setControl(SmootherControl control) {
         this.control = control == null ? DEFAULT_CONTROL : control;
     }
 
     /**
-     * Calculates a pair of Bezier control points for each vertex in an array of {@code
-     * Coordinates}.
+     * Calculates a pair of Bezier control points for each vertex in an array of {@code Coordinates}.
      *
      * @param coords input vertices
      * @param alpha tightness of fit
-     * @return 2D array of {@code Coordinates} for positions of each pair of control points per
-     *     input vertex
+     * @return 2D array of {@code Coordinates} for positions of each pair of control points per input vertex
      */
     private Coordinate[][] getLineControlPoints(Coordinate[] coords, double alpha) {
         if (alpha < 0.0 || alpha > 1.0) {
@@ -266,10 +252,7 @@ class GeometrySmoother {
         v[2] = coords[0];
 
         // Dummy coordinate for end of line
-        Coordinate vN =
-                new Coordinate(
-                        2 * coords[N - 1].x - coords[N - 2].x,
-                        2 * coords[N - 1].y - coords[N - 2].y);
+        Coordinate vN = new Coordinate(2 * coords[N - 1].x - coords[N - 2].x, 2 * coords[N - 1].y - coords[N - 2].y);
 
         mid[1].x = (v[1].x + v[2].x) / 2.0;
         mid[1].y = (v[1].y + v[2].y) / 2.0;
@@ -295,29 +278,25 @@ class GeometrySmoother {
             double xdelta = anchor.x - v[1].x;
             double ydelta = anchor.y - v[1].y;
 
-            ctrl[i][0] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
-                            alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
+            ctrl[i][0] = new Coordinate(
+                    alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
+                    alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
 
-            ctrl[i][1] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
-                            alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
+            ctrl[i][1] = new Coordinate(
+                    alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
+                    alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
         }
 
         return ctrl;
     }
 
     /**
-     * Calculates a pair of Bezier control points for each vertex in an array of {@code
-     * Coordinates}.
+     * Calculates a pair of Bezier control points for each vertex in an array of {@code Coordinates}.
      *
      * @param coords input vertices
      * @param N number of coordinates in {@coords} to use
      * @param alpha tightness of fit
-     * @return 2D array of {@code Coordinates} for positions of each pair of control points per
-     *     input vertex
+     * @return 2D array of {@code Coordinates} for positions of each pair of control points per input vertex
      */
     private Coordinate[][] getPolygonControlPoints(Coordinate[] coords, int N, double alpha) {
         if (alpha < 0.0 || alpha > 1.0) {
@@ -362,23 +341,20 @@ class GeometrySmoother {
             double xdelta = anchor.x - v[1].x;
             double ydelta = anchor.y - v[1].y;
 
-            ctrl[i][0] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
-                            alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
+            ctrl[i][0] = new Coordinate(
+                    alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
+                    alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
 
-            ctrl[i][1] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
-                            alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
+            ctrl[i][1] = new Coordinate(
+                    alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
+                    alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
         }
 
         return ctrl;
     }
 
     /**
-     * Calculates vertices along a cubic Bazier curve given start point, end point and two control
-     * points.
+     * Calculates vertices along a cubic Bazier curve given start point, end point and two control points.
      *
      * @param start start position
      * @param end end position
@@ -408,17 +384,9 @@ class GeometrySmoother {
         for (int i = 1; i < nv - 1; i++) {
             Coordinate c = new Coordinate();
 
-            c.x =
-                    ip[i].t[0] * start.x
-                            + ip[i].t[1] * ctrl1.x
-                            + ip[i].t[2] * ctrl2.x
-                            + ip[i].t[3] * end.x;
+            c.x = ip[i].t[0] * start.x + ip[i].t[1] * ctrl1.x + ip[i].t[2] * ctrl2.x + ip[i].t[3] * end.x;
             c.x /= ip[i].tsum;
-            c.y =
-                    ip[i].t[0] * start.y
-                            + ip[i].t[1] * ctrl1.y
-                            + ip[i].t[2] * ctrl2.y
-                            + ip[i].t[3] * end.y;
+            c.y = ip[i].t[0] * start.y + ip[i].t[1] * ctrl1.y + ip[i].t[2] * ctrl2.y + ip[i].t[3] * end.y;
             c.y /= ip[i].tsum;
 
             curve[i] = c;
@@ -428,8 +396,7 @@ class GeometrySmoother {
     }
 
     /**
-     * Gets the interpolation parameters for a Bezier curve approximated by the given number of
-     * vertices.
+     * Gets the interpolation parameters for a Bezier curve approximated by the given number of vertices.
      *
      * @param npoints number of vertices
      * @return array of {@code InterpPoint} objects holding the parameter values

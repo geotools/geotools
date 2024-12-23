@@ -44,38 +44,20 @@ import org.locationtech.jts.io.WKBConstants;
 public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     public static String GetCurrentSchema = "select current sqlid from sysibm.sysdummy1";
-    public static String GetWKBZTypes =
-            "select db2gse.st_asbinary(db2gse.st_point(1,2,3,0)) from sysibm.sysdummy1";
-    public static String SelectGeometryColumns =
-            "select * from db2gse.st_geometry_columns where 0 = 1";
+    public static String GetWKBZTypes = "select db2gse.st_asbinary(db2gse.st_point(1,2,3,0)) from sysibm.sysdummy1";
+    public static String SelectGeometryColumns = "select * from db2gse.st_geometry_columns where 0 = 1";
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "db2",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "db2", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** enables using EnvelopesIntersect in bbox queries */
     public static final Param LOOSEBBOX =
-            new Param(
-                    "Loose bbox",
-                    Boolean.class,
-                    "Perform only primary filter on bbox",
-                    false,
-                    Boolean.TRUE);
+            new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /** use selectivity clause for spatial predicates */
-    public static final Param USE_SELECTIVITY =
-            new Param(
-                    "Use selectivity clause",
-                    Boolean.class,
-                    "Use selectivity clause for spatial queries",
-                    false,
-                    Boolean.TRUE);
+    public static final Param USE_SELECTIVITY = new Param(
+            "Use selectivity clause", Boolean.class, "Use selectivity clause for spatial queries", false, Boolean.TRUE);
 
     public static final String DriverClassName = "com.ibm.db2.jcc.DB2Driver";
 
@@ -160,13 +142,11 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     @SuppressWarnings("PMD.CheckResultSet")
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         Connection con = null;
         try {
             con = dataStore.getDataSource().getConnection();
-            DB2DialectInfo di =
-                    ((DB2SQLDialectPrepared) dataStore.getSQLDialect()).getDb2DialectInfo();
+            DB2DialectInfo di = ((DB2SQLDialectPrepared) dataStore.getSQLDialect()).getDb2DialectInfo();
 
             DB2SQLDialectPrepared dialect = (DB2SQLDialectPrepared) dataStore.getSQLDialect();
             Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);

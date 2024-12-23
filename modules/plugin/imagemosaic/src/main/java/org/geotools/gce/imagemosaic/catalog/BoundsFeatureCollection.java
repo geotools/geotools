@@ -30,16 +30,15 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Feature collection decorating features with their native bounds, used wehen the {@link
- * GranuleSource#NATIVE_BOUNDS} hint is provided in the queries
+ * Feature collection decorating features with their native bounds, used wehen the {@link GranuleSource#NATIVE_BOUNDS}
+ * hint is provided in the queries
  */
 class BoundsFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     private final Function<SimpleFeature, GranuleDescriptor> granuleMapper;
 
     protected BoundsFeatureCollection(
-            SimpleFeatureCollection delegate,
-            Function<SimpleFeature, GranuleDescriptor> granuleMapper) {
+            SimpleFeatureCollection delegate, Function<SimpleFeature, GranuleDescriptor> granuleMapper) {
         super(delegate);
         this.granuleMapper = granuleMapper;
     }

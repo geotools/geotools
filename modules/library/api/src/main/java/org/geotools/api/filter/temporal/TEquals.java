@@ -18,8 +18,7 @@
 package org.geotools.api.filter.temporal;
 
 /**
- * Filter operator that determines if two temporal objects are equal as defined by the Filter
- * Encoding Specification.
+ * Filter operator that determines if two temporal objects are equal as defined by the Filter Encoding Specification.
  *
  * <p>The TEquals operator is defined by ISO 19108 and has the following semantics:
  *

@@ -56,8 +56,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         checkPointCoordinates(findOne(features, "description", "point_zm_a"), 4, 1, -2, 1, 10, 0.5);
         checkPointCoordinates(findOne(features, "description", "point_zm_b"), 4, 1, 3, 1, 15, -1);
         checkPointCoordinates(findOne(features, "description", "point_zm_c"), 4, 1, 3, 5, 20, 2);
-        checkPointCoordinates(
-                findOne(features, "description", "point_zm_d"), 4, 1, -2, 5, 25, -3.5);
+        checkPointCoordinates(findOne(features, "description", "point_zm_d"), 4, 1, -2, 5, 25, -3.5);
     }
 
     @Test
@@ -79,11 +78,10 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Checks that the provided feature default geometry is a linestring and has the expected
-     * dimension, measures and ordinates.
+     * Checks that the provided feature default geometry is a linestring and has the expected dimension, measures and
+     * ordinates.
      */
-    private void checkLineCoordinates(
-            SimpleFeature feature, int dimension, int measures, double... ordinates) {
+    private void checkLineCoordinates(SimpleFeature feature, int dimension, int measures, double... ordinates) {
         // get the feature point geometry
         Object candidate = feature.getDefaultGeometry();
         assertThat(candidate, instanceOf(LineString.class));
@@ -101,11 +99,10 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Checks that the provided feature default geometry is a point and has the expected dimension,
-     * measures and ordinates.
+     * Checks that the provided feature default geometry is a point and has the expected dimension, measures and
+     * ordinates.
      */
-    private void checkPointCoordinates(
-            SimpleFeature feature, int dimension, int measures, double... ordinates) {
+    private void checkPointCoordinates(SimpleFeature feature, int dimension, int measures, double... ordinates) {
         // get the feature point geometry
         Object candidate = feature.getDefaultGeometry();
         assertThat(candidate, instanceOf(Point.class));
@@ -144,8 +141,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
             // something bad happen, let's abort
             throw new RuntimeException(
                     String.format(
-                            "Error reading features from table '%s' using query '%s'.",
-                            tableName, query.toString()),
+                            "Error reading features from table '%s' using query '%s'.", tableName, query.toString()),
                     exception);
         }
     }
@@ -161,10 +157,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         return features;
     }
 
-    /**
-     * Gets the features that match the provided attributes values and checks that only one feature
-     * was found.
-     */
+    /** Gets the features that match the provided attributes values and checks that only one feature was found. */
     private SimpleFeature findOne(List<SimpleFeature> features, Object... attributesValues) {
         List<SimpleFeature> found = find(features, attributesValues);
         assertThat(found.size(), is(1));

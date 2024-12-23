@@ -52,12 +52,8 @@ import org.geotools.util.logging.Logging;
  * @author Martin Desruisseaux
  * @author Andrea Aime
  */
-final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
-        implements CRSAuthorityFactory {
-    /**
-     * List of codes without authority space. We can not defines them in an ordinary authority
-     * factory.
-     */
+final class DefaultAuthorityFactory extends ThreadedAuthorityFactory implements CRSAuthorityFactory {
+    /** List of codes without authority space. We can not defines them in an ordinary authority factory. */
     private static List<String> AUTHORITY_LESS = UnmodifiableArrayList.wrap("WGS84(DD)");
 
     private static Logger LOGGER = Logging.getLogger(DefaultAuthorityFactory.class);
@@ -68,8 +64,8 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
     }
 
     /**
-     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
-     * this()/super() call in constructors").
+     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of this()/super() call in
+     * constructors").
      */
     private static AbstractAuthorityFactory getBackingFactory(final boolean longitudeFirst) {
         final Hints hints = GeoTools.getDefaultHints();
@@ -93,9 +89,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
              */
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Factories with FORCE_LONGITUDE_FIRST_AXIS_ORDER=true :\n"
-                                + logClassNames(factories));
+                LOGGER.fine("Factories with FORCE_LONGITUDE_FIRST_AXIS_ORDER=true :\n" + logClassNames(factories));
             }
             factories.addAll(ReferencingFactoryFinder.getCRSAuthorityFactories(hints));
         }
@@ -114,13 +108,12 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
     }
 
     /**
-     * Implementation of {@link CRS#getSupportedCodes}. Provided here in order to reduce the amount
-     * of class loading when using {@link CRS} for other purpose than CRS decoding.
+     * Implementation of {@link CRS#getSupportedCodes}. Provided here in order to reduce the amount of class loading
+     * when using {@link CRS} for other purpose than CRS decoding.
      */
     static Set<String> getSupportedCodes(final String authority) {
         final Set<String> result = new LinkedHashSet<>(AUTHORITY_LESS);
-        for (final CRSAuthorityFactory factory :
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
+        for (final CRSAuthorityFactory factory : ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             if (Citations.identifierMatches(factory.getAuthority(), authority)) {
                 final Set<String> codes;
                 try {
@@ -144,13 +137,12 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
     }
 
     /**
-     * Implementation of {@link CRS#getSupportedAuthorities}. Provided here in order to reduce the
-     * amount of class loading when using {@link CRS} for other purpose than CRS decoding.
+     * Implementation of {@link CRS#getSupportedAuthorities}. Provided here in order to reduce the amount of class
+     * loading when using {@link CRS} for other purpose than CRS decoding.
      */
     static Set<String> getSupportedAuthorities(final boolean returnAliases) {
         final Set<String> result = new LinkedHashSet<>();
-        for (final CRSAuthorityFactory factory :
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
+        for (final CRSAuthorityFactory factory : ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             for (final Identifier id : factory.getAuthority().getIdentifiers()) {
                 result.add(id.getCode());
                 if (!returnAliases) {
@@ -163,8 +155,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
 
     /** Returns the coordinate reference system for the given code. */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         if (code != null) {
             code = code.trim();
             if (LOGGER.isLoggable(Level.FINE)) {

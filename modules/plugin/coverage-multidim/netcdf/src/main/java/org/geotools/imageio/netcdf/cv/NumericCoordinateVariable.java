@@ -45,8 +45,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
         // If the axis is not numeric, we can't process any further.
         if (!coordinateAxis.isNumeric()) {
             throw new IllegalArgumentException(
-                    "Unable to process non numeric coordinate variable: "
-                            + coordinateAxis.toString());
+                    "Unable to process non numeric coordinate variable: " + coordinateAxis.toString());
         }
 
         // scale and offset

@@ -36,8 +36,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class FilterFunction_list extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "list", parameter("list", List.class), parameter("item", Object.class, 1, -1));
+            new FunctionNameImpl("list", parameter("list", List.class), parameter("item", Object.class, 1, -1));
 
     public FilterFunction_list() {
         super(NAME);

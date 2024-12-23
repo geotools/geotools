@@ -54,13 +54,7 @@ public class GeoPkgFilterToSQLTest extends SQLFilterTestSupport {
     public void testFunctionLike() throws Exception {
         filterToSql.setFeatureType(testSchema);
         PropertyIsLike like =
-                ff.like(
-                        ff.function("strToLowerCase", ff.property("testString")),
-                        "a_literal",
-                        "%",
-                        "-",
-                        "\\",
-                        true);
+                ff.like(ff.function("strToLowerCase", ff.property("testString")), "a_literal", "%", "-", "\\", true);
 
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();

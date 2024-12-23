@@ -27,15 +27,14 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * A set of objects hold by weak references. An entry in a {@code WeakHashSet} will automatically be
- * removed when it is no longer in ordinary use. More precisely, the presence of an entry will not
- * prevent the entry from being discarded by the garbage collector, that is, made finalizable,
- * finalized, and then reclaimed. When an entry has been discarded it is effectively removed from
- * the set, so this class behaves somewhat differently than other {@link java.util.Set}
+ * A set of objects hold by weak references. An entry in a {@code WeakHashSet} will automatically be removed when it is
+ * no longer in ordinary use. More precisely, the presence of an entry will not prevent the entry from being discarded
+ * by the garbage collector, that is, made finalizable, finalized, and then reclaimed. When an entry has been discarded
+ * it is effectively removed from the set, so this class behaves somewhat differently than other {@link java.util.Set}
  * implementations.
  *
- * <p>If you would like to use {@code WeakHashSet} as inside a factory to prevent creating duplicate
- * immutable objects, please look at the {@link CanonicalSet} subclass.
+ * <p>If you would like to use {@code WeakHashSet} as inside a factory to prevent creating duplicate immutable objects,
+ * please look at the {@link CanonicalSet} subclass.
  *
  * <p>The {@code WeakHashSet} class is thread-safe.
  *
@@ -57,10 +56,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
         /** The next entry, or {@code null} if there is none. */
         Entry next;
 
-        /**
-         * Index for this element in {@link #table}. This index must be updated at every {@link
-         * #rehash} call.
-         */
+        /** Index for this element in {@link #table}. This index must be updated at every {@link #rehash} call. */
         int index;
 
         /** Constructs a new weak reference. */
@@ -94,10 +90,9 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     private int threshold;
 
     /**
-     * The timestamp when {@link #table} was last rehashed. This information is used to avoid too
-     * early table reduction. When the garbage collector collected a lot of elements, we will wait
-     * at least 20 seconds before rehashing {@link #table}. Too early table reduction leads to many
-     * cycles like "reduce", "expand", "reduce", "expand", etc.
+     * The timestamp when {@link #table} was last rehashed. This information is used to avoid too early table reduction.
+     * When the garbage collector collected a lot of elements, we will wait at least 20 seconds before rehashing
+     * {@link #table}. Too early table reduction leads to many cycles like "reduce", "expand", "reduce", "expand", etc.
      */
     private long lastRehashTime;
 
@@ -138,8 +133,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /**
-     * Invoked by {@link Entry} when an element has been collected by the garbage collector. This
-     * method will remove the weak reference from {@link #table}.
+     * Invoked by {@link Entry} when an element has been collected by the garbage collector. This method will remove the
+     * weak reference from {@link #table}.
      */
     private synchronized void removeEntry(final Entry toRemove) {
         assert valid() : count;
@@ -183,8 +178,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     /**
      * Rehash {@link #table}.
      *
-     * @param augmentation {@code true} if this method is invoked for augmenting {@link #table}, or
-     *     {@code false} if it is invoked for making the table smaller.
+     * @param augmentation {@code true} if this method is invoked for augmenting {@link #table}, or {@code false} if it
+     *     is invoked for making the table smaller.
      */
     private void rehash(final boolean augmentation) {
         assert Thread.holdsLock(this);
@@ -218,8 +213,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
         final Logger logger = Logging.getLogger(WeakHashSet.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
-            final LogRecord record =
-                    new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
+            final LogRecord record = new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
             record.setSourceMethodName(augmentation ? "unique" : "remove");
             record.setSourceClassName(WeakHashSet.class.getName());
             record.setLoggerName(logger.getName());
@@ -229,11 +223,10 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /**
-     * Checks if this {@code WeakHashSet} is valid. This method counts the number of elements and
-     * compare it to {@link #count}. If the check fails, the number of elements is corrected (if we
-     * didn't, an {@link AssertionError} would be thrown for every operations after the first error,
-     * which make debugging more difficult). The set is otherwise unchanged, which should help to
-     * get similar behaviour as if assertions hasn't been turned on.
+     * Checks if this {@code WeakHashSet} is valid. This method counts the number of elements and compare it to
+     * {@link #count}. If the check fails, the number of elements is corrected (if we didn't, an {@link AssertionError}
+     * would be thrown for every operations after the first error, which make debugging more difficult). The set is
+     * otherwise unchanged, which should help to get similar behaviour as if assertions hasn't been turned on.
      */
     private boolean valid() {
         int n = 0;
@@ -280,8 +273,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /**
-     * Adds the specified element to this set if it is not already present. If this set already
-     * contains the specified element, the call leaves this set unchanged and returns {@code false}.
+     * Adds the specified element to this set if it is not already present. If this set already contains the specified
+     * element, the call leaves this set unchanged and returns {@code false}.
      *
      * @param obj Element to be added to this set.
      * @return {@code true} if this set did not already contain the specified element.
@@ -302,9 +295,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     static final int INTERN = +2;
 
     /**
-     * Returns an object equals to {@code obj} if such an object already exist in this {@code
-     * WeakHashSet}. Otherwise, add {@code obj} to this {@code WeakHashSet}. This method is
-     * equivalents to the following code:
+     * Returns an object equals to {@code obj} if such an object already exist in this {@code WeakHashSet}. Otherwise,
+     * add {@code obj} to this {@code WeakHashSet}. This method is equivalents to the following code:
      *
      * <blockquote>
      *
@@ -377,9 +369,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /**
-     * Returns a view of this set as an array. Elements will be in an arbitrary order. Note that
-     * this array contains strong reference. Consequently, no object reclamation will occurs as long
-     * as a reference to this array is hold.
+     * Returns a view of this set as an array. Elements will be in an arbitrary order. Note that this array contains
+     * strong reference. Consequently, no object reclamation will occurs as long as a reference to this array is hold.
      */
     @Override
     public synchronized E[] toArray() {
@@ -398,8 +389,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /**
-     * Returns an iterator over the elements contained in this collection. No element from this set
-     * will be garbage collected as long as a reference to the iterator is hold.
+     * Returns an iterator over the elements contained in this collection. No element from this set will be garbage
+     * collected as long as a reference to the iterator is hold.
      */
     @Override
     public Iterator<E> iterator() {

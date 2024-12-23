@@ -20,8 +20,8 @@ import org.geotools.graph.structure.basic.BasicNode;
 import org.locationtech.jts.geom.Coordinate;
 
 /**
- * Basic implementation of XYNode extended from BasicNode. The coordinate is stored in the
- * underlying object reference of the node.
+ * Basic implementation of XYNode extended from BasicNode. The coordinate is stored in the underlying object reference
+ * of the node.
  *
  * @see org.geotools.graph.structure.basic.BasicNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net

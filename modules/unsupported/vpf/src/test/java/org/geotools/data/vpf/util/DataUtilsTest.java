@@ -41,8 +41,8 @@ public class DataUtilsTest implements DataTypesDefinition {
     protected DataUtils varDataUtils;
 
     /**
-     * This method is called every time before particular test execution. It creates new instance of
-     * tested class and it can perform some more actions which are necessary for performs tests.
+     * This method is called every time before particular test execution. It creates new instance of tested class and it
+     * can perform some more actions which are necessary for performs tests.
      */
     @Before
     public void setUp() {
@@ -69,9 +69,7 @@ public class DataUtilsTest implements DataTypesDefinition {
         {-267452416, 4080}
     };
 
-    /**
-     * Method for testing original source method: int littleEndianToInt(byte[]) from tested class
-     */
+    /** Method for testing original source method: int littleEndianToInt(byte[]) from tested class */
     @Test
     public void testLittleEndianToInt1374008726() {
         for (int i = 0; i < TEST_SAMPLES.length; i++) {
@@ -165,10 +163,7 @@ public class DataUtilsTest implements DataTypesDefinition {
         null
     };
 
-    /**
-     * Method for testing original source method: java.lang.Object decodeData(byte[], char) from
-     * tested class
-     */
+    /** Method for testing original source method: java.lang.Object decodeData(byte[], char) from tested class */
     @Test
     public void testDecodeData13740087263052374() {
         byte[] testData = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
@@ -183,8 +178,7 @@ public class DataUtilsTest implements DataTypesDefinition {
                         RESULT_TYPES[i].isInstance(result));
             } // end of if (i < TEST_TYPES.length - 2)
             else {
-                Assert.assertNull(
-                        "for this type: " + RESULT_TYPES[i] + " NULL should be returned", result);
+                Assert.assertNull("for this type: " + RESULT_TYPES[i] + " NULL should be returned", result);
             } // end of else
         } // end of for (int i = 0; i < TEST_TYPES.length; i++)
     } // end of testDecodeData13740087263052374(byte[], char)
@@ -243,10 +237,7 @@ public class DataUtilsTest implements DataTypesDefinition {
     @Test
     public void testDecodeFloat1374008726() {
         Assert.assertEquals(
-                "Decoding float from bytes stream",
-                1.4E-45f,
-                DataUtils.decodeFloat(new byte[] {0, 0, 0, 1}),
-                0);
+                "Decoding float from bytes stream", 1.4E-45f, DataUtils.decodeFloat(new byte[] {0, 0, 0, 1}), 0);
         Assert.assertEquals(
                 "Decoding float from bytes stream",
                 3.57E-43f,
@@ -273,42 +264,28 @@ public class DataUtilsTest implements DataTypesDefinition {
     @Test
     public void testDecodeInt1374008726() {
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                255,
-                DataUtils.decodeInt(new byte[] {0, 0, 0, (byte) 0xFF}));
+                "Decoding short from bytes stream", 255, DataUtils.decodeInt(new byte[] {0, 0, 0, (byte) 0xFF}));
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                65280,
-                DataUtils.decodeInt(new byte[] {0, 0, (byte) 0xFF, 0}));
+                "Decoding short from bytes stream", 65280, DataUtils.decodeInt(new byte[] {0, 0, (byte) 0xFF, 0}));
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                16711680,
-                DataUtils.decodeInt(new byte[] {0, (byte) 0xFF, 0, 0}));
+                "Decoding short from bytes stream", 16711680, DataUtils.decodeInt(new byte[] {0, (byte) 0xFF, 0, 0}));
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                -16777216,
-                DataUtils.decodeInt(new byte[] {(byte) 0xFF, 0, 0, 0}));
+                "Decoding short from bytes stream", -16777216, DataUtils.decodeInt(new byte[] {(byte) 0xFF, 0, 0, 0}));
     } // end of testDecodeInt1374008726(byte[])
 
     /** Method for testing original source method: short decodeShort(byte[]) from tested class */
     @Test
     public void testDecodeShort1374008726() {
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                255,
-                DataUtils.decodeShort(new byte[] {0, (byte) 0xFF}));
+                "Decoding short from bytes stream", 255, DataUtils.decodeShort(new byte[] {0, (byte) 0xFF}));
         Assert.assertEquals(
-                "Decoding short from bytes stream",
-                -256,
-                DataUtils.decodeShort(new byte[] {(byte) 0xFF, 0}));
+                "Decoding short from bytes stream", -256, DataUtils.decodeShort(new byte[] {(byte) 0xFF, 0}));
     } // end of testDecodeShort1374008726(byte[])
 
     /** Method for testing original source method: int unsigByteToInt(byte) from tested class */
     @Test
     public void testUnsigByteToInt3039496() {
-        Assert.assertEquals(
-                "Is negative byte converted correcly:", 255, DataUtils.unsigByteToInt((byte) 0xFF));
-        Assert.assertEquals(
-                "Is negative byte converted correcly:", 1, DataUtils.unsigByteToInt((byte) 1));
+        Assert.assertEquals("Is negative byte converted correcly:", 255, DataUtils.unsigByteToInt((byte) 0xFF));
+        Assert.assertEquals("Is negative byte converted correcly:", 1, DataUtils.unsigByteToInt((byte) 1));
     } // end of testUnsigByteToInt3039496(byte)
 } // end of DataUtilsTest

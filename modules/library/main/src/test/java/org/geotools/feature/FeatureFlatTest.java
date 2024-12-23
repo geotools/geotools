@@ -49,44 +49,17 @@ public class FeatureFlatTest {
         GeometryFactory gf = new GeometryFactory();
         Assert.assertTrue(
                 "geometry retrieval and match",
-                ((Point) testFeature.getAttribute("testGeometry"))
-                        .equalsExact(gf.createPoint(new Coordinate(1, 2))));
+                ((Point) testFeature.getAttribute("testGeometry")).equalsExact(gf.createPoint(new Coordinate(1, 2))));
+        assertEquals("boolean retrieval and match", testFeature.getAttribute("testBoolean"), Boolean.TRUE);
         assertEquals(
-                "boolean retrieval and match",
-                testFeature.getAttribute("testBoolean"),
-                Boolean.TRUE);
-        assertEquals(
-                "character retrieval and match",
-                testFeature.getAttribute("testCharacter"),
-                Character.valueOf('t'));
-        assertEquals(
-                "byte retrieval and match",
-                testFeature.getAttribute("testByte"),
-                Byte.valueOf("10"));
-        assertEquals(
-                "short retrieval and match",
-                testFeature.getAttribute("testShort"),
-                Short.valueOf("101"));
-        assertEquals(
-                "integer retrieval and match",
-                testFeature.getAttribute("testInteger"),
-                Integer.valueOf(1002));
-        assertEquals(
-                "long retrieval and match",
-                testFeature.getAttribute("testLong"),
-                Long.valueOf(10003));
-        assertEquals(
-                "float retrieval and match",
-                testFeature.getAttribute("testFloat"),
-                Float.valueOf(10000.4f));
-        assertEquals(
-                "double retrieval and match",
-                testFeature.getAttribute("testDouble"),
-                Double.valueOf(100000.5));
-        assertEquals(
-                "string retrieval and match",
-                "test string data",
-                testFeature.getAttribute("testString"));
+                "character retrieval and match", testFeature.getAttribute("testCharacter"), Character.valueOf('t'));
+        assertEquals("byte retrieval and match", testFeature.getAttribute("testByte"), Byte.valueOf("10"));
+        assertEquals("short retrieval and match", testFeature.getAttribute("testShort"), Short.valueOf("101"));
+        assertEquals("integer retrieval and match", testFeature.getAttribute("testInteger"), Integer.valueOf(1002));
+        assertEquals("long retrieval and match", testFeature.getAttribute("testLong"), Long.valueOf(10003));
+        assertEquals("float retrieval and match", testFeature.getAttribute("testFloat"), Float.valueOf(10000.4f));
+        assertEquals("double retrieval and match", testFeature.getAttribute("testDouble"), Double.valueOf(100000.5));
+        assertEquals("string retrieval and match", "test string data", testFeature.getAttribute("testString"));
     }
 
     @Test
@@ -183,24 +156,15 @@ public class FeatureFlatTest {
     public void testModify() throws IllegalAttributeException {
         String newData = "new test string data";
         testFeature.setAttribute("testString", newData);
-        assertEquals(
-                "match modified (string) attribute",
-                testFeature.getAttribute("testString"),
-                newData);
+        assertEquals("match modified (string) attribute", testFeature.getAttribute("testString"), newData);
 
         GeometryFactory gf = new GeometryFactory();
         Point newGeom = gf.createPoint(new Coordinate(3, 4));
         testFeature.setAttribute("testGeometry", newGeom);
-        assertEquals(
-                "match modified (geometry) attribute",
-                testFeature.getAttribute("testGeometry"),
-                newGeom);
+        assertEquals("match modified (geometry) attribute", testFeature.getAttribute("testGeometry"), newGeom);
 
         testFeature.setDefaultGeometry(newGeom);
-        assertEquals(
-                "match modified (geometry) attribute",
-                testFeature.getAttribute("testGeometry"),
-                newGeom);
+        assertEquals("match modified (geometry) attribute", testFeature.getAttribute("testGeometry"), newGeom);
     }
 
     //    public void testAttributeAccess() throws Exception {

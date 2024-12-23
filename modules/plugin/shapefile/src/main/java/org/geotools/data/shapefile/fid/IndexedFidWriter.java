@@ -51,8 +51,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
     private StorageFile storageFile;
 
     /**
-     * Creates a new instance and writes the fids to a storage file which is replaces the original
-     * on close().
+     * Creates a new instance and writes the fids to a storage file which is replaces the original on close().
      *
      * @param shpFiles The shapefiles to used
      */
@@ -63,8 +62,8 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
 
     /**
      * Create a new instance<br>
-     * Note: {@link StorageFile#replaceOriginal()} is NOT called. Call {@link
-     * #IndexedFidWriter(ShpFiles)} for that behaviour.
+     * Note: {@link StorageFile#replaceOriginal()} is NOT called. Call {@link #IndexedFidWriter(ShpFiles)} for that
+     * behaviour.
      *
      * @param shpFiles The shapefiles to used
      * @param storageFile the storage file that will be written to. It will NOT be closed.
@@ -79,8 +78,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
 
     private void init(ShpFiles shpFiles, StorageFile storageFile) throws IOException {
         if (!shpFiles.isLocal()) {
-            throw new IllegalArgumentException(
-                    "Currently only local files are supported for writing");
+            throw new IllegalArgumentException("Currently only local files are supported for writing");
         }
 
         try {
@@ -204,8 +202,8 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
     /**
      * Increments the fidIndex by 1.
      *
-     * <p>Indicates that a feature was removed from the location. This is intended to ensure that
-     * FIDs stay constant over time. Consider the following case of 5 features.
+     * <p>Indicates that a feature was removed from the location. This is intended to ensure that FIDs stay constant
+     * over time. Consider the following case of 5 features.
      *
      * <ul>
      *   <li>feature 1 has fid typename.0
@@ -231,8 +229,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
      * @throws IOException if current fid index is null
      */
     public void remove() throws IOException {
-        if (current == -1)
-            throw new IOException("Current fid index is null, next must be called before remove");
+        if (current == -1) throw new IOException("Current fid index is null, next must be called before remove");
         if (hasNext()) {
             removes++;
             current = -1;
@@ -240,15 +237,14 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
     }
 
     /**
-     * Writes the current fidIndex. Writes to the same place in the file each time. Only {@link
-     * #next()} moves forward in the file.
+     * Writes the current fidIndex. Writes to the same place in the file each time. Only {@link #next()} moves forward
+     * in the file.
      *
      * @see #next()
      * @see #remove()
      */
     public void write() throws IOException {
-        if (current == -1)
-            throw new IOException("Current fid index is null, next must be called before write()");
+        if (current == -1) throw new IOException("Current fid index is null, next must be called before write()");
 
         if (writeBuffer == null) {
             allocateBuffers();
@@ -274,30 +270,29 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
         return getClass().getName();
     }
 
-    public static final IndexedFidWriter EMPTY_WRITER =
-            new IndexedFidWriter() {
-                @Override
-                public void close() throws IOException {}
+    public static final IndexedFidWriter EMPTY_WRITER = new IndexedFidWriter() {
+        @Override
+        public void close() throws IOException {}
 
-                @Override
-                public boolean hasNext() throws IOException {
-                    return false;
-                }
+        @Override
+        public boolean hasNext() throws IOException {
+            return false;
+        }
 
-                @Override
-                public boolean isClosed() {
-                    return false;
-                }
+        @Override
+        public boolean isClosed() {
+            return false;
+        }
 
-                @Override
-                public void write() throws IOException {}
+        @Override
+        public void write() throws IOException {}
 
-                @Override
-                public long next() throws IOException {
-                    return 0;
-                }
+        @Override
+        public long next() throws IOException {
+            return 0;
+        }
 
-                @Override
-                public void remove() throws IOException {}
-            };
+        @Override
+        public void remove() throws IOException {}
+    };
 }

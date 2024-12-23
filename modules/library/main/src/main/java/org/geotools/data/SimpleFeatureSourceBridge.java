@@ -33,10 +33,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
-/**
- * Bridges between {@link FeatureSource<SimpleFeatureType, SimpleFeature>} and {@link
- * SimpleFeatureSource}
- */
+/** Bridges between {@link FeatureSource<SimpleFeatureType, SimpleFeature>} and {@link SimpleFeatureSource} */
 class SimpleFeatureSourceBridge implements SimpleFeatureSource {
 
     protected FeatureSource<SimpleFeatureType, SimpleFeature> delegate;

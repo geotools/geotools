@@ -52,9 +52,8 @@ import org.geotools.util.Utilities;
 import si.uom.SI;
 
 /**
- * Returns a conversion from a source to target projected CRS, if this conversion is representable
- * as an affine transform. More specifically, if all projection parameters are identical except the
- * following ones:
+ * Returns a conversion from a source to target projected CRS, if this conversion is representable as an affine
+ * transform. More specifically, if all projection parameters are identical except the following ones:
  *
  * <p>
  *
@@ -64,9 +63,8 @@ import si.uom.SI;
  *   <LI>{@link MapProjection.AbstractProvider#FALSE_NORTHING false_northing}
  * </UL>
  *
- * <p>Then the conversion between two projected CRS can sometime be represented as a linear
- * conversion. For example if only false easting/northing differ, then the coordinate conversion is
- * simply a translation.
+ * <p>Then the conversion between two projected CRS can sometime be represented as a linear conversion. For example if
+ * only false easting/northing differ, then the coordinate conversion is simply a translation.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -76,16 +74,16 @@ final class ProjectionAnalyzer {
     private final Conversion projection;
 
     /**
-     * The affine transform applied on projected coordinates after the projection. In Geotools
-     * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
-     * to get standard (<var>x</var>,<var>y</var>) axis in metres. Can be {@code null} if none.
+     * The affine transform applied on projected coordinates after the projection. In Geotools {@link MapProjection}
+     * implementation, this is the axis swapping and scaling needed in order to get standard (<var>x</var>,<var>y</var>)
+     * axis in metres. Can be {@code null} if none.
      */
     private final Matrix projectedScale;
 
     /**
-     * The transform for the map projection alone, without the {@link #geographicScale} and {@link
-     * #projectedScale} parts. In Geotools implementation, it should be an instance of {@link
-     * MapProjection}. May be {@code null} if we can't handle the {@linkplain #projection}.
+     * The transform for the map projection alone, without the {@link #geographicScale} and {@link #projectedScale}
+     * parts. In Geotools implementation, it should be an instance of {@link MapProjection}. May be {@code null} if we
+     * can't handle the {@linkplain #projection}.
      */
     private final MathTransform transform;
 
@@ -93,10 +91,9 @@ final class ProjectionAnalyzer {
     private List<GeneralParameterValue> parameters;
 
     /**
-     * Constructs a {@code ProjectionAnalyzer} for the specified projected CRS. This constructor
-     * inspects the {@linkplain ProjectedCRS#getConversionFromBase conversion from base} and splits
-     * {@link ConcatenatedTransform} in their {@link #geographicScale}, {@link #projectedScale} and
-     * {@link #transform} components.
+     * Constructs a {@code ProjectionAnalyzer} for the specified projected CRS. This constructor inspects the
+     * {@linkplain ProjectedCRS#getConversionFromBase conversion from base} and splits {@link ConcatenatedTransform} in
+     * their {@link #geographicScale}, {@link #projectedScale} and {@link #transform} components.
      */
     private ProjectionAnalyzer(final ProjectedCRS crs) {
         Matrix geographicScale = null;
@@ -176,14 +173,14 @@ final class ProjectionAnalyzer {
     }
 
     /**
-     * Returns the affine transform applied after the <em>normalized</em> projection in order to get
-     * the same projection than {@link #transform}. The normalized projection is a imaginary
-     * transform (we don't have a {@link MathTransform} instance for it, but we don't need) with
-     * {@code "scale factor"} == 1, {@code "false easting"} == 0 and {@code "false northing"} == 0.
-     * In other words, this method extracts the above-cited parameters in an affine transform.
+     * Returns the affine transform applied after the <em>normalized</em> projection in order to get the same projection
+     * than {@link #transform}. The normalized projection is a imaginary transform (we don't have a
+     * {@link MathTransform} instance for it, but we don't need) with {@code "scale factor"} == 1, {@code "false
+     * easting"} == 0 and {@code "false northing"} == 0. In other words, this method extracts the above-cited parameters
+     * in an affine transform.
      *
-     * <p>As a side effect, this method removes from the {@linkplain #parameters} list all the
-     * above-cited ones parameters.
+     * <p>As a side effect, this method removes from the {@linkplain #parameters} list all the above-cited ones
+     * parameters.
      *
      * @return The affine transform.
      */
@@ -252,12 +249,7 @@ final class ProjectionAnalyzer {
         }
         if (warning != null) {
             final LogRecord record =
-                    Loggings.format(
-                            Level.WARNING,
-                            LoggingKeys.APPLIED_UNIT_CONVERSION_$3,
-                            warning,
-                            unit,
-                            SI.METRE);
+                    Loggings.format(Level.WARNING, LoggingKeys.APPLIED_UNIT_CONVERSION_$3, warning, unit, SI.METRE);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("createLinearConversion"); // This is the public method.
             final Logger logger = ReferencingFactory.LOGGER;
@@ -268,19 +260,17 @@ final class ProjectionAnalyzer {
     }
 
     /**
-     * Checks if the parameter in the two specified list contains the same values. The order
-     * parameter order is irrelevant. The common parameters are removed from both lists.
+     * Checks if the parameter in the two specified list contains the same values. The order parameter order is
+     * irrelevant. The common parameters are removed from both lists.
      */
     private static boolean parameterValuesEqual(
             final List<GeneralParameterValue> source,
             final List<GeneralParameterValue> target,
             final double errorTolerance) {
         search:
-        for (final Iterator<GeneralParameterValue> targetIter = target.iterator();
-                targetIter.hasNext(); ) {
+        for (final Iterator<GeneralParameterValue> targetIter = target.iterator(); targetIter.hasNext(); ) {
             final GeneralParameterValue targetPrm = targetIter.next();
-            for (final Iterator<GeneralParameterValue> sourceIter = source.iterator();
-                    sourceIter.hasNext(); ) {
+            for (final Iterator<GeneralParameterValue> sourceIter = source.iterator(); sourceIter.hasNext(); ) {
                 final GeneralParameterValue sourcePrm = sourceIter.next();
                 if (!nameMatches(sourcePrm.getDescriptor(), targetPrm.getDescriptor())) {
                     continue;
@@ -346,21 +336,18 @@ final class ProjectionAnalyzer {
     }
 
     /**
-     * Returns a conversion from a source to target projected CRS, if this conversion is
-     * representable as an affine transform. If no linear conversion has been found between the two
-     * CRS, then this method returns {@code null}.
+     * Returns a conversion from a source to target projected CRS, if this conversion is representable as an affine
+     * transform. If no linear conversion has been found between the two CRS, then this method returns {@code null}.
      *
      * @param sourceCRS The source coordinate reference system.
      * @param targetCRS The target coordinate reference system.
-     * @param errorTolerance Relative error tolerance for considering two parameter values as equal.
-     *     This is usually a small number like {@code 1E-10}.
-     * @return The conversion from {@code sourceCRS} to {@code targetCRS} as an affine transform, or
-     *     {@code null} if no linear transform has been found.
+     * @param errorTolerance Relative error tolerance for considering two parameter values as equal. This is usually a
+     *     small number like {@code 1E-10}.
+     * @return The conversion from {@code sourceCRS} to {@code targetCRS} as an affine transform, or {@code null} if no
+     *     linear transform has been found.
      */
     public static Matrix createLinearConversion(
-            final ProjectedCRS sourceCRS,
-            final ProjectedCRS targetCRS,
-            final double errorTolerance) {
+            final ProjectedCRS sourceCRS, final ProjectedCRS targetCRS, final double errorTolerance) {
         /*
          * Checks if the datum are the same. To be stricter, we could compare the 'baseCRS'
          * instead. But this is not always needed. For example we don't really care if the

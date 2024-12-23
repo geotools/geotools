@@ -20,9 +20,9 @@ import java.io.IOException;
 import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
- * - Added hasNext to support the FeatureWriter API. - Changed order of writer parameters to match
- * Collections, JDBC API. - Added IOExceptions on all methods. - Do we want AttributeWriters to know
- * about the schema and perform validation??
+ * - Added hasNext to support the FeatureWriter API. - Changed order of writer parameters to match Collections, JDBC
+ * API. - Added IOExceptions on all methods. - Do we want AttributeWriters to know about the schema and perform
+ * validation??
  *
  * @version $Id$
  * @author Ian Schneider
@@ -36,14 +36,14 @@ public interface AttributeWriter {
     AttributeDescriptor getAttributeType(int i) throws ArrayIndexOutOfBoundsException;
 
     /**
-     * Advance the AttributeWriter, all calls to write will correspond to the same set of attributes
-     * until next is called again.
+     * Advance the AttributeWriter, all calls to write will correspond to the same set of attributes until next is
+     * called again.
      */
     void next() throws IOException;
 
     /**
-     * Write the given attribute value at the position indicated. Implementations can choose to
-     * immediately flush the write or buffer it.
+     * Write the given attribute value at the position indicated. Implementations can choose to immediately flush the
+     * write or buffer it.
      */
     void write(int position, Object attribute) throws IOException;
 

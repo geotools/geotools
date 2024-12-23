@@ -55,8 +55,8 @@ public class Log4JLoggerFactory extends LoggerFactory<org.apache.log4j.Logger> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegates to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if the logger would
+     * delegates to Java logging anyway.
      */
     @Override
     protected org.apache.log4j.Logger getImplementation(final String name) {
@@ -70,8 +70,8 @@ public class Log4JLoggerFactory extends LoggerFactory<org.apache.log4j.Logger> {
     }
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none.
      */
     @Override
     protected org.apache.log4j.Logger unwrap(final Logger logger) {

@@ -28,36 +28,34 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 
 /**
- * This provides the transformation method based on RubberSheeting (also known as Billinear
- * interpolated transformation) The class is accessed {@linkplain
- * org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheetBuilder}. More about
- * Rubber Sheet transformation can be seen <a href =
+ * This provides the transformation method based on RubberSheeting (also known as Billinear interpolated transformation)
+ * The class is accessed {@linkplain org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheetBuilder}.
+ * More about Rubber Sheet transformation can be seen <a href =
  * "http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
  *
  * @since 2.4
  * @version $Id$
  * @author Jan Jezek
- * @todo Consider moving this class to the {@linkplain org.geotools.referencing.operation.transform}
- *     package.
+ * @todo Consider moving this class to the {@linkplain org.geotools.referencing.operation.transform} package.
  */
 class RubberSheetTransform extends AbstractMathTransform implements MathTransform2D {
     /**
-     * Helper variable to hold triangle. It is use for optimalization of searching in TIN for
-     * triangle containing points that are transformed.
+     * Helper variable to hold triangle. It is use for optimalization of searching in TIN for triangle containing points
+     * that are transformed.
      */
     private TINTriangle previousTriangle = null;
 
     /**
-     * The HashMap where the keys are the original {@link Polygon} and values are {@link
-     * #org.geotools.api.referencing.operation.MathTransform}.
+     * The HashMap where the keys are the original {@link Polygon} and values are
+     * {@link #org.geotools.api.referencing.operation.MathTransform}.
      */
     private Map<TINTriangle, Object> trianglesToKeysMap;
 
     /**
      * Constructs the RubberSheetTransform.
      *
-     * @param trianglesToAffineTransform The HashMap where the keys are the original {@linkplain
-     *     org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
+     * @param trianglesToAffineTransform The HashMap where the keys are the original
+     *     {@linkplain org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
      *     {@linkplain org.geotools.api.referencing.operation.MathTransform}.
      */
     public RubberSheetTransform(Map<TINTriangle, Object> trianglesToAffineTransform) {
@@ -88,8 +86,8 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      * String representation.
      *
      * @return String expression of the triangle and its affine transform parameters
-     * @todo This method doesn't meet the {@link MathTransform#toString} constract, which should
-     *     uses Well Known Text (WKT) format as much as possible.
+     * @todo This method doesn't meet the {@link MathTransform#toString} constract, which should uses Well Known Text
+     *     (WKT) format as much as possible.
      */
     @Override
     public String toString() {

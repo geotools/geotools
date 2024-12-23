@@ -18,8 +18,7 @@
 package org.geotools.grid.ortholine;
 
 /**
- * Defines how to generate a set of regularly-spaced, ortho-line elements with given orientation and
- * level.
+ * Defines how to generate a set of regularly-spaced, ortho-line elements with given orientation and level.
  *
  * @author mbedward
  * @since 8.0

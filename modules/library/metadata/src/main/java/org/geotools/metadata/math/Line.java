@@ -22,15 +22,14 @@ import java.io.Serializable;
 import org.geotools.api.util.Cloneable;
 
 /**
- * Equation of a line in a two dimensional space (<var>x</var>,<var>y</var>). A line has an equation
- * of the form <var>y</var>=<var>a</var><var>x</var>+<var>b</var>. At the difference of {@link
- * Line2D} (which are bounded by (<var>x1</var>,<var>y1</var>) and (<var>x2</var>,<var>y2</var>)
- * points), {@code Line} objects extends toward infinity.
+ * Equation of a line in a two dimensional space (<var>x</var>,<var>y</var>). A line has an equation of the form
+ * <var>y</var>=<var>a</var><var>x</var>+<var>b</var>. At the difference of {@link Line2D} (which are bounded by
+ * (<var>x1</var>,<var>y1</var>) and (<var>x2</var>,<var>y2</var>) points), {@code Line} objects extends toward
+ * infinity.
  *
- * <p>The equation parameters for a {@code Line} object can bet set at construction time or using
- * one of the {@code setLine(...)} methods. The <var>y</var> value can be computed for a given
- * <var>x</var> value using the {@link #y} method. Method {@link #x} compute the converse and should
- * work even if the line is vertical.
+ * <p>The equation parameters for a {@code Line} object can bet set at construction time or using one of the
+ * {@code setLine(...)} methods. The <var>y</var> value can be computed for a given <var>x</var> value using the
+ * {@link #y} method. Method {@link #x} compute the converse and should work even if the line is vertical.
  *
  * @since 2.0
  * @version $Id$
@@ -90,8 +89,8 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Sets a line colinear with the specified line segment. The line will continues toward infinity
-     * after the line segment extremities.
+     * Sets a line colinear with the specified line segment. The line will continues toward infinity after the line
+     * segment extremities.
      *
      * @param line The line segment.
      * @see #setLine(Point2D,Point2D)
@@ -101,8 +100,7 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Sets a line through the specified point. The line will continues toward infinity after the
-     * point.
+     * Sets a line through the specified point. The line will continues toward infinity after the point.
      *
      * @param p1 Coordinate of the first point.
      * @param p2 Coordinate of the second point.
@@ -113,8 +111,7 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Sets a line through the specified point. The line will continues toward infinity after the
-     * point.
+     * Sets a line through the specified point. The line will continues toward infinity after the point.
      *
      * @param x1 Ordinate <var>x</var> of the first point.
      * @param y1 Ordinate <var>y</var> of the first point.
@@ -138,30 +135,23 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Given a set of data points {@code x[0..ndata-1]}, {@code y[0..ndata-1]}, fit them to a
-     * straight line <var>y</var>=<var>b</var>+<var>m</var><var>x</var> in a least-squares senses.
-     * This method assume that the <var>x</var> values are precise and all uncertainty is in
-     * <var>y</var>.
+     * Given a set of data points {@code x[0..ndata-1]}, {@code y[0..ndata-1]}, fit them to a straight line
+     * <var>y</var>=<var>b</var>+<var>m</var><var>x</var> in a least-squares senses. This method assume that the
+     * <var>x</var> values are precise and all uncertainty is in <var>y</var>.
      *
-     * <p>Reference: <a
-     * href="http://shakti.cc.trincoll.edu/~palladin/courses/ENGR431/statistics/node9.html">Linear
+     * <p>Reference: <a href="http://shakti.cc.trincoll.edu/~palladin/courses/ENGR431/statistics/node9.html">Linear
      * Regression Curve Fitting</a>.
      *
      * @param x Vector of <var>x</var> values (independant variable).
      * @param y Vector of <var>y</var> values (dependant variable).
-     * @return Estimation of the correlation coefficient. The closer this coefficient is to 1, the
-     *     better the fit.
+     * @return Estimation of the correlation coefficient. The closer this coefficient is to 1, the better the fit.
      * @throws MismatchedSizeException if <var>x</var> and <var>y</var> don't have the same length.
      */
     public double setLine(final double[] x, final double[] y) throws IllegalArgumentException {
         final int N = x.length;
         if (N != y.length) {
             throw new IllegalArgumentException(
-                    "Vector x (length "
-                            + N
-                            + ") and Vector y (length:"
-                            + y.length
-                            + ") are not the same length");
+                    "Vector x (length " + N + ") and Vector y (length:" + y.length + ") are not the same length");
         }
         int count = 0;
         double mean_x = 0;
@@ -235,8 +225,8 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Computes <var>y</var>=<var>f</var>(<var>x</var>). If the line is vertical, then this method
-     * returns an infinite value. This method is final for performance reason.
+     * Computes <var>y</var>=<var>f</var>(<var>x</var>). If the line is vertical, then this method returns an infinite
+     * value. This method is final for performance reason.
      *
      * @param x The <var>x</var> value.
      * @return The <var>y</var> value.
@@ -247,8 +237,8 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Computes <var>x</var>=<var>f</var><sup>-1</sup>(<var>y</var>). If the line is horizontal,
-     * then this method returns an infinite value. This method is final for performance reason.
+     * Computes <var>x</var>=<var>f</var><sup>-1</sup>(<var>y</var>). If the line is horizontal, then this method
+     * returns an infinite value. This method is final for performance reason.
      *
      * @param y The <var>y</var> value.
      * @return The <var>x</var> value.
@@ -259,16 +249,16 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Returns the <var>y</var> value for <var>x</var>==0. Coordinate (0, <var>y0</var>) is the
-     * intersection point with the <var>y</var> axis.
+     * Returns the <var>y</var> value for <var>x</var>==0. Coordinate (0, <var>y0</var>) is the intersection point with
+     * the <var>y</var> axis.
      */
     public final double getY0() {
         return y0;
     }
 
     /**
-     * Returns the <var>x</var> value for <var>y</var>==0. Coordinate (<var>x0</var>,0) is the
-     * intersection point with the <var>x</var> axis.
+     * Returns the <var>x</var> value for <var>y</var>==0. Coordinate (<var>x0</var>,0) is the intersection point with
+     * the <var>x</var> axis.
      */
     public final double getX0() {
         return x0;
@@ -280,8 +270,8 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Returns the intersection point between this line and the specified one. If both lines are
-     * parallel, then this method returns {@code null}.
+     * Returns the intersection point between this line and the specified one. If both lines are parallel, then this
+     * method returns {@code null}.
      *
      * @param line The line to intersect.
      * @return The intersection point, or {@code null}.
@@ -309,9 +299,9 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Returns the intersection point between this line and the specified bounded line. If both
-     * lines are parallel or if the specified {@code line} doesn't reach this line (since {@link
-     * Line2D} do not extends toward infinities), then this method returns {@code null}.
+     * Returns the intersection point between this line and the specified bounded line. If both lines are parallel or if
+     * the specified {@code line} doesn't reach this line (since {@link Line2D} do not extends toward infinities), then
+     * this method returns {@code null}.
      *
      * @param line The bounded line to intersect.
      * @return The intersection point, or {@code null}.
@@ -379,21 +369,20 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Computes the base of a isosceles triangle having the specified summit and side length. The
-     * base will be colinear with this line. In other words, this method compute two points
-     * (<var>x1</var>,<var>y1</var>) and (<var>x2</var>,<var>y2</var>) located in such a way that:
+     * Computes the base of a isosceles triangle having the specified summit and side length. The base will be colinear
+     * with this line. In other words, this method compute two points (<var>x1</var>,<var>y1</var>) and
+     * (<var>x2</var>,<var>y2</var>) located in such a way that:
      *
      * <ul>
      *   <li>Both points are on this line.
-     *   <li>The distance between any of the two points and the specified {@code summit} is exactly
-     *       {@code sideLength}.
+     *   <li>The distance between any of the two points and the specified {@code summit} is exactly {@code sideLength}.
      * </ul>
      *
      * @param summit The summit of the isosceles triangle.
      * @param sideLength The length for the two sides of the isosceles triangle.
-     * @return The base of the isoscele triangle, colinear with this line, or {@code null} if the
-     *     base can't be computed. If non-null, then the triangle is the figure formed by joining
-     *     (<var>x1</var>,<var>y1</var>), (<var>x2</var>,<var>y2</var>) and {@code summit}.
+     * @return The base of the isoscele triangle, colinear with this line, or {@code null} if the base can't be
+     *     computed. If non-null, then the triangle is the figure formed by joining (<var>x1</var>,<var>y1</var>),
+     *     (<var>x2</var>,<var>y2</var>) and {@code summit}.
      */
     public Line2D isoscelesTriangleBase(final Point2D summit, double sideLength) {
         sideLength *= sideLength;
@@ -430,8 +419,8 @@ public class Line implements Cloneable, Serializable {
     }
 
     /**
-     * Returns a string representation of this line. This method returns the linear equation in the
-     * form <code>"y=m*x+b"</code>.
+     * Returns a string representation of this line. This method returns the linear equation in the form <code>"y=m*x+b"
+     * </code>.
      *
      * @return A string representation of this line.
      */

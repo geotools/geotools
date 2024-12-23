@@ -23,10 +23,7 @@ import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Style;
 import org.geotools.util.logging.Logging;
 
-/**
- * Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link
- * RuleEncoder}.
- */
+/** Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link RuleEncoder}. */
 public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
 
     static Logger LOG = Logging.getLogger(FeatureStyleEncoder.class);

@@ -99,24 +99,16 @@ public class GML3EncodingTest extends XmlTestSupport {
     public void testEncodeSrsSyntax() throws Exception {
         GMLConfiguration gml = new GMLConfiguration();
         Document dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        Assert.assertTrue(
-                dom.getDocumentElement()
-                        .getAttribute("srsName")
-                        .startsWith("urn:x-ogc:def:crs:EPSG:"));
+        Assert.assertTrue(dom.getDocumentElement().getAttribute("srsName").startsWith("urn:x-ogc:def:crs:EPSG:"));
 
         gml.setSrsSyntax(SrsSyntax.OGC_URN);
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
-        Assert.assertTrue(
-                dom.getDocumentElement()
-                        .getAttribute("srsName")
-                        .startsWith("urn:ogc:def:crs:EPSG::"));
+        Assert.assertTrue(dom.getDocumentElement().getAttribute("srsName").startsWith("urn:ogc:def:crs:EPSG::"));
 
         gml.setSrsSyntax(SrsSyntax.OGC_HTTP_URI);
         dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
         Assert.assertTrue(
-                dom.getDocumentElement()
-                        .getAttribute("srsName")
-                        .startsWith("http://www.opengis.net/def/crs/EPSG/0/"));
+                dom.getDocumentElement().getAttribute("srsName").startsWith("http://www.opengis.net/def/crs/EPSG/0/"));
     }
 
     @Test
@@ -126,8 +118,7 @@ public class GML3EncodingTest extends XmlTestSupport {
 
         GMLConfiguration gml = new GMLConfiguration();
         Document dom = new Encoder(gml).encodeAsDOM(p, GML.Point);
-        assertEquals(
-                "urn:x-ogc:def:crs:IAU:1000", dom.getDocumentElement().getAttribute("srsName"));
+        assertEquals("urn:x-ogc:def:crs:IAU:1000", dom.getDocumentElement().getAttribute("srsName"));
 
         gml.setSrsSyntax(SrsSyntax.OGC_URN);
         dom = new Encoder(gml).encodeAsDOM(p, GML.Point);
@@ -169,7 +160,8 @@ public class GML3EncodingTest extends XmlTestSupport {
         dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
         countList = dom.getElementsByTagName("test:count");
         count = countList.item(0);
-        Assert.assertEquals("true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
+        Assert.assertEquals(
+                "true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
         dateList = dom.getElementsByTagName("test:date");
         date = dateList.item(0);
         Assert.assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
@@ -219,18 +211,10 @@ public class GML3EncodingTest extends XmlTestSupport {
 
     @Test
     public void testRemoveInvalidXMLChars() throws Exception {
-        SimpleFeatureType ft =
-                DataUtilities.createType(
-                        TEST.TestFeature.getNamespaceURI(),
-                        TEST.TestFeature.getLocalPart(),
-                        "the_geom:Point,data:String");
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        ft,
-                        new Object[] {
-                            new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"
-                        },
-                        "123");
+        SimpleFeatureType ft = DataUtilities.createType(
+                TEST.TestFeature.getNamespaceURI(), TEST.TestFeature.getLocalPart(), "the_geom:Point,data:String");
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"}, "123");
 
         TestConfiguration configuration = new TestConfiguration();
         Encoder encoder = new Encoder(configuration);

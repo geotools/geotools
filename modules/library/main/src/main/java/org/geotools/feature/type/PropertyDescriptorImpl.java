@@ -33,8 +33,7 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
     protected final boolean isNillable;
     final Map<Object, Object> userData;
 
-    protected PropertyDescriptorImpl(
-            PropertyType type, Name name, int min, int max, boolean isNillable) {
+    protected PropertyDescriptorImpl(PropertyType type, Name name, int min, int max, boolean isNillable) {
         this.type = type;
         this.name = name;
         this.minOccurs = min;

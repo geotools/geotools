@@ -50,6 +50,8 @@ public class GMLPointTypeBinding2Test extends GMLTestSupport {
         Document doc = encode(GML2MockData.point(), GML.Point);
 
         assertEquals(
-                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart()).getLength());
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart())
+                        .getLength());
     }
 }

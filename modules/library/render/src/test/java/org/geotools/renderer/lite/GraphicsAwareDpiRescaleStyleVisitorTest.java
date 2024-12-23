@@ -34,8 +34,7 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
 
     @Test
     public void testResizeMark() {
-        PointSymbolizer ps =
-                sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
+        PointSymbolizer ps = sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
         GraphicsAwareDpiRescaleStyleVisitor visitor = new GraphicsAwareDpiRescaleStyleVisitor(2);
         ps.accept(visitor);
         PointSymbolizer resized = (PointSymbolizer) visitor.getCopy();
@@ -47,14 +46,11 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
     @Test
     public void testResizeExternalGraphic() throws IOException {
         File imageFile =
-                new File("./src/test/resources/org/geotools/renderer/lite/test-data/draw.png")
-                        .getCanonicalFile();
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/draw.png").getCanonicalFile();
         assertTrue(imageFile.exists());
         String fileUrl = URLs.fileToUrl(imageFile).toExternalForm();
         PointSymbolizer ps =
-                sb.createPointSymbolizer(
-                        sb.createGraphic(
-                                null, null, sb.createExternalGraphic(fileUrl, "image/png")));
+                sb.createPointSymbolizer(sb.createGraphic(null, null, sb.createExternalGraphic(fileUrl, "image/png")));
         GraphicsAwareDpiRescaleStyleVisitor visitor = new GraphicsAwareDpiRescaleStyleVisitor(2);
         ps.accept(visitor);
         PointSymbolizer resized = (PointSymbolizer) visitor.getCopy();
@@ -64,10 +60,7 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
         assertEquals(44, size.evaluate(null, Integer.class).intValue());
     }
 
-    /**
-     * Tests size calculation of dynamically sized feature, using real-world units combined with
-     * DPI-based resizing.
-     */
+    /** Tests size calculation of dynamically sized feature, using real-world units combined with DPI-based resizing. */
     @Test
     public void testCombinedResizingDpiUom() {
         // given: Point with dynamic size in real-world  units

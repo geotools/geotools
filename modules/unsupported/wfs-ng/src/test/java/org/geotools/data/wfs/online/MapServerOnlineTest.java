@@ -104,8 +104,7 @@ public class MapServerOnlineTest {
             assertEquals("1.1.0", wfs110.getInfo().getVersion());
             assertEquals("1.1.0", wfs110_with_get.getInfo().getVersion());
         } catch (Exception e) {
-            LOGGER.log(
-                    SEVERE, "WFS 1.0 and 1.1 tests disabled, server not available: " + url_100, e);
+            LOGGER.log(SEVERE, "WFS 1.0 and 1.1 tests disabled, server not available: " + url_100, e);
             url_100 = null;
             url_110 = null;
         }
@@ -218,8 +217,7 @@ public class MapServerOnlineTest {
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
 
         ReferencedEnvelope env =
-                new ReferencedEnvelope(
-                        4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
+                new ReferencedEnvelope(4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("Geometry"), env);
@@ -249,15 +247,14 @@ public class MapServerOnlineTest {
         }
 
         // test un-encodable filter
-        PropertyIsEqualTo functionFilter =
-                ff.equal(
-                        ff.function(
-                                "strSubstring",
-                                ff.property("nome_fog"), // property not in selection
-                                ff.literal(0),
-                                ff.literal(5)),
-                        ff.literal("ISOLA"),
-                        true);
+        PropertyIsEqualTo functionFilter = ff.equal(
+                ff.function(
+                        "strSubstring",
+                        ff.property("nome_fog"), // property not in selection
+                        ff.literal(0),
+                        ff.literal(5)),
+                ff.literal("ISOLA"),
+                true);
         query.setFilter(ff.and(filter, functionFilter));
         query.setMaxFeatures(5); // there are 7 matching at the time of writing
         features = source.getFeatures(query);

@@ -25,9 +25,9 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * An abstract base class for simple dialogs with a single control panel (supplied by the sub-class)
- * together with OK and Cancel buttons. The sub-class must implement the {@linkplain
- * #createControlPanel()} and {@linkplain #onOK()} methods.
+ * An abstract base class for simple dialogs with a single control panel (supplied by the sub-class) together with OK
+ * and Cancel buttons. The sub-class must implement the {@linkplain #createControlPanel()} and {@linkplain #onOK()}
+ * methods.
  *
  * @author Michael Bedward
  * @since 2.7
@@ -107,17 +107,16 @@ public abstract class AbstractSimpleDialog extends JDialog {
     @Override
     public void setVisible(boolean b) {
         if (b && !initialized) {
-            throw new IllegalStateException(
-                    "Sub-class did not call initComponents() before showing dialog");
+            throw new IllegalStateException("Sub-class did not call initComponents() before showing dialog");
         }
 
         super.setVisible(b);
     }
 
     /**
-     * Creates the main control panel and components. This must be called by the sub-class. We do
-     * this to give sub-classes the chance to initialize fields which can be used within {@linkplain
-     * #createControlPanel()} (called as part of this method).
+     * Creates the main control panel and components. This must be called by the sub-class. We do this to give
+     * sub-classes the chance to initialize fields which can be used within {@linkplain #createControlPanel()} (called
+     * as part of this method).
      */
     protected void initComponents() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -141,10 +140,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
     /** Implemented by the sub-class to respond to the OK button. */
     public abstract void onOK();
 
-    /**
-     * Called when the cancel button is pressed. The base implementation simply closes (disposes)
-     * the dialog.
-     */
+    /** Called when the cancel button is pressed. The base implementation simply closes (disposes) the dialog. */
     public void onCancel() {
         closeDialog();
     }

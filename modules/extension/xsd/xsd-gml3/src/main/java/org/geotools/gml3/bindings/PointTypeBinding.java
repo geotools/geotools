@@ -118,8 +118,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
             if (dp instanceof Position2D) {
                 return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1)));
             } else {
-                return gFactory.createPoint(
-                        new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1), dp.getOrdinate(2)));
+                return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1), dp.getOrdinate(2)));
             }
         }
 

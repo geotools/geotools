@@ -62,11 +62,7 @@ public class FileSystemFileSetManager implements FileSetManager {
                 deleteFile(file);
             } catch (Throwable t) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Exception occurred while deleting file: "
-                                    + filePath
-                                    + "\n"
-                                    + t.getLocalizedMessage());
+                    LOGGER.fine("Exception occurred while deleting file: " + filePath + "\n" + t.getLocalizedMessage());
                 }
             }
         }

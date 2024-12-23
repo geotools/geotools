@@ -22,8 +22,8 @@ import org.geotools.api.feature.type.Name;
 /**
  * An adapter interface allowing a hosting application to advertise DataStore instances to GeoTools.
  *
- * <p>GeoTools includes a really simple RepositoryImpl which you can use to manage DataStore in your
- * own application; or if you have your own advanced "catalog" you can make your own implementation.
+ * <p>GeoTools includes a really simple RepositoryImpl which you can use to manage DataStore in your own application; or
+ * if you have your own advanced "catalog" you can make your own implementation.
  * </ul>
  */
 public interface Repository {
@@ -44,9 +44,8 @@ public interface Repository {
     DataStore dataStore(Name name);
 
     /**
-     * List of available DataStore instances; these are considered to be live/connected datastores
-     * under the management of the application and should not be closed or otherwise harmed by
-     * client code.
+     * List of available DataStore instances; these are considered to be live/connected datastores under the management
+     * of the application and should not be closed or otherwise harmed by client code.
      *
      * <p>
      *

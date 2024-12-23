@@ -25,8 +25,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
 /**
- * Builds a point using the coordinates of stack that maintain the coordinates made in the parsing
- * process.
+ * Builds a point using the coordinates of stack that maintain the coordinates made in the parsing process.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

@@ -25,8 +25,8 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 
 /**
- * A runner for unit tests that should be run multiple times (e.g. concurrency testing). To use,
- * annotate the test class with {@code @RunWith(MultiRepTestRunner.class)}.
+ * A runner for unit tests that should be run multiple times (e.g. concurrency testing). To use, annotate the test class
+ * with {@code @RunWith(MultiRepTestRunner.class)}.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -41,8 +41,7 @@ public class MultiRepTestRunner extends org.junit.internal.runners.JUnit4ClassRu
 
     int numFailures;
 
-    public MultiRepTestRunner(Class<?> klass)
-            throws org.junit.internal.runners.InitializationError {
+    public MultiRepTestRunner(Class<?> klass) throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 
@@ -51,13 +50,12 @@ public class MultiRepTestRunner extends org.junit.internal.runners.JUnit4ClassRu
         Logger logger = Logging.getLogger(MultiRepTestRunner.class);
         logger.setLevel(Level.WARNING);
 
-        notifier.addListener(
-                new RunListener() {
-                    @Override
-                    public void testFailure(Failure failure) throws Exception {
-                        numFailures++;
-                    }
-                });
+        notifier.addListener(new RunListener() {
+            @Override
+            public void testFailure(Failure failure) throws Exception {
+                numFailures++;
+            }
+        });
 
         for (int i = 0; i < N; i++) {
             super.run(notifier);

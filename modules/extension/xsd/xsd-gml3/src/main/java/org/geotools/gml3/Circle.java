@@ -71,10 +71,9 @@ public class Circle {
     }
 
     /**
-     * Creates a circle based on bounding box. It is possible for the user of this class to pass
-     * bounds to this method that do not represent a square. If this is the case, we must force the
-     * bounding rectangle to be a square. To this end, we check the box and set the side of the box
-     * to the larger dimension of the rectangle
+     * Creates a circle based on bounding box. It is possible for the user of this class to pass bounds to this method
+     * that do not represent a square. If this is the case, we must force the bounding rectangle to be a square. To this
+     * end, we check the box and set the side of the box to the larger dimension of the rectangle
      */
     public Circle(double xLeft, double yUpper, double xRight, double yLower) {
         double side = Math.min(Math.abs(xRight - xLeft), Math.abs(yLower - yUpper));
@@ -83,18 +82,12 @@ public class Circle {
         this.radius = side / 2;
     }
 
-    /**
-     * Three point method of circle construction. All three points must be on the circumference of
-     * the circle.
-     */
+    /** Three point method of circle construction. All three points must be on the circumference of the circle. */
     public Circle(Coordinate point1, Coordinate point2, Coordinate point3) {
         initThreePointCircle(point1, point2, point3);
     }
 
-    /**
-     * Three point method of circle construction. All three points must be on the circumference of
-     * the circle.
-     */
+    /** Three point method of circle construction. All three points must be on the circumference of the circle. */
     public Circle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this(new Coordinate(x1, y1), new Coordinate(x2, y2), new Coordinate(x3, y3));
     }
@@ -112,9 +105,9 @@ public class Circle {
     }
 
     /**
-     * Defines the circle based on three points. All three points must be on on the circumference of
-     * the circle, and hence, the 3 points cannot be have any pair equal, and cannot form a line.
-     * Therefore, each point given is one radius measure from the circle's center.
+     * Defines the circle based on three points. All three points must be on on the circumference of the circle, and
+     * hence, the 3 points cannot be have any pair equal, and cannot form a line. Therefore, each point given is one
+     * radius measure from the circle's center.
      *
      * @param p1 A point on the desired circle
      * @param p2 A point on the desired circle
@@ -165,9 +158,9 @@ public class Circle {
     }
 
     /**
-     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of
-     * points that provide connected chords that approximate the arc based on the tolerance value.
-     * The tolerance value specifies the maximum distance between a chord and the circle.
+     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of points that provide
+     * connected chords that approximate the arc based on the tolerance value. The tolerance value specifies the maximum
+     * distance between a chord and the circle.
      *
      * @param x1 x coordinate of point 1
      * @param y1 y coordinate of point 1
@@ -175,8 +168,7 @@ public class Circle {
      * @param y2 y coordinate of point 2
      * @param x3 x coordinate of point 3
      * @param y3 y coordinate of point 3
-     * @param tolerence maximum distance between the center of the chord and the outer edge of the
-     *     circle
+     * @param tolerence maximum distance between the center of the chord and the outer edge of the circle
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
     public static Coordinate[] linearizeArc(
@@ -188,9 +180,9 @@ public class Circle {
     }
 
     /**
-     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of
-     * points that provide connected chords that approximate the arc based on the tolerance value.
-     * This method uses a tolerence value of 1/100 of the length of the radius.
+     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of points that provide
+     * connected chords that approximate the arc based on the tolerance value. This method uses a tolerence value of
+     * 1/100 of the length of the radius.
      *
      * @param x1 x coordinate of point 1
      * @param y1 y coordinate of point 1
@@ -200,8 +192,7 @@ public class Circle {
      * @param y3 y coordinate of point 3
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public static Coordinate[] linearizeArc(
-            double x1, double y1, double x2, double y2, double x3, double y3) {
+    public static Coordinate[] linearizeArc(double x1, double y1, double x2, double y2, double x3, double y3) {
         Coordinate p1 = new Coordinate(x1, y1);
         Coordinate p2 = new Coordinate(x2, y2);
         Coordinate p3 = new Coordinate(x3, y3);
@@ -211,9 +202,8 @@ public class Circle {
     }
 
     /**
-     * Given a circle defined by the 3 points, creates a linearized interpolation of the circle
-     * starting and ending on the first coordinate. This method uses a tolerence value of 1/100 of
-     * the length of the radius.
+     * Given a circle defined by the 3 points, creates a linearized interpolation of the circle starting and ending on
+     * the first coordinate. This method uses a tolerence value of 1/100 of the length of the radius.
      *
      * @param x1 x coordinate of point 1
      * @param y1 y coordinate of point 1
@@ -223,8 +213,7 @@ public class Circle {
      * @param y3 y coordinate of point 3
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public static Coordinate[] linearizeCircle(
-            double x1, double y1, double x2, double y2, double x3, double y3) {
+    public static Coordinate[] linearizeCircle(double x1, double y1, double x2, double y2, double x3, double y3) {
         Coordinate p1 = new Coordinate(x1, y1);
         Coordinate p2 = new Coordinate(x2, y2);
         Coordinate p3 = new Coordinate(x3, y3);
@@ -234,51 +223,43 @@ public class Circle {
     }
 
     /**
-     * Given a circle defined by the 3 points, creates a linearized interpolation of the circle
-     * starting and ending on the first coordinate.
+     * Given a circle defined by the 3 points, creates a linearized interpolation of the circle starting and ending on
+     * the first coordinate.
      *
      * @param p1 coordinate on the circle
      * @param p2 another coordinate on the circle
      * @param p3 yet another coordinate on the circle
-     * @param tolerance maximum distance between the center of the chord and the outer edge of the
-     *     circle
-     * @return an ordered list of Coordinates representing a series of chords approximating the
-     *     circle.
+     * @param tolerance maximum distance between the center of the chord and the outer edge of the circle
+     * @return an ordered list of Coordinates representing a series of chords approximating the circle.
      */
-    public static Coordinate[] linearizeCircle(
-            Coordinate p1, Coordinate p2, Coordinate p3, double tolerance) {
+    public static Coordinate[] linearizeCircle(Coordinate p1, Coordinate p2, Coordinate p3, double tolerance) {
         Circle c = new Circle(p1, p2, p3);
         return c.linearizeArc(p1, p2, p1, tolerance);
     }
 
     /**
-     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of
-     * points that provide connected chords that approximate the arc based on the tolerance value.
-     * The tolerance value specifies the maximum distance between a chord and the circle.
+     * Given 2 points defining an arc on the circle, interpolates the circle into a collection of points that provide
+     * connected chords that approximate the arc based on the tolerance value. The tolerance value specifies the maximum
+     * distance between a chord and the circle.
      *
      * @param p1 begin coordinate of the arc
      * @param p2 any other point on the arc
      * @param p3 end coordinate of the arc
-     * @param tolerence maximum distance between the center of the chord and the outer edge of the
-     *     circle
+     * @param tolerence maximum distance between the center of the chord and the outer edge of the circle
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public Coordinate[] linearizeArc(
-            Coordinate p1, Coordinate p2, Coordinate p3, double tolerence) {
+    public Coordinate[] linearizeArc(Coordinate p1, Coordinate p2, Coordinate p3, double tolerence) {
         Arc arc = createArc(p1, p2, p3);
         List<Coordinate> result = linearizeInternal(null, arc, tolerence);
         return result.toArray(new Coordinate[result.size()]);
     }
 
-    private List<Coordinate> linearizeInternal(
-            List<Coordinate> coordinates, Arc arc, double tolerence) {
+    private List<Coordinate> linearizeInternal(List<Coordinate> coordinates, Arc arc, double tolerence) {
         if (coordinates == null) {
             coordinates = new ArrayList<>();
         }
         double arcHt = arc.getArcHeight();
-        if (Double.compare(arcHt, tolerence) <= 0
-                || Double.isNaN(arcHt)
-                || Double.isInfinite(arcHt)) {
+        if (Double.compare(arcHt, tolerence) <= 0 || Double.isNaN(arcHt) || Double.isInfinite(arcHt)) {
             int lastIndex = coordinates.size() - 1;
             Coordinate lastCoord = lastIndex >= 0 ? coordinates.get(lastIndex) : null;
 
@@ -394,8 +375,7 @@ public class Circle {
     }
 
     /**
-     * Returns an angle between 0 and 2*PI. For example, 4*PI would get returned as 2*PI since they
-     * are equivalent.
+     * Returns an angle between 0 and 2*PI. For example, 4*PI would get returned as 2*PI since they are equivalent.
      *
      * @param angle an angle in radians to normalize
      * @return an angle between 0 and 2*PI
@@ -413,8 +393,7 @@ public class Circle {
     }
 
     /**
-     * Returns the angle between the angles a1 and a2 in radians. Angle is calculated in the
-     * counterclockwise direction.
+     * Returns the angle between the angles a1 and a2 in radians. Angle is calculated in the counterclockwise direction.
      *
      * @param a1 first angle
      * @param a2 second angle
@@ -451,9 +430,8 @@ public class Circle {
                 double midPtAngle = getAngle(midPt);
 
                 // determine the direction
-                double ccDegrees =
-                        Circle.subtractAngles(this.p1Angle, midPtAngle)
-                                + Circle.subtractAngles(midPtAngle, this.p2Angle);
+                double ccDegrees = Circle.subtractAngles(this.p1Angle, midPtAngle)
+                        + Circle.subtractAngles(midPtAngle, this.p2Angle);
 
                 if (ccDegrees < TWO_PI) {
                     this.clockwise = false;
@@ -491,9 +469,8 @@ public class Circle {
         }
 
         /**
-         * given a an arc defined from p1 to p2 existing on this circle, returns the height of the
-         * arc. This height is defined as the distance from the center of a chord defined by (p1,
-         * p2) and the outer edge of the circle.
+         * given a an arc defined from p1 to p2 existing on this circle, returns the height of the arc. This height is
+         * defined as the distance from the center of a chord defined by (p1, p2) and the outer edge of the circle.
          *
          * @return the arc height
          */

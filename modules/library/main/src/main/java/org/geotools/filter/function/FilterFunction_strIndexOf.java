@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strIndexOf extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strIndexOf",
-                    parameter("index", Integer.class),
-                    parameter("String", String.class),
-                    parameter("lookup", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strIndexOf",
+            parameter("index", Integer.class),
+            parameter("String", String.class),
+            parameter("lookup", String.class));
 
     public FilterFunction_strIndexOf() {
         super(NAME);

@@ -30,11 +30,9 @@ import org.geotools.coverageio.BaseGridFormatFactorySPI;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.10.x
  */
-public final class VRTFormatFactory extends BaseGridFormatFactorySPI
-        implements GridFormatFactorySpi {
+public final class VRTFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(VRTFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(VRTFormatFactory.class);
 
     @Override
     public boolean isAvailable() {

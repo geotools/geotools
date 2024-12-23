@@ -22,21 +22,18 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
 /**
- * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect
- * properties from a file name.
+ * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect properties from a file name.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public class StringFileNameExtractorSPI extends DefaultPropertiesCollectorSPI
-        implements PropertiesCollectorSPI {
+public class StringFileNameExtractorSPI extends DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     public StringFileNameExtractorSPI() {
         super("StringFileNameExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
 
         return new StringFileNameExtractor(spi, propertyNames, regex);
     }

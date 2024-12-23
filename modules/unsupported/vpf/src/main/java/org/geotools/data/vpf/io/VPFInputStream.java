@@ -74,8 +74,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         //     condeb("("+streamFile+
         //            ") header.getRecordSize()="+header.getRecordSize());
         if (header.getRecordSize() < 0) {
-            variableIndex =
-                    new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
+            variableIndex = new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
         }
 
         // end of if (header.getRecordSize() == -1)

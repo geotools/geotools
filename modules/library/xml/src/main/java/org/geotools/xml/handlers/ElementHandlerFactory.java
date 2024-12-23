@@ -32,9 +32,8 @@ import org.geotools.xml.schema.Type;
 import org.xml.sax.SAXException;
 
 /**
- * This class is used to create handlers for child elements based on the currently defined
- * namespaces. This class is called by the XMLSAXHandler to help act as a library of prefix ->
- * Schema mappings.
+ * This class is used to create handlers for child elements based on the currently defined namespaces. This class is
+ * called by the XMLSAXHandler to help act as a library of prefix -> Schema mappings.
  *
  * @author dzwiers www.refractions.net
  * @see org.geotools.xml.XMLSAXHandler
@@ -141,13 +140,12 @@ public class ElementHandlerFactory {
     }
 
     /**
-     * Creates an element handler for the element specified by name and namespace. Will return null
-     * if a suitable handler is not found.
+     * Creates an element handler for the element specified by name and namespace. Will return null if a suitable
+     * handler is not found.
      *
      * @see ElementHandlerFactory#createElementHandler(Element)
      */
-    public XMLElementHandler createElementHandler(URI namespaceURI, String localName)
-            throws SAXException {
+    public XMLElementHandler createElementHandler(URI namespaceURI, String localName) throws SAXException {
 
         if (localName == null) {
             return null;
@@ -157,8 +155,7 @@ public class ElementHandlerFactory {
             namespaceURI = defaultNS;
         }
 
-        logger.finest(
-                "Trying to create an element handler for " + localName + " :: " + namespaceURI);
+        logger.finest("Trying to create an element handler for " + localName + " :: " + namespaceURI);
 
         Schema s = targSchemas.get(namespaceURI);
 

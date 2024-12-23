@@ -35,8 +35,7 @@ public abstract class JDBCIAUTestSetup extends JDBCDelegatingTestSetup {
     }
 
     /**
-     * Creates a table named 'mars_poi' which has a variety of temporal attributes, with the
-     * following schema: *
+     * Creates a table named 'mars_poi' which has a variety of temporal attributes, with the following schema: *
      *
      * <p>The table has the following data: <code>
      * _=geom:Point:authority=IAU;srid=49900,name:String,diameter:Double

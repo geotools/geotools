@@ -38,8 +38,8 @@ import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.util.factory.Hints;
 
 /**
- * Applies read/write locks around all operations to protect the underlying store, which might not
- * be able to handle this scenario correctly
+ * Applies read/write locks around all operations to protect the underlying store, which might not be able to handle
+ * this scenario correctly
  */
 public class LockingGranuleCatalog extends GranuleCatalog {
 
@@ -97,14 +97,12 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void addGranule(String typeName, SimpleFeature granule, Transaction transaction)
-            throws IOException {
+    public void addGranule(String typeName, SimpleFeature granule, Transaction transaction) throws IOException {
         guardIO(() -> delegate.addGranule(typeName, granule, transaction), rwLock.writeLock());
     }
 
     @Override
-    public void addGranules(
-            String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+    public void addGranules(String typeName, Collection<SimpleFeature> granules, Transaction transaction)
             throws IOException {
         guardIO(() -> delegate.addGranules(typeName, granules, transaction), rwLock.writeLock());
     }
@@ -115,8 +113,7 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void createType(String namespace, String typeName, String typeSpec)
-            throws IOException, SchemaException {
+    public void createType(String namespace, String typeName, String typeSpec) throws IOException, SchemaException {
         Lock lock = rwLock.writeLock();
         try {
             lock.lock();
@@ -132,8 +129,7 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void createType(String identification, String typeSpec)
-            throws SchemaException, IOException {
+    public void createType(String identification, String typeSpec) throws SchemaException, IOException {
         Lock lock = rwLock.writeLock();
         try {
             lock.lock();

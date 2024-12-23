@@ -55,11 +55,8 @@ class SearchQueryBuilder {
 
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    /**
-     * Used to cut eventual "out of world" coordinates that the remote server could not appreciate
-     */
-    private static final ReferencedEnvelope WORLD =
-            new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
+    /** Used to cut eventual "out of world" coordinates that the remote server could not appreciate */
+    private static final ReferencedEnvelope WORLD = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
 
     private static final String TYPE = "type";
     private static final String ID = "id";
@@ -78,8 +75,8 @@ class SearchQueryBuilder {
      * Maps the GeoTools {@link Query} to a {@link SearchQuery}.
      *
      * @param q The GeoTools query the SearchQuery
-     * @return A pair with a SearchQuery and a post filter, or null if strict is true and part of
-     *     the query could not be mapped
+     * @return A pair with a SearchQuery and a post filter, or null if strict is true and part of the query could not be
+     *     mapped
      */
     public Pair<SearchQuery, Filter> toSearchQuery(Query q, boolean strict) {
         SearchQuery sq = new SearchQuery();
@@ -94,9 +91,7 @@ class SearchQueryBuilder {
         if (q.getSortBy() != null && q.getSortBy() != SortBy.UNSORTED) {
             if (STACConformance.SORT.matches(conformance)) {
                 List<org.geotools.stac.client.SortBy> sorts =
-                        Arrays.stream(q.getSortBy())
-                                .map(sb -> toSTACSort(sb))
-                                .collect(Collectors.toList());
+                        Arrays.stream(q.getSortBy()).map(sb -> toSTACSort(sb)).collect(Collectors.toList());
                 sq.setSortBy(sorts);
             }
         }
@@ -153,8 +148,7 @@ class SearchQueryBuilder {
                     }
 
                     if (!Filter.EXCLUDE.equals(leftover)) {
-                        CQL2PostPreFilterSplitter splitter =
-                                new CQL2PostPreFilterSplitter(conformance);
+                        CQL2PostPreFilterSplitter splitter = new CQL2PostPreFilterSplitter(conformance);
                         leftover.accept(splitter, null);
                         Filter pre = splitter.getFilterPre();
                         post = splitter.getFilterPost();
@@ -180,11 +174,10 @@ class SearchQueryBuilder {
                     post.accept(fex, null);
                     nameList.addAll(fex.getAttributeNameSet());
                 }
-                List<String> fields =
-                        nameList.stream()
-                                .map(n -> propertyToField(n))
-                                .map(n -> n.replace('/', '.'))
-                                .collect(Collectors.toList());
+                List<String> fields = nameList.stream()
+                        .map(n -> propertyToField(n))
+                        .map(n -> n.replace('/', '.'))
+                        .collect(Collectors.toList());
                 fields.add(TYPE); // some servers would even remove this field if not included!
                 fields.add(ID); // and this as well
                 fields.add("-" + BBOX); // no need for the top level bbox
@@ -208,13 +201,11 @@ class SearchQueryBuilder {
     }
 
     /**
-     * Most properties are found under "properties" but a few are top level. They need different
-     * paths in the JSON structure.
+     * Most properties are found under "properties" but a few are top level. They need different paths in the JSON
+     * structure.
      */
     private static String propertyToField(String n) {
-        return n.equals(GEOMETRY)
-                        || n.equals(STACFeatureSource.ASSETS)
-                        || n.startsWith(STACFeatureSource.ASSETS + "/")
+        return n.equals(GEOMETRY) || n.equals(STACFeatureSource.ASSETS) || n.startsWith(STACFeatureSource.ASSETS + "/")
                 ? n
                 : "properties." + n;
     }
@@ -225,8 +216,8 @@ class SearchQueryBuilder {
     }
 
     /**
-     * Sets up a filter encoding language that's supported on both ends. If both text and JSON are
-     * supported, choose based on the type of request, GET vsPOST.
+     * Sets up a filter encoding language that's supported on both ends. If both text and JSON are supported, choose
+     * based on the type of request, GET vsPOST.
      *
      * @param sq
      * @param conformance
@@ -237,8 +228,7 @@ class SearchQueryBuilder {
         boolean json = CQL2Conformance.JSON.matches(conformance);
 
         if (text && json) {
-            if (store.getSearchMode().equals(STACClient.SearchMode.GET))
-                sq.setFilterLang(FilterLang.CQL2_TEXT);
+            if (store.getSearchMode().equals(STACClient.SearchMode.GET)) sq.setFilterLang(FilterLang.CQL2_TEXT);
             else sq.setFilterLang(FilterLang.CQL2_JSON);
         } else if (text) {
             sq.setFilterLang(FilterLang.CQL2_TEXT);
@@ -257,8 +247,7 @@ class SearchQueryBuilder {
                         : org.geotools.stac.client.SortBy.Direction.asc);
     }
 
-    private boolean encodeSimpleFilter(Filter filter, SearchQuery sq)
-            throws FactoryException, TransformException {
+    private boolean encodeSimpleFilter(Filter filter, SearchQuery sq) throws FactoryException, TransformException {
 
         if (filter instanceof BBOX) {
             encodeBBOX((BBOX) filter, sq);
@@ -309,14 +298,10 @@ class SearchQueryBuilder {
     private boolean isTimeFilter(Filter filter) {
         TimeRangeVisitor visitor = new TimeRangeVisitor();
         DateRange range = (DateRange) filter.accept(visitor, null);
-        return range != null
-                && !range.isEmpty()
-                && !TimeRangeVisitor.INFINITY.equals(range)
-                && visitor.isExact();
+        return range != null && !range.isEmpty() && !TimeRangeVisitor.INFINITY.equals(range) && visitor.isExact();
     }
 
-    private void encodeBBOX(BBOX filter, SearchQuery sq)
-            throws TransformException, FactoryException {
+    private void encodeBBOX(BBOX filter, SearchQuery sq) throws TransformException, FactoryException {
         Envelope box = ReferencedEnvelope.reference(filter.getBounds()).transform(WGS84, true);
         box = box.intersection(WORLD);
         sq.setBbox(new double[] {box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY()});

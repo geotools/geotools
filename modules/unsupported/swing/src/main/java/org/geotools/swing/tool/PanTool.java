@@ -63,8 +63,8 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * Respond to a mouse button press event from the map mapPane. This may signal the start of a
-     * mouse drag. Records the event's window position.
+     * Respond to a mouse button press event from the map mapPane. This may signal the start of a mouse drag. Records
+     * the event's window position.
      *
      * @param ev the mouse event
      */
@@ -75,8 +75,7 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.MapPane#moveImage(int,
-     * int)}
+     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.MapPane#moveImage(int, int)}
      *
      * @param ev the mouse event
      */
@@ -92,8 +91,7 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * If this button release is the end of a mouse dragged event, requests the map mapPane to
-     * repaint the display
+     * If this button release is the end of a mouse dragged event, requests the map mapPane to repaint the display
      *
      * @param ev the mouse event
      */
@@ -109,8 +107,7 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * Returns false to indicate that this tool does not draw a box on the map display when the
-     * mouse is being dragged
+     * Returns false to indicate that this tool does not draw a box on the map display when the mouse is being dragged
      */
     @Override
     public boolean drawDragBox() {

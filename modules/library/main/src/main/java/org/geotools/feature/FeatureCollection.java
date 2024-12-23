@@ -43,9 +43,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * <h3>FeatureIterator close</h3>
  *
- * <p>FeatureCollection provides streaming access with the following restriction on the use of
- * {@link FeatureIterator}: You must call {@link FeatureIterator#close()}. This allows
- * FeatureCollection to clean up any operating system resources used to access information.
+ * <p>FeatureCollection provides streaming access with the following restriction on the use of {@link FeatureIterator}:
+ * You must call {@link FeatureIterator#close()}. This allows FeatureCollection to clean up any operating system
+ * resources used to access information.
  *
  * <p>Example (safe) use:
  *
@@ -73,18 +73,17 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * }
  * </code></pre>
  *
- * <p>Handy Tip: Although many resource backed collections will choose to release resources at when
- * the iterator has reached the end of its contents this is not something you should rely on.
+ * <p>Handy Tip: Although many resource backed collections will choose to release resources at when the iterator has
+ * reached the end of its contents this is not something you should rely on.
  *
  * <h2>FeatureCollection Implementation Tips</h2>
  *
- * <p>Auto close: Try and close up resources when you can detect that an Iterator is no longer in
- * use.
+ * <p>Auto close: Try and close up resources when you can detect that an Iterator is no longer in use.
  *
- * <p>Lazy Connect: FeatureCollection is used in two fashions, as a result set, where each iterator
- * acts as a cursor over the content. Also as a predefined query which can be refined further. An
- * example is using featureCollection.subCollection( Filter ) or featureCollection.sort( SortBy )
- * before listing features out of a FeatureCollection.
+ * <p>Lazy Connect: FeatureCollection is used in two fashions, as a result set, where each iterator acts as a cursor
+ * over the content. Also as a predefined query which can be refined further. An example is using
+ * featureCollection.subCollection( Filter ) or featureCollection.sort( SortBy ) before listing features out of a
+ * FeatureCollection.
  *
  * @see org.geotools.Feature
  * @author Ian Turton, CCG
@@ -97,8 +96,8 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /**
      * Obtain a FeatureIterator<SimpleFeature> of the Features within this FeatureCollection.
      *
-     * <p>The implementation of FeatureIterator must adhere to the rules of fail-fast concurrent
-     * modification. In addition (to allow for resource backed collections) the <code>
+     * <p>The implementation of FeatureIterator must adhere to the rules of fail-fast concurrent modification. In
+     * addition (to allow for resource backed collections) the <code>
      * FeatureIterator.close()</code> method must be called.
      *
      * <p>Example use:
@@ -116,9 +115,8 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * }
      * </code></pre>
      *
-     * <p>GML Note: The contents of this iterator are considered to be defined by
-     * <b>featureMember</b> tags (and/or the single allowed <b>FeatureMembers</b> tag). Please see
-     * getFeatureType for more details.
+     * <p>GML Note: The contents of this iterator are considered to be defined by <b>featureMember</b> tags (and/or the
+     * single allowed <b>FeatureMembers</b> tag). Please see getFeatureType for more details.
      *
      * @return A FeatureIterator.
      */
@@ -130,12 +128,12 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * <p>Represents the most general FeatureType in common to all the features in this collection.
      *
      * <ul>
-     *   <li>For a collection backed by a shapefiles (or database tables) the FeatureType returned
-     *       by getSchema() will complete describe each and every child in the collection.
-     *   <li>For mixed content FeatureCollections you will need to check the FeatureType of each
-     *       Feature as it is retrived from the collection
-     *   <li>The degenerate case returns the "_Feature" FeatureType, where the only thing known is
-     *       that the contents are Features.
+     *   <li>For a collection backed by a shapefiles (or database tables) the FeatureType returned by getSchema() will
+     *       complete describe each and every child in the collection.
+     *   <li>For mixed content FeatureCollections you will need to check the FeatureType of each Feature as it is
+     *       retrived from the collection
+     *   <li>The degenerate case returns the "_Feature" FeatureType, where the only thing known is that the contents are
+     *       Features.
      * </ul>
      *
      * @return FeatureType describing the "common" schema to all child features of this collection
@@ -148,9 +146,8 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /**
      * Visit the contents of a feature collection.
      *
-     * <p>The order of traversal is dependent on the FeatureCollection implementation; some
-     * collections are able to make efficient use of an internal index in order to quickly visit
-     * features located in the same region.
+     * <p>The order of traversal is dependent on the FeatureCollection implementation; some collections are able to make
+     * efficient use of an internal index in order to quickly visit features located in the same region.
      *
      * @param visitor Closure applied to each feature in turn.
      * @param progress Used to report progress, may be used to interrupt the operation
@@ -161,14 +158,12 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /**
      * SimpleFeatureCollection "view" indicated by provided filter.
      *
-     * <p>The contents of the returned SimpleFeatureCollection are determined by applying the
-     * provider Filter to the entire contents of this FeatureCollection. The result is "live" and
-     * modifications will be shared.
+     * <p>The contents of the returned SimpleFeatureCollection are determined by applying the provider Filter to the
+     * entire contents of this FeatureCollection. The result is "live" and modifications will be shared.
      *
      * <p>This method is used cut down on the number of filter based methods required for a useful
-     * SimpleFeatureCollection construct. The FeatureCollections returned really should be
-     * considered as a temporary "view" used to control the range of a removeAll, or modify
-     * operation.
+     * SimpleFeatureCollection construct. The FeatureCollections returned really should be considered as a temporary
+     * "view" used to control the range of a removeAll, or modify operation.
      *
      * <p>Example Use:
      *
@@ -176,8 +171,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * collection.subCollection( filter ).clear();
      * </code></pre>
      *
-     * The above recommended use is agreement with the Collections API precident of List.subList(
-     * start, end ).
+     * The above recommended use is agreement with the Collections API precident of List.subList( start, end ).
      *
      * <p>The results of subCollection:
      *
@@ -194,8 +188,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /**
      * Obtained sorted contents.
      *
-     * <p>This method may not be supported by all implementations, consider the use of
-     * FeatureSource.features( Query ).
+     * <p>This method may not be supported by all implementations, consider the use of FeatureSource.features( Query ).
      *
      * @param order Sort order
      * @return FeatureCollection sorted in the indicated order
@@ -203,8 +196,8 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     public FeatureCollection<T, F> sort(SortBy order);
 
     /**
-     * Get the total bounds of this collection which is calculated by doing a union of the bounds of
-     * each feature inside of it
+     * Get the total bounds of this collection which is calculated by doing a union of the bounds of each feature inside
+     * of it
      *
      * @return An Envelope containing the total bounds of this collection.
      */

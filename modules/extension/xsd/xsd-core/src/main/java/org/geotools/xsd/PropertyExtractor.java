@@ -38,8 +38,7 @@ public interface PropertyExtractor {
     /**
      * Extracts the properties from the object being encoded.
      *
-     * <p>This method should return a set of tuples made up of ({@link
-     * org.eclipse.xsd.XSDParticle},Object).
+     * <p>This method should return a set of tuples made up of ({@link org.eclipse.xsd.XSDParticle},Object).
      *
      * @param object The object being encoded.
      * @param element The element declaration corresponding to the object being encoded.

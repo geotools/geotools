@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A PROJ Dedicated Aliases Lookup that allows to retrieve PROJ Aliases for most common EPSG
- * Ellipsoids and PrimeMeridians
+ * A PROJ Dedicated Aliases Lookup that allows to retrieve PROJ Aliases for most common EPSG Ellipsoids and
+ * PrimeMeridians
  */
 public class PROJAliases {
 
@@ -38,8 +38,7 @@ public class PROJAliases {
         URL aliasURL = PROJAliases.class.getResource(ALIAS_TABLE);
 
         try {
-            try (BufferedReader br =
-                    new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
                 String line;
                 Map<String, String> currentMap = null;
 
@@ -71,8 +70,8 @@ public class PROJAliases {
     }
 
     /**
-     * Return the PROJ alias for a given EPSG ellipsoid name, based on the mapping defined on the
-     * PROJAliases.txt definition.
+     * Return the PROJ alias for a given EPSG ellipsoid name, based on the mapping defined on the PROJAliases.txt
+     * definition.
      *
      * <p>To give an example, EPSG "GRS 1980" is reported as "GRS80" in PROJ String.
      */
@@ -81,12 +80,11 @@ public class PROJAliases {
     }
 
     /**
-     * Return the PROJ alias for a given EPSG prime meridian name, based on the mapping defined on
-     * the PROJAliases.txt definition.
+     * Return the PROJ alias for a given EPSG prime meridian name, based on the mapping defined on the PROJAliases.txt
+     * definition.
      *
-     * <p>To give an example, EPSG "Ferro" is reported as "ferro" in PROJ String. Note that some
-     * prime meridians are reported as number by PROJ. e.g. "Madrid" which is reported as
-     * "-3.687375" representing the pm numeric value
+     * <p>To give an example, EPSG "Ferro" is reported as "ferro" in PROJ String. Note that some prime meridians are
+     * reported as number by PROJ. e.g. "Madrid" which is reported as "-3.687375" representing the pm numeric value
      */
     public String getPrimeMeridianAlias(String epsgPrimeMeridian) {
         return primeMeridianAliases.get(epsgPrimeMeridian);

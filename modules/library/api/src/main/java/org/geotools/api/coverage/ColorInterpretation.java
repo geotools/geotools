@@ -53,8 +53,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see #GRAY_INDEX
      */
     @UML(identifier = "CV_PaletteIndex", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation PALETTE_INDEX =
-            new ColorInterpretation("PALETTE_INDEX");
+    public static final ColorInterpretation PALETTE_INDEX = new ColorInterpretation("PALETTE_INDEX");
 
     /**
      * Red Band for the {@linkplain PaletteInterpretation#RGB RGB} color model components.
@@ -90,8 +89,8 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     public static final ColorInterpretation BLUE_BAND = new ColorInterpretation("BLUE_BAND");
 
     /**
-     * Alpha Band for the {@linkplain PaletteInterpretation#RGB RGB} color model components. Alpha
-     * band may or may not be present.
+     * Alpha Band for the {@linkplain PaletteInterpretation#RGB RGB} color model components. Alpha band may or may not
+     * be present.
      *
      * @see #RED_BAND
      * @see #GREEN_BAND
@@ -119,8 +118,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see PaletteInterpretation#HLS
      */
     @UML(identifier = "CV_SaturationBand", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation SATURATION_BAND =
-            new ColorInterpretation("SATURATION_BAND");
+    public static final ColorInterpretation SATURATION_BAND = new ColorInterpretation("SATURATION_BAND");
 
     /**
      * Lightness Band for the {@linkplain PaletteInterpretation#HLS HLS} color model.
@@ -130,8 +128,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see PaletteInterpretation#HLS
      */
     @UML(identifier = "CV_LightnessBand", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation LIGHTNESS_BAND =
-            new ColorInterpretation("LIGHTNESS_BAND");
+    public static final ColorInterpretation LIGHTNESS_BAND = new ColorInterpretation("LIGHTNESS_BAND");
 
     /**
      * Cyan Band for the {@linkplain PaletteInterpretation#CMYK CMYK} color model.
@@ -178,8 +175,8 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     public static final ColorInterpretation BLACK_BAND = new ColorInterpretation("BLACK_BAND");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -205,8 +202,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     }
 
     /**
-     * Returns the color interpretation that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the color interpretation that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

@@ -46,10 +46,7 @@ public interface InstanceComponent {
      */
     void setName(String name);
 
-    /**
-     * @return The text inside of the component, or the empty string if the component does not
-     *     contain any text.
-     */
+    /** @return The text inside of the component, or the empty string if the component does not contain any text. */
     String getText();
 
     /**

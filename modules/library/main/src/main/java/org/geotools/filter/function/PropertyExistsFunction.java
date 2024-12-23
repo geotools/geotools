@@ -36,11 +36,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class PropertyExistsFunction extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "PropertyExists",
-                    parameter("exists", Boolean.class),
-                    parameter("propertyName", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "PropertyExists", parameter("exists", Boolean.class), parameter("propertyName", Object.class));
 
     public PropertyExistsFunction() {
         super(NAME);
@@ -67,9 +64,8 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * @return {@link Boolean#TRUE} if the <code>feature</code>'s {@link FeatureType} contains an
-     *     attribute named as the property name passed as this function argument, {@link
-     *     Boolean#FALSE} otherwise.
+     * @return {@link Boolean#TRUE} if the <code>feature</code>'s {@link FeatureType} contains an attribute named as the
+     *     property name passed as this function argument, {@link Boolean#FALSE} otherwise.
      */
     public Object evaluate(SimpleFeature feature) {
         String propName = getPropertyName();
@@ -79,9 +75,9 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
     }
 
     /**
-     * @return {@link Boolean#TRUE} if the Class of the object passed as argument defines a property
-     *     names as the property name passed as this function argument, following the standard Java
-     *     Beans naming conventions for getters. {@link Boolean#FALSE} otherwise.
+     * @return {@link Boolean#TRUE} if the Class of the object passed as argument defines a property names as the
+     *     property name passed as this function argument, following the standard Java Beans naming conventions for
+     *     getters. {@link Boolean#FALSE} otherwise.
      */
     @Override
     public Object evaluate(Object bean) {

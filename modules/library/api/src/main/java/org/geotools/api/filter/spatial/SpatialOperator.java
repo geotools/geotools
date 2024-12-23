@@ -12,8 +12,7 @@ package org.geotools.api.filter.spatial;
 import org.geotools.api.filter.MultiValuedFilter;
 
 /**
- * Abstract base class for operators that perform a spatial comparison on geometric attributes of a
- * feature.
+ * Abstract base class for operators that perform a spatial comparison on geometric attributes of a feature.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

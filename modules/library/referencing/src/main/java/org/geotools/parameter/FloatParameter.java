@@ -31,16 +31,16 @@ import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A parameter value as a floating point (double precision) number. This class provides the same
- * functionalities than {@link Parameter}, except that:
+ * A parameter value as a floating point (double precision) number. This class provides the same functionalities than
+ * {@link Parameter}, except that:
  *
  * <ul>
  *   <li>Values are always floating point numbers of type {@code double}.
  *   <li>Units are the same than the {@linkplain ParameterDescriptor#getUnit default units}.
  * </ul>
  *
- * When those conditions are meet, {@code ParameterRealValue} is slightly more efficient than {@code
- * ParameterValue} since it avoid the creation of {@link Double} objects.
+ * When those conditions are meet, {@code ParameterRealValue} is slightly more efficient than {@code ParameterValue}
+ * since it avoid the creation of {@link Double} objects.
  *
  * @since 2.1
  * @version $Id$
@@ -56,8 +56,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
     private double value;
 
     /**
-     * Constructs a parameter from the specified descriptor. The descriptor {@linkplain
-     * ParameterDescriptor#getValueClass() value class} must be <code>{@linkplain Double}.class
+     * Constructs a parameter from the specified descriptor. The descriptor
+     * {@linkplain ParameterDescriptor#getValueClass() value class} must be <code>{@linkplain Double}.class
      * </code>.
      *
      * @param descriptor The abstract definition of this parameter.
@@ -68,17 +68,15 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         final Class type = descriptor.getValueClass();
         final Class expected = Double.class;
         if (!expected.equals(type) && !Double.TYPE.equals(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, expected));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, expected));
         }
         final Number value = descriptor.getDefaultValue();
         this.value = (value != null) ? value.doubleValue() : Double.NaN;
     }
 
     /**
-     * Constructs a parameter from the specified descriptor and value. This convenience constructor
-     * is equivalents to the one-argument constructor followed by a call to {@link
-     * #setValue(double)}.
+     * Constructs a parameter from the specified descriptor and value. This convenience constructor is equivalents to
+     * the one-argument constructor followed by a call to {@link #setValue(double)}.
      *
      * @param descriptor The abstract definition of this parameter.
      * @param value The parameter value.
@@ -97,8 +95,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
     }
 
     /**
-     * Returns the unit of measure of the {@linkplain #doubleValue() parameter value}. The default
-     * implementation always delegates to {@link ParameterDescriptor#getUnit}.
+     * Returns the unit of measure of the {@linkplain #doubleValue() parameter value}. The default implementation always
+     * delegates to {@link ParameterDescriptor#getUnit}.
      *
      * @return The unit of measure, or {@code null} if none.
      */
@@ -108,12 +106,12 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
     }
 
     /**
-     * Returns the numeric value of the coordinate operation parameter in the specified unit of
-     * measure. This convenience method apply unit conversion on the fly as needed.
+     * Returns the numeric value of the coordinate operation parameter in the specified unit of measure. This
+     * convenience method apply unit conversion on the fly as needed.
      *
      * @param unit The unit of measure for the value to be returned.
-     * @return The numeric value represented by this parameter after conversion to type {@code
-     *     double} and conversion to {@code unit}.
+     * @return The numeric value represented by this parameter after conversion to type {@code double} and conversion to
+     *     {@code unit}.
      * @throws IllegalArgumentException if the specified unit is invalid for this parameter.
      */
     @Override
@@ -131,11 +129,10 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
     }
 
     /**
-     * Returns the numeric value of the coordinate operation parameter with its associated
-     * {@linkplain #getUnit unit of measure}.
+     * Returns the numeric value of the coordinate operation parameter with its associated {@linkplain #getUnit unit of
+     * measure}.
      *
-     * @return The numeric value represented by this parameter after conversion to type {@code
-     *     double}.
+     * @return The numeric value represented by this parameter after conversion to type {@code double}.
      */
     @Override
     public double doubleValue() {
@@ -176,8 +173,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      * Wraps the value in an array of length 1.
      *
      * @param unit The unit of measure for the value to be returned.
-     * @return The sequence of values represented by this parameter after conversion to type {@code
-     *     double} and conversion to {@code unit}.
+     * @return The sequence of values represented by this parameter after conversion to type {@code double} and
+     *     conversion to {@code unit}.
      * @throws IllegalArgumentException if the specified unit is invalid for this parameter.
      */
     @Override
@@ -236,8 +233,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      *
      * @param value The parameter value.
      * @param unit The unit for the specified value.
-     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a
-     *     value out of range).
+     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a value out of
+     *     range).
      */
     @Override
     public void setValue(double value, final Unit<?> unit) throws InvalidParameterValueException {
@@ -260,8 +257,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      * Set the parameter value as a floating point.
      *
      * @param value The parameter value.
-     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a
-     *     value out of range).
+     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a value out of
+     *     range).
      */
     @Override
     public void setValue(final double value) throws InvalidParameterValueException {
@@ -274,8 +271,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      * Set the parameter value as an integer.
      *
      * @param value The parameter value.
-     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a
-     *     value out of range).
+     * @throws InvalidParameterValueException if the value is illegal for some reason (for example a value out of
+     *     range).
      */
     @Override
     public void setValue(final int value) throws InvalidParameterValueException {
@@ -286,8 +283,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      * Set the parameter value as a boolean.
      *
      * @param value The parameter value.
-     * @throws InvalidParameterValueException if the boolean type is inappropriate for this
-     *     parameter.
+     * @throws InvalidParameterValueException if the boolean type is inappropriate for this parameter.
      */
     @Override
     public void setValue(final boolean value) throws InvalidParameterValueException {
@@ -298,9 +294,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
      * Set the parameter value as a {@link Double} object.
      *
      * @param value The parameter value.
-     * @throws InvalidParameterValueException if the type of {@code value} is inappropriate for this
-     *     parameter, or if the value is illegal for some other reason (for example the value is
-     *     numeric and out of range).
+     * @throws InvalidParameterValueException if the type of {@code value} is inappropriate for this parameter, or if
+     *     the value is illegal for some other reason (for example the value is numeric and out of range).
      */
     @Override
     public void setValue(final Object value) throws InvalidParameterValueException {
@@ -311,8 +306,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
 
     /** Always throws an exception, since this parameter is not an array. */
     @Override
-    public void setValue(double[] values, final Unit<?> unit)
-            throws InvalidParameterValueException {
+    public void setValue(double[] values, final Unit<?> unit) throws InvalidParameterValueException {
         throw new InvalidParameterTypeException(getClassTypeError(), Parameter.getName(descriptor));
     }
 
@@ -334,8 +328,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
     /**
      * Returns a hash value for this parameter.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     public int hashCode() {

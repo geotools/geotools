@@ -23,8 +23,8 @@ import org.xml.sax.SAXException;
 /**
  * LEVEL2 saxGML4j GML handler: Gets basic alerts from GMLFilterDocument.
  *
- * <p>This handler is required for any parent of a GMLFilterDocument filter. It receives basic
- * element notifications and coordinates.
+ * <p>This handler is required for any parent of a GMLFilterDocument filter. It receives basic element notifications and
+ * coordinates.
  *
  * @author Rob Hranac, Vision for New York
  * @version $Id$

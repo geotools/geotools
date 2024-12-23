@@ -105,10 +105,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         try {
             nativeBounds = wgs84Bounds.transform(crs, true);
         } catch (TransformException | FactoryException e) {
-            Loggers.MODULE.log(
-                    Level.WARNING,
-                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
-                    e);
+            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to " + getDefaultSRS(), e);
             nativeBounds = new ReferencedEnvelope(crs);
         }
         return nativeBounds;
@@ -128,9 +125,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
                 boolean forceLongitudFirst = defaultSRS.startsWith("EPSG:");
                 crs = CRS.decode(defaultSRS, forceLongitudFirst);
             } catch (Exception e) {
-                RESPONSES.log(
-                        Level.WARNING,
-                        "Unable to process CRS " + defaultSRS + " proceeding with CRS:80");
+                RESPONSES.log(Level.WARNING, "Unable to process CRS " + defaultSRS + " proceeding with CRS:80");
                 crs = DefaultGeographicCRS.WGS84;
             }
         }
@@ -156,8 +151,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             double maxLat = upperCorner.get(1);
 
             ReferencedEnvelope latLonBounds =
-                    new ReferencedEnvelope(
-                            minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
+                    new ReferencedEnvelope(minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
 
             return latLonBounds;
         }

@@ -38,8 +38,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testNext() throws Exception {
-        try (FeatureWriter writer =
-                dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter writer = dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
             assertEquals("POINT (0 0)", feature.getAttribute(0).toString());
@@ -47,8 +46,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             assertEquals(0.0, (double) (Double) feature.getAttribute(2), 0.0);
             assertEquals("zero", feature.getAttribute(3));
         }
-        try (FeatureWriter writer =
-                dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter writer = dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
             final List<Object> attributes = feature.getAttributes();
@@ -60,8 +58,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testFlushableAppends() throws Exception {
-        try (FeatureWriter writer =
-                dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter writer = dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertFalse(writer.hasNext());
             assertTrue(writer instanceof Flushable);
         }

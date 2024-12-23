@@ -41,8 +41,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * The factory for {@linkplain CoordinateReferenceSystem coordinate reference systems} in the {@code
- * CRS} space.
+ * The factory for {@linkplain CoordinateReferenceSystem coordinate reference systems} in the {@code CRS} space.
  *
  * @since 2.2
  * @version $Id$
@@ -50,10 +49,9 @@ import org.geotools.util.factory.Hints;
  */
 public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
     /**
-     * An optional prefix put in front of code. For example a code may be {@code "CRS84"} instead of
-     * a plain {@code "84"}. This is usefull in order to understand URN syntax like {@code
-     * "urn:ogc:def:crs:OGC:1.3:CRS84"}. Must be uppercase for this implementation (but parsing will
-     * be case-insensitive).
+     * An optional prefix put in front of code. For example a code may be {@code "CRS84"} instead of a plain
+     * {@code "84"}. This is usefull in order to understand URN syntax like {@code "urn:ogc:def:crs:OGC:1.3:CRS84"}.
+     * Must be uppercase for this implementation (but parsing will be case-insensitive).
      */
     private static final String PREFIX = "CRS";
 
@@ -71,11 +69,10 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     }
 
     /**
-     * Ensures that {@link #crsMap} is initialized. This method can't be invoked in the constructor
-     * because the constructor is invoked while {@code FactoryFinder.scanForPlugins()} is still
-     * running. Because the {@link #add} method uses factories for creating CRS objects, invoking
-     * this method during {@code FactoryFinder.scanForPlugins()} execution may result in unexpected
-     * behavior, like GEOT-935.
+     * Ensures that {@link #crsMap} is initialized. This method can't be invoked in the constructor because the
+     * constructor is invoked while {@code FactoryFinder.scanForPlugins()} is still running. Because the {@link #add}
+     * method uses factories for creating CRS objects, invoking this method during
+     * {@code FactoryFinder.scanForPlugins()} execution may result in unexpected behavior, like GEOT-935.
      */
     private synchronized void ensureInitialized() throws FactoryException {
         if (crsMap.isEmpty()) {
@@ -93,8 +90,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * @param ellipsoid The ellipsoid.
      * @throws FactoryException if factories failed to creates the CRS.
      */
-    private void add(final int code, final String name, final Ellipsoid ellipsoid)
-            throws FactoryException {
+    private void add(final int code, final String name, final Ellipsoid ellipsoid) throws FactoryException {
         assert Thread.holdsLock(this);
         final Map<String, Object> properties = new HashMap<>();
         final Citation authority = getAuthority();
@@ -102,20 +98,13 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
         properties.put(IdentifiedObject.NAME_KEY, name);
         properties.put(Identifier.AUTHORITY_KEY, authority);
         final GeodeticDatum datum =
-                factories
-                        .getDatumFactory()
-                        .createGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
+                factories.getDatumFactory().createGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
 
-        properties.put(
-                IdentifiedObject.IDENTIFIERS_KEY,
-                new NamedIdentifier[] {
-                    new NamedIdentifier(authority, text),
-                    new NamedIdentifier(authority, PREFIX + text)
-                });
+        properties.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier[] {
+            new NamedIdentifier(authority, text), new NamedIdentifier(authority, PREFIX + text)
+        });
         final CoordinateReferenceSystem crs =
-                factories
-                        .getCRSFactory()
-                        .createGeographicCRS(properties, datum, DefaultEllipsoidalCS.GEODETIC_2D);
+                factories.getCRSFactory().createGeographicCRS(properties, datum, DefaultEllipsoidalCS.GEODETIC_2D);
         if (crsMap.put(code, crs) != null) {
             throw new IllegalArgumentException(text);
         }
@@ -128,23 +117,19 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     }
 
     /**
-     * Provides a complete set of the known codes provided by this authority. The returned set
-     * contains only numeric identifiers like {@code "84"}, {@code "27"}, <cite>etc</cite>. The
-     * authority name ({@code "CRS"}) is not included. This is consistent with the {@linkplain
-     * org.geotools.referencing.factory.epsg.DirectEpsgFactory#getAuthorityCodes codes returned by
-     * the EPSG factory} and avoid duplication, since the authority is the same for every codes
-     * returned by this factory. It also make it easier for clients to prepend whatever authority
-     * name they wish, as for example in the {@linkplain
-     * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
-     * factory}.
+     * Provides a complete set of the known codes provided by this authority. The returned set contains only numeric
+     * identifiers like {@code "84"}, {@code "27"}, <cite>etc</cite>. The authority name ({@code "CRS"}) is not
+     * included. This is consistent with the
+     * {@linkplain org.geotools.referencing.factory.epsg.DirectEpsgFactory#getAuthorityCodes codes returned by the EPSG
+     * factory} and avoid duplication, since the authority is the same for every codes returned by this factory. It also
+     * make it easier for clients to prepend whatever authority name they wish, as for example in the
+     * {@linkplain org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities factory}.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
-        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry :
-                crsMap.entrySet()) {
+        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry : crsMap.entrySet()) {
             final Map.Entry entry = (Map.Entry) integerCoordinateReferenceSystemEntry;
             final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
@@ -172,8 +157,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
 
     /** Creates a coordinate reference system from the specified code. */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         String c = trimAuthority(code).toUpperCase();
         if (c.startsWith(PREFIX)) {
             c = c.substring(PREFIX.length());
@@ -183,8 +167,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
             i = Integer.parseInt(c);
         } catch (NumberFormatException exception) {
             // If a number can't be parsed, then this is an invalid authority code.
-            NoSuchAuthorityCodeException e =
-                    noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
+            NoSuchAuthorityCodeException e = noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
             e.initCause(exception);
             throw e;
         }

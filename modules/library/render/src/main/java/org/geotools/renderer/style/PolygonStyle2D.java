@@ -34,8 +34,8 @@ public class PolygonStyle2D extends LineStyle2D {
     protected Composite fillComposite;
 
     /**
-     * Returns a Style2D used for filling the {@linkplain org.geotools.renderer.geom.Polygon
-     * polygon} to be rendered, or <code>null</code> if none.
+     * Returns a Style2D used for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be rendered, or
+     * <code>null</code> if none.
      *
      * @return the current fill or null if none
      */
@@ -44,16 +44,16 @@ public class PolygonStyle2D extends LineStyle2D {
     }
 
     /**
-     * Sets a Style2D for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be
-     * rendered. Set it to <code>null</code> if no Style2D filling is to be performed.
+     * Sets a Style2D for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be rendered. Set it to
+     * <code>null</code> if no Style2D filling is to be performed.
      */
     public void setGraphicFill(Style2D graphicFill) {
         this.graphicFill = graphicFill;
     }
 
     /**
-     * Returns the filling color for the {@linkplain org.geotools.renderer.geom.Polygon polygon} to
-     * be rendered, or <code>null</code> if none.
+     * Returns the filling color for the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be rendered, or
+     * <code>null</code> if none.
      *
      * @return the current fill or null if none
      */
@@ -62,16 +62,16 @@ public class PolygonStyle2D extends LineStyle2D {
     }
 
     /**
-     * Sets filling color for the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be
-     * rendered. Set it to <code>null</code> if no filling is to be performed.
+     * Sets filling color for the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be rendered. Set it to
+     * <code>null</code> if no filling is to be performed.
      */
     public void setFill(Paint fill) {
         this.fill = fill;
     }
 
     /**
-     * Returns the fill Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline}
-     * to be rendered, or <code>null</code> if the contour is to be opaque
+     * Returns the fill Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered, or
+     * <code>null</code> if the contour is to be opaque
      *
      * @return the current fill composite or null if none
      */
@@ -80,8 +80,8 @@ public class PolygonStyle2D extends LineStyle2D {
     }
 
     /**
-     * Sets the fill Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to
-     * be rendered. Set it to <code>null</code> if the contour is to be opaque
+     * Sets the fill Composite for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be rendered. Set it
+     * to <code>null</code> if the contour is to be opaque
      */
     public void setFillComposite(Composite fillComposite) {
         this.fillComposite = fillComposite;

@@ -50,22 +50,20 @@ import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 
 /**
- * A replacement for {@link XSAnyTypeBinding} that adds support for {@link ComplexAttribute} and
- * related behaviours.
+ * A replacement for {@link XSAnyTypeBinding} that adds support for {@link ComplexAttribute} and related behaviours.
  *
- * <p>This binding that searches the substitution group of XSD element children to find properties
- * of a complex attribute. This is necessary to support the GML property type pattern, in which a
- * property (a property-type type) contains a property that is a member of a substitution group.
- * gml:AttributeType is the canonical example of the property type pattern.
+ * <p>This binding that searches the substitution group of XSD element children to find properties of a complex
+ * attribute. This is necessary to support the GML property type pattern, in which a property (a property-type type)
+ * contains a property that is a member of a substitution group. gml:AttributeType is the canonical example of the
+ * property type pattern.
  *
- * <p>gml:FeaturePropertyType is an example of the property type pattern that has an explicit
- * binding {@link FeaturePropertyTypeBinding}, but because an application schema may define more
- * property types whose names are not known at compile time, a binding like {@link
- * FeaturePropertyTypeBinding} cannot be written. This class exists to handle these
- * application-schema-defined property types.
+ * <p>gml:FeaturePropertyType is an example of the property type pattern that has an explicit binding
+ * {@link FeaturePropertyTypeBinding}, but because an application schema may define more property types whose names are
+ * not known at compile time, a binding like {@link FeaturePropertyTypeBinding} cannot be written. This class exists to
+ * handle these application-schema-defined property types.
  *
- * <p>This class supports the encoding of XML complexType with simpleContent through extraction of a
- * simpleContent property, as well as encoding XML attributes stored in the UserData map.
+ * <p>This class supports the encoding of XML complexType with simpleContent through extraction of a simpleContent
+ * property, as well as encoding XML attributes stored in the UserData map.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
@@ -102,23 +100,18 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         }
     }
 
-    /**
-     * @see AbstractComplexBinding#getProperties(java.lang.Object,
-     *     org.eclipse.xsd.XSDElementDeclaration)
-     */
+    /** @see AbstractComplexBinding#getProperties(java.lang.Object, org.eclipse.xsd.XSDElementDeclaration) */
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         if (object == null) {
             return null;
         }
 
         XSDTypeDefinition typeDef = element.getTypeDefinition();
-        boolean isAnyType =
-                typeDef.getName() != null
-                        && typeDef.getTargetNamespace() != null
-                        && typeDef.getName().equals(XS.ANYTYPE.getLocalPart())
-                        && typeDef.getTargetNamespace().equals(XS.NAMESPACE);
+        boolean isAnyType = typeDef.getName() != null
+                && typeDef.getTargetNamespace() != null
+                && typeDef.getName().equals(XS.ANYTYPE.getLocalPart())
+                && typeDef.getTargetNamespace().equals(XS.NAMESPACE);
         if (isAnyType) {
             return getPropertiesFromAny(object);
         }
@@ -130,10 +123,8 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         List<Object[ /* 2 */]> properties = new ArrayList<>();
         if (object instanceof ComplexAttribute) {
             ComplexAttribute complex = (ComplexAttribute) object;
-            for (XSDParticle childParticle :
-                    Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
-                XSDElementDeclaration childElement =
-                        (XSDElementDeclaration) childParticle.getContent();
+            for (XSDParticle childParticle : Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+                XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
                 if (childElement.isElementDeclarationReference()) {
                     childElement = childElement.getResolvedElementDeclaration();
                 }
@@ -144,12 +135,10 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                         // Particle creation stolen from BindingPropertyExtractor.
                         // I do not know why a wrapper is required; monkey see, monkey do.
                         // Without the wrapper, get an NPE in BindingPropertyExtractor.
-                        XSDParticle substitutedChildParticle =
-                                XSDFactory.eINSTANCE.createXSDParticle();
+                        XSDParticle substitutedChildParticle = XSDFactory.eINSTANCE.createXSDParticle();
                         substitutedChildParticle.setMaxOccurs(childParticle.getMaxOccurs());
                         substitutedChildParticle.setMinOccurs(childParticle.getMinOccurs());
-                        XSDElementDeclaration wrapper =
-                                XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                        XSDElementDeclaration wrapper = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                         wrapper.setResolvedElementDeclaration(e);
                         substitutedChildParticle.setContent(wrapper);
                         for (Property property : nameProperties) {
@@ -213,26 +202,19 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
              */
             else {
                 List<XSDParticle> elementParticles =
-                        new ArrayList<>(
-                                Schemas.getChildElementParticles(
-                                        element.getTypeDefinition(), false));
+                        new ArrayList<>(Schemas.getChildElementParticles(element.getTypeDefinition(), false));
                 for (Object complex : complexAtts) {
                     if (complex instanceof ComplexAttribute) {
                         ComplexAttribute newComplexAtt = (ComplexAttribute) complex;
                         PropertyDescriptor descriptor = ((Attribute) complex).getDescriptor();
                         if (descriptor.getUserData() != null) {
-                            Object propertyElement =
-                                    descriptor.getUserData().get(XSDElementDeclaration.class);
-                            if (propertyElement != null
-                                    && propertyElement instanceof XSDElementDeclaration) {
-                                XSDParticle substitutedChildParticle =
-                                        XSDFactory.eINSTANCE.createXSDParticle();
+                            Object propertyElement = descriptor.getUserData().get(XSDElementDeclaration.class);
+                            if (propertyElement != null && propertyElement instanceof XSDElementDeclaration) {
+                                XSDParticle substitutedChildParticle = XSDFactory.eINSTANCE.createXSDParticle();
                                 substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
                                 substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
-                                XSDElementDeclaration wrapper =
-                                        XSDFactory.eINSTANCE.createXSDElementDeclaration();
-                                wrapper.setResolvedElementDeclaration(
-                                        (XSDElementDeclaration) propertyElement);
+                                XSDElementDeclaration wrapper = XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                                wrapper.setResolvedElementDeclaration((XSDElementDeclaration) propertyElement);
                                 substitutedChildParticle.setContent(wrapper);
                                 boolean propertyExist = false;
                                 for (XSDParticle childParticle : elementParticles) {
@@ -242,16 +224,17 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                                         childElement = childElement.getResolvedElementDeclaration();
                                     }
                                     String existingName = childElement.getName();
-                                    String newName =
-                                            newComplexAtt.getDescriptor().getName().getLocalPart();
+                                    String newName = newComplexAtt
+                                            .getDescriptor()
+                                            .getName()
+                                            .getLocalPart();
                                     if (existingName.equals(newName)) {
                                         propertyExist = true;
                                         break;
                                     }
                                 }
                                 if (!propertyExist) {
-                                    properties.add(
-                                            new Object[] {substitutedChildParticle, newComplexAtt});
+                                    properties.add(new Object[] {substitutedChildParticle, newComplexAtt});
                                 }
                             }
                         }
@@ -262,8 +245,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         return properties;
     }
 
-    private void collectPropertiesFromComplexAtt(
-            List<Object[]> properties, ComplexAttribute newComplexAtt) {
+    private void collectPropertiesFromComplexAtt(List<Object[]> properties, ComplexAttribute newComplexAtt) {
         PropertyDescriptor descriptor = newComplexAtt.getDescriptor();
         if (descriptor.getUserData() != null) {
             Object propertyElement = descriptor.getUserData().get(XSDElementDeclaration.class);
@@ -325,18 +307,13 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             if (complex instanceof ComplexAttribute) {
                 PropertyDescriptor descriptor = ((Attribute) complex).getDescriptor();
                 if (descriptor.getUserData() != null) {
-                    Object propertyElement =
-                            descriptor.getUserData().get(XSDElementDeclaration.class);
-                    if (propertyElement != null
-                            && propertyElement instanceof XSDElementDeclaration) {
-                        XSDParticle substitutedChildParticle =
-                                XSDFactory.eINSTANCE.createXSDParticle();
+                    Object propertyElement = descriptor.getUserData().get(XSDElementDeclaration.class);
+                    if (propertyElement != null && propertyElement instanceof XSDElementDeclaration) {
+                        XSDParticle substitutedChildParticle = XSDFactory.eINSTANCE.createXSDParticle();
                         substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
                         substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
-                        XSDElementDeclaration wrapper =
-                                XSDFactory.eINSTANCE.createXSDElementDeclaration();
-                        wrapper.setResolvedElementDeclaration(
-                                (XSDElementDeclaration) propertyElement);
+                        XSDElementDeclaration wrapper = XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                        wrapper.setResolvedElementDeclaration((XSDElementDeclaration) propertyElement);
                         substitutedChildParticle.setContent(wrapper);
                         properties.add(new Object[] {substitutedChildParticle, complex});
                     }
@@ -347,8 +324,8 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
     }
 
     /**
-     * Check if the complex attribute contains a feature which id is pre-existing in the document.
-     * If it's true, make sure it's only encoded as an xlink:href to the existing id.
+     * Check if the complex attribute contains a feature which id is pre-existing in the document. If it's true, make
+     * sure it's only encoded as an xlink:href to the existing id.
      *
      * @param value The complex attribute value
      * @param att The complex attribute itself
@@ -390,10 +367,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         }
     }
 
-    /**
-     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
-     *     org.w3c.dom.Element)
-     */
+    /** @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element) */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         if (object instanceof ComplexAttribute) {
@@ -411,8 +385,8 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
     }
 
     /**
-     * We need to skip placeholder objects (new Object()) used in many places to represent objects
-     * that should not be encoded.
+     * We need to skip placeholder objects (new Object()) used in many places to represent objects that should not be
+     * encoded.
      */
     private boolean isPlaceholderObject(Object object) {
         return object != null && object.getClass().isAssignableFrom(Object.class);

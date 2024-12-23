@@ -45,10 +45,7 @@ public class MosaicInputs {
     private final double[][] sourceThreshold;
 
     public MosaicInputs(
-            boolean doInputTransparency,
-            boolean hasAlpha,
-            List<MosaicElement> sources,
-            double[][] sourceThreshold) {
+            boolean doInputTransparency, boolean hasAlpha, List<MosaicElement> sources, double[][] sourceThreshold) {
         this.doInputTransparency = doInputTransparency;
         this.hasAlpha = hasAlpha;
         this.sources = sources;

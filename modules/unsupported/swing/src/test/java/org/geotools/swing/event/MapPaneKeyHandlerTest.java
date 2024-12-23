@@ -59,20 +59,18 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
 
     @Before
     public void setup() {
-        TestFrame frame =
-                GuiActionRunner.execute(
-                        new GuiQuery<TestFrame>() {
-                            @Override
-                            protected TestFrame executeInEDT() throws Throwable {
-                                mapPane = new MockMapPane2();
-                                mapPane.setName("pane");
-                                handler = new MapPaneKeyHandler(mapPane);
-                                mapPane.addKeyListener(handler);
+        TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>() {
+            @Override
+            protected TestFrame executeInEDT() throws Throwable {
+                mapPane = new MockMapPane2();
+                mapPane.setName("pane");
+                handler = new MapPaneKeyHandler(mapPane);
+                mapPane.addKeyListener(handler);
 
-                                TestFrame frame = new TestFrame(mapPane);
-                                return frame;
-                            }
-                        });
+                TestFrame frame = new TestFrame(mapPane);
+                return frame;
+            }
+        });
 
         windowFixture = new FrameFixture(frame);
         windowFixture.show(new Dimension(WIDTH, HEIGHT));
@@ -112,8 +110,7 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
         assertEquals(-1, sign(endEnv.getWidth() - startEnv.getWidth()));
     }
 
-    private void assertScroll(MapPaneKeyHandler.Action action, int expectedDx, int expectedDy)
-            throws Exception {
+    private void assertScroll(MapPaneKeyHandler.Action action, int expectedDx, int expectedDy) throws Exception {
 
         KeyPressInfo info = getKeyPressInfo(action);
         windowFixture.panel("pane").pressAndReleaseKey(info);

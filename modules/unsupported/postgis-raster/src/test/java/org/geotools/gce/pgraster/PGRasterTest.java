@@ -46,11 +46,8 @@ public class PGRasterTest extends OnlineTestCase {
     @Override
     protected boolean isOnline() throws Exception {
         Class.forName(fixture.getProperty("driver"));
-        try (Connection cx =
-                DriverManager.getConnection(
-                        url(fixture),
-                        fixture.getProperty("username"),
-                        fixture.getProperty("password"))) {
+        try (Connection cx = DriverManager.getConnection(
+                url(fixture), fixture.getProperty("username"), fixture.getProperty("password"))) {
 
             String schema = fixture.getProperty("schema");
             String table = "gray";
@@ -140,16 +137,10 @@ public class PGRasterTest extends OnlineTestCase {
         assertNotNull(min);
         assertNotEquals(min, max);
 
-        GridCoverage2D r1 =
-                reader.read(
-                        new GeneralParameterValue[] {
-                            new Parameter<>(AbstractGridFormat.TIME, Collections.singletonList(min))
-                        });
-        GridCoverage2D r2 =
-                reader.read(
-                        new GeneralParameterValue[] {
-                            new Parameter<>(AbstractGridFormat.TIME, Collections.singletonList(max))
-                        });
+        GridCoverage2D r1 = reader.read(
+                new GeneralParameterValue[] {new Parameter<>(AbstractGridFormat.TIME, Collections.singletonList(min))});
+        GridCoverage2D r2 = reader.read(
+                new GeneralParameterValue[] {new Parameter<>(AbstractGridFormat.TIME, Collections.singletonList(max))});
 
         show(r1);
         show(r2);

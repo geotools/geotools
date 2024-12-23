@@ -33,8 +33,8 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.util.factory.Hints;
 
 /**
- * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by
- * leveraging on the {@link URL} associated to the feature.
+ * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by leveraging on the {@link URL}
+ * associated to the feature.
  */
 public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer<SimpleFeature> {
 
@@ -45,8 +45,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
         this.imageMosaicURLConsumer = imageMosaicURLConsumer;
     }
 
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicURLFeatureConsumer.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicURLFeatureConsumer.class);
 
     @Override
     public boolean checkElement(SimpleFeature feature, ImageMosaicWalker walker) {
@@ -61,8 +60,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
         String location = (String) Utils.getAttribute(feature, locationAttrName);
         if (location == null) {
-            throw new IllegalArgumentException(
-                    "Could not find the location using attribute name: " + locationAttrName);
+            throw new IllegalArgumentException("Could not find the location using attribute name: " + locationAttrName);
         }
         imageMosaicURLConsumer.handleElement(new URL(location), walker);
     }
@@ -92,8 +90,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
             ImageMosaicEventHandlers eventHandler = walker.getEventHandler();
             ImageMosaicConfigHandler configHandler = walker.getConfigHandler();
 
-            eventHandler.fireEvent(
-                    Level.INFO, "Now indexing url " + url, ((elementIndex * 100.0) / numElements));
+            eventHandler.fireEvent(Level.INFO, "Now indexing url " + url, ((elementIndex * 100.0) / numElements));
             GridCoverage2DReader coverageReader = null;
             try {
                 // STEP 1
@@ -106,16 +103,12 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                 if (cachedFormat == null) {
                     // When looking for formats which may parse this file, make sure to exclude the
                     // ImageMosaicFormat as return
-                    format =
-                            GridFormatFinder.findFormat(
-                                    readerInputObject, Utils.EXCLUDE_MOSAIC_HINTS);
+                    format = GridFormatFinder.findFormat(readerInputObject, Utils.EXCLUDE_MOSAIC_HINTS);
                 } else {
                     if (cachedFormat.accepts(readerInputObject)) {
                         format = cachedFormat;
                     } else {
-                        format =
-                                GridFormatFinder.findFormat(
-                                        readerInputObject, Utils.EXCLUDE_MOSAIC_HINTS);
+                        format = GridFormatFinder.findFormat(readerInputObject, Utils.EXCLUDE_MOSAIC_HINTS);
                     }
                 }
                 if ((format instanceof UnknownFormat) || format == null) {
@@ -130,10 +123,9 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                     return;
                 }
 
-                final Hints configurationHints = configHandler.getRunConfiguration().getHints();
-                coverageReader =
-                        (GridCoverage2DReader)
-                                format.getReader(readerInputObject, configurationHints);
+                final Hints configurationHints =
+                        configHandler.getRunConfiguration().getHints();
+                coverageReader = (GridCoverage2DReader) format.getReader(readerInputObject, configurationHints);
 
                 // Setting of the ReaderSPI to use
                 if (configHandler.getCachedReaderSPI() == null) {
@@ -142,8 +134,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                     if (inStreamSpi == null) {
                         throw new IllegalArgumentException("no inputStreamSPI available!");
                     }
-                    try (ImageInputStream inStream =
-                            ((SourceSPIProvider) readerInputObject).getStream()) {
+                    try (ImageInputStream inStream = ((SourceSPIProvider) readerInputObject).getStream()) {
                         // Get the ImageInputStream from the SPI
 
                         // Throws an Exception if the ImageInputStream is not present
@@ -152,8 +143,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                                 LOGGER.log(Level.WARNING, "Unable to open a stream on " + url);
                             }
                             throw new IllegalArgumentException(
-                                    "Unable to get an input stream for the provided file granule"
-                                            + url);
+                                    "Unable to get an input stream for the provided file granule" + url);
                         }
                         // Selection of the ImageReaderSpi from the Stream
                         ImageReaderSpi spi = readerInputObject.getReaderSpi();
@@ -173,10 +163,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                         //  Assume that all the granules already put on the datastore are valid
                         configHandler.setCachedFormat(format);
                     } catch (Exception e) {
-                        LOGGER.log(
-                                Level.FINE,
-                                "Failure during potential granule evaluation, skipping it: " + url,
-                                e);
+                        LOGGER.log(Level.FINE, "Failure during potential granule evaluation, skipping it: " + url, e);
                     }
 
                     ImageMosaicSourceElement element = new ImageMosaicSourceElement.URLElement(url);
@@ -189,8 +176,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                             walker.getTransaction());
 
                     // fire event
-                    element.fireHarvestingEvent(
-                            eventHandler, elementIndex, numElements, "Done with granule " + url);
+                    element.fireHarvestingEvent(eventHandler, elementIndex, numElements, "Done with granule " + url);
                 }
             } catch (Exception e) {
                 // we got an exception, we should stop the walk
@@ -205,8 +191,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                         coverageReader.dispose();
                 } catch (Throwable e) {
                     // ignore exception
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
                 }
             }
         }

@@ -136,9 +136,7 @@ public class WFSConfig {
             config.preferredMethod = PreferredHttpMethod.AUTO;
         } else {
             config.preferredMethod =
-                    preferPost.booleanValue()
-                            ? PreferredHttpMethod.HTTP_POST
-                            : PreferredHttpMethod.HTTP_GET;
+                    preferPost.booleanValue() ? PreferredHttpMethod.HTTP_POST : PreferredHttpMethod.HTTP_GET;
         }
 
         config.user = USERNAME.lookUp(params);
@@ -158,14 +156,11 @@ public class WFSConfig {
         config.outputformatOverride = OUTPUTFORMAT.lookUp(params);
         config.axisOrder = AXIS_ORDER.lookUp(params);
         config.axisOrderFilter =
-                AXIS_ORDER_FILTER.lookUp(params) == null
-                        ? AXIS_ORDER.lookUp(params)
-                        : AXIS_ORDER_FILTER.lookUp(params);
+                AXIS_ORDER_FILTER.lookUp(params) == null ? AXIS_ORDER.lookUp(params) : AXIS_ORDER_FILTER.lookUp(params);
 
-        config.gmlCompatibleTypenames =
-                GML_COMPATIBLE_TYPENAMES.lookUp(params) == null
-                        ? (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue()
-                        : GML_COMPATIBLE_TYPENAMES.lookUp(params);
+        config.gmlCompatibleTypenames = GML_COMPATIBLE_TYPENAMES.lookUp(params) == null
+                ? (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue()
+                : GML_COMPATIBLE_TYPENAMES.lookUp(params);
         config.entityResolver = ENTITY_RESOLVER.lookUp(params);
         config.useHttpConnectionPooling = USE_HTTP_CONNECTION_POOLING.lookUp(params);
         config.maxConnectionPoolSize = MAX_CONNECTION_POOL_SIZE.lookUp(params);
@@ -175,34 +170,31 @@ public class WFSConfig {
     }
 
     /**
-     * Extracts headers from parameters and 1) creates a defensive copy of the map, 2) makes sure no
-     * nulls are contained and 3) only strings.
+     * Extracts headers from parameters and 1) creates a defensive copy of the map, 2) makes sure no nulls are contained
+     * and 3) only strings.
      *
      * @param params
      * @return a new map of null
      * @throws IOException
      */
-    private static Map<String, String> extractAdditionalHeaders(Map<?, ?> params)
-            throws IOException {
+    private static Map<String, String> extractAdditionalHeaders(Map<?, ?> params) throws IOException {
         Map<?, ?> headersRaw = WFSDataAccessFactory.ADDITIONAL_HEADERS.lookUp(params);
         if (headersRaw != null) {
             Map<String, String> headers = new LinkedHashMap<>();
-            headersRaw.forEach(
-                    (key, value) -> {
-                        if (key instanceof String && value instanceof String) {
-                            headers.put(key.toString(), value.toString());
-                        } else {
-                            LOGGER.warning(
-                                    "Ignoring additional header. Not string-typed. Key: "
-                                            + key
-                                            + ", value: "
-                                            + value
-                                            + ". Key type: "
-                                            + (key == null ? null : key.getClass().getName())
-                                            + ", value type: "
-                                            + (value == null ? null : value.getClass().getName()));
-                        }
-                    });
+            headersRaw.forEach((key, value) -> {
+                if (key instanceof String && value instanceof String) {
+                    headers.put(key.toString(), value.toString());
+                } else {
+                    LOGGER.warning("Ignoring additional header. Not string-typed. Key: "
+                            + key
+                            + ", value: "
+                            + value
+                            + ". Key type: "
+                            + (key == null ? null : key.getClass().getName())
+                            + ", value type: "
+                            + (value == null ? null : value.getClass().getName()));
+                }
+            });
             return headers;
         }
         return null;
@@ -311,10 +303,7 @@ public class WFSConfig {
         return maxConnectionPoolSize;
     }
 
-    /**
-     * @return null, if the {@link #additionalHeaders} are null. An unmodifiable version of the
-     *     headers otherwise.
-     */
+    /** @return null, if the {@link #additionalHeaders} are null. An unmodifiable version of the headers otherwise. */
     public Map<String, String> getAdditionalHeaders() {
         if (additionalHeaders == null) {
             return null;
@@ -322,17 +311,12 @@ public class WFSConfig {
         return Collections.unmodifiableMap(additionalHeaders);
     }
 
-    /**
-     * Checks if axis flipping is needed comparing axis order requested for the DataStore with query
-     * crs.
-     */
+    /** Checks if axis flipping is needed comparing axis order requested for the DataStore with query crs. */
     public static boolean invertAxisNeeded(String axisOrder, CoordinateReferenceSystem crs) {
         CRS.AxisOrder requestedAxis = CRS.getAxisOrder(crs);
         if (requestedAxis == CRS.AxisOrder.INAPPLICABLE) {
-            boolean forcedLonLat =
-                    Boolean.getBoolean("org.geotools.referencing.forceXY")
-                            || Boolean.TRUE.equals(
-                                    Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+            boolean forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY")
+                    || Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
             if (forcedLonLat) {
                 requestedAxis = CRS.AxisOrder.EAST_NORTH;
             } else {
@@ -352,12 +336,9 @@ public class WFSConfig {
     public String localTypeName(QName remoteTypeName) {
         String localTypeName = remoteTypeName.getLocalPart();
         if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
-            localTypeName =
-                    remoteTypeName.getPrefix()
-                            + (gmlCompatibleTypenames
-                                    ? NAME_SEPARATOR_GML_COMPATIBLE
-                                    : NAME_SEPARATOR)
-                            + localTypeName;
+            localTypeName = remoteTypeName.getPrefix()
+                    + (gmlCompatibleTypenames ? NAME_SEPARATOR_GML_COMPATIBLE : NAME_SEPARATOR)
+                    + localTypeName;
         }
         return localTypeName;
     }

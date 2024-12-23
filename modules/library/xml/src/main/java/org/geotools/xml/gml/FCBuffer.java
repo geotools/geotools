@@ -31,8 +31,8 @@ import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.SAXException;
 
 /**
- * Feature Buffer ... acts as a FeatureReader<SimpleFeatureType, SimpleFeature> by making itself as
- * a seperate thread prior starting execution with the SAX Parser.
+ * Feature Buffer ... acts as a FeatureReader<SimpleFeatureType, SimpleFeature> by making itself as a seperate thread
+ * prior starting execution with the SAX Parser.
  *
  * @author dzwiers
  */
@@ -76,9 +76,9 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
      * Returns the logger to be used for this class.
      *
      * @todo Logger.setLevel(...) should not be invoked, because it override any user setting in
-     *     {@code jre/lib/logging.properties}. Users should edit their properties file instead. If
-     *     Geotools is too verbose below the warning level, then some log messages should probably
-     *     be changed from Level.INFO to Level.FINE.
+     *     {@code jre/lib/logging.properties}. Users should edit their properties file instead. If Geotools is too
+     *     verbose below the warning level, then some log messages should probably be changed from Level.INFO to
+     *     Level.FINE.
      */
     private static final Logger getLogger() {
         Logger l = org.geotools.util.logging.Logging.getLogger(FCBuffer.class);
@@ -132,13 +132,13 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     }
 
     /**
-     * The prefered method of using this class, this will return the Feature Reader for the document
-     * specified, using the specified buffer capacity.
+     * The prefered method of using this class, this will return the Feature Reader for the document specified, using
+     * the specified buffer capacity.
      *
      * @param document URL to parse
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            URI document, int capacity) throws SAXException {
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity)
+            throws SAXException {
         return getFeatureReader(document, capacity, 1000, null);
     }
 
@@ -320,10 +320,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         }
     }
 
-    /**
-     * Called before parsing the FeatureCollection. Subclasses may override to set their custom
-     * hints.
-     */
+    /** Called before parsing the FeatureCollection. Subclasses may override to set their custom hints. */
     protected void initHints(XMLHandlerHints hints) {
         hints.put(XMLHandlerHints.STREAM_HINT, this);
         hints.put(XMLHandlerHints.FLOW_HANDLER_HINT, new FCFlowHandler());

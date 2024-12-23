@@ -37,8 +37,8 @@ import org.geotools.util.Converters;
 /**
  * Implementation of "Categorize" as a normal function.
  *
- * <p>This implementation is compatible with the Function interface; the parameter list can be used
- * to set the threshold values etc...
+ * <p>This implementation is compatible with the Function interface; the parameter list can be used to set the threshold
+ * values etc...
  *
  * <p>This function expects:
  *
@@ -66,9 +66,9 @@ public class CategorizeFunction implements Function {
     public static final String PRECEDING = "preceding";
 
     /**
-     * Use as a PropertyName when defining a color map. The "Raterdata" is expected to apply to only
-     * a single band; if multiple bands are provided it is probably a mistake; but we will use the
-     * maximum value (since we are working against a threshold).
+     * Use as a PropertyName when defining a color map. The "Raterdata" is expected to apply to only a single band; if
+     * multiple bands are provided it is probably a mistake; but we will use the maximum value (since we are working
+     * against a threshold).
      */
     public static final String RASTER_DATA = "Rasterdata";
 
@@ -84,16 +84,15 @@ public class CategorizeFunction implements Function {
     private String belongsTo;
 
     /** Make the instance of FunctionName available in a consistent spot. */
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "Categorize",
-                    "LookupValue",
-                    "Value",
-                    "Threshold 1",
-                    "Value 1",
-                    "Threshold 2",
-                    "Value 2",
-                    "succeeding or preceding");
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "Categorize",
+            "LookupValue",
+            "Value",
+            "Threshold 1",
+            "Value 1",
+            "Threshold 2",
+            "Value 2",
+            "succeeding or preceding");
 
     public CategorizeFunction() {
         this(new ArrayList<>(), null);
@@ -265,9 +264,7 @@ public class CategorizeFunction implements Function {
         return fallback;
     }
 
-    /**
-     * Creates a String representation of this Function with the function name and the arguments.
-     */
+    /** Creates a String representation of this Function with the function name and the arguments. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -276,8 +273,7 @@ public class CategorizeFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -308,8 +304,7 @@ public class CategorizeFunction implements Function {
 
     @Override
     public int hashCode() {
-        int result =
-                Objects.hash(parameters, fallback, staticTable, convertedValuesContext, belongsTo);
+        int result = Objects.hash(parameters, fallback, staticTable, convertedValuesContext, belongsTo);
         result = 31 * result + Arrays.hashCode(thresholds);
         result = 31 * result + Arrays.hashCode(values);
         result = 31 * result + Arrays.hashCode(convertedValues);

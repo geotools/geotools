@@ -56,26 +56,21 @@ public class STACDataStoreFactoryTest {
     public static WireMockClassRule classRule =
             new WireMockClassRule(WireMockConfiguration.options().dynamicPort());
 
-    @Rule public WireMockClassRule service = classRule;
+    @Rule
+    public WireMockClassRule service = classRule;
 
     private static final String NS_URI = "http://www.geotools.org";
 
     @Test
     @SuppressWarnings("PMD.CloseResource") // pooling HTTP client closed via store
     public void testConnect() throws IOException {
-        service.stubFor(
-                get(urlEqualTo("/stac"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "application/json")
-                                        .withHeader("Authentication", "dXNlcjpwYXNzd29yZA==")
-                                        .withBody(
-                                                IOUtils.toString(
-                                                        getClass()
-                                                                .getResourceAsStream(
-                                                                        "../landingPage.json"),
-                                                        StandardCharsets.UTF_8))));
+        service.stubFor(get(urlEqualTo("/stac"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Authentication", "dXNlcjpwYXNzd29yZA==")
+                        .withBody(IOUtils.toString(
+                                getClass().getResourceAsStream("../landingPage.json"), StandardCharsets.UTF_8))));
 
         Map<String, Object> params = new HashMap<>();
         params.put(DBTYPE.key, DBTYPE.sample);

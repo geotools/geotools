@@ -40,8 +40,7 @@ public class LineString3DTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncode3DLineFromLiteCS() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
         LineString geometry = new GeometryFactory().createLineString(cs);
         Document doc = encode(encoder, geometry);
         assertThat(doc, hasXPath("//gml:posList", equalTo("0 0 50 120 0 100")));

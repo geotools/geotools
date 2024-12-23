@@ -70,21 +70,19 @@ import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.factory.Hints;
 
 /**
- * An authority mediator that consults (a possibily shared) cache before delegating the generation
- * of the content to a "worker" authority factory. The behaviour of the {@code createFoo(String)}
- * methods first looks if a previously created object exists for the given code. If such an object
- * exists, it is returned directly. The testing of the cache is synchronized and may block if the
- * referencing object is under construction.
+ * An authority mediator that consults (a possibily shared) cache before delegating the generation of the content to a
+ * "worker" authority factory. The behaviour of the {@code createFoo(String)} methods first looks if a previously
+ * created object exists for the given code. If such an object exists, it is returned directly. The testing of the cache
+ * is synchronized and may block if the referencing object is under construction.
  *
- * <p>If the object is not yet created, the definition is delegated to the appropriate {@code
- * createFoo} method of the factory, which will cache the result for next time.
+ * <p>If the object is not yet created, the definition is delegated to the appropriate {@code createFoo} method of the
+ * factory, which will cache the result for next time.
  *
- * <p>This object is responsible for maintaining an {{ObjectCache}} of "workers" based on the
- * following:
+ * <p>This object is responsible for maintaining an {{ObjectCache}} of "workers" based on the following:
  *
  * <ul>
- *   <li>Hints.AUTHORITY_MAX_ACTIVE (default 2) - indicates the maximum number of worker created, if
- *       non positive the number of workers is unbounded.
+ *   <li>Hints.AUTHORITY_MAX_ACTIVE (default 2) - indicates the maximum number of worker created, if non positive the
+ *       number of workers is unbounded.
  *   <li>Hints.
  * </ul>
  *
@@ -104,33 +102,28 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     static final int PRIORITY = MAXIMUM_PRIORITY - 10;
 
     /**
-     * Cache to be used for referencing objects defined by this authority. Please note that this
-     * cache may be shared!
+     * Cache to be used for referencing objects defined by this authority. Please note that this cache may be shared!
      *
-     * <p>Your cache may grow to considerable size during actual use; in addition to storing
-     * CoordinateReferenceSystems (by code); it will also store all the component parts (each under
-     * its own code), along with MathTransformations between two CoordinateReferenceSystems. So even
-     * if you are only planning on working with 50 CoordianteReferenceSystems please keep in mind
-     * that you will need larger cache size in order to prevent a bottleneck.
+     * <p>Your cache may grow to considerable size during actual use; in addition to storing CoordinateReferenceSystems
+     * (by code); it will also store all the component parts (each under its own code), along with MathTransformations
+     * between two CoordinateReferenceSystems. So even if you are only planning on working with 50
+     * CoordianteReferenceSystems please keep in mind that you will need larger cache size in order to prevent a
+     * bottleneck.
      */
     ObjectCache<Object, Object> cache;
 
     /**
-     * The findCache is used to store search results; often match a "raw" CoordinateReferenceSystem
-     * created from WKT (as the key) with a "real" CoordianteReferenceSystem as defined by this
-     * authority.
+     * The findCache is used to store search results; often match a "raw" CoordinateReferenceSystem created from WKT (as
+     * the key) with a "real" CoordianteReferenceSystem as defined by this authority.
      */
     ObjectCache<Object, Object> findCache;
 
-    /**
-     * Pool to hold workers which will be used to construct referencing objects which are not
-     * present in the cache.
-     */
+    /** Pool to hold workers which will be used to construct referencing objects which are not present in the cache. */
     private ObjectPool workers;
 
     /**
-     * Configuration object for the object pool. The constructor reads its hints and sets the pool
-     * configuration in this object;
+     * Configuration object for the object pool. The constructor reads its hints and sets the pool configuration in this
+     * object;
      */
     Config poolConfig = new Config();
 
@@ -160,10 +153,8 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         poolConfig.maxIdle = Hints.AUTHORITY_MAX_IDLE.toValue(hints);
         poolConfig.maxActive = Hints.AUTHORITY_MAX_ACTIVE.toValue(hints);
         poolConfig.minEvictableIdleTimeMillis = Hints.AUTHORITY_MIN_EVICT_IDLETIME.toValue(hints);
-        poolConfig.softMinEvictableIdleTimeMillis =
-                Hints.AUTHORITY_SOFTMIN_EVICT_IDLETIME.toValue(hints);
-        poolConfig.timeBetweenEvictionRunsMillis =
-                Hints.AUTHORITY_TIME_BETWEEN_EVICTION_RUNS.toValue(hints);
+        poolConfig.softMinEvictableIdleTimeMillis = Hints.AUTHORITY_SOFTMIN_EVICT_IDLETIME.toValue(hints);
+        poolConfig.timeBetweenEvictionRunsMillis = Hints.AUTHORITY_TIME_BETWEEN_EVICTION_RUNS.toValue(hints);
 
         // static behaviour
         poolConfig.maxWait = -1; // block indefinitely until a worker is available
@@ -173,16 +164,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     /**
      * Constructs an instance making use of the indicated cache.
      *
-     * <p>This constructor is protected because subclasses must declare which of the {@link
-     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
-     * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
+     * <p>This constructor is protected because subclasses must declare which of the {@link DatumAuthorityFactory},
+     * {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link CoordinateOperationAuthorityFactory}
+     * interfaces they choose to implement.
      *
      * @param cache The cache to use
      */
     protected AbstractAuthorityMediator(
-            int priority,
-            ObjectCache<Object, Object> cache,
-            ReferencingFactoryContainer container) {
+            int priority, ObjectCache<Object, Object> cache, ReferencingFactoryContainer container) {
         super(priority);
         this.factories = container;
         this.cache = cache;
@@ -223,9 +212,9 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     }
 
     /**
-     * Trims the authority scope, if present. For example if this factory is an EPSG authority
-     * factory and the specified code start with the "EPSG:" prefix, then the prefix is removed.
-     * Otherwise, the string is returned unchanged (except for leading and trailing spaces).
+     * Trims the authority scope, if present. For example if this factory is an EPSG authority factory and the specified
+     * code start with the "EPSG:" prefix, then the prefix is removed. Otherwise, the string is returned unchanged
+     * (except for leading and trailing spaces).
      *
      * @param code The code to trim.
      * @return The code without the authority scope.
@@ -347,116 +336,91 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCoordinateReferenceSystem(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCoordinateReferenceSystem(key);
+            }
+        });
     }
 
     @Override
     public DerivedCRS createDerivedCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createEngineeringCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createEngineeringCRS(key);
+            }
+        });
     }
 
     @Override
     public GeocentricCRS createGeocentricCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createGeocentricCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createGeocentricCRS(key);
+            }
+        });
     }
 
     @Override
     public GeographicCRS createGeographicCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createGeographicCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createGeographicCRS(key);
+            }
+        });
     }
 
     @Override
     public ImageCRS createImageCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createImageCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createImageCRS(key);
+            }
+        });
     }
 
     @Override
     public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createProjectedCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createProjectedCRS(key);
+            }
+        });
     }
 
     @Override
     public TemporalCRS createTemporalCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createTemporalCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createTemporalCRS(key);
+            }
+        });
     }
 
     @Override
     public VerticalCRS createVerticalCRS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createVerticalCRS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createVerticalCRS(key);
+            }
+        });
     }
 
     //
@@ -465,142 +429,112 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     @Override
     public CartesianCS createCartesianCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCartesianCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCartesianCS(key);
+            }
+        });
     }
 
     @Override
     public CoordinateSystem createCoordinateSystem(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCoordinateSystem(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCoordinateSystem(key);
+            }
+        });
     }
 
     // sample implemenation with get/test
     @Override
     public CoordinateSystemAxis createCoordinateSystemAxis(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCoordinateSystemAxis(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCoordinateSystemAxis(key);
+            }
+        });
     }
 
     @Override
     public CylindricalCS createCylindricalCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCylindricalCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCylindricalCS(key);
+            }
+        });
     }
 
     @Override
     public EllipsoidalCS createEllipsoidalCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createEllipsoidalCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createEllipsoidalCS(key);
+            }
+        });
     }
 
     @Override
     public PolarCS createPolarCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createPolarCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createPolarCS(key);
+            }
+        });
     }
 
     @Override
     public SphericalCS createSphericalCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createSphericalCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createSphericalCS(key);
+            }
+        });
     }
 
     @Override
     public TimeCS createTimeCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createTimeCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createTimeCS(key);
+            }
+        });
     }
 
     @Override
     public Unit<?> createUnit(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createUnit(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createUnit(key);
+            }
+        });
     }
 
     @Override
     public VerticalCS createVerticalCS(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createVerticalCS(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createVerticalCS(key);
+            }
+        });
     }
 
     //
@@ -609,127 +543,100 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     @Override
     public Datum createDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createDatum(key);
+            }
+        });
     }
 
     @Override
     public Ellipsoid createEllipsoid(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createEllipsoid(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createEllipsoid(key);
+            }
+        });
     }
 
     @Override
     public EngineeringDatum createEngineeringDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createEngineeringDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createEngineeringDatum(key);
+            }
+        });
     }
 
     @Override
     public GeodeticDatum createGeodeticDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createGeodeticDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createGeodeticDatum(key);
+            }
+        });
     }
 
     @Override
     public ImageDatum createImageDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createImageDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createImageDatum(key);
+            }
+        });
     }
 
     @Override
     public PrimeMeridian createPrimeMeridian(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createPrimeMeridian(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createPrimeMeridian(key);
+            }
+        });
     }
 
     @Override
     public TemporalDatum createTemporalDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createTemporalDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createTemporalDatum(key);
+            }
+        });
     }
 
     @Override
     public VerticalDatum createVerticalDatum(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createVerticalDatum(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createVerticalDatum(key);
+            }
+        });
     }
 
     @Override
     public CoordinateOperation createCoordinateOperation(String code) throws FactoryException {
         final String key = toKey(code);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createCoordinateOperation(key);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createCoordinateOperation(key);
+            }
+        });
     }
 
     @Override
@@ -737,21 +644,17 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
             final String sourceCode, final String targetCode) throws FactoryException {
 
         final Object key = ObjectCaches.toKey(getAuthority(), sourceCode, targetCode);
-        return createWith(
-                key,
-                new WorkerSafeRunnable() {
-                    @Override
-                    public Object run(AbstractCachedAuthorityFactory worker)
-                            throws FactoryException {
-                        return worker.createFromCoordinateReferenceSystemCodes(
-                                sourceCode, targetCode);
-                    }
-                });
+        return createWith(key, new WorkerSafeRunnable() {
+            @Override
+            public Object run(AbstractCachedAuthorityFactory worker) throws FactoryException {
+                return worker.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
+            }
+        });
     }
 
     /**
-     * This method is used to cut down the amount of try/catch/finally code needed when working with
-     * the cache and workers.
+     * This method is used to cut down the amount of try/catch/finally code needed when working with the cache and
+     * workers.
      *
      * <p>This code brings together two try/catch/finally blocks.
      *
@@ -858,8 +761,8 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     /**
      * Clean up the object pool of workers (since we are shutting down).
      *
-     * <p>Subclasses may wish to override this method if they have their own resources to clean up
-     * (like a database connection). If you do this please remember to call super.dispose().
+     * <p>Subclasses may wish to override this method if they have their own resources to clean up (like a database
+     * connection). If you do this please remember to call super.dispose().
      */
     @Override
     public void dispose() throws FactoryException {
@@ -875,8 +778,8 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         }
     }
     /**
-     * Creates the objects, subclasses of AbstractCachedAuthorityFactory, which are held by the
-     * ObjectPool. This implementation simply delegates each method to the subclass.
+     * Creates the objects, subclasses of AbstractCachedAuthorityFactory, which are held by the ObjectPool. This
+     * implementation simply delegates each method to the subclass.
      *
      * @author Cory Horner (Refractions Research)
      */
@@ -948,21 +851,20 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @since 2.4
      */
     @Override
-    public IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
+    public IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return new LazyCachedFinder(type);
     }
     /**
      * An {@link IdentifiedObjectFinder} which uses a worker when searching.
      *
-     * <p>The worker used is configured to store answers in a separate <code>findCache</code>,
-     * rather that disrupt the regular <code>cached</code>(which is focused on retaining codes
-     * requested by the user application). This is because hundred of objects may be created during
-     * a scan while only one will be typically retained. We don't want to overload the cache with
-     * every false candidates that we encounter during the scan.
+     * <p>The worker used is configured to store answers in a separate <code>findCache</code>, rather that disrupt the
+     * regular <code>cached</code>(which is focused on retaining codes requested by the user application). This is
+     * because hundred of objects may be created during a scan while only one will be typically retained. We don't want
+     * to overload the cache with every false candidates that we encounter during the scan.
      *
-     * <p>Because the worker is configured differently before use we must be careful to return it to
-     * its original state before returning back to the <code>workers</code> pool.
+     * <p>Because the worker is configured differently before use we must be careful to return it to its original state
+     * before returning back to the <code>workers</code> pool.
      */
     private final class LazyCachedFinder extends IdentifiedObjectFinder {
         private Class<? extends IdentifiedObject> type;
@@ -973,9 +875,8 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         }
 
         /**
-         * Looks up an object from this authority factory which is equals, ignoring metadata, to the
-         * specified object. The default implementation performs the same lookup than the backing
-         * store and caches the result.
+         * Looks up an object from this authority factory which is equals, ignoring metadata, to the specified object.
+         * The default implementation performs the same lookup than the backing store and caches the result.
          */
         @Override
         public IdentifiedObject find(final IdentifiedObject object) throws FactoryException {

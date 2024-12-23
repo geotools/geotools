@@ -57,8 +57,7 @@ public class MapLayerListEvent extends EventObject {
         this.toIndex = position;
     }
 
-    public MapLayerListEvent(
-            MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
+    public MapLayerListEvent(MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
         super(map);
         this.layer = element;
         this.fromIndex = index;
@@ -74,8 +73,7 @@ public class MapLayerListEvent extends EventObject {
     /**
      * Returns the index of the first layer involved in the change
      *
-     * @return The old index of the layer. -1 will be returned if the layer was not in the
-     *     MapContext
+     * @return The old index of the layer. -1 will be returned if the layer was not in the MapContext
      */
     public int getFromIndex() {
         return this.fromIndex;
@@ -84,8 +82,7 @@ public class MapLayerListEvent extends EventObject {
     /**
      * Returns the index of the last layer involved in the change
      *
-     * @return The old index of the layer. -1 will be returned if the layer is no more in the
-     *     MapContext
+     * @return The old index of the layer. -1 will be returned if the layer is no more in the MapContext
      */
     public int getToIndex() {
         return this.toIndex;

@@ -47,9 +47,7 @@ public class ExternalGraphicBindingTest extends SETestSupport {
         ExternalGraphic externalGraphic = (ExternalGraphic) parse();
         assertNotNull(externalGraphic);
 
-        assertEquals(
-                SETestSupport.class.getResource("inlineContent-image.png"),
-                externalGraphic.getLocation());
+        assertEquals(SETestSupport.class.getResource("inlineContent-image.png"), externalGraphic.getLocation());
         assertEquals("image/png", externalGraphic.getFormat());
         assertNull(externalGraphic.getInlineContent());
     }
@@ -74,8 +72,7 @@ public class ExternalGraphicBindingTest extends SETestSupport {
         assertNotNull(externalGraphic);
 
         assertEquals("image/png", externalGraphic.getFormat());
-        assertImagesEqual(
-                getReferenceImage("inlineContent-image.png"), externalGraphic.getInlineContent());
+        assertImagesEqual(getReferenceImage("inlineContent-image.png"), externalGraphic.getInlineContent());
         assertNull(externalGraphic.getLocation());
     }
 
@@ -85,9 +82,7 @@ public class ExternalGraphicBindingTest extends SETestSupport {
 
         Element c = document.createElementNS(SE.NAMESPACE, "InlineContent");
         c.setAttributeNS(SE.NAMESPACE, "encoding", "base64");
-        c.appendChild(
-                document.createTextNode(
-                        "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCg=="));
+        c.appendChild(document.createTextNode("PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCg=="));
 
         Element f = document.createElementNS(SE.NAMESPACE, "Format");
         f.appendChild(document.createTextNode("image/png"));

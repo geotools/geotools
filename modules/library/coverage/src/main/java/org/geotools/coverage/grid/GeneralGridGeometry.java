@@ -44,30 +44,27 @@ import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 
 /**
- * Describes the valid range of grid coordinates and the math transform to transform grid
- * coordinates to real world coordinates. Grid geometries contains:
+ * Describes the valid range of grid coordinates and the math transform to transform grid coordinates to real world
+ * coordinates. Grid geometries contains:
  *
  * <p>
  *
  * <ul>
- *   <li>An optional {@linkplain GridEnvelope grid envelope} (a.k.a. "<cite>grid range</cite>"),
- *       usually inferred from the {@linkplain RenderedImage rendered image} size.
- *   <li>An optional "grid to CRS" {@linkplain MathTransform transform}, which may be inferred from
- *       the grid range and the envelope.
- *   <li>An optional {@linkplain Bounds envelope}, which may be inferred from the grid range and the
- *       "grid to CRS" transform.
- *   <li>An optional {@linkplain CoordinateReferenceSystem coordinate reference system} to be given
- *       to the envelope.
+ *   <li>An optional {@linkplain GridEnvelope grid envelope} (a.k.a. "<cite>grid range</cite>"), usually inferred from
+ *       the {@linkplain RenderedImage rendered image} size.
+ *   <li>An optional "grid to CRS" {@linkplain MathTransform transform}, which may be inferred from the grid range and
+ *       the envelope.
+ *   <li>An optional {@linkplain Bounds envelope}, which may be inferred from the grid range and the "grid to CRS"
+ *       transform.
+ *   <li>An optional {@linkplain CoordinateReferenceSystem coordinate reference system} to be given to the envelope.
  * </ul>
  *
- * <p>All grid geometry attributes are optional because some of them may be inferred from a wider
- * context. For example a grid geometry know nothing about {@linkplain RenderedImage rendered
- * images}, but {@link GridCoverage2D} do. Consequently, the later may infer the {@linkplain
- * GridEnvelope grid range} by itself.
+ * <p>All grid geometry attributes are optional because some of them may be inferred from a wider context. For example a
+ * grid geometry know nothing about {@linkplain RenderedImage rendered images}, but {@link GridCoverage2D} do.
+ * Consequently, the later may infer the {@linkplain GridEnvelope grid range} by itself.
  *
- * <p>By default, any request for an undefined attribute will thrown an {@link
- * InvalidGridGeometryException}. In order to check if an attribute is defined, use {@link
- * #isDefined}.
+ * <p>By default, any request for an undefined attribute will thrown an {@link InvalidGridGeometryException}. In order
+ * to check if an attribute is defined, use {@link #isDefined}.
  *
  * @since 2.1
  * @version $Id$
@@ -90,42 +87,41 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * A bitmask to specify the validity of the {@linkplain #getCoordinateReferenceSystem coordinate
-     * reference system}. This is given as an argument to the {@link #isDefined} method.
+     * A bitmask to specify the validity of the {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
+     * This is given as an argument to the {@link #isDefined} method.
      *
      * @since 2.2
      */
     public static final int CRS_BITMASK = 1;
 
     /**
-     * A bitmask to specify the validity of the {@linkplain #getEnvelope envelope}. This is given as
-     * an argument to the {@link #isDefined} method.
+     * A bitmask to specify the validity of the {@linkplain #getEnvelope envelope}. This is given as an argument to the
+     * {@link #isDefined} method.
      *
      * @since 2.2
      */
     public static final int ENVELOPE_BITMASK = 2;
 
     /**
-     * A bitmask to specify the validity of the {@linkplain #getGridRange grid range}. This is given
-     * as an argument to the {@link #isDefined} method.
+     * A bitmask to specify the validity of the {@linkplain #getGridRange grid range}. This is given as an argument to
+     * the {@link #isDefined} method.
      *
      * @since 2.2
      */
     public static final int GRID_RANGE_BITMASK = 4;
 
     /**
-     * A bitmask to specify the validity of the {@linkplain #getGridToCoordinateSystem grid to CRS}
-     * transform. This is given as an argument to the {@link #isDefined} method.
+     * A bitmask to specify the validity of the {@linkplain #getGridToCoordinateSystem grid to CRS} transform. This is
+     * given as an argument to the {@link #isDefined} method.
      *
      * @since 2.2
      */
     public static final int GRID_TO_CRS_BITMASK = 8;
 
     /**
-     * The valid coordinate range of a grid coverage, or {@code null} if none. The lowest valid grid
-     * coordinate is zero for {@link java.awt.image.BufferedImage}, but may be non-zero for
-     * arbitrary {@link RenderedImage}. A grid with 512 cells can have a minimum coordinate of 0 and
-     * maximum of 512, with 511 as the highest valid index.
+     * The valid coordinate range of a grid coverage, or {@code null} if none. The lowest valid grid coordinate is zero
+     * for {@link java.awt.image.BufferedImage}, but may be non-zero for arbitrary {@link RenderedImage}. A grid with
+     * 512 cells can have a minimum coordinate of 0 and maximum of 512, with 511 as the highest valid index.
      *
      * @see RenderedImage#getMinX
      * @see RenderedImage#getMinY
@@ -135,41 +131,37 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     protected final GridEnvelope gridRange;
 
     /**
-     * The envelope, which is usually the {@linkplain #gridRange grid range} {@linkplain #gridToCRS
-     * transformed} to real world coordinates. This envelope contains the {@linkplain
-     * CoordinateReferenceSystem coordinate reference system} of "real world" coordinates.
+     * The envelope, which is usually the {@linkplain #gridRange grid range} {@linkplain #gridToCRS transformed} to real
+     * world coordinates. This envelope contains the {@linkplain CoordinateReferenceSystem coordinate reference system}
+     * of "real world" coordinates.
      *
-     * <p>This field should be considered as private because envelopes are mutable, and we want to
-     * make sure that envelopes are cloned before to be returned to the user. Only {@link
-     * GridGeometry2D} and {@link GridCoverage2D} access directly to this field (read only) for
-     * performance reason.
+     * <p>This field should be considered as private because envelopes are mutable, and we want to make sure that
+     * envelopes are cloned before to be returned to the user. Only {@link GridGeometry2D} and {@link GridCoverage2D}
+     * access directly to this field (read only) for performance reason.
      *
      * @since 2.2
      */
     GeneralBounds envelope;
 
     /**
-     * The math transform (usually an affine transform), or {@code null} if none. This math
-     * transform maps {@linkplain PixelInCell#CELL_CENTER pixel center} to "real world" coordinate
-     * using the following line:
+     * The math transform (usually an affine transform), or {@code null} if none. This math transform maps
+     * {@linkplain PixelInCell#CELL_CENTER pixel center} to "real world" coordinate using the following line:
      *
      * <pre>gridToCRS.transform(pixels, point);</pre>
      */
     protected MathTransform gridToCRS;
 
     /**
-     * Same as {@link #gridToCRS} but from {@linkplain PixelInCell#CELL_CORNER pixel corner} instead
-     * of center. Will be computed only when first needed. Serialized because it may be a value
-     * specified explicitly at construction time, in which case it can be more accurate than a
-     * computed value.
+     * Same as {@link #gridToCRS} but from {@linkplain PixelInCell#CELL_CORNER pixel corner} instead of center. Will be
+     * computed only when first needed. Serialized because it may be a value specified explicitly at construction time,
+     * in which case it can be more accurate than a computed value.
      */
     private MathTransform cornerToCRS;
 
     /**
-     * Constructs a new grid geometry identical to the specified one except for the CRS. Note that
-     * this constructor just defines the CRS; it does <strong>not</strong> reproject the envelope.
-     * For this reason, this constructor should not be public. It is for internal use by {@link
-     * GridCoverageFactory} only.
+     * Constructs a new grid geometry identical to the specified one except for the CRS. Note that this constructor just
+     * defines the CRS; it does <strong>not</strong> reproject the envelope. For this reason, this constructor should
+     * not be public. It is for internal use by {@link GridCoverageFactory} only.
      */
     GeneralGridGeometry(final GeneralGridGeometry gm, final CoordinateReferenceSystem crs) {
         gridRange = gm.gridRange; // Do not clone; we assume it is safe to share.
@@ -180,8 +172,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Creates a new grid geometry with the same values than the given grid geometry. This is a copy
-     * constructor useful when the instance must be a {@code GeneralGridGeometry}.
+     * Creates a new grid geometry with the same values than the given grid geometry. This is a copy constructor useful
+     * when the instance must be a {@code GeneralGridGeometry}.
      *
      * @param other The other grid geometry to copy.
      * @since 2.5
@@ -206,47 +198,40 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Constructs a new grid geometry from a grid range and a {@linkplain MathTransform math
-     * transform} mapping {@linkplain PixelInCell#CELL_CENTER pixel center}.
+     * Constructs a new grid geometry from a grid range and a {@linkplain MathTransform math transform} mapping
+     * {@linkplain PixelInCell#CELL_CENTER pixel center}.
      *
      * @param gridRange The valid coordinate range of a grid coverage, or {@code null} if none.
-     * @param gridToCRS The math transform which allows for the transformations from grid
-     *     coordinates (pixel's <em>center</em>) to real world earth coordinates. May be {@code
-     *     null}, but this is not recommanded.
-     * @param crs The coordinate reference system for the "real world" coordinates, or {@code null}
-     *     if unknown. This CRS is given to the {@linkplain #getEnvelope envelope}.
-     * @throws MismatchedDimensionException if the math transform and the CRS don't have consistent
-     *     dimensions.
-     * @throws IllegalArgumentException if the math transform can't transform coordinates in the
-     *     domain of the specified grid range.
+     * @param gridToCRS The math transform which allows for the transformations from grid coordinates (pixel's
+     *     <em>center</em>) to real world earth coordinates. May be {@code null}, but this is not recommanded.
+     * @param crs The coordinate reference system for the "real world" coordinates, or {@code null} if unknown. This CRS
+     *     is given to the {@linkplain #getEnvelope envelope}.
+     * @throws MismatchedDimensionException if the math transform and the CRS don't have consistent dimensions.
+     * @throws IllegalArgumentException if the math transform can't transform coordinates in the domain of the specified
+     *     grid range.
      * @since 2.2
      */
     public GeneralGridGeometry(
-            final GridEnvelope gridRange,
-            final MathTransform gridToCRS,
-            final CoordinateReferenceSystem crs)
+            final GridEnvelope gridRange, final MathTransform gridToCRS, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException, IllegalArgumentException {
         this(gridRange, PixelInCell.CELL_CENTER, gridToCRS, crs);
     }
 
     /**
-     * Constructs a new grid geometry from a grid range and a {@linkplain MathTransform math
-     * transform} mapping pixel {@linkplain PixelInCell#CELL_CENTER center} or {@linkplain
-     * PixelInCell#CELL_CORNER corner}. This is the most general constructor, the one that gives the
-     * maximal control over the grid geometry to be created.
+     * Constructs a new grid geometry from a grid range and a {@linkplain MathTransform math transform} mapping pixel
+     * {@linkplain PixelInCell#CELL_CENTER center} or {@linkplain PixelInCell#CELL_CORNER corner}. This is the most
+     * general constructor, the one that gives the maximal control over the grid geometry to be created.
      *
      * @param gridRange The valid coordinate range of a grid coverage, or {@code null} if none.
-     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link
-     *     PixelInCell#CELL_CORNER CELL_CORNER} for Java2D/JAI conventions.
-     * @param gridToCRS The math transform which allows for the transformations from grid
-     *     coordinates to real world earth coordinates. May be {@code null}, but this is not
-     *     recommended.
-     * @param crs The coordinate reference system for the "real world" coordinates, or {@code null}
-     *     if unknown. This CRS is given to the {@linkplain #getEnvelope envelope}.
-     * @throws MismatchedDimensionException if the math transform and the CRS don't have consistent
-     *     dimensions.
-     * @throws IllegalArgumentException if the math transform can't transform coordinates in the
-     *     domain of the specified grid range.
+     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link PixelInCell#CELL_CORNER
+     *     CELL_CORNER} for Java2D/JAI conventions.
+     * @param gridToCRS The math transform which allows for the transformations from grid coordinates to real world
+     *     earth coordinates. May be {@code null}, but this is not recommended.
+     * @param crs The coordinate reference system for the "real world" coordinates, or {@code null} if unknown. This CRS
+     *     is given to the {@linkplain #getEnvelope envelope}.
+     * @throws MismatchedDimensionException if the math transform and the CRS don't have consistent dimensions.
+     * @throws IllegalArgumentException if the math transform can't transform coordinates in the domain of the specified
+     *     grid range.
      * @since 2.5
      */
     public GeneralGridGeometry(
@@ -272,8 +257,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Casts the specified grid range into an envelope. This is used before to transform the
-     * envelope using {@link CRSUtilities#transform(MathTransform, Bounds)}.
+     * Casts the specified grid range into an envelope. This is used before to transform the envelope using
+     * {@link CRSUtilities#transform(MathTransform, Bounds)}.
      */
     private static Bounds toEnvelope(final GridEnvelope gridRange) {
         final int dimension = gridRange.getDimension();
@@ -287,35 +272,31 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Constructs a new grid geometry from an envelope and a {@linkplain MathTransform math
-     * transform}. According OGC specification, the math transform should map {@linkplain
-     * PixelInCell#CELL_CENTER pixel center}. But in Java2D/JAI conventions, the transform is rather
-     * expected to maps {@linkplain PixelInCell#CELL_CORNER pixel corner}. The convention to follow
-     * can be specified by the {@code anchor} argument.
+     * Constructs a new grid geometry from an envelope and a {@linkplain MathTransform math transform}. According OGC
+     * specification, the math transform should map {@linkplain PixelInCell#CELL_CENTER pixel center}. But in Java2D/JAI
+     * conventions, the transform is rather expected to maps {@linkplain PixelInCell#CELL_CORNER pixel corner}. The
+     * convention to follow can be specified by the {@code anchor} argument.
      *
-     * <p>It is worth to point a few guidelines for the usage of the gridMaxInclusive parameter. In
-     * case we are using this contructor for a reprojection it might be worth using a <code>false
-     * </code> value for this parameter since we would not force to create a new raster that might
-     * be slightly bigger than the original one, causing problems with black or nodata collars
-     * appearing after a resample. In case we are trying to build a source raster area to be used at
-     * reading time, in that case we may want to provide <code>true</code> for gridMaxInclusive
-     * since we may want to read an area that is slightly bigger than what we need to be sure we
-     * actually reading something.
+     * <p>It is worth to point a few guidelines for the usage of the gridMaxInclusive parameter. In case we are using
+     * this contructor for a reprojection it might be worth using a <code>false
+     * </code> value for this parameter since we would not force to create a new raster that might be slightly bigger
+     * than the original one, causing problems with black or nodata collars appearing after a resample. In case we are
+     * trying to build a source raster area to be used at reading time, in that case we may want to provide <code>true
+     * </code> for gridMaxInclusive since we may want to read an area that is slightly bigger than what we need to be
+     * sure we actually reading something.
      *
-     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link
-     *     PixelInCell#CELL_CORNER CELL_CORNER} for Java2D/JAI conventions.
-     * @param gridToCRS The math transform which allows for the transformations from grid
-     *     coordinates to real world earth coordinates. May be {@code null}, but this is not
-     *     recommended.
+     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link PixelInCell#CELL_CORNER
+     *     CELL_CORNER} for Java2D/JAI conventions.
+     * @param gridToCRS The math transform which allows for the transformations from grid coordinates to real world
+     *     earth coordinates. May be {@code null}, but this is not recommended.
      * @param envelope The envelope (including CRS) of a grid coverage, or {@code null} if none.
-     * @param gridMaxInclusive Tells us whether or not the resulting gridRange max values should be
-     *     inclusive or not. See notes above.
-     * @param preserveGridToCRS Tells us whether we should try to preserve the the gridToCRS or the
-     *     envelope most part of the time we won't be able to preserve both for our purposes.
-     * @throws MismatchedDimensionException if the math transform and the envelope doesn't have
-     *     consistent dimensions.
-     * @throws IllegalArgumentException if the math transform can't transform coordinates in the
-     *     domain of the grid range.
+     * @param gridMaxInclusive Tells us whether or not the resulting gridRange max values should be inclusive or not.
+     *     See notes above.
+     * @param preserveGridToCRS Tells us whether we should try to preserve the the gridToCRS or the envelope most part
+     *     of the time we won't be able to preserve both for our purposes.
+     * @throws MismatchedDimensionException if the math transform and the envelope doesn't have consistent dimensions.
+     * @throws IllegalArgumentException if the math transform can't transform coordinates in the domain of the grid
+     *     range.
      * @since 2.7
      */
     public GeneralGridGeometry(
@@ -344,8 +325,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             transformed = org.geotools.referencing.CRS.transform(cornerToCRS.inverse(), envelope);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)),
-                    exception);
+                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)), exception);
         }
 
         // making this inclusive may cause problems when we use for warping of something since we
@@ -378,14 +358,12 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                 final double yScale = transformed.getSpan(1) / gridRange.getSpan(1);
                 final double xTrans = transformed.getMinimum(0) - xScale * gridRange.getLow(0);
                 final double yTrans = transformed.getMinimum(1) - yScale * gridRange.getLow(1);
-                final AffineTransform newTr =
-                        new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans);
+                final AffineTransform newTr = new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans);
                 newTr.preConcatenate((AffineTransform) this.cornerToCRS);
                 this.cornerToCRS = ProjectiveTransform.create(newTr);
 
                 this.gridToCRS =
-                        PixelTranslation.translate(
-                                cornerToCRS, PixelInCell.CELL_CORNER, PixelInCell.CELL_CENTER);
+                        PixelTranslation.translate(cornerToCRS, PixelInCell.CELL_CORNER, PixelInCell.CELL_CENTER);
 
                 // Now 'assertsEnabled' is set to the correct value
                 if (assertsEnabled) {
@@ -393,15 +371,11 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                         final MathTransform tr = cornerToCRS;
                         if (!(tr instanceof AffineTransform)) return;
                         final AffineTransform transform = (AffineTransform) tr;
-                        final double scale =
-                                Math.min(
-                                        XAffineTransform.getScaleX0(transform),
-                                        XAffineTransform.getScaleY0(transform));
+                        final double scale = Math.min(
+                                XAffineTransform.getScaleX0(transform), XAffineTransform.getScaleY0(transform));
                         final GeneralBounds tempEnvelope = CRS.transform(tr, toEnvelope(gridRange));
-                        tempEnvelope.setCoordinateReferenceSystem(
-                                envelope.getCoordinateReferenceSystem());
-                        if (LOGGER.isLoggable(Level.FINE)
-                                && !tempEnvelope.equals(envelope, scale * 1E-3, true)) {
+                        tempEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
+                        if (LOGGER.isLoggable(Level.FINE) && !tempEnvelope.equals(envelope, scale * 1E-3, true)) {
                             LOGGER.log(
                                     Level.FINE,
                                     "Unable to preserve the envelope for this GridGeometry, expected "
@@ -417,35 +391,30 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         }
     }
     /**
-     * Constructs a new grid geometry from an envelope and a {@linkplain MathTransform math
-     * transform}. According OGC specification, the math transform should map {@linkplain
-     * PixelInCell#CELL_CENTER pixel center}. But in Java2D/JAI conventions, the transform is rather
-     * expected to maps {@linkplain PixelInCell#CELL_CORNER pixel corner}. The convention to follow
-     * can be specified by the {@code anchor} argument.
+     * Constructs a new grid geometry from an envelope and a {@linkplain MathTransform math transform}. According OGC
+     * specification, the math transform should map {@linkplain PixelInCell#CELL_CENTER pixel center}. But in Java2D/JAI
+     * conventions, the transform is rather expected to maps {@linkplain PixelInCell#CELL_CORNER pixel corner}. The
+     * convention to follow can be specified by the {@code anchor} argument.
      *
-     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link
-     *     PixelInCell#CELL_CORNER CELL_CORNER} for Java2D/JAI conventions.
-     * @param gridToCRS The math transform which allows for the transformations from grid
-     *     coordinates to real world earth coordinates. May be {@code null}, but this is not
-     *     recommended.
+     * @param anchor {@link PixelInCell#CELL_CENTER CELL_CENTER} for OGC conventions or {@link PixelInCell#CELL_CORNER
+     *     CELL_CORNER} for Java2D/JAI conventions.
+     * @param gridToCRS The math transform which allows for the transformations from grid coordinates to real world
+     *     earth coordinates. May be {@code null}, but this is not recommended.
      * @param envelope The envelope (including CRS) of a grid coverage, or {@code null} if none.
-     * @throws MismatchedDimensionException if the math transform and the envelope doesn't have
-     *     consistent dimensions.
-     * @throws IllegalArgumentException if the math transform can't transform coordinates in the
-     *     domain of the grid range.
+     * @throws MismatchedDimensionException if the math transform and the envelope doesn't have consistent dimensions.
+     * @throws IllegalArgumentException if the math transform can't transform coordinates in the domain of the grid
+     *     range.
      * @since 2.5
      */
-    public GeneralGridGeometry(
-            final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope)
+    public GeneralGridGeometry(final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope)
             throws MismatchedDimensionException, IllegalArgumentException {
         this(anchor, gridToCRS, envelope, false, false);
     }
 
     /**
-     * Constructs a new grid geometry from an {@linkplain Bounds envelope}. An {@linkplain
-     * java.awt.geom.AffineTransform affine transform} will be computed automatically from the
-     * specified envelope using heuristic rules described in {@link GridToEnvelopeMapper} javadoc.
-     * More specifically, heuristic rules are applied for:
+     * Constructs a new grid geometry from an {@linkplain Bounds envelope}. An {@linkplain java.awt.geom.AffineTransform
+     * affine transform} will be computed automatically from the specified envelope using heuristic rules described in
+     * {@link GridToEnvelopeMapper} javadoc. More specifically, heuristic rules are applied for:
      *
      * <p>
      *
@@ -455,12 +424,10 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * </ul>
      *
      * @param gridRange The valid coordinate range of a grid coverage.
-     * @param userRange The corresponding coordinate range in user coordinate. This rectangle must
-     *     contains entirely all pixels, i.e. the rectangle's upper left corner must coincide with
-     *     the upper left corner of the first pixel and the rectangle's lower right corner must
-     *     coincide with the lower right corner of the last pixel.
-     * @throws MismatchedDimensionException if the grid range and the envelope doesn't have
-     *     consistent dimensions.
+     * @param userRange The corresponding coordinate range in user coordinate. This rectangle must contains entirely all
+     *     pixels, i.e. the rectangle's upper left corner must coincide with the upper left corner of the first pixel
+     *     and the rectangle's lower right corner must coincide with the lower right corner of the last pixel.
+     * @throws MismatchedDimensionException if the grid range and the envelope doesn't have consistent dimensions.
      * @since 2.2
      */
     public GeneralGridGeometry(final GridEnvelope gridRange, final Bounds userRange)
@@ -487,10 +454,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Clones the given grid range if necessary. This is mostly a protection for {@link GridRange2D}
-     * which is mutable, at the opposite of {@link GeneralGridRange} which is immutable. We test for
-     * the {@link GridRange2D} super-class which defines a {@code clone()} method, instead of {@link
-     * GridRange2D} itself, for gaining some generality.
+     * Clones the given grid range if necessary. This is mostly a protection for {@link GridRange2D} which is mutable,
+     * at the opposite of {@link GeneralGridRange} which is immutable. We test for the {@link GridRange2D} super-class
+     * which defines a {@code clone()} method, instead of {@link GridRange2D} itself, for gaining some generality.
      */
     private static GridEnvelope clone(GridEnvelope gridRange) {
         if (gridRange instanceof Cloneable) {
@@ -516,13 +482,11 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *
      * @return The coordinate reference system (never {@code null}).
      * @throws InvalidGridGeometryException if this grid geometry has no CRS (i.e. <code>
-     *     {@linkplain #isDefined isDefined}({@linkplain #CRS_BITMASK})</code> returned {@code
-     *     false}).
+     *     {@linkplain #isDefined isDefined}({@linkplain #CRS_BITMASK})</code> returned {@code false}).
      * @see GridGeometry2D#getCoordinateReferenceSystem2D
      * @since 2.2
      */
-    public CoordinateReferenceSystem getCoordinateReferenceSystem()
-            throws InvalidGridGeometryException {
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() throws InvalidGridGeometryException {
         if (envelope != null) {
             final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs != null) {
@@ -535,14 +499,13 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Returns the bounding box of "real world" coordinates for this grid geometry. This envelope is
-     * the {@linkplain #getGridRange grid range} {@linkplain #getGridToCoordinateSystem transformed}
-     * to the "real world" coordinate system.
+     * Returns the bounding box of "real world" coordinates for this grid geometry. This envelope is the
+     * {@linkplain #getGridRange grid range} {@linkplain #getGridToCoordinateSystem transformed} to the "real world"
+     * coordinate system.
      *
      * @return The bounding box in "real world" coordinates (never {@code null}).
      * @throws InvalidGridGeometryException if this grid geometry has no envelope (i.e. <code>
-     *     {@linkplain #isDefined isDefined}({@linkplain #ENVELOPE_BITMASK})</code> returned {@code
-     *     false}).
+     *     {@linkplain #isDefined isDefined}({@linkplain #ENVELOPE_BITMASK})</code> returned {@code false}).
      * @see GridGeometry2D#getEnvelope2D
      */
     public Bounds getEnvelope() throws InvalidGridGeometryException {
@@ -552,21 +515,17 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         }
         assert !isDefined(ENVELOPE_BITMASK);
         throw new InvalidGridGeometryException(
-                gridToCRS == null
-                        ? ErrorKeys.UNSPECIFIED_TRANSFORM
-                        : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+                gridToCRS == null ? ErrorKeys.UNSPECIFIED_TRANSFORM : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
     }
 
     /**
-     * Returns the valid coordinate range of a grid coverage. The lowest valid grid coordinate is
-     * zero for {@link java.awt.image.BufferedImage}, but may be non-zero for arbitrary {@link
-     * RenderedImage}. A grid with 512 cells can have a minimum coordinate of 0 and maximum of 512,
-     * with 511 as the highest valid index.
+     * Returns the valid coordinate range of a grid coverage. The lowest valid grid coordinate is zero for
+     * {@link java.awt.image.BufferedImage}, but may be non-zero for arbitrary {@link RenderedImage}. A grid with 512
+     * cells can have a minimum coordinate of 0 and maximum of 512, with 511 as the highest valid index.
      *
      * @return The grid range (never {@code null}).
      * @throws InvalidGridGeometryException if this grid geometry has no grid range (i.e. <code>
-     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_RANGE_BITMASK})</code> returned
-     *     {@code false}).
+     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_RANGE_BITMASK})</code> returned {@code false}).
      * @see GridGeometry2D#getGridRange2D
      */
     @Override
@@ -580,18 +539,16 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Returns the transform from grid coordinates to real world earth coordinates. The transform is
-     * often an affine transform. The coordinate reference system of the real world coordinates is
-     * given by {@link org.geotools.api.coverage.Coverage#getCoordinateReferenceSystem}.
+     * Returns the transform from grid coordinates to real world earth coordinates. The transform is often an affine
+     * transform. The coordinate reference system of the real world coordinates is given by
+     * {@link org.geotools.api.coverage.Coverage#getCoordinateReferenceSystem}.
      *
-     * <p><strong>Note:</strong> OpenGIS requires that the transform maps <em>pixel centers</em> to
-     * real world coordinates. This is different from some other systems that map pixel's upper left
-     * corner.
+     * <p><strong>Note:</strong> OpenGIS requires that the transform maps <em>pixel centers</em> to real world
+     * coordinates. This is different from some other systems that map pixel's upper left corner.
      *
      * @return The transform (never {@code null}).
      * @throws InvalidGridGeometryException if this grid geometry has no transform (i.e. <code>
-     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned
-     *     {@code false}).
+     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned {@code false}).
      * @see GridGeometry2D#getGridToCRS2D()
      * @since 2.3
      */
@@ -606,20 +563,18 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Returns the transform from grid coordinates to real world earth coordinates. This is similar
-     * to {@link #getGridToCRS()} except that the transform may maps other parts than {@linkplain
-     * PixelInCell#CELL_CENTER pixel center}.
+     * Returns the transform from grid coordinates to real world earth coordinates. This is similar to
+     * {@link #getGridToCRS()} except that the transform may maps other parts than {@linkplain PixelInCell#CELL_CENTER
+     * pixel center}.
      *
      * @param anchor The pixel part to map.
      * @return The transform (never {@code null}).
      * @throws InvalidGridGeometryException if this grid geometry has no transform (i.e. <code>
-     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned
-     *     {@code false}).
+     *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned {@code false}).
      * @see GridGeometry2D#getGridToCRS(org.geotools.api.referencing.datum.PixelInCell)
      * @since 2.3
      */
-    public MathTransform getGridToCRS(final PixelInCell anchor)
-            throws InvalidGridGeometryException {
+    public MathTransform getGridToCRS(final PixelInCell anchor) throws InvalidGridGeometryException {
         if (gridToCRS == null) {
             throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_TRANSFORM);
         }
@@ -629,8 +584,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         if (PixelInCell.CELL_CORNER.equals(anchor)) {
             synchronized (this) {
                 if (cornerToCRS == null) {
-                    cornerToCRS =
-                            PixelTranslation.translate(gridToCRS, PixelInCell.CELL_CENTER, anchor);
+                    cornerToCRS = PixelTranslation.translate(gridToCRS, PixelInCell.CELL_CENTER, anchor);
                 }
             }
             assert !cornerToCRS.equals(gridToCRS) : cornerToCRS;
@@ -642,31 +596,27 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     /**
      * Returns {@code true} if all the parameters specified by the argument are set.
      *
-     * @param bitmask Any combination of {@link #CRS_BITMASK}, {@link #ENVELOPE_BITMASK}, {@link
-     *     #GRID_RANGE_BITMASK} and {@link #GRID_TO_CRS_BITMASK}.
-     * @return {@code true} if all specified attributes are defined (i.e. invoking the corresponding
-     *     method will not thrown an {@link InvalidGridGeometryException}).
-     * @throws IllegalArgumentException if the specified bitmask is not a combination of known
-     *     masks.
+     * @param bitmask Any combination of {@link #CRS_BITMASK}, {@link #ENVELOPE_BITMASK}, {@link #GRID_RANGE_BITMASK}
+     *     and {@link #GRID_TO_CRS_BITMASK}.
+     * @return {@code true} if all specified attributes are defined (i.e. invoking the corresponding method will not
+     *     thrown an {@link InvalidGridGeometryException}).
+     * @throws IllegalArgumentException if the specified bitmask is not a combination of known masks.
      * @since 2.2
      * @see javax.media.jai.ImageLayout#isValid
      */
     public boolean isDefined(final int bitmask) throws IllegalArgumentException {
-        if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK))
-                != 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
+        if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK)) != 0) {
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
         }
-        return ((bitmask & CRS_BITMASK) == 0
-                        || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
+        return ((bitmask & CRS_BITMASK) == 0 || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
                 && ((bitmask & ENVELOPE_BITMASK) == 0 || (envelope != null && !envelope.isNull()))
                 && ((bitmask & GRID_RANGE_BITMASK) == 0 || (gridRange != null))
                 && ((bitmask & GRID_TO_CRS_BITMASK) == 0 || (gridToCRS != null));
     }
 
     /**
-     * Returns a hash value for this grid geometry. This value need not remain consistent between
-     * different implementations of the same class.
+     * Returns a hash value for this grid geometry. This value need not remain consistent between different
+     * implementations of the same class.
      */
     @Override
     public int hashCode() {
@@ -702,8 +652,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     }
 
     /**
-     * Returns a string representation of this grid geometry. The returned string is implementation
-     * dependent. It is usually provided for debugging purposes.
+     * Returns a string representation of this grid geometry. The returned string is implementation dependent. It is
+     * usually provided for debugging purposes.
      */
     @Override
     public String toString() {
@@ -717,11 +667,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

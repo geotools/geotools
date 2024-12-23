@@ -63,7 +63,9 @@ public final class ImagingParametersTest {
          */
         assertEquals("Name", "AddConst", parameters.getName().getCode());
         assertEquals(
-                "Authority", author, parameters.getName().getAuthority().getTitle().toString());
+                "Authority",
+                author,
+                parameters.getName().getAuthority().getTitle().toString());
         assertEquals("Vendor", vendor, alias.scope().name().toString());
         assertNotNull("Version", parameters.getName().getVersion());
         assertLocalized("Vendor", alias.scope().name().toInternationalString());
@@ -80,12 +82,11 @@ public final class ImagingParametersTest {
         assertNull("Maximum", param.getMaximumValue());
         assertNull("Valid values", param.getValidValues());
         assertLocalized("Remarks", param.getRemarks());
-        assertFalse(
-                parameters
-                        .getRemarks()
-                        .toString()
-                        .trim()
-                        .equalsIgnoreCase(param.getRemarks().toString().trim()));
+        assertFalse(parameters
+                .getRemarks()
+                .toString()
+                .trim()
+                .equalsIgnoreCase(param.getRemarks().toString().trim()));
         /*
          * Tests parameter values.
          */
@@ -112,10 +113,7 @@ public final class ImagingParametersTest {
         assertNotSame("clone", values.parameters, copy.parameters);
     }
 
-    /**
-     * Ensures that the specified character sequence created from JAI parameters preserve the
-     * localization infos.
-     */
+    /** Ensures that the specified character sequence created from JAI parameters preserve the localization infos. */
     private static void assertLocalized(final String name, final CharSequence title) {
         assertTrue(name, title instanceof ImagingParameterDescription);
     }
@@ -126,29 +124,26 @@ public final class ImagingParametersTest {
         /*
          * The parameter descriptor for the subsampling.
          */
-        final ParameterDescriptor SPATIAL_SUBSAMPLING_X =
-                new DefaultParameterDescriptor<>(
-                        Citations.OGC,
-                        "xPeriod",
-                        Double.class, // Value class (mandatory)
-                        null, // Array of valid values
-                        null, // Default value
-                        0.0, // Minimal value
-                        null, // Maximal value
-                        null, // Unit of measure
-                        false); // Parameter is optional
+        final ParameterDescriptor SPATIAL_SUBSAMPLING_X = new DefaultParameterDescriptor<>(
+                Citations.OGC,
+                "xPeriod",
+                Double.class, // Value class (mandatory)
+                null, // Array of valid values
+                null, // Default value
+                0.0, // Minimal value
+                null, // Maximal value
+                null, // Unit of measure
+                false); // Parameter is optional
 
         // Gets the descriptors for extrema  JAI operation
         final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
         final OperationDescriptor operation =
-                (OperationDescriptor)
-                        registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Extrema");
+                (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Extrema");
 
         // Gets the ImagingParameterDescriptors to replace xPeriod
         final List<ParameterDescriptor> replacingDescriptors = new ArrayList<>(1);
         replacingDescriptors.add(SPATIAL_SUBSAMPLING_X);
-        final ImagingParameterDescriptors ripd =
-                new ImagingParameterDescriptors(operation, replacingDescriptors);
+        final ImagingParameterDescriptors ripd = new ImagingParameterDescriptors(operation, replacingDescriptors);
 
         // Sets the parameter we want to override
         final ParameterValueGroup rip = ripd.createValue();

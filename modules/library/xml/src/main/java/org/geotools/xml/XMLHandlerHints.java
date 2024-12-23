@@ -33,8 +33,8 @@ import org.xml.sax.EntityResolver;
 public class XMLHandlerHints implements Map<String, Object> {
 
     /**
-     * Declares the schemas to use for parsing. Value must be a java.util.Map of <String,URI>
-     * objects where String is the Namespace and URI is the URL to use to load the schema.
+     * Declares the schemas to use for parsing. Value must be a java.util.Map of <String,URI> objects where String is
+     * the Namespace and URI is the URL to use to load the schema.
      */
     public static final String NAMESPACE_MAPPING = "NAMESPACE_MAPPING";
     /** Declares a FlowHandler for the parser to use */
@@ -42,8 +42,7 @@ public class XMLHandlerHints implements Map<String, Object> {
     /** Tells the parser to "Stream" */
     public static final String STREAM_HINT = "org.geotools.xml.gml.STREAM_HINT";
     /** Sets the level of compliance that the filter encoder should use */
-    public static final String FILTER_COMPLIANCE_STRICTNESS =
-            "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
+    public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
     /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
     public static final String ENTITY_RESOLVER = GeoTools.ENTITY_RESOLVER;
     /** Supplied {@link SaxParserFactory} */
@@ -52,8 +51,7 @@ public class XMLHandlerHints implements Map<String, Object> {
     /** The value so that the parser will encode all Geotools filters with no modifications. */
     public static final Integer VALUE_FILTER_COMPLIANCE_LOW = Integer.valueOf(0);
     /**
-     * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec. It will
-     * encode:
+     * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec. It will encode:
      *
      * <pre><code>
      *  BBoxFilter
@@ -81,10 +79,9 @@ public class XMLHandlerHints implements Map<String, Object> {
      *  &lt;Filter&gt;&lt;FidFilter fid="fid"/&gt;&lt;/Filter&gt;
      *  </code></pre>
      *
-     * <p><b>IMPORTANT:</b> If this compliance level is used and a non-strict FilterFactory is used
-     * to create the filter then the original filter must be ran on the retrieved feature because
-     * this hint will sometimes cause more features to be returned than is requested. Consider the
-     * following filter:
+     * <p><b>IMPORTANT:</b> If this compliance level is used and a non-strict FilterFactory is used to create the filter
+     * then the original filter must be ran on the retrieved feature because this hint will sometimes cause more
+     * features to be returned than is requested. Consider the following filter:
      *
      * <p>not(fidFilter).
      *
@@ -111,13 +108,11 @@ public class XMLHandlerHints implements Map<String, Object> {
      *  &lt;Filter&gt;&lt;FidFilter fid="fid"/&gt;&lt;/Filter&gt;
      *  </code></pre>
      *
-     * <p><b>IMPORTANT:</b> If this compliance level is used and a non-strict FilterFactory is used
-     * to create the filter then the original filter must be ran on the retrieved feature because
-     * this hint will sometimes cause more features to be returned than is requested. Consider the
-     * following filter:
+     * <p><b>IMPORTANT:</b> If this compliance level is used and a non-strict FilterFactory is used to create the filter
+     * then the original filter must be ran on the retrieved feature because this hint will sometimes cause more
+     * features to be returned than is requested. Consider the following filter:
      *
-     * <p>not(fidFilter). this will return all features and so the filtering must be done on the
-     * client.
+     * <p>not(fidFilter). this will return all features and so the filtering must be done on the client.
      */
     public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = Integer.valueOf(2);
 
@@ -194,12 +189,11 @@ public class XMLHandlerHints implements Map<String, Object> {
     }
 
     /**
-     * Looks up {@link #ENTITY_RESOLVER} instance in provided hints, defaulting to setting provided
-     * by {@link GeoTools#getEntityResolver(org.geotools.util.factory.Hints)} (usually {@link
-     * PreventLocalEntityResolver} unless otherwise configured).
+     * Looks up {@link #ENTITY_RESOLVER} instance in provided hints, defaulting to setting provided by
+     * {@link GeoTools#getEntityResolver(org.geotools.util.factory.Hints)} (usually {@link PreventLocalEntityResolver}
+     * unless otherwise configured).
      *
-     * @return EntityResolver provided by hints, or non-null default provided by {@link
-     *     Hints#ENTITY_RESOLVER}.
+     * @return EntityResolver provided by hints, or non-null default provided by {@link Hints#ENTITY_RESOLVER}.
      */
     public static EntityResolver toEntityResolver(Map<String, Object> hints) {
         if (hints != null && hints.containsKey(GeoTools.ENTITY_RESOLVER)) {

@@ -167,9 +167,7 @@ public class GeoSpatialImageReaderTest {
         }
     }
 
-    /**
-     * A simple GeoSpatialImageReader only supporting 2 testCoverages: testCoverage1, testCoverage2
-     */
+    /** A simple GeoSpatialImageReader only supporting 2 testCoverages: testCoverage1, testCoverage2 */
     public static class TestGeospatialImageReader extends GeoSpatialImageReader {
 
         /** Default Logger * */
@@ -187,8 +185,7 @@ public class GeoSpatialImageReaderTest {
             coverageNames.add(new NameImpl("testCoverage1"));
             coverageNames.add(new NameImpl("testCoverage2"));
             for (Name coverageName : coverageNames) {
-                descriptors.put(
-                        coverageName, new TestCoverageSourceDescriptor(coverageName.toString()));
+                descriptors.put(coverageName, new TestCoverageSourceDescriptor(coverageName.toString()));
             }
         }
 
@@ -254,8 +251,7 @@ public class GeoSpatialImageReaderTest {
 
     public static class TestGeospatialImageReaderSpi extends ImageReaderSpi {
 
-        public static final Class<?>[] STANDARD_INPUT_TYPES = {
-            ImageInputStream.class, File.class, URL.class, URI.class
+        public static final Class<?>[] STANDARD_INPUT_TYPES = {ImageInputStream.class, File.class, URL.class, URI.class
         };
 
         public static final String VENDOR_NAME = "GeoTools";

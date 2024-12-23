@@ -38,13 +38,11 @@ public class PolygonLabelProcess extends StaticMethodsProcessFactory<PolygonLabe
 
     @DescribeProcess(
             title = "Polygon label process",
-            description =
-                    "Calculate the Pole of accessibility, the most distant interior point in a polygon.")
+            description = "Calculate the Pole of accessibility, the most distant interior point in a polygon.")
     @DescribeResult(description = "Pole of accessibility")
     public static Geometry PolyLabeller(
             @DescribeParameter(name = "polygon", description = "Input polygon") Geometry polygon,
-            @DescribeParameter(name = "precision", description = "Tolerance", min = 0)
-                    Double tolerance) {
+            @DescribeParameter(name = "precision", description = "Tolerance", min = 0) Double tolerance) {
         return PolyLabeller.getPolylabel(polygon, tolerance);
     }
 }

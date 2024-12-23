@@ -21,9 +21,8 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 /**
- * Wraps a {@link WindowListener} into an {@link InternalFrameListener}. This is used by {@link
- * SwingUtilities} in order to have the same methods working seemless on both {@link java.awt.Frame}
- * and {@link javax.swing.JInternalFrame}.
+ * Wraps a {@link WindowListener} into an {@link InternalFrameListener}. This is used by {@link SwingUtilities} in order
+ * to have the same methods working seemless on both {@link java.awt.Frame} and {@link javax.swing.JInternalFrame}.
  *
  * @since 2.0
  * @version $Id$
@@ -34,8 +33,8 @@ final class InternalWindowListener implements InternalFrameListener {
     private final WindowListener listener;
 
     /**
-     * Wrap the specified {@link WindowListener} into an {@link InternalFrameListener}. If the
-     * specified object is already an {@link InternalFrameListener}, then it is returned as-is.
+     * Wrap the specified {@link WindowListener} into an {@link InternalFrameListener}. If the specified object is
+     * already an {@link InternalFrameListener}, then it is returned as-is.
      */
     public static InternalFrameListener wrap(final WindowListener listener) {
         if (listener == null) {
@@ -47,9 +46,7 @@ final class InternalWindowListener implements InternalFrameListener {
         return new InternalWindowListener(listener);
     }
 
-    /**
-     * Construct a new {@link InternalFrameListener} wrapping the specified {@link WindowListener}.
-     */
+    /** Construct a new {@link InternalFrameListener} wrapping the specified {@link WindowListener}. */
     private InternalWindowListener(final WindowListener listener) {
         this.listener = listener;
     }
@@ -61,8 +58,8 @@ final class InternalWindowListener implements InternalFrameListener {
     }
 
     /**
-     * Invoked when an internal frame is in the process of being closed. The close operation can be
-     * overridden at this point.
+     * Invoked when an internal frame is in the process of being closed. The close operation can be overridden at this
+     * point.
      */
     @Override
     public void internalFrameClosing(InternalFrameEvent event) {

@@ -45,9 +45,8 @@ public enum FootprintInsetPolicy {
         }
     },
     /**
-     * Applies the inset only on the footprint sections that are not lying about the granule bounds
-     * (assuming the granules are cut in a regular grid and meant to be displayed side by side (no
-     * overlap)
+     * Applies the inset only on the footprint sections that are not lying about the granule bounds (assuming the
+     * granules are cut in a regular grid and meant to be displayed side by side (no overlap)
      */
     border {
         @Override
@@ -70,8 +69,8 @@ public enum FootprintInsetPolicy {
         }
 
         /**
-         * Collects all sub-polygons into the specified geometry and returns them either as a single
-         * polygon, or as a multipolygon, shaving off any other lower dimension geometry
+         * Collects all sub-polygons into the specified geometry and returns them either as a single polygon, or as a
+         * multipolygon, shaving off any other lower dimension geometry
          */
         private Geometry collectPolygons(Geometry geometry) {
             if (geometry.isEmpty()) {
@@ -79,13 +78,11 @@ public enum FootprintInsetPolicy {
             }
 
             final List<Polygon> polygons = new ArrayList<>();
-            geometry.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof Polygon && !geom.isEmpty()) {
-                                    polygons.add((Polygon) geom);
-                                }
-                            });
+            geometry.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof Polygon && !geom.isEmpty()) {
+                    polygons.add((Polygon) geom);
+                }
+            });
 
             if (polygons.isEmpty()) {
                 return geometry.getFactory().createMultiPolygon(new Polygon[0]);
@@ -97,8 +94,7 @@ public enum FootprintInsetPolicy {
             }
         }
 
-        private List<LineString> filterRings(
-                List<LinearRing> footprintRings, Geometry bufferedOuterRings) {
+        private List<LineString> filterRings(List<LinearRing> footprintRings, Geometry bufferedOuterRings) {
             List<LineString> result = new ArrayList<>();
             for (LinearRing ring : footprintRings) {
                 Geometry difference = ring.difference(bufferedOuterRings);
@@ -122,24 +118,20 @@ public enum FootprintInsetPolicy {
 
         private List<LinearRing> getRings(Geometry bounds) {
             final ArrayList<LinearRing> rings = new ArrayList<>();
-            bounds.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof LinearRing && !geom.isEmpty()) {
-                                    rings.add((LinearRing) geom);
-                                }
-                            });
+            bounds.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof LinearRing && !geom.isEmpty()) {
+                    rings.add((LinearRing) geom);
+                }
+            });
             return rings;
         }
 
         private void collectLines(Geometry geometry, final List<LineString> lines) {
-            geometry.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof LineString && !geom.isEmpty()) {
-                                    lines.add((LineString) geom);
-                                }
-                            });
+            geometry.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof LineString && !geom.isEmpty()) {
+                    lines.add((LineString) geom);
+                }
+            });
         }
     };
 
@@ -169,11 +161,10 @@ public enum FootprintInsetPolicy {
             try {
                 return FootprintInsetPolicy.valueOf(insetTypeValue.trim());
             } catch (Exception e) {
-                throw new IllegalArgumentException(
-                        "Invalid inset type '"
-                                + insetTypeValue
-                                + "', valid values are: "
-                                + FootprintInsetPolicy.names());
+                throw new IllegalArgumentException("Invalid inset type '"
+                        + insetTypeValue
+                        + "', valid values are: "
+                        + FootprintInsetPolicy.names());
             }
         }
     }
@@ -186,10 +177,7 @@ public enum FootprintInsetPolicy {
         Double converted = Converters.convert(inset, Double.class);
         if (converted == null) {
             throw new IllegalArgumentException(
-                    "Invalid inset value, should be a "
-                            + "floating point number, but instead it is: '"
-                            + inset
-                            + "'");
+                    "Invalid inset value, should be a " + "floating point number, but instead it is: '" + inset + "'");
         }
         return converted;
     }

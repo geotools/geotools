@@ -42,8 +42,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.xml.sax.SAXException;
 
 /**
- * {@link GetParser<SimpleFeature>} for {@link org.geotools.data.wfs.WFSFeatureReader} that uses the
- * geotools {@link PullParser} to fetch Features out of a WFS GetFeature response.
+ * {@link GetParser<SimpleFeature>} for {@link org.geotools.data.wfs.WFSFeatureReader} that uses the geotools
+ * {@link PullParser} to fetch Features out of a WFS GetFeature response.
  *
  * @author Niels Charlier
  */
@@ -75,20 +75,17 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         this.featureType = featureType;
         this.axisOrder = axisOrder;
 
-        this.parser =
-                new PullParser(
-                        wfsConfiguration,
-                        getFeatureResponseStream,
-                        new QName(
-                                featureType.getName().getNamespaceURI(),
-                                featureType.getName().getLocalPart()));
+        this.parser = new PullParser(
+                wfsConfiguration,
+                getFeatureResponseStream,
+                new QName(
+                        featureType.getName().getNamespaceURI(),
+                        featureType.getName().getLocalPart()));
         transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(new AffineTransform2D(0, 1, 1, 0, 0, 0));
     }
 
-    /**
-     * Initialise a feature reader with the used http client, to ensure reuse of the configuration.
-     */
+    /** Initialise a feature reader with the used http client, to ensure reuse of the configuration. */
     public PullParserFeatureReader(
             final Configuration wfsConfiguration,
             final InputStream getFeatureResponseStream,
@@ -147,10 +144,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         }
         if (!(parsed instanceof SimpleFeature)) {
             throw new IOException(
-                    "Couldn't parse SimpleFeature of type "
-                            + featureType
-                            + " from xml.\n"
-                            + entriesInMap(parsed));
+                    "Couldn't parse SimpleFeature of type " + featureType + " from xml.\n" + entriesInMap(parsed));
         }
         SimpleFeature feature = (SimpleFeature) parsed;
         if (feature.getDefaultGeometry() != null) {

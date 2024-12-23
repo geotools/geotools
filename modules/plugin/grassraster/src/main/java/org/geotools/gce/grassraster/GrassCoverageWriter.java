@@ -42,8 +42,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * Coverage Writer class for writing GRASS raster maps.
  *
- * <p>The class writes a GRASS raster map to a GRASS workspace (see package documentation for
- * further info). The writing is really done via Imageio extended classes.
+ * <p>The class writes a GRASS raster map to a GRASS workspace (see package documentation for further info). The writing
+ * is really done via Imageio extended classes.
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
@@ -83,8 +83,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
             double yRes = env.getHeight() / worldToGrid.getHeight();
 
             JGrassRegion region =
-                    new JGrassRegion(
-                            env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), xRes, yRes);
+                    new JGrassRegion(env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), xRes, yRes);
 
             GrassBinaryImageWriterSpi writerSpi = new GrassBinaryImageWriterSpi();
             GrassBinaryImageWriter writer = new GrassBinaryImageWriter(writerSpi, monitor);
@@ -97,8 +96,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
         }
     }
 
-    public void writeRaster(GridCoverage2D gridCoverage2D, GeneralParameterValue[] params)
-            throws IOException {
+    public void writeRaster(GridCoverage2D gridCoverage2D, GeneralParameterValue[] params) throws IOException {
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
         JGrassRegion writeRegion = null;
@@ -119,13 +117,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
                 Position upperCorner = requestedEnvelope.getUpperCorner();
                 double[] eastNorth = upperCorner.getCoordinate();
                 writeRegion =
-                        new JGrassRegion(
-                                westSouth[0],
-                                eastNorth[0],
-                                westSouth[1],
-                                eastNorth[1],
-                                dim.height,
-                                dim.width);
+                        new JGrassRegion(westSouth[0], eastNorth[0], westSouth[1], eastNorth[1], dim.height, dim.width);
             }
         }
 

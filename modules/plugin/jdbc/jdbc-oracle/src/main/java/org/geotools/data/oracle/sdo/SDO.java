@@ -53,11 +53,11 @@ import org.locationtech.jts.geom.Polygon;
  *
  * <p>Provide utility functions for working with JTS Geometries in terms Oracle Spatial Data Objects
  *
- * <p>This class can be used for normal JTS Geometry persistence with little fuss and bother -
- * please see GeometryConverter for an example of this.
+ * <p>This class can be used for normal JTS Geometry persistence with little fuss and bother - please see
+ * GeometryConverter for an example of this.
  *
- * <p>With a little fuss and bother LRS information can also be handled. Although it is very rare
- * that JTS makes use of such things.
+ * <p>With a little fuss and bother LRS information can also be handled. Although it is very rare that JTS makes use of
+ * such things.
  *
  * @see <a
  *     href="http://otn.oracle.com/pls/db10g/db10g.to_toc?pathname=appdev.101%2Fb10826%2Ftoc.htm&remark=portal+%28Unstructured+data%29">Spatial
@@ -83,8 +83,7 @@ public final class SDO {
      *
      * <ul>
      *   <li><b><code>d</code>:</b> number of dimensions (limited to 2,3, or 4)
-     *   <li><b><code>l</code>:</b> measure representation (ordinate 3 or 4) or 0 to represent
-     *       none/last
+     *   <li><b><code>l</code>:</b> measure representation (ordinate 3 or 4) or 0 to represent none/last
      *   <li><b><code>tt:</code></b> See the TT. constants defined in this class
      * </ul>
      *
@@ -101,16 +100,14 @@ public final class SDO {
     /**
      * Return D as defined by SDO_GTYPE (either 2,3 or 4).
      *
-     * <p>For normal JTS Geometry this will be 2 or 3 depending if geom.getCoordinate.z is
-     * Double.NaN.
+     * <p>For normal JTS Geometry this will be 2 or 3 depending if geom.getCoordinate.z is Double.NaN.
      *
      * <p>Subclasses may override as required.
      *
      * @return <code>3</code>
      */
     public static int D(Geometry geom) {
-        CoordinateSequenceFactory f =
-                geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
+        CoordinateSequenceFactory f = geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
@@ -125,8 +122,8 @@ public final class SDO {
     /**
      * Return L as defined by SDO_GTYPE (either 3,4 or 0).
      *
-     * <p>L represents support for LRS (Liniar Referencing System?). JTS Geometry objects do not
-     * support LRS so this will be 0.
+     * <p>L represents support for LRS (Liniar Referencing System?). JTS Geometry objects do not support LRS so this
+     * will be 0.
      *
      * <p>Subclasses may override as required.
      *
@@ -183,19 +180,18 @@ public final class SDO {
             return TT.COLLECTION;
         }
 
-        throw new IllegalArgumentException(
-                "Cannot encode JTS "
-                        + geom.getGeometryType()
-                        + " as SDO_GTYPE "
-                        + "(Limitied to Point, Line, Polygon, GeometryCollection, MultiPoint,"
-                        + " MultiLineString and MultiPolygon)");
+        throw new IllegalArgumentException("Cannot encode JTS "
+                + geom.getGeometryType()
+                + " as SDO_GTYPE "
+                + "(Limitied to Point, Line, Polygon, GeometryCollection, MultiPoint,"
+                + " MultiLineString and MultiPolygon)");
     }
 
     /**
      * Returns geometry SRID.
      *
-     * <p>SRID code representing Spatial Reference System. SRID number used must be defined in the
-     * Oracle MDSYS.CS_SRS table.
+     * <p>SRID code representing Spatial Reference System. SRID number used must be defined in the Oracle MDSYS.CS_SRS
+     * table.
      *
      * <p><code>SRID_NULL</code>represents lack of coordinate system.
      *
@@ -209,13 +205,11 @@ public final class SDO {
     /**
      * Return SDO_POINT_TYPE for geometry
      *
-     * <p>Will return non null for Point objects. <code>null</code> is returned for all non point
-     * objects.
+     * <p>Will return non null for Point objects. <code>null</code> is returned for all non point objects.
      *
      * <p>You cannot use this with LRS Coordinates
      *
-     * <p>Subclasses may wish to repress this method and force Points to be represented using
-     * SDO_ORDINATES.
+     * <p>Subclasses may wish to repress this method and force Points to be represented using SDO_ORDINATES.
      */
     public static double[] point(Geometry geom) {
         if (geom instanceof Point && (L(geom) == 0)) {
@@ -245,8 +239,7 @@ public final class SDO {
      *                       Describes ordering of ordinates in geometry
      * </code></pre>
      *
-     * <p>For compound elements (SDO_ETYPE values 4 and 5) the last element of one is the first
-     * element of the next.
+     * <p>For compound elements (SDO_ETYPE values 4 and 5) the last element of one is the first element of the next.
      *
      * @param geom Geometry being represented
      * @return Descriptionof Ordinates representation
@@ -312,12 +305,11 @@ public final class SDO {
                 return;
         }
 
-        throw new IllegalArgumentException(
-                "Cannot encode JTS "
-                        + geom.getGeometryType()
-                        + " as SDO_ELEM_INFO "
-                        + "(Limitied to Point, Line, Polygon, GeometryCollection, MultiPoint,"
-                        + " MultiLineString and MultiPolygon)");
+        throw new IllegalArgumentException("Cannot encode JTS "
+                + geom.getGeometryType()
+                + " as SDO_ELEM_INFO "
+                + "(Limitied to Point, Line, Polygon, GeometryCollection, MultiPoint,"
+                + " MultiLineString and MultiPolygon)");
     }
 
     /**
@@ -329,25 +321,20 @@ public final class SDO {
      * @param point Point to encode
      * @param STARTING_OFFSET Starting offset in SDO_ORDINATE array
      */
-    private static void addElemInfo(
-            List<Integer> elemInfoList, Point point, final int STARTING_OFFSET) {
+    private static void addElemInfo(List<Integer> elemInfoList, Point point, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.POINT);
         addInt(elemInfoList, 1); // INTERPRETATION single point
     }
 
-    private static void addElemInfo(
-            List<Integer> elemInfoList, LineString line, final int STARTING_OFFSET) {
+    private static void addElemInfo(List<Integer> elemInfoList, LineString line, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.LINE);
         addInt(elemInfoList, 1); // INTERPRETATION straight edges
     }
 
     private static void addElemInfo(
-            List<Integer> elemInfoList,
-            Polygon polygon,
-            final int STARTING_OFFSET,
-            final int GTYPE) {
+            List<Integer> elemInfoList, Polygon polygon, final int STARTING_OFFSET, final int GTYPE) {
         final int HOLES = polygon.getNumInteriorRing();
 
         if (HOLES == 0) {
@@ -376,18 +363,14 @@ public final class SDO {
         }
     }
 
-    private static void addElemInfo(
-            List<Integer> elemInfoList, MultiPoint points, final int STARTING_OFFSET) {
+    private static void addElemInfo(List<Integer> elemInfoList, MultiPoint points, final int STARTING_OFFSET) {
         addInt(elemInfoList, STARTING_OFFSET);
         addInt(elemInfoList, ETYPE.POINT);
         addInt(elemInfoList, elemInfoInterpretation(points, ETYPE.POINT));
     }
 
     private static void addElemInfo(
-            List<Integer> elemInfoList,
-            MultiLineString lines,
-            final int STARTING_OFFSET,
-            final int GTYPE) {
+            List<Integer> elemInfoList, MultiLineString lines, final int STARTING_OFFSET, final int GTYPE) {
         LineString line;
         int offset = STARTING_OFFSET;
 
@@ -401,10 +384,7 @@ public final class SDO {
     }
 
     private static void addElemInfo(
-            List<Integer> elemInfoList,
-            MultiPolygon polys,
-            final int STARTING_OFFSET,
-            final int GTYPE) {
+            List<Integer> elemInfoList, MultiPolygon polys, final int STARTING_OFFSET, final int GTYPE) {
         Polygon poly;
         int offset = STARTING_OFFSET;
 
@@ -424,10 +404,7 @@ public final class SDO {
     }
 
     private static void addElemInfo(
-            List<Integer> elemInfoList,
-            GeometryCollection geoms,
-            final int STARTING_OFFSET,
-            final int GTYPE) {
+            List<Integer> elemInfoList, GeometryCollection geoms, final int STARTING_OFFSET, final int GTYPE) {
         Geometry geom;
         int offset = STARTING_OFFSET;
         int LEN = D(GTYPE) + L(GTYPE);
@@ -501,14 +478,12 @@ public final class SDO {
      * <ul>
      *   <li><code>simple</code> elements are defined by a single triplet entry in the <code>
      *       SDO_ELEM_INFO</code> array
-     *   <li><code>compound</code> elements are defined by a header triplet, and a series of
-     *       triplets for the parts. Elements in a compound element share first and last points.
-     *   <li>We are not allowed to mix 1 digit and 4 digit values for ETYPE and GTYPE in a single
-     *       geometry
+     *   <li><code>compound</code> elements are defined by a header triplet, and a series of triplets for the parts.
+     *       Elements in a compound element share first and last points.
+     *   <li>We are not allowed to mix 1 digit and 4 digit values for ETYPE and GTYPE in a single geometry
      * </ul>
      *
-     * <p>This whole mess describes ordinates as part of <code>SDO_ELEM_INFO</code> array. data
-     * type.
+     * <p>This whole mess describes ordinates as part of <code>SDO_ELEM_INFO</code> array. data type.
      *
      * @param geom Geometry being represented
      * @return Descriptionof Ordinates representation
@@ -568,10 +543,9 @@ public final class SDO {
      *
      * </code></pre>
      *
-     * <p>When playing with circular arcs (SDO_INTERPRETATION==2) arcs are defined by three points.
-     * A start point, any point on the arc and the end point. The last point of an arc is the start
-     * point of the next. When used to describe a polygon (SDO_ETYPE==1003 or 2003) the first and
-     * last point must be the same.
+     * <p>When playing with circular arcs (SDO_INTERPRETATION==2) arcs are defined by three points. A start point, any
+     * point on the arc and the end point. The last point of an arc is the start point of the next. When used to
+     * describe a polygon (SDO_ETYPE==1003 or 2003) the first and last point must be the same.
      */
     public static int elemInfoInterpretation(Geometry geom) {
         return elemInfoInterpretation(geom, elemInfoEType(geom));
@@ -580,8 +554,7 @@ public final class SDO {
     /**
      * Allows specification of <code>INTERPRETATION</code> used to interpret <code>geom</code>.
      *
-     * <p>Provides the INTERPRETATION value for the ELEM_INFO triplet of (STARTING_OFFSET, ETYPE,
-     * INTERPRETATION).
+     * <p>Provides the INTERPRETATION value for the ELEM_INFO triplet of (STARTING_OFFSET, ETYPE, INTERPRETATION).
      *
      * @param geom Geometry to encode
      * @param etype ETYPE value requiring an INTERPREATION
@@ -633,29 +606,26 @@ public final class SDO {
                 return 1;
 
             case ETYPE.COMPOUND:
-                throw new IllegalArgumentException(
-                        "JTS LineStrings are not composed of curves and lines.");
+                throw new IllegalArgumentException("JTS LineStrings are not composed of curves and lines.");
 
             case ETYPE.COMPOUND_POLYGON:
             case ETYPE.COMPOUND_POLYGON_INTERIOR:
             case ETYPE.COMPOUND_POLYGON_EXTERIOR:
-                throw new IllegalArgumentException(
-                        "JTS Polygons are not composed of curves and lines.");
+                throw new IllegalArgumentException("JTS Polygons are not composed of curves and lines.");
         }
 
-        throw new IllegalArgumentException(
-                "Cannot encode JTS "
-                        + geom.getGeometryType()
-                        + " as "
-                        + "SDO_INTERPRETATION (Limitied to Point, Line, Polygon, "
-                        + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
+        throw new IllegalArgumentException("Cannot encode JTS "
+                + geom.getGeometryType()
+                + " as "
+                + "SDO_INTERPRETATION (Limitied to Point, Line, Polygon, "
+                + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
     }
 
     /**
      * Produce <code>SDO_ORDINATES</code> for geometry.
      *
-     * <p>Please see SDO_ETYPE, SDO_INTERPRETATION and SDO_GTYPE for description of how these
-     * ordinates are to be interpreted.
+     * <p>Please see SDO_ETYPE, SDO_INTERPRETATION and SDO_GTYPE for description of how these ordinates are to be
+     * interpreted.
      *
      * <p>Ordinates are ordered by Dimension are non null:
      *
@@ -670,10 +640,10 @@ public final class SDO {
      *
      * <ul>
      *   <li>d001 point/d005 multipoint elements that are not SDO_ETYPE==1 points
-     *   <li>d002 lines or curve/d006 multilines or multicurve elements that are not SDO_ETYPE==2
-     *       lines or SDO_ETYPE==4 arcs
-     *   <li>d003 polygon/d007 multipolygon elements that are not SDO_ETYPE==3 unordered polygon
-     *       lines or SDO_ETYPE==5 unorderd compound polygon ring are ignored
+     *   <li>d002 lines or curve/d006 multilines or multicurve elements that are not SDO_ETYPE==2 lines or SDO_ETYPE==4
+     *       arcs
+     *   <li>d003 polygon/d007 multipolygon elements that are not SDO_ETYPE==3 unordered polygon lines or SDO_ETYPE==5
+     *       unorderd compound polygon ring are ignored
      * </ul>
      *
      * <p>While Oracle is silient on these errors - all other errors will not be detected!
@@ -728,12 +698,11 @@ public final class SDO {
                 return cs;
         }
 
-        throw new IllegalArgumentException(
-                "Cannot encode JTS "
-                        + geom.getGeometryType()
-                        + " as "
-                        + "SDO_ORDINATRES (Limitied to Point, Line, Polygon, "
-                        + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
+        throw new IllegalArgumentException("Cannot encode JTS "
+                + geom.getGeometryType()
+                + " as "
+                + "SDO_ORDINATRES (Limitied to Point, Line, Polygon, "
+                + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
     }
 
     /**
@@ -751,8 +720,8 @@ public final class SDO {
     /**
      * Encode Geometry as described by GTYPE and ELEM_INFO
      *
-     * <p>CoordinateSequence & CoordinateAccess wil be used to determine the dimension, and the
-     * number of ordinates added.
+     * <p>CoordinateSequence & CoordinateAccess wil be used to determine the dimension, and the number of ordinates
+     * added.
      *
      * @param list Flat list of Double
      * @param geom Geometry
@@ -799,12 +768,11 @@ public final class SDO {
                 return;
         }
 
-        throw new IllegalArgumentException(
-                "Cannot encode JTS "
-                        + geom.getGeometryType()
-                        + " as "
-                        + "SDO_ORDINATRES (Limitied to Point, Line, Polygon, "
-                        + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
+        throw new IllegalArgumentException("Cannot encode JTS "
+                + geom.getGeometryType()
+                + " as "
+                + "SDO_ORDINATRES (Limitied to Point, Line, Polygon, "
+                + "GeometryCollection, MultiPoint, MultiLineString and MultiPolygon)");
     }
 
     /**
@@ -900,8 +868,7 @@ public final class SDO {
     /**
      * Rectangle ordinates for polygon.
      *
-     * <p>You should in sure that the provided <code>polygon</code> is a rectangle using
-     * isRectangle( Polygon )
+     * <p>You should in sure that the provided <code>polygon</code> is a rectangle using isRectangle( Polygon )
      *
      * <p>
      *
@@ -951,8 +918,7 @@ public final class SDO {
     private static void addCoordinates(List<double[]> list, MultiLineString lines) {
         for (int i = 0; i < lines.getNumGeometries(); i++) {
             Geometry geometryN = lines.getGeometryN(i);
-            if (geometryN != null && !geometryN.isEmpty())
-                addCoordinates(list, (LineString) geometryN);
+            if (geometryN != null && !geometryN.isEmpty()) addCoordinates(list, (LineString) geometryN);
         }
     }
 
@@ -960,8 +926,7 @@ public final class SDO {
         for (int i = 0; i < polys.getNumGeometries(); i++) {
 
             Geometry geometryN = polys.getGeometryN(i);
-            if (geometryN != null && !geometryN.isEmpty())
-                addCoordinates(list, (Polygon) geometryN);
+            if (geometryN != null && !geometryN.isEmpty()) addCoordinates(list, (Polygon) geometryN);
         }
     }
 
@@ -1265,8 +1230,7 @@ public final class SDO {
      * @param ring Ring of Coordinates
      * @return coords in a CCW order
      */
-    public static CoordinateSequence counterClockWise(
-            CoordinateSequenceFactory factory, CoordinateSequence ring) {
+    public static CoordinateSequence counterClockWise(CoordinateSequenceFactory factory, CoordinateSequence ring) {
         if (Orientation.isCCW(ring.toCoordinateArray())) {
             return ring;
         }
@@ -1283,8 +1247,7 @@ public final class SDO {
      * @param ring Ring of Coordinates
      * @return coords in a CW order
      */
-    private static CoordinateSequence clockWise(
-            CoordinateSequenceFactory factory, CoordinateSequence ring) {
+    private static CoordinateSequence clockWise(CoordinateSequenceFactory factory, CoordinateSequence ring) {
         if (!Orientation.isCCW(ring.toCoordinateArray())) {
             return ring;
         }
@@ -1296,8 +1259,7 @@ public final class SDO {
     //
 
     /**
-     * Will need to tell if we are encoding a Polygon Exterior or Interior so we can produce the
-     * correct encoding.
+     * Will need to tell if we are encoding a Polygon Exterior or Interior so we can produce the correct encoding.
      *
      * @param poly Polygon to check
      * @return <code>true</code> as we expect PolygonExteriors to be passed in
@@ -1316,8 +1278,7 @@ public final class SDO {
     }
 
     /**
-     * We need to check if a <code>polygon</code> a rectangle so we can produce the correct
-     * encoding.
+     * We need to check if a <code>polygon</code> a rectangle so we can produce the correct encoding.
      *
      * <p>Rectangles are only supported without a SRID!
      *
@@ -1342,10 +1303,7 @@ public final class SDO {
             return false;
         }
 
-        if ((coords[0] == null)
-                || (coords[1] == null)
-                || (coords[2] == null)
-                || (coords[3] == null)) {
+        if ((coords[0] == null) || (coords[1] == null) || (coords[2] == null) || (coords[3] == null)) {
             return false;
         }
 
@@ -1380,8 +1338,7 @@ public final class SDO {
     }
 
     /**
-     * We need to check if a <code>polygon</code> is defined with curves so we can produce the
-     * correct encoding.
+     * We need to check if a <code>polygon</code> is defined with curves so we can produce the correct encoding.
      *
      * <p>
      *
@@ -1392,8 +1349,7 @@ public final class SDO {
     }
 
     /**
-     * We need to check if a <code>lineString</code> is defined with curves so we can produce the
-     * correct encoding.
+     * We need to check if a <code>lineString</code> is defined with curves so we can produce the correct encoding.
      *
      * <p>
      *
@@ -1542,8 +1498,7 @@ public final class SDO {
     /**
      * A version of assert that indicates range pre/post condition.
      *
-     * <p>Works like assert exception IllegalArgumentException is thrown indicating this is a
-     * required check.
+     * <p>Works like assert exception IllegalArgumentException is thrown indicating this is a required check.
      *
      * <p>Example phrased as a positive statement of the requirement to be met:
      *
@@ -1559,20 +1514,15 @@ public final class SDO {
      */
     private static void ensure(String condition, int min, int actual, int max) {
         if (!(min <= actual && actual <= max)) {
-            String msg =
-                    MessageFormat.format(
-                            condition,
-                            new Object[] {
-                                Integer.valueOf(min), Integer.valueOf(actual), Integer.valueOf(max)
-                            });
+            String msg = MessageFormat.format(
+                    condition, new Object[] {Integer.valueOf(min), Integer.valueOf(actual), Integer.valueOf(max)});
             throw new IllegalArgumentException(msg);
         }
     }
     /**
      * A version of assert that indicates range pre/post condition.
      *
-     * <p>Works like assert exception IllegalArgumentException is thrown indicating this is a
-     * required check.
+     * <p>Works like assert exception IllegalArgumentException is thrown indicating this is a required check.
      *
      * <p>Example phrased as a positive statement of the requirement to be met:
      *
@@ -1601,11 +1551,10 @@ public final class SDO {
         throw new IllegalArgumentException(msg);
     }
     /**
-     * Returns the "length" of the ordinate array used for the CoordinateSequence, GTYPE is used to
-     * determine the dimension.
+     * Returns the "length" of the ordinate array used for the CoordinateSequence, GTYPE is used to determine the
+     * dimension.
      *
-     * <p>This is most often used to check the STARTING_OFFSET value to ensure that is falls within
-     * allowable bounds.
+     * <p>This is most often used to check the STARTING_OFFSET value to ensure that is falls within allowable bounds.
      *
      * <p>Example:
      *
@@ -1675,20 +1624,19 @@ public final class SDO {
      *   <li>L: Ordinate that represents the LRS measure
      * </ul>
      *
-     * <p>The number of ordinates per coordinate are taken to be D, and the number of ordinates
-     * should be a multiple of this value.
+     * <p>The number of ordinates per coordinate are taken to be D, and the number of ordinates should be a multiple of
+     * this value.
      *
-     * <p>In the Special case of GTYPE 2001 and a three ordinates are interpreted as a single
-     * Coordinate rather than an error.
+     * <p>In the Special case of GTYPE 2001 and a three ordinates are interpreted as a single Coordinate rather than an
+     * error.
      *
-     * <p>For 3-dimensional coordinates we assume z to be the third ordinate. If the LRS measure
-     * value is stored in the third ordinate (L=3) we assume a 2-dimensional coordinate.
+     * <p>For 3-dimensional coordinates we assume z to be the third ordinate. If the LRS measure value is stored in the
+     * third ordinate (L=3) we assume a 2-dimensional coordinate.
      *
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      */
-    public static CoordinateSequence coordinates(
-            CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
+    public static CoordinateSequence coordinates(CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
         if ((ordinates == null) || (ordinates.length == 0)) {
             return f.create(new Coordinate[0]);
         }
@@ -1705,31 +1653,25 @@ public final class SDO {
             return cs;
         }
 
-        final int LEN =
-                D; // bugfix 20121231-BK: LEN = D instead of LEN = D + L as Oracle supports only one
+        final int LEN = D; // bugfix 20121231-BK: LEN = D instead of LEN = D + L as Oracle supports only one
         // LRS ordinate!
 
         if ((ordinates.length % LEN) != 0) {
             // bugfix 20121231-BK: LEN is D instead of D + L
-            throw new IllegalArgumentException(
-                    "Dimension D:"
-                            + D
-                            + " denote Coordinates "
-                            + "of "
-                            + LEN
-                            + " ordinates. This cannot be resolved with"
-                            + "an ordinate array of length "
-                            + ordinates.length);
+            throw new IllegalArgumentException("Dimension D:"
+                    + D
+                    + " denote Coordinates "
+                    + "of "
+                    + LEN
+                    + " ordinates. This cannot be resolved with"
+                    + "an ordinate array of length "
+                    + ordinates.length);
         }
 
         // bugfix 20121231-BK: throw exception if L > D (4 lines added)
         if (L != 0 && L > D) {
             throw new IllegalArgumentException(
-                    "Dimension D:"
-                            + D
-                            + " and LRS with L: "
-                            + L
-                            + " is not supported at a position > D");
+                    "Dimension D:" + D + " and LRS with L: " + L + " is not supported at a position > D");
         }
 
         // special optimization for faster 2D rendering
@@ -1809,8 +1751,8 @@ public final class SDO {
     }
 
     /**
-     * bugfix 20121231-BK: added: TODO org.geotools.geometry.jts.CoordinateSequenceFactory does not
-     * support 4 dimensions! Construct CoordinateSequence with LRS measures.
+     * bugfix 20121231-BK: added: TODO org.geotools.geometry.jts.CoordinateSequenceFactory does not support 4
+     * dimensions! Construct CoordinateSequence with LRS measures.
      *
      * <p>To produce three dimension Coordinates pass in <code>null</code> for z
      *
@@ -1822,11 +1764,7 @@ public final class SDO {
      * @return {@link CoordinateSequence}
      */
     public static CoordinateSequence coordiantes(
-            CoordinateSequenceFactory f,
-            OrdinateList x,
-            OrdinateList y,
-            OrdinateList z,
-            OrdinateList m) {
+            CoordinateSequenceFactory f, OrdinateList x, OrdinateList y, OrdinateList z, OrdinateList m) {
         final int LENGTH = x.size();
         // TODO org.geotools.geometry.jts.LiteCoordinateSequenceFactory does not support 4
         // dimensions!
@@ -1862,12 +1800,7 @@ public final class SDO {
      * @return Geometry as encoded
      */
     public static Geometry create(
-            GeometryFactory gf,
-            final int GTYPE,
-            final int SRID,
-            double[] point,
-            int[] elemInfo,
-            double[] ordinates) {
+            GeometryFactory gf, final int GTYPE, final int SRID, double[] point, int[] elemInfo, double[] ordinates) {
         final int L = SDO.L(GTYPE);
         final int TT = SDO.TT(GTYPE);
         double[] list;
@@ -1898,8 +1831,7 @@ public final class SDO {
                     int ol = ordinates.length;
                     int elemsToCopy = ol - (startpointCoordinates - 1);
                     double[] newOrdinates = new double[elemsToCopy];
-                    System.arraycopy(
-                            ordinates, startpointCoordinates - 1, newOrdinates, 0, elemsToCopy);
+                    System.arraycopy(ordinates, startpointCoordinates - 1, newOrdinates, 0, elemsToCopy);
                     elemInfo = new int[] {1, etype, INTERPRETATION(elemInfo, element)};
                     ordinates = newOrdinates;
                 }
@@ -1913,8 +1845,8 @@ public final class SDO {
     /**
      * Consturct geometry with SDO encoded information over a CoordinateList.
      *
-     * <p>Helpful when dealing construction Geometries with your own Coordinate Types. The
-     * dimensionality specified in GTYPE will be used to interpret the offsets in elemInfo.
+     * <p>Helpful when dealing construction Geometries with your own Coordinate Types. The dimensionality specified in
+     * GTYPE will be used to interpret the offsets in elemInfo.
      *
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param N Number of triplets (-1 for unknown/don't care)
@@ -1947,30 +1879,24 @@ public final class SDO {
                 return createMultiLine(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N);
 
             case TT.MULTIPOLYGON:
-                return createMultiPolygon(
-                        curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N, false);
+                return createMultiPolygon(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N, false);
 
             case TT.COLLECTION:
                 return createCollection(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N);
 
             case TT.SOLID:
-                return createMultiPolygon(
-                        curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N, true);
+                return createMultiPolygon(curvedFactory, GTYPE, SRID, elemInfo, triplet, coords, N, true);
 
             case TT.UNKNOWN:
             default:
-                LOGGER.warning(
-                        "Cannot represent provided SDO STRUCT (GTYPE ="
-                                + GTYPE
-                                + ") using JTS Geometry");
+                LOGGER.warning("Cannot represent provided SDO STRUCT (GTYPE =" + GTYPE + ") using JTS Geometry");
                 return null;
         }
     }
 
     /**
-     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
-     * infinite tolerance (the linearization will happen using the default base segments number set
-     * in {@link CircularArc}
+     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with infinite tolerance
+     * (the linearization will happen using the default base segments number set in {@link CircularArc}
      */
     private static CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;
@@ -2003,25 +1929,16 @@ public final class SDO {
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
             throw new IllegalArgumentException("Invalid ELEM_INFO STARTING_OFFSET ");
         if (etype != ETYPE.POINT)
-            throw new IllegalArgumentException(
-                    "ETYPE " + etype + " inconsistent with expected POINT");
+            throw new IllegalArgumentException("ETYPE " + etype + " inconsistent with expected POINT");
         if (INTERPRETATION != 1) {
-            LOGGER.warning(
-                    "Could not create JTS Point with INTERPRETATION "
-                            + INTERPRETATION
-                            + " - we only expect 1 for a single point");
+            LOGGER.warning("Could not create JTS Point with INTERPRETATION "
+                    + INTERPRETATION
+                    + " - we only expect 1 for a single point");
             return null;
         }
 
         Point point =
-                gf.createPoint(
-                        subList(
-                                gf.getCoordinateSequenceFactory(),
-                                coords,
-                                GTYPE,
-                                elemInfo,
-                                element,
-                                false));
+                gf.createPoint(subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, element, false));
 
         // Point point = gf.createPoint( coords.getCoordinate( index ) );
         point.setSRID(SRID);
@@ -2052,40 +1969,26 @@ public final class SDO {
         LineString result;
         if (etype == ETYPE.LINE && INTERPRETATION == 1) {
             CoordinateSequence subList =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            compoundElement);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, compoundElement);
             result = gf.createLineString(subList);
         } else if (etype == ETYPE.LINE && INTERPRETATION == 2) {
             CoordinateSequence subList =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            compoundElement);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, compoundElement);
             result = gf.createCurvedGeometry(subList);
         } else if (etype == ETYPE.COMPOUND) {
             int triplets = INTERPRETATION;
             List<LineString> components = new ArrayList<>(triplets);
             for (int i = 1; i <= triplets; i++) {
-                LineString component =
-                        createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords, true);
+                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords, true);
                 components.add(component);
             }
             result = gf.createCurvedGeometry(components);
         } else {
-            throw new IllegalArgumentException(
-                    "ELEM_INFO ETYPE "
-                            + etype
-                            + " with INTERPRETAION "
-                            + INTERPRETATION
-                            + " not supported by this decoder");
+            throw new IllegalArgumentException("ELEM_INFO ETYPE "
+                    + etype
+                    + " with INTERPRETAION "
+                    + INTERPRETATION
+                    + " not supported by this decoder");
         }
         result.setSRID(SRID);
 
@@ -2112,13 +2015,13 @@ public final class SDO {
      *       </ul>
      * </ul>
      *
-     * <p>The polygon encoding will process subsequent 2003, or 3 triples with Orientationwise
-     * ordering as interior holes.
+     * <p>The polygon encoding will process subsequent 2003, or 3 triples with Orientationwise ordering as interior
+     * holes.
      *
      * <p>A subsequent triplet of any other type marks the end of the polygon.
      *
-     * <p>The dimensionality of GTYPE will be used to transalte the <code>STARTING_OFFSET</code>
-     * provided by elemInfo into an index into <code>coords</code>.
+     * <p>The dimensionality of GTYPE will be used to transalte the <code>STARTING_OFFSET</code> provided by elemInfo
+     * into an index into <code>coords</code>.
      *
      * @param gf Used to construct polygon
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
@@ -2126,8 +2029,7 @@ public final class SDO {
      * @param elemInfo Interpretation of coords
      * @param triplet Triplet in elemInfo to process as a Polygon
      * @param coords Coordinates to interpret using elemInfo
-     * @return Polygon as encoded by elemInfo, or null when faced with and encoding that can not be
-     *     captured by JTS
+     * @return Polygon as encoded by elemInfo, or null when faced with and encoding that can not be captured by JTS
      * @throws IllegalArgumentException When faced with an invalid SDO encoding
      */
     private static Polygon createPolygon(
@@ -2146,16 +2048,14 @@ public final class SDO {
                 "ELEM_INFO STARTING_OFFSET {1} must be in the range {0}..{1} of COORDINATES",
                 1, STARTING_OFFSET, ordinateSize(coords, GTYPE));
         if (!(1 <= STARTING_OFFSET && STARTING_OFFSET <= ordinateSize(coords, GTYPE))) {
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + "inconsistent with COORDINATES length "
-                            + ordinateSize(coords, GTYPE));
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + "inconsistent with COORDINATES length "
+                    + ordinateSize(coords, GTYPE));
         }
         ensure(
                 "ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})",
-                eTYPE,
-                new int[] {
+                eTYPE, new int[] {
                     ETYPE.COMPOUND_POLYGON_EXTERIOR,
                     ETYPE.COMPOUND_POLYGON,
                     ETYPE.POLYGON,
@@ -2165,12 +2065,11 @@ public final class SDO {
         if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR)
                 && (eTYPE != ETYPE.COMPOUND_POLYGON)
                 && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
-            LOGGER.warning(
-                    "Could not create JTS Polygon with INTERPRETATION "
-                            + INTERPRETATION
-                            + " "
-                            + "- we can only support 1 for straight edges, 2 for circular ones, "
-                            + "3 for rectangle and 4 for circles");
+            LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
+                    + INTERPRETATION
+                    + " "
+                    + "- we can only support 1 for straight edges, 2 for circular ones, "
+                    + "3 for rectangle and 4 for circles");
             return null;
         }
 
@@ -2190,8 +2089,7 @@ public final class SDO {
                 int subelements = INTERPRETATION(elemInfo, i);
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
                 i = i + subelements + 1;
-            } else if (etype
-                    == ETYPE.POLYGON) { // nead to test Orientationwiseness of Ring to see if it
+            } else if (etype == ETYPE.POLYGON) { // nead to test Orientationwiseness of Ring to see if it
                 // is
                 // interior or not - (use POLYGON_INTERIOR to avoid
                 // pain)
@@ -2228,8 +2126,8 @@ public final class SDO {
      *   <li>INTERPRETATION: 1 for strait edges, 3 for rectanlge
      * </ul>
      *
-     * <p>The dimensionality of GTYPE will be used to transalte the <code>STARTING_OFFSET</code>
-     * provided by elemInfo into an index into <code>coords</code>.
+     * <p>The dimensionality of GTYPE will be used to transalte the <code>STARTING_OFFSET</code> provided by elemInfo
+     * into an index into <code>coords</code>.
      *
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @return LinearRing
@@ -2249,16 +2147,14 @@ public final class SDO {
         final int LENGTH = coords.size() * D(GTYPE);
 
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + " inconsistent with ORDINATES length "
-                            + coords.size());
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + " inconsistent with ORDINATES length "
+                    + coords.size());
 
         ensure(
                 "ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})",
-                eTYPE,
-                new int[] {
+                eTYPE, new int[] {
                     ETYPE.COMPOUND_POLYGON,
                     ETYPE.COMPOUND_POLYGON_EXTERIOR,
                     ETYPE.COMPOUND_POLYGON_INTERIOR,
@@ -2271,10 +2167,9 @@ public final class SDO {
                 && (eTYPE != ETYPE.COMPOUND_POLYGON)
                 && (eTYPE != ETYPE.COMPOUND_POLYGON_INTERIOR)
                 && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
-            LOGGER.warning(
-                    "Could not create LinearRing with INTERPRETATION "
-                            + INTERPRETATION
-                            + " - we can only support 1, 2, 3 and 4");
+            LOGGER.warning("Could not create LinearRing with INTERPRETATION "
+                    + INTERPRETATION
+                    + " - we can only support 1, 2, 3 and 4");
             return null;
         }
         LinearRing ring;
@@ -2283,33 +2178,18 @@ public final class SDO {
             int triplets = INTERPRETATION;
             List<LineString> components = new ArrayList<>(triplets);
             for (int i = 1; i <= triplets; i++) {
-                LineString component =
-                        createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords, i < triplets);
+                LineString component = createLine(gf, GTYPE, SRID, elemInfo, triplet + i, coords, i < triplets);
                 components.add(component);
             }
             ring = (LinearRing) gf.createCurvedGeometry(components);
         } else if (INTERPRETATION == 1) {
             CoordinateSequence coordSeq =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            false);
-            coordSeq =
-                    CoordinateSequences.ensureValidRing(
-                            gf.getCoordinateSequenceFactory(), coordSeq);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, false);
+            coordSeq = CoordinateSequences.ensureValidRing(gf.getCoordinateSequenceFactory(), coordSeq);
             ring = gf.createLinearRing(coordSeq);
         } else if (INTERPRETATION == 2) {
             CoordinateSequence coordSeq =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            false);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, false);
             // not calling ensureValidRing, according to Oracle docs tolerance is not considered:
             // For example, five coordinates are used to describe a polygon made up of two connected
             // circular arcs. Points 1, 2, and 3 define the first arc, and points 3, 4, and 5 define
@@ -2321,35 +2201,16 @@ public final class SDO {
             // rectangle does not maintain measures
             //
             CoordinateSequence ext =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            false);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, false);
             Coordinate min = ext.getCoordinate(0);
             Coordinate max = ext.getCoordinate(1);
-            ring =
-                    gf.createLinearRing(
-                            new Coordinate[] {
-                                min,
-                                new Coordinate(max.x, min.y),
-                                max,
-                                new Coordinate(min.x, max.y),
-                                min
-                            });
+            ring = gf.createLinearRing(
+                    new Coordinate[] {min, new Coordinate(max.x, min.y), max, new Coordinate(min.x, max.y), min});
         } else if (INTERPRETATION == 4) {
             // rectangle does not maintain measures
             //
             CoordinateSequence ext =
-                    subList(
-                            gf.getCoordinateSequenceFactory(),
-                            coords,
-                            GTYPE,
-                            elemInfo,
-                            triplet,
-                            false);
+                    subList(gf.getCoordinateSequenceFactory(), coords, GTYPE, elemInfo, triplet, false);
             if (ext.size() != 3) {
                 throw new IllegalArgumentException(
                         "The coordinate sequence for the circle creation must contain 3 points, the one at hand contains "
@@ -2365,12 +2226,11 @@ public final class SDO {
             CircularArc arc = new CircularArc(cp[0], cp[1], cp[2], cp[3], cp[4], cp[5]);
             ring = CurvedGeometries.toCircle(arc, gf, gf.getTolerance());
         } else {
-            throw new IllegalArgumentException(
-                    "ELEM_INFO INTERPRETAION "
-                            + elemInfo[2]
-                            + " not supported"
-                            + "for JTS Polygon Linear Rings."
-                            + "ELEM_INFO INTERPRETATION 1,2 and 3 are supported");
+            throw new IllegalArgumentException("ELEM_INFO INTERPRETAION "
+                    + elemInfo[2]
+                    + " not supported"
+                    + "for JTS Polygon Linear Rings."
+                    + "ELEM_INFO INTERPRETATION 1,2 and 3 are supported");
         }
 
         ring.setSRID(SRID);
@@ -2409,22 +2269,19 @@ public final class SDO {
         final int LENGTH = coords.size() * D(GTYPE);
 
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + " inconsistent with ORDINATES length "
-                            + coords.size());
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + " inconsistent with ORDINATES length "
+                    + coords.size());
         if (!(eTYPE == ETYPE.POINT))
-            throw new IllegalArgumentException(
-                    "ETYPE " + eTYPE + " inconsistent with expected POINT");
+            throw new IllegalArgumentException("ETYPE " + eTYPE + " inconsistent with expected POINT");
         // CH- changed to >= 1, for GEOS-437, Jody and I looked at docs
         // and multipoint is a superset of point, so it should be fine,
         // for cases when there is just one point.  Bart is testing.
         if (!(INTERPRETATION >= 1)) {
-            LOGGER.warning(
-                    "Could not create MultiPoint with INTERPRETATION "
-                            + INTERPRETATION
-                            + " - representing the number of points");
+            LOGGER.warning("Could not create MultiPoint with INTERPRETATION "
+                    + INTERPRETATION
+                    + " - representing the number of points");
             return null;
         }
 
@@ -2433,8 +2290,7 @@ public final class SDO {
         int start = (STARTING_OFFSET - 1) / LEN;
         int end = start + INTERPRETATION;
 
-        MultiPoint points =
-                gf.createMultiPoint(subList(gf.getCoordinateSequenceFactory(), coords, start, end));
+        MultiPoint points = gf.createMultiPoint(subList(gf.getCoordinateSequenceFactory(), coords, start, end));
         points.setSRID(SRID);
 
         return points;
@@ -2476,20 +2332,17 @@ public final class SDO {
         final int LENGTH = coords.size() * D(GTYPE);
 
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + " inconsistent with ORDINATES length "
-                            + coords.size());
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + " inconsistent with ORDINATES length "
+                    + coords.size());
         if (!(eTYPE == ETYPE.LINE))
-            throw new IllegalArgumentException(
-                    "ETYPE " + eTYPE + " inconsistent with expected LINE");
+            throw new IllegalArgumentException("ETYPE " + eTYPE + " inconsistent with expected LINE");
         if (!(INTERPRETATION == 1)) {
             // we cannot represent INTERPRETATION > 1
-            LOGGER.warning(
-                    "Could not create MultiLineString with INTERPRETATION "
-                            + INTERPRETATION
-                            + " - we can only represent 1 for straight edges");
+            LOGGER.warning("Could not create MultiLineString with INTERPRETATION "
+                    + INTERPRETATION
+                    + " - we can only represent 1 for straight edges");
             return null;
         }
 
@@ -2550,11 +2403,10 @@ public final class SDO {
         final int LENGTH = coords.size() * D(GTYPE);
 
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + " inconsistent with ORDINATES length "
-                            + coords.size());
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + " inconsistent with ORDINATES length "
+                    + coords.size());
         if (!(eTYPE == ETYPE.POLYGON)
                 && !(eTYPE == ETYPE.POLYGON_EXTERIOR)
                 && !(eTYPE == ETYPE.FACE_EXTERIOR)
@@ -2567,10 +2419,9 @@ public final class SDO {
                 && !(eTYPE == ETYPE.COMPOUND_POLYGON_EXTERIOR)
                 && INTERPRETATION != 1
                 && INTERPRETATION != 3) {
-            LOGGER.warning(
-                    "Could not create MultiPolygon with INTERPRETATION "
-                            + INTERPRETATION
-                            + " - we can only represent 1 for straight edges, or 3 for rectangle");
+            LOGGER.warning("Could not create MultiPolygon with INTERPRETATION "
+                    + INTERPRETATION
+                    + " - we can only represent 1 for straight edges, or 3 for rectangle");
             return null;
         }
         final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
@@ -2586,8 +2437,7 @@ public final class SDO {
                 Polygon poly = createPolygon(gf, GTYPE, SRID, elemInfo, i, coords);
                 i += poly.getNumInteriorRing(); // skip interior rings
                 list.add(poly);
-            } else if (etype == ETYPE.COMPOUND_POLYGON_EXTERIOR
-                    || etype == ETYPE.COMPOUND_POLYGON) {
+            } else if (etype == ETYPE.COMPOUND_POLYGON_EXTERIOR || etype == ETYPE.COMPOUND_POLYGON) {
                 Polygon poly = createPolygon(gf, GTYPE, SRID, elemInfo, i, coords);
                 int curvilinearElementsCount = getCurvilinearElementsCount(poly);
                 i += curvilinearElementsCount - 1;
@@ -2633,8 +2483,7 @@ public final class SDO {
      *   <li>INTERPRETATION: 1 for straight edges, 2 for rectangle
      * </ul>
      *
-     * <p>TODO: Confirm that createCollection is not getting cut&paste mistakes from
-     * polygonCollection
+     * <p>TODO: Confirm that createCollection is not getting cut&paste mistakes from polygonCollection
      *
      * @param gf Used to construct MultiLineString
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
@@ -2659,11 +2508,10 @@ public final class SDO {
         final int LENGTH = coords.size() * D(GTYPE);
 
         if (!(STARTING_OFFSET >= 1) || !(STARTING_OFFSET <= LENGTH))
-            throw new IllegalArgumentException(
-                    "ELEM_INFO STARTING_OFFSET "
-                            + STARTING_OFFSET
-                            + " inconsistent with ORDINATES length "
-                            + coords.size());
+            throw new IllegalArgumentException("ELEM_INFO STARTING_OFFSET "
+                    + STARTING_OFFSET
+                    + " inconsistent with ORDINATES length "
+                    + coords.size());
 
         final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
 
@@ -2687,8 +2535,7 @@ public final class SDO {
                     } else if (interpretation > 1) {
                         geom = createMultiPoint(gf, GTYPE, SRID, elemInfo, i, coords);
                     } else {
-                        throw new IllegalArgumentException(
-                                "ETYPE.POINT requires INTERPRETATION >= 1");
+                        throw new IllegalArgumentException("ETYPE.POINT requires INTERPRETATION >= 1");
                     }
 
                     break;
@@ -2716,11 +2563,10 @@ public final class SDO {
                 case ETYPE.COMPOUND_POLYGON_EXTERIOR:
                 case ETYPE.COMPOUND_POLYGON_INTERIOR:
                 default:
-                    throw new IllegalArgumentException(
-                            "ETYPE "
-                                    + etype
-                                    + " not representable as a JTS Geometry."
-                                    + "(Custom and Compound Straight and Curved Geometries not supported)");
+                    throw new IllegalArgumentException("ETYPE "
+                            + etype
+                            + " not representable as a JTS Geometry."
+                            + "(Custom and Compound Straight and Curved Geometries not supported)");
             }
 
             list.add(geom);

@@ -24,11 +24,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
 
 /**
- * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code
- * to escape the caste (sic) system.
+ * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code to escape the caste
+ * (sic) system.
  *
- * <p>This implementation checks the iterator to see if it implements {@link Closeable} in order to
- * allow for collections that make use of system resources.
+ * <p>This implementation checks the iterator to see if it implements {@link Closeable} in order to allow for
+ * collections that make use of system resources.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */

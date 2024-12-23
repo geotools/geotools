@@ -63,8 +63,8 @@ public abstract class GraphicsTestBase<S, C extends Window, D extends WindowDriv
     }
 
     /**
-     * Waits up to {@linkplain #DISPLAY_TIMEOUT} milliseconds for a given dialog class to be
-     * displayed. If the waiting time is exceeded an assertion error is thrown.
+     * Waits up to {@linkplain #DISPLAY_TIMEOUT} milliseconds for a given dialog class to be displayed. If the waiting
+     * time is exceeded an assertion error is thrown.
      *
      * @param dialogClass dialog class
      */
@@ -84,14 +84,12 @@ public abstract class GraphicsTestBase<S, C extends Window, D extends WindowDriv
      * @return the button fixture
      */
     protected JButtonFixture getButton(final String buttonText) {
-        JButtonFixture button =
-                windowFixture.button(
-                        new GenericTypeMatcher<JButton>(JButton.class) {
-                            @Override
-                            protected boolean isMatching(JButton component) {
-                                return buttonText.equals(component.getText());
-                            }
-                        });
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return buttonText.equals(component.getText());
+            }
+        });
 
         assertNotNull(button);
         return button;

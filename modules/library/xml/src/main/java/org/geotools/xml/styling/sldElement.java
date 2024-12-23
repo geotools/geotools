@@ -17,8 +17,8 @@
 package org.geotools.xml.styling;
 
 /**
- * This code generated using Refractions SchemaCodeGenerator For more information, view the attached
- * licensing information. CopyRight 105
+ * This code generated using Refractions SchemaCodeGenerator For more information, view the attached licensing
+ * information. CopyRight 105
  */
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.Type;

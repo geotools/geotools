@@ -105,8 +105,7 @@ public class CSVTest {
         // access by list
         for (AttributeDescriptor descriptor : type.getAttributeDescriptors()) {
             System.out.print("  " + descriptor.getName());
-            System.out.print(
-                    " (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs() + ",");
+            System.out.print(" (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs() + ",");
             System.out.print((descriptor.isNillable() ? "nillable" : "manditory") + ")");
             System.out.print(" type: " + descriptor.getType().getName());
             System.out.println(" binding: " + descriptor.getType().getBinding().getSimpleName());
@@ -114,23 +113,27 @@ public class CSVTest {
         // access by index
         AttributeDescriptor attributeDescriptor = type.getDescriptor(0);
         System.out.println("attribute 0    name: " + attributeDescriptor.getName());
-        System.out.println("attribute 0    type: " + attributeDescriptor.getType().toString());
-        System.out.println("attribute 0 binding: " + attributeDescriptor.getType().getBinding());
+        System.out.println(
+                "attribute 0    type: " + attributeDescriptor.getType().toString());
+        System.out.println(
+                "attribute 0 binding: " + attributeDescriptor.getType().getBinding());
 
         // access by name
         AttributeDescriptor cityDescriptor = type.getDescriptor("CITY");
         System.out.println("attribute 'CITY'    name: " + cityDescriptor.getName());
-        System.out.println("attribute 'CITT'    type: " + cityDescriptor.getType().toString());
-        System.out.println("attribute 'CITY' binding: " + cityDescriptor.getType().getBinding());
+        System.out.println(
+                "attribute 'CITT'    type: " + cityDescriptor.getType().toString());
+        System.out.println(
+                "attribute 'CITY' binding: " + cityDescriptor.getType().getBinding());
 
         // default geometry
         GeometryDescriptor geometryDescriptor = type.getGeometryDescriptor();
         System.out.println("default geom    name: " + geometryDescriptor.getName());
-        System.out.println("default geom    type: " + geometryDescriptor.getType().toString());
-        System.out.println("default geom binding: " + geometryDescriptor.getType().getBinding());
         System.out.println(
-                "default geom     crs: "
-                        + CRS.toSRS(geometryDescriptor.getCoordinateReferenceSystem()));
+                "default geom    type: " + geometryDescriptor.getType().toString());
+        System.out.println(
+                "default geom binding: " + geometryDescriptor.getType().getBinding());
+        System.out.println("default geom     crs: " + CRS.toSRS(geometryDescriptor.getCoordinateReferenceSystem()));
 
         // example2 end
         System.out.println("\nexample2 end\n");

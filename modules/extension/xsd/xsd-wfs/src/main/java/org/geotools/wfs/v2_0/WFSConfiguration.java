@@ -139,12 +139,8 @@ public class WFSConfiguration extends Configuration {
         bindings.put(WFS.QueryExpressionTextType, QueryExpressionTextTypeBinding.class);
         bindings.put(WFS.QueryType, QueryTypeBinding.class);
         binding(bindings, WFS.ReplaceType);
-        bindings.put(
-                WFS.ResolveValueType,
-                new EnumSimpleBinding(ResolveValueType.class, WFS.ResolveValueType));
-        bindings.put(
-                WFS.ResultTypeType,
-                new EnumSimpleBinding(ResultTypeType.class, WFS.ResultTypeType));
+        bindings.put(WFS.ResolveValueType, new EnumSimpleBinding(ResolveValueType.class, WFS.ResolveValueType));
+        bindings.put(WFS.ResultTypeType, new EnumSimpleBinding(ResultTypeType.class, WFS.ResultTypeType));
         bindings.put(WFS.ReturnFeatureTypesListType, ReturnFeatureTypesListTypeBinding.class);
         //
         // container.registerComponentImplementation(WFS.SimpleFeatureCollectionType,SimpleFeatureCollectionTypeBinding.class);
@@ -160,9 +156,7 @@ public class WFSConfiguration extends Configuration {
 
         bindings.put(WFS.TransactionType, TransactionTypeBinding.class);
         bindings.put(WFS.TupleType, TupleTypeBinding.class);
-        bindings.put(
-                WFS.UpdateActionType,
-                new EnumSimpleBinding(UpdateActionType.class, WFS.UpdateActionType));
+        bindings.put(WFS.UpdateActionType, new EnumSimpleBinding(UpdateActionType.class, WFS.UpdateActionType));
         binding(bindings, WFS.UpdateType);
         bindings.put(WFS.ValueCollectionType, ValueCollectionTypeBinding.class);
         //
@@ -188,16 +182,13 @@ public class WFSConfiguration extends Configuration {
 
         bindings.put(
                 WFS.Abstract,
-                new SimpleContentComplexEMFBinding(
-                        Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
+                new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "AbstractType")));
         bindings.put(
                 WFS.DropStoredQuery,
-                new ComplexEMFBinding(
-                        Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
+                new ComplexEMFBinding(Wfs20Factory.eINSTANCE, WFS.DropStoredQuery, DropStoredQueryType.class));
         bindings.put(
                 WFS.Title,
-                new SimpleContentComplexEMFBinding(
-                        Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));
+                new SimpleContentComplexEMFBinding(Wfs20Factory.eINSTANCE, new QName(WFS.NAMESPACE, "TitleType")));
 
         bindings.put(WFS.WFS_CapabilitiesType, WFS_CapabilitiesTypeBinding.class);
         bindings.put(WFS.FeatureTypeListType, FeatureTypeListTypeBinding.class);

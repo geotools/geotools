@@ -86,7 +86,6 @@ public class GridtypeBinding extends AbstractComplexBinding {
         double xpixelsize = ((BigDecimal) node.getChildValue("pixelxsize")).doubleValue();
         double ypixelsize = ((BigDecimal) node.getChildValue("pixelysize")).doubleValue();
 
-        return new TileMatrix(
-                zoomlevel, matrixwidth, matrixheight, tilewidth, tilheight, xpixelsize, ypixelsize);
+        return new TileMatrix(zoomlevel, matrixwidth, matrixheight, tilewidth, tilheight, xpixelsize, ypixelsize);
     }
 }

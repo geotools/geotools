@@ -25,12 +25,11 @@ import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
- * Enum that can be use to distinguish between relative paths and absolute paths when trying to load
- * a granuleDescriptor for a mosaic.
+ * Enum that can be use to distinguish between relative paths and absolute paths when trying to load a granuleDescriptor
+ * for a mosaic.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
- *     jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
 public enum PathType {
     RELATIVE {
@@ -52,8 +51,7 @@ public enum PathType {
             try {
                 URL rasterURL = URLs.extendUrl(new URL(parentLocation), location);
                 if (!Utils.checkURLReadable(rasterURL)) {
-                    if (LOGGER.isLoggable(Level.INFO))
-                        LOGGER.info("Unable to read image for file " + rasterURL);
+                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to read image for file " + rasterURL);
 
                     return null;
                 }
@@ -85,8 +83,7 @@ public enum PathType {
                 if (!Utils.checkFileReadable(rasterFile)) {
                     URL rasterURL = new URL(location);
                     if (!Utils.checkURLReadable(rasterURL)) {
-                        if (LOGGER.isLoggable(Level.INFO))
-                            LOGGER.info("Unable to read image for file " + rasterURL);
+                        if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to read image for file " + rasterURL);
 
                         return null;
                     }
@@ -121,18 +118,17 @@ public enum PathType {
     };
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(PathType.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PathType.class);
 
     /**
      * Resolve a path for a granuleDescriptor given the parent location and location itself.
      *
-     * <p>the location can never be null, while the parent location could be null, as an instance
-     * when the path is relative.
+     * <p>the location can never be null, while the parent location could be null, as an instance when the path is
+     * relative.
      *
-     * @return a {@link File} instance that points to a location which could be relative or absolute
-     *     depending on the flavor of the enum where this method is applied. This method might
-     *     return <code>null</code> in case something bad happens.
+     * @return a {@link File} instance that points to a location which could be relative or absolute depending on the
+     *     flavor of the enum where this method is applied. This method might return <code>null</code> in case something
+     *     bad happens.
      */
     public abstract URL resolvePath(final String parentLocation, final String location);
 }

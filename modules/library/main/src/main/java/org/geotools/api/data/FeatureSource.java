@@ -28,11 +28,10 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 
 /**
- * This class provides a high-level API for operations on feature data. Typically, when working with
- * a data source such as a shapefile or database table you will initially create a {@code DataStore}
- * object to connect to the physical source and then retrieve a {@code FeatureSource} to work with
- * the feature data, as in this excerpt from the GeoTools Quickstart example (<a
- * href="http://geotools.org/quickstart.html">http://geotools.org/quickstart.html</a>)
+ * This class provides a high-level API for operations on feature data. Typically, when working with a data source such
+ * as a shapefile or database table you will initially create a {@code DataStore} object to connect to the physical
+ * source and then retrieve a {@code FeatureSource} to work with the feature data, as in this excerpt from the GeoTools
+ * Quickstart example (<a href="http://geotools.org/quickstart.html">http://geotools.org/quickstart.html</a>)
  *
  * <pre><code>
  *     File file = ...
@@ -50,17 +49,16 @@ import org.geotools.util.factory.Hints;
 public interface FeatureSource<T extends FeatureType, F extends Feature> {
 
     /**
-     * Returns the name of the features (strictly, the name of the {@code AttributeDescriptor} for
-     * the features) accessible through this {@code FeatureSource}.
+     * Returns the name of the features (strictly, the name of the {@code AttributeDescriptor} for the features)
+     * accessible through this {@code FeatureSource}.
      *
-     * <p>The value returned by this method can be different to that returned by {@code
-     * featureSource.getSchema().getType().getName()}. This is because there is a distinction
-     * between the name applied to features and the name of a feature type. When working with {@code
-     * SimpleFeature} and {@code SimpleFeatureType}, for example with a shapefile data source, it is
-     * common practice for feature and feature type names to be the same. However, this is not the
-     * case more generally. For instance, a database can contain two tables with the same structure.
-     * The feature name will refer to the table while the feature type name refers to the schema
-     * (table structure).
+     * <p>The value returned by this method can be different to that returned by
+     * {@code featureSource.getSchema().getType().getName()}. This is because there is a distinction between the name
+     * applied to features and the name of a feature type. When working with {@code SimpleFeature} and
+     * {@code SimpleFeatureType}, for example with a shapefile data source, it is common practice for feature and
+     * feature type names to be the same. However, this is not the case more generally. For instance, a database can
+     * contain two tables with the same structure. The feature name will refer to the table while the feature type name
+     * refers to the schema (table structure).
      *
      * @since 2.5
      * @return the name of the features accessible through this {@code FeatureSource}
@@ -68,24 +66,22 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     Name getName();
 
     /**
-     * Returns information describing this {@code FeatureSource} which may include title,
-     * description and spatial parameters. Note that in the returned {@code ResourceInfo} object,
-     * the distinction between feature name and schema (feature type) name applies as discussed for
-     * {@linkplain #getName()}.
+     * Returns information describing this {@code FeatureSource} which may include title, description and spatial
+     * parameters. Note that in the returned {@code ResourceInfo} object, the distinction between feature name and
+     * schema (feature type) name applies as discussed for {@linkplain #getName()}.
      */
     ResourceInfo getInfo();
 
     /**
-     * Returns the data source, as a {@code DataAccess} object, providing this {@code
-     * FeatureSource}.
+     * Returns the data source, as a {@code DataAccess} object, providing this {@code FeatureSource}.
      *
      * @return the data source providing this {@code FeatureSource}
      */
     DataAccess<T, F> getDataStore();
 
     /**
-     * Enquire what what query capabilities this {@code FeatureSource} natively supports. For
-     * example, whether queries can return sorted results.
+     * Enquire what what query capabilities this {@code FeatureSource} natively supports. For example, whether queries
+     * can return sorted results.
      *
      * @return the native query capabilities of this {@code FeatureSource}
      * @since 2.5
@@ -107,11 +103,9 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     void removeFeatureListener(FeatureListener listener);
 
     /**
-     * Retrieves features, in the form of a {@code FeatureCollection}, based on an OGC {@code
-     * Filter}.
+     * Retrieves features, in the form of a {@code FeatureCollection}, based on an OGC {@code Filter}.
      *
-     * @param filter the filter to select features; must not be {@code null} (use {@linkplain
-     *     Filter#INCLUDE} instead)
+     * @param filter the filter to select features; must not be {@code null} (use {@linkplain Filter#INCLUDE} instead)
      * @return features retrieved by the {@code Filter}
      * @throws IOException if the underlying data source cannot be accessed.
      * @see Filter
@@ -121,8 +115,7 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     /**
      * Retrieves features, in the form of a {@code FeatureCollection}, based on a {@code Query}.
      *
-     * @param query DataAccess query for requested information, such as typeName, maxFeatures and
-     *     filter.
+     * @param query DataAccess query for requested information, such as typeName, maxFeatures and filter.
      * @return features retrieved by the {@code Query}
      * @throws IOException if the underlying data source cannot be accessed.
      * @see Query
@@ -146,12 +139,11 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     FeatureCollection<T, F> getFeatures() throws IOException;
 
     /**
-     * Retrieves the schema (feature type) that will apply to features retrieved from this {@code
-     * FeatureSource}.
+     * Retrieves the schema (feature type) that will apply to features retrieved from this {@code FeatureSource}.
      *
-     * <p>For a homogeneous data source such as a shapefile or a database table, this schema be that
-     * of all features. For a heterogeneous data source, e.g. a GML document, the schema returned is
-     * the lowest common denominator across all features.
+     * <p>For a homogeneous data source such as a shapefile or a database table, this schema be that of all features.
+     * For a heterogeneous data source, e.g. a GML document, the schema returned is the lowest common denominator across
+     * all features.
      *
      * @return the schema that will apply to features retrieved from this {@code FeatureSource}
      */
@@ -161,12 +153,12 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
      * Get the spatial bounds of the feature data. This is equivalent to calling <code>
      * getBounds(Query.ALL)</code>.
      *
-     * <p>It is possible that this method will return null if the calculation of bounds is judged to
-     * be too costly by the implementing class. In this case, you might call <code>
+     * <p>It is possible that this method will return null if the calculation of bounds is judged to be too costly by
+     * the implementing class. In this case, you might call <code>
      * getFeatures().getBounds()</code> instead.
      *
-     * @return The bounding envelope of the feature data; or {@code null} if the bounds are unknown
-     *     or too costly to calculate.
+     * @return The bounding envelope of the feature data; or {@code null} if the bounds are unknown or too costly to
+     *     calculate.
      * @throws IOException on any errors calculating the bounds
      */
     ReferencedEnvelope getBounds() throws IOException;
@@ -174,13 +166,13 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     /**
      * Get the spatial bounds of the features that would be returned by the given {@code Query}.
      *
-     * <p>It is possible that this method will return null if the calculation of bounds is judged to
-     * be too costly by the implementing class. In this case, you might call <code>
+     * <p>It is possible that this method will return null if the calculation of bounds is judged to be too costly by
+     * the implementing class. In this case, you might call <code>
      * getFeatures(query).getBounds()</code> instead.
      *
      * @param query the query to select features
-     * @return The bounding envelope of the feature data; or {@code null} if the bounds are unknown
-     *     or too costly to calculate.
+     * @return The bounding envelope of the feature data; or {@code null} if the bounds are unknown or too costly to
+     *     calculate.
      * @throws IOException on any errors calculating the bounds
      */
     ReferencedEnvelope getBounds(Query query) throws IOException;
@@ -212,8 +204,8 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
     /**
      * Returns the set of hints that this {@code FeatureSource} supports via {@code Query} requests.
      *
-     * <p>Note: the existence of a specific hint does not guarantee that it will always be honored
-     * by the implementing class.
+     * <p>Note: the existence of a specific hint does not guarantee that it will always be honored by the implementing
+     * class.
      *
      * @see Hints#FEATURE_DETACHED
      * @see Hints#JTS_GEOMETRY_FACTORY

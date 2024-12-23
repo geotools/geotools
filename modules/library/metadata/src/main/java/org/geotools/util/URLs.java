@@ -28,8 +28,8 @@ import org.geotools.metadata.i18n.ErrorKeys;
 /**
  * Utilities for manipulating and converting to and from {@link URL}s.
  *
- * <p>{@link #urlToFile(URL)} and {@link #fileToUrl(File)} and {@link #getParentUrl(URL)} are used
- * to work with files across platforms
+ * <p>{@link #urlToFile(URL)} and {@link #fileToUrl(File)} and {@link #getParentUrl(URL)} are used to work with files
+ * across platforms
  */
 public class URLs {
 
@@ -71,12 +71,10 @@ public class URLs {
      */
     public static URL extendUrl(URL base, String extension) throws MalformedURLException {
         if (base == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
         }
         if (extension == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
         }
         String a = base.toString();
         if (!a.endsWith("/")) {
@@ -90,9 +88,8 @@ public class URLs {
      * A replacement for {@link File#toURL()} and <code>File.toURI().toURL()</code>.
      *
      * <p>{@link File#toURL()} does not percent-encode characters and <code>File.toURI().toURL()
-     * </code> does not percent-encode non-ASCII characters. This method ensures that URL characters
-     * are correctly percent-encoded, and works around the reported misbehaviour of some Java
-     * implementations on Mac.
+     * </code> does not percent-encode non-ASCII characters. This method ensures that URL characters are correctly
+     * percent-encoded, and works around the reported misbehaviour of some Java implementations on Mac.
      *
      * @return URL
      */
@@ -120,8 +117,8 @@ public class URLs {
     }
 
     /**
-     * The function is supposed to be equivalent to {@link File#getParent()}. The {@link URL} is
-     * converted to a String, truncated to the last / and then recreated as a new URL.
+     * The function is supposed to be equivalent to {@link File#getParent()}. The {@link URL} is converted to a String,
+     * truncated to the last / and then recreated as a new URL.
      *
      * @throws {@link MalformedURLException} if the parent {@link URL} can not be created.
      */
@@ -139,16 +136,15 @@ public class URLs {
     }
 
     /**
-     * Takes a URL and converts it to a File. The attempts to deal with Windows UNC format specific
-     * problems, specifically files located on network shares and different drives.
+     * Takes a URL and converts it to a File. The attempts to deal with Windows UNC format specific problems,
+     * specifically files located on network shares and different drives.
      *
-     * <p>If the URL.getAuthority() returns null or is empty, then only the url's path property is
-     * used to construct the file. Otherwise, the authority is prefixed before the path.
+     * <p>If the URL.getAuthority() returns null or is empty, then only the url's path property is used to construct the
+     * file. Otherwise, the authority is prefixed before the path.
      *
      * <p>It is assumed that url.getProtocol returns "file".
      *
-     * <p>Authority is the drive or network share the file is located on. Such as "C:", "E:",
-     * "\\fooServer"
+     * <p>Authority is the drive or network share the file is located on. Such as "C:", "E:", "\\fooServer"
      *
      * @param url a URL object that uses protocol "file"
      * @return a File that corresponds to the URL's location

@@ -22,9 +22,8 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.util.Utilities;
 
 /**
- * A class to handle overviews resolution levels. It stores overviews resolution levels information
- * and suggests the level to be used depending on the current request and the {@link
- * OverviewPolicy}.
+ * A class to handle overviews resolution levels. It stores overviews resolution levels information and suggests the
+ * level to be used depending on the current request and the {@link OverviewPolicy}.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
@@ -38,16 +37,13 @@ final class OverviewsController {
     /**
      * Constructor.
      *
-     * @param highestRes The resolution values for the finest level, <b>This is treated as level
-     *     0.</b>
+     * @param highestRes The resolution values for the finest level, <b>This is treated as level 0.</b>
      * @param numberOfOverviews number of overview levels.
-     * @param overviewsResolution resolutions for the various levels. <b>Implicitly, the index of
-     *     the resolution is the index of the corresponding level.</b>
+     * @param overviewsResolution resolutions for the various levels. <b>Implicitly, the index of the resolution is the
+     *     index of the corresponding level.</b>
      */
     public OverviewsController(
-            final double[] highestRes,
-            final int numberOfOverviews,
-            final double[][] overviewsResolution) {
+            final double[] highestRes, final int numberOfOverviews, final double[][] overviewsResolution) {
 
         // notice that we assume what follows:
         // -highest resolution image is at level 0.
@@ -58,27 +54,24 @@ final class OverviewsController {
         this.numberOfOverviews = numberOfOverviews;
         if (numberOfOverviews > 0) {
             for (int i = 0; i < overviewsResolution.length; i++) {
-                resolutionsLevels.add(
-                        new OverviewLevel(
-                                overviewsResolution[i][0] / highestRes[0],
-                                overviewsResolution[i][0],
-                                overviewsResolution[i][1],
-                                i + 1));
+                resolutionsLevels.add(new OverviewLevel(
+                        overviewsResolution[i][0] / highestRes[0],
+                        overviewsResolution[i][0],
+                        overviewsResolution[i][1],
+                        i + 1));
             }
             Collections.sort(resolutionsLevels);
         }
     }
 
     /**
-     * Given a specified {@link OverviewPolicy} and a {@link RasterLayerRequest}, suggest the proper
-     * overview level index.
+     * Given a specified {@link OverviewPolicy} and a {@link RasterLayerRequest}, suggest the proper overview level
+     * index.
      *
      * @return the OverviewLevel index
      */
     int pickOverviewLevel(
-            final OverviewPolicy policy,
-            final double[] requestedResolution,
-            final double[] virtualNativeResolution) {
+            final OverviewPolicy policy, final double[] requestedResolution, final double[] virtualNativeResolution) {
 
         // //
         //
@@ -115,10 +108,9 @@ final class OverviewsController {
             if (useVirtual) {
                 virtualRequestedScaleFactorX = virtualNativeResolution[0] / max.resolutionX;
                 virtualRequestedScaleFactorY = virtualNativeResolution[1] / max.resolutionY;
-                virtualRequestedScaleFactor =
-                        (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY)
-                                ? virtualRequestedScaleFactorX
-                                : virtualRequestedScaleFactorY;
+                virtualRequestedScaleFactor = (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY)
+                        ? virtualRequestedScaleFactorX
+                        : virtualRequestedScaleFactorY;
             }
         }
         if (!useVirtual && requestedResolution == null) {
@@ -133,8 +125,7 @@ final class OverviewsController {
         double requestedScaleFactorY = reqy / max.resolutionY;
 
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor =
-                leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // are we looking for a resolution even higher than the native one?
         if (requestedScaleFactor <= 1 && !useVirtual) {
@@ -208,8 +199,7 @@ final class OverviewsController {
                     }
                 } else if (policy == OverviewPolicy.SPEED) {
                     return curr.imageChoice;
-                } else if (requestedScaleFactor - prev.scaleFactor
-                        < curr.scaleFactor - requestedScaleFactor) {
+                } else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor) {
                     return prev.imageChoice;
                 } else {
                     return curr.imageChoice;
@@ -252,10 +242,7 @@ final class OverviewsController {
 
         /** */
         public OverviewLevel(
-                final double scaleFactor,
-                final double resolutionX,
-                final double resolutionY,
-                final int imageChoice) {
+                final double scaleFactor, final double resolutionX, final double resolutionY, final int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;

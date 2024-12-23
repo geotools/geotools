@@ -96,8 +96,7 @@ public class LayerBinding extends AbstractSimpleBinding {
             layer.getBoundingBox().add(c.getValue());
         }
         layer.getWGS84BoundingBox().add(node.getChildValue("WGS84BoundingBox"));
-        layer.getDatasetDescriptionSummary()
-                .addAll(node.getChildren(DatasetDescriptionSummaryBaseType.class));
+        layer.getDatasetDescriptionSummary().addAll(node.getChildren(DatasetDescriptionSummaryBaseType.class));
         layer.getDimension().addAll(node.getChildValues(DimensionType.class));
         children = node.getChildren("Format");
         for (Node c : children) {

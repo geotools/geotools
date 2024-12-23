@@ -38,8 +38,8 @@ public final class Role extends CodeList<Role> {
     public static final Role RESOURCE_PROVIDER = new Role("RESOURCE_PROVIDER");
 
     /**
-     * Party that accepts accountability and responsibility for the data and ensures appropriate
-     * care and maintenance of the resource.
+     * Party that accepts accountability and responsibility for the data and ensures appropriate care and maintenance of
+     * the resource.
      */
     @UML(identifier = "custodian", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Role CUSTODIAN = new Role("CUSTODIAN");
@@ -85,8 +85,8 @@ public final class Role extends CodeList<Role> {
     public static final Role AUTHOR = new Role("AUTHOR");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */

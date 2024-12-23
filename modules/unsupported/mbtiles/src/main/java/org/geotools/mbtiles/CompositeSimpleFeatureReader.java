@@ -26,10 +26,9 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
- * A reader providing features from a sequence of delagate readers provided by {@link
- * ReaderSupplier} instances (each one returning a single reader). The suppliers are used to allow
- * lazy instantiation of the delegate reader, since they might be holding onto scarce resources
- * (memory, connections, and the like)
+ * A reader providing features from a sequence of delagate readers provided by {@link ReaderSupplier} instances (each
+ * one returning a single reader). The suppliers are used to allow lazy instantiation of the delegate reader, since they
+ * might be holding onto scarce resources (memory, connections, and the like)
  */
 class CompositeSimpleFeatureReader implements SimpleFeatureReader {
 
@@ -49,8 +48,8 @@ class CompositeSimpleFeatureReader implements SimpleFeatureReader {
     private SimpleFeatureReader reader;
     private final SimpleFeatureType schema;
 
-    public CompositeSimpleFeatureReader(
-            SimpleFeatureType schema, List<ReaderSupplier> readerSuppliers) throws IOException {
+    public CompositeSimpleFeatureReader(SimpleFeatureType schema, List<ReaderSupplier> readerSuppliers)
+            throws IOException {
         this.schema = schema;
         this.readerSuppliers = readerSuppliers;
         this.reader = readerSuppliers.remove(0).get();
@@ -62,8 +61,7 @@ class CompositeSimpleFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }

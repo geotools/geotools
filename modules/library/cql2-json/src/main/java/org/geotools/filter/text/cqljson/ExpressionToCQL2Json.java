@@ -63,8 +63,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
         return buildBinaryExpression(expression, extraData, "+");
     }
 
-    private Object buildBinaryExpression(
-            BinaryExpression binaryExpression, Object extraData, String opName) {
+    private Object buildBinaryExpression(BinaryExpression binaryExpression, Object extraData, String opName) {
         ArrayNode output = asArrayNode(extraData);
         ArrayNode args = objectMapper.createArrayNode();
         binaryExpression.getExpression1().accept(this, args);
@@ -127,8 +126,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
             toGeoJSON(output, (BoundingBox) expression.getValue());
         } else if (expression.getValue() instanceof java.sql.Date) {
             toDate(output, (java.sql.Date) expression.getValue());
-        } else if (expression.getValue() instanceof Date
-                || expression.getValue() instanceof Instant) {
+        } else if (expression.getValue() instanceof Date || expression.getValue() instanceof Instant) {
             toTimestamp(output, expression.getValue());
         } else if (expression.getValue() instanceof Period) {
             toPeriod(output, (Period) expression.getValue());
@@ -224,8 +222,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
                 output.add(objectMapper.readTree(GeoJSONWriter.toGeoJSON(value)));
             }
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(
-                    "Unable to convert Geometry into GeoJSON while building CQL2-JSON");
+            throw new IllegalArgumentException("Unable to convert Geometry into GeoJSON while building CQL2-JSON");
         }
     }
 

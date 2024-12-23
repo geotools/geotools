@@ -107,46 +107,18 @@ public class OverviewsControllerTest extends Assert {
         GranuleParams g2;
     }
 
-    private static final TestSet at1 =
-            new TestSet(
-                    new OverviewConfig[] {
-                        new OverviewConfig(
-                                OverviewPolicy.QUALITY,
-                                new GranuleParams(3, 1, 1),
-                                new GranuleParams(2, 1, 1)),
-                        new OverviewConfig(
-                                OverviewPolicy.SPEED,
-                                new GranuleParams(4, 1, 1),
-                                new GranuleParams(2, 1, 1)),
-                        new OverviewConfig(
-                                OverviewPolicy.NEAREST,
-                                new GranuleParams(3, 1, 1),
-                                new GranuleParams(2, 1, 1)),
-                        new OverviewConfig(
-                                OverviewPolicy.IGNORE,
-                                new GranuleParams(0, 9, 9),
-                                new GranuleParams(0, 5, 5))
-                    });
-    private static final TestSet at2 =
-            new TestSet(
-                    new OverviewConfig[] {
-                        new OverviewConfig(
-                                OverviewPolicy.QUALITY,
-                                new GranuleParams(3, 1, 1),
-                                new GranuleParams(2, 1, 2)),
-                        new OverviewConfig(
-                                OverviewPolicy.SPEED,
-                                new GranuleParams(4, 1, 1),
-                                new GranuleParams(2, 1, 2)),
-                        new OverviewConfig(
-                                OverviewPolicy.NEAREST,
-                                new GranuleParams(3, 1, 1),
-                                new GranuleParams(2, 1, 2)),
-                        new OverviewConfig(
-                                OverviewPolicy.IGNORE,
-                                new GranuleParams(0, 9, 9),
-                                new GranuleParams(0, 5, 5))
-                    });
+    private static final TestSet at1 = new TestSet(new OverviewConfig[] {
+        new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
+        new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 1)),
+        new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
+        new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 9), new GranuleParams(0, 5, 5))
+    });
+    private static final TestSet at2 = new TestSet(new OverviewConfig[] {
+        new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
+        new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
+        new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
+        new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 9), new GranuleParams(0, 5, 5))
+    });
 
     private static final Logger LOGGER = Logger.getLogger(OverviewsControllerTest.class.toString());
 
@@ -157,11 +129,10 @@ public class OverviewsControllerTest extends Assert {
     private static final ImageReaderSpi spi = new TIFFImageReaderSpi();
 
     /**
-     * Tests the {@link OverviewsController} with support for different resolutions/different number
-     * of overviews.
+     * Tests the {@link OverviewsController} with support for different resolutions/different number of overviews.
      *
-     * <p>world_a.tif => Pixel Size = (0.833333333333333,-0.833333333333333); 4 overviews
-     * world_b.tif => Pixel Size = (1.406250000000000,-1.406250000000000); 2 overviews
+     * <p>world_a.tif => Pixel Size = (0.833333333333333,-0.833333333333333); 4 overviews world_b.tif => Pixel Size =
+     * (1.406250000000000,-1.406250000000000); 2 overviews
      */
     @Test
     public void testHeterogeneousGranules()
@@ -179,13 +150,11 @@ public class OverviewsControllerTest extends Assert {
         // //
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, WGS84);
         hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
-        final AbstractGridFormat format =
-                GridFormatFinder.findFormat(heterogeneousGranulesURL, hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(heterogeneousGranulesURL, hints);
         Assert.assertNotNull(format);
         Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
 
-        final ImageMosaicReader reader =
-                (ImageMosaicReader) format.getReader(heterogeneousGranulesURL, hints);
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(heterogeneousGranulesURL, hints);
         Assert.assertNotNull(reader);
 
         final String name = reader.getGridCoverageNames()[0];
@@ -205,30 +174,10 @@ public class OverviewsControllerTest extends Assert {
         int imageIndexG1 = 0;
         int imageIndexG2 = 0;
 
-        final GranuleDescriptor granuleDescriptor1 =
-                new GranuleDescriptor(
-                        g1File.getAbsolutePath(),
-                        TEST_BBOX_A,
-                        null,
-                        spi,
-                        null,
-                        null,
-                        -1,
-                        true,
-                        false,
-                        hints);
-        final GranuleDescriptor granuleDescriptor2 =
-                new GranuleDescriptor(
-                        g2File.getAbsolutePath(),
-                        TEST_BBOX_B,
-                        null,
-                        spi,
-                        null,
-                        null,
-                        -1,
-                        true,
-                        false,
-                        hints);
+        final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(
+                g1File.getAbsolutePath(), TEST_BBOX_A, null, spi, null, null, -1, true, false, hints);
+        final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(
+                g2File.getAbsolutePath(), TEST_BBOX_B, null, spi, null, null, -1, true, false, hints);
         assertNotNull(granuleDescriptor1.toString());
         assertNotNull(granuleDescriptor2.toString());
 
@@ -242,12 +191,8 @@ public class OverviewsControllerTest extends Assert {
         // //
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final GridEnvelope originalRange = reader.getOriginalGridRange();
-        final Rectangle rasterArea =
-                new Rectangle(
-                        0,
-                        0,
-                        (int) Math.ceil(originalRange.getSpan(0) / 9.0),
-                        (int) Math.ceil(originalRange.getSpan(1) / 9.0));
+        final Rectangle rasterArea = new Rectangle(
+                0, 0, (int) Math.ceil(originalRange.getSpan(0) / 9.0), (int) Math.ceil(originalRange.getSpan(1) / 9.0));
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(range, envelope);
         geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
@@ -271,32 +216,27 @@ public class OverviewsControllerTest extends Assert {
         //
         // //
         final OverviewPolicy[] ovPolicies = {
-            OverviewPolicy.QUALITY,
-            OverviewPolicy.SPEED,
-            OverviewPolicy.NEAREST,
-            OverviewPolicy.IGNORE
+            OverviewPolicy.QUALITY, OverviewPolicy.SPEED, OverviewPolicy.NEAREST, OverviewPolicy.IGNORE
         };
         for (int i = 0; i < ovPolicies.length; i++) {
             OverviewPolicy ovPolicy = ovPolicies[i];
             LOGGER.info("Testing with OverviewPolicy = " + ovPolicy.toString());
-            imageIndexG1 =
-                    ReadParamsController.setReadParams(
-                            requestedResolution,
-                            ovPolicy,
-                            DecimationPolicy.ALLOW,
-                            readParamsG1,
-                            rasterManager,
-                            ovControllerG1,
-                            null);
-            imageIndexG2 =
-                    ReadParamsController.setReadParams(
-                            requestedResolution,
-                            ovPolicy,
-                            DecimationPolicy.ALLOW,
-                            readParamsG2,
-                            rasterManager,
-                            ovControllerG2,
-                            null);
+            imageIndexG1 = ReadParamsController.setReadParams(
+                    requestedResolution,
+                    ovPolicy,
+                    DecimationPolicy.ALLOW,
+                    readParamsG1,
+                    rasterManager,
+                    ovControllerG1,
+                    null);
+            imageIndexG2 = ReadParamsController.setReadParams(
+                    requestedResolution,
+                    ovPolicy,
+                    DecimationPolicy.ALLOW,
+                    readParamsG2,
+                    rasterManager,
+                    ovControllerG2,
+                    null);
             assertSame(at.ot[i].g1.imageIndex, imageIndexG1);
             assertSame(at.ot[i].g2.imageIndex, imageIndexG2);
             assertSame(at.ot[i].g1.ssx, readParamsG1.getSourceXSubsampling());
@@ -316,16 +256,9 @@ public class OverviewsControllerTest extends Assert {
     /** Cleaning up the generated files (shape and properties so that we recreate them). */
     private void cleanUp() throws FileNotFoundException, IOException {
         File dir = TestData.file(this, "heterogeneous/");
-        File[] files =
-                dir.listFiles(
-                        (FilenameFilter)
-                                FileFilterUtils.notFileFilter(
-                                        FileFilterUtils.or(
-                                                FileFilterUtils.or(
-                                                        FileFilterUtils.suffixFileFilter("tif"),
-                                                        FileFilterUtils.suffixFileFilter("aux")),
-                                                FileFilterUtils.nameFileFilter(
-                                                        "datastore.properties"))));
+        File[] files = dir.listFiles((FilenameFilter) FileFilterUtils.notFileFilter(FileFilterUtils.or(
+                FileFilterUtils.or(FileFilterUtils.suffixFileFilter("tif"), FileFilterUtils.suffixFileFilter("aux")),
+                FileFilterUtils.nameFileFilter("datastore.properties"))));
         for (File file : files) {
             file.delete();
         }

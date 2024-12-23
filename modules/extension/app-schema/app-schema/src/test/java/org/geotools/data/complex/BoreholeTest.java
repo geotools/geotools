@@ -74,8 +74,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @since 2.4
  */
 public class BoreholeTest extends AppSchemaTestSupport {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(BoreholeTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(BoreholeTest.class);
 
     private static final String XMMLNS = "http://www.opengis.net/xmml";
 
@@ -122,8 +121,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
-     * can parse the GeoSciML types
+     * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading can parse the
+     * GeoSciML types
      */
     @Test
     public void testParseBoreholeSchema() throws Exception {
@@ -145,8 +144,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             typeRegistry.addSchemas(schemaIndex);
 
             Name typeName = Types.typeName(XMMLNS, "BoreholeType");
-            ComplexFeatureTypeImpl borehole =
-                    (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
+            ComplexFeatureTypeImpl borehole = (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
             assertNotNull(borehole);
             assertTrue(borehole instanceof FeatureType);
 
@@ -161,34 +159,25 @@ public class BoreholeTest extends AppSchemaTestSupport {
             assertEquals(16, properties.size());
             Map<Name, Name> expectedNamesAndTypes = new HashMap<>();
             // from gml:AbstractFeatureType
-            expectedNamesAndTypes.put(
-                    name(GMLNS, "metaDataProperty"), typeName(GMLNS, "MetaDataPropertyType"));
-            expectedNamesAndTypes.put(
-                    name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
+            expectedNamesAndTypes.put(name(GMLNS, "metaDataProperty"), typeName(GMLNS, "MetaDataPropertyType"));
+            expectedNamesAndTypes.put(name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
             expectedNamesAndTypes.put(name(GMLNS, "name"), typeName(GMLNS, "CodeType"));
-            expectedNamesAndTypes.put(
-                    name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
-            expectedNamesAndTypes.put(
-                    name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
+            expectedNamesAndTypes.put(name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
+            expectedNamesAndTypes.put(name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
             // from sa:ProfileType
             expectedNamesAndTypes.put(name(SANS, "begin"), typeName(GMLNS, "PointPropertyType"));
             expectedNamesAndTypes.put(name(SANS, "end"), typeName(GMLNS, "PointPropertyType"));
             expectedNamesAndTypes.put(name(SANS, "length"), typeName(SWENS, "RelativeMeasureType"));
             expectedNamesAndTypes.put(name(SANS, "shape"), typeName(GEONS, "Shape1DPropertyType"));
             // sa:SamplingFeatureType
+            expectedNamesAndTypes.put(name(SANS, "member"), typeName(SANS, "SamplingFeaturePropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "surveyDetails"), typeName(SANS, "SurveyProcedurePropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "associatedSpecimen"), typeName(SANS, "SpecimenPropertyType"));
             expectedNamesAndTypes.put(
-                    name(SANS, "member"), typeName(SANS, "SamplingFeaturePropertyType"));
-            expectedNamesAndTypes.put(
-                    name(SANS, "surveyDetails"), typeName(SANS, "SurveyProcedurePropertyType"));
-            expectedNamesAndTypes.put(
-                    name(SANS, "associatedSpecimen"), typeName(SANS, "SpecimenPropertyType"));
-            expectedNamesAndTypes.put(
-                    name(SANS, "relatedObservation"),
-                    typeName(OMNS, "AbstractObservationPropertyType"));
+                    name(SANS, "relatedObservation"), typeName(OMNS, "AbstractObservationPropertyType"));
             // from xmml:BoreholeType
             expectedNamesAndTypes.put(name(XMMLNS, "drillMethod"), typeName(XMMLNS, "drillCode"));
-            expectedNamesAndTypes.put(
-                    name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
+            expectedNamesAndTypes.put(name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
 
             for (Entry<Name, Name> nameNameEntry : expectedNamesAndTypes.entrySet()) {
@@ -294,9 +283,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
         FeatureCollection<FeatureType, Feature> features = fSource.getFeatures();
 
         int resultCount = size(features);
-        String msg =
-                "be sure difference in result count is not due to different dataset."
-                        + " Query used should be min_time_d = 'carnian'";
+        String msg = "be sure difference in result count is not due to different dataset."
+                + " Query used should be min_time_d = 'carnian'";
         assertEquals(msg, EXPECTED_RESULT_COUNT, resultCount);
 
         int count = 0;
@@ -321,8 +309,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     @Test
     public void testQueryXlinkProperty() throws Exception {
-        final FeatureSource<FeatureType, Feature> fSource =
-                mappingDataStore.getFeatureSource(typeName);
+        final FeatureSource<FeatureType, Feature> fSource = mappingDataStore.getFeatureSource(typeName);
         final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         final String queryLiteral = "#bh.176909a.start";
 
@@ -359,8 +346,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     /** Grab a feature and traverse it in deep as an encoder might do */
     @Test
     public void testTraverseDeep() throws Exception {
-        final FeatureSource<FeatureType, Feature> fSource =
-                mappingDataStore.getFeatureSource(typeName);
+        final FeatureSource<FeatureType, Feature> fSource = mappingDataStore.getFeatureSource(typeName);
         NamespaceSupport namespaces = new NamespaceSupport();
         namespaces.declarePrefix("sa", SANS);
         namespaces.declarePrefix("geo", GEONS);

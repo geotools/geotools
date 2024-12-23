@@ -31,10 +31,10 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
  * <p>Represents one of the following:
  *
  * <ul>
- *   <li>EX_GeographicBoundingBox: (implicit CRS:84) limits of the enclosing rectangle in longitude
- *       and latitude decimal degrees
- *   <li>BoundingBox: The BoundingBox attributes indicate the limits of the bounding box in units of
- *       the specified coordinate reference system.
+ *   <li>EX_GeographicBoundingBox: (implicit CRS:84) limits of the enclosing rectangle in longitude and latitude decimal
+ *       degrees
+ *   <li>BoundingBox: The BoundingBox attributes indicate the limits of the bounding box in units of the specified
+ *       coordinate reference system.
  * </ul>
  *
  * The interpretation of the srsName is based on the version of WMS specification used:
@@ -48,8 +48,8 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
  */
 public class CRSEnvelope implements Bounds {
     /**
-     * Represents the Coordinate Reference System this bounding box is in. This is usually an EPSG
-     * code such as "EPSG:4326"
+     * Represents the Coordinate Reference System this bounding box is in. This is usually an EPSG code such as
+     * "EPSG:4326"
      */
     private String srsName;
 
@@ -72,8 +72,8 @@ public class CRSEnvelope implements Bounds {
     protected double resY;
 
     /**
-     * Indicate how srsName is defined. Use <code>null</code> if unknown (will default to global
-     * GeoTools setting), <code>True</code> to forceXY axis order (used prior to WMS 1.3.0), <code>
+     * Indicate how srsName is defined. Use <code>null</code> if unknown (will default to global GeoTools setting),
+     * <code>True</code> to forceXY axis order (used prior to WMS 1.3.0), <code>
      * False</code> to use provided axis order (WMS 1.3.0 and later )
      */
     private Boolean forceXY = null;
@@ -104,8 +104,8 @@ public class CRSEnvelope implements Bounds {
     }
 
     /**
-     * Returns the coordinate reference system for this envelope (if known). return
-     * CoordinateReferenceSystem if known, or {@code null}
+     * Returns the coordinate reference system for this envelope (if known). return CoordinateReferenceSystem if known,
+     * or {@code null}
      */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -164,8 +164,8 @@ public class CRSEnvelope implements Bounds {
      * </ul>
      *
      * @param srsName The SRSName for this envelope; usually an EPSG code
-     * @param forceXY True to forceXY axis order (used prior to WMS 1.3.0), False to use provided
-     *     axis order (WMS 1.3.0 and later )
+     * @param forceXY True to forceXY axis order (used prior to WMS 1.3.0), False to use provided axis order (WMS 1.3.0
+     *     and later )
      */
     public void setSRSName(String srsName, boolean forceXY) {
         this.srsName = srsName;

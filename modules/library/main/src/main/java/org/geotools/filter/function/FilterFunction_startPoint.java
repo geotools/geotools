@@ -28,11 +28,8 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 
 public class FilterFunction_startPoint extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "startPoint",
-                    parameter("point", Point.class),
-                    parameter("linestring", LineString.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "startPoint", parameter("point", Point.class), parameter("linestring", LineString.class));
 
     public FilterFunction_startPoint() {
         super(NAME);

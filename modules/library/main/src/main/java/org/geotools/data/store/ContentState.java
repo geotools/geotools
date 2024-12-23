@@ -37,8 +37,8 @@ import org.geotools.data.Diff;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * The state of an entry in a DataStore, maintained on a per-transaction basis. For information
- * maintained on a typeName basis see {@link ContentEntry}.
+ * The state of an entry in a DataStore, maintained on a per-transaction basis. For information maintained on a typeName
+ * basis see {@link ContentEntry}.
  *
  * <h3>Data Cache Synchronization Required</h2>
  *
@@ -52,8 +52,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * Other types of state depend on the data format and must be handled by a subclass.
  *
- * <p>This class is a "data object" used to store values and is not thread safe. It is up to clients
- * of this class to ensure that values are set in a thread-safe / synchronized manner. For example:
+ * <p>This class is a "data object" used to store values and is not thread safe. It is up to clients of this class to
+ * ensure that values are set in a thread-safe / synchronized manner. For example:
  *
  * <pre>
  *   <code>
@@ -70,30 +70,28 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * <h3>Event Notification</h3>
  *
- * The list of listeners interested in event notification as features are modified and edited is
- * stored as part of ContentState. Each notification is considered to be broadcast from a specific
- * FeatureSource. Since several ContentFeatureStores can be on the same transaction (and thus share
- * a ContentState) the fire methods listed here require you pass in the FeatureSource making the
- * change; this requires that your individual FeatureWriters keep a pointer to the
- * ContentFeatureStore which created them.
+ * The list of listeners interested in event notification as features are modified and edited is stored as part of
+ * ContentState. Each notification is considered to be broadcast from a specific FeatureSource. Since several
+ * ContentFeatureStores can be on the same transaction (and thus share a ContentState) the fire methods listed here
+ * require you pass in the FeatureSource making the change; this requires that your individual FeatureWriters keep a
+ * pointer to the ContentFeatureStore which created them.
  *
- * <p>You may also make use of {@link ContentFeatureSource#canEvent} value of {@code false} allowing
- * the base ContentFeatureStore class to take responsibility for sending event notifications.
+ * <p>You may also make use of {@link ContentFeatureSource#canEvent} value of {@code false} allowing the base
+ * ContentFeatureStore class to take responsibility for sending event notifications.
  *
  * <h3>Transaction Independence</h3>
  *
- * <p>The default ContentState implementation also supports the handling of {@link
- * ContentFeatureSource#canTransaction} value of {@code false}. The implementation asks ContentState
- * to store a {@link Diff} which is used to record any modifications made until commit is called.
+ * <p>The default ContentState implementation also supports the handling of {@link ContentFeatureSource#canTransaction}
+ * value of {@code false}. The implementation asks ContentState to store a {@link Diff} which is used to record any
+ * modifications made until commit is called.
  *
- * <p>Internally a {@link Transaction.State} is used to notify the implementation of {{@link
- * Transaction#commit} and {@link Transaction#rollback()}.
+ * <p>Internally a {@link Transaction.State} is used to notify the implementation of {{@link Transaction#commit} and
+ * {@link Transaction#rollback()}.
  *
  * <h3>Extension</h3>
  *
- * This class may be extended if your implementaiton wishes to capture additional information per
- * transaction. A database implementation using a JDBCContentState to store a JDBC Connection
- * remains a good example.
+ * This class may be extended if your implementaiton wishes to capture additional information per transaction. A
+ * database implementation using a JDBCContentState to store a JDBC Connection remains a good example.
  *
  * <p>Subclasses may extend (not override) the following methods:
  *
@@ -102,8 +100,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *   <li>{@link #close()} - remember to call super.close()
  * </ul>
  *
- * Subclasses should also override {@link #copy()} to ensure any additional state they are keeping
- * is correctly accounted for.
+ * Subclasses should also override {@link #copy()} to ensure any additional state they are keeping is correctly
+ * accounted for.
  *
  * @author Jody Garnett (LISASoft)
  * @author Justin Deoliveira, The Open Planning Project
@@ -130,8 +128,8 @@ public class ContentState {
 
     // EVENT NOTIFICATION SUPPORT
     /**
-     * Even used for batch notification; used to collect the bounds and feature ids generated over
-     * the course of a transaction.
+     * Even used for batch notification; used to collect the bounds and feature ids generated over the course of a
+     * transaction.
      */
     protected BatchFeatureEvent batchFeatureEvent;
 
@@ -139,9 +137,7 @@ public class ContentState {
     protected List<FeatureListener> listeners = Collections.synchronizedList(new ArrayList<>());
 
     // TRANSACTION SUPPORT
-    /**
-     * Callback used to issue batch feature events when commit/rollback issued on the transaction.
-     */
+    /** Callback used to issue batch feature events when commit/rollback issued on the transaction. */
     protected DiffTransactionState transactionState = new DiffTransactionState(this);
 
     /**
@@ -156,8 +152,8 @@ public class ContentState {
     /**
      * Creates a new state from a previous one.
      *
-     * <p>All state from the specified <tt>state</tt> is copied. Therefore subclasses extending this
-     * constructor should clone all mutable objects.
+     * <p>All state from the specified <tt>state</tt> is copied. Therefore subclasses extending this constructor should
+     * clone all mutable objects.
      *
      * @param state The existing state.
      */
@@ -254,17 +250,15 @@ public class ContentState {
     /**
      * Creates a FeatureEvent indicating that the provided feature has been changed.
      *
-     * <p>This method is provided to simplify event notification for implementors by constructing a
-     * FeatureEvent internally (and then only if listeners are interested). You may find it easier
-     * to construct your own FeatureEvent using {{@link #hasListener()} to check if you need to fire
-     * events at all.
+     * <p>This method is provided to simplify event notification for implementors by constructing a FeatureEvent
+     * internally (and then only if listeners are interested). You may find it easier to construct your own FeatureEvent
+     * using {{@link #hasListener()} to check if you need to fire events at all.
      *
      * @param source FeatureSource responsible for the change
      * @param feature The updated feature
      * @param before the bounds of the feature before the change
      */
-    public void fireFeatureUpdated(
-            FeatureSource<?, ?> source, Feature feature, ReferencedEnvelope before) {
+    public void fireFeatureUpdated(FeatureSource<?, ?> source, Feature feature, ReferencedEnvelope before) {
         if (feature == null) {
             return; // nothing changed
         }
@@ -314,11 +308,11 @@ public class ContentState {
     /**
      * Used to issue a single FeatureEvent.
      *
-     * <p>If this content state is used for Transaction.AUTO_COMMIT the notification will be passed
-     * to all interested parties.
+     * <p>If this content state is used for Transaction.AUTO_COMMIT the notification will be passed to all interested
+     * parties.
      *
-     * <p>If not this event will be recored as part of a BatchFeatureEvent that will to be issued
-     * using issueBatchFeatureEvent()
+     * <p>If not this event will be recored as part of a BatchFeatureEvent that will to be issued using
+     * issueBatchFeatureEvent()
      */
     public final void fireFeatureEvent(FeatureEvent event) {
         if (this.tx == Transaction.AUTO_COMMIT) {
@@ -338,16 +332,12 @@ public class ContentState {
             try {
                 listener.changed(event);
             } catch (Throwable t) {
-                this.entry.dataStore.LOGGER.log(
-                        Level.WARNING, "Problem issuing batch feature event " + event, t);
+                this.entry.dataStore.LOGGER.log(Level.WARNING, "Problem issuing batch feature event " + event, t);
             }
         }
     }
 
-    /**
-     * Notifies all waiting listeners that a commit has been issued; this notification is also sent
-     * to our
-     */
+    /** Notifies all waiting listeners that a commit has been issued; this notification is also sent to our */
     public final void fireBatchFeatureEvent(boolean isCommit) {
         if (batchFeatureEvent == null) {
             return;
@@ -366,9 +356,7 @@ public class ContentState {
                     listener.changed(batchFeatureEvent);
                 } catch (Throwable t) {
                     this.entry.dataStore.LOGGER.log(
-                            Level.WARNING,
-                            "Problem issuing batch feature event " + batchFeatureEvent,
-                            t);
+                            Level.WARNING, "Problem issuing batch feature event " + batchFeatureEvent, t);
                 }
             }
         }
@@ -379,8 +367,7 @@ public class ContentState {
     /**
      * Clears cached state.
      *
-     * <p>This method does not affect any non-cached state. This method may be extended by
-     * subclasses, but not overiden.
+     * <p>This method does not affect any non-cached state. This method may be extended by subclasses, but not overiden.
      */
     public void flush() {
         featureType = null;
@@ -391,9 +378,8 @@ public class ContentState {
     /**
      * Clears all state.
      *
-     * <p>Any resources that the state holds onto (like a database connection) should be closed or
-     * disposes when this method is called. This method may be extended by subclasses, but not
-     * overiden.
+     * <p>Any resources that the state holds onto (like a database connection) should be closed or disposes when this
+     * method is called. This method may be extended by subclasses, but not overiden.
      */
     public void close() {
         featureType = null;

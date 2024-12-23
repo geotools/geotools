@@ -36,14 +36,10 @@ import org.junit.Test;
  */
 public class SampleDataAccessTest {
 
-    /**
-     * Test that {@link org.geotools.appschema.resolver.data.SampleDataAccess} can be used to obtain
-     * two features.
-     */
+    /** Test that {@link org.geotools.appschema.resolver.data.SampleDataAccess} can be used to obtain two features. */
     @Test
     public void testDataAccess() throws Exception {
-        DataAccess<FeatureType, Feature> dataAccess =
-                DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
+        DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
         FeatureSource<FeatureType, Feature> featureSource =
                 dataAccess.getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
         FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();

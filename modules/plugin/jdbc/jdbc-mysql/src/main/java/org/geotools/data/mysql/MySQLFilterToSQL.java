@@ -85,18 +85,12 @@ public class MySQLFilterToSQL extends FilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
         if (usePreciseSpatialOps) {
-            return visitBinarySpatialOperatorEnhanced(
-                    filter, property, geometry, swapped, extraData);
+            return visitBinarySpatialOperatorEnhanced(filter, property, geometry, swapped, extraData);
         } else {
-            return visitBinarySpatialOperator(
-                    filter, property, (Expression) geometry, swapped, extraData);
+            return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 
@@ -111,11 +105,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
     }
     /** pre-5.6 spatial functions. */
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         try {
 
@@ -193,11 +183,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
 
     /** supported if version of MySQL is at least 5.6. */
     protected Object visitBinarySpatialOperatorEnhanced(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         try {
 

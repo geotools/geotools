@@ -53,13 +53,7 @@ public class SimpleTypeGT implements SimpleType {
 
     /** Creates a new SimpleTypeGT object. */
     public SimpleTypeGT(
-            String id,
-            String name,
-            URI namespace,
-            int type,
-            SimpleType[] parents,
-            Facet[] constraints,
-            int finaL) {
+            String id, String name, URI namespace, int type, SimpleType[] parents, Facet[] constraints, int finaL) {
         this.id = id;
         this.name = name;
         this.namespace = namespace;
@@ -68,8 +62,7 @@ public class SimpleTypeGT implements SimpleType {
         this.constraints = constraints;
         if (constraints != null) {
             for (int i = 0; i < constraints.length; i++)
-                if (constraints[i] == null)
-                    throw new NullPointerException(name + " constraint #" + i + " is null");
+                if (constraints[i] == null) throw new NullPointerException(name + " constraint #" + i + " is null");
         }
     }
 
@@ -122,8 +115,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
      */
     @Override
-    public Object getValue(
-            Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+    public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((value == null) || (value.length != 1)) {
             throw new SAXException("can only have one text value ... and one is required");
@@ -143,8 +135,7 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getUnionValue(
-            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
+    private Object getUnionValue(Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if (parents == null) {
             return null;
@@ -166,8 +157,7 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getListValue(
-            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
+    private Object getListValue(Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((parents == null) || (parents[0] == null)) {
             return null;
@@ -190,8 +180,7 @@ public class SimpleTypeGT implements SimpleType {
     /*
      * Helper for getValue(Element,ElementValue[])
      */
-    private Object getRestValue(
-            Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
+    private Object getRestValue(Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         if ((parents == null) || (parents[0] == null)) {
             return null;
@@ -412,8 +401,8 @@ public class SimpleTypeGT implements SimpleType {
     }
 
     /**
-     * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
-     *     java.lang.Object, java.util.Map)
+     * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute, java.lang.Object,
+     *     java.util.Map)
      */
     @Override
     public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints)
@@ -426,8 +415,7 @@ public class SimpleTypeGT implements SimpleType {
             for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parent.equals(attribute.getSimpleType())
-                        && parent.canCreateAttributes(attribute, value, hints)) {
+                if (parent.equals(attribute.getSimpleType()) && parent.canCreateAttributes(attribute, value, hints)) {
                     return parent.toAttribute(attribute, value, hints);
                 }
             }
@@ -457,13 +445,11 @@ public class SimpleTypeGT implements SimpleType {
     }
 
     /**
-     * @see
-     *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
-     *     java.lang.Object, java.util.Map)
+     * @see org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute, java.lang.Object,
+     *     java.util.Map)
      */
     @Override
-    public boolean canCreateAttributes(
-            Attribute attribute, Object value, Map<String, Object> hints) {
+    public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
         if (value == null) {
             return false;
         }
@@ -472,8 +458,7 @@ public class SimpleTypeGT implements SimpleType {
             for (SimpleType parent : parents) {
                 // finds first that works
                 // TODO check that 'equals' works here
-                if (parent.equals(attribute.getSimpleType())
-                        && parent.canCreateAttributes(attribute, value, hints)) {
+                if (parent.equals(attribute.getSimpleType()) && parent.canCreateAttributes(attribute, value, hints)) {
                     return true;
                 }
             }
@@ -488,10 +473,7 @@ public class SimpleTypeGT implements SimpleType {
         return parents[0].canCreateAttributes(attribute, value, hints);
     }
 
-    /**
-     * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
-     *     java.lang.Object, java.util.Map)
-     */
+    /** @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map) */
     @Override
     public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
         if (value == null) {
@@ -522,8 +504,7 @@ public class SimpleTypeGT implements SimpleType {
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
     @Override
-    public void encode(
-            Element element, Object value, PrintHandler output, Map<String, Object> hints)
+    public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws IOException, OperationNotSupportedException {
         if (value == null) {
             return;
@@ -551,39 +532,19 @@ public class SimpleTypeGT implements SimpleType {
             String s = "";
 
             if (i.hasNext()) {
-                Object t =
-                        parents[0]
-                                .toAttribute(
-                                        new AttributeGT(
-                                                null,
-                                                null,
-                                                namespace,
-                                                parents[0],
-                                                0,
-                                                null,
-                                                null,
-                                                false),
-                                        value,
-                                        hints)
-                                .getValue();
+                Object t = parents[0]
+                        .toAttribute(
+                                new AttributeGT(null, null, namespace, parents[0], 0, null, null, false), value, hints)
+                        .getValue();
                 s = t.toString();
 
                 while (i.hasNext()) {
-                    t =
-                            parents[0]
-                                    .toAttribute(
-                                            new AttributeGT(
-                                                    null,
-                                                    null,
-                                                    namespace,
-                                                    parents[0],
-                                                    0,
-                                                    null,
-                                                    null,
-                                                    false),
-                                            value,
-                                            hints)
-                                    .getValue();
+                    t = parents[0]
+                            .toAttribute(
+                                    new AttributeGT(null, null, namespace, parents[0], 0, null, null, false),
+                                    value,
+                                    hints)
+                            .getValue();
                     s = s + " " + t.toString();
                 }
             }

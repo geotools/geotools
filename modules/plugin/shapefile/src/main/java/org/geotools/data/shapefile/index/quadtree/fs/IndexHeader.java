@@ -35,8 +35,7 @@ public class IndexHeader {
     private static final String SIGNATURE = "SQT";
     private static final byte VERSION = 1;
     private static final byte[] RESERVED = {0, 0, 0};
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexHeader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(IndexHeader.class);
     private byte byteOrder;
 
     public IndexHeader(byte byteOrder) {
@@ -57,10 +56,9 @@ public class IndexHeader {
 
         if (!s.equals(SIGNATURE)) {
             // Old file format
-            LOGGER.warning(
-                    "Old qix file format; this file format "
-                            + "is deprecated; It is strongly recommended "
-                            + "to regenerate it in new format.");
+            LOGGER.warning("Old qix file format; this file format "
+                    + "is deprecated; It is strongly recommended "
+                    + "to regenerate it in new format.");
 
             buf.position(0);
             tmp = buf.array();

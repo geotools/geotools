@@ -106,7 +106,7 @@ public final class GeoTiffConstants {
 
     public static final int DEFAULT_KEY_REVISION_MAJOR = 1;
 
-    public static final int DEFAULT_KEY_REVISION_MINOR = 2;
+    public static final int DEFAULT_KEY_REVISION_MINOR = 0;
 
     public static final int UNDEFINED = 0;
 

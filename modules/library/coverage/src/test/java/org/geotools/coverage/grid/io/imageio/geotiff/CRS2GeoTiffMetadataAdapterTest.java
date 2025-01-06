@@ -38,4 +38,19 @@ public class CRS2GeoTiffMetadataAdapterTest {
                 "GCS Name = Mars (2015) - Sphere / Ocentric|Datum = Mars (2015) - Sphere|Ellipsoid = Mars (2015) - Sphere|Primem = Reference Meridian|",
                 value);
     }
+
+    @Test
+    public void testBasic() throws GeoTiffException, FactoryException {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
+        CRS2GeoTiffMetadataAdapter adapter = new CRS2GeoTiffMetadataAdapter(crs);
+        GeoTiffIIOMetadataEncoder meta = adapter.parseCoordinateReferenceSystem();
+        // root of the key array, has special meaning, {KeyDirectoryVersion, KeyRevision, MinorRevision, NumberOfKeys}
+        GeoKeyEntry entry = meta.getGeoKeyEntryAt(0);
+        assertEquals(1, entry.getTiffTagLocation()); // this is the major revision)
+        assertEquals(2, entry.getCount()); // this is the major revision)
+
+        // check the CRS
+        assertEquals(GeoTiffGCSCodes.ModelTypeGeographic, meta.getGeoShortParam(GeoTiffConstants.GTModelTypeGeoKey));
+        assertEquals(4326, meta.getGeoShortParam(GeoTiffGCSCodes.GeographicTypeGeoKey));
+    }
 }

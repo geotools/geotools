@@ -144,10 +144,12 @@ public class GeoPackage implements Closeable {
     // requirement 11, two generic SRID are to be considered
     protected static final int GENERIC_GEOGRAPHIC_SRID = 0;
     protected static final int GENERIC_PROJECTED_SRID = -1;
-    /** The application id for GeoPackage 1.2 onwards (GPKG) */
-    static final int GPKG_120_APPID = 0x47504B47;
     /** The application id for GeoPackage 1.0 (GP10) */
     static final int GPKG_100_APPID = 0x47503130;
+    /** The application id for GeoPackage 1.2 onwards (GPKG) */
+    static final int GPKG_120_APPID = 0x47504B47;
+    /** The user version for GeoPackage 1.2 onwards */
+    public static String GPKG_120_USER_VERSION = "10200";
 
     /**
      * Some tools like QGIS find the SRID and blindly assume it's an EPSG code if it's in the reserved range, without
@@ -328,7 +330,9 @@ public class GeoPackage implements Closeable {
             runScript(METADATA_REFERENCE + ".sql", cx);
             runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
             addDefaultSpatialReferences(cx);
+            // for GeoPackage 1.2 and later, set both the application id and the user_version
             runSQL("PRAGMA application_id = " + GPKG_120_APPID + ";", cx);
+            runSQL("PRAGMA user_version = " + GPKG_120_USER_VERSION + ";", cx);
         }
     }
 

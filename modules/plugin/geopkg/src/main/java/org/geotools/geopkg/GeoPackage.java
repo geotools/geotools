@@ -1150,7 +1150,7 @@ public class GeoPackage implements Closeable {
         try (PreparedStatement ps = prepare(cx, sql)
                 .set(e.getTableName())
                 .set(e.getGeometryColumn())
-                .set(e.getGeometryType() != null ? e.getGeometryType().getName() : null)
+                .set(e.getGeometryType() != null ? e.getGeometryType().getName().toUpperCase() : null)
                 .set(e.getSrid())
                 .set(e.isZ())
                 .set(e.isM())

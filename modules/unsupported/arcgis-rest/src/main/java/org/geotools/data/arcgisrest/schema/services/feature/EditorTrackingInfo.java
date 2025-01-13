@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class EditorTrackingInfo {
 
@@ -117,10 +118,7 @@ public class EditorTrackingInfo {
         sb.append(',');
         sb.append("enableOwnershipAccessControl");
         sb.append('=');
-        sb.append(
-                ((this.enableOwnershipAccessControl == null)
-                        ? "<null>"
-                        : this.enableOwnershipAccessControl));
+        sb.append(((this.enableOwnershipAccessControl == null) ? "<null>" : this.enableOwnershipAccessControl));
         sb.append(',');
         sb.append("allowOthersToQuery");
         sb.append('=');
@@ -153,41 +151,14 @@ public class EditorTrackingInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result =
-                ((result * 31)
-                        + ((this.allowOthersToUpdate == null)
-                                ? 0
-                                : this.allowOthersToUpdate.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.allowAnonymousToUpdate == null)
-                                ? 0
-                                : this.allowAnonymousToUpdate.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.enableEditorTracking == null)
-                                ? 0
-                                : this.enableEditorTracking.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.allowOthersToQuery == null)
-                                ? 0
-                                : this.allowOthersToQuery.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.allowOthersToDelete == null)
-                                ? 0
-                                : this.allowOthersToDelete.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.enableOwnershipAccessControl == null)
-                                ? 0
-                                : this.enableOwnershipAccessControl.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.allowAnonymousToDelete == null)
-                                ? 0
-                                : this.allowAnonymousToDelete.hashCode()));
+        result = ((result * 31) + ((this.allowOthersToUpdate == null) ? 0 : this.allowOthersToUpdate.hashCode()));
+        result = ((result * 31) + ((this.allowAnonymousToUpdate == null) ? 0 : this.allowAnonymousToUpdate.hashCode()));
+        result = ((result * 31) + ((this.enableEditorTracking == null) ? 0 : this.enableEditorTracking.hashCode()));
+        result = ((result * 31) + ((this.allowOthersToQuery == null) ? 0 : this.allowOthersToQuery.hashCode()));
+        result = ((result * 31) + ((this.allowOthersToDelete == null) ? 0 : this.allowOthersToDelete.hashCode()));
+        result = ((result * 31)
+                + ((this.enableOwnershipAccessControl == null) ? 0 : this.enableOwnershipAccessControl.hashCode()));
+        result = ((result * 31) + ((this.allowAnonymousToDelete == null) ? 0 : this.allowAnonymousToDelete.hashCode()));
         return result;
     }
 
@@ -200,40 +171,12 @@ public class EditorTrackingInfo {
             return false;
         }
         EditorTrackingInfo rhs = ((EditorTrackingInfo) other);
-        return ((((((((this.allowOthersToUpdate == rhs.allowOthersToUpdate)
-                                                                || ((this.allowOthersToUpdate
-                                                                                != null)
-                                                                        && this.allowOthersToUpdate
-                                                                                .equals(
-                                                                                        rhs.allowOthersToUpdate)))
-                                                        && ((this.allowAnonymousToUpdate
-                                                                        == rhs.allowAnonymousToUpdate)
-                                                                || ((this.allowAnonymousToUpdate
-                                                                                != null)
-                                                                        && this
-                                                                                .allowAnonymousToUpdate
-                                                                                .equals(
-                                                                                        rhs.allowAnonymousToUpdate))))
-                                                && ((this.enableEditorTracking
-                                                                == rhs.enableEditorTracking)
-                                                        || ((this.enableEditorTracking != null)
-                                                                && this.enableEditorTracking.equals(
-                                                                        rhs.enableEditorTracking))))
-                                        && ((this.allowOthersToQuery == rhs.allowOthersToQuery)
-                                                || ((this.allowOthersToQuery != null)
-                                                        && this.allowOthersToQuery.equals(
-                                                                rhs.allowOthersToQuery))))
-                                && ((this.allowOthersToDelete == rhs.allowOthersToDelete)
-                                        || ((this.allowOthersToDelete != null)
-                                                && this.allowOthersToDelete.equals(
-                                                        rhs.allowOthersToDelete))))
-                        && ((this.enableOwnershipAccessControl == rhs.enableOwnershipAccessControl)
-                                || ((this.enableOwnershipAccessControl != null)
-                                        && this.enableOwnershipAccessControl.equals(
-                                                rhs.enableOwnershipAccessControl))))
-                && ((this.allowAnonymousToDelete == rhs.allowAnonymousToDelete)
-                        || ((this.allowAnonymousToDelete != null)
-                                && this.allowAnonymousToDelete.equals(
-                                        rhs.allowAnonymousToDelete))));
+        return Objects.equals(this.allowOthersToUpdate, rhs.allowOthersToUpdate)
+                && Objects.equals(this.allowAnonymousToUpdate, rhs.allowAnonymousToUpdate)
+                && Objects.equals(this.enableEditorTracking, rhs.enableEditorTracking)
+                && Objects.equals(this.allowOthersToQuery, rhs.allowOthersToQuery)
+                && Objects.equals(this.allowOthersToDelete, rhs.allowOthersToDelete)
+                && Objects.equals(this.enableOwnershipAccessControl, rhs.enableOwnershipAccessControl)
+                && Objects.equals(this.allowAnonymousToDelete, rhs.allowAnonymousToDelete);
     }
 }

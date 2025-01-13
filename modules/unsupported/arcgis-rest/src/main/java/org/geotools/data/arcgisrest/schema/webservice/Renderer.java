@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Renderer {
 
@@ -74,8 +75,6 @@ public class Renderer {
             return false;
         }
         Renderer rhs = ((Renderer) other);
-        return (((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type)))
-                && ((this.symbol == rhs.symbol)
-                        || ((this.symbol != null) && this.symbol.equals(rhs.symbol))));
+        return Objects.equals(this.type, rhs.type) && Objects.equals(this.symbol, rhs.symbol);
     }
 }

@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.catalog;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Error {
 
@@ -55,7 +56,6 @@ public class Error {
             return false;
         }
         Error rhs = ((Error) other);
-        return ((this.error == rhs.error)
-                || ((this.error != null) && this.error.equals(rhs.error)));
+        return Objects.equals(this.error, rhs.error);
     }
 }

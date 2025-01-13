@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Project Open Data Organization
@@ -123,11 +124,7 @@ public class Organization {
         int result = 1;
         result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
         result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.subOrganizationOf == null)
-                                ? 0
-                                : this.subOrganizationOf.hashCode()));
+        result = ((result * 31) + ((this.subOrganizationOf == null) ? 0 : this.subOrganizationOf.hashCode()));
         return result;
     }
 
@@ -140,20 +137,16 @@ public class Organization {
             return false;
         }
         Organization rhs = ((Organization) other);
-        return ((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
-                        && ((this.type == rhs.type)
-                                || ((this.type != null) && this.type.equals(rhs.type))))
-                && ((this.subOrganizationOf == rhs.subOrganizationOf)
-                        || ((this.subOrganizationOf != null)
-                                && this.subOrganizationOf.equals(rhs.subOrganizationOf))));
+        return Objects.equals(this.name, rhs.name)
+                && Objects.equals(this.type, rhs.type)
+                && Objects.equals(this.subOrganizationOf, rhs.subOrganizationOf);
     }
 
     public enum Type {
         @SerializedName("org:Organization")
         ORG_ORGANIZATION("org:Organization");
         private final String value;
-        private static final Map<String, Organization.Type> CONSTANTS =
-                new HashMap<String, Organization.Type>();
+        private static final Map<String, Organization.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Organization.Type c : values()) {

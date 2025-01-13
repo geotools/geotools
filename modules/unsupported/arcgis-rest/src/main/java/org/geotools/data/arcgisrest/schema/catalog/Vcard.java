@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Project Open Data ContactPoint vCard
@@ -136,18 +137,16 @@ public class Vcard {
             return false;
         }
         Vcard rhs = ((Vcard) other);
-        return ((((this.fn == rhs.fn) || ((this.fn != null) && this.fn.equals(rhs.fn)))
-                        && ((this.hasEmail == rhs.hasEmail)
-                                || ((this.hasEmail != null) && this.hasEmail.equals(rhs.hasEmail))))
-                && ((this.type == rhs.type)
-                        || ((this.type != null) && this.type.equals(rhs.type))));
+        return Objects.equals(this.fn, rhs.fn)
+                && Objects.equals(this.hasEmail, rhs.hasEmail)
+                && Objects.equals(this.type, rhs.type);
     }
 
     public enum Type {
         @SerializedName("vcard:Contact")
         VCARD_CONTACT("vcard:Contact");
         private final String value;
-        private static final Map<String, Vcard.Type> CONSTANTS = new HashMap<String, Vcard.Type>();
+        private static final Map<String, Vcard.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Vcard.Type c : values()) {

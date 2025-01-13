@@ -136,8 +136,7 @@ public class ContactPoint {
         @SerializedName("vcard:Contact")
         VCARD_CONTACT("vcard:Contact");
         private final String value;
-        private static final Map<String, ContactPoint.Type> CONSTANTS =
-                new HashMap<String, ContactPoint.Type>();
+        private static final Map<String, ContactPoint.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (ContactPoint.Type c : values()) {

@@ -41,8 +41,7 @@ import org.geotools.util.logging.Logging;
 public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
 
     /** Package's logger */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ArcGISRestDataStoreFactory.class.getName());
+    protected static final Logger LOGGER = Logging.getLogger(ArcGISRestDataStoreFactory.class.getName());
 
     public static final String FACTORY_NAME = "ArcGIS ReST";
     public static final String FACTORY_DESCRIPTION = "ESRI ArcGIS ReST API data store";
@@ -50,29 +49,25 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
     private static final List<Param> paramMetadata = new ArrayList<>(10);
 
     public static final Param NAMESPACE_PARAM = new Param("namespace", String.class, "", true);
-    public static final Param URL_PARAM =
-            new Param(
-                    "Endpoint of the ArcGSI ReST API (either the data.json URL of an OpenData catalog, or the FeatureService URL of an ArcGIS Server API)",
-                    String.class,
-                    "",
-                    true);
-    public static final Param USER_PARAM =
-            new Param("Username of the endpoint", String.class, "", false, null);
-    public static final Param PASSWORD_PARAM =
-            new Param(
-                    "Password associated with the username.",
-                    String.class,
-                    "",
-                    false,
-                    null,
-                    Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
-    public static final Param ISOPENDATA_PARAM =
-            new Param(
-                    "Endpoint is an OpenData catalog",
-                    Boolean.class,
-                    new SimpleInternationalString("is the data source an OpedData servive?"),
-                    true,
-                    false);
+    public static final Param URL_PARAM = new Param(
+            "Endpoint of the ArcGSI ReST API (either the data.json URL of an OpenData catalog, or the FeatureService URL of an ArcGIS Server API)",
+            String.class,
+            "",
+            true);
+    public static final Param USER_PARAM = new Param("Username of the endpoint", String.class, "", false, null);
+    public static final Param PASSWORD_PARAM = new Param(
+            "Password associated with the username.",
+            String.class,
+            "",
+            false,
+            null,
+            Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
+    public static final Param ISOPENDATA_PARAM = new Param(
+            "Endpoint is an OpenData catalog",
+            Boolean.class,
+            new SimpleInternationalString("is the data source an OpedData servive?"),
+            true,
+            false);
 
     static {
         paramMetadata.add(NAMESPACE_PARAM);
@@ -83,8 +78,7 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public DataStore createNewDataStore(Map<String, ?> params)
-            throws UnsupportedOperationException {
+    public DataStore createNewDataStore(Map<String, ?> params) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -110,7 +104,7 @@ public class ArcGISRestDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        return (Param[]) paramMetadata.toArray(new Param[paramMetadata.size()]);
+        return paramMetadata.toArray(new Param[paramMetadata.size()]);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Count {
 
@@ -52,7 +53,6 @@ public class Count {
             return false;
         }
         Count rhs = ((Count) other);
-        return ((this.count == rhs.count)
-                || ((this.count != null) && this.count.equals(rhs.count)));
+        return Objects.equals(this.count, rhs.count);
     }
 }

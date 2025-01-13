@@ -31,7 +31,6 @@ public class Attributes {
         if ((other instanceof Attributes) == false) {
             return false;
         }
-        Attributes rhs = ((Attributes) other);
         return true;
     }
 }

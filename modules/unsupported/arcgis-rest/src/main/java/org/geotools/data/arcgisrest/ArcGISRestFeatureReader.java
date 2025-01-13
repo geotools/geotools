@@ -39,8 +39,7 @@ public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType,
 
     protected int featIndex = 0;
 
-    public ArcGISRestFeatureReader(
-            SimpleFeatureType featureTypeIn, InputStream iStream, Logger logger)
+    public ArcGISRestFeatureReader(SimpleFeatureType featureTypeIn, InputStream iStream, Logger logger)
             throws IOException {
         this.featureType = featureTypeIn;
         this.featIndex = 0;
@@ -54,8 +53,7 @@ public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType,
     @Override
     public SimpleFeatureType getFeatureType() {
         if (this.featureType == null) {
-            throw new IllegalStateException(
-                    "No features were retrieved, shouldn't be calling getFeatureType()");
+            throw new IllegalStateException("No features were retrieved, shouldn't be calling getFeatureType()");
         }
         return this.featureType;
     }

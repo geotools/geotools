@@ -656,7 +656,9 @@ class FilterToSqlHelper {
                 // using for last element the ->> operator
                 // to have a text instead of a json returned
                 else out.write(" ->> ");
-                Literal elPointer = new LiteralExpressionImpl(p);
+                String preparedLiteral = this.prepareInputLiteralForExpression(p);
+                Literal elPointer = new LiteralExpressionImpl(preparedLiteral);
+                // since the input expression could have been changed, binding needs to use original source
                 Class binding = NumberUtils.isParsable(p) ? Integer.class : String.class;
                 elPointer.accept(delegate, binding);
             }
@@ -666,6 +668,20 @@ class FilterToSqlHelper {
                 out.write(cast("", (Class) extraData));
             }
         }
+    }
+
+    private String prepareInputLiteralForExpression(String inputLiteral) {
+        if (inputLiteral.length() < 2) return inputLiteral;
+
+        char firstChar = inputLiteral.charAt(0);
+        char lastChar = inputLiteral.charAt(inputLiteral.length() - 1);
+        if (firstChar == '\'' && lastChar == '\'') {
+            String contentBetween = inputLiteral.substring(1, inputLiteral.length() - 1);
+            if (NumberUtils.isParsable(contentBetween)) {
+                return contentBetween;
+            }
+        }
+        return inputLiteral;
     }
 
     public String buildJsonFromStrPointer(String[] pointers, int index, Expression expected) {

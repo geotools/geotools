@@ -254,6 +254,48 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     }
 
     @Test
+    public void testFunctionJsonPointerWithNumericObjectKey() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer = ff.function("jsonPointer", ff.property("testjson"), ff.literal("/'1407'"));
+        Filter startsWith = ff.equals(pointer, ff.literal("value"));
+        filterToSql.encode(startsWith);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  ->> '1407' = 'value'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointerWithApostropheKey() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer = ff.function("jsonPointer", ff.property("testjson"), ff.literal("/'"));
+        Filter startsWith = ff.equals(pointer, ff.literal("escaped_apostrophe"));
+        filterToSql.encode(startsWith);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  ->> '''' = 'escaped_apostrophe'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointerWithUnescapedNumericKey() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer = ff.function("jsonPointer", ff.property("testjson"), ff.literal("/'2202"));
+        Filter startsWith = ff.equals(pointer, ff.literal("escaped_literal"));
+        filterToSql.encode(startsWith);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals("where testjson ::json  ->> '''2202' = 'escaped_literal'", sql);
+    }
+
+    @Test
+    public void testFunctionJsonPointerWithComplexPath() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function("jsonPointer", ff.property("testjson"), ff.literal("/numeric_key/'0714'/array_index/1407"));
+        Filter startsWith = ff.equals(pointer, ff.literal("complex_pointer"));
+        filterToSql.encode(startsWith);
+        String sql = writer.toString().toLowerCase().trim();
+        assertEquals(
+                "where testjson ::json  -> 'numeric_key' -> '0714' -> 'array_index' ->> 1407 = 'complex_pointer'", sql);
+    }
+
+    @Test
     public void testBinaryComparisonWithJsonPointer() throws Exception {
         filterToSql.setFeatureType(testSchema);
         Function pointer = ff.function("jsonPointer", ff.property("testJSON"), ff.literal("/arr/0"));

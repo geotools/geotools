@@ -173,6 +173,12 @@ public class InFunction extends FunctionExpressionImpl {
             return Double.class; // StaticGeometry.equalTo will convert to double
         } else if (Boolean.class.isAssignableFrom(target)) {
             return Boolean.class;
+        } else if (java.sql.Timestamp.class.isAssignableFrom(target)) {
+            return java.sql.Timestamp.class;
+        } else if (java.sql.Date.class.isAssignableFrom(target)) {
+            return java.sql.Date.class;
+        } else if (java.sql.Time.class.isAssignableFrom(target)) {
+            return java.sql.Time.class;
         } else if (Date.class.isAssignableFrom(target)) {
             return Date.class;
         } else if (String.class.isAssignableFrom(target)) {

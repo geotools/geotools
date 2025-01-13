@@ -61,6 +61,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.filter.function.InFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
@@ -1259,5 +1260,24 @@ public class FilterTest {
         Intersects intersects = fac.intersects(fac.function("boundedBy"), fac.literal(box));
 
         Assert.assertTrue(intersects.evaluate(testFeature));
+    }
+
+    @Test
+    public void testInConditionWithDateClassesGEOS11591() {
+        InFunction inFunctionTimestamp = new InFunction();
+        inFunctionTimestamp.setParameters(List.of(fac.property("datetime2"), fac.literal("2007-08-15 12:00:00")));
+        Assert.assertTrue(fac.equals(inFunctionTimestamp, fac.literal(true)).evaluate(testFeature));
+
+        InFunction inFunctionUtilDate = new InFunction();
+        inFunctionUtilDate.setParameters(List.of(fac.property("datetime1"), fac.literal("2007-08-15 12:00:00PM")));
+        Assert.assertTrue(fac.equals(inFunctionUtilDate, fac.literal(true)).evaluate(testFeature));
+
+        InFunction inFunctionSqlDate = new InFunction();
+        inFunctionSqlDate.setParameters(List.of(fac.property("date"), fac.literal("2007-08-15")));
+        Assert.assertTrue(fac.equals(inFunctionSqlDate, fac.literal(true)).evaluate(testFeature));
+
+        InFunction inFunctionSqlTime = new InFunction();
+        inFunctionSqlTime.setParameters(List.of(fac.property("time"), fac.literal("12:00:00")));
+        Assert.assertTrue(fac.equals(inFunctionSqlTime, fac.literal(true)).evaluate(testFeature));
     }
 }

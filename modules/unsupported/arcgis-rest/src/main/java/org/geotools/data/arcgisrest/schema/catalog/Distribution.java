@@ -5,12 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Project Open Data Distribution
  *
- * <p>Validates an entire collection of common core metadata JSON objects. Agencies produce said
- * collections in the form of Data.json files.
+ * <p>Validates an entire collection of common core metadata JSON objects. Agencies produce said collections in the form
+ * of Data.json files.
  */
 public class Distribution {
 
@@ -33,8 +34,7 @@ public class Distribution {
     /**
      * Media Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * downloadURL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
      */
     @SerializedName("mediaType")
     @Expose
@@ -90,8 +90,7 @@ public class Distribution {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     @SerializedName("describedByType")
     @Expose
@@ -136,8 +135,7 @@ public class Distribution {
     /**
      * Media Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * downloadURL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
      */
     public Object getMediaType() {
         return mediaType;
@@ -146,8 +144,7 @@ public class Distribution {
     /**
      * Media Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * downloadURL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
      */
     public void setMediaType(Object mediaType) {
         this.mediaType = mediaType;
@@ -264,8 +261,7 @@ public class Distribution {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     public Object getDescribedByType() {
         return describedByType;
@@ -274,8 +270,7 @@ public class Distribution {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     public void setDescribedByType(Object describedByType) {
         this.describedByType = describedByType;
@@ -348,9 +343,7 @@ public class Distribution {
         result = ((result * 31) + ((this.conformsTo == null) ? 0 : this.conformsTo.hashCode()));
         result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
         result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.describedByType == null) ? 0 : this.describedByType.hashCode()));
+        result = ((result * 31) + ((this.describedByType == null) ? 0 : this.describedByType.hashCode()));
         return result;
     }
 
@@ -363,65 +356,23 @@ public class Distribution {
             return false;
         }
         Distribution rhs = ((Distribution) other);
-        return (((((((((((this.accessURL == rhs.accessURL)
-                                                                                        || ((this
-                                                                                                                .accessURL
-                                                                                                        != null)
-                                                                                                && this
-                                                                                                        .accessURL
-                                                                                                        .equals(
-                                                                                                                rhs.accessURL)))
-                                                                                && ((this
-                                                                                                        .downloadURL
-                                                                                                == rhs.downloadURL)
-                                                                                        || ((this
-                                                                                                                .downloadURL
-                                                                                                        != null)
-                                                                                                && this
-                                                                                                        .downloadURL
-                                                                                                        .equals(
-                                                                                                                rhs.downloadURL))))
-                                                                        && ((this.format
-                                                                                        == rhs.format)
-                                                                                || ((this.format
-                                                                                                != null)
-                                                                                        && this
-                                                                                                .format
-                                                                                                .equals(
-                                                                                                        rhs.format))))
-                                                                && ((this.description
-                                                                                == rhs.description)
-                                                                        || ((this.description
-                                                                                        != null)
-                                                                                && this.description
-                                                                                        .equals(
-                                                                                                rhs.description))))
-                                                        && ((this.describedBy == rhs.describedBy)
-                                                                || ((this.describedBy != null)
-                                                                        && this.describedBy.equals(
-                                                                                rhs.describedBy))))
-                                                && ((this.mediaType == rhs.mediaType)
-                                                        || ((this.mediaType != null)
-                                                                && this.mediaType.equals(
-                                                                        rhs.mediaType))))
-                                        && ((this.conformsTo == rhs.conformsTo)
-                                                || ((this.conformsTo != null)
-                                                        && this.conformsTo.equals(rhs.conformsTo))))
-                                && ((this.type == rhs.type)
-                                        || ((this.type != null) && this.type.equals(rhs.type))))
-                        && ((this.title == rhs.title)
-                                || ((this.title != null) && this.title.equals(rhs.title))))
-                && ((this.describedByType == rhs.describedByType)
-                        || ((this.describedByType != null)
-                                && this.describedByType.equals(rhs.describedByType))));
+        return Objects.equals(this.accessURL, rhs.accessURL)
+                && Objects.equals(this.downloadURL, rhs.downloadURL)
+                && Objects.equals(this.format, rhs.format)
+                && Objects.equals(this.description, rhs.description)
+                && Objects.equals(this.describedBy, rhs.describedBy)
+                && Objects.equals(this.mediaType, rhs.mediaType)
+                && Objects.equals(this.conformsTo, rhs.conformsTo)
+                && Objects.equals(this.type, rhs.type)
+                && Objects.equals(this.title, rhs.title)
+                && Objects.equals(this.describedByType, rhs.describedByType);
     }
 
     public enum Type {
         @SerializedName("dcat:Distribution")
         DCAT_DISTRIBUTION("dcat:Distribution");
         private final String value;
-        private static final Map<String, Distribution.Type> CONSTANTS =
-                new HashMap<String, Distribution.Type>();
+        private static final Map<String, Distribution.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Distribution.Type c : values()) {

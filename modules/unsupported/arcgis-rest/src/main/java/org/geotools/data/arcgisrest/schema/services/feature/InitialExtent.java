@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class InitialExtent {
 
@@ -118,9 +119,7 @@ public class InitialExtent {
         result = ((result * 31) + ((this.xmin == null) ? 0 : this.xmin.hashCode()));
         result = ((result * 31) + ((this.ymax == null) ? 0 : this.ymax.hashCode()));
         result = ((result * 31) + ((this.xmax == null) ? 0 : this.xmax.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
+        result = ((result * 31) + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
         return result;
     }
 
@@ -133,16 +132,10 @@ public class InitialExtent {
             return false;
         }
         InitialExtent rhs = ((InitialExtent) other);
-        return ((((((this.ymin == rhs.ymin) || ((this.ymin != null) && this.ymin.equals(rhs.ymin)))
-                                        && ((this.xmin == rhs.xmin)
-                                                || ((this.xmin != null)
-                                                        && this.xmin.equals(rhs.xmin))))
-                                && ((this.ymax == rhs.ymax)
-                                        || ((this.ymax != null) && this.ymax.equals(rhs.ymax))))
-                        && ((this.xmax == rhs.xmax)
-                                || ((this.xmax != null) && this.xmax.equals(rhs.xmax))))
-                && ((this.spatialReference == rhs.spatialReference)
-                        || ((this.spatialReference != null)
-                                && this.spatialReference.equals(rhs.spatialReference))));
+        return Objects.equals(this.ymin, rhs.ymin)
+                && Objects.equals(this.xmin, rhs.xmin)
+                && Objects.equals(this.ymax, rhs.ymax)
+                && Objects.equals(this.xmax, rhs.xmax)
+                && Objects.equals(this.spatialReference, rhs.spatialReference);
     }
 }

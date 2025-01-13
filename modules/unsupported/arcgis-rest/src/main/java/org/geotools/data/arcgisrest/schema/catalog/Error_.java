@@ -21,7 +21,7 @@ public class Error_ {
     /** (Required) */
     @SerializedName("details")
     @Expose
-    private List<String> details = new ArrayList<String>();
+    private List<String> details = new ArrayList<>();
 
     /**
      * (Required)
@@ -84,7 +84,11 @@ public class Error_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(code).append(message).append(details).toHashCode();
+        return new HashCodeBuilder()
+                .append(code)
+                .append(message)
+                .append(details)
+                .toHashCode();
     }
 
     @Override

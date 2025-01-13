@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Index {
 
@@ -131,17 +132,10 @@ public class Index {
             return false;
         }
         Index rhs = ((Index) other);
-        return ((((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
-                                        && ((this.isUnique == rhs.isUnique)
-                                                || ((this.isUnique != null)
-                                                        && this.isUnique.equals(rhs.isUnique))))
-                                && ((this.description == rhs.description)
-                                        || ((this.description != null)
-                                                && this.description.equals(rhs.description))))
-                        && ((this.fields == rhs.fields)
-                                || ((this.fields != null) && this.fields.equals(rhs.fields))))
-                && ((this.isAscending == rhs.isAscending)
-                        || ((this.isAscending != null)
-                                && this.isAscending.equals(rhs.isAscending))));
+        return Objects.equals(this.name, rhs.name)
+                && Objects.equals(this.isUnique, rhs.isUnique)
+                && Objects.equals(this.description, rhs.description)
+                && Objects.equals(this.fields, rhs.fields)
+                && Objects.equals(this.isAscending, rhs.isAscending);
     }
 }

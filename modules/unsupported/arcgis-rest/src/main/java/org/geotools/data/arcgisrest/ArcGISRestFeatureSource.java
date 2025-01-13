@@ -64,7 +64,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     // property?
     protected static CoordinateReferenceSystem SPATIALCRS;
 
-    protected static final Map<String, Class> EsriJavaMapping = new HashMap<String, Class>();
+    protected static final Map<String, Class> EsriJavaMapping = new HashMap<>();
 
     static {
         EsriJavaMapping.put("esriFieldTypeBlob", java.lang.Object.class);
@@ -81,7 +81,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         EsriJavaMapping.put("esriFieldTypeXML", java.lang.String.class);
     }
 
-    protected static final Map<String, Class> EsriJTSMapping = new HashMap<String, Class>();
+    protected static final Map<String, Class> EsriJTSMapping = new HashMap<>();
 
     static {
         EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
@@ -105,17 +105,13 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
 
         // Extracts information about the type name (as per this.entry) from the API
         Dataset ds = this.dataStore.getDataset(this.entry.getName());
-        Webservice ws =
-                (new Gson())
-                        .fromJson(
-                                ArcGISRestDataStore.InputStreamToString(
-                                        this.dataStore.retrieveJSON(
-                                                "GET",
-                                                new URL(
-                                                        ArcGISRestDataStore.getWebServiceEndpoint(
-                                                                ds)),
-                                                ArcGISRestDataStore.DEFAULT_PARAMS)),
-                                Webservice.class);
+        Webservice ws = (new Gson())
+                .fromJson(
+                        ArcGISRestDataStore.InputStreamToString(this.dataStore.retrieveJSON(
+                                "GET",
+                                new URL(ArcGISRestDataStore.getWebServiceEndpoint(ds)),
+                                ArcGISRestDataStore.DEFAULT_PARAMS)),
+                        Webservice.class);
 
         if (ws == null) {
             throw new IOException(String.format("Type name %s not found", entry.getName()));
@@ -133,12 +129,12 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         // Extracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
-                this.resInfo.setCRS(
-                        CRS.decode("EPSG:" + ws.getExtent().getSpatialReference().getLatestWkid()));
+                this.resInfo.setCRS(CRS.decode(
+                        "EPSG:" + ws.getExtent().getSpatialReference().getLatestWkid()));
             } else {
                 if (ws.getExtent().getSpatialReference().getWkid() != null) {
-                    this.resInfo.setCRS(
-                            CRS.decode("EPSG:" + ws.getExtent().getSpatialReference().getWkid()));
+                    this.resInfo.setCRS(CRS.decode(
+                            "EPSG:" + ws.getExtent().getSpatialReference().getWkid()));
                 } else {
                     this.resInfo.setCRS(
                             CRS.parseWKT(ws.getExtent().getSpatialReference().getWkt()));
@@ -150,23 +146,21 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             throw new IOException(e.getMessage());
         }
 
-        this.resInfo.setKeywords(new HashSet<String>(ds.getKeyword()));
+        this.resInfo.setKeywords(new HashSet<>(ds.getKeyword()));
 
         // FIXME: the abstract of the feature type is not set
         this.resInfo.setDescription(ds.getDescription());
 
         this.resInfo.setTitle(ds.getTitle() != null ? ds.getTitle() : ws.getName());
         this.resInfo.setName(ws.getName());
-        ReferencedEnvelope geoBbox =
-                new ReferencedEnvelope(
-                        ws.getExtent().getXmin(),
-                        ws.getExtent().getXmax(),
-                        ws.getExtent().getYmin(),
-                        ws.getExtent().getYmax(),
-                        this.resInfo.getCRS());
+        ReferencedEnvelope geoBbox = new ReferencedEnvelope(
+                ws.getExtent().getXmin(),
+                ws.getExtent().getXmax(),
+                ws.getExtent().getYmin(),
+                ws.getExtent().getYmax(),
+                this.resInfo.getCRS());
         this.resInfo.setBounds(geoBbox);
-        this.objectIdField =
-                (ws.getObjectIdField() != null) ? ws.getObjectIdField() : ws.getGlobalIdField();
+        this.objectIdField = (ws.getObjectIdField() != null) ? ws.getObjectIdField() : ws.getGlobalIdField();
 
         // Builds the feature type
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -175,30 +169,21 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         // not set
         builder.setName(this.entry.getName());
         // FIXME: the abstract of the feature type is not set
-        builder.setDescription(
-                ds.getDescription() != null
-                        ? new SimpleInternationalString(ds.getDescription())
-                        : null);
+        builder.setDescription(ds.getDescription() != null ? new SimpleInternationalString(ds.getDescription()) : null);
 
         // Adds non-geometry field descriptions
-        ws.getFields()
-                .forEach(
-                        (fld) -> {
-                            Class clazz = EsriJavaMapping.get(fld.getType());
-                            if (clazz == null) {
-                                this.getDataStore()
-                                        .getLogger()
-                                        .severe(String.format("Type %s not found", fld.getType()));
-                            }
-                            builder.add(fld.getName(), clazz);
-                        });
+        ws.getFields().forEach((fld) -> {
+            Class clazz = EsriJavaMapping.get(fld.getType());
+            if (clazz == null) {
+                this.getDataStore().getLogger().severe(String.format("Type %s not found", fld.getType()));
+            }
+            builder.add(fld.getName(), clazz);
+        });
 
         // Adds the geometry field
         Class clazz = EsriJTSMapping.get(ws.getGeometryType());
         if (clazz == null) {
-            this.getDataStore()
-                    .getLogger()
-                    .severe(String.format("Geometry type %s not found", ws.getGeometryType()));
+            this.getDataStore().getLogger().severe(String.format("Geometry type %s not found", ws.getGeometryType()));
         }
 
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
@@ -242,31 +227,23 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
 
         Count cnt;
-        Map<String, Object> params =
-                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
+        Map<String, Object> params = new HashMap<>(ArcGISRestDataStore.DEFAULT_PARAMS);
         params.put(ArcGISRestDataStore.COUNT_PARAM, true);
-        params.put(
-                ArcGISRestDataStore.GEOMETRY_PARAM,
-                this.composeExtent(this.getBoundsInternal(query)));
+        params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBoundsInternal(query)));
         try {
             params.put(
                     ArcGISRestDataStore.GEOMETRYSRS_PARAM,
-                    CRS.lookupEpsgCode(
-                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+                    CRS.lookupEpsgCode(this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
         } catch (FactoryException e) {
             throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
         }
 
         try {
-            cnt =
-                    (new Gson())
-                            .fromJson(
-                                    ArcGISRestDataStore.InputStreamToString(
-                                            this.dataStore.retrieveJSON(
-                                                    "POST",
-                                                    (new URL(this.composeQueryURL())),
-                                                    params)),
-                                    Count.class);
+            cnt = (new Gson())
+                    .fromJson(
+                            ArcGISRestDataStore.InputStreamToString(
+                                    this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params)),
+                            Count.class);
         } catch (HTTPException e) {
             throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
         }
@@ -275,19 +252,16 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
 
-        Map<String, Object> params =
-                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
+        Map<String, Object> params = new HashMap<>(ArcGISRestDataStore.DEFAULT_PARAMS);
         InputStream result;
 
         params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
         try {
             params.put(
                     ArcGISRestDataStore.GEOMETRYSRS_PARAM,
-                    CRS.lookupEpsgCode(
-                            this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
+                    CRS.lookupEpsgCode(this.getBoundsInternal(query).getCoordinateReferenceSystem(), true));
         } catch (FactoryException e) {
             throw new IOException(String.format("Unknown CRS %s", e.getMessage()));
         }
@@ -357,7 +331,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         joiner.add(this.objectIdField);
 
         if (query.retrieveAllProperties()) {
-            Iterator<AttributeDescriptor> iter = this.schema.getAttributeDescriptors().iterator();
+            Iterator<AttributeDescriptor> iter =
+                    this.schema.getAttributeDescriptors().iterator();
             while (iter.hasNext()) {
                 AttributeDescriptor attr = iter.next();
                 // Skips ID and geometry field

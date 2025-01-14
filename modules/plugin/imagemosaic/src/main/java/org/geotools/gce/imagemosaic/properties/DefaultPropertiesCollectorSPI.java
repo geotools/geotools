@@ -18,6 +18,8 @@ package org.geotools.gce.imagemosaic.properties;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -30,6 +32,14 @@ import org.geotools.util.URLs;
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     private final String name;
+
+    public static final String REGEX = "regex";
+
+    public static final String FULL_PATH = "fullPath";
+
+    public static final String REGEX_PREFIX = REGEX + "=";
+
+    public static final String FULL_PATH_PREFIX = FULL_PATH + "=";
 
     @Override
     public String getName() {
@@ -50,12 +60,11 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         return Collections.emptyMap();
     }
 
-    public static final String REGEX_PREFIX = "regex=";
-
     @Override
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         URL source = null;
-        String property = null;
+        String regex = null;
+        Properties properties = null;
         if (o instanceof URL) {
             source = (URL) o;
         } else if (o instanceof File) {
@@ -66,10 +75,33 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
             } catch (MalformedURLException e) {
 
                 String value = (String) o;
+
+                // parameters can be in any order
+                // look for the first parameter
+                int[] indexesOf = new int[3];
+                indexesOf[1] = value.indexOf("," + FULL_PATH_PREFIX);
+                int minIndex = value.length();
+                for (int indexOf : indexesOf) {
+                    minIndex = (indexOf > 0 && indexOf < minIndex) ? indexOf : minIndex;
+                }
+
                 if (value.startsWith(REGEX_PREFIX)) {
-                    property = value.substring(REGEX_PREFIX.length());
-                } else {
-                    return null;
+                    String prop = value;
+                    regex = value.substring(REGEX_PREFIX.length(), minIndex);
+                    // Do we have more parameters?
+                    if (minIndex != value.length()) {
+                        value = value.substring(minIndex + 1);
+                        prop = value.replaceAll(",", "\n");
+
+                        // Setup properties from String for future extraction
+                        properties = new Properties();
+                        try {
+                            properties.load(new StringReader(prop));
+                            properties.setProperty(REGEX, regex);
+                        } catch (IOException e1) {
+                            throw new IllegalArgumentException("Unable to parse the specified regex: " + value, e1);
+                        }
+                    }
                 }
             }
         } else {
@@ -77,14 +109,33 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         }
 
         // it is a url
+        boolean fullPath = false;
         if (source != null) {
-            final Properties properties = CoverageUtilities.loadPropertiesFromURL(source);
-            if (properties.containsKey("regex")) {
-                property = properties.getProperty("regex");
+            properties = CoverageUtilities.loadPropertiesFromURL(source);
+            if (properties.containsKey(REGEX)) {
+                regex = properties.getProperty(REGEX);
+                fullPath = Boolean.valueOf(properties.getProperty(FULL_PATH));
+            }
+        } else if (properties != null) { // it was inline
+            regex = properties.getProperty(REGEX);
+            String fullPathParam = properties.getProperty(FULL_PATH);
+            if (fullPathParam != null && fullPathParam.trim().length() > 0) {
+                fullPath = Boolean.valueOf(fullPathParam);
             }
         }
-        if (property != null) {
-            return createInternal(this, propertyNames, property.trim());
+        if (regex != null) {
+            PropertiesCollector pc = createInternal(this, propertyNames, regex.trim());
+            if (pc == null) return null;
+            if (fullPath) {
+                if (pc instanceof FullPathCollector) {
+                    ((FullPathCollector) pc).setFullPath(true);
+                } else {
+                    throw new IllegalArgumentException(
+                            "This collector does not support the full path option: " + pc.getSpi());
+                }
+            }
+
+            return pc;
         }
 
         return null;

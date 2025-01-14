@@ -28,16 +28,20 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.util.logging.Logging;
 
-public abstract class RegExPropertiesCollector extends PropertiesCollector {
+public abstract class RegExPropertiesCollector extends PropertiesCollector implements FullPathCollector {
 
     private static final Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
 
     private boolean fullPath = false;
 
+    private Pattern pattern;
+
+    @Override
     public boolean isFullPath() {
         return fullPath;
     }
 
+    @Override
     public void setFullPath(boolean fullPath) {
         this.fullPath = fullPath;
     }
@@ -48,8 +52,6 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         this.fullPath = fullPath;
         pattern = Pattern.compile(regex);
     }
-
-    private Pattern pattern;
 
     @Override
     public RegExPropertiesCollector collect(File file) {

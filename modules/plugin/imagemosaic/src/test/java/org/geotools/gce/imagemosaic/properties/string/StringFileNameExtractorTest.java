@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -76,6 +77,18 @@ public class StringFileNameExtractorTest {
         String seq = (String) feature.getAttribute("seq");
         assertNotNull(seq);
         assertEquals("20130301000000", seq);
+    }
+
+    @Test
+    public void testFullPath() throws Exception {
+        PropertiesCollectorSPI spi = getStringFileNameSpi();
+        PropertiesCollector collector =
+                spi.create("regex=(?<=\\/)([sS]\\d+)(?=\\/),fullPath=true", Arrays.asList("seq"));
+        collector.collect(new URI("/var/data/s10/raster.tiff"));
+        collector.setProperties(feature);
+        String seq = (String) feature.getAttribute("seq");
+        assertNotNull(seq);
+        assertEquals("s10", seq);
     }
 
     private PropertiesCollectorSPI getStringFileNameSpi() {

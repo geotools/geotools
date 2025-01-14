@@ -7,13 +7,14 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Project Open Data Dataset
  *
- * <p>The metadata format for all federal open data. Validates a single JSON object entry (as
- * opposed to entire Data.json catalog).
+ * <p>The metadata format for all federal open data. Validates a single JSON object entry (as opposed to entire
+ * Data.json catalog).
  */
 public class Dataset {
 
@@ -28,11 +29,10 @@ public class Dataset {
     /**
      * Public Access Level
      *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
+     * <p>The degree to which this dataset could be made publicly-available, regardless of whether it has been made
+     * available. Choices: public (Data asset is or could be made publicly available to all without restrictions),
+     * restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not
+     * available to members of the public) (Required)
      */
     @SerializedName("accessLevel")
     @Expose
@@ -40,11 +40,10 @@ public class Dataset {
     /**
      * Rights
      *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
+     * <p>This may include information regarding access or restrictions based on privacy, security, or other policies.
+     * This should also provide an explanation for the selected "accessLevel" including instructions for how to access a
+     * restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not
+     * "public," if applicable. Text, 255 characters.
      */
     @SerializedName("rights")
     @Expose
@@ -61,12 +60,12 @@ public class Dataset {
      * Bureau Code
      *
      * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
+     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11,
+     * Appendix C</a> in the format of <code>015:010</code>. (Required)
      */
     @SerializedName("bureauCode")
     @Expose
-    private Set<String> bureauCode = new LinkedHashSet<String>();
+    private Set<String> bureauCode = new LinkedHashSet<>();
     /**
      * Project Open Data ContactPoint vCard
      *
@@ -78,8 +77,8 @@ public class Dataset {
     /**
      * Data Dictionary
      *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be
+     * referenced using Related Documents as shown in the expanded fields.
      */
     @SerializedName("describedBy")
     @Expose
@@ -87,8 +86,7 @@ public class Dataset {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     @SerializedName("describedByType")
     @Expose
@@ -112,8 +110,8 @@ public class Dataset {
     /**
      * Description
      *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
+     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand
+     * whether the asset is of interest. (Required)
      */
     @SerializedName("description")
     @Expose
@@ -125,12 +123,11 @@ public class Dataset {
      */
     @SerializedName("distribution")
     @Expose
-    private List<Distribution> distribution = new ArrayList<Distribution>();
+    private List<Distribution> distribution = new ArrayList<>();
     /**
      * Unique Identifier
      *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
+     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or database. (Required)
      */
     @SerializedName("identifier")
     @Expose
@@ -146,17 +143,17 @@ public class Dataset {
     /**
      * Tags
      *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
+     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and
+     * non-technical users. (Required)
      */
     @SerializedName("keyword")
     @Expose
-    private List<String> keyword = new ArrayList<String>();
+    private List<String> keyword = new ArrayList<>();
     /**
      * Homepage URL
      *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or
+     * API when selecting this resource from the Data.gov user interface.
      */
     @SerializedName("landingPage")
     @Expose
@@ -181,8 +178,7 @@ public class Dataset {
      * License
      *
      * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
+     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
      */
     @SerializedName("license")
     @Expose
@@ -212,7 +208,7 @@ public class Dataset {
      */
     @SerializedName("programCode")
     @Expose
-    private Set<String> programCode = new LinkedHashSet<String>();
+    private Set<String> programCode = new LinkedHashSet<>();
     /**
      * Project Open Data Organization
      *
@@ -224,8 +220,7 @@ public class Dataset {
     /**
      * Related Documents
      *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
+     * <p>Related documents such as technical information about a dataset, developer documentation, etc.
      */
     @SerializedName("references")
     @Expose
@@ -233,8 +228,8 @@ public class Dataset {
     /**
      * Spatial
      *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
+     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named
+     * place.
      */
     @SerializedName("spatial")
     @Expose
@@ -242,8 +237,8 @@ public class Dataset {
     /**
      * System of Records
      *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
+     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the
+     * System of Records Notice related to this dataset.
      */
     @SerializedName("systemOfRecords")
     @Expose
@@ -251,8 +246,7 @@ public class Dataset {
     /**
      * Temporal
      *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
+     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
      */
     @SerializedName("temporal")
     @Expose
@@ -276,8 +270,8 @@ public class Dataset {
     /**
      * Title
      *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
+     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate
+     * search and discovery. (Required)
      */
     @SerializedName("title")
     @Expose
@@ -304,11 +298,10 @@ public class Dataset {
     /**
      * Public Access Level
      *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
+     * <p>The degree to which this dataset could be made publicly-available, regardless of whether it has been made
+     * available. Choices: public (Data asset is or could be made publicly available to all without restrictions),
+     * restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not
+     * available to members of the public) (Required)
      */
     public Dataset.AccessLevel getAccessLevel() {
         return accessLevel;
@@ -317,11 +310,10 @@ public class Dataset {
     /**
      * Public Access Level
      *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
+     * <p>The degree to which this dataset could be made publicly-available, regardless of whether it has been made
+     * available. Choices: public (Data asset is or could be made publicly available to all without restrictions),
+     * restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not
+     * available to members of the public) (Required)
      */
     public void setAccessLevel(Dataset.AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
@@ -330,11 +322,10 @@ public class Dataset {
     /**
      * Rights
      *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
+     * <p>This may include information regarding access or restrictions based on privacy, security, or other policies.
+     * This should also provide an explanation for the selected "accessLevel" including instructions for how to access a
+     * restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not
+     * "public," if applicable. Text, 255 characters.
      */
     public Object getRights() {
         return rights;
@@ -343,11 +334,10 @@ public class Dataset {
     /**
      * Rights
      *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
+     * <p>This may include information regarding access or restrictions based on privacy, security, or other policies.
+     * This should also provide an explanation for the selected "accessLevel" including instructions for how to access a
+     * restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not
+     * "public," if applicable. Text, 255 characters.
      */
     public void setRights(Object rights) {
         this.rights = rights;
@@ -375,8 +365,8 @@ public class Dataset {
      * Bureau Code
      *
      * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
+     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11,
+     * Appendix C</a> in the format of <code>015:010</code>. (Required)
      */
     public Set<String> getBureauCode() {
         return bureauCode;
@@ -386,8 +376,8 @@ public class Dataset {
      * Bureau Code
      *
      * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
+     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11,
+     * Appendix C</a> in the format of <code>015:010</code>. (Required)
      */
     public void setBureauCode(Set<String> bureauCode) {
         this.bureauCode = bureauCode;
@@ -414,8 +404,8 @@ public class Dataset {
     /**
      * Data Dictionary
      *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be
+     * referenced using Related Documents as shown in the expanded fields.
      */
     public Object getDescribedBy() {
         return describedBy;
@@ -424,8 +414,8 @@ public class Dataset {
     /**
      * Data Dictionary
      *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be
+     * referenced using Related Documents as shown in the expanded fields.
      */
     public void setDescribedBy(Object describedBy) {
         this.describedBy = describedBy;
@@ -434,8 +424,7 @@ public class Dataset {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     public Object getDescribedByType() {
         return describedByType;
@@ -444,8 +433,7 @@ public class Dataset {
     /**
      * Data Dictionary Type
      *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
      */
     public void setDescribedByType(Object describedByType) {
         this.describedByType = describedByType;
@@ -490,8 +478,8 @@ public class Dataset {
     /**
      * Description
      *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
+     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand
+     * whether the asset is of interest. (Required)
      */
     public String getDescription() {
         return description;
@@ -500,8 +488,8 @@ public class Dataset {
     /**
      * Description
      *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
+     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand
+     * whether the asset is of interest. (Required)
      */
     public void setDescription(String description) {
         this.description = description;
@@ -528,8 +516,7 @@ public class Dataset {
     /**
      * Unique Identifier
      *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
+     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or database. (Required)
      */
     public String getIdentifier() {
         return identifier;
@@ -538,8 +525,7 @@ public class Dataset {
     /**
      * Unique Identifier
      *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
+     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or database. (Required)
      */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
@@ -566,8 +552,8 @@ public class Dataset {
     /**
      * Tags
      *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
+     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and
+     * non-technical users. (Required)
      */
     public List<String> getKeyword() {
         return keyword;
@@ -576,8 +562,8 @@ public class Dataset {
     /**
      * Tags
      *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
+     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and
+     * non-technical users. (Required)
      */
     public void setKeyword(List<String> keyword) {
         this.keyword = keyword;
@@ -586,8 +572,8 @@ public class Dataset {
     /**
      * Homepage URL
      *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or
+     * API when selecting this resource from the Data.gov user interface.
      */
     public Object getLandingPage() {
         return landingPage;
@@ -596,8 +582,8 @@ public class Dataset {
     /**
      * Homepage URL
      *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or
+     * API when selecting this resource from the Data.gov user interface.
      */
     public void setLandingPage(Object landingPage) {
         this.landingPage = landingPage;
@@ -643,8 +629,7 @@ public class Dataset {
      * License
      *
      * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
+     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
      */
     public Object getLicense() {
         return license;
@@ -654,8 +639,7 @@ public class Dataset {
      * License
      *
      * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
+     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
      */
     public void setLicense(Object license) {
         this.license = license;
@@ -740,8 +724,7 @@ public class Dataset {
     /**
      * Related Documents
      *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
+     * <p>Related documents such as technical information about a dataset, developer documentation, etc.
      */
     public Object getReferences() {
         return references;
@@ -750,8 +733,7 @@ public class Dataset {
     /**
      * Related Documents
      *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
+     * <p>Related documents such as technical information about a dataset, developer documentation, etc.
      */
     public void setReferences(Object references) {
         this.references = references;
@@ -760,8 +742,8 @@ public class Dataset {
     /**
      * Spatial
      *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
+     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named
+     * place.
      */
     public Object getSpatial() {
         return spatial;
@@ -770,8 +752,8 @@ public class Dataset {
     /**
      * Spatial
      *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
+     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named
+     * place.
      */
     public void setSpatial(Object spatial) {
         this.spatial = spatial;
@@ -780,8 +762,8 @@ public class Dataset {
     /**
      * System of Records
      *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
+     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the
+     * System of Records Notice related to this dataset.
      */
     public Object getSystemOfRecords() {
         return systemOfRecords;
@@ -790,8 +772,8 @@ public class Dataset {
     /**
      * System of Records
      *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
+     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the
+     * System of Records Notice related to this dataset.
      */
     public void setSystemOfRecords(Object systemOfRecords) {
         this.systemOfRecords = systemOfRecords;
@@ -800,8 +782,7 @@ public class Dataset {
     /**
      * Temporal
      *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
+     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
      */
     public Object getTemporal() {
         return temporal;
@@ -810,8 +791,7 @@ public class Dataset {
     /**
      * Temporal
      *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
+     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
      */
     public void setTemporal(Object temporal) {
         this.temporal = temporal;
@@ -856,8 +836,8 @@ public class Dataset {
     /**
      * Title
      *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
+     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate
+     * search and discovery. (Required)
      */
     public String getTitle() {
         return title;
@@ -866,8 +846,8 @@ public class Dataset {
     /**
      * Title
      *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
+     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate
+     * search and discovery. (Required)
      */
     public void setTitle(String title) {
         this.title = title;
@@ -1020,11 +1000,7 @@ public class Dataset {
         result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
         result = ((result * 31) + ((this.bureauCode == null) ? 0 : this.bureauCode.hashCode()));
         result = ((result * 31) + ((this.webService == null) ? 0 : this.webService.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.primaryITInvestmentUII == null)
-                                ? 0
-                                : this.primaryITInvestmentUII.hashCode()));
+        result = ((result * 31) + ((this.primaryITInvestmentUII == null) ? 0 : this.primaryITInvestmentUII.hashCode()));
         result = ((result * 31) + ((this.rights == null) ? 0 : this.rights.hashCode()));
         result = ((result * 31) + ((this.describedBy == null) ? 0 : this.describedBy.hashCode()));
         result = ((result * 31) + ((this.modified == null) ? 0 : this.modified.hashCode()));
@@ -1037,21 +1013,13 @@ public class Dataset {
         result = ((result * 31) + ((this.accessLevel == null) ? 0 : this.accessLevel.hashCode()));
         result = ((result * 31) + ((this.programCode == null) ? 0 : this.programCode.hashCode()));
         result = ((result * 31) + ((this.landingPage == null) ? 0 : this.landingPage.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.systemOfRecords == null) ? 0 : this.systemOfRecords.hashCode()));
+        result = ((result * 31) + ((this.systemOfRecords == null) ? 0 : this.systemOfRecords.hashCode()));
         result = ((result * 31) + ((this.isPartOf == null) ? 0 : this.isPartOf.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.describedByType == null) ? 0 : this.describedByType.hashCode()));
+        result = ((result * 31) + ((this.describedByType == null) ? 0 : this.describedByType.hashCode()));
         result = ((result * 31) + ((this.license == null) ? 0 : this.license.hashCode()));
         result = ((result * 31) + ((this.dataQuality == null) ? 0 : this.dataQuality.hashCode()));
         result = ((result * 31) + ((this.publisher == null) ? 0 : this.publisher.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.accrualPeriodicity == null)
-                                ? 0
-                                : this.accrualPeriodicity.hashCode()));
+        result = ((result * 31) + ((this.accrualPeriodicity == null) ? 0 : this.accrualPeriodicity.hashCode()));
         result = ((result * 31) + ((this.conformsTo == null) ? 0 : this.conformsTo.hashCode()));
         return result;
     }
@@ -1065,260 +1033,36 @@ public class Dataset {
             return false;
         }
         Dataset rhs = ((Dataset) other);
-        return (((((((((((((((((((((((((((((((this.references == rhs.references)
-                                                                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                                                                .references
-                                                                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                                                                        .references
-                                                                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                                                                rhs.references)))
-                                                                                                                                                                                                                                                && ((this
-                                                                                                                                                                                                                                                                        .contactPoint
-                                                                                                                                                                                                                                                                == rhs.contactPoint)
-                                                                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                                                                .contactPoint
-                                                                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                                                                        .contactPoint
-                                                                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                                                                rhs.contactPoint))))
-                                                                                                                                                                                                                                        && ((this
-                                                                                                                                                                                                                                                                .description
-                                                                                                                                                                                                                                                        == rhs.description)
-                                                                                                                                                                                                                                                || ((this
-                                                                                                                                                                                                                                                                        .description
-                                                                                                                                                                                                                                                                != null)
-                                                                                                                                                                                                                                                        && this
-                                                                                                                                                                                                                                                                .description
-                                                                                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                                                                                        rhs.description))))
-                                                                                                                                                                                                                                && ((this
-                                                                                                                                                                                                                                                        .language
-                                                                                                                                                                                                                                                == rhs.language)
-                                                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                                                .language
-                                                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                                                        .language
-                                                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                                                rhs.language))))
-                                                                                                                                                                                                                        && ((this
-                                                                                                                                                                                                                                                .type
-                                                                                                                                                                                                                                        == rhs.type)
-                                                                                                                                                                                                                                || ((this
-                                                                                                                                                                                                                                                        .type
-                                                                                                                                                                                                                                                != null)
-                                                                                                                                                                                                                                        && this
-                                                                                                                                                                                                                                                .type
-                                                                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                                                                        rhs.type))))
-                                                                                                                                                                                                                && ((this
-                                                                                                                                                                                                                                        .distribution
-                                                                                                                                                                                                                                == rhs.distribution)
-                                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                                .distribution
-                                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                                        .distribution
-                                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                                rhs.distribution))))
-                                                                                                                                                                                                        && ((this
-                                                                                                                                                                                                                                .title
-                                                                                                                                                                                                                        == rhs.title)
-                                                                                                                                                                                                                || ((this
-                                                                                                                                                                                                                                        .title
-                                                                                                                                                                                                                                != null)
-                                                                                                                                                                                                                        && this
-                                                                                                                                                                                                                                .title
-                                                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                                                        rhs.title))))
-                                                                                                                                                                                                && ((this
-                                                                                                                                                                                                                        .bureauCode
-                                                                                                                                                                                                                == rhs.bureauCode)
-                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                .bureauCode
-                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                        .bureauCode
-                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                rhs.bureauCode))))
-                                                                                                                                                                                        && ((this
-                                                                                                                                                                                                                .webService
-                                                                                                                                                                                                        == rhs.webService)
-                                                                                                                                                                                                || ((this
-                                                                                                                                                                                                                        .webService
-                                                                                                                                                                                                                != null)
-                                                                                                                                                                                                        && this
-                                                                                                                                                                                                                .webService
-                                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                                        rhs.webService))))
-                                                                                                                                                                                && ((this
-                                                                                                                                                                                                        .primaryITInvestmentUII
-                                                                                                                                                                                                == rhs.primaryITInvestmentUII)
-                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                .primaryITInvestmentUII
-                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                && this
-                                                                                                                                                                                                        .primaryITInvestmentUII
-                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                rhs.primaryITInvestmentUII))))
-                                                                                                                                                                        && ((this
-                                                                                                                                                                                                .rights
-                                                                                                                                                                                        == rhs.rights)
-                                                                                                                                                                                || ((this
-                                                                                                                                                                                                        .rights
-                                                                                                                                                                                                != null)
-                                                                                                                                                                                        && this
-                                                                                                                                                                                                .rights
-                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                        rhs.rights))))
-                                                                                                                                                                && ((this
-                                                                                                                                                                                        .describedBy
-                                                                                                                                                                                == rhs.describedBy)
-                                                                                                                                                                        || ((this
-                                                                                                                                                                                                .describedBy
-                                                                                                                                                                                        != null)
-                                                                                                                                                                                && this
-                                                                                                                                                                                        .describedBy
-                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                rhs.describedBy))))
-                                                                                                                                                        && ((this
-                                                                                                                                                                                .modified
-                                                                                                                                                                        == rhs.modified)
-                                                                                                                                                                || ((this
-                                                                                                                                                                                        .modified
-                                                                                                                                                                                != null)
-                                                                                                                                                                        && this
-                                                                                                                                                                                .modified
-                                                                                                                                                                                .equals(
-                                                                                                                                                                                        rhs.modified))))
-                                                                                                                                                && ((this
-                                                                                                                                                                        .theme
-                                                                                                                                                                == rhs.theme)
-                                                                                                                                                        || ((this
-                                                                                                                                                                                .theme
-                                                                                                                                                                        != null)
-                                                                                                                                                                && this
-                                                                                                                                                                        .theme
-                                                                                                                                                                        .equals(
-                                                                                                                                                                                rhs.theme))))
-                                                                                                                                        && ((this
-                                                                                                                                                                .issued
-                                                                                                                                                        == rhs.issued)
-                                                                                                                                                || ((this
-                                                                                                                                                                        .issued
-                                                                                                                                                                != null)
-                                                                                                                                                        && this
-                                                                                                                                                                .issued
-                                                                                                                                                                .equals(
-                                                                                                                                                                        rhs.issued))))
-                                                                                                                                && ((this
-                                                                                                                                                        .keyword
-                                                                                                                                                == rhs.keyword)
-                                                                                                                                        || ((this
-                                                                                                                                                                .keyword
-                                                                                                                                                        != null)
-                                                                                                                                                && this
-                                                                                                                                                        .keyword
-                                                                                                                                                        .equals(
-                                                                                                                                                                rhs.keyword))))
-                                                                                                                        && ((this
-                                                                                                                                                .spatial
-                                                                                                                                        == rhs.spatial)
-                                                                                                                                || ((this
-                                                                                                                                                        .spatial
-                                                                                                                                                != null)
-                                                                                                                                        && this
-                                                                                                                                                .spatial
-                                                                                                                                                .equals(
-                                                                                                                                                        rhs.spatial))))
-                                                                                                                && ((this
-                                                                                                                                        .temporal
-                                                                                                                                == rhs.temporal)
-                                                                                                                        || ((this
-                                                                                                                                                .temporal
-                                                                                                                                        != null)
-                                                                                                                                && this
-                                                                                                                                        .temporal
-                                                                                                                                        .equals(
-                                                                                                                                                rhs.temporal))))
-                                                                                                        && ((this
-                                                                                                                                .identifier
-                                                                                                                        == rhs.identifier)
-                                                                                                                || ((this
-                                                                                                                                        .identifier
-                                                                                                                                != null)
-                                                                                                                        && this
-                                                                                                                                .identifier
-                                                                                                                                .equals(
-                                                                                                                                        rhs.identifier))))
-                                                                                                && ((this
-                                                                                                                        .accessLevel
-                                                                                                                == rhs.accessLevel)
-                                                                                                        || ((this
-                                                                                                                                .accessLevel
-                                                                                                                        != null)
-                                                                                                                && this
-                                                                                                                        .accessLevel
-                                                                                                                        .equals(
-                                                                                                                                rhs.accessLevel))))
-                                                                                        && ((this
-                                                                                                                .programCode
-                                                                                                        == rhs.programCode)
-                                                                                                || ((this
-                                                                                                                        .programCode
-                                                                                                                != null)
-                                                                                                        && this
-                                                                                                                .programCode
-                                                                                                                .equals(
-                                                                                                                        rhs.programCode))))
-                                                                                && ((this
-                                                                                                        .landingPage
-                                                                                                == rhs.landingPage)
-                                                                                        || ((this
-                                                                                                                .landingPage
-                                                                                                        != null)
-                                                                                                && this
-                                                                                                        .landingPage
-                                                                                                        .equals(
-                                                                                                                rhs.landingPage))))
-                                                                        && ((this.systemOfRecords
-                                                                                        == rhs.systemOfRecords)
-                                                                                || ((this
-                                                                                                        .systemOfRecords
-                                                                                                != null)
-                                                                                        && this
-                                                                                                .systemOfRecords
-                                                                                                .equals(
-                                                                                                        rhs.systemOfRecords))))
-                                                                && ((this.isPartOf == rhs.isPartOf)
-                                                                        || ((this.isPartOf != null)
-                                                                                && this.isPartOf
-                                                                                        .equals(
-                                                                                                rhs.isPartOf))))
-                                                        && ((this.describedByType
-                                                                        == rhs.describedByType)
-                                                                || ((this.describedByType != null)
-                                                                        && this.describedByType
-                                                                                .equals(
-                                                                                        rhs.describedByType))))
-                                                && ((this.license == rhs.license)
-                                                        || ((this.license != null)
-                                                                && this.license.equals(
-                                                                        rhs.license))))
-                                        && ((this.dataQuality == rhs.dataQuality)
-                                                || ((this.dataQuality != null)
-                                                        && this.dataQuality.equals(
-                                                                rhs.dataQuality))))
-                                && ((this.publisher == rhs.publisher)
-                                        || ((this.publisher != null)
-                                                && this.publisher.equals(rhs.publisher))))
-                        && ((this.accrualPeriodicity == rhs.accrualPeriodicity)
-                                || ((this.accrualPeriodicity != null)
-                                        && this.accrualPeriodicity.equals(rhs.accrualPeriodicity))))
-                && ((this.conformsTo == rhs.conformsTo)
-                        || ((this.conformsTo != null) && this.conformsTo.equals(rhs.conformsTo))));
+        return Objects.equals(this.references, rhs.references)
+                && Objects.equals(this.contactPoint, rhs.contactPoint)
+                && Objects.equals(this.description, rhs.description)
+                && Objects.equals(this.language, rhs.language)
+                && Objects.equals(this.type, rhs.type)
+                && Objects.equals(this.distribution, rhs.distribution)
+                && Objects.equals(this.title, rhs.title)
+                && Objects.equals(this.bureauCode, rhs.bureauCode)
+                && Objects.equals(this.webService, rhs.webService)
+                && Objects.equals(this.primaryITInvestmentUII, rhs.primaryITInvestmentUII)
+                && Objects.equals(this.rights, rhs.rights)
+                && Objects.equals(this.describedBy, rhs.describedBy)
+                && Objects.equals(this.modified, rhs.modified)
+                && Objects.equals(this.theme, rhs.theme)
+                && Objects.equals(this.issued, rhs.issued)
+                && Objects.equals(this.keyword, rhs.keyword)
+                && Objects.equals(this.spatial, rhs.spatial)
+                && Objects.equals(this.temporal, rhs.temporal)
+                && Objects.equals(this.identifier, rhs.identifier)
+                && Objects.equals(this.accessLevel, rhs.accessLevel)
+                && Objects.equals(this.programCode, rhs.programCode)
+                && Objects.equals(this.landingPage, rhs.landingPage)
+                && Objects.equals(this.systemOfRecords, rhs.systemOfRecords)
+                && Objects.equals(this.isPartOf, rhs.isPartOf)
+                && Objects.equals(this.describedByType, rhs.describedByType)
+                && Objects.equals(this.license, rhs.license)
+                && Objects.equals(this.dataQuality, rhs.dataQuality)
+                && Objects.equals(this.publisher, rhs.publisher)
+                && Objects.equals(this.accrualPeriodicity, rhs.accrualPeriodicity)
+                && Objects.equals(this.conformsTo, rhs.conformsTo);
     }
 
     public enum AccessLevel {
@@ -1329,8 +1073,7 @@ public class Dataset {
         @SerializedName("non-public")
         NON_PUBLIC("non-public");
         private final String value;
-        private static final Map<String, Dataset.AccessLevel> CONSTANTS =
-                new HashMap<String, Dataset.AccessLevel>();
+        private static final Map<String, Dataset.AccessLevel> CONSTANTS = new HashMap<>();
 
         static {
             for (Dataset.AccessLevel c : values()) {
@@ -1365,8 +1108,7 @@ public class Dataset {
         @SerializedName("dcat:Dataset")
         DCAT_DATASET("dcat:Dataset");
         private final String value;
-        private static final Map<String, Dataset.Type> CONSTANTS =
-                new HashMap<String, Dataset.Type>();
+        private static final Map<String, Dataset.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Dataset.Type c : values()) {

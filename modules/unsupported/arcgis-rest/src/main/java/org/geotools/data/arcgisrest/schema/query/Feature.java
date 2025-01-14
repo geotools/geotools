@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.query;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Feature {
 
@@ -74,9 +75,6 @@ public class Feature {
             return false;
         }
         Feature rhs = ((Feature) other);
-        return (((this.attributes == rhs.attributes)
-                        || ((this.attributes != null) && this.attributes.equals(rhs.attributes)))
-                && ((this.geometry == rhs.geometry)
-                        || ((this.geometry != null) && this.geometry.equals(rhs.geometry))));
+        return Objects.equals(this.attributes, rhs.attributes) && Objects.equals(this.geometry, rhs.geometry);
     }
 }

@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class XssPreventionInfo {
 
@@ -78,17 +79,9 @@ public class XssPreventionInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result =
-                ((result * 31)
-                        + ((this.xssPreventionEnabled == null)
-                                ? 0
-                                : this.xssPreventionEnabled.hashCode()));
+        result = ((result * 31) + ((this.xssPreventionEnabled == null) ? 0 : this.xssPreventionEnabled.hashCode()));
         result = ((result * 31) + ((this.xssInputRule == null) ? 0 : this.xssInputRule.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.xssPreventionRule == null)
-                                ? 0
-                                : this.xssPreventionRule.hashCode()));
+        result = ((result * 31) + ((this.xssPreventionRule == null) ? 0 : this.xssPreventionRule.hashCode()));
         return result;
     }
 
@@ -101,15 +94,8 @@ public class XssPreventionInfo {
             return false;
         }
         XssPreventionInfo rhs = ((XssPreventionInfo) other);
-        return ((((this.xssPreventionEnabled == rhs.xssPreventionEnabled)
-                                || ((this.xssPreventionEnabled != null)
-                                        && this.xssPreventionEnabled.equals(
-                                                rhs.xssPreventionEnabled)))
-                        && ((this.xssInputRule == rhs.xssInputRule)
-                                || ((this.xssInputRule != null)
-                                        && this.xssInputRule.equals(rhs.xssInputRule))))
-                && ((this.xssPreventionRule == rhs.xssPreventionRule)
-                        || ((this.xssPreventionRule != null)
-                                && this.xssPreventionRule.equals(rhs.xssPreventionRule))));
+        return Objects.equals(this.xssPreventionEnabled, rhs.xssPreventionEnabled)
+                && Objects.equals(this.xssInputRule, rhs.xssInputRule)
+                && Objects.equals(this.xssPreventionRule, rhs.xssPreventionRule);
     }
 }

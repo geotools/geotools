@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Project Open Data Catalog
  *
- * <p>Validates an entire collection of Project Open Data metadata JSON objects. Agencies produce
- * said collections in the form of Data.json files.
+ * <p>Validates an entire collection of Project Open Data metadata JSON objects. Agencies produce said collections in
+ * the form of Data.json files.
  */
 public class Catalog {
 
@@ -27,8 +28,7 @@ public class Catalog {
     /**
      * Metadata Catalog ID
      *
-     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
-     * data.json file itself.
+     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the data.json file itself.
      */
     @SerializedName("@id")
     @Expose
@@ -60,7 +60,7 @@ public class Catalog {
     /** (Required) */
     @SerializedName("dataset")
     @Expose
-    private List<Dataset> dataset = new ArrayList<Dataset>();
+    private List<Dataset> dataset = new ArrayList<>();
 
     /**
      * Metadata Context
@@ -83,8 +83,7 @@ public class Catalog {
     /**
      * Metadata Catalog ID
      *
-     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
-     * data.json file itself.
+     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the data.json file itself.
      */
     public URI getId() {
         return id;
@@ -93,8 +92,7 @@ public class Catalog {
     /**
      * Metadata Catalog ID
      *
-     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
-     * data.json file itself.
+     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the data.json file itself.
      */
     public void setId(URI id) {
         this.id = id;
@@ -224,32 +222,19 @@ public class Catalog {
             return false;
         }
         Catalog rhs = ((Catalog) other);
-        return (((((((this.context == rhs.context)
-                                                        || ((this.context != null)
-                                                                && this.context.equals(
-                                                                        rhs.context)))
-                                                && ((this.describedBy == rhs.describedBy)
-                                                        || ((this.describedBy != null)
-                                                                && this.describedBy.equals(
-                                                                        rhs.describedBy))))
-                                        && ((this.id == rhs.id)
-                                                || ((this.id != null) && this.id.equals(rhs.id))))
-                                && ((this.conformsTo == rhs.conformsTo)
-                                        || ((this.conformsTo != null)
-                                                && this.conformsTo.equals(rhs.conformsTo))))
-                        && ((this.type == rhs.type)
-                                || ((this.type != null) && this.type.equals(rhs.type))))
-                && ((this.dataset == rhs.dataset)
-                        || ((this.dataset != null) && this.dataset.equals(rhs.dataset))));
+        return Objects.equals(this.context, rhs.context)
+                && Objects.equals(this.describedBy, rhs.describedBy)
+                && Objects.equals(this.id, rhs.id)
+                && Objects.equals(this.conformsTo, rhs.conformsTo)
+                && Objects.equals(this.type, rhs.type)
+                && Objects.equals(this.dataset, rhs.dataset);
     }
 
     public enum ConformsTo {
         @SerializedName("https://project-open-data.cio.gov/v1.1/schema")
-        HTTPS_PROJECT_OPEN_DATA_CIO_GOV_V_1_1_SCHEMA(
-                "https://project-open-data.cio.gov/v1.1/schema");
+        HTTPS_PROJECT_OPEN_DATA_CIO_GOV_V_1_1_SCHEMA("https://project-open-data.cio.gov/v1.1/schema");
         private final String value;
-        private static final Map<String, Catalog.ConformsTo> CONSTANTS =
-                new HashMap<String, Catalog.ConformsTo>();
+        private static final Map<String, Catalog.ConformsTo> CONSTANTS = new HashMap<>();
 
         static {
             for (Catalog.ConformsTo c : values()) {
@@ -284,8 +269,7 @@ public class Catalog {
         @SerializedName("dcat:Catalog")
         DCAT_CATALOG("dcat:Catalog");
         private final String value;
-        private static final Map<String, Catalog.Type> CONSTANTS =
-                new HashMap<String, Catalog.Type>();
+        private static final Map<String, Catalog.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Catalog.Type c : values()) {

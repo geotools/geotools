@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Services {
 
@@ -14,7 +15,7 @@ public class Services {
     /** (Required) */
     @SerializedName("services")
     @Expose
-    private List<Service> services = new ArrayList<Service>();
+    private List<Service> services = new ArrayList<>();
 
     /** (Required) */
     public Double getCurrentVersion() {
@@ -62,9 +63,7 @@ public class Services {
     @Override
     public int hashCode() {
         int result = 1;
-        result =
-                ((result * 31)
-                        + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
+        result = ((result * 31) + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
         result = ((result * 31) + ((this.services == null) ? 0 : this.services.hashCode()));
         return result;
     }
@@ -78,10 +77,6 @@ public class Services {
             return false;
         }
         Services rhs = ((Services) other);
-        return (((this.currentVersion == rhs.currentVersion)
-                        || ((this.currentVersion != null)
-                                && this.currentVersion.equals(rhs.currentVersion)))
-                && ((this.services == rhs.services)
-                        || ((this.services != null) && this.services.equals(rhs.services))));
+        return Objects.equals(this.currentVersion, rhs.currentVersion) && Objects.equals(this.services, rhs.services);
     }
 }

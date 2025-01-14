@@ -31,7 +31,6 @@ public class Geometry {
         if ((other instanceof Geometry) == false) {
             return false;
         }
-        Geometry rhs = ((Geometry) other);
         return true;
     }
 }

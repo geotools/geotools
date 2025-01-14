@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class EditingInfo {
 
@@ -55,7 +56,6 @@ public class EditingInfo {
             return false;
         }
         EditingInfo rhs = ((EditingInfo) other);
-        return ((this.lastEditDate == rhs.lastEditDate)
-                || ((this.lastEditDate != null) && this.lastEditDate.equals(rhs.lastEditDate)));
+        return Objects.equals(this.lastEditDate, rhs.lastEditDate);
     }
 }

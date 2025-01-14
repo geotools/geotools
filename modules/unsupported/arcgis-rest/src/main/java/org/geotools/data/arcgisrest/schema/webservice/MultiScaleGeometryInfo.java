@@ -4,13 +4,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MultiScaleGeometryInfo {
 
     /** (Required) */
     @SerializedName("levels")
     @Expose
-    private List<Integer> levels = new ArrayList<Integer>();
+    private List<Integer> levels = new ArrayList<>();
 
     /** (Required) */
     public List<Integer> getLevels() {
@@ -57,7 +58,6 @@ public class MultiScaleGeometryInfo {
             return false;
         }
         MultiScaleGeometryInfo rhs = ((MultiScaleGeometryInfo) other);
-        return ((this.levels == rhs.levels)
-                || ((this.levels != null) && this.levels.equals(rhs.levels)));
+        return Objects.equals(this.levels, rhs.levels);
     }
 }

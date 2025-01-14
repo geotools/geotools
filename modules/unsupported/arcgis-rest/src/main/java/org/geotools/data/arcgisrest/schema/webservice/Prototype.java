@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Prototype {
 
@@ -55,7 +56,6 @@ public class Prototype {
             return false;
         }
         Prototype rhs = ((Prototype) other);
-        return ((this.attributes == rhs.attributes)
-                || ((this.attributes != null) && this.attributes.equals(rhs.attributes)));
+        return Objects.equals(this.attributes, rhs.attributes);
     }
 }

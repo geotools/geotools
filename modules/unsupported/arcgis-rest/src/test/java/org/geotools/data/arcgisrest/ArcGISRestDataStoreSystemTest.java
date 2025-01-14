@@ -16,7 +16,9 @@
  */
 package org.geotools.data.arcgisrest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,7 +41,7 @@ public class ArcGISRestDataStoreSystemTest {
     /** Helper method to create a default data store on ArcGIS Server */
     public static DataStore createDefaultOpenDataTestDataStore(String url) throws IOException {
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put(ArcGISRestDataStoreFactory.NAMESPACE_PARAM.key, "http://aurin.org.au");
         params.put(ArcGISRestDataStoreFactory.URL_PARAM.key, url);
         params.put(ArcGISRestDataStoreFactory.ISOPENDATA_PARAM.key, true);
@@ -52,36 +54,20 @@ public class ArcGISRestDataStoreSystemTest {
     public void testCityOfDarwin() throws Exception {
 
         ArcGISRestDataStore dataStore =
-                (ArcGISRestDataStore)
-                        ArcGISRestDataStoreSystemTest.createDefaultOpenDataTestDataStore(
-                                "http://open-darwin.opendata.arcgis.com/data.json");
+                (ArcGISRestDataStore) ArcGISRestDataStoreSystemTest.createDefaultOpenDataTestDataStore(
+                        "http://open-darwin.opendata.arcgis.com/data.json");
         List<Name> names = dataStore.createTypeNames();
 
         assertTrue(names.size() > 30);
-        names.forEach(
-                (n) -> {
-                    System.out.println(n.getURI());
-                });
 
         String[] namesArray = ((DataStore) dataStore).getTypeNames();
-        for (int i = 0; i < namesArray.length; i++) {
-            System.out.println(String.format("%d of %d %s", i, namesArray.length, namesArray[i]));
-            FeatureSource<SimpleFeatureType, SimpleFeature> src =
-                    dataStore.createFeatureSource(
-                            dataStore.getEntry(
-                                    new NameImpl(
-                                            ArcGISRestDataStoreFactoryTest.NAMESPACE,
-                                            namesArray[i])));
+        for (String name : namesArray) {
+            FeatureSource<SimpleFeatureType, SimpleFeature> src = dataStore.createFeatureSource(
+                    dataStore.getEntry(new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, name)));
             assertNotNull(src.getSchema());
             assertNotNull(src.getSchema().getTypeName());
             assertNotNull(src.getBounds());
             assertNotNull(src.getFeatures());
-            System.out.println(
-                    String.format(
-                            "      %d %s %s",
-                            src.getFeatures().size(),
-                            src.getSchema().getTypeName(),
-                            src.getBounds()));
         }
     }
 
@@ -89,32 +75,20 @@ public class ArcGISRestDataStoreSystemTest {
     public void testBBOXQueryWithGeoCRS() throws Exception {
 
         ArcGISRestDataStore dataStore =
-                (ArcGISRestDataStore)
-                        ArcGISRestDataStoreSystemTest.createDefaultOpenDataTestDataStore(
-                                "https://data-planvic.opendata.arcgis.com/data.json");
+                (ArcGISRestDataStore) ArcGISRestDataStoreSystemTest.createDefaultOpenDataTestDataStore(
+                        "https://data-planvic.opendata.arcgis.com/data.json");
         List<Name> names = dataStore.createTypeNames();
 
         assertEquals(4, names.size());
-        names.forEach(
-                (n) -> {
-                    System.out.println(n.getURI());
-                });
 
         String[] namesArray = ((DataStore) dataStore).getTypeNames();
-        FeatureSource<SimpleFeatureType, SimpleFeature> src =
-                dataStore.createFeatureSource(
-                        dataStore.getEntry(
-                                new NameImpl(
-                                        ArcGISRestDataStoreFactoryTest.NAMESPACE, namesArray[0])));
+        FeatureSource<SimpleFeatureType, SimpleFeature> src = dataStore.createFeatureSource(
+                dataStore.getEntry(new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, namesArray[0])));
         assertNotNull(src.getSchema());
         assertNotNull(src.getSchema().getTypeName());
         assertNotNull(src.getBounds());
         Filter filter = CQL.toFilter("BBOX(the_geom, 144, -38, 145, -37, 'EPSG:4283')");
         src.getFeatures(new Query(src.getName().getLocalPart(), filter));
         assertNotNull(src.getFeatures());
-        System.out.println(
-                String.format(
-                        "      %d %s %s",
-                        src.getFeatures().size(), src.getSchema().getTypeName(), src.getBounds()));
     }
 }

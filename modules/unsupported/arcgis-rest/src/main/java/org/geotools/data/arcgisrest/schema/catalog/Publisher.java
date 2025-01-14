@@ -140,8 +140,7 @@ public class Publisher {
         @SerializedName("org:Organization")
         ORG_ORGANIZATION("org:Organization");
         private final String value;
-        private static final Map<String, Publisher.Type> CONSTANTS =
-                new HashMap<String, Publisher.Type>();
+        private static final Map<String, Publisher.Type> CONSTANTS = new HashMap<>();
 
         static {
             for (Publisher.Type c : values()) {

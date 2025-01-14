@@ -2,6 +2,7 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Objects;
 
 public class Template {
 
@@ -112,14 +113,9 @@ public class Template {
             return false;
         }
         Template rhs = ((Template) other);
-        return (((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
-                                && ((this.description == rhs.description)
-                                        || ((this.description != null)
-                                                && this.description.equals(rhs.description))))
-                        && ((this.drawingTool == rhs.drawingTool)
-                                || ((this.drawingTool != null)
-                                        && this.drawingTool.equals(rhs.drawingTool))))
-                && ((this.prototype == rhs.prototype)
-                        || ((this.prototype != null) && this.prototype.equals(rhs.prototype))));
+        return Objects.equals(this.name, rhs.name)
+                && Objects.equals(this.description, rhs.description)
+                && Objects.equals(this.drawingTool, rhs.drawingTool)
+                && Objects.equals(this.prototype, rhs.prototype);
     }
 }

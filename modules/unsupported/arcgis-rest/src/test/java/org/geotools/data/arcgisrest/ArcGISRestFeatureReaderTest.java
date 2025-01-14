@@ -16,7 +16,9 @@
  */
 package org.geotools.data.arcgisrest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -55,20 +57,15 @@ public class ArcGISRestFeatureReaderTest {
     @Test(expected = IOException.class)
     public void emptyInputStreamHasNext() throws Exception {
 
-        this.reader =
-                new ArcGISRestFeatureReader(
-                        this.fType, new ByteArrayInputStream("".getBytes()), this.LOGGER);
+        this.reader = new ArcGISRestFeatureReader(this.fType, new ByteArrayInputStream("".getBytes()), this.LOGGER);
         assertFalse(this.reader.hasNext());
     }
 
     @Test
     public void noFeaturesHasNext() throws Exception {
 
-        this.json =
-                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
-        this.reader =
-                new ArcGISRestFeatureReader(
-                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json = ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
+        this.reader = new ArcGISRestFeatureReader(this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         assertFalse(this.reader.hasNext());
     }
@@ -76,12 +73,9 @@ public class ArcGISRestFeatureReaderTest {
     @Test(expected = NoSuchElementException.class)
     public void noFeaturesNext() throws Exception {
 
-        this.json =
-                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
-        this.reader =
-                this.reader =
-                        new ArcGISRestFeatureReader(
-                                this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json = ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
+        this.reader = this.reader =
+                new ArcGISRestFeatureReader(this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         this.reader.next();
     }
@@ -89,11 +83,8 @@ public class ArcGISRestFeatureReaderTest {
     @Test
     public void noProperties() throws Exception {
 
-        this.json =
-                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noProperties.geo.json");
-        this.reader =
-                new ArcGISRestFeatureReader(
-                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json = ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noProperties.geo.json");
+        this.reader = new ArcGISRestFeatureReader(this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         assertTrue(this.reader.hasNext());
         SimpleFeature feat = this.reader.next();
@@ -108,11 +99,8 @@ public class ArcGISRestFeatureReaderTest {
     @Test
     public void properties() throws Exception {
 
-        this.json =
-                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/properties.geo.json");
-        this.reader =
-                new ArcGISRestFeatureReader(
-                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json = ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/properties.geo.json");
+        this.reader = new ArcGISRestFeatureReader(this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         assertTrue(this.reader.hasNext());
         SimpleFeature feat = this.reader.next();

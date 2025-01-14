@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Featureserver {
 
@@ -98,11 +99,11 @@ public class Featureserver {
     /** (Required) */
     @SerializedName("layers")
     @Expose
-    private List<Layer> layers = new ArrayList<Layer>();
+    private List<Layer> layers = new ArrayList<>();
     /** (Required) */
     @SerializedName("tables")
     @Expose
-    private List<Object> tables = new ArrayList<Object>();
+    private List<Object> tables = new ArrayList<>();
 
     /** (Required) */
     public Double getCurrentVersion() {
@@ -369,10 +370,7 @@ public class Featureserver {
         sb.append(',');
         sb.append("supportsDisconnectedEditing");
         sb.append('=');
-        sb.append(
-                ((this.supportsDisconnectedEditing == null)
-                        ? "<null>"
-                        : this.supportsDisconnectedEditing));
+        sb.append(((this.supportsDisconnectedEditing == null) ? "<null>" : this.supportsDisconnectedEditing));
         sb.append(',');
         sb.append("hasStaticData");
         sb.append('=');
@@ -432,10 +430,7 @@ public class Featureserver {
         sb.append(',');
         sb.append("supportsApplyEditsWithGlobalIds");
         sb.append('=');
-        sb.append(
-                ((this.supportsApplyEditsWithGlobalIds == null)
-                        ? "<null>"
-                        : this.supportsApplyEditsWithGlobalIds));
+        sb.append(((this.supportsApplyEditsWithGlobalIds == null) ? "<null>" : this.supportsApplyEditsWithGlobalIds));
         sb.append(',');
         sb.append("editorTrackingInfo");
         sb.append('=');
@@ -464,76 +459,34 @@ public class Featureserver {
     @Override
     public int hashCode() {
         int result = 1;
-        result =
-                ((result * 31)
-                        + ((this.allowGeometryUpdates == null)
-                                ? 0
-                                : this.allowGeometryUpdates.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.supportsApplyEditsWithGlobalIds == null)
-                                ? 0
-                                : this.supportsApplyEditsWithGlobalIds.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.maxRecordCount == null) ? 0 : this.maxRecordCount.hashCode()));
+        result = ((result * 31) + ((this.allowGeometryUpdates == null) ? 0 : this.allowGeometryUpdates.hashCode()));
+        result = ((result * 31)
+                + ((this.supportsApplyEditsWithGlobalIds == null)
+                        ? 0
+                        : this.supportsApplyEditsWithGlobalIds.hashCode()));
+        result = ((result * 31) + ((this.maxRecordCount == null) ? 0 : this.maxRecordCount.hashCode()));
         result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
         result = ((result * 31) + ((this.units == null) ? 0 : this.units.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.hasStaticData == null) ? 0 : this.hasStaticData.hashCode()));
+        result = ((result * 31) + ((this.hasStaticData == null) ? 0 : this.hasStaticData.hashCode()));
         result = ((result * 31) + ((this.syncEnabled == null) ? 0 : this.syncEnabled.hashCode()));
         result = ((result * 31) + ((this.tables == null) ? 0 : this.tables.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.hasVersionedData == null) ? 0 : this.hasVersionedData.hashCode()));
+        result = ((result * 31) + ((this.hasVersionedData == null) ? 0 : this.hasVersionedData.hashCode()));
         result = ((result * 31) + ((this.layers == null) ? 0 : this.layers.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.serviceItemId == null) ? 0 : this.serviceItemId.hashCode()));
+        result = ((result * 31) + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
+        result = ((result * 31) + ((this.serviceItemId == null) ? 0 : this.serviceItemId.hashCode()));
         result = ((result * 31) + ((this.fullExtent == null) ? 0 : this.fullExtent.hashCode()));
         result = ((result * 31) + ((this.capabilities == null) ? 0 : this.capabilities.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.xssPreventionInfo == null)
-                                ? 0
-                                : this.xssPreventionInfo.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.syncCapabilities == null) ? 0 : this.syncCapabilities.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.supportsDisconnectedEditing == null)
-                                ? 0
-                                : this.supportsDisconnectedEditing.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.supportedQueryFormats == null)
-                                ? 0
-                                : this.supportedQueryFormats.hashCode()));
+        result = ((result * 31) + ((this.xssPreventionInfo == null) ? 0 : this.xssPreventionInfo.hashCode()));
+        result = ((result * 31) + ((this.syncCapabilities == null) ? 0 : this.syncCapabilities.hashCode()));
+        result = ((result * 31)
+                + ((this.supportsDisconnectedEditing == null) ? 0 : this.supportsDisconnectedEditing.hashCode()));
+        result = ((result * 31) + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
+        result = ((result * 31) + ((this.supportedQueryFormats == null) ? 0 : this.supportedQueryFormats.hashCode()));
         result = ((result * 31) + ((this.size == null) ? 0 : this.size.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.initialExtent == null) ? 0 : this.initialExtent.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.serviceDescription == null)
-                                ? 0
-                                : this.serviceDescription.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.editorTrackingInfo == null)
-                                ? 0
-                                : this.editorTrackingInfo.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.copyrightText == null) ? 0 : this.copyrightText.hashCode()));
+        result = ((result * 31) + ((this.initialExtent == null) ? 0 : this.initialExtent.hashCode()));
+        result = ((result * 31) + ((this.serviceDescription == null) ? 0 : this.serviceDescription.hashCode()));
+        result = ((result * 31) + ((this.editorTrackingInfo == null) ? 0 : this.editorTrackingInfo.hashCode()));
+        result = ((result * 31) + ((this.copyrightText == null) ? 0 : this.copyrightText.hashCode()));
         return result;
     }
 
@@ -546,206 +499,29 @@ public class Featureserver {
             return false;
         }
         Featureserver rhs = ((Featureserver) other);
-        return (((((((((((((((((((((((((this.allowGeometryUpdates == rhs.allowGeometryUpdates)
-                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                .allowGeometryUpdates
-                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                        .allowGeometryUpdates
-                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                rhs.allowGeometryUpdates)))
-                                                                                                                                                                                                && ((this
-                                                                                                                                                                                                                        .supportsApplyEditsWithGlobalIds
-                                                                                                                                                                                                                == rhs.supportsApplyEditsWithGlobalIds)
-                                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                                .supportsApplyEditsWithGlobalIds
-                                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                                && this
-                                                                                                                                                                                                                        .supportsApplyEditsWithGlobalIds
-                                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                                rhs.supportsApplyEditsWithGlobalIds))))
-                                                                                                                                                                                        && ((this
-                                                                                                                                                                                                                .maxRecordCount
-                                                                                                                                                                                                        == rhs.maxRecordCount)
-                                                                                                                                                                                                || ((this
-                                                                                                                                                                                                                        .maxRecordCount
-                                                                                                                                                                                                                != null)
-                                                                                                                                                                                                        && this
-                                                                                                                                                                                                                .maxRecordCount
-                                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                                        rhs.maxRecordCount))))
-                                                                                                                                                                                && ((this
-                                                                                                                                                                                                        .description
-                                                                                                                                                                                                == rhs.description)
-                                                                                                                                                                                        || ((this
-                                                                                                                                                                                                                .description
-                                                                                                                                                                                                        != null)
-                                                                                                                                                                                                && this
-                                                                                                                                                                                                        .description
-                                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                                rhs.description))))
-                                                                                                                                                                        && ((this
-                                                                                                                                                                                                .units
-                                                                                                                                                                                        == rhs.units)
-                                                                                                                                                                                || ((this
-                                                                                                                                                                                                        .units
-                                                                                                                                                                                                != null)
-                                                                                                                                                                                        && this
-                                                                                                                                                                                                .units
-                                                                                                                                                                                                .equals(
-                                                                                                                                                                                                        rhs.units))))
-                                                                                                                                                                && ((this
-                                                                                                                                                                                        .hasStaticData
-                                                                                                                                                                                == rhs.hasStaticData)
-                                                                                                                                                                        || ((this
-                                                                                                                                                                                                .hasStaticData
-                                                                                                                                                                                        != null)
-                                                                                                                                                                                && this
-                                                                                                                                                                                        .hasStaticData
-                                                                                                                                                                                        .equals(
-                                                                                                                                                                                                rhs.hasStaticData))))
-                                                                                                                                                        && ((this
-                                                                                                                                                                                .syncEnabled
-                                                                                                                                                                        == rhs.syncEnabled)
-                                                                                                                                                                || ((this
-                                                                                                                                                                                        .syncEnabled
-                                                                                                                                                                                != null)
-                                                                                                                                                                        && this
-                                                                                                                                                                                .syncEnabled
-                                                                                                                                                                                .equals(
-                                                                                                                                                                                        rhs.syncEnabled))))
-                                                                                                                                                && ((this
-                                                                                                                                                                        .tables
-                                                                                                                                                                == rhs.tables)
-                                                                                                                                                        || ((this
-                                                                                                                                                                                .tables
-                                                                                                                                                                        != null)
-                                                                                                                                                                && this
-                                                                                                                                                                        .tables
-                                                                                                                                                                        .equals(
-                                                                                                                                                                                rhs.tables))))
-                                                                                                                                        && ((this
-                                                                                                                                                                .hasVersionedData
-                                                                                                                                                        == rhs.hasVersionedData)
-                                                                                                                                                || ((this
-                                                                                                                                                                        .hasVersionedData
-                                                                                                                                                                != null)
-                                                                                                                                                        && this
-                                                                                                                                                                .hasVersionedData
-                                                                                                                                                                .equals(
-                                                                                                                                                                        rhs.hasVersionedData))))
-                                                                                                                                && ((this
-                                                                                                                                                        .layers
-                                                                                                                                                == rhs.layers)
-                                                                                                                                        || ((this
-                                                                                                                                                                .layers
-                                                                                                                                                        != null)
-                                                                                                                                                && this
-                                                                                                                                                        .layers
-                                                                                                                                                        .equals(
-                                                                                                                                                                rhs.layers))))
-                                                                                                                        && ((this
-                                                                                                                                                .spatialReference
-                                                                                                                                        == rhs.spatialReference)
-                                                                                                                                || ((this
-                                                                                                                                                        .spatialReference
-                                                                                                                                                != null)
-                                                                                                                                        && this
-                                                                                                                                                .spatialReference
-                                                                                                                                                .equals(
-                                                                                                                                                        rhs.spatialReference))))
-                                                                                                                && ((this
-                                                                                                                                        .serviceItemId
-                                                                                                                                == rhs.serviceItemId)
-                                                                                                                        || ((this
-                                                                                                                                                .serviceItemId
-                                                                                                                                        != null)
-                                                                                                                                && this
-                                                                                                                                        .serviceItemId
-                                                                                                                                        .equals(
-                                                                                                                                                rhs.serviceItemId))))
-                                                                                                        && ((this
-                                                                                                                                .fullExtent
-                                                                                                                        == rhs.fullExtent)
-                                                                                                                || ((this
-                                                                                                                                        .fullExtent
-                                                                                                                                != null)
-                                                                                                                        && this
-                                                                                                                                .fullExtent
-                                                                                                                                .equals(
-                                                                                                                                        rhs.fullExtent))))
-                                                                                                && ((this
-                                                                                                                        .capabilities
-                                                                                                                == rhs.capabilities)
-                                                                                                        || ((this
-                                                                                                                                .capabilities
-                                                                                                                        != null)
-                                                                                                                && this
-                                                                                                                        .capabilities
-                                                                                                                        .equals(
-                                                                                                                                rhs.capabilities))))
-                                                                                        && ((this
-                                                                                                                .xssPreventionInfo
-                                                                                                        == rhs.xssPreventionInfo)
-                                                                                                || ((this
-                                                                                                                        .xssPreventionInfo
-                                                                                                                != null)
-                                                                                                        && this
-                                                                                                                .xssPreventionInfo
-                                                                                                                .equals(
-                                                                                                                        rhs.xssPreventionInfo))))
-                                                                                && ((this
-                                                                                                        .syncCapabilities
-                                                                                                == rhs.syncCapabilities)
-                                                                                        || ((this
-                                                                                                                .syncCapabilities
-                                                                                                        != null)
-                                                                                                && this
-                                                                                                        .syncCapabilities
-                                                                                                        .equals(
-                                                                                                                rhs.syncCapabilities))))
-                                                                        && ((this
-                                                                                                .supportsDisconnectedEditing
-                                                                                        == rhs.supportsDisconnectedEditing)
-                                                                                || ((this
-                                                                                                        .supportsDisconnectedEditing
-                                                                                                != null)
-                                                                                        && this
-                                                                                                .supportsDisconnectedEditing
-                                                                                                .equals(
-                                                                                                        rhs.supportsDisconnectedEditing))))
-                                                                && ((this.currentVersion
-                                                                                == rhs.currentVersion)
-                                                                        || ((this.currentVersion
-                                                                                        != null)
-                                                                                && this
-                                                                                        .currentVersion
-                                                                                        .equals(
-                                                                                                rhs.currentVersion))))
-                                                        && ((this.supportedQueryFormats
-                                                                        == rhs.supportedQueryFormats)
-                                                                || ((this.supportedQueryFormats
-                                                                                != null)
-                                                                        && this
-                                                                                .supportedQueryFormats
-                                                                                .equals(
-                                                                                        rhs.supportedQueryFormats))))
-                                                && ((this.size == rhs.size)
-                                                        || ((this.size != null)
-                                                                && this.size.equals(rhs.size))))
-                                        && ((this.initialExtent == rhs.initialExtent)
-                                                || ((this.initialExtent != null)
-                                                        && this.initialExtent.equals(
-                                                                rhs.initialExtent))))
-                                && ((this.serviceDescription == rhs.serviceDescription)
-                                        || ((this.serviceDescription != null)
-                                                && this.serviceDescription.equals(
-                                                        rhs.serviceDescription))))
-                        && ((this.editorTrackingInfo == rhs.editorTrackingInfo)
-                                || ((this.editorTrackingInfo != null)
-                                        && this.editorTrackingInfo.equals(rhs.editorTrackingInfo))))
-                && ((this.copyrightText == rhs.copyrightText)
-                        || ((this.copyrightText != null)
-                                && this.copyrightText.equals(rhs.copyrightText))));
+        return Objects.equals(this.allowGeometryUpdates, rhs.allowGeometryUpdates)
+                && Objects.equals(this.supportsApplyEditsWithGlobalIds, rhs.supportsApplyEditsWithGlobalIds)
+                && Objects.equals(this.maxRecordCount, rhs.maxRecordCount)
+                && Objects.equals(this.description, rhs.description)
+                && Objects.equals(this.units, rhs.units)
+                && Objects.equals(this.hasStaticData, rhs.hasStaticData)
+                && Objects.equals(this.syncEnabled, rhs.syncEnabled)
+                && Objects.equals(this.tables, rhs.tables)
+                && Objects.equals(this.hasVersionedData, rhs.hasVersionedData)
+                && Objects.equals(this.layers, rhs.layers)
+                && Objects.equals(this.serviceDescription, rhs.serviceDescription)
+                && Objects.equals(this.serviceItemId, rhs.serviceItemId)
+                && Objects.equals(this.fullExtent, rhs.fullExtent)
+                && Objects.equals(this.capabilities, rhs.capabilities)
+                && Objects.equals(this.xssPreventionInfo, rhs.xssPreventionInfo)
+                && Objects.equals(this.syncCapabilities, rhs.syncCapabilities)
+                && Objects.equals(this.supportsDisconnectedEditing, rhs.supportsDisconnectedEditing)
+                && Objects.equals(this.currentVersion, rhs.currentVersion)
+                && Objects.equals(this.supportedQueryFormats, rhs.supportedQueryFormats)
+                && Objects.equals(this.size, rhs.size)
+                && Objects.equals(this.initialExtent, rhs.initialExtent)
+                && Objects.equals(this.serviceDescription, rhs.serviceDescription)
+                && Objects.equals(this.editorTrackingInfo, rhs.editorTrackingInfo)
+                && Objects.equals(this.copyrightText, rhs.copyrightText);
     }
 }

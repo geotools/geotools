@@ -25,11 +25,14 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.List;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.message.BasicHttpResponse;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -52,7 +55,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @Ignore
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({HttpMethod.class, ArcGISRestDataStore.class})
+@PrepareForTest({HttpRequestBase.class, ArcGISRestDataStore.class})
 public class ArcGISRestDataStoreTest {
 
     public static String TYPENAME1 = "LGAProfiles2014Beta";
@@ -65,30 +68,33 @@ public class ArcGISRestDataStoreTest {
     private ArcGISRestDataStore dataStore;
 
     private HttpClient clientMock;
-    private GetMethod getMock;
-    private PostMethod postMock;
+    private HttpGet getMock;
+    private HttpPost postMock;
+    private CloseableHttpResponse responseMock;
 
     @Before
     public void setUp() throws Exception {
         this.clientMock = PowerMockito.mock(HttpClient.class);
-        this.getMock = PowerMockito.mock(GetMethod.class);
-        this.postMock = PowerMockito.mock(PostMethod.class);
+        this.getMock = PowerMockito.mock(HttpGet.class);
+        this.postMock = PowerMockito.mock(HttpPost.class);
+        this.responseMock = PowerMockito.mock(CloseableHttpResponse.class);
     }
 
     @After
     public void tearDown() throws Exception {
         this.clientMock = PowerMockito.mock(HttpClient.class);
-        this.getMock = PowerMockito.mock(GetMethod.class);
-        this.postMock = PowerMockito.mock(PostMethod.class);
+        this.getMock = PowerMockito.mock(HttpGet.class);
+        this.postMock = PowerMockito.mock(HttpPost.class);
+        this.responseMock = PowerMockito.mock(CloseableHttpResponse.class);
     }
 
     @Test
     public void testHTTPError() throws Exception {
 
         PowerMockito.whenNew(HttpClient.class).withNoArguments().thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class).withNoArguments().thenReturn(getMock);
-        when(clientMock.executeMethod(getMock)).thenReturn(HttpStatus.SC_NOT_FOUND);
-
+        PowerMockito.whenNew(HttpGet.class).withNoArguments().thenReturn(getMock);
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_NOT_FOUND, "Not Found"));
         try {
             this.dataStore = (ArcGISRestDataStore) ArcGISRestDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
             this.dataStore.createTypeNames();
@@ -99,17 +105,19 @@ public class ArcGISRestDataStoreTest {
 
     @Test
     public void testServiceError() throws Exception {
-
         PowerMockito.whenNew(HttpClient.class)
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock)).thenReturn(HttpStatus.SC_OK).thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
+                //                getMock.getResponseBodyAsStream())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"));
 
@@ -134,7 +142,7 @@ public class ArcGISRestDataStoreTest {
                 .thenReturn(clientMock)
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock)
@@ -143,15 +151,15 @@ public class ArcGISRestDataStoreTest {
                 .thenReturn(getMock)
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_BAD_REQUEST)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_BAD_REQUEST, "Bad Request"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/wsServiceInDistribution.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"))
@@ -185,12 +193,13 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock)).thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/unsupportedCatalog.json"));
 
         this.dataStore = (ArcGISRestDataStore) ArcGISRestDataStoreFactoryTest.createDefaultArcGISServerTestDataStore();
@@ -203,12 +212,14 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock)).thenReturn(HttpStatus.SC_OK).thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"));
 
@@ -229,15 +240,15 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/FeatureServerAirport.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/airport2Dataset.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/airport3Dataset.json"));
@@ -260,15 +271,15 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"));
@@ -301,9 +312,10 @@ public class ArcGISRestDataStoreTest {
         this.clientMock = PowerMockito.mock(HttpClient.class);
         PowerMockito.whenNew(HttpClient.class).withNoArguments().thenReturn(this.clientMock);
 
-        PowerMockito.whenNew(PostMethod.class).withNoArguments().thenReturn(this.postMock);
-        when(this.clientMock.executeMethod(postMock)).thenReturn(HttpStatus.SC_OK);
-        when(this.postMock.getResponseBodyAsStream())
+        PowerMockito.whenNew(HttpPost.class).withNoArguments().thenReturn(this.postMock);
+        when(this.clientMock.execute(postMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/count.json"));
 
         assertEquals(79, src.getCount(new Query()));
@@ -316,15 +328,15 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaDataset.json"));
@@ -340,19 +352,21 @@ public class ArcGISRestDataStoreTest {
         this.clientMock = PowerMockito.mock(HttpClient.class);
         PowerMockito.whenNew(HttpClient.class).withNoArguments().thenReturn(this.clientMock);
 
-        PowerMockito.whenNew(PostMethod.class).withNoArguments().thenReturn(this.postMock);
-        when(this.clientMock.executeMethod(postMock)).thenReturn(HttpStatus.SC_OK);
-        when(this.postMock.getResponseBodyAsStream())
+        PowerMockito.whenNew(HttpPost.class).withNoArguments().thenReturn(this.postMock);
+        when(this.clientMock.execute(postMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/lgaFeatures.geo.json"));
 
         FeatureCollection<SimpleFeatureType, SimpleFeature> fc = src.getFeatures(new Query());
-        try (FeatureIterator iter = fc.features()) {
+        try (FeatureIterator<SimpleFeature> iter = fc.features()) {
 
             assertEquals(CRS.decode("EPSG:3857"), fc.getSchema().getCoordinateReferenceSystem());
             assertTrue(iter.hasNext());
-            SimpleFeature sf = (SimpleFeature) iter.next();
+            SimpleFeature sf = iter.next();
+            assertNotNull(sf);
             assertTrue(iter.hasNext());
-            sf = (SimpleFeature) iter.next();
+            sf = iter.next();
             assertEquals(
                     "POINT (16421261.466298774 -4592239.022226746)",
                     ((Geometry) (sf.getAttribute("geometry"))).getCentroid().toString());
@@ -369,15 +383,15 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/catalog.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/bicycleDataset.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/bicycleDataset.json"));
@@ -392,20 +406,21 @@ public class ArcGISRestDataStoreTest {
         this.clientMock = PowerMockito.mock(HttpClient.class);
         PowerMockito.whenNew(HttpClient.class).withNoArguments().thenReturn(this.clientMock);
 
-        PowerMockito.whenNew(PostMethod.class).withNoArguments().thenReturn(this.postMock);
-        when(this.clientMock.executeMethod(postMock)).thenReturn(HttpStatus.SC_OK);
-        when(this.postMock.getResponseBodyAsStream())
+        PowerMockito.whenNew(HttpPost.class).withNoArguments().thenReturn(this.postMock);
+        when(this.clientMock.execute(postMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/bicycleFeatures.geo.json"));
 
         FeatureCollection<SimpleFeatureType, SimpleFeature> fc = src.getFeatures(new Query());
-        try (FeatureIterator iter = fc.features()) {
+        try (FeatureIterator<SimpleFeature> iter = fc.features()) {
             assertTrue(iter.hasNext());
-            SimpleFeature sf = (SimpleFeature) iter.next();
+            SimpleFeature sf = iter.next();
             assertEquals("ROAD", sf.getAttribute("LOCAL_TYPE"));
             assertEquals(5532, sf.getAttribute("RD_NUM"));
             assertNull(sf.getAttribute("VERI_DATE"));
             assertTrue(iter.hasNext());
-            sf = (SimpleFeature) iter.next();
+            sf = iter.next();
             assertEquals("ROAD", sf.getAttribute("LOCAL_TYPE"));
             assertEquals(5068, sf.getAttribute("RD_NUM"));
             // FIXME: this fails with AbstractMethod in GeoJSONParser
@@ -425,15 +440,15 @@ public class ArcGISRestDataStoreTest {
                 .withNoArguments()
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
-        PowerMockito.whenNew(GetMethod.class)
+        PowerMockito.whenNew(HttpGet.class)
                 .withNoArguments()
                 .thenReturn(getMock)
                 .thenReturn(getMock);
-        when(clientMock.executeMethod(getMock))
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK)
-                .thenReturn(HttpStatus.SC_OK);
-        when(getMock.getResponseBodyAsStream())
+        when(clientMock.execute(getMock))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"))
+                .thenReturn(new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK"));
+        when(responseMock.getEntity().getContent())
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/FeatureServerLandUse.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/walkablecatchmentDataset.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/walkablecatchmentDataset.json"));

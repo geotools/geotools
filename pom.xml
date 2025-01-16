@@ -479,7 +479,7 @@
     <hamcrest.version>3.0</hamcrest.version>
     <imageio.ext.version>1.4.14</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
-    <jackson2.version>2.17.2</jackson2.version>
+    <jackson2.version>2.18.2</jackson2.version>
     <jackson2.databind.version>${jackson2.version}</jackson2.databind.version>
     <jaiext.version>1.1.27</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>

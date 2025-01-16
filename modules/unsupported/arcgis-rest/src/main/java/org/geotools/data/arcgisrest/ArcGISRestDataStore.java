@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -39,17 +40,25 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.http.Consts;
+import org.apache.http.Header;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
@@ -114,7 +123,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
     protected URL namespace;
     protected URL apiUrl;
-    protected boolean opendataFlag = false;
+    protected boolean opendataFlag;
     protected String user;
     protected String password;
     protected Catalog catalog;
@@ -122,7 +131,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
     public ArcGISRestDataStore(
             String namespaceIn, String apiEndpoint, boolean opendataFlagIn, String user, String password)
-            throws MalformedURLException, JsonSyntaxException, IOException {
+            throws JsonSyntaxException, IOException {
 
         super();
 
@@ -143,23 +152,23 @@ public class ArcGISRestDataStore extends ContentDataStore {
         this.opendataFlag = opendataFlagIn;
 
         // Retrieves the catalog JSON document
-        String response = null;
+        String response;
         Error_ err;
         try {
             response = ArcGISRestDataStore.InputStreamToString(this.retrieveJSON("GET", apiUrl, DEFAULT_PARAMS));
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             LOGGER.log(
                     Level.SEVERE,
                     String.format("Error during retrieval of service '%s' %s", apiUrl, e.getMessage()),
                     e);
-            throw (e);
+            throw new IOException(e);
         }
 
         // Gets the catalog of web services in either the Open Data catalog, or
         // the ArcGIS Server list of services
 
         // If this is the Open Data catalog, it loads it
-        if (this.opendataFlag == true) {
+        if (this.opendataFlag) {
             this.catalog = (new Gson()).fromJson(response, Catalog.class);
             if (this.catalog == null) {
                 throw (new JsonSyntaxException("Malformed JSON"));
@@ -170,7 +179,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
         } else {
             this.catalog = new Catalog();
 
-            Featureserver featureServer = null;
+            Featureserver featureServer;
 
             try {
                 featureServer = (new Gson()).fromJson(response, Featureserver.class);
@@ -189,11 +198,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
             // Checks API version and output format of the endpoint
             if (featureServer.getCurrentVersion() < MINIMUM_API_VERSION
-                    || featureServer
-                                    .getSupportedQueryFormats()
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(FORMAT_JSON.toLowerCase())
+                    || featureServer.getSupportedQueryFormats().toLowerCase().contains(FORMAT_JSON.toLowerCase())
                             == false) {
                 UnsupportedImplementationException e = new UnsupportedImplementationException(String.format(
                         "FeatureServer %s does not support either the minimum API version required, or the GeoJSON format",
@@ -240,28 +245,27 @@ public class ArcGISRestDataStore extends ContentDataStore {
     @Override
     protected List<Name> createTypeNames() {
 
-        if (this.entries.isEmpty() == false) {
+        if (!this.entries.isEmpty()) {
             return new ArrayList<>(this.entries.keySet());
         }
 
         final List<Dataset> datasetList = this.getCatalog().getDataset();
 
-        // Starts an executor with a fixed numbe rof threads
+        // Starts an executor with a fixed number of threads
         ExecutorService executor = Executors.newFixedThreadPool(REQUEST_THREADS);
 
-        /**
+        /*
          * Since there could be many datasets in the FeatureServer, it makes sense to parallelize the requests to cut
-         * down processing time
+         * down processing time.
          */
         final class WsCallResult {
-            public Dataset dataset;
-            public Webservice webservice;
+            public final Dataset dataset;
+            public final Webservice webservice;
 
             public WsCallResult(Dataset ds, Webservice ws) {
                 this.dataset = ds;
                 this.webservice = ws;
             }
-            ;
         }
 
         final class WsCall implements Callable<WsCallResult> {
@@ -311,11 +315,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 // Checks whether the web-service API version is supported and
                 // supports GeoJSON
                 if (ws.getCurrentVersion() < MINIMUM_API_VERSION
-                        || ws.getSupportedQueryFormats()
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(FORMAT_JSON.toLowerCase())
-                                == false) {
+                        || ws.getSupportedQueryFormats().toLowerCase().contains(FORMAT_JSON.toLowerCase()) == false) {
                     LOGGER.log(
                             Level.SEVERE,
                             String.format(
@@ -340,8 +340,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
         });
 
         try {
-            List<Future<WsCallResult>> futures =
-                    executor.invokeAll(calls, (REQUEST_TIMEOUT * calls.size()) / REQUEST_THREADS, TimeUnit.SECONDS);
+            List<Future<WsCallResult>> futures = executor.invokeAll(
+                    calls, ((long) REQUEST_TIMEOUT * calls.size()) / REQUEST_THREADS, TimeUnit.SECONDS);
 
             for (Future<WsCallResult> future : futures) {
 
@@ -375,13 +375,13 @@ public class ArcGISRestDataStore extends ContentDataStore {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, String.format("Error during webservice calls %s", e.getMessage()), e);
-            return new ArrayList<Name>();
+            return new ArrayList<>();
         }
 
         executor.shutdown();
 
         // Returns the list of datastore entries
-        return new ArrayList<Name>(this.entries.keySet());
+        return new ArrayList<>(this.entries.keySet());
     }
 
     @Override
@@ -413,70 +413,67 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * @param url The endpoint of the resource
      * @param params Request parameters
      * @return A string representing the JSON, null
-     * @throws IOException
+     * @throws IOException if any error occurs during the retrieval
      */
-    public InputStream retrieveJSON(String methType, URL url, Map<String, Object> params) throws IOException {
-
-        HttpClient client = new HttpClient();
+    public InputStream retrieveJSON(String methType, URL url, Map<String, Object> params)
+            throws IOException, URISyntaxException {
+        List<NameValuePair> kvps = new ArrayList<>();
+        params.entrySet().stream().forEach((entry) -> {
+            kvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
+        });
 
         // Instanties the method based on the methType parameter
-        HttpMethodBase meth;
+        HttpRequestBase httpRequest;
         if (methType.equals("GET")) {
-            meth = new GetMethod();
-        } else {
-            meth = new PostMethod();
-        }
-        HttpMethodParams methParams = new HttpMethodParams();
-        methParams.setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-        meth.setParams(methParams);
-
-        // Sets the URI, request parameters and request body (depending on method
-        // type)
-        URI uri = new URI(url.toString(), false);
-        NameValuePair[] kvps = new NameValuePair[params.size()];
-        int i = 0;
-        for (Object entry : params.entrySet().toArray()) {
-            kvps[i++] = new NameValuePair(
-                    ((Map.Entry) entry).getKey().toString(),
-                    ((Map.Entry) entry).getValue().toString());
-        }
-
-        if (methType.equals("GET")) {
-            meth.setQueryString(kvps);
-            uri.setQuery(meth.getQueryString());
-            this.LOGGER.log(
-                    Level.FINER, String.format("About to query GET '%s?%s'", url.toString(), meth.getQueryString()));
-        } else {
-            ((PostMethod) (meth)).setContentChunked(true);
-            ((PostMethod) (meth)).setRequestBody(kvps);
+            httpRequest = new HttpGet(
+                    new URIBuilder(String.valueOf(url)).addParameters(kvps).build());
             this.LOGGER.log(
                     Level.FINER,
-                    String.format("About to query POST '%s' with body: %s", url.toString(), params.toString()));
+                    String.format(
+                            "About to query GET '%s?%s'",
+                            url.toString(), httpRequest.getURI().getQuery()));
+        } else {
+            httpRequest = new HttpPost(new URIBuilder(String.valueOf(url)).build());
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(kvps, Consts.UTF_8);
+            entity.setChunked(true);
+            ((HttpPost) (httpRequest)).setEntity(entity);
+            this.LOGGER.log(Level.FINER, String.format("About to query POST '%s' with body: %s", url, params));
         }
 
-        meth.setURI(uri);
+        httpRequest.setConfig(RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY)
+                .build());
 
         // Adds authorization if login/password is set
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
         if (this.user != null && this.password != null) {
-            meth.addRequestHeader("Authentication", (new UsernamePasswordCredentials(user, password)).toString());
+            credsProvider.setCredentials(
+                    new AuthScope(
+                            httpRequest.getURI().getHost(), httpRequest.getURI().getPort()),
+                    new UsernamePasswordCredentials("user", "passwd"));
         }
-
+        CloseableHttpClient client = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider)
+                .build();
+        CloseableHttpResponse httpResponse;
         // Re-tries the request if necessary
         while (true) {
 
             // Executes the request (a POST, since the URL may get too long)
-            int status = client.executeMethod(meth);
+            httpResponse = client.execute(httpRequest);
 
             // If HTTP error, throws an exception
-            if (status != HttpStatus.SC_OK) {
-                throw new IOException(String.format("HTTP Status: %d for URL: %s", status, uri));
+            if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new IOException(String.format(
+                        "HTTP Status: %d for URL: %s",
+                        httpResponse.getStatusLine().getStatusCode(), httpRequest.getURI()));
             }
 
             // Retrieve the wait period is returned by the server
             int wait = 0;
-            Header header = meth.getResponseHeader("Retry-After");
+            Header header = httpResponse.getFirstHeader("Retry-After");
             if (header != null) {
-                wait = Integer.valueOf(header.getValue());
+                wait = Integer.parseInt(header.getValue());
             }
 
             // Exists if no retry is necessary
@@ -493,7 +490,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
         }
 
         // Extracts an returns the response
-        return meth.getResponseBodyAsStream();
+        return httpResponse.getEntity().getContent();
     }
 
     /**
@@ -524,8 +521,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * Helper method to convert an entire InputStream to a String and close the steeam
      *
      * @param istream input stream to convert to a String
-     * @throws IOException
-     * @returns the converted String
+     * @throws IOException if an error occurs during the conversion
+     * @return the converted String
      */
     public static String InputStreamToString(InputStream istream) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(istream, Charset.defaultCharset()))) {

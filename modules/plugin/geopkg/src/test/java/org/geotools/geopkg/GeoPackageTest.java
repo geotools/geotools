@@ -1008,13 +1008,11 @@ public class GeoPackageTest {
                 }
             }
 
-            // index
-            try (PreparedStatement ps =
-                    cx.prepareStatement("SELECT * from sqlite_master WHERE type='index' and name = ?")) {
-                ps.setString(1, entry.getTableName() + "_zyx_idx");
-                try (ResultSet rs = ps.executeQuery()) {
-                    assertTrue(rs.next());
-                }
+            // unique index
+            try (Statement st = cx.createStatement();
+                    ResultSet rs = st.executeQuery("PRAGMA index_list('" + entry.getTableName() + "')")) {
+                assertTrue(rs.next());
+                assertTrue(rs.getBoolean("unique"));
             }
         }
     }

@@ -1401,15 +1401,10 @@ public class GeoPackage implements Closeable {
                             + "zoom_level INTEGER NOT NULL,"
                             + "tile_column INTEGER NOT NULL,"
                             + "tile_row INTEGER NOT NULL,"
-                            + "tile_data BLOB NOT NULL)",
+                            + "tile_data BLOB NOT NULL,"
+                            // the unique constraints forces creation of an index
+                            + "UNIQUE (zoom_level, tile_column, tile_row))",
                     e.getTableName()))) {
-                st.execute();
-            }
-
-            // create an index on the tile
-            try (PreparedStatement st = cx.prepareStatement(format(
-                    "CREATE INDEX \"%s_zyx_idx\" ON \"%s\"(zoom_level, tile_column, tile_row);",
-                    e.getTableName(), e.getTableName()))) {
                 st.execute();
             }
 

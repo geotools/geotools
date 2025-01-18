@@ -102,32 +102,27 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-
-        // Extracts information about the type name (as per this.entry) from the API
         Dataset ds = this.dataStore.getDataset(this.entry.getName());
-        Webservice ws = (new Gson())
-                .fromJson(
-                        ArcGISRestDataStore.InputStreamToString(this.dataStore.retrieveJSON(
-                                "GET",
-                                new URL(ArcGISRestDataStore.getWebServiceEndpoint(ds)),
-                                ArcGISRestDataStore.DEFAULT_PARAMS)),
-                        Webservice.class);
-
-        if (ws == null) {
-            throw new IOException(String.format("Type name %s not found", entry.getName()));
-        }
-
-        // Sets the information about the resource
-        this.resInfo = new DefaultResourceInfo();
         try {
+            // Extracts information about the type name (as per this.entry) from the API
+            Webservice ws = (new Gson())
+                    .fromJson(
+                            ArcGISRestDataStore.InputStreamToString(this.dataStore.retrieveJSON(
+                                    "GET",
+                                    new URL(ArcGISRestDataStore.getWebServiceEndpoint(ds)),
+                                    ArcGISRestDataStore.DEFAULT_PARAMS)),
+                            Webservice.class);
+
+            if (ws == null) {
+                throw new IOException(String.format("Type name %s not found", entry.getName()));
+            }
+
+            // Sets the information about the resource
+            this.resInfo = new DefaultResourceInfo();
             this.resInfo.setSchema(new URI(this.dataStore.getNamespace().toExternalForm()));
-        } catch (URISyntaxException e) {
-            // Re-packages the exception to be compatible with method signature
-            throw new IOException(e.getMessage(), e.fillInStackTrace());
-        }
 
-        // Extracts the CRS either using WKID or WKT
-        try {
+            // Extracts the CRS either using WKID or WKT
+
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(CRS.decode(
                         "EPSG:" + ws.getExtent().getSpatialReference().getLatestWkid()));
@@ -141,56 +136,56 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                 }
             }
 
-        } catch (FactoryException e) {
-            // FIXME: this is not nice: exceptions should not be re-packaged
-            throw new IOException(e.getMessage());
-        }
+            this.resInfo.setKeywords(new HashSet<>(ds.getKeyword()));
 
-        this.resInfo.setKeywords(new HashSet<>(ds.getKeyword()));
+            // FIXME: the abstract of the feature type is not set
+            this.resInfo.setDescription(ds.getDescription());
 
-        // FIXME: the abstract of the feature type is not set
-        this.resInfo.setDescription(ds.getDescription());
+            this.resInfo.setTitle(ds.getTitle() != null ? ds.getTitle() : ws.getName());
+            this.resInfo.setName(ws.getName());
+            ReferencedEnvelope geoBbox = new ReferencedEnvelope(
+                    ws.getExtent().getXmin(),
+                    ws.getExtent().getXmax(),
+                    ws.getExtent().getYmin(),
+                    ws.getExtent().getYmax(),
+                    this.resInfo.getCRS());
+            this.resInfo.setBounds(geoBbox);
+            this.objectIdField = (ws.getObjectIdField() != null) ? ws.getObjectIdField() : ws.getGlobalIdField();
 
-        this.resInfo.setTitle(ds.getTitle() != null ? ds.getTitle() : ws.getName());
-        this.resInfo.setName(ws.getName());
-        ReferencedEnvelope geoBbox = new ReferencedEnvelope(
-                ws.getExtent().getXmin(),
-                ws.getExtent().getXmax(),
-                ws.getExtent().getYmin(),
-                ws.getExtent().getYmax(),
-                this.resInfo.getCRS());
-        this.resInfo.setBounds(geoBbox);
-        this.objectIdField = (ws.getObjectIdField() != null) ? ws.getObjectIdField() : ws.getGlobalIdField();
+            // Builds the feature type
+            SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+            builder.setCRS(this.resInfo.getCRS()); // NOTE: this has ot be done before
+            // other settings, lest the SRS is
+            // not set
+            builder.setName(this.entry.getName());
+            // FIXME: the abstract of the feature type is not set
+            builder.setDescription(
+                    ds.getDescription() != null ? new SimpleInternationalString(ds.getDescription()) : null);
 
-        // Builds the feature type
-        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setCRS(this.resInfo.getCRS()); // NOTE: this has ot be done before
-        // other settings, lest the SRS is
-        // not set
-        builder.setName(this.entry.getName());
-        // FIXME: the abstract of the feature type is not set
-        builder.setDescription(ds.getDescription() != null ? new SimpleInternationalString(ds.getDescription()) : null);
+            // Adds non-geometry field descriptions
+            ws.getFields().forEach((fld) -> {
+                Class clazz = EsriJavaMapping.get(fld.getType());
+                if (clazz == null) {
+                    this.getDataStore().getLogger().severe(String.format("Type %s not found", fld.getType()));
+                }
+                builder.add(fld.getName(), clazz);
+            });
 
-        // Adds non-geometry field descriptions
-        ws.getFields().forEach((fld) -> {
-            Class clazz = EsriJavaMapping.get(fld.getType());
+            // Adds the geometry field
+            Class clazz = EsriJTSMapping.get(ws.getGeometryType());
             if (clazz == null) {
-                this.getDataStore().getLogger().severe(String.format("Type %s not found", fld.getType()));
+                this.getDataStore()
+                        .getLogger()
+                        .severe(String.format("Geometry type %s not found", ws.getGeometryType()));
             }
-            builder.add(fld.getName(), clazz);
-        });
 
-        // Adds the geometry field
-        Class clazz = EsriJTSMapping.get(ws.getGeometryType());
-        if (clazz == null) {
-            this.getDataStore().getLogger().severe(String.format("Geometry type %s not found", ws.getGeometryType()));
+            builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
+
+            this.schema = builder.buildFeatureType();
+            this.schema.getUserData().put("serviceUrl", ArcGISRestDataStore.getWebServiceEndpoint(ds));
+        } catch (FactoryException | IOException | URISyntaxException e) {
+            throw new IOException(e);
         }
-
-        builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
-
-        this.schema = builder.buildFeatureType();
-        this.schema.getUserData().put("serviceUrl", ArcGISRestDataStore.getWebServiceEndpoint(ds));
-
         return this.schema;
     }
 
@@ -244,8 +239,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                             ArcGISRestDataStore.InputStreamToString(
                                     this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params)),
                             Count.class);
-        } catch (HTTPException e) {
-            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
+        } catch (IOException | URISyntaxException e) {
+            throw new IOException(e);
         }
 
         return (cnt == null) ? -1 : cnt.getCount();
@@ -278,8 +273,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         // Executes the request
         try {
             result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
-        } catch (HTTPException e) {
-            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
+        } catch (HTTPException | URISyntaxException e) {
+            throw new IOException(e);
         }
 
         // Returns a reader for the result

@@ -22,17 +22,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BBOX3D;
+import org.geotools.api.filter.spatial.Disjoint;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
@@ -47,6 +51,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
+
+    private SimpleFeatureType curveSchema;
 
     private static FilterFactory ff;
 
@@ -69,6 +75,9 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.setWriter(writer);
 
         prepareFeatures();
+
+        curveSchema = DataUtilities.createType(
+                "curveIntersection", "name:String,testGeometry:org.geotools.geometry.jts.MultiSurface");
     }
 
     /**
@@ -324,5 +333,79 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals("OPERATIONS::jsonb @> '{ \"operations\": [\"\\\"''FOO\"] }'::jsonb", sql);
+    }
+
+    @Test
+    public void testFlatIntersectionImplementation() throws Exception {
+        Intersects intersects =
+                ff.intersects(ff.property("testGeometry"), ff.literal(gf.createPoint(new Coordinate(0, 0))));
+
+        // encode plain
+        filterToSql.setFeatureType(testSchema);
+        filterToSql.encode(intersects);
+        assertEquals(
+                "WHERE testGeometry && ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry)) AND ST_Intersects(testGeometry, ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry)))",
+                writer.toString());
+    }
+
+    @Test
+    public void testCurveIntersectionImplementation() throws Exception {
+        Intersects intersects =
+                ff.intersects(ff.property("testGeometry"), ff.literal(gf.createPoint(new Coordinate(0, 0))));
+
+        // encode plain
+        filterToSql.setFeatureType(curveSchema);
+        filterToSql.encode(intersects);
+        assertEquals(
+                "WHERE testGeometry && ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry)) AND ST_Distance(testGeometry, ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry))) = 0",
+                writer.toString());
+    }
+
+    @Test
+    public void testFlatDisjointImplementation() throws Exception {
+        Disjoint disjoint = ff.disjoint(ff.property("testGeometry"), ff.literal(gf.createPoint(new Coordinate(0, 0))));
+
+        // encode plain
+        filterToSql.setFeatureType(testSchema);
+        filterToSql.encode(disjoint);
+        assertEquals(
+                "WHERE NOT (ST_Intersects(testGeometry, ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry))))",
+                writer.toString());
+    }
+
+    @Test
+    public void testCurveDisjointImplementation() throws Exception {
+        Disjoint disjoint = ff.disjoint(ff.property("testGeometry"), ff.literal(gf.createPoint(new Coordinate(0, 0))));
+
+        // encode plain
+        filterToSql.setFeatureType(curveSchema);
+        filterToSql.encode(disjoint);
+        assertEquals(
+                "WHERE ST_Distance(testGeometry, ST_GeomFromText('POINT (0 0)', ST_SRID(testGeometry))) > 0",
+                writer.toString());
+    }
+
+    @Test
+    public void testFlatBBOXImplementation() throws Exception {
+        BBOX bbox = ff.bbox(ff.property("testGeometry"), 0, 0, 1, 1, "EPSG:4326");
+
+        // encode plain
+        filterToSql.setFeatureType(testSchema);
+        filterToSql.encode(bbox);
+        assertEquals(
+                "WHERE testGeometry && ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry)) AND ST_Intersects(testGeometry, ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry)))",
+                writer.toString());
+    }
+
+    @Test
+    public void testCurveBBOXImplementation() throws Exception {
+        BBOX bbox = ff.bbox(ff.property("testGeometry"), 0, 0, 1, 1, "EPSG:4326");
+
+        // encode plain
+        filterToSql.setFeatureType(curveSchema);
+        filterToSql.encode(bbox);
+        assertEquals(
+                "WHERE testGeometry && ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry)) AND ST_Distance(testGeometry, ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry))) = 0",
+                writer.toString());
     }
 }

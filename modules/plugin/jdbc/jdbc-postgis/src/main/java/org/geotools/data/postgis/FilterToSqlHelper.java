@@ -28,6 +28,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -105,6 +106,7 @@ import org.geotools.filter.function.math.FilterFunction_abs_3;
 import org.geotools.filter.function.math.FilterFunction_abs_4;
 import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
@@ -115,6 +117,7 @@ import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -125,6 +128,14 @@ class FilterToSqlHelper {
     protected static final String IO_ERROR = "io problem writing filter";
 
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
+
+    /**
+     * Last resort flag to disable ST_Distance for cases where the geometry column might contain curves. Rationale:
+     * ST_Intersects will linearize curves, reducing the test precision, if we have a chance of geometries being curves
+     * we should use ST_Distance instead, which has a native curve implementation.
+     */
+    private static final Boolean DISABLE_CURVE_ACCURATE_INTERSECTION =
+            Boolean.getBoolean("org.geotools.postgis.disableCurveAccurateIntersection");
 
     FilterToSQL delegate;
     Writer out;
@@ -367,6 +378,15 @@ class FilterToSqlHelper {
             Object extraData)
             throws IOException {
 
+        // ST_Intersects needs to linearize curves which reduces test precision, if we have a chance of
+        // geometries being curves we should use ST_Distance instead
+        if (!DISABLE_CURVE_ACCURATE_INTERSECTION
+                && (filter instanceof Intersects || filter instanceof BBOX || filter instanceof Disjoint)
+                && (mayHaveCurves(e1) || mayHaveCurves(e2))) {
+            writeCurveIntersection(filter, e1, e2, swapped, extraData);
+            return;
+        }
+
         String closingParenthesis = ")";
         if (filter instanceof Equals) {
             out.write("ST_Equals");
@@ -397,6 +417,49 @@ class FilterToSqlHelper {
         e2.accept(delegate, extraData);
 
         out.write(closingParenthesis);
+    }
+
+    private void writeCurveIntersection(
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData)
+            throws IOException {
+
+        out.write("ST_Distance(");
+        e1.accept(delegate, extraData);
+        out.write(", ");
+        e2.accept(delegate, extraData);
+        out.write(") ");
+
+        if (filter instanceof Disjoint) {
+            out.write("> 0");
+        } else {
+            out.write("= 0");
+        }
+    }
+
+    /**
+     * Checks if the expression may contain curves, either because it is a geometry or because it is a property that
+     * might be a geometry. In particular, the geometry is considered to have curves if it is a {@link CurvedGeometry}
+     * or if it is a {@link GeometryCollection} or a {@link Geometry}. The latter cases are generic containers that may
+     * contain any sort of geometry, and thus, curved ones too.
+     */
+    private boolean mayHaveCurves(Expression ex) {
+        if (ex instanceof Literal) {
+            Object value = ex.evaluate(null, Geometry.class);
+            return value instanceof CurvedGeometry
+                    || (value != null
+                            && (Geometry.class.equals(value.getClass())
+                                    || GeometryCollection.class.equals(value.getClass())));
+        } else if (ex instanceof PropertyName) {
+            AttributeDescriptor ad = ex.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
+            return Optional.ofNullable(ad)
+                    .map(a -> a.getType())
+                    .map(t -> t.getBinding())
+                    .filter(c -> CurvedGeometry.class.isAssignableFrom(c)
+                            || Geometry.class.equals(c)
+                            || GeometryCollection.class.equals(c))
+                    .isPresent();
+        }
+        return false;
     }
 
     boolean isCurrentGeography() {

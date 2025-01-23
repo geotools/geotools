@@ -17,29 +17,25 @@
 
 package org.geotools.ows.wmts.response;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.data.ows.GetCapabilitiesResponse;
+import org.geotools.data.ows.ServiceExceptionParser;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.util.logging.Logging;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * Provides a hook up to parse the capabilties document from inputstream.
+ * Provides a hook up to parse the capabilities document from input stream.
  *
  * <p>(Based on existing work by rgould for WMS service)
  *
@@ -54,43 +50,38 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
         this(response, null);
     }
 
+    /**
+     * Constructor that sets capabilities property. Input stream of response is closed immediately.
+     *
+     * @param response the httpResponse from the server
+     * @param hints not used
+     * @throws ServiceException thrown if server responds with ServiceException or a ill-formatted XML
+     * @throws IOException thrown if input stream is wrong
+     */
     public WMTSGetCapabilitiesResponse(HTTPResponse response, Map<String, Object> hints)
             throws ServiceException, IOException {
         super(response);
-
-        try {
-
-            Object object;
-            try (InputStream inputStream = response.getResponseStream()) {
+        Object object;
+        try (InputStream inputStream = response.getResponseStream()) {
+            try {
                 Parser parser = new Parser(WMTS_CONFIGURATION);
-                if (LOGGER.isLoggable(Level.FINEST)) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line = null;
-
-                    try (BufferedReader bufferedReader =
-                            new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                        while ((line = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(line + "\n");
-                        }
-                    }
-                    String string = stringBuilder.toString();
-                    LOGGER.finest(string);
-
-                    object = parser.parse(new InputSource(new ByteArrayInputStream(string.getBytes())));
-                } else {
-                    object = parser.parse(inputStream);
-                }
+                object = parser.parse(inputStream);
             } catch (SAXException | ParserConfigurationException e) {
-                throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
+                throw new IOException("Error while parsing XML.", e);
             }
-
-            if (object instanceof ServiceException) {
-                throw (ServiceException) object;
+            if (object instanceof CapabilitiesType) {
+                this.capabilities = new WMTSCapabilities((CapabilitiesType) object);
+            } else {
+                inputStream.reset();
+                object = ServiceExceptionParser.parse(inputStream);
+                if (object instanceof ServiceException) {
+                    LOGGER.log(Level.SEVERE, "Server returned ServiceException.", object);
+                    throw (ServiceException) object;
+                } else {
+                    LOGGER.info("Unknown xml returned from server.");
+                    throw new IOException("Unknown XML from server.");
+                }
             }
-
-            this.capabilities = new WMTSCapabilities((CapabilitiesType) object);
-        } finally {
-            response.dispose();
         }
     }
 }

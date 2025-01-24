@@ -165,7 +165,7 @@ public class LogbackLogger extends LoggerAdapter {
 
     @Override
     public boolean isLoggable(Level level) {
-        return getLevel().intValue() > level.intValue();
+        return getLevel().intValue() <= level.intValue();
     }
 
     @Override

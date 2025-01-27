@@ -17,6 +17,8 @@
 
 package org.geotools.ows.wmts.response;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -46,6 +48,8 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
     private static final Logger LOGGER = Logging.getLogger(WMTSGetCapabilitiesResponse.class);
     private static WMTSConfiguration WMTS_CONFIGURATION = new WMTSConfiguration();
 
+    private static final int MAX_BUFFER_SIZE = 2048; // Should be enough to support the size of a ServiceException.
+
     public WMTSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
         this(response, null);
     }
@@ -55,14 +59,19 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
      *
      * @param response the httpResponse from the server
      * @param hints not used
-     * @throws ServiceException thrown if server responds with ServiceException or a ill-formatted XML
-     * @throws IOException thrown if input stream is wrong
+     * @throws ServiceException thrown if server responds with ServiceException
+     * @throws IOException thrown if xml or input stream is wrong
      */
     public WMTSGetCapabilitiesResponse(HTTPResponse response, Map<String, Object> hints)
             throws ServiceException, IOException {
         super(response);
         Object object;
-        try (InputStream inputStream = response.getResponseStream()) {
+        byte[] buffer = new byte[MAX_BUFFER_SIZE];
+        try (InputStream inputStream = new BufferedInputStream(response.getResponseStream(), MAX_BUFFER_SIZE)) {
+            inputStream.mark(MAX_BUFFER_SIZE);
+            int bytesRead = inputStream.read(buffer, 0, MAX_BUFFER_SIZE);
+            inputStream.reset();
+
             try {
                 Parser parser = new Parser(WMTS_CONFIGURATION);
                 object = parser.parse(inputStream);
@@ -72,15 +81,17 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
             if (object instanceof CapabilitiesType) {
                 this.capabilities = new WMTSCapabilities((CapabilitiesType) object);
             } else {
-                inputStream.reset();
-                object = ServiceExceptionParser.parse(inputStream);
-                if (object instanceof ServiceException) {
-                    LOGGER.log(Level.SEVERE, "Server returned ServiceException.", object);
-                    throw (ServiceException) object;
-                } else {
-                    LOGGER.info("Unknown xml returned from server.");
-                    throw new IOException("Unknown XML from server.");
+                try (InputStream bufferedStream = new ByteArrayInputStream(buffer, 0, bytesRead)) {
+                    object = ServiceExceptionParser.parse(bufferedStream);
+                    if (object instanceof ServiceException) {
+                        LOGGER.log(Level.SEVERE, "Server returned ServiceException.", (Throwable) object);
+                        throw (ServiceException) object;
+                    }
+                } catch (IOException e) {
+                    LOGGER.log(
+                            Level.SEVERE, "Server returned xml that couldn't be parsed by ServiceExceptionParser.", e);
                 }
+                throw new IOException("Server returned wrong xml.");
             }
         }
     }

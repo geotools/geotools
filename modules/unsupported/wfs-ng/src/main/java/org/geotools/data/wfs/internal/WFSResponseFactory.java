@@ -19,6 +19,7 @@ package org.geotools.data.wfs.internal;
 import java.io.IOException;
 import java.util.List;
 import org.geotools.http.HTTPResponse;
+import org.geotools.ows.ServiceException;
 
 /**
  * A factory interface meant to be used through the usual GeoTools SPI mechanism to dynamically find out a parser
@@ -49,7 +50,7 @@ public interface WFSResponseFactory {
      * @param response the handle to the response contents the WFS sent
      * @return a {@link WFSResponse} that can deal with the given request and response
      */
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException;
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws ServiceException, IOException;
 
     public boolean canProcess(WFSOperationType operation);
 

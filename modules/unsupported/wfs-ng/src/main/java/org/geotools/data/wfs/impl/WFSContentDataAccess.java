@@ -245,8 +245,9 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
             SchemaResolver appSchemaResolver = null;
             if (this.cacheLocation == null) {
-                File temporaryCache =
-                        new File(FileUtils.getTempDirectory(), "wfs_cache_" + RandomStringUtils.randomAlphanumeric(5));
+                File temporaryCache = new File(
+                        FileUtils.getTempDirectory(),
+                        "wfs_cache_" + RandomStringUtils.secure().nextAlphanumeric(5));
                 if (temporaryCache.mkdir()) {
                     appSchemaResolver = new SchemaResolver(new SchemaCache(temporaryCache, true, true));
                     if (LOGGER.isLoggable(Level.FINE)) {

@@ -215,7 +215,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
 
         // cannot get a consistent type response from different databases, but it should be able
         // to hold a very large string without cutting it
-        String largeString = RandomStringUtils.random(Short.MAX_VALUE + 1, true, false);
+        String largeString = RandomStringUtils.secure().next(Short.MAX_VALUE + 1, true, false);
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> w =
                 dataStore.getFeatureWriter(typeName, Transaction.AUTO_COMMIT)) {
             w.hasNext();

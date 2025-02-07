@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 env: 
-  OSX_GDAL_VERSION: 3.9.0
+  OSX_GDAL_VERSION: 3.10.1
   GDAL_INSTALL_PATH: /Users/runner/work/gdal
   DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
   CMAKE_OPTIONS: -DCFITSIO_ROOT=/opt/homebrew/Cellar/cfitsio  -DPoppler_ROOT=/opt/homebrew/Cellar/poppler -DPROJ_ROOT=/opt/homebrew/Cellar/proj -DSPATIALITE_ROOT=/opt/homebrew/Cellar/libspatialite -DPostgreSQL_ROOT=/opt/homebrew/Cellar/libpq -DEXPAT_ROOT=/opt/homebrew/Cellar/expat -DXercesC_ROOT=/opt/homebrew/Cellar/xerces-c -DSQLite3_ROOT=/opt/homebrew/Cellar/sqlite -DOpenSSL_ROOT=/opt/homebrew/Cellar/openssl -DPNG_ROOT=/opt/homebrew/Cellar/libpng -DJPEG_ROOT=/opt/homebrew/Cellar/jpeg-turbo -DEXPECTED_JPEG_LIB_VERSION=80 -DOpenJPEG_ROOT=/opt/homebrew/Cellar/openjpeg -DCURL_ROOT=/opt/homebrew/Cellar/curl -DGDAL_USE_LIBKML=OFF -DGDAL_USE_ODBC=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON

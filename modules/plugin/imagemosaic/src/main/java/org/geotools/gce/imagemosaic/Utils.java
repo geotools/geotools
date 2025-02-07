@@ -33,11 +33,9 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -1434,8 +1432,9 @@ public class Utils {
         // serialize it
         // do we have the sample image??
         if (Utils.checkFileReadable(sampleImageFile)) {
-            try (ValidatingObjectInputStream oiStream =
-                    new ValidatingObjectInputStream(new BufferedInputStream(new FileInputStream(sampleImageFile)))) {
+            try (ValidatingObjectInputStream oiStream = ValidatingObjectInputStream.builder()
+                    .setFile(sampleImageFile)
+                    .get()) {
                 oiStream.accept(SAMPLE_IMAGE_CLASSES).accept(SAMPLE_IMAGE_PATTERNS);
                 if (SAMPLE_IMAGE_ALLOWLIST != null) {
                     oiStream.accept(SAMPLE_IMAGE_ALLOWLIST);
@@ -1865,7 +1864,7 @@ public class Utils {
         // No histogram in cache. Deserializing...
         if (histogram == null) {
             try (ValidatingObjectInputStream objectStream =
-                    new ValidatingObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+                    ValidatingObjectInputStream.builder().setFile(file).get()) {
                 // only allow histogram objects and its fields
                 objectStream.accept(Histogram.class, double[].class, int[].class);
                 histogram = (Histogram) objectStream.readObject();

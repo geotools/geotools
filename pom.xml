@@ -495,7 +495,7 @@
     <mysql-connector-java.version>9.1.0</mysql-connector-java.version>
     <netcdf.version>5.5.3</netcdf.version>
     <ojdbc8.version>19.18.0.0</ojdbc8.version>
-    <postgresql.jdbc.version>42.7.3</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.7.5</postgresql.jdbc.version>
     <reload4j.version>1.2.19</reload4j.version>
     <sl4j.version>2.0.16</sl4j.version>
     <solrj.version>8.11.3</solrj.version>

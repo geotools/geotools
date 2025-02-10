@@ -16,12 +16,13 @@
  */
 package org.geotools.data.wfs.internal;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.util.factory.FactoryNotFoundException;
 
@@ -41,69 +42,38 @@ public class WFSExtensions {
     private static volatile Set<WFSResponseFactory> registry;
 
     /**
-     * Processes the result of a WFS operation and returns the parsed object.
+     * Finds the most suitable WFS response factory for the given request and content-type.
      *
-     * <p>The result can either be:
-     *
-     * <ul>
-     *   <li>a {@link WFSException} exception if the WFS response was an exception report
-     *   <li>a {@link GetParser<SimpleFeature>} if the WFS returned a FeatureCollection
-     *
-     * @param request the WFS request that originated the given response
-     * @param response the handle to the WFS response contents
+     * @param originatingRequest the WFS request that needs a response factory
+     * @param contentType content-type that came in the header of the response
+     * @throws FactoryNotFoundException when no factory is found
      */
-    // public static Object process(WFSResponse response) throws IOException {
-    //
-    // WFSRequest originatingRequest = response.getOriginatingRequest();
-    // WFSResponseFactory pf = findParserFactory(originatingRequest);
-    //
-    // WFSResponseParser parser = pf.createParser(response);
-    //
-    // Object result = parser.parse(response);
-    // return result;
-    // }
-
-    /** */
     public static WFSResponseFactory findResponseFactory(
             final WFSRequest originatingRequest, final String contentType) {
 
-        Iterator<WFSResponseFactory> serviceProviders = getServiceProviders();
-
-        WFSResponseFactory factory;
-        while (serviceProviders.hasNext()) {
-            factory = serviceProviders.next();
-            if (factory.isAvailable()) {
-                if (factory.canProcess(originatingRequest, contentType)) {
-                    return factory;
-                }
-            }
-        }
-        throw new FactoryNotFoundException("Can't find a response parser factory for "
-                + originatingRequest.getOperation()
-                + "/'"
-                + contentType
-                + "'");
+        return getServiceProviders()
+                .filter(factory -> factory.isAvailable() && factory.canProcess(originatingRequest, contentType))
+                .findFirst()
+                .orElseThrow(() -> new FactoryNotFoundException("Can't find a response parser factory for "
+                        + originatingRequest.getOperation()
+                        + "/'"
+                        + contentType
+                        + "'"));
     }
 
+    /**
+     * Finds all suitable WFS response factories for the operation.
+     *
+     * @param operation WFS operation that we should have response for
+     * @return list of known factories that supports the operation
+     */
     public static List<WFSResponseFactory> findResponseFactories(final WFSOperationType operation) {
-
-        Iterator<WFSResponseFactory> serviceProviders = getServiceProviders();
-
-        List<WFSResponseFactory> matches = new ArrayList<>(5);
-
-        while (serviceProviders.hasNext()) {
-            WFSResponseFactory factory = serviceProviders.next();
-            if (factory.isAvailable()) {
-                if (factory.canProcess(operation)) {
-                    matches.add(factory);
-                }
-            }
-        }
-
-        return matches;
+        return getServiceProviders()
+                .filter(factory -> factory.isAvailable() && factory.canProcess(operation))
+                .collect(Collectors.toList());
     }
 
-    private static Iterator<WFSResponseFactory> getServiceProviders() {
+    private static Stream<WFSResponseFactory> getServiceProviders() {
         if (registry == null) {
             synchronized (WFSExtensions.class) {
                 if (registry == null) {
@@ -138,6 +108,6 @@ public class WFSExtensions {
                 }
             }
         }
-        return registry.iterator();
+        return registry.stream();
     }
 }

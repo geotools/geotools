@@ -20,7 +20,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Helper class for enums mapped between integers and strings. */
+/**
+ * Helper class for enums mapped between integers and strings.
+ *
+ * <p><b>Deprecated in favor of {@link EnumMapping} due to <a
+ * href="https://osgeo-org.atlassian.net/browse/GEOT-7715">GEOT-7715</a></b>.
+ */
+@Deprecated(forRemoval = true)
 public class EnumMapper {
 
     Map<Integer, String> integerToString = new HashMap<>();

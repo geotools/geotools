@@ -471,7 +471,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <series>latest</series>
     <!-- dependency management -->
-    <batik.version>1.17</batik.version>
+    <batik.version>1.18</batik.version>
     <commons-beanutils.version>1.9.2</commons-beanutils.version>
     <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>

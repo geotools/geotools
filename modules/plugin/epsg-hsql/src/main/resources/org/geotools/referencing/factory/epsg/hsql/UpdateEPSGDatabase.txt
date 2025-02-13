@@ -34,6 +34,7 @@ The database in the zip file is a HSQL version of the official EPSG database.
     report_date   DATE NOT NULL,
     action        VARCHAR,
     UNIQUE(CHANGE_ID) );
+
 7) Update ThreadedHsqlEpsgFactory.VERSION to the current version
 8) Run the DatabaseCreationScript.java
 9) Check the EPSG.zip file has been updated

@@ -68,7 +68,8 @@ public class SimilarityTransformProvider extends MathTransformProvider {
     /** "Scale difference" EPSG::8611 */
     public static final ParameterDescriptor<Double> SCALE = createDescriptor(
             new NamedIdentifier[] {
-                new NamedIdentifier(Citations.EPSG, "Scale difference"), new NamedIdentifier(Citations.EPSG, "8611")
+                new NamedIdentifier(Citations.EPSG, "Scale factor for source CRS axes"),
+                new NamedIdentifier(Citations.EPSG, "8611")
             },
             1,
             Double.MIN_NORMAL,

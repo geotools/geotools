@@ -74,7 +74,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * related to the EPSG-HSQL plugin rather than the EPSG database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public static final Version VERSION = new Version("9.6.1");
+    public static final Version VERSION = new Version("11.0.31");
 
     /** The key for fetching the database directory from {@linkplain System#getProperty(String) system properties}. */
     public static final String DIRECTORY_KEY = "EPSG-HSQL.directory";

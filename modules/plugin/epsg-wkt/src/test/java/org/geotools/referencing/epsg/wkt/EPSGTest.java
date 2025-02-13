@@ -70,7 +70,7 @@ public class EPSGTest {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
         assertNotNull(codes);
-        Assert.assertEquals(6588, codes.size());
+        Assert.assertEquals(7840, codes.size());
     }
 
     /** A random CRS for fun. */

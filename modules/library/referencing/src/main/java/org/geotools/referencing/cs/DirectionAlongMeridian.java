@@ -156,6 +156,12 @@ public final class DirectionAlongMeridian implements Comparable<DirectionAlongMe
                     candidate = findDirection(values, modified);
                 }
             }
+            if (candidate == null && direction.startsWith("geocentric")) {
+                modified = direction.replace("geocentric", "geocentric_");
+                if (modified != direction) {
+                    candidate = findDirection(values, modified);
+                }
+            }
         }
         return candidate;
     }

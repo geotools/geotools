@@ -205,6 +205,28 @@ public class WMS1_3_0_Test {
         }
     }
 
+    @Test
+    public void testGEOT7718() {
+        try {
+            WMSCapabilities capabilities = createCapabilities("ign.xml");
+
+            assertNotNull(capabilities);
+
+            assertEquals(capabilities.getVersion(), "1.3.0");
+            assertEquals(capabilities.getService().getName(), "WMS");
+
+            Layer topLayer = capabilities.getLayerList().get(0);
+            assertNotNull(topLayer);
+            assertNull(topLayer.getParent());
+            assertFalse(topLayer.isQueryable());
+            assertEquals("WMS layers", topLayer.getTitle());
+            assertEquals(192, topLayer.getSrs().size());
+            assertTrue(topLayer.getSrs().contains("EPSG:2154"));
+        } catch (Exception e) {
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+        }
+    }
+
     protected WMSCapabilities createCapabilities(String capFile) throws Exception {
         try {
             File getCaps = TestData.file(this, capFile);

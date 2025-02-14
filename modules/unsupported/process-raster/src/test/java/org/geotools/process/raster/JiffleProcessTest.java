@@ -5,16 +5,19 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
@@ -145,6 +148,41 @@ public class JiffleProcessTest {
             {2, 0, 0},
             {0, 2, 0},
             {0, 0, 2},
+        };
+        assertArrayEquals(expected, resultData);
+
+        // the two coverages have the same grid geometry, no need to resample them via
+        // GridCoverage2DRIA
+        List sources = ((RenderedOp) result.getRenderedImage()).getSources();
+        assertEquals(c1.getRenderedImage(), sources.get(0));
+        assertEquals(c2.getRenderedImage(), sources.get(1));
+    }
+
+    @Test
+    public void testSumNoData() {
+        // prepare a diagonal image with a nodata value set to 1
+        GridCoverage2D diagonal = buildCoverage(ONE_DIAGONAL);
+        RenderedImage ri = diagonal.getRenderedImage();
+        PlanarImage pi = PlanarImage.wrapRenderedImage(ri);
+        pi.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(1));
+        GridCoverage2D c1 = covFactory.create("coverage", pi, diagonal.getEnvelope());
+        // the second coverage is a 2 everywhere
+        GridCoverage2D c2 = buildCoverage(TWO_SOLID);
+
+        // now perform a sum with the two images
+        Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
+        inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
+        inputs.put(JiffleProcess.IN_SCRIPT, "dest = a + b;");
+        Map<String, Object> output = jiffle.execute(inputs, null);
+        GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
+        float[][] resultData = data(result, 0);
+
+        float[][] expected = {
+            {Float.NaN, 2, 2},
+            {2, Float.NaN, 2},
+            {2, 2, Float.NaN},
         };
         assertArrayEquals(expected, resultData);
 

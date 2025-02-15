@@ -472,7 +472,7 @@
     <series>latest</series>
     <!-- dependency management -->
     <batik.version>1.17</batik.version>
-    <commons-beanutils.version>1.9.2</commons-beanutils.version>
+    <commons-beanutils.version>1.10.1</commons-beanutils.version>
     <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
@@ -1002,7 +1002,7 @@
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.10.0</version>
+        <version>${commons-beanutils.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-dbcp</groupId>

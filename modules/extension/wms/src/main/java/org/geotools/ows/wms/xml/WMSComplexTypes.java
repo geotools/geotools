@@ -3838,8 +3838,10 @@ public class WMSComplexTypes {
             new WMSSchema.WMSElement("Format", _FormatType.getInstance()),
             new WMSSchema.WMSElement("OnlineResource", _OnlineResourceType.getInstance())
         };
-
-        private static Sequence seq = new SequenceGT(elems);
+        /*
+         * make this a choice rather than a sequence as IGN put the format after the OnlineResource
+         */
+        private static ChoiceGT seq = new ChoiceGT("ch", 2, 2, elems);
 
         private static Attribute[] attrs = {
             new WMSSchema.WMSAttribute("width", XSISimpleTypes.PositiveInteger.getInstance()),

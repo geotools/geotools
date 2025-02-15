@@ -26,6 +26,8 @@ import it.geosolutions.jaiext.jiffle.parser.node.ScalarLiteral;
 import it.geosolutions.jaiext.jiffle.runtime.BandTransform;
 import it.geosolutions.jaiext.jiffleop.JiffleDescriptor;
 import it.geosolutions.jaiext.jiffleop.JiffleRIF;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.Range.DataType;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -152,6 +154,19 @@ public class JiffleProcess implements RasterProcess {
             }
         }
 
+        // grab the source nodata
+        Range[] nodatas = new Range[sources.length];
+        for (int i = 0; i < sources.length; i++) {
+            GridCoverage2D coverage = coverages[i];
+            NoDataContainer coverageNoData = CoverageUtilities.getNoDataProperty(coverage);
+            if (coverageNoData != null) {
+                nodatas[i] = coverageNoData.getAsRange();
+            }
+        }
+        if (Arrays.stream(nodatas).filter(n -> n != null).count() == 0) {
+            nodatas = null;
+        }
+
         // in case we have optimized out band selection, need to remap the band access
         BandTransform[] bandTransforms = null;
         if (sources.length == 1) {
@@ -173,6 +188,7 @@ public class JiffleProcess implements RasterProcess {
                 outputBandCount,
                 null,
                 bandTransforms,
+                nodatas,
                 GeoTools.getDefaultHints());
 
         GridSampleDimension[] sampleDimensions = getSampleDimensions(result, outputBandNames);

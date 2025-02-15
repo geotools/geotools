@@ -472,7 +472,7 @@
     <series>latest</series>
     <!-- dependency management -->
     <batik.version>1.18</batik.version>
-    <commons-beanutils.version>1.9.2</commons-beanutils.version>
+    <commons-beanutils.version>1.10.1</commons-beanutils.version>
     <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
@@ -936,7 +936,7 @@
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
-        <version>1.2</version>
+        <version>1.3.5</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
@@ -1002,7 +1002,7 @@
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.9.4</version>
+        <version>${commons-beanutils.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-dbcp</groupId>
@@ -1168,6 +1168,13 @@
       </dependency>
 
       <!-- Tests or legacy -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>

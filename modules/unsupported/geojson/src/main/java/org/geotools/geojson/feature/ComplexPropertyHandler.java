@@ -17,7 +17,12 @@
 package org.geotools.geojson.feature;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
@@ -27,6 +32,7 @@ public class ComplexPropertyHandler extends HandlerBase implements IContentHandl
     Object result = null;
 
     Deque<Object> destinationStack = new ArrayDeque<>();
+
     String objectKey = null;
 
     public ComplexPropertyHandler() {}
@@ -43,8 +49,9 @@ public class ComplexPropertyHandler extends HandlerBase implements IContentHandl
         return !destinationStack.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     void addValue(Object obj) {
-        if (result == null) {
+        if (result == null || destinationStack.peek() == null) {
             this.result = obj;
             return;
         }
@@ -97,6 +104,7 @@ public class ComplexPropertyHandler extends HandlerBase implements IContentHandl
         return true;
     }
 
+    @Override
     public Object getValue() {
         return result;
     }

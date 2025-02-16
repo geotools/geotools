@@ -196,7 +196,7 @@ public class GeoJSONUtil {
         } else if (value instanceof Map) {
             sb.append('{');
             boolean firstEntry = true;
-            for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet()) {
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
                 if (firstEntry) {
                     firstEntry = false;
                 } else {

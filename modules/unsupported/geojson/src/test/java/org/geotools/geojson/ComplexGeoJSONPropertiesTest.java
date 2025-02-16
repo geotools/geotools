@@ -18,11 +18,19 @@ package org.geotools.geojson;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -34,7 +42,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.Test;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
 
 public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
@@ -128,9 +142,8 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
         assertEquals(2, gc.getNumGeometries());
 
         WKTReader wkt = new WKTReader();
-        assertTrue(wkt.read("POINT (4 6)").equals(gc.getGeometryN(0)));
-        assertTrue(wkt.read("LINESTRING (4 6, 7 10)").equals(gc.getGeometryN(1)));
-
+        assertEquals(wkt.read("POINT (4 6)"), gc.getGeometryN(0));
+        assertEquals(wkt.read("LINESTRING (4 6, 7 10)"), gc.getGeometryN(1));
         assertEquals("fid-7205cfc1_138e7ce8900_-7ffe", f1.getID());
         assertEquals("Name123", f1.getAttribute("name"));
         assertEquals("Label321", f1.getAttribute("label"));
@@ -169,11 +182,13 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
         assertEquals(2, gc.getNumGeometries());
 
         WKTReader wkt = new WKTReader();
-        assertTrue(wkt.read(
-                        "POLYGON ((-28.1107 142.998, -28.1107 148.623, -30.2591 148.623, -30.2591 142.998, -28.1107 142.998))")
-                .equals(gc.getGeometryN(0)));
-        assertTrue(wkt.read("POLYGON((-27.1765 142.998, -25.6811 146.4258, -27.1765 148.5352, -27.1765 142.998))")
-                .equals(gc.getGeometryN(1)));
+        assertEquals(
+                wkt.read(
+                        "POLYGON ((-28.1107 142.998, -28.1107 148.623, -30.2591 148.623, -30.2591 142.998, -28.1107 142.998))"),
+                gc.getGeometryN(0));
+        assertEquals(
+                wkt.read("POLYGON((-27.1765 142.998, -25.6811 146.4258, -27.1765 148.5352, -27.1765 142.998))"),
+                gc.getGeometryN(1));
 
         assertEquals("fid-397164b3_13880d348b9_-7a5c", f1.getID());
         assertEquals("", f1.getAttribute("name"));
@@ -210,9 +225,10 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
         assertEquals(0.1, p.getY(), 0.1);
 
         assertTrue(f.getAttribute("otherGeometry") instanceof LineString);
-        assertTrue(new GeometryFactory()
-                .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)})
-                .equals((LineString) f.getAttribute("otherGeometry")));
+        assertEquals(
+                new GeometryFactory()
+                        .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)}),
+                f.getAttribute("otherGeometry"));
 
         assertEquals(1, ((Number) f.getAttribute("int")).intValue());
         assertEquals(0.1, ((Number) f.getAttribute("double")).doubleValue(), 0.0f);
@@ -237,7 +253,7 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
                 + " }")));
 
         assertNotNull(f);
-        assertTrue(f.getDefaultGeometry() == null);
+        assertNull(f.getDefaultGeometry());
 
         assertEquals(1, ((Number) f.getAttribute("int")).intValue());
         assertEquals(0.1, ((Number) f.getAttribute("double")).doubleValue(), 0.0f);
@@ -266,14 +282,16 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
         assertTrue(f.getDefaultGeometry() instanceof LineString);
 
         LineString l = (LineString) f.getDefaultGeometry();
-        assertTrue(new GeometryFactory()
-                .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)})
-                .equals(l));
+        assertEquals(
+                new GeometryFactory()
+                        .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)}),
+                l);
 
         assertTrue(f.getAttribute("otherGeometry") instanceof LineString);
-        assertTrue(new GeometryFactory()
-                .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)})
-                .equals((LineString) f.getAttribute("otherGeometry")));
+        assertEquals(
+                new GeometryFactory()
+                        .createLineString(new Coordinate[] {new Coordinate(1.1, 1.2), new Coordinate(1.3, 1.4)}),
+                f.getAttribute("otherGeometry"));
 
         assertEquals(1, ((Number) f.getAttribute("int")).intValue());
         assertEquals(0.1, ((Number) f.getAttribute("double")).doubleValue(), 0.0f);

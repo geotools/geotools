@@ -534,7 +534,7 @@
     <maven.jacoco.plugin.version>0.8.10</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.20.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
-    <pmd.version>6.55.0</pmd.version>
+    <pmd.version>7.10.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>
     <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
     <qa>false</qa>

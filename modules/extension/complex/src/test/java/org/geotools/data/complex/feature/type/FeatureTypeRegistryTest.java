@@ -19,8 +19,13 @@ package org.geotools.data.complex.feature.type;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.api.feature.type.Name;
@@ -82,5 +87,24 @@ public class FeatureTypeRegistryTest {
             exception = true;
         }
         assertTrue(exception);
+    }
+
+    @Test
+    public void testTypeRegistryThreadSafe() throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        List<Future<FeatureTypeRegistry>> futures = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            futures.add(executor.submit(() -> {
+                return new FeatureTypeRegistry(
+                        new ComplexFeatureTypeFactoryImpl(), new GmlFeatureTypeRegistryConfiguration(null));
+            }));
+        }
+
+        for (Future<FeatureTypeRegistry> future : futures) {
+            assertNotNull(future.get());
+        }
+
+        executor.shutdown();
     }
 }

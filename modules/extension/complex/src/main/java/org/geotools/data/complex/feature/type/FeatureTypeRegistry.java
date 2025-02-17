@@ -613,9 +613,9 @@ public class FeatureTypeRegistry {
             new HashMap<>();
 
     private void createFoundationTypes() {
-        Map<Name, AttributeType> foundationTypes =
-                FOUNDATION_TYPES.computeIfAbsent(helper.getClass(), o -> new HashMap<>());
-        synchronized (foundationTypes) {
+        synchronized (FOUNDATION_TYPES) {
+            Map<Name, AttributeType> foundationTypes =
+                    FOUNDATION_TYPES.computeIfAbsent(helper.getClass(), o -> new HashMap<>());
             if (!foundationTypes.isEmpty()) {
                 typeRegistry.putAll(foundationTypes);
                 return;

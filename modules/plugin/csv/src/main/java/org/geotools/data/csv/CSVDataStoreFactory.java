@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,7 +68,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
 
-    public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false);
+    public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false, GUESS_STRATEGY, new KVP(Param.OPTIONS, new ArrayList<>(List.of(GUESS_STRATEGY, ATTRIBUTES_ONLY_STRATEGY, SPECIFC_STRATEGY, WKT_STRATEGY))));
 
     public static final Param LATFIELDP =
             new Param("latField", String.class, "Latitude field. Assumes a CSVSpecifiedLatLngStrategy", false);

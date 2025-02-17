@@ -20,17 +20,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.net.URL;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.ows.Response;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
+import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPResponse;
+import org.geotools.ows.ServiceException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -92,15 +96,13 @@ public class XXEProtectionTest {
         String baseDirectory = "GeoServer_2.0/1.1.0_XXE_Transaction/";
         IntegrationTestWFSClient client = new IntegrationTestWFSClient(baseDirectory, config) {
             @Override
-            protected org.geotools.data.ows.Response mockTransactionSuccess(
-                    org.geotools.data.wfs.internal.TransactionRequest request) throws java.io.IOException {
+            protected Response mockTransactionSuccess(TransactionRequest request) throws ServiceException, IOException {
                 String resource = "Transaction.xml";
                 URL contentUrl = new URL(baseDirectory, resource);
 
                 HTTPResponse httpResp = new TestHttpResponse("text/xml", "UTF-8", contentUrl);
                 return request.createResponse(httpResp);
             }
-            ;
         };
         WFSDataStore store = new WFSDataStore(client);
         SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource(store.getTypeNames()[0]);

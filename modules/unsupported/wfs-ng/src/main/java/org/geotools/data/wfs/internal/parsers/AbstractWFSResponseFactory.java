@@ -33,6 +33,7 @@ import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.http.HTTPResponse;
+import org.geotools.ows.ServiceException;
 import org.geotools.xsd.Parser;
 import org.xml.sax.EntityResolver;
 
@@ -60,7 +61,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
      * @see WFSException
      */
     @Override
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException, ServiceException {
 
         // We can't rely on the server returning the correct output format. Some, for example
         // CubeWerx, upon a successful GetFeature request, set the response's content-type

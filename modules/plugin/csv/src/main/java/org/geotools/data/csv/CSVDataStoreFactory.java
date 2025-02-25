@@ -68,7 +68,16 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
 
-    public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false, GUESS_STRATEGY, new KVP(Param.OPTIONS, new ArrayList<>(List.of(GUESS_STRATEGY, ATTRIBUTES_ONLY_STRATEGY, SPECIFC_STRATEGY, WKT_STRATEGY))));
+    public static final Param STRATEGYP = new Param(
+            "strategy",
+            String.class,
+            "strategy",
+            false,
+            GUESS_STRATEGY,
+            new KVP(
+                    Param.OPTIONS,
+                    new ArrayList<>(
+                            List.of(GUESS_STRATEGY, ATTRIBUTES_ONLY_STRATEGY, SPECIFC_STRATEGY, WKT_STRATEGY))));
 
     public static final Param LATFIELDP =
             new Param("latField", String.class, "Latitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
@@ -103,7 +112,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param LINESEPSTRING = new Param(
             "lineSeperator",
             String.class,
-            "String to be used to seperate records",
+            "String to be used to separate records",
             false,
             System.lineSeparator(),
             new KVP(Param.LEVEL, "advanced"));

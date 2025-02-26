@@ -124,7 +124,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     private int[] attributeRsIndex;
 
     /** enum support */
-    EnumMapper[] enumMappers;
+    EnumMapping[] enumMappings;
 
     public JDBCFeatureReader(
             String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query)
@@ -240,11 +240,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // mapped enumeration support
         List<AttributeDescriptor> descriptors = featureType.getAttributeDescriptors();
-        enumMappers = new EnumMapper[descriptors.size()];
-        for (int i = 0; i < enumMappers.length; i++) {
+        enumMappings = new EnumMapping[descriptors.size()];
+        for (int i = 0; i < enumMappings.length; i++) {
             AttributeDescriptor ad = descriptors.get(i);
-            EnumMapper mapper = (EnumMapper) ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-            enumMappers[i] = mapper;
+            EnumMapping mapping = (EnumMapping) ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+            enumMappings[i] = mapping;
         }
     }
 
@@ -282,7 +282,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.st = other.st;
         this.rs = other.rs;
         this.md = other.md;
-        this.enumMappers = other.enumMappers;
+        this.enumMappings = other.enumMappings;
     }
 
     public void setNext(Boolean next) {
@@ -404,14 +404,14 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
                 // they value may need conversion. We let converters chew the initial
                 // value towards the target type, if the result is not the same as the
-                // original, then a conversion happened and we may want to report it to the
-                // user (being the feature type reverse engineerd, it's unlikely a true
+                // original, then a conversion happened, and we may want to report it to the
+                // user (being the feature type reverse engineered, it's unlikely a true
                 // conversion will be needed)
                 if (value != null) {
-                    EnumMapper mapper = enumMappers[i];
+                    EnumMapping mapping = enumMappings[i];
                     Object converted = null;
-                    if (mapper != null) {
-                        value = mapper.fromInteger(Converters.convert(value, Integer.class));
+                    if (mapping != null) {
+                        value = mapping.fromKey(Converters.convert(value, String.class));
                         converted = value;
                     } else {
                         converted = dataStore.dialect.convertValue(value, type);
@@ -742,8 +742,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 }
             }
             Object value = values[index];
-            EnumMapper mapper = enumMappers[index];
-            if (mapper != null) value = mapper.fromInteger(Converters.convert(value, Integer.class));
+            EnumMapping mapping = enumMappings[index];
+            if (mapping != null) value = mapping.fromKey(Converters.convert(value, String.class));
             return value;
         }
 
@@ -767,8 +767,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + index + " to " + value);
             }
-            EnumMapper mapper = enumMappers[index];
-            if (mapper != null) value = mapper.fromString(Converters.convert(value, String.class));
+            EnumMapping mapping = enumMappings[index];
+            if (mapping != null) value = mapping.fromValue(Converters.convert(value, String.class));
             values[index] = value;
             dirty[index] = true;
         }

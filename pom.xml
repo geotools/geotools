@@ -473,7 +473,7 @@
     <!-- dependency management -->
     <batik.version>1.17</batik.version>
     <commons-beanutils.version>1.10.1</commons-beanutils.version>
-    <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
+    <db2.jdbc.version>12.1.0.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <hamcrest.version>3.0</hamcrest.version>

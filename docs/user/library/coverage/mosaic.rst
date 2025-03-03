@@ -64,11 +64,13 @@ An example data set looks something like::
   The :file:`sample_image.dat` (legacy :file:`sample_image`) is a sample image used to determine color model
   upfront without requiring a full scan.
   
-  By default the sample image file is limited to built-in image formats and color models. This restriction may be relaxed using the system property ``org.geotools.gce.imagemosaic.sampleimage.allowlist``:
+  By default the sample image file is limited to built-in image formats and color models. The old sample image
+  file format that used the ``javax.media.jai.remote.SerializableRenderedImage`` class is also blocked by default.
+  This restriction may be relaxed using the system property ``org.geotools.gce.imagemosaic.sampleimage.allowlist``:
   
   .. code-block:: properties
      
-     org.geotools.gce.imagemosaic.sampleimage.allowlist=^some\.package\.MyCustomColorModel$
+     org.geotools.gce.imagemosaic.sampleimage.allowlist=^java\\.(net\\.InetAddress|util\\.Hashtable)$
 
 * Properties File
   

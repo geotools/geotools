@@ -38,17 +38,21 @@ GeoTools 32.x
 ImageMosaic Deserialization Validation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools now validates class names when deserializing sample image files for ImageMosaic.
+Since GeoTools 31.4, class names are validated when deserializing sample image files for ImageMosaic.
 
 If the default allowlist of classes that image mosaic will deserialize is preventing the usage of valid
 sample image files, the ``org.geotools.gce.imagemosaic.sampleimage.allowlist`` system property can be set to
 allow additional classes whose fully-qualified class names match the provided regular expression.
 
-For example:
+Since GeoTools 32.3, certain fields of the ``javax.media.jai.remote.SerializableRenderedImage`` class are
+blocked by the default allow list to block deserializing instances of that class. GeoTools has migrated to
+the using the ``org.geotools.gce.imagemosaic.SampleImage`` class since version 16.2 (released February 2017)
+so most users will probably not be affected by this but the following example shows how to set the system
+property to allow SerializableRenderedImage instances if necessary:
 
 .. code-block:: properties
 
-   org.geotools.gce.imagemosaic.sampleimage.allowlist=^some\.package\.MyCustomColorModel$
+   org.geotools.gce.imagemosaic.sampleimage.allowlist=^java\\.(net\\.InetAddress|util\\.Hashtable)$
 
 JDBC Method signature change in PreparedStatementSQLDialect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

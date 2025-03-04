@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.data.Query;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.junit.Test;
 
@@ -38,6 +39,20 @@ public class TransformerTest extends AbstractTransformTest {
         assertEquals(1, transformedQuery.getSortBy().length);
         assertEquals(
                 "state_name", transformedQuery.getSortBy()[0].getPropertyName().toString());
+    }
+
+    @Test
+    public void testTransformedSortBy_naturalOrder() throws Exception {
+        TransformFeatureSource transformedSource = (TransformFeatureSource) transformWithRename();
+
+        Query query = new Query(Query.ALL);
+        query.setSortBy(SortBy.NATURAL_ORDER);
+
+        Query transformedQuery = transformedSource.transformer.transformQuery(query);
+        assertNotNull(transformedQuery);
+        assertNotNull(transformedQuery.getSortBy());
+        assertEquals(1, transformedQuery.getSortBy().length);
+        assertEquals(SortBy.NATURAL_ORDER, transformedQuery.getSortBy()[0]);
     }
 
     @Test

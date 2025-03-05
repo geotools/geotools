@@ -50,6 +50,8 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
 
     private boolean inProperties;
 
+    private int complexNestingLevel; // level inside a complex property
+
     private String currentProp;
 
     private CoordinateReferenceSystem crs;
@@ -64,6 +66,9 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
 
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
+        if (complexNestingLevel > 0) {
+            return true;
+        }
         if ("crs".equals(key)) {
             delegate = new CRSHandler();
             return true;
@@ -102,12 +107,59 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             return true;
         }
 
+        if (inProperties && currentProp != null) {
+            if (complexNestingLevel++ == 0) {
+                // Record property type
+                if (!propertyTypes.containsKey(currentProp)) {
+                    // found previously unknown property
+                    propertyTypes.put(currentProp, List.class);
+                } else {
+                    checkValueCompatibility(List.class);
+                }
+            }
+            return true;
+        }
+
         return super.startArray();
+    }
+
+    @Override
+    public boolean endArray() throws ParseException, IOException {
+        super.endArray();
+
+        if (inProperties) {
+            --complexNestingLevel;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean startObject() throws ParseException, IOException {
+        super.startObject();
+        if (inProperties && currentProp != null) {
+            if (complexNestingLevel++ == 0) {
+                // Record property type
+                if (!propertyTypes.containsKey(currentProp)) {
+                    // found previously unknown property
+                    propertyTypes.put(currentProp, Map.class);
+                } else {
+                    checkValueCompatibility(Map.class);
+                }
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean endObject() throws ParseException, IOException {
         super.endObject();
+
+        if (inProperties && currentProp != null) {
+            --complexNestingLevel;
+        }
+        if (complexNestingLevel > 0) {
+            return true;
+        }
 
         if (delegate instanceof FeatureHandler) {
             // obtain a type from the first feature
@@ -136,35 +188,46 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
     @Override
     public boolean primitive(Object value) throws ParseException, IOException {
 
-        if (value != null) {
-            Class<?> newType = value.getClass();
-            if (currentProp != null) {
-                Class<?> knownType = propertyTypes.get(currentProp);
-                if (knownType == Object.class) {
-                    propertyTypes.put(currentProp, newType);
-
-                    if (foundAllValues()) {
-                        // found the last unknown type, stop parsing
-                        buildType();
-                        return false;
-                    }
-                } else if (knownType != newType) {
-                    if (Number.class.isAssignableFrom(knownType) && newType == Double.class
-                            || (Number.class.isAssignableFrom(newType) && knownType == Double.class)) {
-                        propertyTypes.put(currentProp, Double.class);
-                    } else {
-                        throw new IllegalStateException("Found conflicting types "
-                                + knownType.getSimpleName()
-                                + " and "
-                                + newType.getSimpleName()
-                                + " for property "
-                                + currentProp);
-                    }
-                }
+        if (inProperties && complexNestingLevel == 0 && currentProp != null) {
+            if (!checkValueCompatibility(value)) {
+                return false;
             }
         }
 
         return super.primitive(value);
+    }
+
+    private boolean checkValueCompatibility(Object value) {
+        if (value != null) {
+            return checkValueCompatibility(value.getClass());
+        }
+        return true;
+    }
+
+    private boolean checkValueCompatibility(Class<?> newType) {
+        Class<?> knownType = propertyTypes.get(currentProp);
+        if (knownType == Object.class) {
+            propertyTypes.put(currentProp, newType);
+
+            if (foundAllValues()) {
+                // found the last unknown type, stop parsing
+                buildType();
+                return false;
+            }
+        } else if (knownType != newType) {
+            if (Number.class.isAssignableFrom(knownType) && newType == Double.class
+                    || (Number.class.isAssignableFrom(newType) && knownType == Double.class)) {
+                propertyTypes.put(currentProp, Double.class);
+            } else {
+                throw new IllegalStateException("Found conflicting types "
+                        + knownType.getSimpleName()
+                        + " and "
+                        + newType.getSimpleName()
+                        + " for property "
+                        + currentProp);
+            }
+        }
+        return true;
     }
 
     /*
@@ -189,6 +252,10 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
     public boolean endObjectEntry() throws ParseException, IOException {
 
         super.endObjectEntry();
+        if (complexNestingLevel > 0) {
+            // Still inside complex property
+            return true;
+        }
 
         if (delegate != null && delegate instanceof CRSHandler) {
             crs = ((CRSHandler) delegate).getValue();
@@ -197,8 +264,6 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             }
         } else if (currentProp != null) {
             currentProp = null;
-        } else if (inProperties) {
-            inProperties = false;
         }
         return true;
     }

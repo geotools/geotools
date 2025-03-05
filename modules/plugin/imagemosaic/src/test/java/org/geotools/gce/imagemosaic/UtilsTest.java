@@ -25,6 +25,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.PriorityQueue;
 import javax.media.jai.Histogram;
+import javax.media.jai.remote.SerializableRenderedImage;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -33,6 +36,13 @@ public class UtilsTest {
 
     @ClassRule
     public static TemporaryFolder folder = new TemporaryFolder();
+
+    @Before
+    @After
+    public void reset() {
+        System.clearProperty(Utils.SAMPLE_IMAGE_ALLOWLIST_KEY);
+        Utils.resetSampleImageAllowlist();
+    }
 
     @Test
     public void testGetHistogramValid() throws Exception {
@@ -69,5 +79,23 @@ public class UtilsTest {
             out.writeObject(new PriorityQueue<>());
         }
         assertNull(Utils.loadSampleImage(file));
+    }
+
+    @Test
+    public void testLoadSampleImageSerializableRenderedImage() throws Exception {
+        File file = folder.newFile("serializable.rendered.image").getAbsoluteFile();
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+            out.writeObject(new SerializableRenderedImage(new BufferedImage(1, 1, 1)));
+        }
+        // javax.media.jai.remote.SerializableRenderedImage fields blocked by default
+        assertNull(Utils.loadSampleImage(file));
+        // javax.media.jai.remote.SerializableRenderedImage fields allowed by system property
+        System.setProperty(Utils.SAMPLE_IMAGE_ALLOWLIST_KEY, "^java\\.(net\\.InetAddress|util\\.Hashtable)$");
+        assertNotNull(Utils.resetSampleImageAllowlist());
+        assertNotNull(Utils.loadSampleImage(file));
+        // file will have been converted to org.geotools.gce.imagemosaic.SampleImage
+        System.clearProperty(Utils.SAMPLE_IMAGE_ALLOWLIST_KEY);
+        assertNull(Utils.resetSampleImageAllowlist());
+        assertNotNull(Utils.loadSampleImage(file));
     }
 }

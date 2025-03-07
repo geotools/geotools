@@ -76,7 +76,7 @@ public class EsriExtensionTest {
         Assert.assertTrue(codes.containsAll(subset));
         Assert.assertFalse(codes.contains("26910")); // This is an EPSG code.
         // The following number may be adjusted if esri.properties is updated.
-        Assert.assertEquals(798, codes.size());
+        Assert.assertEquals(796, codes.size());
     }
 
     /** Checks for duplication with EPSG-HSQL. */

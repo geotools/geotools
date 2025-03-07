@@ -667,6 +667,7 @@ public class ObliqueMercator extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC, "azimuth"),
                     new NamedIdentifier(Citations.ESRI, "Azimuth"),
+                    new NamedIdentifier(Citations.EPSG, "Azimuth at projection centre"),
                     new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
                     new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
                     new NamedIdentifier(Citations.PROJ, "alpha")

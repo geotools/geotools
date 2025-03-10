@@ -140,7 +140,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     public void encodeUpdateGeometryPoint()
             throws IOException, SAXException, ParserConfigurationException, ParseException {
 
-        Geometry updateGeometry = reader.read("POINT(-79.460958 43.972668)");
+        Geometry updateGeometry = reader.read("POINT(-79.4609587567345256 43.9726687567345256)");
 
         testUpdateGeometry(updateGeometry);
     }

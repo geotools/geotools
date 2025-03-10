@@ -35,11 +35,16 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
-
+    private final GMLConfiguration gml;
+    private final GenericGeometryEncoder geometryEncoder;
     private static final String VALUE = "Value";
 
     public PropertyTypeBinding_1_1(WfsFactory factory) {
         super(factory);
+        gml = new GMLConfiguration();
+        Encoder encoder = new Encoder(gml);
+        encoder.setInline(true);
+        geometryEncoder = new GenericGeometryEncoder(encoder);
     }
 
     @Override
@@ -67,20 +72,15 @@ public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
                 if (value instanceof Geometry) {
                     Geometry geometry = (Geometry) value;
 
-                    GMLConfiguration gml = new GMLConfiguration();
-
-                    Encoder encoder = new Encoder(gml);
-                    encoder.setInline(true);
-
-                    GenericGeometryEncoder geometryEncoder = new GenericGeometryEncoder(encoder);
                     GMLWriter handler = new GMLWriter(
                             output,
                             new NamespaceSupport(),
-                            gml.getNumDecimals(),
+                            geometry.getPrecisionModel().getMaximumSignificantDigits(),
                             gml.getForceDecimalEncoding(),
                             gml.getPadWithZeros(),
                             "gml",
                             gml.getEncodeMeasures());
+
                     geometryEncoder.encode(geometry, new AttributesImpl(), handler);
 
                 } else {

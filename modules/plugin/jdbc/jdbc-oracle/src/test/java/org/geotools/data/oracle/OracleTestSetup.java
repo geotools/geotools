@@ -57,10 +57,10 @@ public class OracleTestSetup extends JDBCTestSetup {
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("driver", "oracle.jdbc.OracleDriver");
-        fixture.put("url", "jdbc:oracle:thin:@127.0.0.1:1521:XE");
+        fixture.put("url", "jdbc:oracle:thin:@127.0.0.1:1521/FREEPDB1");
         fixture.put("host", "127.0.0.1");
         fixture.put("port", "1521");
-        fixture.put("database", "XE");
+        fixture.put("database", "/FREEPDB1");
         fixture.put("username", "GEOTOOLS");
         fixture.put("user", "GEOTOOLS");
         fixture.put("schema", "GEOTOOLS");

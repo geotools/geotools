@@ -24,6 +24,7 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.simple.GenericGeometryEncoder;
 import org.geotools.wfs.WFS;
 import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
@@ -39,9 +40,9 @@ public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
     private final GenericGeometryEncoder geometryEncoder;
     private static final String VALUE = "Value";
 
-    public PropertyTypeBinding_1_1(WfsFactory factory) {
+    public PropertyTypeBinding_1_1(WfsFactory factory, Configuration configuration) {
         super(factory);
-        gml = new GMLConfiguration();
+        gml = configuration.getDependency(GMLConfiguration.class);
         Encoder encoder = new Encoder(gml);
         encoder.setInline(true);
         geometryEncoder = new GenericGeometryEncoder(encoder);
@@ -75,7 +76,7 @@ public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
                     GMLWriter handler = new GMLWriter(
                             output,
                             new NamespaceSupport(),
-                            geometry.getPrecisionModel().getMaximumSignificantDigits(),
+                            gml.getNumDecimals(),
                             gml.getForceDecimalEncoding(),
                             gml.getPadWithZeros(),
                             "gml",

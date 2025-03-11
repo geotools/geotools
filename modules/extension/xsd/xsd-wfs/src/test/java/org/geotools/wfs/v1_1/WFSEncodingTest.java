@@ -1,5 +1,6 @@
 package org.geotools.wfs.v1_1;
 
+import org.geotools.gml3.GMLConfiguration;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -39,6 +40,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -223,6 +225,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     private void testUpdateGeometry(Geometry updateGeometry)
             throws IOException, ParserConfigurationException, SAXException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
+
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         UpdateElementType update = wfsfac.createUpdateElementType();
@@ -234,7 +237,13 @@ public class WFSEncodingTest extends XmlTestSupport {
         propertyType.setValue(updateGeometry);
         update.getProperty().add(propertyType);
 
-        Encoder encoder = new Encoder(new WFSConfiguration());
+        PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
+
+        WFSConfiguration config = new WFSConfiguration();
+        GMLConfiguration gmlConfig = config.getDependency(GMLConfiguration.class);
+        gmlConfig.setNumDecimals(pm.getMaximumSignificantDigits());
+
+        Encoder encoder = new Encoder(config);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             encoder.encode(update, WFS.Update, out);

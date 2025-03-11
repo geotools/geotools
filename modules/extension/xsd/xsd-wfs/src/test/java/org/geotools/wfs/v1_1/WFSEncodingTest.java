@@ -1,6 +1,5 @@
 package org.geotools.wfs.v1_1;
 
-import org.geotools.gml3.GMLConfiguration;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +27,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.gml3.GMLConfiguration;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Encoder;
@@ -40,7 +40,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

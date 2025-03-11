@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.Properties;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
@@ -68,5 +70,21 @@ public class HSQLCRSTest extends AbstractCRSTest {
         // leave native axis order, it should be recognized as north/east
         CoordinateReferenceSystem crsNE = CRS.decode("EPSG:32761", false);
         assertEquals(CRS.AxisOrder.NORTH_EAST, CRS.getAxisOrder(crsNE));
+    }
+
+    @Test
+    public void testETRSPivot() throws Exception {
+        CoordinateReferenceSystem source = CRS.decode("EPSG:31467");
+        CoordinateReferenceSystem target = CRS.decode("EPSG:5683");
+        MathTransform mtAccuracy = CRS.findMathTransform(source, target, true);
+
+        double[] src = {3099840.7430828, 4949957.671010};
+        double[] dst = new double[2];
+        double[] projResult = {4949953.06, 3099840.28};
+
+        // without pivoting the result is 150 meters away form the proj one,
+        // with pivoting it's within 15 meters (proj favours large area operations over accurate ones)
+        mtAccuracy.transform(src, 0, dst, 0, 1);
+        assertArrayEquals(projResult, dst, 15);
     }
 }

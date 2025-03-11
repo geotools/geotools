@@ -786,6 +786,11 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
             final Matrix matrix = swapAndScaleAxis(sourceCS, targetCS, sourcePM, targetPM);
             return createFromAffineTransform(AXIS_CHANGES, sourceCRS, targetCRS, matrix);
         }
+
+        /* If the implementation allows, try to go through well known pivots that might provide better accuracy */
+        CoordinateOperation pivotOperation = tryWellKnownPivots(sourceCRS, targetCRS);
+        if (pivotOperation != null) return pivotOperation;
+
         /*
          * The two geographic CRS use different datum. If Molodenski transformations
          * are allowed, try them first. Note that is some case if the datum shift can't
@@ -885,6 +890,19 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         final CoordinateOperation step1 = createOperationStep(sourceCRS, stepCRS);
         final CoordinateOperation step2 = createOperationStep(stepCRS, targetCRS);
         return concatenate(step1, step2);
+    }
+
+    /**
+     * Allows subclasses to test for well known pivots that might provide better accuracy, before using a Molodenski.
+     * The default implementation returns <code>null</code>
+     *
+     * @param sourceCRS
+     * @param targetCRS
+     * @return An operation going though a well known pivot, or <code>null</code> if not found.
+     */
+    protected CoordinateOperation tryWellKnownPivots(GeographicCRS sourceCRS, GeographicCRS targetCRS)
+            throws FactoryException {
+        return null;
     }
 
     /**

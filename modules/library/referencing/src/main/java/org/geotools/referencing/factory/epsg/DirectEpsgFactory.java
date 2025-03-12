@@ -181,6 +181,50 @@ import tech.units.indriya.AbstractUnit;
 @SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pool
 public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
+
+    /**
+     * Allows to switch the {@link CoordinateOperation} order from the default accuracy first (GeoTools default) to area
+     * first (Proj default).
+     */
+    public enum OperationOrder {
+        AccuracyFirst("ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                + " CO.COORD_OP_CODE DESC"),
+        AreaFirst(" ABS(CO.DEPRECATED), "
+                + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                + " CO.COORD_OP_ACCURACY,"
+                + " CO.COORD_OP_CODE DESC");
+
+        String order;
+
+        OperationOrder(String order) {
+            this.order = order;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+    }
+
+    public static final String ORDER_KEY = "org.geotools.referencing.operation.order";
+    private static OperationOrder OPERATION_ORDER =
+            OperationOrder.valueOf(System.getProperty(ORDER_KEY, OperationOrder.AccuracyFirst.name()));
+
+    /**
+     * Allows to programmatically switch between the possible orders orders for coordinate operation priority
+     *
+     * @param order
+     */
+    public static void setOperationOrder(OperationOrder order) {
+        OPERATION_ORDER = order;
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     //////                                                                                 ///////
     //////   HARD CODED VALUES (other than SQL statements) RELATIVE TO THE EPSG DATABASE   ///////
@@ -1455,13 +1499,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         + " SELECT CRS1.COORD_REF_SYS_CODE " // GEOT-1129
                         + " FROM [Coordinate Reference System] AS CRS1 "
                         + " WHERE CRS1.DATUM_CODE = ?)"
-                        + " ORDER BY CRS2.DATUM_CODE,"
-                        + " ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
-                        + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
-                        + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
-                        + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
-                        + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
-                        + " CO.COORD_OP_CODE DESC"); // GEOT-846 fix
+                        + " ORDER BY CRS2.DATUM_CODE, " + OPERATION_ORDER.getOrder()); // GEOT-846 fix
         stmt.setInt(1, Integer.parseInt(code));
         List<Object> bwInfos = null;
         try (ResultSet result = stmt.executeQuery()) {
@@ -2642,12 +2680,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
                             + " JOIN [Extent] E on U.extent_code = E.extent_code"
                             + " WHERE COORD_OP_CODE = ?"
-                            + " ORDER BY ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
-                            + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
-                            + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
-                            + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
-                            + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
-                            + " CO.COORD_OP_CODE DESC LIMIT 1");
+                            + " ORDER BY " + OPERATION_ORDER.getOrder() + " LIMIT 1");
 
             stmt.setInt(1, Integer.parseInt(primaryKey));
             try (ResultSet result = stmt.executeQuery()) {
@@ -2958,12 +2991,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             + " LEFT JOIN [Extent] E on U.extent_code = E.extent_code"
                             + " WHERE SOURCE_CRS_CODE = ?"
                             + " AND TARGET_CRS_CODE = ?"
-                            + " ORDER BY ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
-                            + "	(BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
-                            + " (CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
-                            + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
-                            + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
-                            + " COORD_OP_CODE DESC";
+                            + " ORDER BY " + OPERATION_ORDER.getOrder();
                 } else {
                     key = "ConversionFromCRS";
                     sql = "SELECT PROJECTION_CONV_CODE"

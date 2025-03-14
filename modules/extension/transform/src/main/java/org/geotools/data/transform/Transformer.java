@@ -280,6 +280,7 @@ class Transformer {
         for (SortBy sort : original) {
             if (sort == SortBy.NATURAL_ORDER || sort == SortBy.REVERSE_ORDER) {
                 transformed.add(sort);
+                continue;
             }
             PropertyName pname = sort.getPropertyName();
             Expression ex = expressions.get(pname.getPropertyName());

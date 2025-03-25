@@ -27,6 +27,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.gml3.GMLConfiguration;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Encoder;
@@ -140,7 +141,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     public void encodeUpdateGeometryPoint()
             throws IOException, SAXException, ParserConfigurationException, ParseException {
 
-        Geometry updateGeometry = reader.read("POINT(-79.460958 43.972668)");
+        Geometry updateGeometry = reader.read("POINT(-79.4609587567345256 43.9726687567345256)");
 
         testUpdateGeometry(updateGeometry);
     }
@@ -223,6 +224,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     private void testUpdateGeometry(Geometry updateGeometry)
             throws IOException, ParserConfigurationException, SAXException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
+
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         UpdateElementType update = wfsfac.createUpdateElementType();
@@ -234,7 +236,13 @@ public class WFSEncodingTest extends XmlTestSupport {
         propertyType.setValue(updateGeometry);
         update.getProperty().add(propertyType);
 
-        Encoder encoder = new Encoder(new WFSConfiguration());
+        PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
+
+        WFSConfiguration config = new WFSConfiguration();
+        GMLConfiguration gmlConfig = config.getDependency(GMLConfiguration.class);
+        gmlConfig.setNumDecimals(pm.getMaximumSignificantDigits());
+
+        Encoder encoder = new Encoder(config);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             encoder.encode(update, WFS.Update, out);

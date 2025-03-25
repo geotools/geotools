@@ -1099,6 +1099,13 @@
         <version>1.1.119</version>
       </dependency>
 
+      <!-- DuckDB -->
+      <dependency>
+        <groupId>org.duckdb</groupId>
+        <artifactId>duckdb_jdbc</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+
       <!-- Grid data formats -->
       <dependency>
         <groupId>edu.ucar</groupId>

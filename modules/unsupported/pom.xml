@@ -47,6 +47,7 @@
     <module>vector-mosaic</module>
     <module>jdbc-h2gis</module>
     <module>graticules</module>
+    <module>geoparquet</module>
   </modules>
   <profiles>
     <!-- ================================================== -->
@@ -222,6 +223,12 @@
       <id>teradata</id>
       <modules>
         <module>jdbc-teradata</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>geoparquet</id>
+      <modules>
+        <module>geoparquet</module>
       </modules>
     </profile>
   </profiles>

@@ -187,10 +187,12 @@ public class STACClient implements Closeable {
                 LOGGER.log(Level.FINE, () -> "STAC GET search request: " + getURL);
                 response = this.http.get(getURL);
             } else {
-                URL postURL = new URL(landingPage.getSearchLink(HttpMethod.POST));
-                if (postURL == null) {
-                    throw new IllegalArgumentException("Cannot find GeoJSON search GET link");
+                String url = landingPage.getSearchLink(HttpMethod.POST);
+                if (url == null) {
+                    throw new IllegalArgumentException("Cannot find GeoJSON search POST link");
                 }
+                URL postURL = new URL(url);
+
                 String body = OBJECT_MAPPER.writeValueAsString(search);
 
                 LOGGER.log(Level.FINE, () -> "STAC POST search request: " + postURL + " with body:\n" + body);

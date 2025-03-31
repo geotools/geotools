@@ -115,7 +115,7 @@
 				<Dimension name="REFERENCE_TIME" units="ISO8601" unitSymbol="t">
 					2025-03-12T00:00:00.000Z
 				</Dimension>
-				<!-- GEOS-7632: 'units' must not be missing, but could be empty -->
+				<!-- GEOS-7632: 'units' must not be missing, but could be empty according to WMS spec 1.3, page 52 -->
 				<Dimension name="ELEVATION" units="" unitSymbol="m">
 					2
 				</Dimension>

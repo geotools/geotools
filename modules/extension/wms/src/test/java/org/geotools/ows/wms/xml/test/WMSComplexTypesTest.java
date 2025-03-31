@@ -139,7 +139,7 @@ public class WMSComplexTypesTest {
     }
 
     /**
-     * Runs a test that should make te WMS capabilities parsing fail, because some given dimension has the 'units'
+     * Runs a test that should make the WMS capabilities parsing fail, because some given dimension has the 'units'
      * attribute missing.
      *
      * @throws Exception in case loading of test data fails.

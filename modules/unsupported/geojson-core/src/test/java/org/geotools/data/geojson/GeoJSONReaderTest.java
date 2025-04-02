@@ -45,6 +45,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.referencing.CRS;
@@ -100,6 +101,20 @@ public class GeoJSONReaderTest {
             SimpleFeature first = DataUtilities.first(features);
             for (Property prop : first.getProperties()) {
                 assertEquals(expected.get(prop.getName().getLocalPart()), prop.getValue());
+            }
+        }
+    }
+
+    @Test
+    public void checkUserDataAfterSchemaChange() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "planetary_stac.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection collection = reader.getFeatures();
+            try (SimpleFeatureIterator features = collection.features()) {
+                while (features.hasNext()) {
+                    SimpleFeature feature = features.next();
+                    assertTrue(feature.getUserData().containsKey(GeoJSONReader.TOP_LEVEL_ATTRIBUTES));
+                }
             }
         }
     }

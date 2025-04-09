@@ -62,6 +62,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
+import org.geotools.imageio.netcdf.utilities.BaseDirectoryStrategy;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
@@ -259,15 +260,8 @@ public class AncillaryFileManager implements FileSetManager {
         ncFile = netcdfFile;
         parentDirectory = new File(ncFile.getParent());
 
-        // Look for external folder configuration
-        File baseDir = parentDirectory;
-        final String baseFolder = NetCDFUtilities.EXTERNAL_DATA_DIR;
-        if (baseFolder != null) {
-            baseDir = new File(baseFolder);
-            // Check it again in case it has been deleted in the meantime:
-            baseDir = NetCDFUtilities.isValidDir(baseDir) ? baseDir : null;
-        }
-
+        // Look for the base directory that will contain the auxiliary files
+        File baseDir = BaseDirectoryStrategy.createStrategy().getBaseDirectory(parentDirectory);
         String mainFilePath = ncFile.getCanonicalPath();
 
         // Selection of the hashcode for creating a unique directory of the auxiliary files

@@ -16,12 +16,15 @@
  */
 package org.geotools.xsd;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.xml.namespace.QName;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
@@ -37,6 +40,37 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.EntityResolver2;
 
 public class ParserTest {
+    @Test
+    public void testParseEntityResolver() throws Exception {
+        Parser parser = new Parser(new XMLConfiguration());
+        AtomicBoolean resolverUsed = new AtomicBoolean(false);
+        parser.setEntityResolver(
+                new EntityResolver2() {
+                    @Override
+                    public InputSource getExternalSubset(String name, String baseURI)
+                            throws SAXException, IOException {
+                        return null;
+                    }
+
+                    @Override
+                    public InputSource resolveEntity(
+                            String name, String publicId, String baseURI, String systemId)
+                            throws SAXException, IOException {
+                        if (systemId.equals("./mails.xsd")) resolverUsed.set(true);
+                        return null;
+                    }
+
+                    @Override
+                    public InputSource resolveEntity(String publicId, String systemId)
+                            throws SAXException, IOException {
+                        if (systemId.equals("./mails.xsd")) resolverUsed.set(true);
+                        return null;
+                    }
+                });
+        parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-local-schema.xml"));
+        assertTrue("The resolver was not used?", resolverUsed.get());
+    }
+
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
@@ -127,8 +161,8 @@ public class ParserTest {
         Parser parser = new Parser(config);
         parser.parse(ParserTest.class.getResourceAsStream("parserDelegate.xml"));
 
-        Assert.assertTrue(delegate.foo);
-        Assert.assertTrue(delegate.bar);
+        assertTrue(delegate.foo);
+        assertTrue(delegate.bar);
     }
 
     static class MyParserDelegate implements ParserDelegate, ParserDelegate2 {
@@ -412,7 +446,7 @@ public class ParserTest {
         }
         Assert.assertNotNull(expected);
         // check for the entity expansion limit error code in exception message
-        Assert.assertTrue(expected.getMessage().contains("JAXP00010001"));
+        assertTrue(expected.getMessage().contains("JAXP00010001"));
     }
 
     /** Tests entity expansion limit configuration on Parser. */

@@ -615,7 +615,12 @@ public class ParserHandler extends DefaultHandler2 {
                         // parse the document
                         try {
                             schemas[i / 2] =
-                                    Schemas.parse(location, locators, resolvers, uriHandlers);
+                                    Schemas.parse(
+                                            location,
+                                            locators,
+                                            resolvers,
+                                            uriHandlers,
+                                            entityResolver);
                         } catch (Exception e) {
                             String msg =
                                     "Error loading schema for namespace: "

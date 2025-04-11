@@ -282,7 +282,7 @@ public class BindingGenerator extends AbstractGenerator {
     }
     
     public static void main(String[] args) throws Exception {
-        XSDSchema schema = Schemas.parse("/home/jdeolive/devel/geotools/trunk/demo/xml-po/src/main/xsd/po.xsd");
+        XSDSchema schema = Schemas.parse("/home/jdeolive/devel/geotools/trunk/demo/xml-po/src/main/xsd/po.xsd", null, null, null, null);
         System.out.println( schema.getQNamePrefixToNamespaceMap() );
 //        ArrayList cargList = new ArrayList();
 //        HashSet includedTypes = new HashSet();

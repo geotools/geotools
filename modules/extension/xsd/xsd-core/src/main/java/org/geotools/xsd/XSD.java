@@ -239,9 +239,10 @@ public abstract class XSD {
             resolvers.add(resolver);
         }
 
-        // parse the location of the xsd with all the locators for dependent
-        // schemas
-        return Schemas.parse(getSchemaLocation(), locators, resolvers);
+        // parse the location of the xsd with all the locators for dependent schemas
+        // no resolver as the code should be referencing only local schemas
+        return Schemas.parse(
+                getSchemaLocation(), locators, resolvers, Collections.emptyList(), null);
     }
 
     public SchemaLocator createSchemaLocator() {

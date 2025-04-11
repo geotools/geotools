@@ -16,6 +16,11 @@
  */
 package org.geotools.xsd;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,11 +42,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.HTTPURIHandler;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** Tests for {@link org.geotools.xsd.Schemas}. */
@@ -49,6 +57,12 @@ public class SchemasTest {
 
     File tmp, sub;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    @BeforeClass
+    public static void setupResolver() {
+        // tests need to be able to resolve local entities
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -108,6 +122,17 @@ public class SchemasTest {
                         + "</xsd:schema>";
         write(f, xsd);
 
+        f = new File(sub, "test.xsd");
+        xsd =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n"
+                        + "           targetNamespace=\"http://geotools.org/test\"\n"
+                        + "           xmlns=\"http://geotools.org/test\"\n"
+                        + "           elementFormDefault=\"qualified\">\n"
+                        + "  <xs:element name=\"root\" type=\"xs:anyType\"/>\n"
+                        + "</xs:schema>";
+        write(f, xsd);
+
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
     }
 
@@ -141,7 +166,7 @@ public class SchemasTest {
     public void testValidateImportsIncludes() throws Exception {
         String location = new File(tmp, "root.xsd").getAbsolutePath();
         List errors = Schemas.validateImportsIncludes(location);
-        Assert.assertEquals(2, errors.size());
+        assertEquals(2, errors.size());
 
         SchemaLocationResolver resolver1 =
                 new SchemaLocationResolver(XS.getInstance()) {
@@ -194,10 +219,10 @@ public class SchemasTest {
     public void testImportsOnly() throws IOException {
         XSDSchema schema =
                 Schemas.parse(Schemas.class.getResource("importFacetsEmpty.xsd").toString());
-        Assert.assertNotNull(schema);
+        assertNotNull(schema);
 
         boolean elFound = hasElement(schema, "collapsedString");
-        Assert.assertTrue(elFound);
+        assertTrue(elFound);
     }
 
     /**
@@ -214,7 +239,7 @@ public class SchemasTest {
         // false:
         // elements defined in imported schema should not be found
         boolean elFound = hasElement(schema, "collapsedString");
-        Assert.assertFalse(elFound);
+        assertFalse(elFound);
 
         // force import of external schemas in any case
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "true");
@@ -223,7 +248,7 @@ public class SchemasTest {
         Assert.assertNotNull(schema);
 
         elFound = hasElement(schema, "collapsedString");
-        Assert.assertTrue(elFound);
+        assertTrue(elFound);
     }
 
     private boolean hasElement(XSDSchema schema, String elQName) {

@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         java: [ 11 ]
-        oracle: [ 'oracle-xe:18.4.0', 'oracle-xe:21.3.0', 'oracle-free:23.7' ]
+        oracle: [ 'oracle-xe:21.3.0', 'oracle-free:23.7' ]
       fail-fast: false
 
     steps:

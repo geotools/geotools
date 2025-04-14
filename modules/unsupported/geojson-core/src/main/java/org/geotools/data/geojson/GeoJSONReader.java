@@ -366,6 +366,13 @@ public class GeoJSONReader implements AutoCloseable {
                 while (parser.nextToken() == JsonToken.START_OBJECT) {
                     ObjectNode node = mapper.readTree(parser);
                     JsonNode rel = node.get("rel");
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        JsonNode href = node.get("href");
+                        LOGGER.log(
+                                Level.FINE,
+                                "Found link of type " + (rel == null ? "no rel" : rel.textValue()) + " href: "
+                                        + (href == null ? "none" : href.textValue()));
+                    }
                     if (rel != null && "next".equals(rel.textValue())) {
                         next = node;
                     }

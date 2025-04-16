@@ -86,24 +86,18 @@ public class GeoParquetDialect extends DuckDBDialect {
     }
 
     @Override
-    public void initializeConnection(Connection cx) throws SQLException {
-        registerParquetViews(cx);
-    }
-
-    @Override
     public FilterToSQL createFilterToSQL() {
         return new GeoParquetFilterToSQL();
     }
 
-    /** Connection init scripts to work with geoparquet */
+    /** Database init scripts to work with geoparquet */
     @Override
-    public List<String> getConnectionInitSqls() {
-        List<String> initScript = new ArrayList<>(super.getConnectionInitSqls());
+    public List<String> getDatabaseInitSql() {
+        List<String> initScript = new ArrayList<>(super.getDatabaseInitSql());
         initScript.add("install httpfs");
         initScript.add("load httpfs");
         initScript.add("install parquet");
         initScript.add("load parquet");
-        // initScript.addAll(registerGeoParquetSource());
         return initScript;
     }
 

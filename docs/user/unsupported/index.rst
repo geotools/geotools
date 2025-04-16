@@ -19,6 +19,7 @@ Research and Development:
    arcgis-rest
    css
    geojson
+   geoparquet
    process/index
    swing/index
    swt/index
@@ -29,6 +30,7 @@ Research and Development:
 Unsupported DataStore implementations:
 
 * :doc:`/library/data/elasticsearch` Support for search and analytics engine
+* :doc:`geoparquet` (Active) Support for reading GeoParquet format data files, both local and remote
 * :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 

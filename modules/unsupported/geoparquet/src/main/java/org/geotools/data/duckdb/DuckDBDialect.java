@@ -100,7 +100,7 @@ public class DuckDBDialect extends BasicSQLDialect {
     //        this.topologyPreserved = topologyPreserved;
     //    }
 
-    public List<String> getConnectionInitSqls() {
+    public List<String> getDatabaseInitSql() {
         return List.of("install spatial", "load spatial");
     }
 
@@ -117,12 +117,11 @@ public class DuckDBDialect extends BasicSQLDialect {
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
         // exclude DuckDB system tables
-        if (tableName.startsWith("pg_")
+        boolean systemTable = (tableName.startsWith("pg_")
                 || tableName.startsWith("sqlite_")
-                || tableName.startsWith("information_schema")) {
-            return false;
-        }
-        return true;
+                || tableName.startsWith("information_schema"));
+
+        return !systemTable;
     }
 
     @Override

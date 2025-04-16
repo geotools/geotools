@@ -22,8 +22,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
 import org.geotools.api.data.DataAccessFactory;
+import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
 import org.geotools.data.duckdb.ParamBuilder;
@@ -53,7 +53,7 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory implements DataStoreFactorySpi {
 
-    private static final String GEOPARQUET = "geoparquet";
+    static final String GEOPARQUET = "geoparquet";
 
     /**
      * Parameter for database type.
@@ -67,7 +67,6 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
             .defaultValue(GEOPARQUET)
             .programLevel()
             .build();
-
     /**
      * Parameter for GeoParquet URI.
      *
@@ -91,6 +90,14 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
             .required(true)
             .userLevel()
             .build();
+
+    public static final Param NAMESPACE = AbstractDuckDBDataStoreFactory.NAMESPACE;
+
+    public static final Param FETCHSIZE = AbstractDuckDBDataStoreFactory.FETCHSIZE;
+
+    public static final Param SCREENMAP = AbstractDuckDBDataStoreFactory.SCREENMAP;
+
+    public static final Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
 
     @Override
     protected String getDatabaseID() {
@@ -136,20 +143,32 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
 
     @Override
     protected JDBCDataStore setupDataStore(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
-        dataStore.getLogger().setLevel(Level.FINEST); // REMOVE
         GeoParquetDialect dialect = (GeoParquetDialect) dataStore.getSQLDialect();
         dataStore.setPrimaryKeyFinder(dialect.getPrimaryKeyFinder());
         dialect.registerParquetViews();
         return dataStore;
     }
 
+    /**
+     * Creates a JDBC URL for a persistent DuckDB database tied to the GeoParquet dataset configuration.
+     *
+     * <p>This implementation uses {@link GeoParquetDatabaseUtils} to create a temporary on-disk database that's shared
+     * among all connections to the same GeoParquet dataset configuration, ensuring that:
+     *
+     * <ul>
+     *   <li>SQL views created for GeoParquet files persist across connections
+     *   <li>Metadata caching is properly shared between connections
+     *   <li>When {@link GeoParquetDialect#initializeConnection(Connection)} is called for each connection from the
+     *       pool, the views don't need to be re-registered
+     *   <li>Temporary database files are properly managed and cleaned up when the JVM exits
+     * </ul>
+     *
+     * @param params The parameter map containing the connection parameters
+     * @return A JDBC URL pointing to a persistent DuckDB database for this dataset configuration
+     * @throws IOException If there's an error creating the temporary directory
+     */
     @Override
     protected String getJDBCUrl(Map<String, ?> params) throws IOException {
-        // define a name for the in-memory database to be shared by all connections in
-        // this store. Wait, the JDBC driver does not support named memory databases yet (the python client does for
-        // example)
-        // URI uri = URI.create(Objects.requireNonNull((String) URI_PARAM.lookUp(params)));
-        // String memoryDbName = uri.toASCIIString();
-        return "jdbc:duckdb:"; // + memoryDbName;
+        return GeoParquetDatabaseUtils.getJDBCUrl(params, getParametersInfo());
     }
 }

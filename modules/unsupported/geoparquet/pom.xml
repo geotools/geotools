@@ -17,7 +17,6 @@
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <groupId>org.geotools</groupId>
   <artifactId>gt-geoparquet</artifactId>
   <packaging>jar</packaging>
   <name>GeoParquet DataStore</name>

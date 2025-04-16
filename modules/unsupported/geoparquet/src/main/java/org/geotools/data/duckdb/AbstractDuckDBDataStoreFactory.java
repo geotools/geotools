@@ -17,12 +17,13 @@
 package org.geotools.data.duckdb;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.duckdb.DuckDBDriver;
 import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.data.duckdb.datasource.DuckdbDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -48,6 +49,10 @@ import org.geotools.jdbc.SQLDialect;
  * Parquet, and includes excellent built-in support for spatial operations.
  */
 public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactory implements DataStoreFactorySpi {
+
+    public static final Param NAMESPACE = JDBCDataStoreFactory.NAMESPACE;
+
+    public static final Param FETCHSIZE = JDBCDataStoreFactory.FETCHSIZE;
 
     public static final Param SCREENMAP = new ParamBuilder("screenmap")
             .type(Boolean.class)
@@ -109,7 +114,7 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
         parameters.put(SIMPLIFY.key, SIMPLIFY);
         parameters.put(SCREENMAP.key, SCREENMAP);
         // add these ones back, order matters for the webui
-        parameters.put(JDBCDataStoreFactory.FETCHSIZE.key, JDBCDataStoreFactory.FETCHSIZE);
+        parameters.put(FETCHSIZE.key, FETCHSIZE);
         // parameters.put(SIMPLIFICATION_METHOD.key, SIMPLIFICATION_METHOD);
     }
 
@@ -127,14 +132,18 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
     @Override
     protected BasicDataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
 
-        BasicDataSource dataSource = new BasicDataSource();
+        DuckDBDialect duckDBDialect = (DuckDBDialect) dialect;
+        List<String> databaseInitSqls = duckDBDialect.getDatabaseInitSql();
+
+        DuckdbDataSource dataSource = new DuckdbDataSource(databaseInitSqls);
         dataSource.setUrl(getJDBCUrl(params));
         dataSource.setDriverClassName(getDriverClassName());
+        // configure the driver for streaming
         dataSource.addConnectionProperty(DuckDBDriver.JDBC_STREAM_RESULTS, "true");
+        // keep at least one open connection to not lose memory databases
+        dataSource.setMinIdle(1);
+        dataSource.setMaxActive(2 * Runtime.getRuntime().availableProcessors());
 
-        DuckDBDialect duckDBDialect = (DuckDBDialect) dialect;
-        Collection<String> connectionInitSqls = duckDBDialect.getConnectionInitSqls();
-        dataSource.setConnectionInitSqls(connectionInitSqls);
         return dataSource;
     }
 

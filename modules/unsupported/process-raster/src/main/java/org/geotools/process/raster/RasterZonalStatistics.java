@@ -17,9 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +27,8 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -46,7 +39,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
@@ -54,8 +46,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.util.NumberRange;
 import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.media.jai.zonalstats.ZonalStatsOpImage;
@@ -63,8 +53,6 @@ import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.util.AffineTransformation;
-import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * A process computing zonal statistics based on a raster data set and a set of polygonal zones of interest
@@ -277,17 +265,6 @@ public class RasterZonalStatistics implements RasterProcess {
         }
 
         private ZonalStats processStatistics(Geometry geometry) throws TransformException {
-            // double checked with the tasmania simple test data, this transformation
-            // actually lines up the polygons where they are supposed to be in raster space
-            final AffineTransform dataG2WCorrected = new AffineTransform(
-                    (AffineTransform) dataCoverage.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT));
-            final MathTransform w2gTransform;
-            try {
-                w2gTransform = ProjectiveTransform.create(dataG2WCorrected.createInverse());
-            } catch (NoninvertibleTransformException e) {
-                throw new IllegalArgumentException(e.getLocalizedMessage());
-            }
-
             GridCoverage2D cropped = null;
             try {
                 // first off, cut the geometry around the coverage bounds if necessary
@@ -306,57 +283,13 @@ public class RasterZonalStatistics implements RasterProcess {
                 }
 
                 // check if the novalue is != from NaN
-                GridSampleDimension sampleDimension = dataCoverage.getSampleDimension(0);
-                List<Category> categories = sampleDimension.getCategories();
-                List<Range<Double>> novalueRangeList = null;
-                if (categories != null) {
-                    for (Category category : categories) {
-                        String catName = category.getName().toString();
-                        if (catName.equalsIgnoreCase("no data")) {
-                            NumberRange range = category.getRange();
-                            double min = range.getMinimum();
-                            double max = category.getRange().getMaximum();
-                            if (!Double.isNaN(min) && !Double.isNaN(max)) {
-                                // we have to filter those out
-                                Range<Double> novalueRange = new Range<>(min, true, max, true);
-                                novalueRangeList = new ArrayList<>();
-                                novalueRangeList.add(novalueRange);
-                            }
-                            break;
-                        }
-                    }
-                }
+                List<Range<Double>> noDataValueRangeList = CoverageUtilities.getNoDataAsList(dataCoverage);
 
                 /*
                  * crop on region of interest
                  */
-                ParameterValueGroup param =
-                        PROCESSOR.getOperation("CoverageCrop").getParameters();
-                param.parameter("Source").setValue(dataCoverage);
-                param.parameter("Envelope").setValue(new GeneralBounds(geometryEnvelope));
-                cropped = (GridCoverage2D) PROCESSOR.doOperation(param);
-
-                // transform the geometry to raster space so that we can use it as a ROI source
-                Geometry rasterSpaceGeometry = JTS.transform(geometry, w2gTransform);
-                // System.out.println(rasterSpaceGeometry);
-                // System.out.println(rasterSpaceGeometry.getEnvelopeInternal());
-
-                // simplify the geometry so that it's as precise as the coverage, excess coordinates
-                // just make it slower to determine the point in polygon relationship
-                Geometry simplifiedGeometry = DouglasPeuckerSimplifier.simplify(rasterSpaceGeometry, 1);
-                // System.out.println(simplifiedGeometry.getEnvelopeInternal());
-
-                // compensate for the jaitools range lookup poking the corner of the cells instead
-                // of their center, this makes for odd results if the polygon is just slightly
-                // misaligned with the coverage
-                AffineTransformation at = new AffineTransformation();
-
-                at.setToTranslation(-0.5, -0.5);
-                simplifiedGeometry.apply(at);
-
-                // build a shape using a fast point in polygon wrapper
-                ROI roi = new ROIGeometry(simplifiedGeometry, false);
-
+                cropped = CoverageUtilities.crop(dataCoverage, geometryEnvelope);
+                ROI roi = CoverageUtilities.getSimplifiedRoiGeometry(dataCoverage, geometry);
                 // run the stats via JAI
                 Statistic[] reqStatsArr = {
                     Statistic.MAX, Statistic.MIN, Statistic.RANGE, Statistic.MEAN, Statistic.SDEV, Statistic.SUM
@@ -373,7 +306,7 @@ public class RasterZonalStatistics implements RasterProcess {
                         null,
                         null,
                         false,
-                        novalueRangeList);
+                        noDataValueRangeList);
                 return (ZonalStats) zsOp.getProperty(ZonalStatsDescriptor.ZONAL_STATS_PROPERTY);
             } finally {
                 // dispose coverages

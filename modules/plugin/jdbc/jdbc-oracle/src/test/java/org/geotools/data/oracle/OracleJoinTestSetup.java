@@ -41,17 +41,17 @@ public class OracleJoinTestSetup extends JDBCJoinTestSetup {
 
         sql = "INSERT INTO ftjoin VALUES (0, 'zero', MDSYS.SDO_GEOMETRY(2003, 4326, NULL,"
                 + " MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1), "
-                + " MDSYS.SDO_ORDINATE_ARRAY(-0.1,-0.1, -0.1,0.1, 0.1,0.1, 0.1,-0.1, -0.1,-0.1)), 0)";
+                + " MDSYS.SDO_ORDINATE_ARRAY(-0.1,-0.1, 0.1,-0.1, 0.1,0.1, -0.1,0.1, -0.1,-0.1)), 0)";
         run(sql);
 
         sql = "INSERT INTO ftjoin VALUES (1, 'one', MDSYS.SDO_GEOMETRY(2003, 4326, NULL,"
                 + " MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1), "
-                + " MDSYS.SDO_ORDINATE_ARRAY(-1.1,-1.1, -1.1,1.1, 1.1,1.1, 1.1,-1.1, -1.1,-1.1)), 1)";
+                + " MDSYS.SDO_ORDINATE_ARRAY(-1.1,-1.1, 1.1,-1.1, 1.1,1.1, -1.1,1.1, -1.1,-1.1)), 1)";
         run(sql);
 
         sql = "INSERT INTO ftjoin VALUES (2, 'two', MDSYS.SDO_GEOMETRY(2003, 4326, NULL,"
                 + " MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1), "
-                + " MDSYS.SDO_ORDINATE_ARRAY(-10,-10, -10,10, 10,10, 10,-10, -10,-10)), 2)";
+                + " MDSYS.SDO_ORDINATE_ARRAY(-10,-10, 10,-10, 10,10, -10,10, -10,-10)), 2)";
         run(sql);
 
         sql = "INSERT INTO ftjoin VALUES (3, 'three', NULL, 3)";

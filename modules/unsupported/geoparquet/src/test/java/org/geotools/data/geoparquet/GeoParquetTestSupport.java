@@ -327,6 +327,9 @@ public class GeoParquetTestSupport extends ExternalResource {
         try (Connection conn = DriverManager.getConnection("jdbc:duckdb:");
                 Statement stmt = conn.createStatement()) {
             stmt.execute(script);
+        } catch (SQLException e) {
+            LOGGER.severe(e.getMessage() + " script: \n" + script);
+            throw e;
         }
     }
 

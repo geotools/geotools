@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeFalse;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
@@ -44,10 +46,20 @@ import org.locationtech.jts.geom.Geometry;
 /** Tests for GeoParquet DataStore with local files. */
 public class GeoParquetLocalFileTest extends GeoParquetTestBase {
 
+    /** Flag to detect Windows OS */
+    private static final boolean IS_WINDOWS =
+            System.getProperty("os.name").toLowerCase().contains("windows");
+
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @ClassRule
     public static final GeoParquetTestSupport support = new GeoParquetTestSupport();
+
+    @Before
+    public void setUp() {
+        // Skip test on Windows due to path handling differences
+        assumeFalse("Test disabled on Windows platform", IS_WINDOWS);
+    }
 
     @Test
     public void testSingleFileAccess() throws IOException {

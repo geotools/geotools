@@ -394,8 +394,11 @@ SELECT 'Exporting to GeoParquet files...' AS status;
 -- Export to GeoParquet with Hive partitioning by theme and type at test-data/worldgrid_partitioned
 COPY (
     SELECT * FROM points
-) TO 'test-data/worldgrid_partitioned' (
-    FORMAT 'parquet', 
+) 
+TO 'test-data/worldgrid_partitioned'
+(
+    FORMAT 'parquet',
+    ROW_GROUP_SIZE 2048,
     COMPRESSION 'zstd', 
     PARTITION_BY (theme, type), 
     OVERWRITE_OR_IGNORE, 
@@ -404,8 +407,11 @@ COPY (
 
 COPY (
     SELECT * FROM lines
-) TO 'test-data/worldgrid_partitioned' (
-    FORMAT 'parquet', 
+)
+TO 'test-data/worldgrid_partitioned'
+(
+    FORMAT 'parquet',
+    ROW_GROUP_SIZE 2048,
     COMPRESSION 'zstd', 
     PARTITION_BY (theme, type), 
     OVERWRITE_OR_IGNORE, 
@@ -414,8 +420,11 @@ COPY (
 
 COPY (
     SELECT * FROM polygons
-) TO 'test-data/worldgrid_partitioned' (
-    FORMAT 'parquet', 
+)
+TO 'test-data/worldgrid_partitioned'
+(
+    FORMAT 'parquet',
+    ROW_GROUP_SIZE 2048,
     COMPRESSION 'zstd', 
     PARTITION_BY (theme, type), 
     OVERWRITE_OR_IGNORE, 

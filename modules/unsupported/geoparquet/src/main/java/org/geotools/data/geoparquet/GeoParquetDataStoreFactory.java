@@ -17,13 +17,8 @@
 package org.geotools.data.geoparquet;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
-import java.util.Objects;
 import org.geotools.api.data.DataAccessFactory;
-import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
 import org.geotools.data.duckdb.ParamBuilder;
@@ -43,13 +38,13 @@ import org.geotools.jdbc.SQLDialect;
  *
  * <p>Usage example:
  *
- * <pre>
- * Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+ * <pre>{@code
+ * Map<String, Object> params = new HashMap<>();
  * params.put("dbtype", "geoparquet");
  * params.put("uri", "file:/path/to/data.parquet");
  *
  * DataStore store = DataStoreFinder.getDataStore(params);
- * </pre>
+ * }</pre>
  */
 public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory implements DataStoreFactorySpi {
 
@@ -91,29 +86,81 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
             .userLevel()
             .build();
 
+    /**
+     * Parameter for controlling Hive partition depth in GeoParquet datasets.
+     *
+     * <p>This parameter determines how many levels of key=value directories are used for partitioning:
+     *
+     * <ul>
+     *   <li>null (default): Use all partition levels found
+     *   <li>0: No partitioning, treat all files as a single dataset
+     *   <li>1+: Use this many levels of partitioning
+     * </ul>
+     *
+     * <p>For example, with a dataset structure like: {@code s3://bucket/data/year=2023/month=01/day=01/file.parquet}
+     *
+     * <ul>
+     *   <li>max_hive_depth=1: Only "year=2023" is used for partitioning
+     *   <li>max_hive_depth=2: "year=2023/month=01" is used
+     *   <li>max_hive_depth=3 or null: "year=2023/month=01/day=01" is used
+     * </ul>
+     */
+    public static final DataAccessFactory.Param MAX_HIVE_DEPTH = new ParamBuilder("max_hive_depth")
+            .type(Integer.class)
+            .title("Max Hive partition depth")
+            .description("Max number Hive partitions to use when resolving feature types")
+            .required(false)
+            .defaultValue(null)
+            .advancedLevel()
+            .build();
+
+    /** Parameter for specifying the namespace URI for the feature type. */
     public static final Param NAMESPACE = AbstractDuckDBDataStoreFactory.NAMESPACE;
 
+    /** Parameter for controlling the number of features to fetch at once. */
     public static final Param FETCHSIZE = AbstractDuckDBDataStoreFactory.FETCHSIZE;
 
+    /** Parameter for enabling/disabling screen map optimization for rendering. */
     public static final Param SCREENMAP = AbstractDuckDBDataStoreFactory.SCREENMAP;
 
+    /** Parameter for enabling/disabling geometry simplification when rendering. */
     public static final Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
 
+    /**
+     * Returns the database ID for this factory.
+     *
+     * @return The database ID ("geoparquet")
+     */
     @Override
     protected String getDatabaseID() {
         return GEOPARQUET;
     }
 
+    /**
+     * Returns the human-readable display name for this datastore.
+     *
+     * @return The display name ("GeoParquet")
+     */
     @Override
     public String getDisplayName() {
         return "GeoParquet";
     }
 
+    /**
+     * Returns a human-readable description of this datastore.
+     *
+     * @return The description of the datastore
+     */
     @Override
     public String getDescription() {
         return "GeoParquet format data files (*.parquet)";
     }
 
+    /**
+     * Adds GeoParquet-specific parameters to the parameter map.
+     *
+     * @param parameters The parameter map to add to
+     */
     @Override
     protected void addDatabaseSpecificParameters(Map<String, Object> parameters) {
         // Add GeoParquet specific parameters
@@ -121,31 +168,53 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
         parameters.put(URI_PARAM.key, URI_PARAM);
     }
 
+    /**
+     * Creates a GeoParquetDialect for handling GeoParquet-specific SQL operations.
+     *
+     * @param dataStore The datastore to create a dialect for
+     * @param params The connection parameters
+     * @return A new GeoParquetDialect instance
+     */
     @Override
     protected GeoParquetDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
-        dataStore.dispose();
-        try {
-            String lookUp = (String) Objects.requireNonNull(URI_PARAM.lookUp(params));
-            java.net.URI uri = new URI(lookUp);
-            return new GeoParquetDialect(dataStore, uri);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return new GeoParquetDialect(dataStore);
     }
 
-    /** Unused, we override {@link #createSQLDialect(JDBCDataStore, Map)} instead */
+    /**
+     * Unused method since we override {@link #createSQLDialect(JDBCDataStore, Map)} instead.
+     *
+     * @param dataStore The datastore to create a dialect for
+     * @return Never returns, always throws UnsupportedOperationException
+     * @throws UnsupportedOperationException Always
+     */
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Sets up the datastore with GeoParquet-specific configuration.
+     *
+     * <p>This method:
+     *
+     * <ol>
+     *   <li>Sets up the primary key finder for feature ID handling
+     *   <li>Creates a configuration object from the parameters
+     *   <li>Registers the GeoParquet views based on the configuration
+     * </ol>
+     *
+     * @param dataStore The datastore to set up
+     * @param params The connection parameters
+     * @return The configured datastore
+     * @throws IOException If there's an error setting up the datastore
+     */
     @Override
     protected JDBCDataStore setupDataStore(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         GeoParquetDialect dialect = (GeoParquetDialect) dataStore.getSQLDialect();
         dataStore.setPrimaryKeyFinder(dialect.getPrimaryKeyFinder());
-        dialect.registerParquetViews();
+
+        GeoParquetConfig config = GeoParquetConfig.valueOf(params);
+        dialect.registerParquetViews(config);
         return dataStore;
     }
 

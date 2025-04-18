@@ -9,6 +9,8 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 - **Local File Access**: Read GeoParquet files from your local filesystem
 - **Remote File Access**: Access GeoParquet files via HTTP/HTTPS URLs and S3 storage
 - **Directory Support**: Point to a directory and automatically work with all GeoParquet files within it
+- **Hive Partitioning Support**: Automatically detects and handles Hive-partitioned datasets (key=value directory structure)
+- **Partition Depth Control**: Configure how many levels of partitioning to use with the `max_hive_depth` parameter
 - **Spatial Queries**: Full support for spatial filters (intersects, contains, within, etc.)
 - **Attribute Filters**: Filter data based on attribute values
 - **Geometry Simplification**: Supports on-the-fly geometry simplification for rendering optimization
@@ -18,15 +20,17 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 - **Query Pushdown**: Pushes filters down to optimize data retrieval
 - **Bounds Optimization**: Uses GeoParquet metadata or specialized bbox columns for fast bounds calculation
 
+
 ## How It Works
 
 Under the hood, this DataStore uses [DuckDB](https://duckdb.org/) and its Spatial and Parquet extensions to provide high-performance access to GeoParquet files. DuckDB is an embedded analytical database that excels at reading and processing Parquet files. The implementation:
 
 1. Creates SQL views over GeoParquet files (local or remote)
-2. Handles GeoParquet metadata parsing and schema detection
-3. Translates GeoTools filters to optimized SQL queries
-4. Converts spatial operations to DuckDB spatial functions
-5. Manages extension loading (spatial, parquet, httpfs)
+2. Detects and manages Hive-partitioned datasets (directory structures with key=value patterns)
+3. Handles GeoParquet metadata parsing and schema detection
+4. Translates GeoTools filters to optimized SQL queries
+5. Converts spatial operations to DuckDB spatial functions
+6. Manages extension loading (spatial, parquet, httpfs)
 
 This implementation detail is abstracted away from the user, providing a clean GeoTools DataStore interface.
 
@@ -64,6 +68,21 @@ params.put("uri", "file:/path/to/directory/with/parquet/files");
 
 DataStore store = DataStoreFinder.getDataStore(params);
 // Each GeoParquet file will appear as a separate feature type
+String[] typeNames = store.getTypeNames();
+```
+
+### Hive-Partitioned Dataset
+
+```java
+Map<String, Object> params = new HashMap<>();
+params.put("dbtype", "geoparquet");
+params.put("uri", "s3://my-bucket/data/year=*/month=*/day=*");
+// Optionally limit partition depth
+params.put("max_hive_depth", 2); // Only use year and month, ignore day
+
+DataStore store = DataStoreFinder.getDataStore(params);
+// Each distinct partition becomes a separate feature type
+// With max_hive_depth=2, you'll get partitions like "year=2023_month=01"
 String[] typeNames = store.getTypeNames();
 ```
 
@@ -132,6 +151,7 @@ SimpleFeatureCollection centralBuildings = buildings.getFeatures(filter);
 |-----------|------|----------|-------------|
 | **dbtype** | String | Yes | Must be "geoparquet" |
 | **uri** | String | Yes | URI to GeoParquet file or directory (supports file://, https://, s3://) |
+| **max_hive_depth** | Integer | No | Maximum depth of Hive partition hierarchy to use (null = all levels, 0 = none, 1+ = specific level) |
 | **simplify** | Boolean | No | Enable geometry simplification for rendering optimization (default: `true`) |
 | **namespace** | String | No | Namespace URI to use for features |
 
@@ -170,9 +190,18 @@ The implementation parses the `geo` metadata field from Parquet files to obtain:
 - Each GeoParquet file in a directory appears as a separate feature type in the DataStore
 - On-the-fly geometry simplification uses ST_SimplifyPreserveTopology for best results with rendering
 
-## TODO
+## Implemented Features
 
-- Identify datasets when the URI contains globbing patterns (e.g. `path/to/hive-partitioned-files/**/*`), and report them as separate `FeatureType`s.
+- Hive-partitioned dataset support for directories with key=value patterns
+- Configurable partition depth with max_hive_depth parameter
+- Support for Overture Maps data format and organization
+- Bounds optimization using GeoParquet metadata or bbox columns
+- Automatic feature type discovery from partitioned datasets
+- Remote access to HTTP/S3 GeoParquet files
+- Filter pushdown for optimized spatial queries
+
+## Planned Improvements
+
 - Identify actual **geometry type**. Currently all geometry columns are reported as type `Geometry`. Consider GeoParquet files can have multiple
   geometry types. If the `geo` metadata is available, they're reported (e.g. [Polygon, MultiPolygon, ...]). Otherwise it's hard to know.
 - Support multiple CRS's, read the kvp 'geo' metadata
@@ -199,6 +228,6 @@ The implementation parses the `geo` metadata field from Parquet files to obtain:
 ## Dependencies
 
 - GeoTools Core and JDBC modules
-- DuckDB JDBC driver (version 1.2.0 or higher)
+- DuckDB JDBC driver (version specified in the root `pom.xml` for the `org.duckdb:duckdb_jdbc` dependency)
 - Jackson Databind (for parsing GeoParquet metadata)
 

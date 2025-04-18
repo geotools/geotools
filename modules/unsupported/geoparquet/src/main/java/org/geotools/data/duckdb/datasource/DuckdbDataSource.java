@@ -21,8 +21,13 @@ import static java.util.Objects.requireNonNull;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
+import java.util.logging.Logger;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.jdbc.datasource.ManageableDataSource;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.logging.Logging;
 
 /**
  * A specialized JDBC DataSource implementation for DuckDB connections.
@@ -32,8 +37,11 @@ import org.apache.commons.dbcp.BasicDataSource;
  *
  * <p>The class accepts a list of SQL statements that are executed once to initialize the database (typically to load
  * extensions like 'spatial' and 'parquet').
+ *
+ * @implNote implementing {@link ManageableDataSource} is necessary for {@link JDBCDataStore#dispose()} to call
+ *     {@link #close()}
  */
-public class DuckdbDataSource extends BasicDataSource {
+public class DuckdbDataSource extends BasicDataSource implements ManageableDataSource {
 
     private DuckdbConnectionFactory duckdbConnectionFactory;
     private List<String> databaseInitSqls;
@@ -96,5 +104,10 @@ public class DuckdbDataSource extends BasicDataSource {
             duckdbConnectionFactory.close();
         }
         super.close();
+    }
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return Logging.getLogger(getClass()).getParent();
     }
 }

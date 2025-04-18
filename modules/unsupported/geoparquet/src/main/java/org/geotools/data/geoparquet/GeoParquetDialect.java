@@ -19,9 +19,7 @@ package org.geotools.data.geoparquet;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -30,16 +28,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
-import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -69,28 +63,60 @@ import org.locationtech.jts.geom.Geometry;
  * <p>The dialect extracts and uses the GeoParquet specification metadata to provide improved performance for operations
  * like bounds computation and feature access. It supports both standard GeoParquet format (1.1.0) and development
  * versions (1.2.0-dev).
+ *
+ * <p>The dialect uses several performance optimizations:
+ *
+ * <ul>
+ *   <li>Extracting bounds from GeoParquet metadata rather than computing them
+ *   <li>Creating SQL views for consistent access to partitioned datasets
+ *   <li>Using DuckDB's spatial functions for efficient querying
+ *   <li>Maintaining a cache of metadata to avoid repeated parsing
+ * </ul>
+ *
+ * <p>It works in conjunction with {@link GeoParquetViewManager} to handle Hive-partitioned datasets, exposing each
+ * partition as a separate feature type.
  */
 public class GeoParquetDialect extends DuckDBDialect {
 
     private static final Logger LOGGER = Logging.getLogger(GeoParquetDialect.class);
 
-    /** The URI of the GeoParquet file or directory being accessed */
-    private final URI uri;
+    private final GeoParquetViewManager viewManager;
 
     /** Cached GeoParquet metadata extracted from the dataset */
-    private GeoparquetDatasetMetadata geoparquetMetadata;
+    private Map<String, GeoparquetDatasetMetadata> geoparquetMetadata = new ConcurrentHashMap<>();
 
-    public GeoParquetDialect(JDBCDataStore dataStore, URI uri) {
+    /**
+     * Creates a new GeoParquetDialect.
+     *
+     * @param dataStore The JDBC datastore this dialect will work with
+     */
+    public GeoParquetDialect(JDBCDataStore dataStore) {
         super(dataStore);
-        this.uri = uri;
+        this.viewManager = new GeoParquetViewManager(dataStore);
     }
 
+    /**
+     * Creates a specialized filter-to-SQL converter for GeoParquet.
+     *
+     * @return A new GeoParquetFilterToSQL instance
+     */
     @Override
     public FilterToSQL createFilterToSQL() {
         return new GeoParquetFilterToSQL();
     }
 
-    /** Database init scripts to work with geoparquet */
+    /**
+     * Provides SQL statements to initialize the DuckDB database for GeoParquet access.
+     *
+     * <p>This installs and loads required DuckDB extensions:
+     *
+     * <ul>
+     *   <li>httpfs - For HTTP/S3 access to remote GeoParquet files
+     *   <li>parquet - For reading Parquet file format
+     * </ul>
+     *
+     * @return List of SQL statements to initialize the database
+     */
     @Override
     public List<String> getDatabaseInitSql() {
         List<String> initScript = new ArrayList<>(super.getDatabaseInitSql());
@@ -101,21 +127,60 @@ public class GeoParquetDialect extends DuckDBDialect {
         return initScript;
     }
 
-    public GeoparquetDatasetMetadata getGeoparquetMetadata(Connection cx) throws IOException {
-        if (geoparquetMetadata == null) {
-            Map<String, GeoParquetMetadata> md = loadGeoparquetMetadata(cx);
-            geoparquetMetadata = new GeoparquetDatasetMetadata(md);
-        }
-        return geoparquetMetadata;
+    /**
+     * Registers SQL views for GeoParquet data partitions.
+     *
+     * <p>This method is called by {@link GeoParquetDataStoreFactory#setupDataStore(JDBCDataStore, Map)} to initialize
+     * the dialect with the provided configuration. It:
+     *
+     * <ol>
+     *   <li>Clears any cached metadata
+     *   <li>Initializes the view manager with the new configuration
+     * </ol>
+     *
+     * @param config The GeoParquet configuration
+     * @throws IOException If there's an error registering the views
+     */
+    public void registerParquetViews(GeoParquetConfig config) throws IOException {
+        geoparquetMetadata.clear();
+        viewManager.initialize(config);
     }
 
-    public Map<String, GeoParquetMetadata> loadGeoparquetMetadata(Connection cx) throws IOException {
-        String lookUpUri = isDirectory(uri)
-                ? toFile(uri)
-                        .map(File::getAbsolutePath)
-                        .map(dir -> dir + "/*.parquet")
-                        .orElseThrow()
-                : uri.toASCIIString();
+    /**
+     * Gets the GeoParquet metadata for a feature type.
+     *
+     * <p>This method retrieves metadata from the cache if available, or loads it from the data source if not yet
+     * cached.
+     *
+     * @param featureType The feature type to get metadata for
+     * @param cx Database connection to use if metadata needs to be loaded
+     * @return The GeoParquet metadata for the feature type
+     * @throws IOException If there's an error accessing the metadata
+     */
+    GeoparquetDatasetMetadata getGeoparquetMetadata(SimpleFeatureType featureType, Connection cx) throws IOException {
+
+        final String viewName = featureType.getTypeName();
+        return geoparquetMetadata.computeIfAbsent(viewName, view -> loadGeoparquetMetadata(viewName, cx));
+    }
+
+    /**
+     * Loads GeoParquet metadata for a specific view.
+     *
+     * <p>This method:
+     *
+     * <ol>
+     *   <li>Retrieves the URI for the view
+     *   <li>Queries the Parquet key-value metadata to extract the 'geo' field
+     *   <li>Parses the metadata for each file in the dataset
+     * </ol>
+     *
+     * @param viewName The name of the view to load metadata for
+     * @param cx Database connection to use for querying
+     * @return The combined dataset metadata
+     */
+    public GeoparquetDatasetMetadata loadGeoparquetMetadata(String viewName, Connection cx) {
+
+        String lookUpUri = viewManager.getVieUri(viewName);
         // geo comes as a binary string
         String sql = format(
                 "SELECT file_name, value::BLOB AS value FROM parquet_kv_metadata('%s') WHERE key = 'geo'", lookUpUri);
@@ -132,12 +197,27 @@ public class GeoParquetDialect extends DuckDBDialect {
                 }
             }
         } catch (SQLException e) {
-            throw new IOException(e);
+            throw new IllegalStateException(e);
         }
 
-        return parquetMetadataByFileName;
+        return new GeoparquetDatasetMetadata(parquetMetadataByFileName);
     }
 
+    /**
+     * Parses the 'geo' metadata blob from a Parquet file into a structured object.
+     *
+     * <p>This method:
+     *
+     * <ol>
+     *   <li>Extracts the binary data from the blob
+     *   <li>Converts it to a UTF-8 string (the geo metadata is stored as JSON)
+     *   <li>Parses the JSON into a GeoParquetMetadata object
+     * </ol>
+     *
+     * @param fileName The name of the file this metadata belongs to
+     * @param blobData The binary 'geo' metadata
+     * @return The parsed metadata, or null if parsing failed
+     */
     private GeoParquetMetadata parseMetadata(String fileName, Blob blobData) throws SQLException {
         long length = blobData.length();
         byte[] bytes = blobData.getBytes(1L /* yes, 1-indexed */, (int) length);
@@ -154,8 +234,13 @@ public class GeoParquetDialect extends DuckDBDialect {
     }
 
     /**
-     * Helper for {@link GeoParquetDataStoreFactory} to identify the {@code id} column as the primary key (and hence the
-     * FeatureId)
+     * Provides a PrimaryKeyFinder that identifies the 'id' column as the primary key.
+     *
+     * <p>This is a helper for {@link GeoParquetDataStoreFactory} to establish the feature ID column in GeoParquet
+     * datasets. It always identifies the 'id' column as a String primary key, which is the standard convention for
+     * GeoParquet files.
+     *
+     * @return A PrimaryKeyFinder for GeoParquet datasets
      */
     public PrimaryKeyFinder getPrimaryKeyFinder() {
         return new PrimaryKeyFinder() {
@@ -167,17 +252,26 @@ public class GeoParquetDialect extends DuckDBDialect {
         };
     }
 
-    //
-
     /**
-     * If possible, return the full dataset bounds from the {@code geo} geoparquet metadata field.
+     * Returns optimized bounds for a feature type by using GeoParquet metadata.
      *
-     * <p>Otherwise check if there's a {@code bbox} column even if the geoparquet metadata is not present (e.g.
-     * OvertureMaps release 2025-02-19.0), and compute the xmin,xmax,ymin,ymax bounds using aggregate functions, which
-     * will perform better since it uses the column stats.
+     * <p>This method uses a multi-stage approach to efficiently determine dataset bounds:
      *
-     * <p>Finally, fall back to {@link DuckDBDialect#getOptimizedBounds(String, SimpleFeatureType, Connection)} for a
-     * more general (and slow) {@code ST_Extent_Agg(geometry)} call.
+     * <ol>
+     *   <li>First tries to extract bounds from the GeoParquet 'geo' metadata field
+     *   <li>If 'geo' metadata is not available, checks for a 'bbox' column and uses aggregate functions on its
+     *       components (common in datasets like OvertureMaps)
+     *   <li>Finally falls back to the generic DuckDB bounds computation using spatial functions
+     * </ol>
+     *
+     * <p>Each method is progressively more computationally expensive, so we try them in order of efficiency.
+     *
+     * @param schema The database schema (unused in GeoParquet)
+     * @param featureType The feature type to get bounds for
+     * @param cx Database connection to use for querying
+     * @return A list containing a single ReferencedEnvelope representing the dataset bounds
+     * @throws SQLException If there's an error executing SQL
+     * @throws IOException If there's an error accessing the data
      */
     @Override
     public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType, Connection cx)
@@ -187,7 +281,7 @@ public class GeoParquetDialect extends DuckDBDialect {
             return List.of();
         }
 
-        GeoparquetDatasetMetadata md = getGeoparquetMetadata(cx);
+        GeoparquetDatasetMetadata md = getGeoparquetMetadata(featureType, cx);
         ReferencedEnvelope bounds;
         if (!md.isEmpty()) {
             bounds = md.getBounds();
@@ -202,6 +296,19 @@ public class GeoParquetDialect extends DuckDBDialect {
         return List.of(requireNonNull(bounds));
     }
 
+    /**
+     * Computes bounds from a 'bbox' column in the dataset.
+     *
+     * <p>This method handles datasets that don't have GeoParquet 'geo' metadata but do have a 'bbox' column with xmin,
+     * xmax, ymin, ymax components. It uses SQL aggregate functions to efficiently compute the overall bounds without
+     * having to examine each geometry.
+     *
+     * @param featureType The feature type containing a bbox column
+     * @param cx Database connection to use for querying
+     * @return The computed bounds as a ReferencedEnvelope
+     * @throws SQLException If there's an error executing SQL
+     * @throws IOException If there's an error accessing the data
+     */
     private ReferencedEnvelope computeBoundsFromBboxColumn(SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
 
@@ -219,90 +326,22 @@ public class GeoParquetDialect extends DuckDBDialect {
         }
     }
 
-    public void registerParquetViews() throws IOException {
-        try (Connection c = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
-            registerParquetViews(c);
-        } catch (SQLException e) {
-            throw new IOException(e);
-        }
-    }
-
-    private void registerParquetViews(Connection c) throws SQLException {
-        try (Statement st = c.createStatement()) {
-            for (String viewSql : registerGeoParquetSource()) {
-                st.addBatch(viewSql);
-            }
-            st.executeBatch();
-        }
-    }
-
-    private List<String> registerGeoParquetSource() {
-        Optional<File> file = toFile(uri);
-        if (file.isPresent()) {
-            List<File> parquetFiles = findParquetFiles(file.orElseThrow());
-            return registerParquetFiles(parquetFiles);
-        }
-        return List.of(createParquetUrlView(uri));
-    }
-
+    /**
+     * Gets the SRID (Spatial Reference ID) for a geometry column.
+     *
+     * <p>In GeoParquet, geometries are typically in EPSG:4326 (WGS84) coordinate system, so this method returns 4326 by
+     * default. A future enhancement could extract the CRS from the 'geo' metadata field.
+     *
+     * @param schemaName The database schema (unused in GeoParquet)
+     * @param tableName The table/view name
+     * @param columnName The geometry column name
+     * @param cx Database connection
+     * @return The SRID of the geometry column (4326)
+     */
     @Override
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
 
         return 4326;
-    }
-
-    private boolean isDirectory(URI uri) {
-        return toFile(uri).map(File::isDirectory).orElse(false);
-    }
-
-    private Optional<File> toFile(URI uri) {
-        if (StringUtils.isEmpty(uri.getScheme())) {
-            uri = URI.create("file:" + uri);
-        }
-        if ("file".equals(uri.getScheme())) {
-            File file = new File(uri).getAbsoluteFile();
-            return Optional.of(file);
-        }
-        return Optional.empty();
-    }
-
-    /** List of files as absolute path names */
-    private List<File> findParquetFiles(File file) {
-
-        if (!file.isAbsolute()) file = file.getAbsoluteFile();
-        if (file.isDirectory()) {
-            File[] parquetFiles = file.listFiles((d, name) -> name.toLowerCase().endsWith(".parquet"));
-            if (parquetFiles == null || parquetFiles.length == 0) {
-                throw new IllegalArgumentException("No parquet files found in directory: " + file);
-            }
-            return Arrays.asList(parquetFiles);
-        }
-        return List.of(file);
-    }
-
-    private List<String> registerParquetFiles(List<File> parquetFiles) {
-        // Create a view for each parquet file
-        return parquetFiles.stream().map(this::createParquetView).collect(Collectors.toList());
-    }
-
-    private String createParquetView(File parquetFile) {
-        String viewName = generateViewName(parquetFile.getName());
-        String filePath = parquetFile.getAbsolutePath();
-
-        return format(
-                "CREATE VIEW IF NOT EXISTS %s AS SELECT * FROM read_parquet('%s')", escapeName(viewName), filePath);
-    }
-
-    private String createParquetUrlView(URI uri) {
-        String path = uri.getPath();
-        String viewName = generateViewName(path.substring(path.lastIndexOf('/') + 1));
-
-        return format("CREATE VIEW IF NOT EXISTS %s AS SELECT * FROM read_parquet('%s')", escapeName(viewName), uri);
-    }
-
-    private String generateViewName(String filename) {
-        String replaceAll = filename.replaceAll("\\.parquet$", "").replaceAll("[^\\w]", "_");
-        return replaceAll;
     }
 }

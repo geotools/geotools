@@ -16,10 +16,20 @@
  */
 package org.geotools.data.geoparquet;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
+import org.geotools.jackson.datatype.geoparquet.GeoParquetModule;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -90,5 +100,56 @@ public class GeoParquetTestSupportTest {
 
         assertNotNull("Should be able to get a partition file", pointFile);
         assertTrue("Partition file should exist", pointFile.exists());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testGeoParquetMetadataStructure() throws IOException, SQLException {
+        File pointsFile = testData.getWorldgridFile("points.parquet");
+
+        try (Connection conn = DriverManager.getConnection("jdbc:duckdb:");
+                Statement stmt = conn.createStatement()) {
+
+            stmt.execute("install spatial");
+            stmt.execute("load spatial");
+            stmt.execute("install parquet");
+            stmt.execute("load parquet");
+
+            String sql = String.format(
+                    "SELECT decode(value) AS value FROM parquet_kv_metadata('%s') where key = 'geo'",
+                    pointsFile.getAbsolutePath());
+
+            String metadataJson;
+            try (ResultSet rs = stmt.executeQuery(sql)) {
+                assertTrue("Parquet file should have 'geo' metadata", rs.next());
+                metadataJson = rs.getString("value");
+                assertNotNull("Geo metadata value should not be null", metadataJson);
+            }
+
+            ObjectMapper mapper = GeoParquetModule.createObjectMapper();
+            Map<String, Object> metadata = mapper.readValue(metadataJson, Map.class);
+
+            // Verify metadata structure
+            assertTrue("Metadata should have 'version' field", metadata.containsKey("version"));
+            assertTrue("Metadata should have 'primary_column' field", metadata.containsKey("primary_column"));
+            assertTrue("Metadata should have 'columns' field", metadata.containsKey("columns"));
+
+            Map<String, Object> columns = (Map<String, Object>) metadata.get("columns");
+            Map<String, Object> geometryColumn = (Map<String, Object>) columns.get("geometry");
+
+            assertTrue("Geometry column should have 'encoding' field", geometryColumn.containsKey("encoding"));
+            assertTrue(
+                    "Geometry column should have 'geometry_types' field", geometryColumn.containsKey("geometry_types"));
+            assertTrue("Geometry column should have 'bbox' field", geometryColumn.containsKey("bbox"));
+
+            // Note: CRS is currently not added by DuckDB 1.2.2, but we document its expected location
+            // in tests for when the DuckDB version is updated
+            if (geometryColumn.containsKey("crs")) {
+                // If crs exists, verify it's structured correctly
+                Map<String, Object> crs = (Map<String, Object>) geometryColumn.get("crs");
+                assertTrue("CRS should have type field", crs.containsKey("type"));
+                assertEquals("CRS type should be GeographicCRS", "GeographicCRS", crs.get("type"));
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.geoparquet;
+package org.geotools.jackson.datatype.geoparquet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.locationtech.jts.geom.Envelope;
@@ -67,7 +66,7 @@ import org.locationtech.jts.geom.Envelope;
 })
 public abstract class GeoParquetMetadata {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = GeoParquetModule.createObjectMapper();
 
     @JsonProperty(value = "version", required = true)
     protected String version;
@@ -78,16 +77,30 @@ public abstract class GeoParquetMetadata {
     @JsonProperty(value = "columns", required = true)
     protected Map<String, Geometry> columns;
 
+    /**
+     * Reads GeoParquet metadata from a JSON string.
+     *
+     * @param geo the JSON string containing the metadata
+     * @return the parsed GeoParquetMetadata object
+     * @throws IOException if the JSON cannot be parsed
+     */
     public static GeoParquetMetadata readValue(String geo) throws IOException {
         return objectMapper.readValue(geo, GeoParquetMetadata.class);
     }
 
-    Envelope bounds() {
+    /**
+     * Gets the bounds of the primary geometry column.
+     *
+     * @return The envelope representing the bounds of the primary geometry column, or an empty envelope if bounds are
+     *     not available
+     */
+    public Envelope bounds() {
         // shouldn't be null by spec but who knows...
         return Optional.ofNullable(columns.get(primaryColumn))
                 .map(Geometry::bounds)
                 .orElseGet(Envelope::new);
     }
+
     /**
      * Gets the GeoParquet specification version.
      *
@@ -125,6 +138,16 @@ public abstract class GeoParquetMetadata {
     }
 
     /**
+     * Gets the geometry metadata for a specific column.
+     *
+     * @param column the name of the column
+     * @return an Optional containing the column's geometry metadata, or empty if the column doesn't exist
+     */
+    public Optional<Geometry> getColumn(String column) {
+        return Optional.ofNullable(columns).map(cols -> cols.get(column));
+    }
+
+    /**
      * Gets the column metadata, mapping column names to their geometry details.
      *
      * @return a map of column names to geometry metadata
@@ -140,172 +163,5 @@ public abstract class GeoParquetMetadata {
      */
     public void setColumns(Map<String, Geometry> columns) {
         this.columns = columns;
-    }
-
-    /**
-     * Represents the metadata for a geometry column in a GeoParquet file, including required encoding and geometry
-     * types, and optional attributes like bounding box, CRS, and edge type.
-     */
-    public static class Geometry {
-        @JsonProperty(value = "encoding", required = true)
-        protected String encoding;
-
-        @JsonProperty(value = "geometry_types", required = true)
-        protected List<String> geometryTypes;
-
-        @JsonProperty("crs")
-        protected Object crs;
-
-        @JsonProperty("edges")
-        protected String edges;
-
-        @JsonProperty("orientation")
-        protected String orientation;
-
-        @JsonProperty("bbox")
-        protected List<Double> bbox;
-
-        @JsonProperty("epoch")
-        protected Double epoch;
-
-        @JsonProperty("covering")
-        protected Covering covering;
-
-        public Envelope bounds() {
-            List<Double> bb = getBbox();
-            if (bb == null || bb.size() < 4) {
-                return new Envelope();
-            }
-            double minx = bb.get(0);
-            double miny = bb.get(1);
-            double maxx = bb.get(bb.size() == 6 ? 4 : 2);
-            double maxy = bb.get(bb.size() == 6 ? 5 : 3);
-            return new Envelope(minx, maxx, miny, maxy);
-        }
-
-        public String getEncoding() {
-            return encoding;
-        }
-
-        public void setEncoding(String encoding) {
-            this.encoding = encoding;
-        }
-
-        public List<String> getGeometryTypes() {
-            return geometryTypes;
-        }
-
-        public void setGeometryTypes(List<String> geometryTypes) {
-            this.geometryTypes = geometryTypes;
-        }
-
-        public Object getCrs() {
-            return crs;
-        }
-
-        public void setCrs(Object crs) {
-            this.crs = crs;
-        }
-
-        public String getEdges() {
-            return edges;
-        }
-
-        public void setEdges(String edges) {
-            this.edges = edges;
-        }
-
-        public String getOrientation() {
-            return orientation;
-        }
-
-        public void setOrientation(String orientation) {
-            this.orientation = orientation;
-        }
-
-        public List<Double> getBbox() {
-            return bbox;
-        }
-
-        public void setBbox(List<Double> bbox) {
-            this.bbox = bbox;
-        }
-
-        public Double getEpoch() {
-            return epoch;
-        }
-
-        public void setEpoch(Double epoch) {
-            this.epoch = epoch;
-        }
-
-        public Covering getCovering() {
-            return covering;
-        }
-
-        public void setCovering(Covering covering) {
-            this.covering = covering;
-        }
-    }
-
-    /** Represents the covering metadata for a geometry column. */
-    public static class Covering {
-        @JsonProperty(value = "bbox", required = true)
-        protected BboxCovering bbox;
-
-        public BboxCovering getBbox() {
-            return bbox;
-        }
-
-        public void setBbox(BboxCovering bbox) {
-            this.bbox = bbox;
-        }
-    }
-
-    /** Represents the bounding box covering structure, mapping min/max coordinates to column names. */
-    public static class BboxCovering {
-        @JsonProperty(value = "xmin", required = true)
-        protected List<String> xmin;
-
-        @JsonProperty(value = "xmax", required = true)
-        protected List<String> xmax;
-
-        @JsonProperty(value = "ymin", required = true)
-        protected List<String> ymin;
-
-        @JsonProperty(value = "ymax", required = true)
-        protected List<String> ymax;
-
-        public List<String> getXmin() {
-            return xmin;
-        }
-
-        public void setXmin(List<String> xmin) {
-            this.xmin = xmin;
-        }
-
-        public List<String> getXmax() {
-            return xmax;
-        }
-
-        public void setXmax(List<String> xmax) {
-            this.xmax = xmax;
-        }
-
-        public List<String> getYmin() {
-            return ymin;
-        }
-
-        public void setYmin(List<String> ymin) {
-            this.ymin = ymin;
-        }
-
-        public List<String> getYmax() {
-            return ymax;
-        }
-
-        public void setYmax(List<String> ymax) {
-            this.ymax = ymax;
-        }
     }
 }

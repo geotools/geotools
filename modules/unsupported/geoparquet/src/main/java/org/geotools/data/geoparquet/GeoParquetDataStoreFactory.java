@@ -166,6 +166,7 @@ public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory i
         // Add GeoParquet specific parameters
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(URI_PARAM.key, URI_PARAM);
+        parameters.put(MAX_HIVE_DEPTH.key, MAX_HIVE_DEPTH);
     }
 
     /**

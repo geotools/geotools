@@ -1,0 +1,119 @@
+{
+  "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+  "type": "CompoundCRS",
+  "name": "WGS 84 + EGM2008 height",
+  "components": [
+    {
+      "type": "GeographicCRS",
+      "name": "WGS 84",
+      "datum_ensemble": {
+        "name": "World Geodetic System 1984 ensemble",
+        "members": [
+          {
+            "name": "World Geodetic System 1984 (Transit)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1166
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G730)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1152
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G873)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1153
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G1150)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1154
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G1674)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1155
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G1762)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1156
+            }
+          },
+          {
+            "name": "World Geodetic System 1984 (G2139)",
+            "id": {
+              "authority": "EPSG",
+              "code": 1309
+            }
+          }
+        ],
+        "ellipsoid": {
+          "name": "WGS 84",
+          "semi_major_axis": 6378137,
+          "inverse_flattening": 298.257223563
+        },
+        "accuracy": "2.0",
+        "id": {
+          "authority": "EPSG",
+          "code": 6326
+        }
+      },
+      "coordinate_system": {
+        "type": "ellipsoidal",
+        "axes": [
+          {
+            "name": "Geodetic latitude",
+            "abbreviation": "Lat",
+            "direction": "north",
+            "unit": "degree"
+          },
+          {
+            "name": "Geodetic longitude",
+            "abbreviation": "Lon",
+            "direction": "east",
+            "unit": "degree"
+          }
+        ]
+      }
+    },
+    {
+      "type": "VerticalCRS",
+      "name": "EGM2008 height",
+      "datum": {
+        "type": "VerticalReferenceFrame",
+        "name": "EGM2008 geoid"
+      },
+      "coordinate_system": {
+        "type": "vertical",
+        "axes": [
+          {
+            "name": "Gravity-related height",
+            "abbreviation": "H",
+            "direction": "up",
+            "unit": "metre"
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Spatial referencing.",
+  "area": "World.",
+  "bbox": [-180, -90, 180, 90],
+  "id": {
+    "authority": "EPSG",
+    "code": 9518
+  }
+}
+

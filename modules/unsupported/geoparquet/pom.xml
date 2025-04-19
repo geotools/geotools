@@ -36,12 +36,21 @@
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <id>groldan</id>
+      <id>groldan-c2c</id>
       <name>Gabriel Roldan</name>
       <email>gabriel.roldan@camptocamp.com</email>
       <organization>Camptocamp</organization>
       <roles>
-        <role>Developer</role>
+        <role>Contributor</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>groldan-multiversio</id>
+      <name>Gabriel Roldan</name>
+      <email>groldan@multivers.io</email>
+      <organization>Multivers.io</organization>
+      <roles>
+        <role>Maintainer</role>
       </roles>
     </developer>
   </developers>

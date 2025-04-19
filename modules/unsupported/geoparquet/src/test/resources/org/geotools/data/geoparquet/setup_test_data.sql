@@ -457,6 +457,5 @@ COPY (
 );
 
 SELECT 'Export complete.' AS status;
-SELECT 'Note: GeoParquet metadata must have been added automatically as of duckdb 2.1.' AS note;
-
--- SELECT file_name, json(decode(value)) FROM parquet_kv_metadata('test-data/**/*');
+SELECT 'NOTE: DuckDB version 1.2.2 does not add CRS information to GeoParquet metadata and does not provide API to modify it.' AS note;
+SELECT 'The GeoParquetDataStore code handles missing CRS information by defaulting to EPSG:4326 (WGS 84).' AS note;

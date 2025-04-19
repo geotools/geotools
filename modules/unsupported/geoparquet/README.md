@@ -170,9 +170,22 @@ The implementation parses the `geo` metadata field from Parquet files to obtain:
 - Primary geometry column name
 - Geometry encoding details
 - Geometry types
-- CRS information
+- CRS information using PROJJSON (v0.7 schema) format
 - Bounding box information
 - Additional metadata fields
+
+### Coordinate Reference System Support
+
+The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
+
+- Fully supports PROJJSON v0.7 schema as defined by the OGC GeoParquet specification
+- Parses CRS information from the `geo` metadata field in GeoParquet files
+- Properly handles CRS identifiers with authority and code properties
+- Converts between PROJJSON and GeoTools CRS objects transparently
+- Associates CRS with all geometry descriptors in feature types
+- Provides proper SRID information for all spatial operations
+- Falls back to EPSG:4326 (WGS 84) when CRS information is not available
+- Supports multiple geometry columns with different CRS
 
 ## Optimized Operations
 
@@ -204,7 +217,6 @@ The implementation parses the `geo` metadata field from Parquet files to obtain:
 
 - Identify actual **geometry type**. Currently all geometry columns are reported as type `Geometry`. Consider GeoParquet files can have multiple
   geometry types. If the `geo` metadata is available, they're reported (e.g. [Polygon, MultiPolygon, ...]). Otherwise it's hard to know.
-- Support multiple CRS's, read the kvp 'geo' metadata
 - Support **Struct** data types. Since they're "value objects" and not relationships, maybe just create a JSON attribute type and parse them as JSON,
   maintaining the store as "simple features". No need to build "complex features".
 - Allow to configure [S3 credentials](https://duckdb.org/docs/stable/guides/network_cloud_storage/s3_import.html#credentials-and-configuration)

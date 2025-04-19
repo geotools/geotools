@@ -1,0 +1,120 @@
+{
+    "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+    "type": "ProjectedCRS",
+    "name": "WGS 84 / UTM zone 31N",
+    "base_crs": {
+        "type": "GeographicCRS",
+        "name": "WGS 84",
+        "datum": {
+            "type": "GeodeticReferenceFrame",
+            "name": "World Geodetic System 1984",
+            "ellipsoid": {
+                "name": "WGS 84",
+                "semi_major_axis": 6378137,
+                "inverse_flattening": 298.257223563
+            }
+        },
+        "coordinate_system": {
+            "type": "ellipsoidal",
+            "axes": [
+            {
+                "name": "Geodetic latitude",
+                "abbreviation": "Lat",
+                "direction": "north",
+                "unit": "degree"
+            },
+            {
+                "name": "Geodetic longitude",
+                "abbreviation": "Lon",
+                "direction": "east",
+                "unit": "degree"
+            }
+            ]
+        },
+        "id": {
+            "authority": "EPSG",
+            "code": 4326
+        }
+    },
+    "conversion": {
+        "name": "UTM zone 31N",
+        "method": {
+            "name": "Transverse Mercator",
+            "id": {
+                "authority": "EPSG",
+                "code": 9807
+            }
+        },
+        "parameters": [
+        {
+            "name": "Latitude of natural origin",
+            "value": 0,
+            "unit": "degree",
+            "id": {
+                "authority": "EPSG",
+                "code": 8801
+            }
+        },
+        {
+            "name": "Longitude of natural origin",
+            "value": 3,
+            "unit": "degree",
+            "id": {
+                "authority": "EPSG",
+                "code": 8802
+            }
+        },
+        {
+            "name": "Scale factor at natural origin",
+            "value": 0.9996,
+            "unit": "unity",
+            "id": {
+                "authority": "EPSG",
+                "code": 8805
+            }
+        },
+        {
+            "name": "False easting",
+            "value": 500000,
+            "unit": "metre",
+            "id": {
+                "authority": "EPSG",
+                "code": 8806
+            }
+        },
+        {
+            "name": "False northing",
+            "value": 0,
+            "unit": "metre",
+            "id": {
+                "authority": "EPSG",
+                "code": 8807
+            }
+        }
+        ]
+    },
+    "coordinate_system": {
+        "type": "Cartesian",
+        "axes": [
+        {
+            "name": "Easting",
+            "abbreviation": "E",
+            "direction": "east",
+            "unit": "metre"
+        },
+        {
+            "name": "Northing",
+            "abbreviation": "N",
+            "direction": "north",
+            "unit": "metre"
+        }
+        ]
+    },
+    "area": "World - N hemisphere - 0°E to 6°E - by country",
+    "bbox": [0, 0, 6, 84],
+    "id": {
+        "authority": "EPSG",
+        "code": 32631
+    }
+}
+

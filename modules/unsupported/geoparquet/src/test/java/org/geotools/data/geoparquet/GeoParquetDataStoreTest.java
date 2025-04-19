@@ -21,12 +21,15 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,12 +46,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 
 /** Tests for GeoParquetDataStoreFactory. */
 public class GeoParquetDataStoreTest {
@@ -303,5 +312,111 @@ public class GeoParquetDataStoreTest {
         String[] finalTypeNames = store.getTypeNames();
         LOGGER.info("Final type names: " + Arrays.toString(finalTypeNames));
         assertEquals(expectedTypeNames, new HashSet<>(Arrays.asList(finalTypeNames)));
+    }
+
+    @Test
+    public void testGetSchema() throws IOException {
+        store = getDataStore(worldgridPartitionedParams);
+
+        testGetSchema(store, "theme_lines_type_line", Geometry.class);
+        testGetSchema(store, "theme_lines_type_multiline", Geometry.class);
+
+        Set.of(
+                "theme_lines_type_line",
+                "theme_lines_type_multiline",
+                "theme_points_type_point",
+                "theme_points_type_multipoint",
+                "theme_polygons_type_polygon",
+                "theme_polygons_type_multipolygon");
+    }
+
+    /**
+     * Tests the CRS handling in GeoParquet metadata.
+     *
+     * <p>This test verifies that:
+     *
+     * <ol>
+     *   <li>GeoParquet metadata correctly contains CRS information from the 'geo' field
+     *   <li>The CRS is properly parsed from the PROJJSON representation
+     *   <li>The CRS is correctly converted to a GeoTools CoordinateReferenceSystem object
+     *   <li>The GeoParquetDialect correctly extracts SRID information from the CRS
+     *   <li>The implementation properly handles column-specific CRS information
+     *   <li>The SRID lookup correctly handles WGS84 (EPSG:4326) defined in test data
+     * </ol>
+     *
+     * <p>The test uses the strongly-typed CRS model that follows the PROJJSON v0.7 schema as defined by the OGC
+     * GeoParquet specification.
+     */
+    @Test
+    public void testGetCrsFromMetadata() throws IOException, SQLException {
+        store = getDataStore(worldGridDirParams);
+
+        // Get the dialect to test CRS handling
+        GeoParquetDialect dialect = (GeoParquetDialect) ((JDBCDataStore) store).getSQLDialect();
+        SimpleFeatureType schema = store.getSchema("points");
+
+        // Get metadata and verify it has valid CRS information
+        GeoparquetDatasetMetadata metadata = dialect.getGeoparquetMetadata(schema);
+        assertNotNull(metadata);
+        assertNotNull(metadata.getCrs());
+
+        // Test getting SRID from metadata
+        try (Connection cx = ((JDBCDataStore) store).getConnection(Transaction.AUTO_COMMIT)) {
+            Integer srid = dialect.getGeometrySRIDInternal(metadata, "invalid_column", cx);
+            assertNull(srid);
+            String geomColumn = metadata.getPrimaryColumnName().orElseThrow();
+            srid = dialect.getGeometrySRIDInternal(metadata, geomColumn, cx);
+            // Should be 4326 (WGS84) as defined in the test data
+            assertEquals(Integer.valueOf(4326), srid);
+        }
+    }
+
+    /**
+     * Helper method to test the schema for a GeoParquet feature type, including CRS validation.
+     *
+     * <p>This method tests:
+     *
+     * <ol>
+     *   <li>That the feature type schema can be loaded correctly
+     *   <li>That the GeoParquet metadata contains valid CRS information
+     *   <li>That the bounds have a proper CoordinateReferenceSystem
+     *   <li>That the geometry descriptor has the expected geometry type
+     *   <li>That the geometry descriptor has a valid CRS attached
+     * </ol>
+     *
+     * <p>The CRS validation ensures that:
+     *
+     * <ol>
+     *   <li>CRS information is correctly extracted from the GeoParquet 'geo' metadata
+     *   <li>The PROJJSON CRS representation is properly converted to GeoTools CRS
+     *   <li>The CRS is properly attached to both the bounds and geometry descriptor
+     * </ol>
+     *
+     * @param store The GeoParquet DataStore
+     * @param typeName The feature type name to test
+     * @param geomType The expected geometry class
+     * @return The validated SimpleFeatureType
+     * @throws IOException If there's an error accessing the schema
+     */
+    private SimpleFeatureType testGetSchema(DataStore store, String typeName, Class<? extends Geometry> geomType)
+            throws IOException {
+
+        GeoParquetDialect dialect = (GeoParquetDialect) ((JDBCDataStore) store).getSQLDialect();
+        SimpleFeatureType schema = store.getSchema(typeName);
+
+        GeoparquetDatasetMetadata aggregattedGeo = dialect.getGeoparquetMetadata(schema);
+        assertNotNull(aggregattedGeo);
+        ReferencedEnvelope bounds = aggregattedGeo.getBounds();
+
+        // Verify we have a valid CRS
+        assertNotNull(bounds.getCoordinateReferenceSystem());
+
+        GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();
+        assertEquals(geomType, geometryDescriptor.getType().getBinding());
+
+        // Verify the geometry descriptor has a CRS
+        assertNotNull(geometryDescriptor.getCoordinateReferenceSystem());
+
+        return schema;
     }
 }

@@ -1,0 +1,163 @@
+{
+  "geo": {
+    "columns": {
+      "geometry": {
+        "bbox": [
+          -180.0,
+          -90.0,
+          0.0,
+          180.0,
+          83.6451,
+          100.0
+        ],
+        "covering": {
+          "bbox": {
+            "xmax": [
+              "bbox",
+              "xmax"
+            ],
+            "xmin": [
+              "bbox",
+              "xmin"
+            ],
+            "ymax": [
+              "bbox",
+              "ymax"
+            ],
+            "ymin": [
+              "bbox",
+              "ymin"
+            ],
+            "zmax": [
+              "bbox",
+              "zmax"
+            ],
+            "zmin": [
+              "bbox",
+              "zmin"
+            ]
+          }
+        },
+        "crs": {
+          "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+          "area": "World.",
+          "bbox": [-180, -90, 180, 90],
+          "coordinate_system": {
+            "type": "ellipsoidal",
+            "axes": [
+              {
+                "abbreviation": "Lon",
+                "direction": "east",
+                "name": "Geodetic longitude",
+                "unit": "degree"
+              },
+              {
+                "abbreviation": "Lat",
+                "direction": "north",
+                "name": "Geodetic latitude",
+                "unit": "degree"
+              },
+              {
+                "abbreviation": "h",
+                "direction": "up",
+                "name": "Ellipsoidal height",
+                "unit": "metre"
+              }
+            ]
+          },
+          "datum_ensemble": {
+            "accuracy": "2.0",
+            "ellipsoid": {
+              "inverse_flattening": 298.257223563,
+              "name": "WGS 84",
+              "semi_major_axis": 6378137
+            },
+            "id": {
+              "authority": "EPSG",
+              "code": 6326
+            },
+            "members": [
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1166
+                },
+                "name": "World Geodetic System 1984 (Transit)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1152
+                },
+                "name": "World Geodetic System 1984 (G730)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1153
+                },
+                "name": "World Geodetic System 1984 (G873)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1154
+                },
+                "name": "World Geodetic System 1984 (G1150)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1155
+                },
+                "name": "World Geodetic System 1984 (G1674)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1156
+                },
+                "name": "World Geodetic System 1984 (G1762)"
+              },
+              {
+                "id": {
+                  "authority": "EPSG",
+                  "code": 1309
+                },
+                "name": "World Geodetic System 1984 (G2139)"
+              }
+            ],
+            "name": "World Geodetic System 1984 ensemble"
+          },
+          "id": {
+            "authority": "OGC",
+            "code": "CRS84h"
+          },
+          "name": "WGS 84 height (CRS84h)",
+          "scope": "Not known.",
+          "type": "GeographicCRS"
+        },
+        "edges": "spherical",
+        "orientation": "counterclockwise",
+        "encoding": "WKB",
+        "geometry_types": [
+          "Polygon Z",
+          "MultiPolygon Z",
+          "GeometryCollection"
+        ],
+        "epoch": 2022.5
+      },
+      "points": {
+        "encoding": "point",
+        "geometry_types": [
+          "Point",
+          "Point Z"
+        ],
+        "edges": "spherical",
+        "crs": null
+      }
+    },
+    "primary_column": "geometry",
+    "version": "1.2.0-dev"
+  }
+}

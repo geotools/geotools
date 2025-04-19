@@ -1,0 +1,200 @@
+{
+  "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+  "type": "BoundCRS",
+  "source_crs": {
+    "type": "GeographicCRS",
+    "name": "ETRS89",
+    "datum_ensemble": {
+      "name": "European Terrestrial Reference System 1989 ensemble",
+      "members": [
+        {
+          "name": "European Terrestrial Reference Frame 1989"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1990"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1991"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1992"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1993"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1994"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1996"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 1997"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 2000"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 2005"
+        },
+        {
+          "name": "European Terrestrial Reference Frame 2014"
+        }
+      ],
+      "ellipsoid": {
+        "name": "GRS 1980",
+        "semi_major_axis": 6378137,
+        "inverse_flattening": 298.257222101
+      },
+      "accuracy": "0.1"
+    },
+    "coordinate_system": {
+      "type": "ellipsoidal",
+      "axes": [
+        {
+          "name": "Geodetic latitude",
+          "abbreviation": "Lat",
+          "direction": "north",
+          "unit": "degree"
+        },
+        {
+          "name": "Geodetic longitude",
+          "abbreviation": "Lon",
+          "direction": "east",
+          "unit": "degree"
+        }
+      ]
+    },
+    "id": {
+      "authority": "EPSG",
+      "code": 4258
+    }
+  },
+  "target_crs": {
+    "type": "GeographicCRS",
+    "name": "WGS 84",
+    "datum": {
+      "type": "GeodeticReferenceFrame",
+      "name": "World Geodetic System 1984",
+      "ellipsoid": {
+        "name": "WGS 84",
+        "semi_major_axis": 6378137,
+        "inverse_flattening": 298.257223563
+      }
+    },
+    "coordinate_system": {
+      "type": "ellipsoidal",
+      "axes": [
+        {
+          "name": "Geodetic latitude",
+          "abbreviation": "Lat",
+          "direction": "north",
+          "unit": "degree"
+        },
+        {
+          "name": "Geodetic longitude",
+          "abbreviation": "Lon",
+          "direction": "east",
+          "unit": "degree"
+        }
+      ]
+    },
+    "id": {
+      "authority": "EPSG",
+      "code": 4326
+    }
+  },
+  "transformation": {
+    "type": "Transformation",
+    "name": "Transformation from unknown to WGS84",
+    "method": {
+      "name": "Position Vector transformation (geog2D domain)",
+      "id": {
+        "authority": "EPSG",
+        "code": 9606
+      }
+    },
+    "parameters": [
+      {
+        "name": "X-axis translation",
+        "value": 0,
+        "unit": "metre",
+        "id": {
+          "authority": "EPSG",
+          "code": 8605
+        }
+      },
+      {
+        "name": "Y-axis translation",
+        "value": 0,
+        "unit": "metre",
+        "id": {
+          "authority": "EPSG",
+          "code": 8606
+        }
+      },
+      {
+        "name": "Z-axis translation",
+        "value": 0,
+        "unit": "metre",
+        "id": {
+          "authority": "EPSG",
+          "code": 8607
+        }
+      },
+      {
+        "name": "X-axis rotation",
+        "value": 0,
+        "unit": {
+          "type": "AngularUnit",
+          "name": "arc-second",
+          "conversion_factor": 4.84813681109536e-06
+        },
+        "id": {
+          "authority": "EPSG",
+          "code": 8608
+        }
+      },
+      {
+        "name": "Y-axis rotation",
+        "value": 0,
+        "unit": {
+          "type": "AngularUnit",
+          "name": "arc-second",
+          "conversion_factor": 4.84813681109536e-06
+        },
+        "id": {
+          "authority": "EPSG",
+          "code": 8609
+        }
+      },
+      {
+        "name": "Z-axis rotation",
+        "value": 0,
+        "unit": {
+          "type": "AngularUnit",
+          "name": "arc-second",
+          "conversion_factor": 4.84813681109536e-06
+        },
+        "id": {
+          "authority": "EPSG",
+          "code": 8610
+        }
+      },
+      {
+        "name": "Scale difference",
+        "value": 0,
+        "unit": {
+          "type": "ScaleUnit",
+          "name": "parts per million",
+          "conversion_factor": 1e-06
+        },
+        "id": {
+          "authority": "EPSG",
+          "code": 8611
+        }
+      }
+    ]
+  }
+}
+

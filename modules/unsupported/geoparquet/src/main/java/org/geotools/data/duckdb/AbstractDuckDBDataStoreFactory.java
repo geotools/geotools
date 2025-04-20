@@ -68,8 +68,9 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
      * Enables usage of a simplification function, when the queries contain geometry simplification hints. The
      * simplification function used depends on SIMPLIFICATION_METHOD setting, and is ST_Simplify by default.
      */
-    public static final Param SIMPLIFY = new ParamBuilder("Support on the fly geometry simplification")
+    public static final Param SIMPLIFY = new ParamBuilder("simplification")
             .type(Boolean.class)
+            .title("Support on the fly geometry simplification")
             .description(
                     "When enabled, operations such as map rendering will pass a hint that will enable the usage of a simplification function")
             .required(false)

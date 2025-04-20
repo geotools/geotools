@@ -16,7 +16,6 @@
  */
 package org.geotools.data.geoparquet;
 
-import static org.geotools.api.data.DataStoreFinder.getDataStore;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -46,11 +45,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
-import org.geotools.api.data.Transaction;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Assert;
@@ -75,7 +73,7 @@ public class GeoParquetDataStoreTest {
     private Map<String, Object> worldGridDirParams;
     private Map<String, Object> worldgridPartitionedParams;
 
-    private DataStore store;
+    private GeoparquetDataStore store;
 
     @Before
     public void setUp() {
@@ -105,6 +103,10 @@ public class GeoParquetDataStoreTest {
         if (store != null) {
             store.dispose();
         }
+    }
+
+    static GeoparquetDataStore getDataStore(Map<String, ?> params) throws IOException {
+        return (GeoparquetDataStore) DataStoreFinder.getDataStore(params);
     }
 
     @Test
@@ -265,6 +267,11 @@ public class GeoParquetDataStoreTest {
                                         threadId, j, actualTypeNames));
                             }
                         }
+                        for (String typeName : actualTypeNames) {
+                            SimpleFeatureType schema = store.getSchema(typeName);
+                            assertNotNull(schema);
+                            assertEquals(typeName, schema.getTypeName());
+                        }
                     }
                 } catch (Exception e) {
                     String errorMsg = String.format("Thread %d failed with exception: %s", threadId, e.getMessage());
@@ -352,7 +359,7 @@ public class GeoParquetDataStoreTest {
         store = getDataStore(worldGridDirParams);
 
         // Get the dialect to test CRS handling
-        GeoParquetDialect dialect = (GeoParquetDialect) ((JDBCDataStore) store).getSQLDialect();
+        GeoParquetDialect dialect = store.getSQLDialect();
         SimpleFeatureType schema = store.getSchema("points");
 
         // Get metadata and verify it has valid CRS information
@@ -361,7 +368,7 @@ public class GeoParquetDataStoreTest {
         assertNotNull(metadata.getCrs());
 
         // Test getting SRID from metadata
-        try (Connection cx = ((JDBCDataStore) store).getConnection(Transaction.AUTO_COMMIT)) {
+        try (Connection cx = store.getSQLDialect().getConnection()) {
             Integer srid = dialect.getGeometrySRIDInternal(metadata, "invalid_column", cx);
             assertNull(srid);
             String geomColumn = metadata.getPrimaryColumnName().orElseThrow();
@@ -398,10 +405,10 @@ public class GeoParquetDataStoreTest {
      * @return The validated SimpleFeatureType
      * @throws IOException If there's an error accessing the schema
      */
-    private SimpleFeatureType testGetSchema(DataStore store, String typeName, Class<? extends Geometry> geomType)
-            throws IOException {
+    private SimpleFeatureType testGetSchema(
+            GeoparquetDataStore store, String typeName, Class<? extends Geometry> geomType) throws IOException {
 
-        GeoParquetDialect dialect = (GeoParquetDialect) ((JDBCDataStore) store).getSQLDialect();
+        GeoParquetDialect dialect = store.getSQLDialect();
         SimpleFeatureType schema = store.getSchema(typeName);
 
         GeoparquetDatasetMetadata aggregattedGeo = dialect.getGeoparquetMetadata(schema);

@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStoreFactorySpi;
-import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
-import org.geotools.data.duckdb.ParamBuilder;
 import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.SQLDialect;
 
 /**
  * DataStoreFactory for GeoParquet files, powered by DuckDB.
@@ -46,199 +43,27 @@ import org.geotools.jdbc.SQLDialect;
  * DataStore store = DataStoreFinder.getDataStore(params);
  * }</pre>
  */
-public class GeoParquetDataStoreFactory extends AbstractDuckDBDataStoreFactory implements DataStoreFactorySpi {
+public class GeoParquetDataStoreFactory extends ForwardingDataStoreFactory<GeoParquetDataStoreFactoryDelegate>
+        implements DataStoreFactorySpi {
 
-    static final String GEOPARQUET = "geoparquet";
+    static final String GEOPARQUET = GeoParquetDataStoreFactoryDelegate.GEOPARQUET;
 
-    /**
-     * Parameter for database type.
-     *
-     * <p>Must be "geoparquet" for this DataStore.
-     */
-    public static final DataAccessFactory.Param DBTYPE = new ParamBuilder("dbtype")
-            .type(String.class)
-            .title("DataStore type identifier")
-            .required(true)
-            .defaultValue(GEOPARQUET)
-            .programLevel()
-            .build();
-    /**
-     * Parameter for GeoParquet URI.
-     *
-     * <p>Must be a valid URI pointing to a GeoParquet file or directory. Supported schemes:
-     *
-     * <ul>
-     *   <li>file:// - for local files and directories
-     *   <li>https:// - for remote files
-     *   <li>s3:// - for files in S3 storage (requires credentials)
-     * </ul>
-     *
-     * <p>For S3 URIs, additional parameters can be included in the query string:
-     *
-     * <pre>
-     * s3://bucket/path/to/file.parquet?region=us-west-2&access_key=ACCESS_KEY&secret_key=SECRET_KEY
-     * </pre>
-     */
-    public static final DataAccessFactory.Param URI_PARAM = new ParamBuilder("uri")
-            .type(String.class)
-            .description("URI to GeoParquet local or remote file")
-            .required(true)
-            .userLevel()
-            .build();
+    public static final DataAccessFactory.Param DBTYPE = GeoParquetDataStoreFactoryDelegate.DBTYPE;
+    public static final Param NAMESPACE = GeoParquetDataStoreFactoryDelegate.NAMESPACE;
 
-    /**
-     * Parameter for controlling Hive partition depth in GeoParquet datasets.
-     *
-     * <p>This parameter determines how many levels of key=value directories are used for partitioning:
-     *
-     * <ul>
-     *   <li>null (default): Use all partition levels found
-     *   <li>0: No partitioning, treat all files as a single dataset
-     *   <li>1+: Use this many levels of partitioning
-     * </ul>
-     *
-     * <p>For example, with a dataset structure like: {@code s3://bucket/data/year=2023/month=01/day=01/file.parquet}
-     *
-     * <ul>
-     *   <li>max_hive_depth=1: Only "year=2023" is used for partitioning
-     *   <li>max_hive_depth=2: "year=2023/month=01" is used
-     *   <li>max_hive_depth=3 or null: "year=2023/month=01/day=01" is used
-     * </ul>
-     */
-    public static final DataAccessFactory.Param MAX_HIVE_DEPTH = new ParamBuilder("max_hive_depth")
-            .type(Integer.class)
-            .title("Max Hive partition depth")
-            .description("Max number Hive partitions to use when resolving feature types")
-            .required(false)
-            .defaultValue(null)
-            .advancedLevel()
-            .build();
+    public static final DataAccessFactory.Param URI_PARAM = GeoParquetDataStoreFactoryDelegate.URI_PARAM;
+    public static final DataAccessFactory.Param MAX_HIVE_DEPTH = GeoParquetDataStoreFactoryDelegate.MAX_HIVE_DEPTH;
+    public static final Param FETCHSIZE = GeoParquetDataStoreFactoryDelegate.FETCHSIZE;
+    public static final Param SCREENMAP = GeoParquetDataStoreFactoryDelegate.SCREENMAP;
+    public static final Param SIMPLIFY = GeoParquetDataStoreFactoryDelegate.SIMPLIFY;
 
-    /** Parameter for specifying the namespace URI for the feature type. */
-    public static final Param NAMESPACE = AbstractDuckDBDataStoreFactory.NAMESPACE;
-
-    /** Parameter for controlling the number of features to fetch at once. */
-    public static final Param FETCHSIZE = AbstractDuckDBDataStoreFactory.FETCHSIZE;
-
-    /** Parameter for enabling/disabling screen map optimization for rendering. */
-    public static final Param SCREENMAP = AbstractDuckDBDataStoreFactory.SCREENMAP;
-
-    /** Parameter for enabling/disabling geometry simplification when rendering. */
-    public static final Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
-
-    /**
-     * Returns the database ID for this factory.
-     *
-     * @return The database ID ("geoparquet")
-     */
-    @Override
-    protected String getDatabaseID() {
-        return GEOPARQUET;
+    public GeoParquetDataStoreFactory() {
+        super(new GeoParquetDataStoreFactoryDelegate());
     }
 
-    /**
-     * Returns the human-readable display name for this datastore.
-     *
-     * @return The display name ("GeoParquet")
-     */
     @Override
-    public String getDisplayName() {
-        return "GeoParquet";
-    }
-
-    /**
-     * Returns a human-readable description of this datastore.
-     *
-     * @return The description of the datastore
-     */
-    @Override
-    public String getDescription() {
-        return "GeoParquet format data files (*.parquet)";
-    }
-
-    /**
-     * Adds GeoParquet-specific parameters to the parameter map.
-     *
-     * @param parameters The parameter map to add to
-     */
-    @Override
-    protected void addDatabaseSpecificParameters(Map<String, Object> parameters) {
-        // Add GeoParquet specific parameters
-        parameters.put(DBTYPE.key, DBTYPE);
-        parameters.put(URI_PARAM.key, URI_PARAM);
-        parameters.put(MAX_HIVE_DEPTH.key, MAX_HIVE_DEPTH);
-    }
-
-    /**
-     * Creates a GeoParquetDialect for handling GeoParquet-specific SQL operations.
-     *
-     * @param dataStore The datastore to create a dialect for
-     * @param params The connection parameters
-     * @return A new GeoParquetDialect instance
-     */
-    @Override
-    protected GeoParquetDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
-        return new GeoParquetDialect(dataStore);
-    }
-
-    /**
-     * Unused method since we override {@link #createSQLDialect(JDBCDataStore, Map)} instead.
-     *
-     * @param dataStore The datastore to create a dialect for
-     * @return Never returns, always throws UnsupportedOperationException
-     * @throws UnsupportedOperationException Always
-     */
-    @Override
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Sets up the datastore with GeoParquet-specific configuration.
-     *
-     * <p>This method:
-     *
-     * <ol>
-     *   <li>Sets up the primary key finder for feature ID handling
-     *   <li>Creates a configuration object from the parameters
-     *   <li>Registers the GeoParquet views based on the configuration
-     * </ol>
-     *
-     * @param dataStore The datastore to set up
-     * @param params The connection parameters
-     * @return The configured datastore
-     * @throws IOException If there's an error setting up the datastore
-     */
-    @Override
-    protected JDBCDataStore setupDataStore(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
-        GeoParquetDialect dialect = (GeoParquetDialect) dataStore.getSQLDialect();
-        dataStore.setPrimaryKeyFinder(dialect.getPrimaryKeyFinder());
-
-        GeoParquetConfig config = GeoParquetConfig.valueOf(params);
-        dialect.registerParquetViews(config);
-        return dataStore;
-    }
-
-    /**
-     * Creates a JDBC URL for a persistent DuckDB database tied to the GeoParquet dataset configuration.
-     *
-     * <p>This implementation uses {@link GeoParquetDatabaseUtils} to create a temporary on-disk database that's shared
-     * among all connections to the same GeoParquet dataset configuration, ensuring that:
-     *
-     * <ul>
-     *   <li>SQL views created for GeoParquet files persist across connections
-     *   <li>Metadata caching is properly shared between connections
-     *   <li>When {@link GeoParquetDialect#initializeConnection(Connection)} is called for each connection from the
-     *       pool, the views don't need to be re-registered
-     *   <li>Temporary database files are properly managed and cleaned up when the JVM exits
-     * </ul>
-     *
-     * @param params The parameter map containing the connection parameters
-     * @return A JDBC URL pointing to a persistent DuckDB database for this dataset configuration
-     * @throws IOException If there's an error creating the temporary directory
-     */
-    @Override
-    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
-        return GeoParquetDatabaseUtils.getJDBCUrl(params, getParametersInfo());
+    public GeoparquetDataStore createDataStore(Map<String, ?> params) throws IOException {
+        JDBCDataStore delegateStore = delegate.createDataStore(params);
+        return new GeoparquetDataStore(delegateStore);
     }
 }

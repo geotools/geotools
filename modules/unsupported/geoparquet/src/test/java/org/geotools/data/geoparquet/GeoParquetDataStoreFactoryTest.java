@@ -32,7 +32,6 @@ import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.DataStoreFinder;
-import org.geotools.jdbc.JDBCDataStore;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -85,11 +84,9 @@ public class GeoParquetDataStoreFactoryTest {
         DataStore ds = factory.createDataStore(worldGridDirParams);
 
         assertNotNull(ds);
-        assertTrue(ds instanceof JDBCDataStore);
+        assertTrue(ds instanceof GeoparquetDataStore);
 
-        // Check the dialect is correctly set
-        JDBCDataStore jdbcDS = (JDBCDataStore) ds;
-        assertTrue(jdbcDS.getSQLDialect() instanceof GeoParquetDialect);
+        assertNotNull(((GeoparquetDataStore) ds).getSQLDialect());
     }
 
     @Test

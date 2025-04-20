@@ -16,20 +16,27 @@
  */
 package org.geotools.data.geoparquet;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.logging.Level.CONFIG;
+import static java.util.logging.Level.INFO;
 
 import java.io.IOException;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.data.Transaction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.logging.Logging;
 
 /**
  * Manages the creation and lifecycle of DuckDB views for GeoParquet data sources.
@@ -40,21 +47,172 @@ import org.geotools.jdbc.JDBCDataStore;
  *   <li>Creating DuckDB SQL views for GeoParquet data partitions
  *   <li>Managing the mapping between partition URIs and view names
  *   <li>Handling Hive-partitioned datasets (datasets organized in directories following key=value patterns)
- *   <li>Dropping and recreating views when the target dataset changes
+ *   <li>Maintaining the lifecycle of views when the target dataset changes
+ *   <li>Implementing lazy view registration for better performance
  * </ul>
  *
- * <p>The view manager works with {@link HivePartitionResolver} to discover partition structure and creates
- * corresponding DuckDB views. Each partition becomes a separate view in DuckDB, allowing the GeoParquetDataStore to
- * expose each partition as a distinct feature type.
+ * <p>The view manager implements a lazy initialization pattern where:
+ *
+ * <ol>
+ *   <li>During initialization, it only discovers available partitions and creates mappings
+ *   <li>The actual SQL views are only created when a feature type is first accessed
+ *   <li>Thread-safe locking ensures views are created exactly once even with concurrent access
+ * </ol>
+ *
+ * <p>This lazy approach significantly improves performance for large datasets or remote data, as it avoids unnecessary
+ * view registrations during DataStore initialization.
+ *
+ * <p>The view manager works with {@link HivePartitionResolver} to discover partition structure. Each partition becomes
+ * a separate view in DuckDB, allowing the GeoParquetDataStore to expose each partition as a distinct feature type.
  */
 class GeoParquetViewManager {
+
+    private static final Logger LOGGER = Logging.getLogger(GeoParquetViewManager.class);
 
     private final JDBCDataStore dataStore;
 
     private GeoParquetConfig config;
 
-    private Map<String, List<String>> partitionUrlToFiles = Map.of();
-    private Map<String, String> viewNamesToPartitionUrls = Map.of();
+    private Map<String, Partition> partitionsByViewName = Map.of();
+
+    /**
+     * Represents a GeoParquet data partition with thread-safe view registration tracking.
+     *
+     * <p>This class encapsulates:
+     *
+     * <ul>
+     *   <li>The URI pattern for the partition (may include Hive partition information)
+     *   <li>The view name derived from the partition URI
+     *   <li>The list of actual GeoParquet files included in this partition
+     *   <li>A thread-safe registration status using atomic operations
+     *   <li>A reentrant lock to ensure thread safety during view creation
+     *   <li>Logic for safely creating SQL views when needed (lazy initialization)
+     * </ul>
+     *
+     * <p>This design ensures that even with concurrent access, each partition's view is created exactly once, and
+     * waiting threads will see the created view. The view registration is handled internally by the partition object,
+     * which encapsulates all the thread-safety and view creation logic.
+     */
+    private class Partition {
+        private final Lock lock = new ReentrantLock();
+        private final AtomicBoolean registered = new AtomicBoolean();
+
+        private final String uri;
+        private final String viewName;
+        private final List<String> files;
+
+        /** Creates a new partition entry. */
+        public Partition(String uri, String viewName, List<String> files) {
+            this.uri = requireNonNull(uri);
+            this.viewName = requireNonNull(viewName);
+            this.files = requireNonNull(files);
+        }
+
+        /**
+         * Returns the SQL view name for this partition.
+         *
+         * <p>This name is used as both the database view name and the feature type name in the GeoParquet DataStore.
+         */
+        public String getViewName() {
+            return viewName;
+        }
+
+        /**
+         * Returns the URI pattern for this partition.
+         *
+         * @return The URI pattern string
+         */
+        public String getURI() {
+            return uri;
+        }
+
+        /**
+         * Returns the list of files in this partition.
+         *
+         * @return List of file paths or URI patterns
+         */
+        public List<String> getFiles() {
+            return files;
+        }
+
+        /**
+         * Ensures the SQL view for this partition is registered in the database.
+         *
+         * <p>This method implements the lazy initialization pattern and thread-safety:
+         *
+         * <ol>
+         *   <li>It acquires a lock to ensure thread-safety
+         *   <li>It checks if the view is already registered using atomic compare-and-set
+         *   <li>If not yet registered, it creates the view
+         *   <li>Finally, it releases the lock
+         * </ol>
+         *
+         * <p>This ensures that even with concurrent calls, the view is created exactly once, and all threads will see a
+         * consistent view state without requiring synchronization at the manager level.
+         *
+         * @throws IOException If there's an error creating the view
+         */
+        public void ensureRegistered() throws IOException {
+            lock.lock();
+            try {
+                if (registered.compareAndSet(false, true)) {
+                    String partitionUrl = getURI();
+                    createView(viewName, partitionUrl);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+
+        /**
+         * Creates a SQL view in the DuckDB database.
+         *
+         * <p>This method is called after a lock has been acquired and registration status confirmed, ensuring it's only
+         * called once per view. It:
+         *
+         * <ol>
+         *   <li>Logs the view creation at INFO level
+         *   <li>Builds the SQL statement for creating the view
+         *   <li>Executes the SQL using a new connection
+         *   <li>Logs completion at INFO level
+         * </ol>
+         *
+         * @param viewName The name of the view to create
+         * @param partitionUrl The URI pattern for the partition
+         * @throws IOException If there is an error executing the SQL statement
+         */
+        private void createView(String viewName, final String partitionUrl) throws IOException {
+            LOGGER.log(INFO, () -> format("Creating view %s for URI %s", viewName, partitionUrl));
+
+            final String viewSql = createViewSql(viewName, partitionUrl);
+            try (Connection c = GeoParquetViewManager.this.getConnection();
+                    Statement st = c.createStatement()) {
+                st.execute(viewSql);
+            } catch (SQLException e) {
+                throw new IOException(e);
+            }
+
+            LOGGER.log(INFO, () -> format("Created view %s for URI %s", viewName, partitionUrl));
+        }
+
+        /**
+         * Creates the SQL statement for a view.
+         *
+         * <p>The created view uses DuckDB's {@code union_by_name = true} option which allows files with different
+         * schemas to be combined, as long as columns with the same name have compatible types. See <a href=
+         * "https://duckdb.org/docs/stable/data/multiple_files/combining_schemas.html">Combining Schemas</a> in the
+         * DuckDB documentation.
+         *
+         * @param viewName The name for the view
+         * @param partitionUrl The URI pattern for the GeoParquet files to include
+         * @return The SQL statement to create the view
+         */
+        private String createViewSql(String viewName, String partitionUrl) {
+            return String.format(
+                    "CREATE OR REPLACE VIEW \"%s\" AS SELECT * FROM read_parquet('%s', union_by_name = true)",
+                    viewName, partitionUrl);
+        }
+    }
 
     /**
      * Creates a new GeoParquetViewManager.
@@ -81,10 +239,14 @@ class GeoParquetViewManager {
      *
      * <ol>
      *   <li>Discovers partitions in the target URI
-     *   <li>Creates SQL view names for each partition
-     *   <li>Drops obsolete views and creates new ones
-     *   <li>Updates internal mappings between views and partitions
+     *   <li>Creates Partition objects for each partition with their view names
+     *   <li>Drops any existing views from previous configurations
+     *   <li>Updates internal mappings between view names and partitions
      * </ol>
+     *
+     * <p>Following the lazy initialization pattern, this method only discovers available partitions and prepares the
+     * mapping structures. It does not actually create SQL views in the database - those are created on-demand when
+     * {@link #createViewIfNotExists(String)} is called for a specific view name.
      *
      * @param config The configuration containing the target URI and partitioning parameters
      * @throws IOException If there's an error accessing or processing the data source
@@ -94,42 +256,149 @@ class GeoParquetViewManager {
         final URI targetUri = config.getTargetUri();
         final Integer maxHiveDepth = config.getMaxHiveDepth();
 
-        Map<String, List<String>> newPartitionedFiles = findPartitions(targetUri, maxHiveDepth);
-        Map<String, String> newViewNamesToPartitions = new HashMap<>();
+        LOGGER.config("Resolving files for geoparquet uri " + targetUri);
 
-        Map<String, String> createViewStatements = new HashMap<>();
-        for (Map.Entry<String, List<String>> partition : newPartitionedFiles.entrySet()) {
-            String partitionUrl = partition.getKey();
-            String partitionViewName = HivePartitionResolver.buildPartitionName(partitionUrl);
-            newViewNamesToPartitions.put(partitionViewName, partitionUrl);
+        Map<String, Partition> partitions = loadPartitions(targetUri, maxHiveDepth);
 
-            String viewSql = createViewSql(partitionViewName, partitionUrl);
-            createViewStatements.put(partitionViewName, viewSql);
-        }
+        LOGGER.log(
+                CONFIG,
+                () -> format(
+                        "Found %,d partitions with %,d total files",
+                        partitions.keySet().size(),
+                        partitions.values().stream()
+                                .map(Partition::getFiles)
+                                .flatMap(List::stream)
+                                .count()));
 
-        dropOldViewsAndCreateNewOnes(createViewStatements);
-
+        dropViews();
         this.config = config;
-        this.partitionUrlToFiles = newPartitionedFiles;
-        this.viewNamesToPartitionUrls = newViewNamesToPartitions;
+        this.partitionsByViewName = partitions;
+    }
+
+    /**
+     * Loads available partitions from the target URI.
+     *
+     * <p>This method is part of the initialization process and:
+     *
+     * <ol>
+     *   <li>Finds all partitions based on the URI and max hive depth settings
+     *   <li>Creates Partition objects for each partition with generated view names
+     *   <li>Builds a map of view names to Partition objects
+     * </ol>
+     *
+     * <p>This method doesn't actually create the SQL views - following the lazy initialization pattern, views are only
+     * created when requested via {@link #createViewIfNotExists(String)}. Each Partition object handles its own view
+     * registration in a thread-safe manner when needed.
+     *
+     * @param targetUri The target URI to find partitions for
+     * @param maxHiveDepth The maximum Hive partition depth to use
+     * @return A map of view names to Partition objects
+     * @throws IOException If there is an error finding partitions
+     */
+    private Map<String, Partition> loadPartitions(final URI targetUri, final Integer maxHiveDepth) throws IOException {
+
+        Map<String, List<String>> partitionFilesByUrl = findPartitions(targetUri, maxHiveDepth);
+
+        return partitionFilesByUrl.entrySet().stream()
+                .map(e -> newPartition(e.getKey(), e.getValue()))
+                .collect(Collectors.toMap(Partition::getViewName, Function.identity()));
+    }
+
+    /**
+     * Creates a new Partition object with a view name derived from the URI.
+     *
+     * <p>This helper method:
+     *
+     * <ol>
+     *   <li>Generates a view name based on the URI using the HivePartitionResolver
+     *   <li>Creates a new Partition object with the URI, view name, and files
+     * </ol>
+     *
+     * @param uri The URI pattern for the partition
+     * @param files The list of GeoParquet files in the partition
+     * @return A new Partition object
+     */
+    private Partition newPartition(String uri, List<String> files) {
+        String viewName = HivePartitionResolver.buildPartitionName(uri);
+        return new Partition(uri, viewName, files);
+    }
+
+    /**
+     * Drops all registered views from the database.
+     *
+     * <p>This synchronized method ensures that view cleanup happens atomically:
+     *
+     * <ol>
+     *   <li>Gets all view names from the current mapping
+     *   <li>Creates DROP VIEW statements for each view
+     *   <li>Executes them as a batch operation for efficiency
+     * </ol>
+     *
+     * <p>This method is called during re-initialization when the configuration changes, ensuring any stale views are
+     * removed.
+     *
+     * @throws IOException If there is an error dropping the views
+     */
+    private synchronized void dropViews() throws IOException {
+        try (Connection c = getConnection();
+                Statement st = c.createStatement()) {
+            for (Partition p : partitionsByViewName.values()) {
+                String view = p.getViewName();
+                String sql = String.format("DROP VIEW IF EXISTS \"%s\"", view);
+                st.addBatch(sql);
+                LOGGER.log(CONFIG, () -> format("Dropping view %s for URI %s", view, p.getURI()));
+            }
+            st.executeBatch();
+        } catch (SQLException e) {
+            throw new IOException(e);
+        }
+    }
+
+    /**
+     * Creates a DuckDB view for a partition if it doesn't already exist.
+     *
+     * <p>This method implements the lazy initialization pattern, where views are only created when they are needed. It
+     * follows these steps:
+     *
+     * <ol>
+     *   <li>Looks up the Partition object for the given view name
+     *   <li>Delegates the view registration to the Partition object
+     * </ol>
+     *
+     * <p>The actual view registration is handled by the {@link Partition#ensureRegistered()} method, which handles all
+     * the thread-safety and atomic registration concerns. This design follows good object-oriented principles by
+     * encapsulating the registration logic within the Partition object itself.
+     *
+     * <p>This implementation is thread-safe, ensuring that even with concurrent access:
+     *
+     * <ul>
+     *   <li>Each view is created exactly once
+     *   <li>All threads will see a consistent view state
+     *   <li>No deadlocks occur during view creation
+     * </ul>
+     *
+     * @param viewName The name of the view to create
+     * @throws IOException If there is an error creating the view
+     * @throws NullPointerException If the viewName is not valid or not registered
+     */
+    public void createViewIfNotExists(String viewName) throws IOException {
+        final Partition partition = requireNonNull(partitionsByViewName.get(viewName));
+        partition.ensureRegistered();
     }
 
     /**
      * Returns all view names created by this manager.
      *
-     * @return A set of all view names
-     */
-    public Set<String> getViewNames() {
-        return Set.copyOf(viewNamesToPartitionUrls.keySet());
-    }
-
-    /**
-     * Returns all partition URIs managed by this view manager.
+     * <p>This method returns the names of all available views, sorted alphabetically. These view names can be used as
+     * feature type names by the GeoParquet DataStore, and they correspond to partitions in the dataset.
      *
-     * @return A set of all partition URIs
+     * <p>Note that this method returns the names of all available views, whether or not they have been actually created
+     * in the database yet. The actual SQL view creation happens lazily via {@link #createViewIfNotExists(String)}.
+     *
+     * @return A sorted list of all view names
      */
-    public Set<String> getPartitionUris() {
-        return Set.copyOf(partitionUrlToFiles.keySet());
+    public List<String> getViewNames() {
+        return partitionsByViewName.keySet().stream().sorted().collect(Collectors.toList());
     }
 
     /**
@@ -141,7 +410,7 @@ class GeoParquetViewManager {
      */
     public String getVieUri(String viewName) {
         return requireNonNull(
-                viewNamesToPartitionUrls.get(requireNonNull(viewName, "viewName")),
+                partitionsByViewName.get(requireNonNull(viewName, "viewName")).getURI(),
                 () -> String.format("No target URL exists for view %s", viewName));
     }
 
@@ -165,55 +434,6 @@ class GeoParquetViewManager {
     }
 
     /**
-     * Drops obsolete views and creates new ones in a single transaction.
-     *
-     * <p>This method:
-     *
-     * <ol>
-     *   <li>Identifies views that no longer correspond to partitions
-     *   <li>Drops those views
-     *   <li>Creates or replaces views for all current partitions
-     * </ol>
-     *
-     * @param createViewStatements Map of view names to their SQL CREATE statements
-     * @throws IOException If there's an error executing the SQL statements
-     */
-    private void dropOldViewsAndCreateNewOnes(Map<String, String> createViewStatements) throws IOException {
-
-        Set<String> newViewNames = createViewStatements.keySet();
-        Set<String> viewsToDrop = this.viewNamesToPartitionUrls.keySet().stream()
-                .filter(view -> !newViewNames.contains(view))
-                .collect(Collectors.toSet());
-
-        try (Connection c = getConnection();
-                Statement st = c.createStatement()) {
-            c.setAutoCommit(false);
-            try {
-                for (String view : viewsToDrop) {
-                    String sql = String.format("DROP VIEW IF EXISTS \"%s\"", view);
-                    st.addBatch(sql);
-                }
-                st.executeBatch();
-                st.clearBatch();
-
-                for (String viewSql : createViewStatements.values()) {
-                    st.addBatch(viewSql);
-                }
-
-                st.executeBatch();
-                c.commit();
-            } catch (SQLException e) {
-                c.rollback();
-                throw e;
-            } finally {
-                c.setAutoCommit(true);
-            }
-        } catch (SQLException e) {
-            throw new IOException(e);
-        }
-    }
-
-    /**
      * Gets a database connection from the data store.
      *
      * @return A JDBC Connection
@@ -221,23 +441,5 @@ class GeoParquetViewManager {
      */
     public Connection getConnection() throws IOException {
         return dataStore.getConnection(Transaction.AUTO_COMMIT);
-    }
-
-    /**
-     * Creates the SQL statement for a view.
-     *
-     * <p>The created view uses DuckDB's {@code union_by_name = true} option which allows files with different schemas
-     * to be combined, as long as columns with the same name have compatible types. See <a
-     * href="https://duckdb.org/docs/stable/data/multiple_files/combining_schemas.html">Combining Schemas</a> in the
-     * DuckDB documentation.
-     *
-     * @param viewName The name for the view
-     * @param partitionUrl The URI pattern for the GeoParquet files to include
-     * @return The SQL statement to create the view
-     */
-    private String createViewSql(String viewName, String partitionUrl) {
-        return String.format(
-                "CREATE OR REPLACE VIEW \"%s\" AS SELECT * FROM read_parquet('%s', union_by_name = true)",
-                viewName, partitionUrl);
     }
 }

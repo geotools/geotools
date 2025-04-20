@@ -97,6 +97,42 @@ public class GeoParquetDialect extends DuckDBDialect {
     }
 
     /**
+     * Ensures that a database view exists for the specified feature type.
+     *
+     * <p>This method is called before any operations that require access to a feature type's schema or data,
+     * implementing the lazy initialization pattern. If the view already exists, this method has no effect.
+     *
+     * @param viewName The name of the view/feature type to ensure exists
+     * @throws IOException If there is an error creating the view
+     */
+    public void ensureSchema(String viewName) throws IOException {
+        viewManager.createViewIfNotExists(viewName);
+    }
+
+    /**
+     * Returns a list of all available feature type names.
+     *
+     * <p>This method queries the view manager to get the names of all registered views, which correspond to available
+     * feature types in the GeoParquet dataset.
+     *
+     * @return A list of feature type names
+     * @throws IOException If there is an error retrieving the names
+     */
+    public List<String> getTypeNames() throws IOException {
+        return viewManager.getViewNames();
+    }
+
+    /**
+     * Gets a database connection from the connection pool.
+     *
+     * @return A JDBC connection
+     * @throws IOException If there is an error getting a connection
+     */
+    Connection getConnection() throws IOException {
+        return viewManager.getConnection();
+    }
+
+    /**
      * Creates a specialized filter-to-SQL converter for GeoParquet.
      *
      * @return A new GeoParquetFilterToSQL instance
@@ -142,11 +178,21 @@ public class GeoParquetDialect extends DuckDBDialect {
      * @param config The GeoParquet configuration
      * @throws IOException If there's an error registering the views
      */
-    public void registerParquetViews(GeoParquetConfig config) throws IOException {
+    public void initialize(GeoParquetConfig config) throws IOException {
         geoparquetMetadata.clear();
         viewManager.initialize(config);
     }
 
+    /**
+     * Gets the GeoParquet metadata for a feature type.
+     *
+     * <p>This is a convenience method that creates a connection and delegates to {@link #getGeoparquetMetadata(String,
+     * Connection)}.
+     *
+     * @param featureType The feature type to get metadata for
+     * @return The GeoParquet metadata for the feature type
+     * @throws IOException If there is an error retrieving the metadata
+     */
     public GeoparquetDatasetMetadata getGeoparquetMetadata(SimpleFeatureType featureType) throws IOException {
         try (Connection c = viewManager.getConnection()) {
             return getGeoparquetMetadata(featureType.getTypeName(), c);
@@ -380,6 +426,14 @@ public class GeoParquetDialect extends DuckDBDialect {
         return srid;
     }
 
+    /**
+     * Internal helper method to get the SRID from metadata for a specific column.
+     *
+     * @param metadata The GeoParquet dataset metadata
+     * @param columnName The name of the column to get SRID for
+     * @param cx Database connection
+     * @return The SRID if found, or null if not available
+     */
     Integer getGeometrySRIDInternal(GeoparquetDatasetMetadata metadata, String columnName, Connection cx) {
         Integer srid = null;
 
@@ -393,6 +447,12 @@ public class GeoParquetDialect extends DuckDBDialect {
         return srid;
     }
 
+    /**
+     * Attempts to find an EPSG code for the given coordinate reference system.
+     *
+     * @param crs The coordinate reference system
+     * @return The EPSG code if found, or null if not found or an error occurred
+     */
     private Integer lookupEpsgCode(CoordinateReferenceSystem crs) {
         Integer srid = null;
         if (crs != null) {

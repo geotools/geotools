@@ -38,9 +38,9 @@ import org.junit.rules.TemporaryFolder;
  *
  * <p>Usage:
  *
- * <pre>
+ * <pre><code>
  * public class MyTest {
- *     &#64;Rule
+ *     @Rule
  *     public GeoParquetTestSupport testData = new GeoParquetTestSupport();
  *
  *     @Test
@@ -50,6 +50,7 @@ import org.junit.rules.TemporaryFolder;
  *         // Test with the GeoParquet files
  *     }
  * }
+ * </code>
  * </pre>
  *
  * <p>This support class will create the following directories and files in the {@link #getTemporaryFolder() temp

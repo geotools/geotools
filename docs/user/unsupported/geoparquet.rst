@@ -25,10 +25,12 @@ Features
 - **Attribute Filters**: Filter data based on attribute values
 - **Geometry Simplification**: Supports on-the-fly geometry simplification for rendering optimization
 - **GeoParquet Metadata**: Parses and utilizes the GeoParquet 'geo' metadata for schema information and optimizations
+- **Precise Geometry Types**: Extracts and uses specific geometry types (Point, LineString, etc.) from GeoParquet metadata
 - **Projection Support**: Handles coordinate reference systems properly
 - **Memory Efficient**: Leverages Parquet's efficient columnar storage format
 - **Query Pushdown**: Pushes filters down to optimize data retrieval
 - **Bounds Optimization**: Uses GeoParquet metadata or specialized bbox columns for fast bounds calculation
+- **Struct Data Type Support**: Basic support for DuckDB's STRUCT data type columns
 
 How It Works
 ------------
@@ -150,10 +152,23 @@ The implementation parses the ``geo`` metadata field from Parquet files to obtai
 
 - Primary geometry column name
 - Geometry encoding details
-- Geometry types
-- CRS information
+- Geometry types and converts them to specific JTS geometry classes
+- CRS information using PROJJSON (v0.7 schema) format
 - Bounding box information
 - Additional metadata fields
+
+Geometry Type Handling
+----------------------
+
+The GeoParquet DataStore provides accurate geometry type information based on the contents of each dataset:
+
+- Automatically extracts geometry type information from the GeoParquet ``geo`` metadata
+- Determines the most specific geometry type that covers all geometries in the column
+- Properly handles mixed geometry cases (for example, Point and MultiPoint becoming Multipoint)
+- Configures the feature type with the correct geometry type binding
+- Ensures all features report the proper geometry type
+
+This is particularly valuable because DuckDB itself only reports a generic GEOMETRY type regardless of actual content.
 
 Hive Partitioning Support
 -------------------------
@@ -233,12 +248,28 @@ This works perfectly with the GeoParquet DataStore's Hive partitioning support, 
 
 For details on downloading and preparing Overture Maps data, refer to the ``extract_overturemaps_data.md`` documentation included with the module.
 
+Additional Features
+-------------------
+
+Struct Data Type Support
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The GeoParquet DataStore provides basic support for DuckDB's STRUCT data type:
+
+- Recognizes and properly maps STRUCT columns in GeoParquet files
+- Preserves the structured data as java.sql.Struct objects
+- Allows access to the structured attributes via Struct.getAttributes()
+- Maintains SQL type information via Struct.getSQLTypeName()
+
+This is useful for working with structured data columns that contain multiple related values, such as bounding boxes, address components, or other complex attributes that don't warrant full complex feature modeling.
+
 Current Limitations
 -------------------
 
 - Currently read-only (no writing capabilities)
 - Tables don't show up in the DataStore until they've been accessed at least once
 - Working with extremely large remote files may involve some latency on initial access
+- Struct data type support is basic and currently doesn't convert to more user-friendly object types
 - This module is unsupported and still under development
 
 Requirements

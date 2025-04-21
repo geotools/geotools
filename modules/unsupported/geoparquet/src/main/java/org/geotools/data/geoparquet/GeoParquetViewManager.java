@@ -32,9 +32,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.logging.Logging;
 
@@ -100,6 +102,7 @@ class GeoParquetViewManager {
         private final String uri;
         private final String viewName;
         private final List<String> files;
+        private SimpleFeatureType viewType;
 
         /** Creates a new partition entry. */
         public Partition(String uri, String viewName, List<String> files) {
@@ -133,6 +136,45 @@ class GeoParquetViewManager {
          */
         public List<String> getFiles() {
             return files;
+        }
+
+        /**
+         * Gets the enhanced feature type for this partition with caching.
+         *
+         * <p>This method implements a thread-safe caching mechanism for feature types:
+         *
+         * <ol>
+         *   <li>First checks if a cached version already exists
+         *   <li>If not, acquires a lock to prevent concurrent rebuilding
+         *   <li>Double-checks if another thread created the type while waiting for the lock
+         *   <li>If still needed, applies the builder function to create the enhanced type
+         *   <li>Caches the result for future use by all threads
+         * </ol>
+         *
+         * <p>This implementation follows the double-checked locking pattern to provide both thread safety and
+         * performance. The lock is only acquired when necessary, and the expensive builder function is called exactly
+         * once per partition.
+         *
+         * @param original The original feature type from JDBC metadata
+         * @param builder Function to enhance the feature type (typically narrowing geometry types)
+         * @return The enhanced feature type, either from cache or freshly built
+         */
+        public SimpleFeatureType getFeatureType(SimpleFeatureType original, UnaryOperator<SimpleFeatureType> builder) {
+            SimpleFeatureType finalType = this.viewType;
+            if (finalType == null) {
+                lock.lock();
+                try {
+                    if (this.viewType == null) {
+                        finalType = builder.apply(original);
+                        this.viewType = finalType;
+                    } else {
+                        finalType = this.viewType;
+                    }
+                } finally {
+                    lock.unlock();
+                }
+            }
+            return finalType;
         }
 
         /**
@@ -384,6 +426,30 @@ class GeoParquetViewManager {
     public void createViewIfNotExists(String viewName) throws IOException {
         final Partition partition = requireNonNull(partitionsByViewName.get(viewName));
         partition.ensureRegistered();
+    }
+
+    /**
+     * Gets the enhanced feature type for a view, with caching for performance.
+     *
+     * <p>This method retrieves the feature type for a given view name, applying the provided builder function to
+     * enhance it (typically by narrowing geometry types based on GeoParquet metadata). Results are cached at the
+     * partition level to avoid repeatedly rebuilding the same feature type.
+     *
+     * <p>Thread-safety is maintained through a lock in the Partition class, ensuring that:
+     *
+     * <ol>
+     *   <li>The builder function is applied only once per feature type
+     *   <li>All threads see the same, consistently-built feature type once created
+     *   <li>No race conditions occur even with concurrent access to the same feature type
+     * </ol>
+     *
+     * @param original The original feature type as inferred by JDBCDataStore from the database metadata
+     * @param builder A function to enhance the original feature type (typically by narrowing geometry types)
+     * @return The enhanced feature type, either freshly built or retrieved from cache
+     */
+    public SimpleFeatureType getViewFeatureType(SimpleFeatureType original, UnaryOperator<SimpleFeatureType> builder) {
+        final Partition partition = requireNonNull(partitionsByViewName.get(original.getTypeName()));
+        return partition.getFeatureType(original, builder);
     }
 
     /**

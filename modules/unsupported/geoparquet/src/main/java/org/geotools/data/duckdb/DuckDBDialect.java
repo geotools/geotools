@@ -26,11 +26,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Struct;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import org.duckdb.DuckDBStruct;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -41,6 +43,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
@@ -136,8 +139,16 @@ public class DuckDBDialect extends BasicSQLDialect {
         }
     }
 
+    /**
+     * It is called before the mappings registered in
+     * {@link #registerSqlTypeToClassMappings(Map)} and
+     * {@link #registerSqlTypeNameToClassMappings(Map) are used to determine the
+     * mapping. Subclasses should implement as needed, the default implementation
+     * returns {@code null}.
+     */
     @Override
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
+        super.getMapping(columnMetaData, cx);
         String typeName = columnMetaData.getString("TYPE_NAME");
 
         // Check if it's a geometry column
@@ -148,6 +159,30 @@ public class DuckDBDialect extends BasicSQLDialect {
         return null;
     }
 
+    /**
+     * Appends a mapping of {@link Types#STRUCT} to {@code java.sql.Struct.class}
+     *
+     * <p>Support for struct is limited and results in GeoServer WMS and WFS to interpret it as a String literal. For
+     * example, a "bbox" {@link Struct} attribute value with {@link Struct#getSQLTypeName() SQL type name} as
+     * {@literal STRUCT(xmin FLOAT, xmax FLOAT, ymin FLOAT, ymax FLOAT)} will be encoded as
+     * {@literal <bbox>{xmin=-63.005005, xmax=-63.004997, ymin=-40.81569, ymax=-40.81568}</bbox> } by virtue of
+     * {@link DuckDBStruct#toString()}
+     */
+    @Override
+    public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
+        super.registerSqlTypeToClassMappings(mappings);
+        mappings.put(Integer.valueOf(Types.STRUCT), java.sql.Struct.class);
+    }
+
+    /**
+     * Maps {@link Geometry} types to {@link Types#OTHER} and {@link java.sql.Struct} to {@link Types#STRUCT}
+     *
+     * <p>Support for struct is limited and results in GeoServer WMS and WFS to interpret it as a String literal. For
+     * example, a "bbox" {@link Struct} attribute value with {@link Struct#getSQLTypeName() SQL type name} as
+     * {@literal STRUCT(xmin FLOAT, xmax FLOAT, ymin FLOAT, ymax FLOAT)} will be encoded as
+     * {@literal <bbox>{xmin=-63.005005, xmax=-63.004997, ymin=-40.81569, ymax=-40.81568}</bbox> } by virtue of
+     * {@link DuckDBStruct#toString()}
+     */
     @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
@@ -160,6 +195,9 @@ public class DuckDBDialect extends BasicSQLDialect {
         mappings.put(MultiPoint.class, Types.OTHER);
         mappings.put(MultiLineString.class, Types.OTHER);
         mappings.put(MultiPolygon.class, Types.OTHER);
+        mappings.put(GeometryCollection.class, Types.OTHER);
+
+        mappings.put(java.sql.Struct.class, Types.STRUCT);
     }
 
     @Override
@@ -259,18 +297,23 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
+        encodeGeometryColumnInternal(gatt, prefix, hints, false, sql);
+    }
+
+    protected void encodeGeometryColumnInternal(
+            GeometryDescriptor gatt, String prefix, Hints hints, boolean forceMulti, StringBuffer sql) {
         boolean force2D = hints != null
                 && hints.containsKey(Hints.FEATURE_2D)
                 && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
 
-        String geometryColumn = encodeColumnName(prefix, gatt.getLocalName());
-
-        String geomSql;
-        if (force2D) {
-            geomSql = format("ST_AsWKB(%s::GEOMETRY)::BLOB", geometryColumn);
-        } else {
-            geomSql = format("ST_AsWKB(ST_Force2D(%s::GEOMETRY))::BLOB", geometryColumn);
+        String geometry = format("%s::GEOMETRY", encodeColumnName(prefix, gatt.getLocalName()));
+        if (forceMulti) {
+            geometry = format("ST_Multi(%s)", geometry);
         }
+        if (force2D) {
+            geometry = format("ST_Force2D(%s)", geometry);
+        }
+        String geomSql = format("ST_AsWKB(%s)::BLOB", geometry);
         sql.append(geomSql);
     }
 

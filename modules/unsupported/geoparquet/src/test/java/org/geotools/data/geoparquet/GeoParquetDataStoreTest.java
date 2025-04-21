@@ -17,18 +17,23 @@
 package org.geotools.data.geoparquet;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 
+import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,10 +49,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
@@ -56,6 +67,12 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /** Tests for GeoParquetDataStoreFactory. */
 public class GeoParquetDataStoreTest {
@@ -322,19 +339,80 @@ public class GeoParquetDataStoreTest {
     }
 
     @Test
-    public void testGetSchema() throws IOException {
+    public void testGeometryTypes() throws IOException {
         store = getDataStore(worldgridPartitionedParams);
 
-        testGetSchema(store, "theme_lines_type_line", Geometry.class);
-        testGetSchema(store, "theme_lines_type_multiline", Geometry.class);
+        testGeometryAttribute(store, "theme_lines_type_line", LineString.class);
+        testGeometryAttribute(store, "theme_lines_type_multiline", MultiLineString.class);
+        testGeometryAttribute(store, "theme_points_type_point", Point.class);
+        testGeometryAttribute(store, "theme_points_type_multipoint", MultiPoint.class);
+        testGeometryAttribute(store, "theme_polygons_type_polygon", Polygon.class);
+        testGeometryAttribute(store, "theme_polygons_type_multipolygon", MultiPolygon.class);
+    }
 
-        Set.of(
-                "theme_lines_type_line",
-                "theme_lines_type_multiline",
-                "theme_points_type_point",
-                "theme_points_type_multipoint",
-                "theme_polygons_type_polygon",
-                "theme_polygons_type_multipolygon");
+    @Test
+    public void testGeometryTypesHivePartitioned() throws IOException {
+        worldgridPartitionedParams.put(GeoParquetDataStoreFactory.MAX_HIVE_DEPTH.key, 1);
+        store = getDataStore(worldgridPartitionedParams);
+
+        testGeometryAttribute(store, "theme_lines", MultiLineString.class);
+        testGeometryAttribute(store, "theme_points", MultiPoint.class);
+        testGeometryAttribute(store, "theme_polygons", MultiPolygon.class);
+
+        worldgridPartitionedParams.put(GeoParquetDataStoreFactory.MAX_HIVE_DEPTH.key, 0);
+        store = getDataStore(worldgridPartitionedParams);
+
+        testGeometryAttribute(store, "worldgrid_partitioned", Geometry.class);
+    }
+
+    /**
+     * Test that when limiting the number of hive-partitions, {@literal read_parquet(<uri>, union_by_name=true)} is used
+     * and hence the resulting schema contains the union of all attributes
+     */
+    @Test
+    public void testGetSchemaHivePartitionUnionByName() throws IOException {
+        store = getDataStore(worldgridPartitionedParams);
+        assertEquals(
+                Set.of(
+                        "theme_lines_type_line",
+                        "theme_lines_type_multiline",
+                        "theme_points_type_point",
+                        "theme_points_type_multipoint",
+                        "theme_polygons_type_polygon",
+                        "theme_polygons_type_multipolygon"),
+                Set.copyOf(Arrays.asList(store.getTypeNames())));
+
+        Set<String> lines = getAttributeNames(store, "theme_lines_type_line");
+        Set<String> multilines = getAttributeNames(store, "theme_lines_type_multiline");
+        Set<String> points = getAttributeNames(store, "theme_points_type_point");
+        Set<String> multipoints = getAttributeNames(store, "theme_points_type_multipoint");
+        Set<String> polygons = getAttributeNames(store, "theme_polygons_type_polygon");
+        Set<String> multipolygons = getAttributeNames(store, "theme_polygons_type_multipolygon");
+
+        assertNotEquals(lines, points);
+        assertNotEquals(points, polygons);
+
+        // now get 2 level less of hive partitioning, since types from the same theme have the exact same attributes due
+        // to how the test data is built
+        store.dispose();
+        worldgridPartitionedParams.put(GeoParquetDataStoreFactory.MAX_HIVE_DEPTH.key, 0);
+        store = getDataStore(worldgridPartitionedParams);
+
+        assertEquals(Set.of("worldgrid_partitioned"), Set.copyOf(Arrays.asList(store.getTypeNames())));
+
+        Set<String> unionedAttributes = getAttributeNames(store, "worldgrid_partitioned");
+
+        Set<String> expected = new HashSet<>();
+        expected.addAll(Sets.union(lines, multilines));
+        expected.addAll(Sets.union(points, multipoints));
+        expected.addAll(Sets.union(polygons, multipolygons));
+        assertThat(unionedAttributes, equalTo(expected));
+    }
+
+    private Set<String> getAttributeNames(GeoparquetDataStore store, String typeName) throws IOException {
+        return store.getSchema(typeName).getAttributeDescriptors().stream()
+                .map(AttributeDescriptor::getLocalName)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -363,7 +441,7 @@ public class GeoParquetDataStoreTest {
         SimpleFeatureType schema = store.getSchema("points");
 
         // Get metadata and verify it has valid CRS information
-        GeoparquetDatasetMetadata metadata = dialect.getGeoparquetMetadata(schema);
+        GeoparquetDatasetMetadata metadata = dialect.getGeoparquetMetadata(schema.getTypeName());
         assertNotNull(metadata);
         assertNotNull(metadata.getCrs());
 
@@ -402,16 +480,15 @@ public class GeoParquetDataStoreTest {
      * @param store The GeoParquet DataStore
      * @param typeName The feature type name to test
      * @param geomType The expected geometry class
-     * @return The validated SimpleFeatureType
      * @throws IOException If there's an error accessing the schema
      */
-    private SimpleFeatureType testGetSchema(
-            GeoparquetDataStore store, String typeName, Class<? extends Geometry> geomType) throws IOException {
+    private void testGeometryAttribute(GeoparquetDataStore store, String typeName, Class<? extends Geometry> geomType)
+            throws IOException {
 
         GeoParquetDialect dialect = store.getSQLDialect();
         SimpleFeatureType schema = store.getSchema(typeName);
 
-        GeoparquetDatasetMetadata aggregattedGeo = dialect.getGeoparquetMetadata(schema);
+        GeoparquetDatasetMetadata aggregattedGeo = dialect.getGeoparquetMetadata(schema.getTypeName());
         assertNotNull(aggregattedGeo);
         ReferencedEnvelope bounds = aggregattedGeo.getBounds();
 
@@ -424,6 +501,40 @@ public class GeoParquetDataStoreTest {
         // Verify the geometry descriptor has a CRS
         assertNotNull(geometryDescriptor.getCoordinateReferenceSystem());
 
-        return schema;
+        SimpleFeatureSource featureSource = store.getFeatureSource(typeName);
+        assertEquals(schema, featureSource.getSchema());
+
+        try (SimpleFeatureIterator it = featureSource.getFeatures().features()) {
+            assertTrue(it.hasNext());
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                assertEquals(schema, feature.getFeatureType());
+                Geometry value = (Geometry) feature.getAttribute(geometryDescriptor.getLocalName());
+                assertThat(value, instanceOf(geomType));
+            }
+        }
+    }
+
+    @Test
+    public void testStruct() throws IOException, SQLException {
+        store = getDataStore(worldgridPartitionedParams);
+
+        SimpleFeatureSource featureSource = store.getFeatureSource("theme_lines_type_line");
+        SimpleFeatureCollection fc = featureSource.getFeatures();
+        SimpleFeature feature;
+        try (SimpleFeatureIterator it = fc.features()) {
+            feature = it.next();
+        }
+
+        Object bbox = feature.getAttribute("bbox");
+        assertThat(bbox, instanceOf(java.sql.Struct.class));
+
+        java.sql.Struct struct = (Struct) bbox;
+        Object[] attributes = struct.getAttributes();
+        assertNotNull(attributes);
+        assertEquals(4, attributes.length);
+
+        String sqlTypeName = struct.getSQLTypeName();
+        assertEquals("STRUCT(xmin FLOAT, xmax FLOAT, ymin FLOAT, ymax FLOAT)", sqlTypeName);
     }
 }

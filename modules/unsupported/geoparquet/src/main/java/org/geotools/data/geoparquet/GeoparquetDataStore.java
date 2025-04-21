@@ -79,22 +79,6 @@ public class GeoparquetDataStore extends ForwardingDataStore<JDBCDataStore> impl
     }
 
     /**
-     * Returns the feature type schema for the given name.
-     *
-     * <p>This implementation ensures the database view exists for the requested schema before delegating to the JDBC
-     * datastore.
-     *
-     * @param name The qualified name of the feature type
-     * @return The feature type schema
-     * @throws IOException If there is a problem retrieving the schema
-     */
-    @Override
-    public SimpleFeatureType getSchema(Name name) throws IOException {
-        getSQLDialect().ensureSchema(name.getLocalPart());
-        return delegate.getSchema(name);
-    }
-
-    /**
      * Returns the feature type schema for the given type name.
      *
      * <p>This implementation ensures the database view exists for the requested schema before delegating to the JDBC
@@ -106,8 +90,7 @@ public class GeoparquetDataStore extends ForwardingDataStore<JDBCDataStore> impl
      */
     @Override
     public SimpleFeatureType getSchema(String typeName) throws IOException {
-        getSQLDialect().ensureSchema(typeName);
-        return delegate.getSchema(typeName);
+        return getSchema(new NameImpl(delegate.getNamespaceURI(), typeName));
     }
 
     /**
@@ -122,24 +105,54 @@ public class GeoparquetDataStore extends ForwardingDataStore<JDBCDataStore> impl
      */
     @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
-        getSQLDialect().ensureSchema(typeName);
-        return delegate.getFeatureSource(typeName);
+        return getFeatureSource(new NameImpl(delegate.getNamespaceURI(), typeName));
+    }
+
+    /**
+     * Returns the feature type schema for the given name.
+     *
+     * <p>This implementation ensures the database view exists for the requested schema before delegating to the JDBC
+     * datastore. It sets the CURRENT_TYPENAME thread-local variable to provide context for geometry type handling
+     * during the operation.
+     *
+     * @param name The qualified name of the feature type
+     * @return The feature type schema with correct geometry types
+     * @throws IOException If there is a problem retrieving the schema
+     */
+    @Override
+    public SimpleFeatureType getSchema(Name name) throws IOException {
+        GeoParquetDialect.CURRENT_TYPENAME.set(name.getLocalPart());
+        try {
+            getSQLDialect().ensureViewExists(name.getLocalPart());
+            SimpleFeatureType schema = delegate.getSchema(name);
+            return getSQLDialect().fixGeometryTypes(schema);
+        } finally {
+            GeoParquetDialect.CURRENT_TYPENAME.remove();
+        }
     }
 
     /**
      * Returns a feature source for the given qualified name.
      *
      * <p>This implementation ensures the database view exists for the requested feature source before delegating to the
-     * JDBC datastore.
+     * JDBC datastore. It sets the CURRENT_TYPENAME thread-local variable to provide context for geometry type handling
+     * during the operation and wraps the result in an OverridingFeatureSource that provides the correct geometry types.
      *
      * @param typeName The qualified name of the feature type
-     * @return A feature source for reading features
+     * @return A feature source for reading features with correct geometry types
      * @throws IOException If there is a problem creating the feature source
      */
     @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
-        getSQLDialect().ensureSchema(typeName.getLocalPart());
-        return delegate.getFeatureSource(typeName);
+        GeoParquetDialect.CURRENT_TYPENAME.set(typeName.getLocalPart());
+        try {
+            getSQLDialect().ensureViewExists(typeName.getLocalPart());
+            SimpleFeatureSource featureSource = delegate.getFeatureSource(typeName);
+            SimpleFeatureType geometryTypeNarrowedSchema = getSQLDialect().fixGeometryTypes(featureSource.getSchema());
+            return new OverridingFeatureSource(featureSource, this, geometryTypeNarrowedSchema);
+        } finally {
+            GeoParquetDialect.CURRENT_TYPENAME.remove();
+        }
     }
 
     /**

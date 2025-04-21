@@ -15,10 +15,12 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 - **Attribute Filters**: Filter data based on attribute values
 - **Geometry Simplification**: Supports on-the-fly geometry simplification for rendering optimization
 - **GeoParquet Metadata**: Parses and utilizes the GeoParquet 'geo' metadata for schema information and optimizations
+- **Precise Geometry Types**: Extracts and uses specific geometry types (Point, LineString, etc.) from GeoParquet metadata
 - **Projection Support**: Handles coordinate reference systems properly
 - **Memory Efficient**: Leverages Parquet's efficient columnar storage format
 - **Query Pushdown**: Pushes filters down to optimize data retrieval
 - **Bounds Optimization**: Uses GeoParquet metadata or specialized bbox columns for fast bounds calculation
+- **Struct Data Type Support**: Basic support for DuckDB's STRUCT data type columns
 
 
 ## How It Works
@@ -212,13 +214,11 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 - Automatic feature type discovery from partitioned datasets
 - Remote access to HTTP/S3 GeoParquet files
 - Filter pushdown for optimized spatial queries
+- Precise geometry type detection from GeoParquet metadata
+- Support for DuckDB Struct data types
 
 ## Planned Improvements
 
-- Identify actual **geometry type**. Currently all geometry columns are reported as type `Geometry`. Consider GeoParquet files can have multiple
-  geometry types. If the `geo` metadata is available, they're reported (e.g. [Polygon, MultiPolygon, ...]). Otherwise it's hard to know.
-- Support **Struct** data types. Since they're "value objects" and not relationships, maybe just create a JSON attribute type and parse them as JSON,
-  maintaining the store as "simple features". No need to build "complex features".
 - Allow to configure [S3 credentials](https://duckdb.org/docs/stable/guides/network_cloud_storage/s3_import.html#credentials-and-configuration)
 - Install [aws extension](https://duckdb.org/docs/stable/extensions/aws.html) to load credentials automatically
 - Enable [Azure](https://duckdb.org/docs/stable/extensions/azure) as a data storage option

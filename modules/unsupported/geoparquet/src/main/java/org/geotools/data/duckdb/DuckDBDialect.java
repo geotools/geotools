@@ -277,7 +277,7 @@ public class DuckDBDialect extends BasicSQLDialect {
         // Use ST_Envelope to get the envelope
         sql.append("ST_AsWKB(ST_Envelope(");
         encodeColumnName(null, geometryColumn, sql);
-        sql.append(")::GEOMETRY)::BLOB");
+        sql.append(")::GEOMETRY)::BLOB "); // mind the trailing whitespace, JDBCDataStore won't add it
     }
 
     /**

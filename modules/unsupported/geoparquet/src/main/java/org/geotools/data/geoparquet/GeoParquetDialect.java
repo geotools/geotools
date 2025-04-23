@@ -51,6 +51,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.PrimaryKeyFinder;
+import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -395,11 +396,11 @@ public class GeoParquetDialect extends DuckDBDialect {
      * @throws SQLException If there's an error executing SQL
      * @throws IOException If there's an error accessing the data
      */
-    private ReferencedEnvelope computeBoundsFromBboxColumn(SimpleFeatureType featureType, Connection cx)
+    ReferencedEnvelope computeBoundsFromBboxColumn(SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
 
         String sql = format(
-                "SELECT ST_AsWKB(ST_MakeEnvelope(MIN(bbox.xmin), MAX(bbox.xmax), MIN(bbox.ymin), MAX(bbox.ymax))::GEOMETRY)::BLOB FROM %s",
+                "SELECT ST_AsWKB(ST_MakeEnvelope(MIN(bbox.xmin), MIN(bbox.ymin), MAX(bbox.xmax), MAX(bbox.ymax))::GEOMETRY)::BLOB FROM %s",
                 escapeName(featureType.getTypeName()));
 
         try (PreparedStatement ps = cx.prepareStatement(sql);
@@ -446,7 +447,7 @@ public class GeoParquetDialect extends DuckDBDialect {
         Integer srid = null;
         try {
             GeoparquetDatasetMetadata metadata = getGeoparquetMetadata(tableName, cx);
-            srid = getGeometrySRIDInternal(metadata, columnName, cx);
+            srid = getGeometrySRIDInternal(metadata, columnName);
             if (srid == null) {
                 // If specific column CRS not found, try the primary column
                 CoordinateReferenceSystem crs = metadata.getCrs();
@@ -460,6 +461,39 @@ public class GeoParquetDialect extends DuckDBDialect {
             srid = 4326; // Default if no metadata available
         }
         return srid;
+    }
+
+    /**
+     * Override to use the {@link GeoParquetMetadata} provided axis order on a per-FeatureType basis.
+     * {@link SQLDialect#createCRS} uses the {@link #forceLongitudeFirst} flag as a constant.
+     */
+    @Override
+    public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
+        String typeName = CURRENT_TYPENAME.get();
+        if (typeName != null) {
+            // note we're abusing the fact that this method is only ever called right after getGeometrySRID(), so we do
+            // know we're being asked for the declared CRS and not any random one
+            GeoparquetDatasetMetadata md = getGeoparquetMetadata(typeName, cx);
+            CoordinateReferenceSystem crs = md.getCrs();
+            // but check it anyway
+            try {
+                Integer id = CRS.lookupEpsgCode(crs, false);
+                if (id != null && id.intValue() == srid) {
+                    return crs;
+                }
+            } catch (FactoryException e) {
+                LOGGER.log(
+                        Level.FINE, "Could not figure out CRS id, proceeding with regular parsing of the provided id");
+            }
+        }
+
+        boolean longitudeFirst = true; // default to x/y
+        try {
+            return CRS.decode("EPSG:" + srid, longitudeFirst);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Could not decode EPSG:" + srid + " using the EPSG plugins.");
+            return null;
+        }
     }
 
     /**
@@ -650,11 +684,9 @@ public class GeoParquetDialect extends DuckDBDialect {
      * Internal helper method to get the SRID from metadata for a specific column.
      *
      * @param metadata The GeoParquet dataset metadata
-     * @param columnName The name of the column to get SRID for
-     * @param cx Database connection
      * @return The SRID if found, or null if not available
      */
-    Integer getGeometrySRIDInternal(GeoparquetDatasetMetadata metadata, String columnName, Connection cx) {
+    Integer getGeometrySRIDInternal(GeoparquetDatasetMetadata metadata, String columnName) {
         Integer srid = null;
 
         // Try to get the specific column's CRS if columnName is provided

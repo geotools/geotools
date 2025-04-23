@@ -19,6 +19,7 @@ package org.geotools.data.geoparquet;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -52,14 +53,19 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Assert;
@@ -339,7 +345,7 @@ public class GeoParquetDataStoreTest {
     }
 
     @Test
-    public void testGeometryTypes() throws IOException {
+    public void testGeometryTypes() throws Exception {
         store = getDataStore(worldgridPartitionedParams);
 
         testGeometryAttribute(store, "theme_lines_type_line", LineString.class);
@@ -351,7 +357,7 @@ public class GeoParquetDataStoreTest {
     }
 
     @Test
-    public void testGeometryTypesHivePartitioned() throws IOException {
+    public void testGeometryTypesHivePartitioned() throws Exception {
         worldgridPartitionedParams.put(GeoParquetDataStoreFactory.MAX_HIVE_DEPTH.key, 1);
         store = getDataStore(worldgridPartitionedParams);
 
@@ -392,7 +398,8 @@ public class GeoParquetDataStoreTest {
         assertNotEquals(lines, points);
         assertNotEquals(points, polygons);
 
-        // now get 2 level less of hive partitioning, since types from the same theme have the exact same attributes due
+        // now get 2 level less of hive partitioning, since types from the same theme
+        // have the exact same attributes due
         // to how the test data is built
         store.dispose();
         worldgridPartitionedParams.put(GeoParquetDataStoreFactory.MAX_HIVE_DEPTH.key, 0);
@@ -446,14 +453,12 @@ public class GeoParquetDataStoreTest {
         assertNotNull(metadata.getCrs());
 
         // Test getting SRID from metadata
-        try (Connection cx = store.getSQLDialect().getConnection()) {
-            Integer srid = dialect.getGeometrySRIDInternal(metadata, "invalid_column", cx);
-            assertNull(srid);
-            String geomColumn = metadata.getPrimaryColumnName().orElseThrow();
-            srid = dialect.getGeometrySRIDInternal(metadata, geomColumn, cx);
-            // Should be 4326 (WGS84) as defined in the test data
-            assertEquals(Integer.valueOf(4326), srid);
-        }
+        Integer srid = dialect.getGeometrySRIDInternal(metadata, "invalid_column");
+        assertNull(srid);
+        String geomColumn = metadata.getPrimaryColumnName().orElseThrow();
+        srid = dialect.getGeometrySRIDInternal(metadata, geomColumn);
+        // Should be 4326 (WGS84) as defined in the test data
+        assertEquals(Integer.valueOf(4326), srid);
     }
 
     /**
@@ -481,9 +486,13 @@ public class GeoParquetDataStoreTest {
      * @param typeName The feature type name to test
      * @param geomType The expected geometry class
      * @throws IOException If there's an error accessing the schema
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
      */
     private void testGeometryAttribute(GeoparquetDataStore store, String typeName, Class<? extends Geometry> geomType)
-            throws IOException {
+            throws Exception {
+
+        final CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
 
         GeoParquetDialect dialect = store.getSQLDialect();
         SimpleFeatureType schema = store.getSchema(typeName);
@@ -494,12 +503,14 @@ public class GeoParquetDataStoreTest {
 
         // Verify we have a valid CRS
         assertNotNull(bounds.getCoordinateReferenceSystem());
+        assertThat(bounds.getCoordinateReferenceSystem(), equalTo(crs));
 
         GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();
         assertEquals(geomType, geometryDescriptor.getType().getBinding());
 
         // Verify the geometry descriptor has a CRS
         assertNotNull(geometryDescriptor.getCoordinateReferenceSystem());
+        assertThat(geometryDescriptor.getCoordinateReferenceSystem(), equalTo(crs));
 
         SimpleFeatureSource featureSource = store.getFeatureSource(typeName);
         assertEquals(schema, featureSource.getSchema());
@@ -536,5 +547,56 @@ public class GeoParquetDataStoreTest {
 
         String sqlTypeName = struct.getSQLTypeName();
         assertEquals("STRUCT(xmin FLOAT, xmax FLOAT, ymin FLOAT, ymax FLOAT)", sqlTypeName);
+    }
+
+    @Test
+    public void testGetBounds() throws Exception {
+        store = getDataStore(worldgridPartitionedParams);
+        testWorldBounds("theme_points_type_point");
+        testWorldBounds("theme_lines_type_line");
+    }
+
+    private void testWorldBounds(String typeName) throws NoSuchAuthorityCodeException, FactoryException, IOException {
+        final ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
+
+        SimpleFeatureSource featureSource = store.getFeatureSource(typeName);
+        ReferencedEnvelope bounds;
+
+        bounds = featureSource.getBounds();
+        assertThat(bounds, equalTo(world));
+
+        bounds = featureSource.getBounds(new Query());
+        assertThat(bounds, equalTo(world));
+
+        bounds = featureSource.getBounds(new Query());
+        assertThat(bounds, equalTo(world));
+
+        SimpleFeatureCollection fc = featureSource.getFeatures();
+        bounds = fc.getBounds();
+        assertThat(bounds, equalTo(world));
+
+        Query query = new Query();
+        query.setMaxFeatures(1);
+        bounds = featureSource.getBounds(query);
+        assertThat(bounds, not(equalTo(world)));
+    }
+
+    /**
+     * Fallback method when there's no geo metadata but there's a {@literal STRUCT(xmin FLOAT, xmax FLOAT, ymin FLOAT,
+     * ymax FLOAT)} {@code bbox} column
+     *
+     * @see GeoParquetDialect#computeBoundsFromBboxColumn(SimpleFeatureType, java.sql.Connection)
+     */
+    @Test
+    public void testGeoParquetDialectComputeBoundsFromBboxColumn() throws Exception {
+        store = getDataStore(worldgridPartitionedParams);
+        GeoParquetDialect dialect = store.getSQLDialect();
+        final ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
+
+        try (Connection cx = dialect.getConnection()) {
+            SimpleFeatureType schema = store.getSchema("theme_points_type_point");
+            ReferencedEnvelope bounds = dialect.computeBoundsFromBboxColumn(schema, cx);
+            assertThat(bounds, equalTo(world));
+        }
     }
 }

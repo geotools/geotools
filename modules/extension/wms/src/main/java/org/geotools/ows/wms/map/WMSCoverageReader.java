@@ -406,13 +406,14 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         mapRequest.setBBox(requestEnvelope);
         mapRequest.setSRS(requestSrs);
 
-        boolean anyVendorParameters = getLayers().stream()
+        long distinctVendorParameterSets = getLayers().stream()
                 .map(Layer::getVendorParameters)
-                .filter(Objects::nonNull)
-                .anyMatch(not(Map::isEmpty));
+                .map(m -> Objects.isNull(m) ? Collections.emptyMap() : m)
+                .distinct()
+                .count();
 
-        if (anyVendorParameters) {
-            LOGGER.warning("Vendor parameters have been found. Using the first one");
+        if (distinctVendorParameterSets > 1) {
+            LOGGER.warning("More than one distinct vendor parameter sets found. Using the first one.");
         }
 
         // If there are multiple layers find the first with vendor parameters to use

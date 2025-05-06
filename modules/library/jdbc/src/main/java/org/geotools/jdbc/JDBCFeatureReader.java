@@ -31,6 +31,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.FeatureReader;
@@ -333,7 +334,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return next.booleanValue();
     }
 
-    protected SimpleFeature readNextFeature() throws IOException {
+    protected SimpleFeature readNextFeature() {
         // figure out the fid
         String fid;
 
@@ -411,7 +412,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     EnumMapping mapping = enumMappings[i];
                     Object converted = null;
                     if (mapping != null) {
-                        value = mapping.fromKey(Converters.convert(value, String.class));
+                        String keyAsString = Converters.convert(value, String.class);
+                        // if the mapping is not found in the enum, mimic QGIS behavior by placing the key in
+                        // parentheses as value
+                        value = Objects.requireNonNullElse(mapping.fromKey(keyAsString), "(" + keyAsString + ")");
                         converted = value;
                     } else {
                         converted = dataStore.dialect.convertValue(value, type);

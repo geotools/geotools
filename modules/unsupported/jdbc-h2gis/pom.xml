@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools.jdbc</groupId>
   <artifactId>gt-jdbc-h2gis</artifactId>
-  <version>33-SNAPSHOT</version>
+  <version>34-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <!-- Project Information -->
@@ -44,7 +44,6 @@
     <h2gis-version>2.2.1</h2gis-version>
     <h2-version>2.2.224</h2-version>
     <cts-version>1.7.1</cts-version>
-    <junit-version>5.8.2</junit-version>
   </properties>
 
   <dependencies>
@@ -93,14 +92,7 @@
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-version}</version>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

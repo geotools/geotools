@@ -156,6 +156,14 @@ public final class DirectionAlongMeridian implements Comparable<DirectionAlongMe
                     candidate = findDirection(values, modified);
                 }
             }
+            if (candidate == null && direction.startsWith("geocentric")) {
+                // previous COORD_AXIS_ORIENTATION with code 115-117 changed from
+                // Geocentre > [equator/0E;equator/90E;north pole] to geocentricX,Y,Z
+                modified = direction.replace("geocentric", "geocentric_");
+                if (modified != direction) {
+                    candidate = findDirection(values, modified);
+                }
+            }
         }
         return candidate;
     }

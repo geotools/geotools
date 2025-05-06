@@ -145,6 +145,7 @@ public class GeoPackageTest {
         assertTableExists("gpkg_spatial_ref_sys");
         assertDefaultSpatialReferencesExist();
         assertApplicationId();
+        assertUserVersion();
     }
 
     void assertDefaultSpatialReferencesExist() throws Exception {
@@ -167,6 +168,16 @@ public class GeoPackageTest {
                 Statement st = cx.createStatement();
                 ResultSet rs = st.executeQuery("PRAGMA application_id;")) {
             assertEquals(rs.getInt(1), GeoPackage.GPKG_120_APPID);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    void assertUserVersion() throws Exception {
+        try (Connection cx = geopkg.getDataSource().getConnection();
+                Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery("PRAGMA user_version;")) {
+            assertEquals(GeoPackage.GPKG_120_USER_VERSION, rs.getString(1));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -997,13 +1008,11 @@ public class GeoPackageTest {
                 }
             }
 
-            // index
-            try (PreparedStatement ps =
-                    cx.prepareStatement("SELECT * from sqlite_master WHERE type='index' and name = ?")) {
-                ps.setString(1, entry.getTableName() + "_zyx_idx");
-                try (ResultSet rs = ps.executeQuery()) {
-                    assertTrue(rs.next());
-                }
+            // unique index
+            try (Statement st = cx.createStatement();
+                    ResultSet rs = st.executeQuery("PRAGMA index_list('" + entry.getTableName() + "')")) {
+                assertTrue(rs.next());
+                assertTrue(rs.getBoolean("unique"));
             }
         }
     }

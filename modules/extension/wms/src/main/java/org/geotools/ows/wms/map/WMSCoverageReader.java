@@ -16,6 +16,8 @@
  */
 package org.geotools.ows.wms.map;
 
+import static java.util.function.Predicate.not;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -28,6 +30,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -402,6 +405,25 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         ReferencedEnvelope requestEnvelope = gridEnvelope;
         mapRequest.setBBox(requestEnvelope);
         mapRequest.setSRS(requestSrs);
+
+        long distinctVendorParameterSets = getLayers().stream()
+                .map(Layer::getVendorParameters)
+                .map(m -> Objects.isNull(m) ? Collections.emptyMap() : m)
+                .distinct()
+                .count();
+
+        if (distinctVendorParameterSets > 1) {
+            LOGGER.warning("More than one distinct vendor parameter sets found. Using the first one.");
+        }
+
+        // If there are multiple layers find the first with vendor parameters to use
+        // there should only be one
+        getLayers().stream()
+                .map(Layer::getVendorParameters)
+                .filter(Objects::nonNull)
+                .filter(not(Map::isEmpty))
+                .findFirst()
+                .ifPresent(parameters -> parameters.forEach(mapRequest::setVendorSpecificParameter));
 
         this.mapRequest = mapRequest;
         this.requestedEnvelope = gridEnvelope;

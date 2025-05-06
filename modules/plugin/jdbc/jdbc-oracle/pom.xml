@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -66,7 +66,7 @@
     </dependency>
     <dependency>
       <groupId>com.oracle.database.jdbc</groupId>
-      <artifactId>ojdbc8</artifactId>
+      <artifactId>ojdbc11</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-dbcp</groupId>

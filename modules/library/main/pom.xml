@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -238,7 +238,7 @@
     <dependency>
       <groupId>com.google.re2j</groupId>
       <artifactId>re2j</artifactId>
-      <version>1.6</version>
+      <version>1.8</version>
     </dependency>
     <dependency>
       <groupId>org.ejml</groupId>

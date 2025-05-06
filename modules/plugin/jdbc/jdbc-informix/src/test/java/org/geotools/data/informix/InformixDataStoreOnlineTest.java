@@ -78,7 +78,7 @@ public class InformixDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
         // 32768 bytes is the maximum length of a quoted string in Informix, including the NULL byte
         // - so, only 32767 characters
-        String largeString = RandomStringUtils.random(32767, true, false);
+        String largeString = RandomStringUtils.secure().next(32767, true, false);
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> w =
                 dataStore.getFeatureWriter(typeName, Transaction.AUTO_COMMIT)) {
             w.hasNext();

@@ -80,6 +80,11 @@ import org.geotools.util.factory.Hints;
  * {@link SerializableRenderedImage} class. While serialization (usually on server side) should work on J2SE 1.4 and
  * above, deserialization (usually on client side) of {@code GridCoverage2D} instances requires J2SE 1.5.
  *
+ * <p><strong>Serialization warning:</strong><br>
+ * Deserialization of the {@link SerializableRenderedImage} class is inherently insecure which makes deserialization of
+ * {@code GridCoverage2D} instances insecure. This feature should only be used in cases where it can be guaranteed that
+ * the {@code GridCoverage2D} instances being deserialized come from trusted sources.
+ *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

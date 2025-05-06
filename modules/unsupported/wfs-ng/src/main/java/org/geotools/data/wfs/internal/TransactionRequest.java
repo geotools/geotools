@@ -35,6 +35,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.NameImpl;
 import org.geotools.http.HTTPResponse;
+import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 
@@ -80,7 +81,7 @@ public class TransactionRequest extends WFSRequest {
     }
 
     @Override
-    public WFSResponse createResponse(HTTPResponse response) throws IOException {
+    public WFSResponse createResponse(HTTPResponse response) throws ServiceException, IOException {
         return super.createResponse(response);
     }
 

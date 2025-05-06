@@ -143,7 +143,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             throw new RuntimeException("Transform failure: " + e.getMessage(), e);
         } finally {
             // if result is null, an exception has occurred, close the wrapped iterator
-            if (result == null) {
+            if (result == null && fi != null) {
                 fi.close();
             }
         }

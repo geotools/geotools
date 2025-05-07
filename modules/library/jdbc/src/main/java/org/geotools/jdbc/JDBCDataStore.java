@@ -178,7 +178,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Used to specify the column alias to use when encoding a column in a select */
     public static final String JDBC_COLUMN_ALIAS = "org.geotools.jdbc.columnAlias";
 
-    /** Contains a {@link EnumMapper} to support enums mapped from integer values */
+    /** Contains a {@link EnumMapping} to support enums */
     public static final String JDBC_ENUM_MAP = "org.geotools.jdbc.enumMap";
 
     /** name of table to use to store geometries when {@link #associations} is set. */
@@ -1827,7 +1827,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
 
                     Class binding = att.getType().getBinding();
-                    EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                    EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
                     Object value = feature.getAttribute(colName);
                     if (value == null && !att.isNillable()) {
@@ -1842,8 +1842,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     } else if (this.dialect.isArray(att)) {
                         dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
-                        if (mapper != null) {
-                            value = mapper.fromString((String) value);
+                        if (mapping != null) {
+                            value = mapping.fromValue((String) value);
                             binding = Integer.class;
                         }
 
@@ -4248,7 +4248,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             Class binding = att.getType().getBinding();
-            EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+            EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
             Object value = feature.getAttribute(colName);
 
@@ -4269,8 +4269,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         throw new RuntimeException(e);
                     }
                 } else {
-                    if (mapper != null) {
-                        value = mapper.fromString((String) value);
+                    if (mapping != null) {
+                        value = mapping.fromValue((String) value);
                         binding = Integer.class;
                     }
                     dialect.encodeValue(value, binding, sql);
@@ -4412,9 +4412,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     throw new RuntimeException(e);
                 }
             } else {
-                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (mapper != null) {
-                    value = mapper.fromString(Converters.convert(value, String.class));
+                EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapping != null) {
+                    value = mapping.fromValue(Converters.convert(value, String.class));
                     binding = Integer.class;
                 }
                 dialect.encodeValue(value, binding, sql);
@@ -4511,9 +4511,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 Geometry g = linearize(value, binding);
                 dialect.setGeometryValue(g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {
-                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (mapper != null) {
-                    value = mapper.fromString(Converters.convert(value, String.class));
+                EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapping != null) {
+                    value = mapping.fromValue(Converters.convert(value, String.class));
                     binding = Integer.class;
                 }
                 dialect.setValue(value, binding, att, ps, j + 1, cx);

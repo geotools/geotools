@@ -181,9 +181,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
 
             for (Entry<Name, Name> nameNameEntry : expectedNamesAndTypes.entrySet()) {
-                Entry entry = nameNameEntry;
-                Name dName = (Name) entry.getKey();
-                Name tName = (Name) entry.getValue();
+                Name dName = nameNameEntry.getKey();
+                Name tName = nameNameEntry.getValue();
 
                 AttributeDescriptor d = (AttributeDescriptor) Types.descriptor(borehole, dName);
                 assertNotNull("Descriptor not found: " + dName, d);

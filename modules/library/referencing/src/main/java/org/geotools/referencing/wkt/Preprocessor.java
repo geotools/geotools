@@ -246,9 +246,8 @@ public class Preprocessor extends Format {
         replacements = last = new Replacement(0, 0, offset);
         StringBuilder buffer = null;
         for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
-            final Map.Entry entry = stringDefinitionEntry;
-            final String name = (String) entry.getKey();
-            final Definition def = (Definition) entry.getValue();
+            final String name = stringDefinitionEntry.getKey();
+            final Definition def = stringDefinitionEntry.getValue();
             int index = (buffer != null) ? buffer.indexOf(name) : text.indexOf(name);
             while (index >= 0) {
                 /*
@@ -368,9 +367,8 @@ public class Preprocessor extends Format {
         table.nextLine();
         table.writeHorizontalSeparator();
         for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
-            final Map.Entry entry = stringDefinitionEntry;
-            final Object object = ((Definition) entry.getValue()).asObject;
-            table.write(String.valueOf(entry.getKey()));
+            final Object object = stringDefinitionEntry.getValue().asObject;
+            table.write(stringDefinitionEntry.getKey());
             table.nextColumn();
             table.write(Classes.getShortClassName(object));
             table.nextColumn();

@@ -201,7 +201,6 @@ public class STACClient implements Closeable {
             }
             checkGeoJSONResponse(response);
 
-            // TODO: support paging following links
             try (STACGeoJSONReader reader =
                     new STACGeoJSONReader(new BufferedInputStream(response.getResponseStream(), 1024 * 32), http)) {
                 if (schema != null) reader.setSchema(schema);

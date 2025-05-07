@@ -34,8 +34,8 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
     protected static final Logger LOGGER = Logging.getLogger(PagingFeatureCollection.class);
 
     final Integer matched;
-    SimpleFeatureCollection first;
-    ObjectNode next;
+    private final SimpleFeatureCollection first;
+    private final ObjectNode next;
 
     public PagingFeatureCollection(SimpleFeatureCollection first, ObjectNode next, Integer matched) {
         super(first.getSchema());
@@ -51,8 +51,7 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
 
     @Override
     public int size() {
-        if (matched != null) return matched;
-        return super.size();
+        return matched != null ? matched : super.size();
     }
 
     @Override
@@ -60,6 +59,13 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
         return new PagingFeatureIterator(first.features(), next);
     }
 
+    protected SimpleFeatureCollection getFirstCollection() {
+        return first;
+    }
+
+    protected ObjectNode getNext() {
+        return next;
+    }
     /**
      * Reads the next feature collection, or return null if there is none. Subclasses can override if they need a
      * different logic for fetching the next page.
@@ -77,27 +83,30 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
 
     protected class PagingFeatureIterator implements SimpleFeatureIterator {
         private SimpleFeatureIterator delegate;
-        private ObjectNode next;
+        private ObjectNode nextPage;
 
         public PagingFeatureIterator(SimpleFeatureIterator delegate, ObjectNode next) {
             this.delegate = delegate;
-            this.next = next;
+            this.nextPage = next;
         }
 
         @Override
         public boolean hasNext() {
             // jump to the next link, if possible, until a non-empty collection is found,
             // or no next links are found
-            while (!delegate.hasNext() && next != null) {
+            while (!delegate.hasNext() && nextPage != null) {
                 try {
                     // call the reader again, but do not delegate to avoid creating a series of
                     // nested objects (the next collection might contain another and so on)
-                    SimpleFeatureCollection features = readNext(next);
-                    this.delegate = features.features();
+                    SimpleFeatureCollection features = readNext(nextPage);
                     if (features instanceof PagingFeatureCollection) {
-                        this.next = ((PagingFeatureCollection) features).next;
+                        this.nextPage = ((PagingFeatureCollection) features).getNext();
+                        this.delegate = ((PagingFeatureCollection) features)
+                                .getFirstCollection()
+                                .features();
                     } else {
-                        this.next = null;
+                        this.nextPage = null;
+                        this.delegate = features.features();
                     }
                 } catch (IOException e) {
                     throw new RuntimeException("Switching to the next page failed", e);

@@ -129,11 +129,10 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
-        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry : crsMap.entrySet()) {
-            final Map.Entry entry = integerCoordinateReferenceSystemEntry;
-            final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
+        for (Map.Entry<Integer, CoordinateReferenceSystem> entry : crsMap.entrySet()) {
+            final CoordinateReferenceSystem crs = entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
-                final Integer code = (Integer) entry.getKey();
+                final Integer code = entry.getKey();
                 set.add(String.valueOf(code));
             }
         }

@@ -139,7 +139,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         // sort the results and put them in an array
         Collections.sort(result);
 
-        Comparable[] values = result.toArray(new Comparable[result.size()]);
+        Comparable[] values = result.toArray(Comparable[]::new);
 
         // size arrays
         classNum = Math.min(classNum, values.length);

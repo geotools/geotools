@@ -101,8 +101,9 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     protected void fireChange(Collection coll, int type) {
-        @SuppressWarnings({"unchecked", "PMD.UnnecessaryCast"})
-        SimpleFeature[] features = (SimpleFeature[]) coll.toArray(n -> new SimpleFeature[n]);
+        @SuppressWarnings("unchecked")
+        Collection<SimpleFeature> fcoll = coll;
+        SimpleFeature[] features = fcoll.toArray(SimpleFeature[]::new);
         fireChange(features, type);
     }
 

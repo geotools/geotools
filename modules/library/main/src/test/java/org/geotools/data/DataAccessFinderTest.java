@@ -340,7 +340,7 @@ public class DataAccessFinderTest {
     }
 
     /** Fake DataAccess returned by {@link MockDataAccessFactory} */
-    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS = new DataAccess<FeatureType, Feature>() {
+    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS = new DataAccess<>() {
 
         @Override
         public void createSchema(FeatureType featureType) throws IOException {}

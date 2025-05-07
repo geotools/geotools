@@ -149,6 +149,7 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void close() throws IOException {
         try {
             flush();

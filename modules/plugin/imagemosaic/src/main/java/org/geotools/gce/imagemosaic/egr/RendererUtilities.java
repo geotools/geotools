@@ -40,20 +40,17 @@ public final class RendererUtilities {
      * Helper class for building affine transforms. We use one instance per thread, in order to avoid the need for
      * {@code synchronized} statements.
      */
-    private static final ThreadLocal<GridToEnvelopeMapper> gridToEnvelopeMappers =
-            new ThreadLocal<GridToEnvelopeMapper>() {
-                @Override
-                protected GridToEnvelopeMapper initialValue() {
-                    final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper();
-                    mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-                    return mapper;
-                }
-            };
+    private static final ThreadLocal<GridToEnvelopeMapper> gridToEnvelopeMappers = new ThreadLocal<>() {
+        @Override
+        protected GridToEnvelopeMapper initialValue() {
+            final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper();
+            mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
+            return mapper;
+        }
+    };
 
     /** Utilities classes should not be instantiated. */
     private RendererUtilities() {}
-    ;
-
     /**
      * Sets up the affine transform
      *

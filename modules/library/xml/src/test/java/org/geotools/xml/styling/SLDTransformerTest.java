@@ -114,11 +114,11 @@ public class SLDTransformerTest extends XmlTestSupport {
                 Namespace("xlink", "http://www.w3.org/1999/xlink"));
     }
 
-    static StyleFactory sf = (StyleFactory) CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    static final String NEWLINE = System.getProperty("line.separator");
+    static final String NEWLINE = System.lineSeparator();
 
     static SLDTransformer transformer;
 
@@ -899,7 +899,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         for (Symbolizer symbolizer : symbolizers) {
             if (symbolizer instanceof TextSymbolizer) {
                 Font font = ((TextSymbolizer) symbolizer).fonts().get(0);
-                assertTrue(font.getFamily().size() > 0);
+                assertFalse(font.getFamily().isEmpty());
                 return font.getFamily().get(0) == null
                         ? null
                         : font.getFamily().get(0).toString();

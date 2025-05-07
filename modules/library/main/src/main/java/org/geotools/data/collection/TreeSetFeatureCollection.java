@@ -201,7 +201,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
         Iterator<SimpleFeature> iterator = collection.iterator();
         try {
-            List featuresAdded = new ArrayList(collection.size());
+            List featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = iterator.next();
                 boolean added = add(f);
@@ -307,7 +307,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     public Iterator<SimpleFeature> iterator() {
         final Iterator<SimpleFeature> iterator = contents.values().iterator();
 
-        return new Iterator<SimpleFeature>() {
+        return new Iterator<>() {
             SimpleFeature currFeature = null;
 
             @Override
@@ -374,7 +374,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         boolean changed = false;
         Iterator iterator = collection.iterator();
         try {
-            List removedFeatures = new ArrayList(collection.size());
+            List removedFeatures = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean removed = contents.values().remove(f);
@@ -402,7 +402,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      */
     @SuppressWarnings("unchecked")
     public boolean retainAll(Collection collection) {
-        List removedFeatures = new ArrayList(contents.size() - collection.size());
+        List removedFeatures = new ArrayList<>(contents.size() - collection.size());
         boolean modified = false;
 
         for (Iterator it = contents.values().iterator(); it.hasNext(); ) {
@@ -495,7 +495,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     @SuppressWarnings("PMD.CloseResource") // closed in the wrapper
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features();
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+        return new FeatureReader<>() {
             @Override
             public SimpleFeatureType getFeatureType() {
                 return getSchema();

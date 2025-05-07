@@ -94,10 +94,6 @@ public final class FeatureUtilities {
     }
 
     /** Returns the polygon surrounding the specified rectangle. Code lifted from ArcGridDataSource (temporary). */
-    private static Polygon getPolygon(final Rectangle2D rect) {
-        return getPolygon(rect, 0);
-    }
-    /** Returns the polygon surrounding the specified rectangle. Code lifted from ArcGridDataSource (temporary). */
     private static Polygon getPolygon(final BoundingBox bounds) {
         final PrecisionModel pm = new PrecisionModel();
         final GeometryFactory gf = new GeometryFactory(pm, 0);

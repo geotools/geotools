@@ -338,7 +338,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         }
 
         for (Map.Entry<String, String> stringStringEntry : mappings.entrySet()) {
-            Map.Entry mapping = (Map.Entry) stringStringEntry;
+            Map.Entry mapping = stringStringEntry;
             String key = (String) mapping.getKey();
 
             if (key == null) {

@@ -415,11 +415,11 @@ public class StrokeImpl implements Stroke, Cloneable {
             }
 
             if (fillGraphic != null && fillGraphic instanceof Cloneable) {
-                clone.fillGraphic = (GraphicImpl) ((Cloneable) fillGraphic).clone();
+                clone.fillGraphic = (GraphicImpl) fillGraphic.clone();
             }
 
             if (strokeGraphic != null && fillGraphic instanceof Cloneable) {
-                clone.strokeGraphic = (GraphicImpl) ((Cloneable) strokeGraphic).clone();
+                clone.strokeGraphic = (GraphicImpl) strokeGraphic.clone();
             }
 
             return clone;

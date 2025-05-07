@@ -134,7 +134,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
             if (sort != null && !sort.isEmpty()) {
                 final SortBy initialOrder = sort.get(sort.size() - 1);
                 final FeatureIdAccessor idAccessor = new FeatureIdAccessor(true);
-                Collections.sort(fids, new Comparator<FeatureId>() {
+                Collections.sort(fids, new Comparator<>() {
                     @Override
                     public int compare(FeatureId key1, FeatureId key2) {
                         SimpleFeature feature1 = idAccessor.getFeature(key1.getID());
@@ -150,7 +150,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                     }
 
                     @SuppressWarnings("unchecked")
-                    protected int compare(SimpleFeature feature1, SimpleFeature feature2, SortBy order) {
+                    private int compare(SimpleFeature feature1, SimpleFeature feature2, SortBy order) {
                         PropertyName name = order.getPropertyName();
                         Comparable value1 = (Comparable) name.evaluate(feature1);
                         Comparable value2 = (Comparable) name.evaluate(feature2);

@@ -645,10 +645,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
             arguments.out.flush();
         } catch (NoSuchIdentifierException exception) {
             arguments.err.println(exception.getLocalizedMessage());
-            return;
         } catch (Exception exception) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
-            return;
         }
     }
 

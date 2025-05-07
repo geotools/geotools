@@ -586,7 +586,7 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
         fb.add(val);
         fb.add(val + 0.1);
         fb.add(toString(val));
-        fb.add(new LinkedList<Object>(asList((long) val, singletonList(2L))));
+        fb.add(new LinkedList<>(asList((long) val, singletonList(2L))));
         fb.add(new HashMap<>(Collections.singletonMap("key", (long) val)));
         fb.add(new GeometryFactory().createPoint(new Coordinate(val + 0.1, val + 0.1)));
 

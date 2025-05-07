@@ -76,15 +76,15 @@ public class GraphicViewer {
     private class Listener implements SelectionListener, ModifyListener {
         public void widgetSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
-        };
+        }
 
         private void sync(SelectionEvent selectionEvent) {
             try {
@@ -103,7 +103,7 @@ public class GraphicViewer {
                 GraphicViewer.this.size.setEnabled(GraphicViewer.this.enabled);
             }
         }
-    };
+    }
 
     Listener sync = new Listener();
     private SelectionListener listener;

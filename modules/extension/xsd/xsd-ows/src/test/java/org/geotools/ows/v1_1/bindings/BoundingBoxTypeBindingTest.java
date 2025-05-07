@@ -54,7 +54,7 @@ public class BoundingBoxTypeBindingTest extends OWSTestSupport_1_1 {
         BoundingBoxType box = (BoundingBoxType) parse();
         assertNotNull(box);
 
-        assertEquals(new BigInteger("2"), box.getDimensions());
+        assertEquals(BigInteger.TWO, box.getDimensions());
         assertEquals("EPSG:4326", box.getCrs());
         assertEquals(Arrays.asList(-180.0, -90.0), box.getLowerCorner());
         assertEquals(Arrays.asList(180.0, 90.0), box.getUpperCorner());

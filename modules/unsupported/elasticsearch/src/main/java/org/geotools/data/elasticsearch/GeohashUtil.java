@@ -76,8 +76,7 @@ public class GeohashUtil {
 
     public static Map<String, Map<String, Map<String, Object>>> parseAggregation(String definition) {
 
-        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
-                new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
+        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type = new TypeReference<>() {};
         try {
             return MAPPER.readValue(definition, type);
         } catch (Exception e) {
@@ -150,8 +149,7 @@ public class GeohashUtil {
     public static Integer getPrecision(String aggregationDefinition) {
         Integer precision = null;
         final ObjectMapper mapper = new ObjectMapper();
-        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
-                new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
+        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type = new TypeReference<>() {};
         try {
             Map<String, Map<String, Map<String, Object>>> map = mapper.readValue(aggregationDefinition, type);
             Map<String, Map<String, Object>> aggMap = map.get("agg");

@@ -101,7 +101,7 @@ public class ForceCoordinateSystemFeatureReaderTest {
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
         try (FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader(features);
                 ForceCoordinateSystemFeatureReader modified =
-                        new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS); ) {
+                        new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS)) {
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
 

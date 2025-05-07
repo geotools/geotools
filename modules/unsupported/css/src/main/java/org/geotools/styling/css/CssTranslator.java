@@ -139,8 +139,8 @@ public class CssTranslator {
          * rules. There is no cascading going on, no creation of additional rules. After merging the rules are sorted by
          * z-index.
          */
-        Auto;
-    };
+        Auto
+    }
 
     static final Logger LOGGER = Logging.getLogger(CssTranslator.class);
 
@@ -2007,7 +2007,7 @@ public class CssTranslator {
         }
         if (v instanceof MultiValue) {
             MultiValue m = (MultiValue) v;
-            if (m.values.size() == 0) {
+            if (m.values.isEmpty()) {
                 return null;
             }
             double[] result = new double[m.values.size()];
@@ -2036,7 +2036,7 @@ public class CssTranslator {
         }
         if (v instanceof MultiValue) {
             MultiValue m = (MultiValue) v;
-            if (m.values.size() == 0) {
+            if (m.values.isEmpty()) {
                 return null;
             }
             String[] result = new String[m.values.size()];
@@ -2058,7 +2058,7 @@ public class CssTranslator {
         }
         if (v instanceof MultiValue) {
             MultiValue m = (MultiValue) v;
-            if (m.values.size() == 0) {
+            if (m.values.isEmpty()) {
                 return null;
             }
             Expression[] result = new Expression[m.values.size()];
@@ -2118,7 +2118,7 @@ public class CssTranslator {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
         NamedLayer layer = styleFactory.createNamedLayer();
-        layer.addStyle((org.geotools.api.style.Style) style);
+        layer.addStyle(style);
         sld.layers().add(layer);
         SLDTransformer tx = new SLDTransformer();
         tx.setIndentation(2);

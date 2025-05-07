@@ -86,7 +86,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  */
 public class PropertyDataStoreTest {
     private PropertyDataStore store;
-    static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Before
     public void setUp() throws Exception {
@@ -314,13 +314,11 @@ public class PropertyDataStoreTest {
 
     private int count(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws Exception {
         int count = 0;
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
             }
-        } finally {
-            reader.close();
         }
         return count;
     }
@@ -659,7 +657,7 @@ public class PropertyDataStoreTest {
 
             roadFromClient2.setTransaction(transaction2);
 
-            FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Filter selectFid1 = ff.id(Collections.singleton(ff.featureId("fid1")));
 
             // Before we edit everything should be the same

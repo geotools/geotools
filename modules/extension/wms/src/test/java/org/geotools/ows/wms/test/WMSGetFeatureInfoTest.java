@@ -120,5 +120,4 @@ public class WMSGetFeatureInfoTest {
         }
         return result;
     }
-    ;
 }

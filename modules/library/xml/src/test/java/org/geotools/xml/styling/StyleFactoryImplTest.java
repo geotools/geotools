@@ -45,7 +45,6 @@ import org.geotools.api.style.SelectedChannelType;
 import org.geotools.api.style.Stroke;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
-import org.geotools.api.style.Symbol;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -247,7 +246,7 @@ public class StyleFactoryImplTest {
         Expression opacity = filterFactory.literal(0.5);
         Expression size = filterFactory.literal(10);
         Expression rotation = filterFactory.literal(145.0);
-        Graphic g = styleFactory.createGraphic(externalGraphics, marks, (Symbol[]) symbols, opacity, size, rotation);
+        Graphic g = styleFactory.createGraphic(externalGraphics, marks, symbols, opacity, size, rotation);
 
         Assert.assertNotNull("failed to build graphic ", g);
     }

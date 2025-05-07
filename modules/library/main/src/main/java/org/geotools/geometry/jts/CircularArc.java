@@ -89,7 +89,6 @@ public class CircularArc {
         }
         this.controlPoints = controlPoints;
     }
-    ;
 
     public CircularArc(double sx, double sy, double mx, double my, double ex, double ey) {
         this(new double[] {sx, sy, mx, my, ex, ey});

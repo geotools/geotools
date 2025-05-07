@@ -296,7 +296,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
         try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
-            SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
+            SimpleFeatureCollection features = reader.getFeatures();
             return features;
         } catch (IOException e) {
             throw new RuntimeException("problem parsing FeatureCollection", e);

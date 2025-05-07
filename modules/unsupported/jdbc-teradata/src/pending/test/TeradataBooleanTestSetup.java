@@ -24,7 +24,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
 
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
+@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class TeradataBooleanTestSetup extends JDBCBooleanTestSetup {
 
     public TeradataBooleanTestSetup(JDBCTestSetup delegate) {

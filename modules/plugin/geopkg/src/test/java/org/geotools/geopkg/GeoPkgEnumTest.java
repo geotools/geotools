@@ -48,6 +48,7 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.sqlite.SQLiteConfig;
 
+@SuppressWarnings("PMD.CheckResultSet")
 public class GeoPkgEnumTest extends JDBCTestSupport {
 
     @Override

@@ -107,7 +107,6 @@ public class GeometryRendererTest {
                 frame.dispose();
             } catch (HeadlessException exception) {
                 // The test is running on a machine without X11 display. Ignore.
-                return;
             }
         }
     }

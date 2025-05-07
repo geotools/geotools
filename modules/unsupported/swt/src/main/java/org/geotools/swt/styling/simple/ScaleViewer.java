@@ -70,15 +70,15 @@ public class ScaleViewer {
     private class Listener implements SelectionListener, ModifyListener {
         public void widgetSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void modifyText(ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
-        };
+        }
 
         private void sync(SelectionEvent selectionEvent) {
             try {
@@ -92,7 +92,7 @@ public class ScaleViewer {
                 ScaleViewer.this.scaleEditor.setEnabled(ScaleViewer.this.enabled);
             }
         }
-    };
+    }
 
     Listener sync = new Listener();
     private SelectionListener listener;

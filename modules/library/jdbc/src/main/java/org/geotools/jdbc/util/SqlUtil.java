@@ -127,11 +127,8 @@ public class SqlUtil {
     }
 
     public static void runScript(InputStream stream, Connection cx) throws SQLException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-        Statement st = cx.createStatement();
-
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                Statement st = cx.createStatement()) {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();
             while (sql != null) {
@@ -157,17 +154,6 @@ public class SqlUtil {
             st.executeBatch();
         } catch (IOException e) {
             throw new SQLException(e);
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.FINER, e.getMessage(), e);
-            }
-            try {
-                st.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error closing statement", e);
-            }
         }
     }
 
@@ -175,12 +161,10 @@ public class SqlUtil {
 
     public static void runScript(InputStream stream, Connection cx, Map<String, String> properties)
             throws SQLException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
-        Statement st = cx.createStatement();
         int insideBlock = 0;
-
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                Statement st = cx.createStatement()) {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();
             while (sql != null) {
@@ -220,17 +204,6 @@ public class SqlUtil {
             st.executeBatch();
         } catch (IOException e) {
             throw new SQLException(e);
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.FINER, e.getMessage(), e);
-            }
-            try {
-                st.close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Error closing statement", e);
-            }
         }
     }
 

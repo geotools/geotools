@@ -56,7 +56,7 @@ public class MapPaneEvent extends EventObject {
          * The map pane is rendering features. The event will carry data that can be retrieved as a
          * floating point value between 0 and 1.
          */
-        RENDERING_PROGRESS;
+        RENDERING_PROGRESS
     }
 
     /** Type of mappane event */

@@ -515,13 +515,11 @@ public class MemoryDataStoreTest extends DataTestCase {
             throws NoSuchElementException, IOException {
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 assertTrue(contains(features, reader.next()));
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         Assert.assertEquals(features.length, count);
@@ -533,7 +531,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -543,8 +541,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -554,7 +550,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -564,8 +560,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -576,7 +570,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -586,8 +580,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -597,7 +589,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -607,8 +599,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -733,7 +723,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction();
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 = data.getFeatureWriter("road", rd1Filter, t1);
-                FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 = data.getFeatureWriterAppend("road", t2); ) {
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 = data.getFeatureWriterAppend("road", t2)) {
             SimpleFeature feature;
             SimpleFeature[] ORIGIONAL = roadFeatures;
             SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];

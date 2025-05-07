@@ -36,7 +36,7 @@ class ResolutionExtractor extends PropertiesCollector {
         X,
         Y,
         BOTH
-    };
+    }
 
     Axis axis = BOTH;
 

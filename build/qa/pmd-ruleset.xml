@@ -47,6 +47,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" /> 
 
   <rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
+  <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
@@ -78,8 +79,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
     <properties>
       <!-- When calling the store to close, PMD wants the full prefix before the call to the method to match, so let's try to use common var names for store ... -->
         <property name="closeTargets" value="releaseConnection,store.releaseConnection,closeQuietly,closeConnection,closeSafe,store.closeSafe,dataStore.closeSafe,getDataStore().closeSafe,close,closeResultSet,closeStmt"/>
-	<property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream|java.io.ByteArrayInputStream|java.io.StringWriter|java.io.CharArrayWriter|java.util.stream.Stream|java.util.stream.IntStream|java.util.stream.LongStream|java.util.stream.DoubleStream|java.io.StringReader" />	    
-    </properties>
+          <property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream,java.io.ByteArrayInputStream,java.io.StringWriter,java.io.CharArrayWriter,java.util.stream.Stream,java.util.stream.IntStream,java.util.stream.LongStream,java.util.stream.DoubleStream,java.io.StringReader" />    </properties>
   </rule>
 
   <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
@@ -89,13 +89,12 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/StringInstantiation"/>
-  <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.XPathRule">
+  <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       Don't use wildcard imports
     </description>
     <priority>3</priority>
     <properties>
-      <property name="version" value="2.0"/>
       <property name="xpath">
         <value><![CDATA[
           //ImportDeclaration[@ImportedName=@PackageName]

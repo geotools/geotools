@@ -72,7 +72,7 @@ public class SwtMapFrame extends ApplicationWindow {
         RESET,
 
         /** Requests the zoom in and out cursor tools */
-        ZOOM;
+        ZOOM
     }
 
     /*

@@ -163,7 +163,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 
             try (PreparedStatement ps = con.prepareStatement(SelectGeometryColumns);
                     ResultSet rs = ps.executeQuery()) {
-                ResultSetMetaData rsmd = ps.getMetaData();
+                ResultSetMetaData rsmd = rs.getMetaData();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     if ("MIN_X".equals(rsmd.getColumnName(i + 1))) {
                         di.setSupportingPrecalculatedExtents(true);

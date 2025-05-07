@@ -72,7 +72,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     public final void addFilter(org.geotools.api.filter.Filter filter) throws IllegalFilterException {
         // reset
         cachedHash = 0;
-        if (this instanceof Not && children.size() != 0) {
+        if (this instanceof Not && !children.isEmpty()) {
             throw new IllegalFilterException("Attempted to add an more than one filter to a NOT filter.");
         } else {
             children.add(filter);

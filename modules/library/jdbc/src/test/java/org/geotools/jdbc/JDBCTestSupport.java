@@ -106,6 +106,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     }
 
     @Override
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     protected boolean isOnline() throws Exception {
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(getFixture());
@@ -307,7 +308,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     protected <F extends Feature> void assertFeatureIterator(
             int startIndex, int numberExpected, FeatureIterator<F> iter, FeatureAssertion<F> assertion) {
-        try {
+        try (iter) {
             boolean[] loadedFeatures = new boolean[numberExpected];
             for (int j = startIndex; j < numberExpected + startIndex; j++) {
                 F feature = iter.next();
@@ -328,14 +329,12 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
             for (int i = 0; i < numberExpected; i++) {
                 assertTrue("feature " + i + " is missing", loadedFeatures[i]);
             }
-        } finally {
-            iter.close();
         }
     }
 
     protected <F extends Feature> void assertFeatureIterator(
             int startIndex, int numberExpected, final Iterator<F> iterator, FeatureAssertion<F> assertion) {
-        try (FeatureIterator<F> adapter = new FeatureIterator<F>() {
+        try (FeatureIterator<F> adapter = new FeatureIterator<>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
@@ -356,7 +355,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     protected <FT extends FeatureType, F extends Feature> void assertFeatureReader(
             int startIndex, int numberExpected, final FeatureReader<FT, F> reader, FeatureAssertion<F> assertion)
             throws IOException {
-        try (FeatureIterator<F> iter = new FeatureIterator<F>() {
+        try (FeatureIterator<F> iter = new FeatureIterator<>() {
 
             @Override
             public boolean hasNext() {

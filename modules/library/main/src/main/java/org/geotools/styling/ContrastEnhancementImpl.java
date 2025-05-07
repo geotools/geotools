@@ -97,7 +97,7 @@ public class ContrastEnhancementImpl implements org.geotools.api.style.ContrastE
         }
         this.gamma = contrastEnhancement.getGammaValue();
         if (contrastEnhancement instanceof ContrastEnhancement) {
-            ContrastEnhancement other = (ContrastEnhancement) contrastEnhancement;
+            ContrastEnhancement other = contrastEnhancement;
             if (other.getOptions() != null) {
                 this.options = new HashMap<>();
                 this.options.putAll(other.getOptions());

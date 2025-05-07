@@ -371,7 +371,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 // nodata though float to get a representation that would succesfully compare
                 // against the pixels
                 if (sampleModel.getDataType() == DataBuffer.TYPE_FLOAT) {
-                    noData = Double.valueOf(((Double) noData).floatValue());
+                    noData = Double.valueOf(noData.floatValue());
                 }
             }
 

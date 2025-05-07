@@ -18,7 +18,6 @@ package org.geotools.data.shapefile.shp;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -99,7 +98,7 @@ public class ShapefileWriter implements Closeable {
 
     /** Drain internal buffers into underlying channels. */
     private void drain() throws IOException {
-        ((Buffer) shapeBuffer).flip();
+        shapeBuffer.flip();
         indexBuffer.flip();
         while (shapeBuffer.remaining() > 0) shpChannel.write(shapeBuffer);
         while (indexBuffer.remaining() > 0) shxChannel.write(indexBuffer);

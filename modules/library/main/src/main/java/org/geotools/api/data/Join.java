@@ -56,7 +56,7 @@ public class Join {
     /** type of join */
     public static enum Type {
         INNER,
-        OUTER;
+        OUTER
     }
 
     /** join type */

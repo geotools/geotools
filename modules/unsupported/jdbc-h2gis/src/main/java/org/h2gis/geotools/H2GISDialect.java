@@ -85,8 +85,6 @@ public class H2GISDialect extends BasicSQLDialect {
     static Pattern GEOMETRY_TABLE_PATTERN = Pattern.compile(
             "(?:(?:GEOMETRY\\s*\\(\\s*([a-zA-Z]+\\s*(?:[ZM]+)?)\\s*(?:,\\s*([\\d]+))?\\))|^\\s*([a-zA-Z]+\\s*(?:[ZM]+)?))",
             Pattern.CASE_INSENSITIVE);
-    ;
-
     // geometry type to class map
     static final Map<String, Class> TYPE_TO_CLASS_MAP = Map.ofEntries(
             entry("GEOMETRY", Geometry.class),

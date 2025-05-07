@@ -88,7 +88,7 @@ public abstract class FeatureCollectionTest {
     protected abstract SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list);
 
     public Collection randomPiece(Collection original) {
-        LinkedList next = new LinkedList();
+        LinkedList next = new LinkedList<>();
         Iterator og = original.iterator();
         while (og.hasNext()) {
             if (Math.random() > .5) {

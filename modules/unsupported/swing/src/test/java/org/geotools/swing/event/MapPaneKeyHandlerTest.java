@@ -59,7 +59,7 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
 
     @Before
     public void setup() {
-        TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>() {
+        TestFrame frame = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected TestFrame executeInEDT() throws Throwable {
                 mapPane = new MockMapPane2();
@@ -152,7 +152,6 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
         ReferencedEnvelope env = new ReferencedEnvelope(0, 100, 0, 100, null);
         int dx = 0;
         int dy = 0;
-        private boolean gotReset = false;
 
         @Override
         public void moveImage(int dx, int dy) {
@@ -174,7 +173,6 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
 
         @Override
         public void reset() {
-            gotReset = true;
             latch.countDown();
         }
     }

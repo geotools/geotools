@@ -22,5 +22,5 @@ public enum SimplificationMethod {
     PRESERVETOPOLOGY,
 
     /** Does not preserve topology constraints, results in a faster implementation */
-    FAST;
+    FAST
 }

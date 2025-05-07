@@ -122,7 +122,7 @@ public class JTextReporter extends Dialog {
                 new SelectionAdapter() {
                     public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                         saveReport();
-                    };
+                    }
                 });
 
         Button clearButton = new Button(buttonComposite, SWT.PUSH);
@@ -132,7 +132,7 @@ public class JTextReporter extends Dialog {
                 new SelectionAdapter() {
                     public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                         clearReport();
-                    };
+                    }
                 });
 
         return parent;

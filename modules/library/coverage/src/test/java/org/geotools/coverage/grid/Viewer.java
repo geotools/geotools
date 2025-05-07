@@ -217,7 +217,7 @@ public class Viewer extends JPanel {
      * @param value The number to format.
      */
     private static void format(final PrintWriter out, final byte value) {
-        format(out, ((int) value) & 0xFF);
+        format(out, value & 0xFF);
     }
 
     /**

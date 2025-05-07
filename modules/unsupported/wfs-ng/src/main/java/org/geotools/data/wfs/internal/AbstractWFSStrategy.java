@@ -478,7 +478,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "DescribeStoredQueries");
 
-        if (request.getStoredQueryIds().size() > 0) {
+        if (!request.getStoredQueryIds().isEmpty()) {
             StringBuffer sb = new StringBuffer();
             boolean first = true;
             for (URI storedQueryId : request.getStoredQueryIds()) {

@@ -304,8 +304,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             }
             if (toCompareValues.isEmpty()) toCompareValues = null;
             if (groupingValues == null && toCompareValues == null) return true;
-            else if (groupingValues != null && toCompareValues != null && groupingValues.equals(toCompareValues))
-                return true;
+            else if (groupingValues != null && groupingValues.equals(toCompareValues)) return true;
             else return false;
         }
 

@@ -440,7 +440,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             }
         }
     }
-    ;
 
     protected static String referenceToIdentifier(String reference) {
 

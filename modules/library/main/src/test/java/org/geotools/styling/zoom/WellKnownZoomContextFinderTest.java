@@ -59,7 +59,7 @@ public class WellKnownZoomContextFinderTest {
     }
 
     Matcher<Double> mCloseTo(final double value, final double epsilon) {
-        return new BaseMatcher<Double>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object arg0) {

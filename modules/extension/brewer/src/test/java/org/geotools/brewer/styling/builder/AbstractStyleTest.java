@@ -1,7 +1,8 @@
 package org.geotools.brewer.styling.builder;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
@@ -30,6 +31,6 @@ public abstract class AbstractStyleTest {
         assertEquals(1, collector.rules.size());
         assertEquals(1, collector.symbolizers.size());
         assertEquals(1, collector.styles.size());
-        assertTrue(collector.layers.size() == 0 || collector.layers.size() == 1);
+        assertThat(collector.layers.size(), lessThanOrEqualTo(1));
     }
 }

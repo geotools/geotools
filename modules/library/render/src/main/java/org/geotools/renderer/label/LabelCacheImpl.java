@@ -129,7 +129,7 @@ public class LabelCacheImpl implements LabelCache {
          * coupled with {@link RenderingHints#VALUE_FRACTIONALMETRICS_ON} for good label/halo centering
          */
         ADAPTIVE
-    };
+    }
 
     static final Logger LOGGER = Logging.getLogger(LabelCacheImpl.class);
 
@@ -171,7 +171,7 @@ public class LabelCacheImpl implements LabelCache {
     // SLDStyleFactory caches by identity, we have to re-use the same labellels equivalent
     LoadingCache<TextSymbolizer, TextSymbolizer> labellessCache = CacheBuilder.newBuilder()
             .softValues()
-            .build(new CacheLoader<TextSymbolizer, TextSymbolizer>() {
+            .build(new CacheLoader<>() {
 
                 @Override
                 public TextSymbolizer load(TextSymbolizer orig) throws Exception {

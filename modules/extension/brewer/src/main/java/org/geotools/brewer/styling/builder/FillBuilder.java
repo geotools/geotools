@@ -27,7 +27,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
 
     Expression opacity;
 
-    GraphicBuilder graphic = (GraphicBuilder) new GraphicBuilder(this).unset();
+    GraphicBuilder graphic = new GraphicBuilder(this).unset();
 
     /** Create a FillBuilder on its own; not part of a larger data structure. */
     public FillBuilder() {

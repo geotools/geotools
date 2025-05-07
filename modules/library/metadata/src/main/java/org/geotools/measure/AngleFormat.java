@@ -281,7 +281,7 @@ public class AngleFormat extends Format {
         ROUND_HALF_UP,
 
         /** Always round downwards: e.g. {@code 2.5 => 2, 3.5 => 3}. */
-        ROUND_HALF_DOWN;
+        ROUND_HALF_DOWN
     }
 
     /** The default rounding method ({@linkplain AngleFormat.RoundingMethod#ROUND_HALF_EVEN}). */

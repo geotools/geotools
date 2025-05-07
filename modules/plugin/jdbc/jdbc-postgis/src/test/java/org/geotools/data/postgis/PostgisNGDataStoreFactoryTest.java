@@ -75,6 +75,7 @@ public class PostgisNGDataStoreFactoryTest {
     private AutoCloseable mocks = null;
 
     @Before
+    @SuppressWarnings("PMD.CheckResultSet")
     public void setUp() throws Exception {
         this.mocks = MockitoAnnotations.openMocks(this);
         when(this.ds.getConnection()).thenReturn(this.conn);

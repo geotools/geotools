@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -283,8 +282,6 @@ public class ColorBrewer {
             load(stream, type);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "couldn't open input stream to load palette", e);
-
-            return;
         }
     }
 
@@ -443,7 +440,7 @@ public class ColorBrewer {
     public void reset() {
         name = null;
         description = null;
-        palettes = new Hashtable<>();
+        palettes = new HashMap<>();
     }
 
     public boolean isSet(int singleValue, int multipleValue) {

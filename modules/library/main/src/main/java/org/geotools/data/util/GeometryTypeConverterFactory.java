@@ -159,10 +159,10 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     else if (source instanceof Polygon) {
                         // copy polygon
                         Polygon polygon = (Polygon) source;
-                        LinearRing exterior = (LinearRing) polygon.getExteriorRing();
+                        LinearRing exterior = polygon.getExteriorRing();
                         LinearRing[] interiors = new LinearRing[polygon.getNumInteriorRing()];
                         for (int i = 0; i < interiors.length; i++) {
-                            interiors[i] = (LinearRing) polygon.getInteriorRingN(i);
+                            interiors[i] = polygon.getInteriorRingN(i);
                         }
                         polygons = new Polygon[] {gFac.createPolygon(exterior, interiors)};
                     } else if (source instanceof GeometryCollection)

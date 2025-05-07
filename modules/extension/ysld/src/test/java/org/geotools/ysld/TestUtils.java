@@ -31,7 +31,6 @@ import static org.hamcrest.Matchers.nullValue;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -108,7 +107,7 @@ public enum TestUtils {
 
     /** Compares the string representation of the object being matched to that of value. */
     public static Matcher<? extends Object> lexEqualTo(final Object value) {
-        return new BaseMatcher<Object>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object arg0) {
@@ -130,7 +129,7 @@ public enum TestUtils {
      * value.
      */
     public static Matcher<? extends Object> numEqualTo(final double value, final double epsilon) {
-        return new BaseMatcher<Object>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object obj) {
@@ -156,7 +155,7 @@ public enum TestUtils {
      * value.
      */
     public static Matcher<? extends Object> numEqualTo(final long value) {
-        return new BaseMatcher<Object>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object obj) {
@@ -177,7 +176,7 @@ public enum TestUtils {
     }
 
     public static Matcher<String> asHexInt(final Matcher<Integer> m) {
-        return new BaseMatcher<String>() {
+        return new BaseMatcher<>() {
             @Override
             public boolean matches(Object arg0) {
                 return m.matches(Integer.parseInt((String) arg0, 16));
@@ -191,7 +190,7 @@ public enum TestUtils {
     }
 
     public static Matcher<String> asColor(final Matcher<Color> m) {
-        return new BaseMatcher<String>() {
+        return new BaseMatcher<>() {
             @Override
             public boolean matches(Object arg0) {
                 Color c;
@@ -299,10 +298,6 @@ public enum TestUtils {
     public static Matcher<Object> yHasEntry(final String key) {
         return yHasEntry(key, Matchers.any(Object.class));
     }
-
-    private static final Pattern TUPLE_STRIP = Pattern.compile("^\\s*\\(([^)]*)\\)\\s*$");
-
-    private static final Pattern TUPLE_SPLIT = Pattern.compile("\\s*,\\s*");
 
     /** Matches a YamlSeq */
     @SafeVarargs

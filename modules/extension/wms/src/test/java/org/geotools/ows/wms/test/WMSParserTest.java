@@ -59,7 +59,6 @@ public class WMSParserTest {
             }
         }
     }
-    ;
 
     @Test
     public void testWMS111EntityResolver() throws Exception {

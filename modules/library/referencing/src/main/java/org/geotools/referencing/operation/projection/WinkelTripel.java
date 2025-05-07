@@ -60,8 +60,7 @@ public class WinkelTripel extends MapProjection {
     private enum ProjectionMode {
         Winkel,
         Aitoff
-    };
-
+    }
     /** Cosine of the standard parallel Used for calculations for the ellipsoid. */
     private final double cosphi1;
 

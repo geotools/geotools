@@ -161,7 +161,6 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
         return getFactory(extraData).anyInteracts(expr1, expr2, anyInteracts.getMatchAction());
     }
-    ;
 
     @Override
     public Object visit(Before before, Object extraData) {
@@ -178,7 +177,6 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
         return getFactory(extraData).begins(expr1, expr2, begins.getMatchAction());
     }
-    ;
 
     @Override
     public Object visit(BegunBy begunBy, Object extraData) {

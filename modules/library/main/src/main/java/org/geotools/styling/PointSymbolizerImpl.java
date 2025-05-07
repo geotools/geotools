@@ -40,7 +40,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
     /** Creates a new instance of DefaultPointSymbolizer */
     protected PointSymbolizerImpl() {
         this(
-                (Graphic) new GraphicImpl(),
+                new GraphicImpl(),
                 null,
                 null,
                 null,
@@ -101,7 +101,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
 
         try {
             clone = (PointSymbolizerImpl) super.clone();
-            if (graphic != null) clone.graphic = (GraphicImpl) ((Cloneable) graphic).clone();
+            if (graphic != null) clone.graphic = (GraphicImpl) graphic.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e); // this should never happen.
         }

@@ -130,7 +130,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
         for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry : crsMap.entrySet()) {
-            final Map.Entry entry = (Map.Entry) integerCoordinateReferenceSystemEntry;
+            final Map.Entry entry = integerCoordinateReferenceSystemEntry;
             final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
                 final Integer code = (Integer) entry.getKey();

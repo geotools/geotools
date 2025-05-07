@@ -42,7 +42,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
 
     /** Creates a new instance of CustomGlyphRenderer */
     public CustomGlyphRenderer() {
-        FilterFactory factory = (FilterFactory) org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
+        FilterFactory factory = org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
 
         list.addProperty("radius", Expression.class, factory.literal(50));
         list.addProperty("circle color", Expression.class, factory.literal("#000066"));

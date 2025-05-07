@@ -86,9 +86,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
 
             // drop the database if available
             try (ResultSet rs = st.executeQuery("select * from pg_database where datname = 'create_drop_testdb'")) {
-                boolean databaseExists = rs.next();
-
-                if (databaseExists) {
+                if (rs.next()) {
                     st.execute("drop database " + CREATE_DROP_TESTDB);
                 }
             }

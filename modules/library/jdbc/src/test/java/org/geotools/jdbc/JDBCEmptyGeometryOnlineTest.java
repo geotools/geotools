@@ -76,7 +76,7 @@ public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
             SimpleFeature feature = writer.next();
             feature.setAttribute(aname("id"), Integer.valueOf(100));
             feature.setAttribute(emptyGeometryName, emptyGeometry);
-            feature.setAttribute(aname("name"), new String("empty " + type));
+            feature.setAttribute(aname("name"), "empty " + type);
             writer.write();
             writer.close();
             tx.commit();

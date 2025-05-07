@@ -301,7 +301,7 @@ public abstract class Configuration {
         unpacked = new LinkedList<>();
         while (!q.isEmpty()) {
             DepNode n = q.remove();
-            if (n.outgoing().size() != 0) {
+            if (!n.outgoing().isEmpty()) {
                 throw new IllegalStateException();
             }
 

@@ -79,7 +79,7 @@ public final class MetadataStandard {
      * Shared pool of {@link PropertyTree} instances, once for each thread (in order to avoid the need for thread
      * synchronization).
      */
-    private final ThreadLocal<PropertyTree> treeBuilders = new ThreadLocal<PropertyTree>() {
+    private final ThreadLocal<PropertyTree> treeBuilders = new ThreadLocal<>() {
         @Override
         protected PropertyTree initialValue() {
             return new PropertyTree(MetadataStandard.this);

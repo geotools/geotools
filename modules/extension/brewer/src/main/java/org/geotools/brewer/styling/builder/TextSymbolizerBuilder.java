@@ -42,7 +42,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
 
     Unit<Length> uom;
 
-    GraphicBuilder shield = (GraphicBuilder) new GraphicBuilder(this).unset();
+    GraphicBuilder shield = new GraphicBuilder(this).unset();
 
     Builder<? extends LabelPlacement> placement = new PointPlacementBuilder(this).unset();
 

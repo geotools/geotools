@@ -604,25 +604,6 @@ public enum ContrastEnhancementType {
         return lut;
     }
 
-    /** Return the max Value for the specified dataType */
-    private static double getMaxValue(int dataType) {
-        switch (dataType) {
-            case DataBuffer.TYPE_BYTE:
-                return MAX_BYTE;
-            case DataBuffer.TYPE_SHORT:
-                return Short.MAX_VALUE;
-            case DataBuffer.TYPE_USHORT:
-                return 65535.0;
-            case DataBuffer.TYPE_INT:
-                return Integer.MAX_VALUE;
-            case DataBuffer.TYPE_FLOAT:
-                return Float.MAX_VALUE;
-            case DataBuffer.TYPE_DOUBLE:
-                return Double.MAX_VALUE;
-        }
-        return Double.NaN;
-    }
-
     /** Simple utility method to check Double values equality. */
     public static boolean areEqual(double a, double b) {
         if (!Double.isNaN(a) && !Double.isNaN(b)) {
@@ -661,8 +642,6 @@ public enum ContrastEnhancementType {
     LookupTable createByteLookupTable(Map<String, Object> params) {
         throw new UnsupportedOperationException();
     }
-    ;
-
     /**
      * Create a {@link PiecewiseTransform1D} for the general case (!= Byte dataType). Different algorithms may implement
      * it accordingly. Default implementation throws {@link UnsupportedOperationException}

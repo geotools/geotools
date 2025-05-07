@@ -57,7 +57,6 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 public String toString() {
                     return "SKIP";
                 }
-                ;
             };
 
     SimpleFeatureType schema;

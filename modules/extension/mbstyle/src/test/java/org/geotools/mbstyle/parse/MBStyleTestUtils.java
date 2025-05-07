@@ -27,7 +27,7 @@ import org.hamcrest.Matchers;
 
 public class MBStyleTestUtils {
     public static Matcher<MBFunction> categories(Matcher<? super Set<FunctionCategory>> matcher) {
-        return new BaseMatcher<MBFunction>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object item) {
@@ -56,7 +56,7 @@ public class MBStyleTestUtils {
     }
 
     public static Matcher<Expression> evaluatesTo(Object object, Matcher<?> resultMatcher) {
-        return new BaseMatcher<Expression>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object item) {
@@ -89,7 +89,7 @@ public class MBStyleTestUtils {
     }
 
     public static Matcher<Number> asInt(Matcher<Integer> matcher) {
-        return new BaseMatcher<Number>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object item) {
@@ -118,7 +118,7 @@ public class MBStyleTestUtils {
 
     public static <T> Matcher<Expression> evaluatesTo(
             Object object, Class<T> context, Matcher<? super T> resultMatcher) {
-        return new BaseMatcher<Expression>() {
+        return new BaseMatcher<>() {
 
             @Override
             public boolean matches(Object item) {

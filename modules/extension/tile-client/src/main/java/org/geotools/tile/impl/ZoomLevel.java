@@ -58,7 +58,7 @@ public abstract class ZoomLevel {
     public abstract int calculateMaxTilePerColNumber(int zoomLevel);
 
     public long calculateMaxTileNumber() {
-        return ((long) (maxTilePerColNumber)) * ((long) (maxTilePerRowNumber));
+        return maxTilePerColNumber * (long) maxTilePerRowNumber;
     }
 
     public int getZoomLevel() {

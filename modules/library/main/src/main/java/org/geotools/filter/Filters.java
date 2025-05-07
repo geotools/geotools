@@ -688,7 +688,7 @@ public class Filters {
             return Collections.emptySet();
         }
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        filter.accept(extractor, new HashSet<String>());
+        filter.accept(extractor, new HashSet<>());
         return extractor.getAttributeNameSet();
     }
 
@@ -775,7 +775,6 @@ public class Filters {
                 return data;
             }
         }
-        ;
         SearchFilterVisitor search = new SearchFilterVisitor();
         boolean found = (Boolean) filter.accept(search, false);
         return found;
@@ -948,7 +947,6 @@ public class Filters {
                 return name.getPropertyName();
             }
         }
-        ;
         SearchFilterVisitor search = new SearchFilterVisitor();
         return (String) filter.accept(search, null);
     }

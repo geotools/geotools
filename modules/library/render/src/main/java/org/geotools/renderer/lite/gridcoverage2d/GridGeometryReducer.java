@@ -59,7 +59,7 @@ class GridGeometryReducer {
             int next = (value + 1) % 4;
             return values()[next];
         }
-    };
+    }
 
     ReferencedEnvelope validArea;
 

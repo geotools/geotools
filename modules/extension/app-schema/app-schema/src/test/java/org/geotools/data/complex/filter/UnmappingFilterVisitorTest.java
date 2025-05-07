@@ -102,7 +102,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
-    private static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private UnmappingFilterVisitor visitor;
 
@@ -160,7 +160,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                 tf.createAttributeDescriptor(targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
         // create the mapping definition
-        List attMappings = new LinkedList();
+        List attMappings = new LinkedList<>();
 
         NamespaceSupport namespaces = new NamespaceSupport();
 

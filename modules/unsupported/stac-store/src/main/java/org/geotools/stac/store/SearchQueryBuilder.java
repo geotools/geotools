@@ -278,8 +278,8 @@ class SearchQueryBuilder {
         DateRange range = (DateRange) filter.accept(visitor, null);
         if (TimeRangeVisitor.DATE_NEGATIVE_INFINITE.equals(range.getMinValue())) {
             // should not get here, but just in case, don't encode anything
-            if (TimeRangeVisitor.DATE_POSITIVE_INFINITE.equals(range.getMaxValue())) return;
-            else sq.setDatetime("../" + toISO(range.getMaxValue()));
+            if (!TimeRangeVisitor.DATE_POSITIVE_INFINITE.equals(range.getMaxValue()))
+                sq.setDatetime("../" + toISO(range.getMaxValue()));
         } else if (TimeRangeVisitor.DATE_POSITIVE_INFINITE.equals(range.getMaxValue())) {
             sq.setDatetime(toISO(range.getMinValue()) + "/..");
         } else if (range.getMinValue().equals(range.getMaxValue())) {

@@ -401,7 +401,7 @@ public class GeostationarySatelliteTest {
         }
     }
 
-    @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
+    @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation")
     public interface Testable {
         void test() throws Exception;
     }

@@ -201,7 +201,7 @@ public class SolrDataStore extends ContentDataStore {
 
     @SuppressWarnings("unchecked")
     private Comparator<SolrAttribute> getEmptyComparator() {
-        return new BeanComparator("empty").thenComparing(new BeanComparator("name"));
+        return new BeanComparator<SolrAttribute>("empty").thenComparing(new BeanComparator<>("name"));
     }
 
     @Override

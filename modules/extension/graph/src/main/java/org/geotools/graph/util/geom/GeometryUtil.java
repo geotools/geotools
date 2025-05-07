@@ -196,7 +196,7 @@ public class GeometryUtil {
                 avg += ls.getPointN(i).distance(to);
             }
         }
-        return (avg / ((double) n));
+        return avg / n;
     }
 
     public static LineString simplifyLineString(LineString line) {
@@ -260,7 +260,7 @@ public class GeometryUtil {
                 int n = (int) (distance(c, 0, 1) / sample);
                 if (n > 1) {
                     nadd += n - 1;
-                    add[0] = distance(c, 0, 1) / ((double) n);
+                    add[0] = distance(c, 0, 1) / n;
                 }
             } else return (line);
         } else {
@@ -280,7 +280,7 @@ public class GeometryUtil {
 
                 int n = (int) (distance(c, i, j) / (sample));
                 if (n > 1) {
-                    add[i] = distance(c, i, j) / ((double) n);
+                    add[i] = distance(c, i, j) / n;
                     nadd += n - 1;
                 }
 
@@ -315,7 +315,7 @@ public class GeometryUtil {
                             // recalculate
                             n = (int) (distance(c, l, c.length - 1) / sample);
                             if (n > 1) {
-                                add[l] = distance(c, l, c.length - 1) / ((double) n);
+                                add[l] = distance(c, l, c.length - 1) / n;
                                 nadd += n - 1;
                             }
                         }
@@ -327,7 +327,7 @@ public class GeometryUtil {
                             int n = (int) (distance(c, k, c.length - 1) / sample);
                             if (n > 1) {
                                 nadd += n - 1;
-                                add[k] = distance(c, k, c.length - 1) / ((double) n);
+                                add[k] = distance(c, k, c.length - 1) / n;
                             }
                         }
                     }

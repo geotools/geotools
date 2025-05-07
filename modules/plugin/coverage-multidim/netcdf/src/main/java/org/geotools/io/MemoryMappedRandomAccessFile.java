@@ -85,7 +85,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         dataEnd = channelSize;
 
         long initialMapSize =
-                (channelSize - channel.position()) < (long) BUFFER_MEMORY_LIMIT ? channelSize : BUFFER_MEMORY_LIMIT;
+                (channelSize - channel.position()) < BUFFER_MEMORY_LIMIT ? channelSize : BUFFER_MEMORY_LIMIT;
         mappedByteBuffer = channel.map(mapMode, 0, initialMapSize);
         mappedByteBuffer.position((int) channel.position());
         bufferStart = 0;
@@ -249,7 +249,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
     @Override
     public boolean searchForward(KMPMatch match, int maxBytes) throws IOException {
         long start = this.getFilePointer();
-        long last = maxBytes < 0 ? this.length() : Math.min(this.length(), start + (long) maxBytes);
+        long last = maxBytes < 0 ? this.length() : Math.min(this.length(), start + maxBytes);
         long needToScan = last - start;
         int bytesAvailable = (int) (this.dataEnd - this.filePosition);
         if (bytesAvailable < 1) {
@@ -263,18 +263,18 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         int pos = match.indexOf(tempBuffer, 0, scanBytes);
         long seekPos = last;
         if (pos >= 0) {
-            seekPos = this.currentOffset + startPosition + (long) pos;
+            seekPos = this.currentOffset + startPosition + pos;
             this.seek(seekPos);
             return true;
         } else {
             int matchLen = match.getMatchLength();
 
-            for (needToScan -= scanBytes; needToScan > (long) matchLen; needToScan -= scanBytes) {
+            for (needToScan -= scanBytes; needToScan > matchLen; needToScan -= scanBytes) {
                 scanBytes = (int) Math.min(maxBytes > 0 ? maxBytes : MAX_SEARCH_BUFFER_LIMIT, needToScan);
                 readBytes(tempBuffer, 0, scanBytes);
                 pos = match.indexOf(tempBuffer, 0, scanBytes);
                 if (pos > 0) {
-                    seekPos = this.currentOffset + (long) pos + (endOfFile ? BUFFER_MEMORY_LIMIT - scanBytes : 0);
+                    seekPos = this.currentOffset + pos + (endOfFile ? BUFFER_MEMORY_LIMIT - scanBytes : 0);
                     this.seek(seekPos);
                     return true;
                 }

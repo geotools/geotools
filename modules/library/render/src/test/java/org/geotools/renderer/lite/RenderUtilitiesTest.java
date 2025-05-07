@@ -104,7 +104,7 @@ public class RenderUtilitiesTest {
     public void testOGCScaleProjected() throws Exception {
         ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.CARTESIAN_2D);
         int tenMetersPixels = (int) Math.round(10 / 0.00028);
-        double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap());
+        double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap<>());
         Assert.assertEquals(1.0, scale, 0.0001);
     }
 
@@ -115,11 +115,11 @@ public class RenderUtilitiesTest {
             int tenMetersPixels = (int) Math.round(10 / 0.00028);
 
             RendererUtilities.SCALE_UNIT_COMPENSATION = false;
-            double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap());
+            double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap<>());
             Assert.assertEquals(1, scale, 0.0001);
 
             RendererUtilities.SCALE_UNIT_COMPENSATION = true;
-            scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap());
+            scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap<>());
             Assert.assertEquals(0.304803, scale, 0.0001);
         } finally {
             RendererUtilities.SCALE_UNIT_COMPENSATION = true;
@@ -131,7 +131,7 @@ public class RenderUtilitiesTest {
         // same example as page 29 in the SLD OGC spec, but with the expected scale corrected
         // since the OGC document contains a very imprecise one
         ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 2, 0, 2), DefaultGeographicCRS.WGS84);
-        double scale = RendererUtilities.calculateOGCScale(re, 600, new HashMap());
+        double scale = RendererUtilities.calculateOGCScale(re, 600, new HashMap<>());
         Assert.assertEquals(1325232.03, scale, 0.01);
     }
 
@@ -144,15 +144,15 @@ public class RenderUtilitiesTest {
 
         final CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
 
-        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(500 / 0.00028, scale, 0.0001);
 
         worldToScreen.rotate(1.0);
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(500 / 0.00028, scale, 0.0001);
 
         worldToScreen.translate(100.0, 100.0);
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(500 / 0.00028, scale, 0.0001);
     }
 
@@ -166,15 +166,15 @@ public class RenderUtilitiesTest {
 
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
 
-        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(0.5 * RendererUtilities.OGC_DEGREE_TO_METERS / 0.00028, scale, 0.0001);
 
         worldToScreen.rotate(1.0);
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(0.5 * RendererUtilities.OGC_DEGREE_TO_METERS / 0.00028, scale, 0.0001);
 
         worldToScreen.translate(100.0, 100.0);
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap<>());
         Assert.assertEquals(0.5 * RendererUtilities.OGC_DEGREE_TO_METERS / 0.00028, scale, 0.0001);
     }
 

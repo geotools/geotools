@@ -905,7 +905,6 @@ public class HeterogenousCRSTest {
                 Object source = it.next();
                 groupOperations(source, operationsSet);
             }
-            return;
         }
     }
 

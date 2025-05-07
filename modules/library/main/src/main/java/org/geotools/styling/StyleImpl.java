@@ -59,7 +59,7 @@ public class StyleImpl implements Style, Cloneable {
     }
 
     public FeatureTypeStyle[] getFeatureTypeStyles() {
-        FeatureTypeStyle[] ret = {(FeatureTypeStyle) new FeatureTypeStyleImpl()};
+        FeatureTypeStyle[] ret = {new FeatureTypeStyleImpl()};
 
         if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("number of fts set " + featureTypeStyles.size());

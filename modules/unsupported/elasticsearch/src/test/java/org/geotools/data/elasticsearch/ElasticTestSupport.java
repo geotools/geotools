@@ -261,12 +261,10 @@ public class ElasticTestSupport {
 
     List<SimpleFeature> readFeatures(SimpleFeatureIterator iterator) {
         final List<SimpleFeature> features = new ArrayList<>();
-        try {
+        try (iterator) {
             while (iterator.hasNext()) {
                 features.add(iterator.next());
             }
-        } finally {
-            iterator.close();
         }
         return features;
     }

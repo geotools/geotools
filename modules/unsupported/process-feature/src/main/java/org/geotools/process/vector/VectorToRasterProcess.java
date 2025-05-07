@@ -98,14 +98,14 @@ public class VectorToRasterProcess implements VectorProcess {
 
     private static enum TransferType {
         INTEGRAL,
-        FLOAT;
+        FLOAT
     }
 
     private TransferType transferType;
 
     private static enum ValueSource {
         PROPERTY_NAME,
-        EXPRESSION;
+        EXPRESSION
     }
 
     private ValueSource valueSource;

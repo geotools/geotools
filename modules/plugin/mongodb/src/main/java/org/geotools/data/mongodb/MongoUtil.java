@@ -241,7 +241,7 @@ public class MongoUtil {
     }
 
     static SimpleFeatureType getSimpleFeatureType(BufferedReader reader, Name name) throws IOException {
-        try {
+        try (reader) {
             String lineSeparator = System.getProperty("line.separator");
             StringBuilder jsonBuilder = new StringBuilder();
             String line;
@@ -251,8 +251,6 @@ public class MongoUtil {
             }
             BasicDBObject o = BasicDBObject.parse(jsonBuilder.toString());
             return FeatureTypeDBObject.convert(o, name);
-        } finally {
-            reader.close();
         }
     }
 

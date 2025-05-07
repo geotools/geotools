@@ -254,7 +254,7 @@ public class DefaultRepository implements Repository {
     @Override
     @SuppressWarnings("unchecked")
     public List<DataStore> getDataStores() {
-        List list = new ArrayList(repository.values());
+        List list = new ArrayList<>(repository.values());
         return (List<DataStore>) list;
     }
 }

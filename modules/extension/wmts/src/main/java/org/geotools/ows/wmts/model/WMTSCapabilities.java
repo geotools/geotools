@@ -322,7 +322,7 @@ public class WMTSCapabilities extends Capabilities {
     private WMTSLayer parseLayer(LayerType layerType) {
 
         String name = layerType.getIdentifier().getValue();
-        String title = layerType.getTitle().size() > 0
+        String title = !layerType.getTitle().isEmpty()
                 ? ((LanguageStringType) layerType.getTitle().get(0)).getValue()
                 : name;
 
@@ -330,7 +330,7 @@ public class WMTSCapabilities extends Capabilities {
         layer.setName(name);
 
         // The Abstract is of Type LanguageStringType, not String. We're choosing the first one.
-        if (layerType.getAbstract().size() > 0) {
+        if (!layerType.getAbstract().isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (Object line : layerType.getAbstract()) {
                 if (line instanceof LanguageStringType) {

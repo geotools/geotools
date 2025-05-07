@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.IncludeFilter;
@@ -418,14 +417,6 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     private Integer getSRID() {
         return getSRID(featureType.getGeometryDescriptor());
-    }
-
-    private Integer getSRID(String attrName) {
-        AttributeDescriptor attrDescr = featureType.getDescriptor(attrName);
-        if (attrDescr instanceof GeometryDescriptor) {
-            return getSRID((GeometryDescriptor) attrDescr);
-        }
-        return currentSRID;
     }
 
     private Integer getSRID(GeometryDescriptor gDescr) {

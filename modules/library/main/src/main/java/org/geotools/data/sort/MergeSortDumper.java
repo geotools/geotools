@@ -118,7 +118,7 @@ class MergeSortDumper {
         List<SimpleFeature> features = new ArrayList<>();
         List<FeatureBlockReader> readers = new ArrayList<>();
         boolean cleanFile = true;
-        try {
+        try (reader) {
             // read and store into files as necessary
             while (reader.hasNext()) {
                 SimpleFeature f = reader.next();
@@ -167,8 +167,6 @@ class MergeSortDumper {
                 io.close(true);
                 file.delete();
             }
-
-            reader.close();
         }
     }
 

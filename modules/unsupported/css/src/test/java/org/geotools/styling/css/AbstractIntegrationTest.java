@@ -177,7 +177,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     private void writeStyle(Style s, File sldFile) throws TransformerException, IOException, FileNotFoundException {
         StyledLayerDescriptor sld = STYLE_FACTORY.createStyledLayerDescriptor();
         NamedLayer layer = STYLE_FACTORY.createNamedLayer();
-        layer.addStyle((org.geotools.api.style.Style) s);
+        layer.addStyle(s);
         sld.layers().add(layer);
         if (!sldFile.getParentFile().exists()) {
             assertTrue(sldFile.getParentFile().mkdirs());

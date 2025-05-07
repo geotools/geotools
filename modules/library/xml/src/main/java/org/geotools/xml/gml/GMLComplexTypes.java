@@ -160,8 +160,6 @@ public class GMLComplexTypes {
 
         if (g instanceof GeometryCollection) {
             encode(e, (GeometryCollection) g, output);
-
-            return;
         }
     }
 

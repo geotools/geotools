@@ -98,7 +98,7 @@ public class PointStackerProcess implements VectorProcess {
          * symbolizers for the
          */
         Never
-    };
+    }
 
     public static final String ATTR_GEOM = "geom";
 

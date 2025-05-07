@@ -50,18 +50,15 @@ public class AppSchemaExample {
             FeatureSource<FeatureType, Feature> source = dataAccess.getFeatureSource(new NameImpl(
                     "urn:cgi:xmlns:CGI:GeoSciML:2.0", "MappedFeature"));
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
-            FeatureIterator<Feature> iterator = features.features();
-            try {
+            try (FeatureIterator<Feature> iterator = features.features()) {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();
                     System.out.println("Feature "
                             + f.getIdentifier().toString()
                             + " has gml:name = "
                             + ((ComplexAttribute) f.getProperty(new NameImpl(GML.name)))
-                                    .getProperty("simpleContent").getValue());
+                            .getProperty("simpleContent").getValue());
                 }
-            } finally {
-                iterator.close();
             }
         } finally {
             if (dataAccess != null) {

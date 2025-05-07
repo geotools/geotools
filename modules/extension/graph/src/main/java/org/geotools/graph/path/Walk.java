@@ -229,7 +229,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
      * @return the reverse iterator.
      */
     public Iterator<Node> riterator() {
-        return (new Iterator<Node>() {
+        return (new Iterator<>() {
             int m_index = size() - 1;
 
             @Override

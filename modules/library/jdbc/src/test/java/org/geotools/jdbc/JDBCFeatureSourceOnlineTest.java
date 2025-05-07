@@ -187,6 +187,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testGetFeaturesWithInvalidFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
@@ -252,7 +253,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     @Test(expected = Exception.class)
-    @SuppressWarnings("PMD.EmptyControlStatement")
+    @SuppressWarnings({"PMD.EmptyControlStatement", "PMD.UnusedLocalVariable"})
     public void testGetFeaturesWithInvalidQuery() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
@@ -490,7 +491,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testLikeFilter() throws Exception {
-        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
+        FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsLike caseSensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
         PropertyIsLike caseInsensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
         PropertyIsLike caseInsensitiveLike2 =

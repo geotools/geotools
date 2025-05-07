@@ -126,5 +126,4 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
     public void setAnchorPointY(float anchorPointY) {
         this.anchorPointY = anchorPointY;
     }
-    ;
 }

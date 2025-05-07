@@ -75,10 +75,7 @@ import org.junit.Assume;
  * @author Justin Deoliveira, The Open Planning Project
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
-@SuppressWarnings({
-    "PMD.JUnit4TestShouldUseBeforeAnnotation",
-    "PMD.JUnit4TestShouldUseAfterAnnotation",
-    "PMD.DisallowJUnit3"
+@SuppressWarnings({"PMD.UnitTestShouldUseBeforeAnnotation", "PMD.UnitTestShouldUseAfterAnnotation", "PMD.DisallowJUnit3"
 })
 public abstract class OnlineTestCase extends TestCase {
     /** System property set to totally disable any online tests */

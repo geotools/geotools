@@ -142,6 +142,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
         return mockClient;
     }
 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     private HTTPClient createFailingHttpClient() throws Exception {
         MockHttpClient mockClient = new MockHttpClient();
         try (InputStream xsdResponse = TestData.openStream(this, "Mjosovervak_stations.xsd")) {

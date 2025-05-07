@@ -167,7 +167,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            final Map.Entry entry = (Map.Entry) stringStringEntry;
+            final Map.Entry entry = stringStringEntry;
             final String oldName = (String) entry.getKey();
             final String newName = (String) entry.getValue();
             /*

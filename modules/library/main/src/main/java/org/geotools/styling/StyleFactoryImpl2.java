@@ -199,7 +199,7 @@ public class StyleFactoryImpl2 {
 
         for (org.geotools.api.style.Rule rule : rules) {
             if (rule instanceof RuleImpl) {
-                featureTypeStyle.rules().add((RuleImpl) rule);
+                featureTypeStyle.rules().add(rule);
             } else {
                 featureTypeStyle.rules().add(new RuleImpl(rule));
             }

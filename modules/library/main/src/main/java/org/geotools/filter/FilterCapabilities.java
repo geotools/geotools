@@ -215,7 +215,7 @@ public class FilterCapabilities {
         ops = ops | type;
         // the type can be a mask signifying multiple filter types, we have to add them all
         for (Map.Entry<Long, Object> longObjectEntry : intTypeToOpenGisTypeMap.entrySet()) {
-            Map.Entry entry = (Map.Entry) longObjectEntry;
+            Map.Entry entry = longObjectEntry;
             long key = ((Long) entry.getKey()).longValue();
             if ((key & type) != 0) {
                 Object filter = entry.getValue();

@@ -1138,6 +1138,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
+                    @SuppressWarnings("PMD.CheckResultSet") // return of next is checked...
                     final boolean present = result.next();
                     if (present) {
                         if (index >= 0) {

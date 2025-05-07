@@ -308,7 +308,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     private Set orFids(int startOfFilterStack) {
-        Set set = new HashSet();
+        Set set = new HashSet<>();
 
         for (int i = startOfFilterStack; i < current.size(); i++) {
             Data data = current.get(i);
@@ -326,7 +326,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             return Collections.emptySet();
         }
 
-        Set toRemove = new HashSet();
+        Set toRemove = new HashSet<>();
         List<Set> fidSet = new ArrayList<>();
         boolean doRemove = true;
 
@@ -356,7 +356,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             return fidSet.get(0);
         }
 
-        HashSet set = new HashSet();
+        HashSet set = new HashSet<>();
 
         for (Set tmp : fidSet) {
             for (Object o : tmp) {
@@ -592,7 +592,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     private static class Data {
         public static final Data NONE = new Data(Filter.EXCLUDE);
         public static final Data ALL = new Data(Filter.INCLUDE);
-        final Set fids = new HashSet();
+        final Set fids = new HashSet<>();
         org.geotools.api.filter.Filter filter;
 
         public Data() {

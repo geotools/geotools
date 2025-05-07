@@ -96,7 +96,7 @@ public class ImageGraphicFactoryTest {
         Assert.assertTrue(image.imageCache.containsKey(u));
         Assert.assertNotNull(image.imageCache.get(u));
 
-        ((GraphicCache) image).clearCache();
+        image.clearCache();
 
         Assert.assertTrue(image.imageCache.isEmpty());
     }

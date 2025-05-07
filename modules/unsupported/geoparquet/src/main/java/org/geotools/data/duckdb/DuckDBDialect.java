@@ -259,7 +259,8 @@ public class DuckDBDialect extends BasicSQLDialect {
 
         try (PreparedStatement ps = cx.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
-            rs.next();
+            if (!rs.next())
+                throw new RuntimeException("Could not compute optimized bounds, ST_Extent_Agg returned no record");
             Blob blob = rs.getBlob(1);
             Geometry fullBounds = parseWKB(blob);
             return new ReferencedEnvelope(

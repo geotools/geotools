@@ -90,7 +90,6 @@ public class DuplicateFilterVisitorTest {
                 return super.visit(expression, extraData);
             }
         }
-        ;
         Expression modified = (Expression) add.accept(new Optimization(), null);
         Assert.assertTrue(modified instanceof Literal);
     }

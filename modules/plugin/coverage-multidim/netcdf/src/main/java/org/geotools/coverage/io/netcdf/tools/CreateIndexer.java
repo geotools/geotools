@@ -220,7 +220,7 @@ public class CreateIndexer {
         // initialize StreamResult with File object to save to file
         StreamResult result = new StreamResult(new StringWriter());
         try (InputStream is = new FileInputStream(auxiliaryFile);
-                PrintWriter out = new PrintWriter(finalAuxFile); ) {
+                PrintWriter out = new PrintWriter(finalAuxFile)) {
 
             transformer.transform(new StreamSource(is), result);
             String xmlString = result.getWriter().toString();

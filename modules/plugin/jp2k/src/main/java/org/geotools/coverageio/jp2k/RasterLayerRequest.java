@@ -576,7 +576,6 @@ class RasterLayerRequest {
             // TODO: Future versions may define a 1x1 rectangle starting
             // from the lower coordinate
             empty = true;
-            return;
         }
     }
 

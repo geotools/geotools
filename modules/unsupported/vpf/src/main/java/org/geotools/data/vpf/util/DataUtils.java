@@ -356,7 +356,7 @@ public class DataUtils implements DataTypesDefinition {
      * @return an <code>int</code> value
      */
     public static int unsigByteToInt(byte b) {
-        return (int) b & 0xFF;
+        return b & 0xFF;
     }
 
     /**

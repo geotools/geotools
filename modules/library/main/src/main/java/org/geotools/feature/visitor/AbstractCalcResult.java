@@ -99,7 +99,7 @@ public class AbstractCalcResult implements CalcResult {
             Number number = (Number) value;
             return number.floatValue();
         } else {
-            return (float) 0;
+            return 0f;
         }
     }
 
@@ -203,16 +203,15 @@ public class AbstractCalcResult implements CalcResult {
         return list.toArray();
     }
 
+    @SuppressWarnings("unchecked")
     public String[] toStringArray() {
-        List list = toList();
+        List<Object> list = toList();
 
         if (list == null) {
             return null;
         }
 
-        @SuppressWarnings("unchecked")
-        String[] strings = (String[]) list.toArray(new String[list.size()]);
-        return strings;
+        return list.stream().map(o -> o != null ? String.valueOf(o) : null).toArray(n -> new String[n]);
     }
 
     @Override

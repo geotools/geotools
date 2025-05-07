@@ -373,7 +373,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                     ps.setInt(2, col.srid != null ? col.srid : -1);
 
                     try (ResultSet rs = ps.executeQuery()) {
-                        Iterator<TileData> tiles = new AbstractIterator<TileData>() {
+                        Iterator<TileData> tiles = new AbstractIterator<>() {
                             WKBReader wkb = new WKBReader(GEOMS);
 
                             @Override

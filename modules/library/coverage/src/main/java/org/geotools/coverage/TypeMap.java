@@ -81,8 +81,6 @@ public final class TypeMap {
         new TypeMap(REAL_32BITS, DataBuffer.TYPE_FLOAT, (byte) 32, true, true, M1, P1, pool);
         new TypeMap(REAL_64BITS, DataBuffer.TYPE_DOUBLE, (byte) 64, true, true, M2, P2, pool);
     }
-    ;
-
     /**
      * The {@link DataBuffer} type. Must be one of the following constants: {@link DataBuffer#TYPE_BYTE},
      * {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT}, {@link DataBuffer#TYPE_INT},

@@ -150,7 +150,7 @@ public class MultiFilterTest {
 
         Expression e = new LiteralExpressionImpl(list);
 
-        Expression empty = new LiteralExpressionImpl(new ArrayList<String>());
+        Expression empty = new LiteralExpressionImpl(new ArrayList<>());
 
         Filter filter = fac.equals(e, new LiteralExpressionImpl("foo-2"));
         assertTrue(filter.evaluate(null));
@@ -321,7 +321,7 @@ public class MultiFilterTest {
 
         Expression e = new LiteralExpressionImpl(list);
 
-        Expression empty = new LiteralExpressionImpl(new ArrayList<String>());
+        Expression empty = new LiteralExpressionImpl(new ArrayList<>());
 
         Filter filter = fac.equals(e, new LiteralExpressionImpl(201.7));
         assertTrue(filter.evaluate(null));

@@ -291,6 +291,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testInvalidView() throws Exception {
         StringBuffer sb = new StringBuffer();
         sb.append("select ");

@@ -853,17 +853,17 @@ public class SimpleFeatureTypeBuilder {
     // Internal api available for subclasses to override
     /** Creates a new set instance, this default implementation returns {@link HashSet}. */
     protected Set newSet() {
-        return new HashSet();
+        return new HashSet<>();
     }
 
     /** Creates a new list instance, this default impelementation returns {@link ArrayList}. */
     protected List newList() {
-        return new ArrayList();
+        return new ArrayList<>();
     }
 
     /** Creates a new map instance, this default implementation returns {@link HashMap} */
     protected Map newMap() {
-        return new HashMap();
+        return new HashMap<>();
     }
 
     /**

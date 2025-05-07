@@ -104,6 +104,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         walkXPathRecursive(currentXPath, currentType, attrDescr, feature);
     }
 
+    @SuppressWarnings("PMD.UnnecessaryReturn")
     private void walkXPathRecursive(
             StepList currentXPath,
             FeatureTypeMapping currentType,

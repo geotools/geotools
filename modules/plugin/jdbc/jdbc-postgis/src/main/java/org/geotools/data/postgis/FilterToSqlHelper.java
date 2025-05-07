@@ -790,6 +790,7 @@ class FilterToSqlHelper {
         }
     }
 
+    @SuppressWarnings("PMD.UnecessaryCast")
     private String constructEquality(String[] jsonPath, Expression expected) {
         int lastIndex = jsonPath.length - 1;
         Object value = ((LiteralExpressionImpl) expected).getValue();

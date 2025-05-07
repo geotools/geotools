@@ -147,9 +147,9 @@ public class MemoryMappedFileCache implements FileCacheIF {
         this.minElements = minElementsInMemory;
         this.softLimit = softLimit;
         this.hardLimit = hardLimit;
-        this.period = 1000L * (long) period;
-        this.cache = new ConcurrentHashMap(2 * softLimit, 0.75F, 8);
-        this.files = new ConcurrentHashMap(4 * softLimit, 0.75F, 8);
+        this.period = 1000L * period;
+        this.cache = new ConcurrentHashMap<>(2 * softLimit, 0.75F, 8);
+        this.files = new ConcurrentHashMap<>(4 * softLimit, 0.75F, 8);
         boolean wantsCleanup = period > 0;
         if (wantsCleanup) {
             scheduleAtFixedRate(new MemoryMappedFileCache.CleanupTask(), this.period, this.period);
@@ -159,7 +159,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
         }
 
         if (this.trackAll) {
-            this.track = new ConcurrentHashMap(5000);
+            this.track = new ConcurrentHashMap<>(5000);
         }
     }
 
@@ -444,7 +444,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
 
     @Override
     public synchronized void clearCache(boolean force) {
-        List<CacheElement.CacheFile> deleteList = new ArrayList(2 * this.cache.size());
+        List<CacheElement.CacheFile> deleteList = new ArrayList<>(2 * this.cache.size());
         Iterator iter;
         CacheElement.CacheFile file;
         if (force) {
@@ -512,7 +512,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
 
     @Override
     public void showCache(Formatter format) {
-        ArrayList<CacheElement.CacheFile> allFiles = new ArrayList(this.files.size());
+        ArrayList<CacheElement.CacheFile> allFiles = new ArrayList<>(this.files.size());
         Iterator it = this.cache.values().iterator();
 
         while (it.hasNext()) {
@@ -545,7 +545,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
 
     @Override
     public List<String> showCache() {
-        List<CacheElement.CacheFile> allFiles = new ArrayList(this.files.size());
+        List<CacheElement.CacheFile> allFiles = new ArrayList<>(this.files.size());
         Iterator valIt = this.cache.values().iterator();
 
         while (valIt.hasNext()) {
@@ -556,7 +556,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
         }
 
         Collections.sort(allFiles);
-        List<String> result = new ArrayList(allFiles.size());
+        List<String> result = new ArrayList<>(allFiles.size());
         Iterator fileIt = allFiles.iterator();
 
         while (fileIt.hasNext()) {
@@ -580,7 +580,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
     @Override
     public void showTracking(Formatter format) {
         if (this.track != null) {
-            List<CacheTracking> all = new ArrayList(this.track.size());
+            List<CacheTracking> all = new ArrayList<>(this.track.size());
             all.addAll(this.track.values());
             Collections.sort(all);
             int seq = 0;
@@ -600,14 +600,14 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 format.format("%6d  %7d : %6d %6d %s%n", seq, countAll, t.hit, t.miss, t.key);
             }
 
-            float r = countAll == 0 ? 0.0F : (float) countHits / (float) countAll;
+            float r = countAll == 0 ? 0.0F : countHits / (float) countAll;
             format.format("  total=%7d : %6d %6d hit ratio=%f%n", countAll, countHits, countMiss, r);
         }
     }
 
     @Override
     public void resetTracking() {
-        this.track = new ConcurrentHashMap(5000);
+        this.track = new ConcurrentHashMap<>(5000);
         this.trackAll = true;
     }
 
@@ -622,7 +622,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 }
 
                 this.cleanups.incrementAndGet();
-                ArrayList<CacheFileSorter> unlockedFiles = new ArrayList();
+                ArrayList<CacheFileSorter> unlockedFiles = new ArrayList<>();
                 Iterator filesIt = this.files.values().iterator();
 
                 while (filesIt.hasNext()) {
@@ -635,7 +635,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                 Collections.sort(unlockedFiles);
                 int need2delete = size - this.minElements;
                 int minDelete = size - maxElements;
-                List<CacheElement.CacheFile> deleteList = new ArrayList(need2delete);
+                List<CacheElement.CacheFile> deleteList = new ArrayList<>(need2delete);
                 int count = 0;
                 Iterator iter = unlockedFiles.iterator();
 
@@ -692,8 +692,6 @@ public class MemoryMappedFileCache implements FileCacheIF {
                             " MemoryMappedFileCache {} cleanup had={} removed={} took={} msecs%n",
                             new Object[] {this.name, size, deleteList.size(), took});
                 }
-
-                return;
             }
         } finally {
             this.hasScheduled.set(false);

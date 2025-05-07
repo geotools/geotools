@@ -65,10 +65,8 @@ public class MBStyleParser {
      * @throws MBFormatException If MapBox Style is obviously not well formed
      */
     public MBStyle parse(Reader json) throws ParseException, IOException, MBFormatException {
-        try {
+        try (json) {
             return MBStyle.create(jsonParser.parse(json));
-        } finally {
-            json.close();
         }
     }
 

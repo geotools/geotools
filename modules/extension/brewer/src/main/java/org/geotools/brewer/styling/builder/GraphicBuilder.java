@@ -181,7 +181,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
 
     @Override
     public GraphicBuilder reset(org.geotools.api.style.Graphic graphic) {
-        if (graphic == null || graphic.graphicalSymbols().size() == 0) {
+        if (graphic == null || graphic.graphicalSymbols().isEmpty()) {
             return unset();
         }
         unset = false;
@@ -191,7 +191,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
                 Symbol symbol = (Symbol) graphicalSymbol;
                 Builder<? extends Symbol> builder;
                 if (symbol instanceof Mark) {
-                    builder = (Builder<? extends Symbol>) new MarkBuilder(this).reset((Mark) symbol);
+                    builder = new MarkBuilder(this).reset((Mark) symbol);
                 } else if (symbol instanceof ExternalGraphic) {
                     builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
                 } else {

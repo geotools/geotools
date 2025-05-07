@@ -159,13 +159,13 @@ public class EMFUtils {
     static Collection createEmptyCollection(EStructuralFeature feature) {
         Class clazz = feature.getEType().getInstanceClass();
         if (EList.class.isAssignableFrom(clazz)) {
-            return new BasicEList();
+            return new BasicEList<>();
         }
         if (List.class.isAssignableFrom(clazz)) {
-            return new ArrayList();
+            return new ArrayList<>();
         }
         if (Set.class.isAssignableFrom(clazz)) {
-            return new HashSet();
+            return new HashSet<>();
         }
         throw new IllegalArgumentException("Unable to create collection for " + clazz);
     }
@@ -184,7 +184,7 @@ public class EMFUtils {
             return Collections.emptyList();
         } else if (value.getClass().isArray()) {
             final int len = java.lang.reflect.Array.getLength(value);
-            List list = new ArrayList(len);
+            List list = new ArrayList<>(len);
 
             for (int i = 0; i < len; i++) {
                 Object val = Array.get(value, i);

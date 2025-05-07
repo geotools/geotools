@@ -498,8 +498,8 @@ public class JGrassUtilities {
         }
         ImageWorker worker = new ImageWorker(translatedImage);
         worker.scale(
-                (float) requestedCols / (float) translatedImage.getWidth(),
-                (float) requestedRows / (float) translatedImage.getHeight(),
+                requestedCols / (float) translatedImage.getWidth(),
+                requestedRows / (float) translatedImage.getHeight(),
                 0F,
                 0F,
                 interpolation);

@@ -390,17 +390,17 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
 				setCoverageId((String)newValue);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_FUNCTION:
-				setCoverageFunction((Object)newValue);
+				setCoverageFunction(newValue);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__METADATA:
 				getMetadata().clear();
 				getMetadata().addAll((Collection<? extends Object>)newValue);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__DOMAIN_SET:
-				setDomainSet((Object)newValue);
+				setDomainSet(newValue);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__RANGE_TYPE:
-				setRangeType((Object)newValue);
+				setRangeType(newValue);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__SERVICE_PARAMETERS:
 				setServiceParameters((ServiceParametersType)newValue);
@@ -421,16 +421,16 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
 				setCoverageId(COVERAGE_ID_EDEFAULT);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_FUNCTION:
-				setCoverageFunction((Object)null);
+				setCoverageFunction(null);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__METADATA:
 				getMetadata().clear();
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__DOMAIN_SET:
-				setDomainSet((Object)null);
+				setDomainSet(null);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__RANGE_TYPE:
-				setRangeType((Object)null);
+				setRangeType(null);
 				return;
 			case Wcs20Package.COVERAGE_DESCRIPTION_TYPE__SERVICE_PARAMETERS:
 				setServiceParameters((ServiceParametersType)null);

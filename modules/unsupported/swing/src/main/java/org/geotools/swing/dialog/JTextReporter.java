@@ -165,7 +165,7 @@ public class JTextReporter {
 
         private static enum StateChange {
             TEXT_UPDATED,
-            DIALOG_CLOSED;
+            DIALOG_CLOSED
         }
 
         private final WeakReference<TextDialog> dialogRef;

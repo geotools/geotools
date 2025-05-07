@@ -186,7 +186,7 @@ public class YsldParseCookbookTest {
         // </UserStyle>
         Style style = parse("point", "legend.sld");
 
-        GraphicLegend legend = (GraphicLegend) SLD.rules(style)[0].getLegend();
+        GraphicLegend legend = SLD.rules(style)[0].getLegend();
         assertEquals(32, Filters.asInt(legend.getSize()));
 
         ExternalGraphic external = (ExternalGraphic) legend.graphicalSymbols().get(0);

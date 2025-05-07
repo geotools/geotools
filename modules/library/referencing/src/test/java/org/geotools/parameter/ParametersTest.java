@@ -337,7 +337,7 @@ public final class ParametersTest {
         final ParameterDescriptor<Integer> p3 = new DefaultParameterDescriptor<>(
                 Collections.singletonMap("name", "3"), Integer.class, null, ONE, null, null, null, false);
         final ParameterDescriptor<Integer> p4 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "4"), Integer.class, null, ONE, null, null, null, false) {
                     /**
                      * We are cheating here: <code>maximumOccurs</code> should always be 1 for <code>ParameterValue

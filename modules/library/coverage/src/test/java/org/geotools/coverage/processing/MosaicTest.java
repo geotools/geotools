@@ -915,7 +915,7 @@ public class MosaicTest extends GridProcessingTestBase {
     }
 
     private List<GridCoverage2D> sortCoverages(List<GridCoverage2D> coverages) {
-        Collections.sort(coverages, new Comparator<GridCoverage2D>() {
+        Collections.sort(coverages, new Comparator<>() {
 
             @Override
             public int compare(GridCoverage2D o1, GridCoverage2D o2) {

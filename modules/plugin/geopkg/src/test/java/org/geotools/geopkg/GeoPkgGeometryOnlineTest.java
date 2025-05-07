@@ -38,6 +38,7 @@ public class GeoPkgGeometryOnlineTest extends JDBCGeometryOnlineTest {
     }
 
     @Override
+    @SuppressWarnings("PMD.CheckResultSet")
     protected Class checkGeometryType(Class geomClass) throws Exception {
         Class result = super.checkGeometryType(geomClass);
 

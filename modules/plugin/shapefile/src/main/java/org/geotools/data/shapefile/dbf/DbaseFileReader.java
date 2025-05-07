@@ -24,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -205,7 +204,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         // if we have a FileChannel, lets map it
         if (channel instanceof FileChannel && this.useMemoryMappedBuffer) {
             final FileChannel fc = (FileChannel) channel;
-            if ((fc.size() - fc.position()) < (long) Integer.MAX_VALUE) {
+            if ((fc.size() - fc.position()) < Integer.MAX_VALUE) {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             } else {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, Integer.MAX_VALUE);
@@ -226,7 +225,7 @@ public class DbaseFileReader implements FileReader, Closeable {
             buffer = NIOUtilities.allocate(header.getRecordLength());
             // fill it and reset
             fill(buffer, channel);
-            ((Buffer) buffer).flip();
+            buffer.flip();
             this.currentOffset = header.getHeaderLength();
         }
 
@@ -441,9 +440,9 @@ public class DbaseFileReader implements FileReader, Closeable {
             final char deleted = (char) buffer.get();
             row.deleted = deleted == '*';
 
-            ((Buffer) buffer).limit(buffer.position() + header.getRecordLength() - 1);
+            buffer.limit(buffer.position() + header.getRecordLength() - 1);
             buffer.get(bytes); // SK: There is a side-effect here!!!
-            ((Buffer) buffer).limit(buffer.capacity());
+            buffer.limit(buffer.capacity());
 
             foundRecord = true;
         }

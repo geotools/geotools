@@ -211,13 +211,11 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
 
     private void logIdsOnCursor(DBCursor cursor, List<String> ids) {
         final Set<String> idsOnCursor = new HashSet<>();
-        try {
+        try (cursor) {
             cursor.forEach(dbo -> {
                 ObjectId oid = (ObjectId) dbo.get("_id");
                 idsOnCursor.add(oid.toHexString());
             });
-        } finally {
-            cursor.close();
         }
         // compare ids on list, log not found ids
         for (String eid : ids) {

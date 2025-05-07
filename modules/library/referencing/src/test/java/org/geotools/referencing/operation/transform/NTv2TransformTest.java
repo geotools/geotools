@@ -106,7 +106,7 @@ public class NTv2TransformTest {
         try {
             new NTv2Transform(new URI(INEXISTENT_GRID));
         } catch (NoSuchIdentifierException e) {
-            return;
+            // ignore and move on
         }
     }
 

@@ -35,7 +35,7 @@ public abstract class AbstractHSLFunction extends FunctionImpl {
     enum Method {
         absolute,
         relative
-    };
+    }
 
     public static FunctionName NAME = new FunctionNameImpl(
             "abstractHSL",

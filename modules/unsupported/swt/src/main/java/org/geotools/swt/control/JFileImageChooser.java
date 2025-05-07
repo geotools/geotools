@@ -75,7 +75,7 @@ public class JFileImageChooser {
                 this.suffixes[i] = suffixes[i];
             }
         }
-    };
+    }
 
     private static final Set<FormatSpecifier> supportedReaders = new TreeSet<>();
     private static final Set<FormatSpecifier> supportedWriters = new TreeSet<>();

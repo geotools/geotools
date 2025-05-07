@@ -62,7 +62,7 @@ public class InfoToolHelperUtils {
             byte[] values = (byte[]) objArray;
             numbers = new Number[values.length];
             for (int i = 0; i < values.length; i++) {
-                numbers[i] = ((int) values[i]) & 0xff;
+                numbers[i] = values[i] & 0xff;
             }
 
         } else if (objArray instanceof int[]) {

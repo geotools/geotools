@@ -340,8 +340,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             options.put(key, String.valueOf(defaultValue * scaleFactor));
         }
     }
-    ;
-
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
@@ -352,8 +350,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
     }
-    ;
-
     /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
@@ -371,5 +367,4 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
     }
-    ;
 }

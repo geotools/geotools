@@ -46,7 +46,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
                 FF.literal(new ReferencedEnvelope(-82, 36, -76, 40, DefaultGeographicCRS.WGS84)));
         q.setFilter(intersects);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 iterator.next();
@@ -67,7 +67,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter qequals = FF.equals(FF.property("queryables"), FF.literal("time"));
         q.setFilter(qequals);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
@@ -94,7 +94,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere2"));
         q.setFilter(qequals);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 SimpleFeature simpleFeature = iterator.next();
@@ -128,7 +128,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter and = FF.and(qequals, qequals2);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 SimpleFeature simpleFeature = iterator.next();
@@ -159,7 +159,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter and = FF.and(qequals, qequals2);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 count++;
@@ -187,7 +187,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter and = FF.and(fBbox, qequals);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 SimpleFeature simpleFeature = iterator.next();
@@ -218,7 +218,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         Filter and = FF.and(fBbox, qequals);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
-        try (SimpleFeatureIterator iterator = fc.features(); ) {
+        try (SimpleFeatureIterator iterator = fc.features()) {
             int count = 0;
             while (iterator.hasNext()) {
                 SimpleFeature simpleFeature = iterator.next();

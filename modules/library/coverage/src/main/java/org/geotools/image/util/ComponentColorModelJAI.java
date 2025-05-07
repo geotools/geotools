@@ -103,7 +103,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
      */
     @Override
     public String toString() {
-        return new String("ComponentColorModelJAI: #pixelBits = "
+        return "ComponentColorModelJAI: #pixelBits = "
                 + pixel_bits
                 + " numComponents = "
                 + super.getNumComponents()
@@ -114,6 +114,6 @@ public class ComponentColorModelJAI extends ComponentColorModel {
                 + " has alpha = "
                 + super.hasAlpha()
                 + " isAlphaPre = "
-                + super.isAlphaPremultiplied());
+                + super.isAlphaPremultiplied();
     }
 }

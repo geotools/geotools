@@ -52,8 +52,7 @@ public abstract class Tile implements ImageLoader {
         NEW,
         RENDERED,
         INVALID
-    };
-
+    }
     /**
      * These states represent the state of the context. If the context is invalid than the rendering stack no longer
      * matches the rendering stack the user has defined and the rendering stack needs to be updated.
@@ -61,8 +60,7 @@ public abstract class Tile implements ImageLoader {
     public enum ContextState {
         OKAY,
         INVALID
-    };
-
+    }
     /**
      * These states represent if the tile is on or off screen. This information is used to determine what tiles can be
      * disposed.
@@ -70,8 +68,7 @@ public abstract class Tile implements ImageLoader {
     public enum ScreenState {
         ONSCREEN,
         OFFSCREEN
-    };
-
+    }
     /**
      * These states represent if the tile has been validated in response to a user event.
      *
@@ -80,8 +77,7 @@ public abstract class Tile implements ImageLoader {
     public enum ValidatedState {
         VALIDATED,
         OLD
-    };
-
+    }
     /** The bounds of the tile */
     private ReferencedEnvelope env;
 

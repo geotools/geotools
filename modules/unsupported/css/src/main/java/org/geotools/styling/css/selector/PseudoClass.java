@@ -25,7 +25,7 @@ public class PseudoClass extends Selector {
 
     public static Selector combineAnd(List<PseudoClass> selectors, Object ctx) {
         // just remove duplicate pseudo classes
-        return new And(new ArrayList<>(new LinkedHashSet<Selector>(selectors)));
+        return new And(new ArrayList<>(new LinkedHashSet<>(selectors)));
     }
 
     public static final PseudoClass ROOT = new PseudoClass(null, -1) {
@@ -33,7 +33,6 @@ public class PseudoClass extends Selector {
         public String toString() {
             return "ROOT";
         }
-        ;
     };
 
     String className;

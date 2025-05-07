@@ -315,10 +315,10 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                  * in this case we respect the original subsampling contract.
                  */
                 JGrassRegion tmpRegion = new JGrassRegion(region);
-                tmpRegion.setWEResolution((fileEast - fileWest) / (double) fileCols);
-                tmpRegion.setNSResolution((fileNorth - fileSouth) / (double) fileRows);
-                subSamplingX = (int) Math.floor((double) tmpRegion.getCols() / (double) requestedCols);
-                subSamplingY = (int) Math.floor((double) tmpRegion.getRows() / (double) requestedRows);
+                tmpRegion.setWEResolution((fileEast - fileWest) / fileCols);
+                tmpRegion.setNSResolution((fileNorth - fileSouth) / fileRows);
+                subSamplingX = (int) Math.floor(tmpRegion.getCols() / (double) requestedCols);
+                subSamplingY = (int) Math.floor(tmpRegion.getRows() / (double) requestedRows);
                 if (subSamplingX == 0) subSamplingX = 1;
                 if (subSamplingY == 0) subSamplingY = 1;
                 if (subSamplingX != subSamplingY) {
@@ -417,12 +417,12 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
             int xPaddingDx = 0;
             if (xDeltaE > 0) {
-                xPaddingDx = (int) Math.round(
-                        xDeltaE * (double) imageWidth / ((requestedEast - tmpDxE) - (requestedWest - tmpDxW)));
+                xPaddingDx =
+                        (int) Math.round(xDeltaE * imageWidth / ((requestedEast - tmpDxE) - (requestedWest - tmpDxW)));
             }
             int yPaddingBottom = 0;
             if (yDeltaS < 0) {
-                yPaddingBottom = (int) Math.round(yDeltaS * (double) imageHeight / (totalHeigth));
+                yPaddingBottom = (int) Math.round(yDeltaS * imageHeight / (totalHeigth));
             }
             RenderedImage translatedImage = setPadding(xPaddingSx, xPaddingDx, yPaddingTop, yPaddingBottom, image);
 
@@ -549,7 +549,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                     0);
             catsList.add(noData);
 
-            double a = (values[values.length - 1][1] - values[0][0]) / (double) (COLORNUM - 1);
+            double a = (values[values.length - 1][1] - values[0][0]) / (COLORNUM - 1);
             double pmin = 1.0;
             double scale = a;
             if (scale == 0) {

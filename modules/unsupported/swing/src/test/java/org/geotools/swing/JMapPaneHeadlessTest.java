@@ -58,7 +58,7 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
 
     @Before
     public void setup() {
-        mapPane = GuiActionRunner.execute(new GuiQuery<JMapPane>() {
+        mapPane = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected JMapPane executeInEDT() throws Throwable {
                 return new JMapPane();

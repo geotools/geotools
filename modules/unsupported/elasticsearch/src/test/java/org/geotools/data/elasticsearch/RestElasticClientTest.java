@@ -713,7 +713,7 @@ public class RestElasticClientTest {
 
         JsonByteArrayEntityMatcher(byte[] data) throws IOException {
             ObjectMapper mapper = new ObjectMapper();
-            this.data = mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
+            this.data = mapper.readValue(data, new TypeReference<>() {});
         }
 
         @Override
@@ -721,7 +721,7 @@ public class RestElasticClientTest {
             ByteArrayInputStream inputStream = (ByteArrayInputStream) argument.getContent();
             ObjectMapper mapper = new ObjectMapper();
             try {
-                Map<String, Object> data = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
+                Map<String, Object> data = mapper.readValue(inputStream, new TypeReference<>() {});
                 return this.data.equals(data);
             } catch (IOException e) {
                 return false;

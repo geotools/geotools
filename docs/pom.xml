@@ -50,6 +50,8 @@
   <properties>
     <target>full</target>
     <checkstyle.file>checkstyle-cc0.xml</checkstyle.file>
+    <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->
+    <pmd.skip>true</pmd.skip>
   </properties>
 
   <!-- =========================================================== -->
@@ -263,17 +265,6 @@
                 </ant>
               </tasks>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven.pmd.plugin.version}</version>
-        <executions>
-          <execution>
-            <phase>none</phase>
           </execution>
         </executions>
       </plugin>

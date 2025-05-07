@@ -313,7 +313,7 @@ public class SchemaGenerator extends AbstractGenerator {
     public XSDTypeDefinition getXSDType(AttributeType type) {
         for (Entry<XSDTypeDefinition, AttributeType> xsdTypeDefinitionAttributeTypeEntry :
                 types.entrySet()) {
-            Entry entry = (Entry) xsdTypeDefinitionAttributeTypeEntry;
+            Entry entry = xsdTypeDefinitionAttributeTypeEntry;
             XSDTypeDefinition xsdType = (XSDTypeDefinition) entry.getKey();
             AttributeType gtType = (AttributeType) entry.getValue();
 

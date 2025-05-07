@@ -346,8 +346,8 @@ public class Drawer {
 
                 g.drawImage(
                         image,
-                        (int) (point[0] - ((double) image.getWidth()) / (double) 2),
-                        (int) (point[1] - ((double) image.getHeight()) / (double) 2),
+                        (int) ((point[0] - image.getWidth()) / 2d),
+                        (int) ((point[1] - image.getHeight()) / 2d),
                         null);
             }
         }

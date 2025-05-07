@@ -282,7 +282,7 @@ public class PreGeneralizedSimpleFeatureTest {
             }
 
             try {
-                feature1.setValue((Object) null);
+                feature1.setValue(null);
             } catch (UnsupportedOperationException ex) {
                 error = false;
             }

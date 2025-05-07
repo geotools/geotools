@@ -40,7 +40,6 @@ public class CogConfiguration implements SourceSPIProviderFactory {
     private static final ImageInputStreamSpi COG_IMAGE_INPUT_STREAM_SPI = new CogImageInputStreamSpi();
 
     public CogConfiguration() {}
-    ;
 
     public CogConfiguration(final CogConfiguration that) {
         Utilities.ensureNonNull("CogConfiguration", that);

@@ -57,7 +57,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * Compares {@link Category} objects according their {@link Category#minimum} value. This is used for sorting the
      * {@link #categories} array at construction time.
      */
-    static Comparator<Category> COMPARATOR = new Comparator<Category>() {
+    static Comparator<Category> COMPARATOR = new Comparator<>() {
 
         @Override
         public int compare(Category c1, Category c2) {
@@ -185,7 +185,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                             }
                         }
                     }
-                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
+                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {

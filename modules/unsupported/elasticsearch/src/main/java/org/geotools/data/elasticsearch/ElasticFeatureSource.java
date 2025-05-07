@@ -179,8 +179,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                         feature = reader.next();
                         if (feature.getAttribute("_aggregation") != null) {
                             final byte[] data = (byte[]) feature.getAttribute("_aggregation");
-                            final Map<String, Object> aggregation =
-                                    mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
+                            final Map<String, Object> aggregation = mapper.readValue(data, new TypeReference<>() {});
                             elasticBucketVisitor.getBuckets().add(aggregation);
                         }
                     } catch (IOException erp) {

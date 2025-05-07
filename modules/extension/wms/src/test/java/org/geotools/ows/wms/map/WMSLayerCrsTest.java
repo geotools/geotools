@@ -51,7 +51,6 @@ public class WMSLayerCrsTest {
         }
         return result;
     }
-    ;
 
     @Before
     public void setUp() throws Exception {

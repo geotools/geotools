@@ -82,19 +82,19 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
             if (value.getCoordinateValue() != null) {
                 float n = value.getCoordinateValue().floatValue();
                 if (interval.toString().equals("year")) {
-                    f = n * (float) yearMS;
+                    f = n * yearMS;
                 } else if (interval.toString().equals("month")) {
-                    f = n * (float) monthMS;
+                    f = n * monthMS;
                 } else if (interval.toString().equals("week")) {
-                    f = n * (float) weekMS;
+                    f = n * weekMS;
                 } else if (interval.toString().equals("day")) {
-                    f = n * (float) dayMS;
+                    f = n * dayMS;
                 } else if (interval.toString().equals("hour")) {
-                    f = n * (float) hourMS;
+                    f = n * hourMS;
                 } else if (interval.toString().equals("minute")) {
-                    f = n * (float) minMS;
+                    f = n * minMS;
                 } else if (interval.toString().equals("second")) {
-                    f = n * (float) secondMS;
+                    f = n * secondMS;
                 } else if (interval.toString().equals("millisecond")) {
                     f = n;
                 } else {
@@ -124,19 +124,19 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
 
         Number coordinateValue = Math.abs(dateTime.getTime() - origin.getTime());
         if (interval.toString().equals("year")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) yearMS;
+            coordinateValue = (float) coordinateValue.longValue() / yearMS;
         } else if (interval.toString().equals("month")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) monthMS;
+            coordinateValue = (float) coordinateValue.longValue() / monthMS;
         } else if (interval.toString().equals("week")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) weekMS;
+            coordinateValue = (float) coordinateValue.longValue() / weekMS;
         } else if (interval.toString().equals("day")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) dayMS;
+            coordinateValue = (float) coordinateValue.longValue() / dayMS;
         } else if (interval.toString().equals("hour")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) hourMS;
+            coordinateValue = (float) coordinateValue.longValue() / hourMS;
         } else if (interval.toString().equals("minute")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) minMS;
+            coordinateValue = (float) coordinateValue.longValue() / minMS;
         } else if (interval.toString().equals("second")) {
-            coordinateValue = (float) coordinateValue.longValue() / (float) secondMS;
+            coordinateValue = (float) coordinateValue.longValue() / secondMS;
         }
         TemporalCoordinate response = new DefaultTemporalCoordinate(this, null, coordinateValue);
         return response;

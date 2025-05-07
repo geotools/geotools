@@ -49,6 +49,7 @@ public class SchemaCatalog {
      * @param location typically an absolute http/https URL.
      * @return null if location not found in the catalog
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public String resolveLocation(String location) {
         String resolvedLocation = null;
         try {

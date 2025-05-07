@@ -128,7 +128,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
     public void copyToClipboard() throws Exception {
         createAndShow(true);
 
-        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<>(JButton.class) {
             @Override
             protected boolean isMatching(JButton component) {
                 return "Copy to clipboard".equals(component.getText());
@@ -151,7 +151,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
 
     private void createAndShow(final boolean showAppInfo) {
         this.showAppInfo = showAppInfo;
-        JAboutDialog dialog = GuiActionRunner.execute(new GuiQuery<JAboutDialog>() {
+        JAboutDialog dialog = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected JAboutDialog executeInEDT() throws Throwable {
                 JAboutDialog dialog;
@@ -169,7 +169,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
     }
 
     private JTextComponentFixture getDialogTextArea() {
-        return windowFixture.textBox(new GenericTypeMatcher<JTextArea>(JTextArea.class, true) {
+        return windowFixture.textBox(new GenericTypeMatcher<>(JTextArea.class, true) {
 
             @Override
             protected boolean isMatching(JTextArea component) {

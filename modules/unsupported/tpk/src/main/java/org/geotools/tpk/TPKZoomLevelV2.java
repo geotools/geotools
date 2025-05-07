@@ -327,6 +327,7 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
      * @param indexReadOffset -- offset within the bundle tile index
      * @return -- the converted data offset "pointer"
      */
+    @SuppressWarnings("PMD.UnnecessaryCast")
     private TPKTile.TileInfo getTileInfo(TPKBundle bundle, long indexReadOffset) {
         byte[] tileIndex = bundle.bundleData.read(indexReadOffset, INDEX_ENTRY_LENGTH);
 

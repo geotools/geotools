@@ -54,7 +54,7 @@ public interface CoverageAccess {
          * <p>This level of access implys {@link CoverageAccess#access(Name, Map, AccessType, Hints, ProgressListener)}
          * is able to return a {@link CoverageStore}
          */
-        READ_WRITE;
+        READ_WRITE
     }
 
     /**

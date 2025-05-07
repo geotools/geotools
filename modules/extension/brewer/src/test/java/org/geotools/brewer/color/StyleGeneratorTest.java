@@ -38,7 +38,6 @@ import org.geotools.api.style.Rule;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.ClassificationFunction;
@@ -55,21 +54,6 @@ public class StyleGeneratorTest extends DataTestCase {
             Filter filter = rule.getFilter();
             SimpleFeatureCollection filteredCollection = fs.getFeatures(filter);
             assertTrue(filteredCollection.size() > 0);
-
-            String filterInfo =
-                    "Filter \"" + filter.toString() + "\" contains " + filteredCollection.size() + " element(s) (";
-            try (SimpleFeatureIterator it = filteredCollection.features()) {
-
-                while (it.hasNext()) {
-                    SimpleFeature feature = it.next();
-                    filterInfo += ("'" + feature.getAttribute(attribName) + "'");
-
-                    if (it.hasNext()) {
-                        filterInfo += ", ";
-                    }
-                }
-            }
-            // System.out.println(filterInfo + ")");
         }
     }
 

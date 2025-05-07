@@ -59,7 +59,7 @@ public class FilterVisitorTest {
                 return set;
             }
         };
-        Set set = (Set) myFilter.accept(allFids, new HashSet());
+        Set set = (Set) myFilter.accept(allFids, new HashSet<>());
         Assert.assertEquals(1, set.size());
     }
     /** Example located on the wiki */
@@ -77,7 +77,7 @@ public class FilterVisitorTest {
                 return set;
             }
         }
-        Set set = (Set) myFilter.accept(new FindNames(), new HashSet());
+        Set set = (Set) myFilter.accept(new FindNames(), new HashSet<>());
         Assert.assertTrue(set.contains("foo"));
     }
 
@@ -121,12 +121,12 @@ public class FilterVisitorTest {
     @Test
     public void testIdCollector() {
         Filter filter = ff.isNull(ff.property("name"));
-        Set fids = (Set) filter.accept(IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet());
+        Set fids = (Set) filter.accept(IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet<>());
         Assert.assertTrue(fids.isEmpty());
         Assert.assertFalse(fids.contains("eclesia"));
 
         filter = ff.id(Collections.singleton(ff.featureId("eclesia")));
-        fids = (Set) filter.accept(IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet());
+        fids = (Set) filter.accept(IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet<>());
         Assert.assertFalse(fids.isEmpty());
         Assert.assertTrue(fids.contains("eclesia"));
     }

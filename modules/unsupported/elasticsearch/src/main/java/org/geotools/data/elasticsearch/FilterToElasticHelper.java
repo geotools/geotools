@@ -22,7 +22,6 @@ import static org.geotools.data.elasticsearch.ElasticConstants.MATCH_ALL;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -56,30 +55,24 @@ class FilterToElasticHelper {
     private Map<String, Object> shapeBuilder;
 
     /** Conversion factor from common units to meter */
-    static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
-
-        private static final long serialVersionUID = 1L;
-
-        {
+    static final Map<String, Double> UNITS_MAP = Map.ofEntries(
             // Metric
-            put("millimeter", 0.001);
-            put("mm", 0.001);
-            put("cm", 0.01);
-            put("m", 1.0);
-            put("kilometers", 1000.0);
-            put("kilometer", 1000.0);
-            put("km", 1000.0);
+            Map.entry("millimeter", 0.001),
+            Map.entry("mm", 0.001),
+            Map.entry("cm", 0.01),
+            Map.entry("m", 1.0),
+            Map.entry("kilometers", 1000.0),
+            Map.entry("kilometer", 1000.0),
+            Map.entry("km", 1000.0),
             // Other
-            put("in", 0.0254);
-            put("ft", 0.3048);
-            put("feet", 0.3048);
-            put("yd", 0.9144);
-            put("mi", 1609.344);
-            put("miles", 1609.344);
-            put("NM", 1852d);
-            put("nmi", 1852d);
-        }
-    };
+            Map.entry("in", 0.0254),
+            Map.entry("ft", 0.3048),
+            Map.entry("feet", 0.3048),
+            Map.entry("yd", 0.9144),
+            Map.entry("mi", 1609.344),
+            Map.entry("miles", 1609.344),
+            Map.entry("NM", 1852d),
+            Map.entry("nmi", 1852d));
 
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
 

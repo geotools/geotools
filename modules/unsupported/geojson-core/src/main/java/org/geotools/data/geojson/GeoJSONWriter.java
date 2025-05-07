@@ -463,7 +463,7 @@ public class GeoJSONWriter implements AutoCloseable {
         }
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) itr.next();
+                SimpleFeature feature = itr.next();
                 write(feature);
             }
         }

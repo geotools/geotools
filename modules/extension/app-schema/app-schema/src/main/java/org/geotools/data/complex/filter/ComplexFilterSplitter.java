@@ -522,7 +522,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         if (filter instanceof BinarySpatialOperator) {
             expectedType = GeometryDescriptor.class;
         } else {
-            if (xpath.size() > 0) {
+            if (!xpath.isEmpty()) {
                 boolean isXmlAttr = xpath.get(xpath.size() - 1).isXmlAttribute();
                 expectedType = (isXmlAttr) ? Name.class : AttributeDescriptor.class;
             }

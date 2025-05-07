@@ -154,15 +154,14 @@ public class URIs {
     }
 
     public static Map<String, String> parseQueryString(final String queryString) {
-        if (queryString == null || queryString.length() == 0) {
+        if (queryString == null || queryString.isEmpty()) {
             return Collections.emptyMap();
         }
         String[] params = queryString.split("&");
-        @SuppressWarnings("unchecked")
-        Map<String, String> kvpMap = new CaseInsensitiveMap();
+        Map<String, String> kvpMap = new CaseInsensitiveMap<>();
         for (String kvp : params) {
             String[] split = kvp.split("=");
-            if (split[0].length() > 0) {
+            if (!split[0].isEmpty()) {
                 String key = split[0];
                 String value = split.length > 1 ? urlDecode(split[1]) : null;
 

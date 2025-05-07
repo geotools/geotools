@@ -48,7 +48,7 @@ public class Contours {
     private enum PointType {
         Point,
         MultiPoint
-    };
+    }
 
     private static final GeometryFactory GF = new GeometryFactory();
 

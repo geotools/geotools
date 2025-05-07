@@ -148,7 +148,6 @@ public class EnvFunction extends FunctionExpressionImpl {
             return super.get();
         }
     }
-    ;
 
     private static final LocalLookup localLookup = new LocalLookup();
 

@@ -348,7 +348,7 @@ public class MBObjectStops {
                         }
                     }
                 }
-                if (((JSONArray) child.get("stops")).size() == 0) {
+                if (((JSONArray) child.get("stops")).isEmpty()) {
                     keyToRemove.add(key);
                 }
             }

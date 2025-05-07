@@ -1742,6 +1742,7 @@ public class Hints extends RenderingHints {
          * @param key String key which identifies the metadata in question.
          * @return Key object for the requested key
          */
+        @SuppressWarnings("PMD.DoubleCheckedLocking")
         public static ConfigurationMetadataKey get(String key) {
             ConfigurationMetadataKey ret = map.get(key);
             if (ret == null) {

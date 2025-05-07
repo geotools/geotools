@@ -74,7 +74,6 @@ public class LiterateFunction extends FunctionExpressionImpl {
                     }
                     return name;
                 }
-                ;
             };
             Expression indexedExpression = (Expression) getExpression(2).accept(indexVisitor, null);
             result.add(indexedExpression.evaluate(feature));

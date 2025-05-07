@@ -1232,7 +1232,7 @@ public class YsldParseTest {
                 (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
-        ColorMap map = (ColorMap) symb.getColorMap();
+        ColorMap map = symb.getColorMap();
 
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
         Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
@@ -1267,7 +1267,7 @@ public class YsldParseTest {
                 (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
-        ColorMap map = (ColorMap) symb.getColorMap();
+        ColorMap map = symb.getColorMap();
 
         assertThat(map.getColorMapEntry(2).getOpacity(), function("pow", literal(0.75), literal(1.2)));
     }
@@ -1295,7 +1295,7 @@ public class YsldParseTest {
                 (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
-        ColorMap map = (ColorMap) symb.getColorMap();
+        ColorMap map = symb.getColorMap();
 
         LOG.fine(map.getColorMapEntry(0).getColor().evaluate(null).toString());
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
@@ -1867,7 +1867,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        TextSymbolizer p = (TextSymbolizer) SLD.textSymbolizer(SLD.defaultStyle(sld));
+        TextSymbolizer p = SLD.textSymbolizer(SLD.defaultStyle(sld));
         assertThat(
                 p.getGraphic().getDisplacement(),
                 allOf(hasProperty("displacementX", literal(10)), hasProperty("displacementY", literal(15))));

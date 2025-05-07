@@ -52,7 +52,7 @@ import org.locationtech.jts.io.WKTReader;
 public class PropertyDataStoreCurveTest {
     PropertyDataStore store;
 
-    static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Before
     public void setUp() throws Exception {

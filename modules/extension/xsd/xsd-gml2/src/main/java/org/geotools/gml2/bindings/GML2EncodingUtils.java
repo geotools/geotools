@@ -68,7 +68,7 @@ public class GML2EncodingUtils {
         }
 
         for (org.geotools.api.referencing.ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
-            Identifier id = (Identifier) referenceIdentifier;
+            Identifier id = referenceIdentifier;
 
             // return "EPSG:" + id.getCode();
             if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
@@ -109,7 +109,7 @@ public class GML2EncodingUtils {
         String code = null;
         String authority = "EPSG";
         for (ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
-            Identifier id = (Identifier) referenceIdentifier;
+            Identifier id = referenceIdentifier;
 
             if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 code = id.getCode();

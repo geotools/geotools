@@ -226,7 +226,7 @@ public class JDBCDataStoreTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.EmptyControlStatement")
+    @SuppressWarnings({"PMD.EmptyControlStatement", "PMD.UnusedLocalVariable"})
     public void testGetConnectionAutocommit() throws Exception {
 
         JDBCMockObjectFactory jdbcMock = new JDBCMockObjectFactory();

@@ -276,8 +276,6 @@ public class LabelingTest {
     }
 
     private SimpleFeatureCollection createLineFeatureCollection() throws Exception {
-        AttributeDescriptor[] types = new AttributeDescriptor[2];
-
         GeometryFactory geomFac = new GeometryFactory();
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
 

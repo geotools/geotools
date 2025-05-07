@@ -60,7 +60,7 @@ public class GeometryFunctions {
         private BufferCapStyle(int value) {
             this.value = value;
         }
-    };
+    }
 
     @DescribeProcess(
             title = "Contains Test",

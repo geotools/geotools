@@ -53,7 +53,7 @@ public class CssBaseTest {
         assertProperty(r, PseudoClass.ROOT, propertyIdx, propertyName, expectedValue);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UseDiamondOperator"})
     protected void printResults(String input, ParsingResult<?> result) {
         Object value = result.parseTreeRoot.getValue();
         if (value != null) {

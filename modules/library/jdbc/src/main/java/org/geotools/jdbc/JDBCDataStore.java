@@ -1011,7 +1011,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         String tableName = entry.getName().getLocalPart();
                         if (virtualTables.containsKey(tableName)) {
                             VirtualTable vt = virtualTables.get(tableName);
-                            if (vt.getPrimaryKeyColumns().size() == 0) {
+                            if (vt.getPrimaryKeyColumns().isEmpty()) {
                                 pkey = new NullPrimaryKey(tableName);
                             } else {
                                 List<ColumnMetadata> metas = JDBCFeatureSource.getColumnMetadata(cx, vt, dialect, this);

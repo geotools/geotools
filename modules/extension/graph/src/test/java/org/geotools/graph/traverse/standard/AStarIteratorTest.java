@@ -151,7 +151,7 @@ public class AStarIteratorTest {
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
         final Node root = (Node) obj[0];
         final HashMap map = (HashMap) obj[1];
-        HashMap rmap = new HashMap();
+        HashMap rmap = new HashMap<>();
         Map.Entry[] set = new Map.Entry[map.size()];
         map.entrySet().toArray(set);
         for (Map.Entry entry : set) {

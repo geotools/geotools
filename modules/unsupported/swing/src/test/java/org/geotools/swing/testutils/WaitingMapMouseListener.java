@@ -25,7 +25,7 @@ public class WaitingMapMouseListener extends WaitingListener<MapMouseEvent, Wait
         MOVED,
         PRESSED,
         RELEASED,
-        WHEEL_MOVED;
+        WHEEL_MOVED
     }
 
     public WaitingMapMouseListener() {

@@ -943,7 +943,7 @@ public class MBFunction {
         JSONArray arr = getStops();
 
         // No need to split if there are no stops.
-        if (arr.size() == 0) {
+        if (arr.isEmpty()) {
             return Arrays.asList(this);
         }
 

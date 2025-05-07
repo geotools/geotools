@@ -151,7 +151,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         if (node.hasChild("SemanticTypeIdentifier")) {
             @SuppressWarnings("unchecked")
             List<String> ids = node.getChildValues("SemanticTypeIdentifier");
-            ids.forEach(id -> featureTypeStyle.semanticTypeIdentifiers().add(SemanticType.valueOf((String) id)));
+            ids.forEach(id -> featureTypeStyle.semanticTypeIdentifiers().add(SemanticType.valueOf(id)));
         }
 
         // &lt;xsd:element ref="sld:Rule" maxOccurs="unbounded"/&gt;

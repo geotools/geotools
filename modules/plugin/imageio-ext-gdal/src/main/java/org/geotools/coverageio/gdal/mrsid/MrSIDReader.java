@@ -78,12 +78,12 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
         // //
         super.setCoverageProperties(reader);
 
-        if (this.originalGridRange != null && this.crs != null && originalEnvelope != null) return;
-
         // Uncomment this section in case we stop using the default CRS.
         // The CRS information coming from GDAL are computed from the
         // same MrSID metadata.
 
+        // if (this.originalGridRange != null && this.crs != null && originalEnvelope != null) return;
+        //
         //    final IIOMetadata metadata = reader.getImageMetadata(0);
         //    if (!(metadata instanceof GDALCommonIIOImageMetadata)) {
         //        throw new DataSourceException(

@@ -749,7 +749,7 @@ public WGS84BoundingBoxType createWGS84BoundingBoxType() {
     List result = new ArrayList();
     for (StringTokenizer stringTokenizer = new StringTokenizer(initialValue); stringTokenizer.hasMoreTokens(); ) {
       String item = stringTokenizer.nextToken();
-      result.add((Double)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
+      result.add(XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
     }
     return result;
   }

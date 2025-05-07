@@ -153,7 +153,6 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
             }
         } else if (!checkCompatible(first, pam)) {
             stopCollection = true;
-            return;
         } else {
             for (int i = 0; i < bands.size(); i++) {
                 GDALRasterAttributeTable rat = bands.get(i).getGdalRasterAttributeTable();

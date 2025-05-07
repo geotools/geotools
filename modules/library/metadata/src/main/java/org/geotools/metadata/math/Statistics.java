@@ -433,7 +433,7 @@ public class Statistics implements Cloneable, Serializable {
         @Override
         public void add(final long sample) {
             super.add(sample);
-            if (last == (double) lastAsLong) {
+            if (last == lastAsLong) {
                 // 'lastAsLong' may have more precision than 'last' since the cast to the
                 // 'double' type may loose some digits. Invoke the 'delta.add(long)' version.
                 delta.add(sample - lastAsLong);

@@ -30,6 +30,7 @@ public class HanaTestSetupNonPSPooling extends HanaTestSetupBase {
     private static volatile BasicDataSource dataSource;
 
     @Override
+    @SuppressWarnings("PMD.DoubleCheckedLocking")
     public DataSource getDataSource() throws IOException {
         BasicDataSource ds = dataSource;
         if (ds == null) {

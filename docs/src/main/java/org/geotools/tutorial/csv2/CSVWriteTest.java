@@ -248,9 +248,8 @@ public class CSVWriteTest {
         SimpleFeature bf = SimpleFeatureBuilder.build(type, new Object[] {boston, "Boston", 1300, 2017}, "locations.1");
         collection.add(bf);
 
-        final FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                store.getFeatureWriter("locations", Transaction.AUTO_COMMIT)) {
             // remove all features
             while (writer.hasNext()) {
                 writer.next();
@@ -264,8 +263,6 @@ public class CSVWriteTest {
                 newFeature.setAttributes(feature.getAttributes());
                 writer.write();
             }
-        } finally {
-            writer.close();
         }
         // replaceAll end
         System.out.println("\nreplaceAll end\n");
@@ -294,12 +291,12 @@ public class CSVWriteTest {
         SimpleFeature feature, newFeature;
 
         Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
         // writer = duplicate.getFeatureWriter("duplicate", Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -307,9 +304,6 @@ public class CSVWriteTest {
                 newFeature.setAttributes(feature.getAttributes());
                 writer.write();
             }
-        } finally {
-            reader.close();
-            writer.close();
         }
 
         // appendContent end

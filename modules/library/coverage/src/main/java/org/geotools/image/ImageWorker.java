@@ -5425,8 +5425,8 @@ public class ImageWorker {
                 // are not present
                 Range oldNoData = (Range)
                         (sourceParamBlock.getNumParameters() > 3 ? sourceParamBlock.getObjectParameter(4) : null);
-                boolean hasSameNodata = (oldNoData == null && nodata == null)
-                        || (oldNoData != null && nodata != null && oldNoData.equals(nodata));
+                boolean hasSameNodata =
+                        (oldNoData == null && nodata == null) || (oldNoData != null && oldNoData.equals(nodata));
                 if (((property == null) || property.equals(Image.UndefinedProperty) || !(property instanceof ROI))) {
                     paramBlk.add(warp).add(interpolation).add(bgValues);
                     if (oldNoData != null) {

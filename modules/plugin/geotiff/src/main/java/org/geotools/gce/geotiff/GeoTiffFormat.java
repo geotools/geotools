@@ -99,7 +99,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
      * be written when available. Default or missing parameter means true.
      */
     public static final DefaultParameterDescriptor<Boolean> WRITE_NODATA =
-            new DefaultParameterDescriptor<Boolean>(
+            new DefaultParameterDescriptor<>(
                     "WRITE_NODATA", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, DEFAULT_WRITE_NODATA) {
                 private static final long serialVersionUID = 476944281037266742L;
 

@@ -76,7 +76,7 @@ public class TransformEncoder extends YsldEncodeHandler<Expression> {
             }
 
             Function fexpr = (Function) expr;
-            if (fexpr.getParameters().size() < 1) {
+            if (fexpr.getParameters().isEmpty()) {
                 FeatureStyleEncoder.LOG.warning("Skipping parameter, must have at least one value");
                 continue;
             }

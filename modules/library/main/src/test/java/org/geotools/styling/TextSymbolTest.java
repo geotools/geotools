@@ -22,8 +22,6 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Mark;
-import org.geotools.api.style.Rule;
-import org.geotools.api.style.Symbolizer;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -79,7 +77,7 @@ public class TextSymbolTest {
 
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < symbol.length; i++) {
-                point = makeSamplePoint(geomFac, ((double) i * 5.0) + 5.0, 5.0 + (j * 5));
+                point = makeSamplePoint(geomFac, (i * 5.0) + 5.0, 5.0 + (j * 5));
                 pointFeature = SimpleFeatureBuilder.build(
                         pointType,
                         new Object[] {point, Double.valueOf(size), Double.valueOf(rotation), symbol[i]},
@@ -107,10 +105,10 @@ public class TextSymbolTest {
         pointsym.setGraphic(graphic);
 
         RuleImpl rule = new RuleImpl();
-        rule.symbolizers().add((Symbolizer) pointsym);
+        rule.symbolizers().add(pointsym);
 
-        FeatureTypeStyle fts = (FeatureTypeStyle) new FeatureTypeStyleImpl();
-        fts.rules().add((Rule) rule);
+        FeatureTypeStyle fts = new FeatureTypeStyleImpl();
+        fts.rules().add(rule);
         fts.featureTypeNames().add(new NameImpl("testPoint"));
 
         StyleImpl style = new StyleImpl();

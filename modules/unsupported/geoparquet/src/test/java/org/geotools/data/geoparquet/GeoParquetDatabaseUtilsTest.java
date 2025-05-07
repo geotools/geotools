@@ -38,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /** Tests for {@link GeoParquetDatabaseUtils}. */
+@SuppressWarnings("PMD.CheckResultSet")
 public class GeoParquetDatabaseUtilsTest {
 
     private Map<String, Object> params;
@@ -74,6 +75,7 @@ public class GeoParquetDatabaseUtilsTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testConnectionsSeeSameData() throws IOException, SQLException {
         String jdbcUrl = GeoParquetDatabaseUtils.getJDBCUrl(params, parametersInfo);
         try (Connection c1 = DriverManager.getConnection(jdbcUrl);

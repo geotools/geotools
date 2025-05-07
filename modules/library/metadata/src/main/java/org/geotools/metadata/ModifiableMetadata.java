@@ -211,7 +211,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                 // since we don't need anymore synchronization or type checking.
                 collection = UnmodifiableArrayList.wrap(array);
                 if (collection instanceof Set) {
-                    collection = Collections.unmodifiableSet(new LinkedHashSet<Object>(collection));
+                    collection = Collections.unmodifiableSet(new LinkedHashSet<>(collection));
                 }
                 // Conservatively assumes a List if we are not sure to have a Set,
                 // since the list is less destructive (no removal of duplicated).
@@ -227,7 +227,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
             if (map.isEmpty()) {
                 return Collections.emptyMap();
             }
-            map = new LinkedHashMap(map);
+            map = new LinkedHashMap<>(map);
             for (final Map.Entry entry : (Iterable<Map.Entry>) map.entrySet()) {
                 entry.setValue(unmodifiable(entry.getValue()));
             }

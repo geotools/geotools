@@ -665,10 +665,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.equal(property, geom);
+        return filterFactory.equal(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialDisjointFilter() throws CQLException {
@@ -676,10 +673,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.disjoint(property, geom);
+        return filterFactory.disjoint(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialIntersectsFilter() throws CQLException {
@@ -688,10 +682,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.intersects(property, geom);
+        return filterFactory.intersects(property, geom);
     }
 
     public PropertyIsEqualTo buildSpatialRelateFilter() throws CQLException {
@@ -726,10 +717,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.touches(property, geom);
+        return filterFactory.touches(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialCrossesFilter() throws CQLException {
@@ -737,10 +725,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.crosses(property, geom);
+        return filterFactory.crosses(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialWithinFilter() throws CQLException {
@@ -749,10 +734,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.within(property, geom);
+        return filterFactory.within(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialContainsFilter() throws CQLException {
@@ -761,10 +743,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.contains(property, geom);
+        return filterFactory.contains(property, geom);
     }
 
     public BinarySpatialOperator buildSpatialOverlapsFilter() throws CQLException {
@@ -773,10 +752,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.overlaps(property, geom);
+        return filterFactory.overlaps(property, geom);
     }
 
     public Filter buildBBox() throws CQLException {
@@ -816,10 +792,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.dwithin(property, geom, tolerance, unit);
+        return filterFactory.dwithin(property, geom, tolerance, unit);
     }
 
     public DistanceBufferOperator buildSpatialBeyondFilter() throws CQLException {
@@ -832,10 +805,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
-        // implementation
-
-        return ff.beyond(property, geom, tolerance, unit);
+        return filterFactory.beyond(property, geom, tolerance, unit);
     }
 
     /**

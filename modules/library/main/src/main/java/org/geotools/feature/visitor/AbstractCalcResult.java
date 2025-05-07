@@ -156,7 +156,8 @@ public class AbstractCalcResult implements CalcResult {
     }
 
     @Override
-    public List toList() {
+    @SuppressWarnings("unchecked")
+    public List<Object> toList() {
         Object value = getValue();
 
         if (value == null) {
@@ -164,27 +165,14 @@ public class AbstractCalcResult implements CalcResult {
         }
 
         if (value instanceof List) {
-            List list = (List) value;
-
-            return list;
+            return (List<Object>) value;
         }
 
         if (value.getClass().isArray()) {
             return Arrays.asList((Object[]) value);
         }
 
-        if (value instanceof HashSet) {
-            Set set = (HashSet) value;
-            // Object[] values = set.toArray();
-            return Arrays.asList(set.toArray());
-            // List list = new ArrayList();
-            // for (int i = 0; i < values.length; i++)
-            // list.add(values[i]);
-            // return list;
-        }
-
         if (value instanceof Collection) {
-            @SuppressWarnings("unchecked")
             Collection<Object> cast = (Collection<Object>) value;
             return new ArrayList<>(cast);
         }
@@ -194,7 +182,7 @@ public class AbstractCalcResult implements CalcResult {
 
     @Override
     public Object[] toArray() {
-        List list = toList();
+        List<Object> list = toList();
 
         if (list == null) {
             return null;
@@ -203,7 +191,6 @@ public class AbstractCalcResult implements CalcResult {
         return list.toArray();
     }
 
-    @SuppressWarnings("unchecked")
     public String[] toStringArray() {
         List<Object> list = toList();
 
@@ -211,7 +198,7 @@ public class AbstractCalcResult implements CalcResult {
             return null;
         }
 
-        return list.stream().map(o -> o != null ? String.valueOf(o) : null).toArray(n -> new String[n]);
+        return list.stream().map(o -> o != null ? String.valueOf(o) : null).toArray(String[]::new);
     }
 
     @Override

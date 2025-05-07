@@ -166,10 +166,9 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     @Override
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
-        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            final Map.Entry entry = stringStringEntry;
-            final String oldName = (String) entry.getKey();
-            final String newName = (String) entry.getValue();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            final String oldName = entry.getKey();
+            final String newName = entry.getValue();
             /*
              * Replaces all occurences of 'oldName' by 'newName'.
              */

@@ -722,11 +722,10 @@ public class DataUtilities {
 
         if (src instanceof Map) {
             @SuppressWarnings("unchecked")
-            Map<Object, Object> map = (Map) src;
+            Map<Object, Object> map = (Map<Object, Object>) src;
             Map<Object, Object> copy = new HashMap<>(map.size());
 
-            for (Map.Entry<Object, Object> objectObjectEntry : map.entrySet()) {
-                Map.Entry entry = objectObjectEntry;
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 copy.put(entry.getKey(), duplicate(entry.getValue()));
             }
 

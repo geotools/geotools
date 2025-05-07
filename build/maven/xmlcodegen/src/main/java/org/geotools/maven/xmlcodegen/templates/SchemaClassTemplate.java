@@ -339,9 +339,7 @@ public class SchemaClassTemplate
           if (!type.getUserData().isEmpty()) {
               //attributes
               for (Map.Entry<Object, Object> objectObjectEntry : type.getUserData().entrySet()) {
-                  Map.Entry entry = objectObjectEntry;
-                  Name n = (Name) entry.getKey();
-                  PropertyDescriptor pd = (PropertyDescriptor) entry.getValue();
+                  PropertyDescriptor pd = (PropertyDescriptor) objectObjectEntry.getValue();
                   PropertyType pdType = pd.getType();
 
                   String pdTypeName = pdType.getName().getLocalPart().toUpperCase() +

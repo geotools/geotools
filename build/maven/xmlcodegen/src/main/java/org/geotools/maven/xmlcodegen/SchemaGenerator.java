@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,6 +39,13 @@ import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.SchemaImpl;
@@ -54,16 +60,8 @@ import org.geotools.graph.traverse.standard.DirectedDepthFirstTopologicalIterato
 import org.geotools.graph.util.graph.CycleDetector;
 import org.geotools.graph.util.graph.DirectedCycleDetector;
 import org.geotools.util.Utilities;
-import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.FeatureTypeFactory;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.feature.type.Schema;
+import org.geotools.xsd.Schemas;
 
 /**
  * Parses an XML schema to procuce an instance of
@@ -313,9 +311,8 @@ public class SchemaGenerator extends AbstractGenerator {
     public XSDTypeDefinition getXSDType(AttributeType type) {
         for (Entry<XSDTypeDefinition, AttributeType> xsdTypeDefinitionAttributeTypeEntry :
                 types.entrySet()) {
-            Entry entry = xsdTypeDefinitionAttributeTypeEntry;
-            XSDTypeDefinition xsdType = (XSDTypeDefinition) entry.getKey();
-            AttributeType gtType = (AttributeType) entry.getValue();
+            XSDTypeDefinition xsdType = xsdTypeDefinitionAttributeTypeEntry.getKey();
+            AttributeType gtType = xsdTypeDefinitionAttributeTypeEntry.getValue();
 
             if (gtType.equals(type)) {
                 return xsdType;

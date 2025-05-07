@@ -179,10 +179,9 @@ public class SLDTransformer extends TransformerBase {
         // add pre-configured namespace mappings
         if (!uri2prefix.isEmpty()) {
             for (Entry<URI, String> uriStringEntry : uri2prefix.entrySet()) {
-                Entry e = uriStringEntry;
-                URI uri = (URI) e.getKey();
+                URI uri = uriStringEntry.getKey();
                 if (uri != null) {
-                    String prefix = (String) e.getValue();
+                    String prefix = uriStringEntry.getValue();
                     // FIXME handle default namespace and possible clash with
                     // one already known to the namespace-support delegate; i.e.
                     // the entry with an empty prefix

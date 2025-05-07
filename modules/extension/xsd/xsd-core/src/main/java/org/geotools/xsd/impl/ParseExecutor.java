@@ -279,8 +279,7 @@ public class ParseExecutor implements Visitor {
                 // atomic
 
                 // walk through the facets and preparse as necessary
-                for (org.eclipse.xsd.XSDConstrainingFacet xsdConstrainingFacet : type.getFacets()) {
-                    XSDFacet facet = xsdConstrainingFacet;
+                for (org.eclipse.xsd.XSDConstrainingFacet facet : type.getFacets()) {
 
                     if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;

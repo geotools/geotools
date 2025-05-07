@@ -337,15 +337,14 @@ public abstract class XMLTestSupport extends XmlTestSupport {
             throw new RuntimeException(e);
         }
 
-        for (Map.Entry<String, String> stringStringEntry : mappings.entrySet()) {
-            Map.Entry mapping = stringStringEntry;
-            String key = (String) mapping.getKey();
+        for (Map.Entry<String, String> mapping : mappings.entrySet()) {
+            String key = mapping.getKey();
 
             if (key == null) {
                 key = "";
             }
 
-            namespaces.declarePrefix(key, (String) mapping.getValue());
+            namespaces.declarePrefix(key, mapping.getValue());
         }
 
         context.registerComponentInstance(namespaces);

@@ -135,7 +135,6 @@ public class MBStyle {
     public List<MBLayer> layers() {
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
-        @SuppressWarnings("PMD.UnusedLocalVariable")
         int labelPriority = 0;
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
@@ -156,7 +155,8 @@ public class MBStyle {
                 }
                 // adjust label priority so that the labels of the last layer are painted first
                 if (mbLayer instanceof SymbolMBLayer) {
-                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority += DEFAULT_LABEL_PRIORITY);
+                    labelPriority += DEFAULT_LABEL_PRIORITY;
+                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority);
                 }
                 layersList.add(mbLayer);
             } else {

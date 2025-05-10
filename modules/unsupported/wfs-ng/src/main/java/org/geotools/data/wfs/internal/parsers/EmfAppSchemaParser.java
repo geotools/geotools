@@ -56,6 +56,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -182,7 +183,6 @@ public class EmfAppSchemaParser {
         }
         return subsetType;
     }
-
     /**
      * Parses the FeatureType pointed out by the {@code schemaLocation} URL and returns it.
      *
@@ -207,9 +207,38 @@ public class EmfAppSchemaParser {
             final CoordinateReferenceSystem crs,
             final Map<QName, Class<?>> mappedBindings)
             throws IOException {
+        return parse(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings, null);
+    }
+    /**
+     * Parses the FeatureType pointed out by the {@code schemaLocation} URL and returns it.
+     *
+     * <p>The returned {@link FeatureType} default geometry, will be the first geometric attribute
+     * distinct from {@code gml:location}, or {@code gml:location} if no additional geometric
+     * property is found. Note: this code is borrowed and adapted from {@link
+     * ParserHandler#startDocument()}
+     *
+     * @param wfsConfiguration the WFS configuration for the parser to grab {@link Binding}s from.
+     * @param featureName the qualified name of the Feature element in the schema, for which the
+     *     feature type is to be parsed.
+     * @param schemaLocation the location of the root schema file from where to parse the feature
+     *     type.
+     * @param crs the CRS to be assigned to the geometric attributes in the parsed feature type.
+     *     This information shall be provided here as the schema itself has no knowledge of the CRS
+     *     used.
+     * @param entityResolver Locate, or deny access to, resources
+     */
+    public static SimpleFeatureType parse(
+            final Configuration wfsConfiguration,
+            final QName featureName,
+            final URL schemaLocation,
+            final CoordinateReferenceSystem crs,
+            final Map<QName, Class<?>> mappedBindings,
+            final EntityResolver entityResolver)
+            throws IOException {
         ApplicationSchemaConfiguration configuration =
-                getConfiguration(featureName, schemaLocation);
-        XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
+                getConfiguration(featureName, schemaLocation, entityResolver);
+        XSDElementDeclaration elementDecl =
+                parseFeatureType(featureName, configuration, entityResolver);
 
         Map<QName, Object> bindings = wfsConfiguration.setupBindings();
         if (mappedBindings != null) {
@@ -279,12 +308,14 @@ public class EmfAppSchemaParser {
 
     /** TODO: add connectionfactory parameter to handle authentication, gzip, etc */
     private static XSDElementDeclaration parseFeatureType(
-            final QName featureTypeName, ApplicationSchemaConfiguration configuration)
+            final QName featureTypeName,
+            ApplicationSchemaConfiguration configuration,
+            EntityResolver entityResolver)
             throws DataSourceException {
         SchemaIndex schemaIndex;
         try {
-            schemaIndex = Schemas.findSchemas(configuration);
-        } catch (RuntimeException e) {
+            schemaIndex = Schemas.findSchemas(configuration, entityResolver);
+        } catch (Exception e) {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
@@ -298,12 +329,12 @@ public class EmfAppSchemaParser {
     }
 
     private static ApplicationSchemaConfiguration getConfiguration(
-            final QName featureTypeName, final URL schemaLocation) {
+            final QName featureTypeName, final URL schemaLocation, EntityResolver resolver) {
         ApplicationSchemaConfiguration configuration;
         {
             String namespaceURI = featureTypeName.getNamespaceURI();
             String uri = schemaLocation.toExternalForm();
-            configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
+            configuration = new ApplicationSchemaConfiguration(namespaceURI, uri, resolver);
         }
         return configuration;
     }

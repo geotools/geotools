@@ -38,6 +38,7 @@ import org.geotools.xs.XS;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
+import org.xml.sax.EntityResolver;
 
 /**
  * Xml Schema for a particular namespace.
@@ -59,6 +60,8 @@ public abstract class XSD {
     protected Schema typeSchema;
     /** type mapping profile */
     protected Schema typeMappingProfile;
+
+    protected EntityResolver entityResolver;
 
     /** dependencies */
     private volatile Set<XSD> dependencies;
@@ -242,7 +245,7 @@ public abstract class XSD {
         // parse the location of the xsd with all the locators for dependent schemas
         // no resolver as the code should be referencing only local schemas
         return Schemas.parse(
-                getSchemaLocation(), locators, resolvers, Collections.emptyList(), null);
+                getSchemaLocation(), locators, resolvers, Collections.emptyList(), entityResolver);
     }
 
     public SchemaLocator createSchemaLocator() {

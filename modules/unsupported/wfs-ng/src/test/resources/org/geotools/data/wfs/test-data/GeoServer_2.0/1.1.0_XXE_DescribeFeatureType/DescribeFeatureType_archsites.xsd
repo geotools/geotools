@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE name [
+<!DOCTYPE name [  
   <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 			xmlns:gml="http://www.opengis.net/gml" 
 			xmlns:sf="http://www.openplans.org/spearfish" 
 			elementFormDefault="qualified" 

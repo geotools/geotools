@@ -39,6 +39,7 @@ import org.geotools.ows.ServiceException;
 import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -514,7 +515,12 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         new WFSFactoryParam<>(name, Boolean.class, title, description, false);
     }
 
-    /** Optional {@link EntityResolver} used to expand XML entities during parses */
+    /**
+     * Optional {@link EntityResolver} used to expand XML entities during parses.
+     *
+     * <p>Defaults to {@link PreventLocalEntityResolver}, rather than {@link
+     * org.geotools.util.factory.GeoTools#getEntityResolver(Hints)} default.
+     */
     public static final WFSFactoryParam<EntityResolver> ENTITY_RESOLVER;
 
     static {

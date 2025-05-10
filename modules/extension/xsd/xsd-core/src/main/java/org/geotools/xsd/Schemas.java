@@ -123,6 +123,18 @@ public class Schemas {
      * @return a {@link SchemaIndex} holding the schemas related to <code>configuration</code>
      */
     public static final SchemaIndex findSchemas(Configuration configuration) {
+        return findSchemas(configuration, null);
+    }
+    /**
+     * Finds all the XSDSchemas used by the {@link Configuration configuration} by looking at the
+     * configuration's schema locator and its dependencies.
+     *
+     * @param configuration the {@link Configuration} for which to find all its related schemas
+     * @param entityResolver Locate, or deny access to, resources
+     * @return a {@link SchemaIndex} holding the schemas related to <code>configuration</code>
+     */
+    public static final SchemaIndex findSchemas(
+            Configuration configuration, EntityResolver entityResolver) {
         Set<Configuration> configurations = new HashSet<>(configuration.allDependencies());
         configurations.add(configuration);
 
@@ -144,6 +156,15 @@ public class Schemas {
             String namespaceURI = conf.getNamespaceURI();
             String schemaLocation = null;
 
+            // first check if entity resolver would allow reading the schema location
+            if (entityResolver != null) {
+                try {
+                    entityResolver.resolveEntity(null, conf.getXSD().getSchemaLocation());
+                } catch (IOException | SAXException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             try {
                 URL location = new URL(conf.getXSD().getSchemaLocation());
                 schemaLocation = location.toExternalForm();
@@ -156,7 +177,6 @@ public class Schemas {
             }
 
             XSDSchema schema = locator.locateSchema(null, namespaceURI, schemaLocation, null);
-
             if (schema != null) {
                 resolvedSchemas.add(schema);
             }
@@ -192,7 +212,7 @@ public class Schemas {
 
     /**
      * Parses a schema at the specified location. Only used for tests, for other purposes use {@link
-     * #parse(String, List, List, EntityResolver)}
+     * #parse(String, List, List, List, EntityResolver)}.
      *
      * @param location A uri pointing to the location of the schema.
      * @return The parsed schema, or null if the schema could not be parsed.
@@ -231,6 +251,7 @@ public class Schemas {
      *     encountered in an instance document or an imported schema.
      * @param uriHandlers A list of uri handlers to inject into the parsing chain, to handle
      *     externally referenced resources, like external schemas, etc...
+     * @param entityResolver An entity resolver to use when parsing the schema.
      * @return The parsed schema, or null if the schema could not be parsed.
      * @throws IOException In the event of a schema parsing error.
      */
@@ -262,6 +283,14 @@ public class Schemas {
         return parse(location, resourceSet, entityResolver);
     }
 
+    /**
+     * Parse a schema at the specified location.
+     *
+     * @param location A uri pointing to the location of the schema.
+     * @param resourceSet Collection of related documents which may be loaded on demand.
+     * @return The parsed schema, or null if the schema could not be parsed.
+     * @throws IOException In the event of a schema parsing error.
+     */
     public static final XSDSchema parse(String location, ResourceSet resourceSet)
             throws IOException {
         return parse(location, resourceSet, null);

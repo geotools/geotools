@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.util.NullEntityResolver;
+import org.xml.sax.EntityResolver;
 
 /** */
 public class WFSTestData {
@@ -180,7 +182,10 @@ public class WFSTestData {
         return stream;
     }
 
-    protected static class MutableWFSConfig extends WFSConfig {
+    public static class MutableWFSConfig extends WFSConfig {
+        public MutableWFSConfig() {
+            this.entityResolver = NullEntityResolver.INSTANCE;
+        }
 
         public void setAxisOrder(String axisOrder) {
             this.axisOrder = axisOrder;
@@ -211,6 +216,10 @@ public class WFSTestData {
 
         public void setGmlCompatibleTypeNames(boolean gmlCompatibleTypeNames) {
             this.gmlCompatibleTypenames = gmlCompatibleTypeNames;
+        }
+
+        public void setEntityResolver(EntityResolver entityResolver) {
+            this.entityResolver = entityResolver;
         }
     }
 

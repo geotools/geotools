@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.xml.sax.SAXException;
 
 /**
  * Helper class which ensures that the xsd schema parser uses pre-build schema objects.
@@ -79,6 +80,7 @@ public class SchemaLocator implements XSDSchemaLocator {
             try {
                 return xsd.getSchema();
             } catch (IOException e) {
+                if (e.getCause() instanceof SAXException) throw new SAXExceptionWrapper((SAXException) e.getCause());
                 LOGGER.log(Level.WARNING, "Error occured getting schema", e);
             }
         }

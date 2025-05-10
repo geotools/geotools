@@ -19,6 +19,7 @@ package org.geotools.gml3;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
+import org.xml.sax.EntityResolver;
 
 /**
  * An xml configuration for application schemas.
@@ -34,7 +35,11 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class ApplicationSchemaConfiguration extends Configuration {
     public ApplicationSchemaConfiguration(String namespace, String schemaLocation) {
-        super(new ApplicationSchemaXSD(namespace, schemaLocation));
+        this(namespace, schemaLocation, null);
+    }
+
+    public ApplicationSchemaConfiguration(String namespace, String schemaLocation, EntityResolver resolver) {
+        super(new ApplicationSchemaXSD(namespace, schemaLocation, resolver));
         addDependency(new XSConfiguration());
         addDependency(new GMLConfiguration());
     }

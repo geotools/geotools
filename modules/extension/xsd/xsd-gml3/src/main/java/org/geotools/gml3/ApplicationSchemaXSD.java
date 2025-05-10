@@ -24,6 +24,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
 import org.geotools.xsd.SchemaLocationResolver;
 import org.geotools.xsd.XSD;
+import org.xml.sax.EntityResolver;
 
 /**
  * XSD instance for an application schema.
@@ -38,8 +39,13 @@ public class ApplicationSchemaXSD extends XSD {
     private String schemaLocation;
 
     public ApplicationSchemaXSD(String namespaceURI, String schemaLocation) {
+        this(namespaceURI, schemaLocation, null);
+    }
+
+    public ApplicationSchemaXSD(String namespaceURI, String schemaLocation, EntityResolver resolver) {
         this.namespaceURI = namespaceURI;
         this.schemaLocation = schemaLocation;
+        this.entityResolver = resolver;
     }
 
     @Override

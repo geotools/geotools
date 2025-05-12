@@ -9,30 +9,23 @@ The GeoTools Users email list is a great place to start out; ask questions and s
 The users list is for questions regarding the installation or use of the GeoTools library. Users of GeoTools are usually Java developers building applications with spatial capabilities.
 
 * https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users
-* http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-gt2-users
+* https://sourceforge.net/mailarchive/forum.php?forum_name=geotools-gt2-users
 
-Sometimes, some small applications or server-side code will exist within the GeoTools code base (for example, a Web Map Service implementation or a conversion utility). If these have not yet found a project of their own, then questions about how to use them may be directed to this list.
+Although GeoTools is primarily a Java library, it is also used to host some small tools or server-side code (for example a refactoring script, or a format conversion utility). If these have not yet found a project of their own, then questions about how to use these tools may be directed to this list.
 
-Internet Relay Chat
--------------------
+Developer Chat
+--------------
 
-The GeoTools community is available on IRC for a little bit of Question and Answer. You can often
-find active developers, helpful users, and all manner of activity.
+GeoTools has a developer chat on Gitter:
 
-If you are new to IRC, you will need to find an IRC client (Pidgin, mIRC, or even Colloquy on mac).
+* `https://matrix.to/#/#geotools_geotools:gitter.im <https://matrix.to/#/#geotools_geotools:gitter.im>`__
 
-* ``irc://irc.freenode.net/geotools``
-
-The information you need to configure your IRC client are:
-
-* Server - Pick one from FreeNode Servers
-* Channel - ``#geotools``
-* Port - ``6667``
+This is used on occasion when email is too slow - this is also a suitable venue for development questions.
 
 Question and Answer Forums
 --------------------------
 
-A recent fad is the advent of question and answer forums, while these websites are not an official means of communication they do offer an advantage over the traditional email list in that good answers can be voted relevant.
+While question and answer forums are not an official means of communication they do offer an advantage over the traditional email list in that good answers can be voted relevant.
 
 Tips for use:
 
@@ -42,8 +35,8 @@ Tips for use:
 
 Here are some forums we are aware of at this time:
 
-* http://gis.stackexchange.com/questions/tagged/geotools
-* http://stackoverflow.com/questions/tagged/geotools
+* https://gis.stackexchange.com/questions/tagged/geotools
+* https://stackoverflow.com/questions/tagged/geotools
 
 .. _commercial-support:
 
@@ -55,9 +48,6 @@ please consider setting up a support contract with any of the following organiza
 
 * `Camptocamp <http://www.camptocamp.com/en/services/support>`_
 * `GeoSolutions <https://www.geo-solutions.it/offer/>`_
-* `LISAsoft <http://lisasoft.com/lisasoft-support-services-software-support>`_
-* `OpenGeo <http://opengeo.org/support/>`_
-* `Astun Technology, UK <https://astuntechnology.com/services/#open-source-support>`_
 * `Ian Turton, UK <https://www.ianturton.com>`_
 
 Please consider this as an option, especially if you do not have a background in Geospatial Science
@@ -72,11 +62,11 @@ and improvements.
 
 To create an issue:
 
-1. [Log In](https://osgeo-org.atlassian.net/login) to ``<osgeo-org.atlassian.net>``.
+1. `Log In <https://osgeo-org.atlassian.net/login>`__ to ``<osgeo-org.atlassian.net>``.
    
-   * If this is your first time you can [create an account](https://osgeo-org.atlassian.net/admin/users/sign-up) using the link at the bottom of the Sign In screen.
+   * If this is your first time you can `create an account <https://osgeo-org.atlassian.net/admin/users/sign-up>`__ using the link at the bottom of the Sign In screen.
 
-3. Once logged in you can [Create](https://osgeo-org.atlassian.net/secure/CreateIssue!default.jspa) an issue from the button at the top of the page
+3. Once logged in you can `Create <https://osgeo-org.atlassian.net/secure/CreateIssue!default.jspa>`__ an issue from the button at the top of the page
    
    * Navigate to the `GeoTools JIRA page <https://osgeo-org.atlassian.net/projects/GEOT>`_
    * Press the **Create** at the top of the page

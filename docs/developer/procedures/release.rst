@@ -339,11 +339,6 @@ Cut and paste from the blog post to the following:
 3. Open Source Geospatial Foundation
    
     Only to be used for "significant" releases (Major release only, not for milestone
-    or point releases)
+    or point releases).
     
-    https://www.osgeo.org/content/news/submit_news.html
-    
-4. Post a message to the osgeo news email list (you are subscribed right?)
-   
-   * To: news_item@osgeo.org
-   * Subject: GeoTools 26.1 Released
+    https://www.osgeo.org/foundation-news/

@@ -9,7 +9,7 @@ concurrency:
 jobs:
   build:
     name: Java ${{ matrix.java }}
-    runs-on: [ubuntu-20.04]
+    runs-on: [ubuntu-22.04]
     strategy:
       matrix:
         java: [11]

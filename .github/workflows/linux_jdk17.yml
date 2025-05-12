@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: [ubuntu-20.04]
+    runs-on: [ubuntu-22.04]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -19,10 +19,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 17
-    - name: Set up GDAL
-      run: |
-        sudo apt update
-        sudo apt install --no-install-recommends -y gdal-bin libgdal-dev libgdal-java
     - name: Setup python for docs
       uses: actions/setup-python@v5
       with:

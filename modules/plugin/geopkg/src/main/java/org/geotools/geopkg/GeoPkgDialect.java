@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.api.feature.FeatureVisitor;
@@ -251,6 +252,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put(Float.class, Types.FLOAT);
         mappings.put(Double.class, Types.DOUBLE);
         mappings.put(Boolean.class, Types.INTEGER);
+        // SQLite has no native support for UUID datatype.
+        // Map Java UUID to varchar instead
+        mappings.put(UUID.class, Types.VARCHAR);
     }
 
     @Override

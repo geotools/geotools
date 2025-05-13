@@ -33,7 +33,7 @@ jobs:
           ./build/ci/informix/start-informix.sh
           ./build/ci/informix/setup-informix.sh
       - name: Build GeoTools dependent modules (no tests)
-        run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-informix -DskipTests -am -Dspotless.apply.skip=true
+        run: mvn -B clean install -T1C -Dall -pl :gt-jdbc-informix -DskipTests -am -Dspotless.apply.skip=true
       - name: Test Informix data store
         run: mvn -B verify -pl :gt-jdbc-informix -Ponline -Dspotless.apply.skip=true
       - name: Remove SNAPSHOT jars from repository

@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.feature.type.FeatureType;
@@ -29,6 +33,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.URLs;
 import org.geotools.xsd.Configuration;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -92,12 +97,49 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
     }
 
     private static class TempEntityResolver implements EntityResolver {
-        EntityResolver delegate;
-        File tempSchema;
+        private final EntityResolver delegate;
+        private Set<String> tempSchemaURIs;
 
         public TempEntityResolver(EntityResolver delegate, File tempSchema) {
             this.delegate = delegate;
-            this.tempSchema = tempSchema;
+            URL tempSchemaURL = URLs.fileToUrl(tempSchema);
+            this.tempSchemaURIs = new HashSet<>(List.of(tempSchemaURL.toExternalForm(), tempSchemaURL.toString()));
+            try {
+                File canonicalFile = tempSchema.getCanonicalFile();
+                URL canonicalSchemaURL = URLs.fileToUrl(canonicalFile);
+                tempSchemaURIs.add(canonicalSchemaURL.toExternalForm());
+                tempSchemaURIs.add(canonicalSchemaURL.toString());
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to get canonical file for " + tempSchema, e);
+            }
+            if (!isFileSystemCaseSensitive(tempSchema)) {
+                Set<String> insensitive = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+                insensitive.addAll(tempSchemaURIs);
+                this.tempSchemaURIs = insensitive;
+            }
+        }
+
+        static boolean isFileSystemCaseSensitive(File knownFile) {
+            if (!knownFile.exists()) {
+                throw new IllegalArgumentException("The specified file does not exist: " + knownFile);
+            }
+
+            // Try to access the same file with a different case
+            File alteredCase = new File(knownFile.getParentFile(), toggleCase(knownFile.getName()));
+            return !alteredCase.exists();
+        }
+
+        static String toggleCase(String name) {
+            char[] chars = name.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char c = chars[i];
+                if (Character.isUpperCase(c)) {
+                    chars[i] = Character.toLowerCase(c);
+                } else if (Character.isLowerCase(c)) {
+                    chars[i] = Character.toUpperCase(c);
+                }
+            }
+            return new String(chars);
         }
 
         @Override
@@ -108,9 +150,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
         }
 
         protected boolean isTempSchema(String systemId) {
-            // let it go
-            if (systemId.equalsIgnoreCase("file:" + tempSchema.getAbsolutePath())) return true;
-            return false;
+            return tempSchemaURIs.contains(systemId);
         }
     }
 

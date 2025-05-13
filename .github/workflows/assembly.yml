@@ -40,7 +40,7 @@ jobs:
       run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
-        mvn -B clean install -DskipTests -Dall -T2 --file pom.xml
+        mvn -B clean install -DskipTests -Dall -T1C --file pom.xml
     - name: Javadoc build
       run: |
         mvn -B -DskipTests -Dfmt.skip=true javadoc:aggregate --file modules/pom.xml

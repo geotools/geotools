@@ -31,7 +31,7 @@ jobs:
           sudo ethtool -K eth0 tx off rx off
       - name: Build GeoTools (no tests, prepare fresh artifacts)
         run: |
-          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean install -T2 -Dall --file pom.xml -DskipTests
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean install -T1C -Dall --file pom.xml -DskipTests
       - name: Checkout GeoWebCache, GeoServer and ...
         run: |
           cd ~
@@ -49,15 +49,15 @@ jobs:
       - name: Build Mapfish-print v2 with tests
         run: |
           cd ~
-          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
-          mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T2
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T1C
+          mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T1C
       - name: Build GeoWebCache with tests
         run: |
           export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
           export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
           cd ~
-          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T2
-          mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T2 -Dspotless.apply.skip=true
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T1C
+          mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T1C -Dspotless.apply.skip=true
       - name: Build GeoServer with tests
         run: |
           echo "Building GeoServer"
@@ -66,9 +66,9 @@ jobs:
           cd ~
           sed -i "s/<mf.version>2.2.0<\/mf.version>/<mf.version>2.3-SNAPSHOT<\/mf.version>/g" geoserver/src/pom.xml
           sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
-          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
-          mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2
-          mvn -B -f geoserver/src/pom.xml test -fae -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T1C
+          mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T1C
+          mvn -B -f geoserver/src/pom.xml test -fae -T1C -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
       - name: Remove SNAPSHOT jars from repository
         run: |
           find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -18,6 +18,7 @@ workspace
 *.db
 .metadata
 .gradle
+.factorypath
 
 # jenkins relesae build
 /settings.xml

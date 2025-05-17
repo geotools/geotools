@@ -337,7 +337,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
             if (lg >= Byte.MIN_VALUE && lg <= Byte.MAX_VALUE) return Byte.class;
             if (lg >= Short.MIN_VALUE && lg <= Short.MAX_VALUE) return Short.class;
             if (lg >= Integer.MIN_VALUE && lg <= Integer.MAX_VALUE) return Integer.class;
-            if (lg >= Long.MIN_VALUE && lg <= Long.MAX_VALUE) return Long.class;
+            return Long.class;
         }
         final float fv = (float) value;
         if (value == fv) {

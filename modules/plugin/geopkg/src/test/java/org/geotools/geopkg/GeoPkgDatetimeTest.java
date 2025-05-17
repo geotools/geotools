@@ -282,8 +282,8 @@ public class GeoPkgDatetimeTest {
         // ListFeatureCollection(features).stream().collect(Collectors.toList());
         assertEquals(3, features.size());
 
-        var lower = gmt2Local("2020-02-19T23:00:00Z");
-        var upper = gmt2Local("2020-03-19T00:00:00Z");
+        String lower = gmt2Local("2020-02-19T23:00:00Z");
+        String upper = gmt2Local("2020-03-19T00:00:00Z");
 
         between = ECQL.toFilter("time BETWEEN '" + lower + "' AND '" + upper + "'");
 
@@ -300,7 +300,7 @@ public class GeoPkgDatetimeTest {
                 parsedDate.getTime() + Calendar.getInstance().getTimeZone().getOffset(parsedDate.getTime()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        var localStr = sdf.format(local);
+        String localStr = sdf.format(local);
         return localStr;
     }
 }

@@ -159,16 +159,16 @@ public class NetCDFUnitParserTest {
         public void testReconfigureAliases() {
             Map<String, String> aliases = NetCDFUnitFormat.builtInAliases();
             aliases.put("foobar", "m^3");
-            var format = NetCDFUnitFormat.create(NetCDFUnitFormat.builtInReplacements(), aliases);
+            NetCDFUnitFormat format = NetCDFUnitFormat.create(NetCDFUnitFormat.builtInReplacements(), aliases);
             Unit<?> parsed = format.parse("foobar");
             assertEquals(parsed, METRE.pow(3));
         }
 
         @Test
         public void testReconfigureReplacements() {
-            var replacements = NetCDFUnitFormat.builtInReplacements();
+            Map<String, String> replacements = NetCDFUnitFormat.builtInReplacements();
             replacements.put("one two three four!", "g*m^2*s^-2");
-            var format = NetCDFUnitFormat.create(replacements, NetCDFUnitFormat.builtInAliases());
+            NetCDFUnitFormat format = NetCDFUnitFormat.create(replacements, NetCDFUnitFormat.builtInAliases());
             Unit<?> parsed = format.parse("one two three four!");
             Unit<?> expected = GRAM.multiply(METRE.pow(2)).multiply(SECOND.pow(-2));
             assertEquals(expected, parsed);

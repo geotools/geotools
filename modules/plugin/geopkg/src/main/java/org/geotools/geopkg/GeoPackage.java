@@ -56,6 +56,7 @@ import org.geotools.api.data.SimpleFeatureWriter;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.PropertyDescriptor;
@@ -742,8 +743,8 @@ public class GeoPackage implements Closeable {
         // remove the attributes, we are going to put in new ones
         builder.setAttributes(new ArrayList<>());
 
-        for (var attribute : schema.getAttributeDescriptors()) {
-            var modifiedAttribute = new AttributeDescriptorImpl(
+        for (AttributeDescriptor attribute : schema.getAttributeDescriptors()) {
+            AttributeDescriptor modifiedAttribute = new AttributeDescriptorImpl(
                     attribute.getType(),
                     attribute.getName(),
                     attribute.getMinOccurs(),

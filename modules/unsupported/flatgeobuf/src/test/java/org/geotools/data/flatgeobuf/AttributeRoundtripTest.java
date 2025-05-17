@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.geojson.GeoJSONReader;
@@ -110,8 +111,8 @@ public class AttributeRoundtripTest {
         SimpleFeatureCollection actual = FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         SimpleFeature expectedFeature = (SimpleFeature) expected.toArray()[0];
         SimpleFeature actualFeature = (SimpleFeature) actual.toArray()[0];
-        var e = expectedFeature.getAttributes();
-        var a = actualFeature.getAttributes();
+        List<Object> e = expectedFeature.getAttributes();
+        List<Object> a = actualFeature.getAttributes();
         assertEquals(e.get(1), a.get(1));
         assertEquals(e.get(2), a.get(2));
         assertEquals(ISO_LOCAL_DATE_TIME.format((LocalDateTime) e.get(3)), a.get(3));

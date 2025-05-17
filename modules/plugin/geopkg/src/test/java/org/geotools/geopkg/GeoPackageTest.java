@@ -589,7 +589,7 @@ public class GeoPackageTest {
         builder.add("float1", Float.class);
         builder.add("float2", Double.class);
 
-        var schema = builder.buildFeatureType();
+        SimpleFeatureType schema = builder.buildFeatureType();
 
         schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.SMALLINT.getName());
         schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.SMALLINT.getVendorTypeNumber());
@@ -615,8 +615,8 @@ public class GeoPackageTest {
     // metadata
     @Test
     public void testCorrectSchema() {
-        var schema = createJDBCSchema();
-        var schema2 = geopkg.correctSchema(schema);
+        SimpleFeatureType schema = createJDBCSchema();
+        SimpleFeatureType schema2 = geopkg.correctSchema(schema);
 
         // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE are in the userdata #size() == 0 means
         // not there
@@ -635,7 +635,7 @@ public class GeoPackageTest {
     // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE metadata are attached to the schema.
     @Test
     public void testMetadataColumns() throws IOException {
-        var schema = createJDBCSchema();
+        SimpleFeatureType schema = createJDBCSchema();
         FeatureEntry entry = new FeatureEntry();
         entry.setBounds(new ReferencedEnvelope());
         entry.setTableName(schema.getTypeName());

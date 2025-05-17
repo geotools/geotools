@@ -19,7 +19,7 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         // dates MUST be in ISO-8601 date/time string in the form YYYY-MM-DDTHH:MM[:SS.SSS]Z
         // However, the online test cases use local time
 
-        var localStr = "2009-06-28 15:12:41";
+        String localStr = "2009-06-28 15:12:41";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date parsedDate = dateFormat.parse(localStr);
 
@@ -27,7 +27,7 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
                 parsedDate.getTime() - Calendar.getInstance().getTimeZone().getOffset(parsedDate.getTime()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        var gmt2 = sdf.format(gmt);
+        String gmt2 = sdf.format(gmt);
 
         // NOTE: geopackage does NOT support TIME columns - just DATE and DATETIME
         // For TIME columns, we use a time like '15:12:41Z' to explicitly show it is Zulu-time

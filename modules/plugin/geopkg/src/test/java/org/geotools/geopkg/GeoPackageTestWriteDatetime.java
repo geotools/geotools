@@ -34,6 +34,7 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -107,24 +108,24 @@ public class GeoPackageTestWriteDatetime {
      */
     @Test
     public void testOldGTDateFormat() throws Exception {
-        var dialect = new GeoPkgDialect(null);
+        GeoPkgDialect dialect = new GeoPkgDialect(null);
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("testCaseFT");
         builder.setCRS(DefaultGeographicCRS.WGS84);
         builder.add("the_geom", LineString.class);
         builder.add("datetime", Timestamp.class);
-        var descriptor = builder.buildFeatureType().getDescriptor(1);
+        AttributeDescriptor descriptor = builder.buildFeatureType().getDescriptor(1);
 
-        var oldGTFormat = "2024-02-27 00:13:00.0Z";
-        var converted = (Timestamp) dialect.convertValue(oldGTFormat, descriptor);
+        String oldGTFormat = "2024-02-27 00:13:00.0Z";
+        Timestamp converted = (Timestamp) dialect.convertValue(oldGTFormat, descriptor);
 
         // convert to standard GMT format
         SimpleDateFormat sdf = new SimpleDateFormat();
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         sdf.applyPattern("dd MMM yyyy HH:mm:ss z");
 
-        var result = sdf.format(converted);
+        String result = sdf.format(converted);
         assertEquals("27 Feb 2024 00:13:00 GMT", result);
     }
 

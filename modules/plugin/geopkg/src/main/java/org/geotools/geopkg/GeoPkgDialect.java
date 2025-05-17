@@ -664,14 +664,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, value.toString());
                 break;
             case Types.TIME:
-                var time = value.toString();
+                String time = value.toString();
                 ps.setString(column, time);
                 break;
             case Types.TIMESTAMP:
                 // 2020-02-19 23:00:00.0  --> 2020-02-19T23:00:00.0Z
                 // We need the "Z" or sql lite will interpret the value as local time
                 // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-                var v = ((Timestamp) value).toInstant().toString();
+                String v = ((Timestamp) value).toInstant().toString();
                 ps.setString(column, v);
                 break;
             default:
@@ -957,7 +957,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 return null;
             }
             // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-            var strValue = (String) value;
+            String strValue = (String) value;
             // this is for support with "bad" geopkgs
             if (!strValue.endsWith("Z")) {
                 strValue += "Z";
@@ -969,7 +969,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             } catch (Exception e) {
                 // could be an old GT datetime i.e. '2024-02-27 00:13:00.0Z'
                 try {
-                    var dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     java.util.Date date = dateFormat.parse(strValue);
                     Instant dateInstant = date.toInstant();

@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
@@ -228,7 +229,7 @@ final class TestUtils extends Assert {
         // Remove the default handlers
         Logger rootLogger = Logger.getLogger("");
         rootLogger.setLevel(Level.ALL);
-        for (var handler : rootLogger.getHandlers()) {
+        for (Handler handler : rootLogger.getHandlers()) {
             rootLogger.removeHandler(handler);
         }
 

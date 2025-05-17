@@ -527,7 +527,7 @@
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <checkstyle.file>checkstyle.xml</checkstyle.file>
     <checkstyle.skip>false</checkstyle.skip>
-    <errorProne.version>2.18.0</errorProne.version>
+    <errorProne.version>2.31.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
     <jacoco.version>0.8.7</jacoco.version>
     <lint>deprecation,unchecked</lint>
@@ -2481,7 +2481,7 @@
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.* -Xep:BanJNDI:WARN ${errorProneFlags}</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.* -Xep:BanJNDI:WARN -Xep:SelfAssertion:OFF ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
                 <arg>-Xmaxwarns</arg>

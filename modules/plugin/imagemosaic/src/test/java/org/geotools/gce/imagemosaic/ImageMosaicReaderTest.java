@@ -5270,7 +5270,8 @@ public class ImageMosaicReaderTest {
 
         // Having a properties file with ArcGridFormat as suggested Format
         // although images are RGBA. The bad format will not be used
-        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), true)) {
+        // (the file might already be there and have a suggested format, so, overwriting)
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"))) {
             out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
             out.flush();
         }

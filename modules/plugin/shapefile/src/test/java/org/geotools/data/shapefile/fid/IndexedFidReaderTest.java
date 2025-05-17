@@ -18,7 +18,6 @@ package org.geotools.data.shapefile.fid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -140,8 +139,6 @@ public class IndexedFidReaderTest extends FIDTestCase {
 
         for (String fid : expectedFids) {
             long offset = reader.findFid(fid);
-            assertNotNull(offset);
-            // System.out.print(fid + "=" + offset + ", ");
             assertNotEquals("findFid for " + fid + " returned -1", -1, offset);
         }
     }

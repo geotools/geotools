@@ -221,6 +221,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     @SuppressFBWarnings("IL_INFINITE_RECURSIVE_LOOP")
+    @SuppressWarnings("InfiniteRecursion")
     Rule AndSelector() {
         return Sequence(
                 BasicSelector(),

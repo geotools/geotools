@@ -803,6 +803,11 @@
           <artifactId>spotbugs-maven-plugin</artifactId>
           <version>4.7.3.5</version>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>1.7.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 

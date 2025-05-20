@@ -195,21 +195,22 @@ Microsoft SQL Server
 ____________________
 
 Microsoft provides official docker images of SQL Server in various versions, see
-`docker hub <https://hub.docker.com/_/microsoft-mssql-server>`_ for all the options.
-Extensive documentation is provided at: `SQL Server on Linux <https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash>`_.
+`docker hub <https://hub.docker.com/r/microsoft/mssql-server>`_ for all the options.
+Extensive documentation is provided at:
+`SQL Server on Linux <https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-linux-ver17&tabs=cli&pivots=cs1-bash>`_.
 The system requirements for SQL Server are quite moderate especially when compared to Oracle database.
 
-Use the following to create and start a SQL Server 2019 (developer edition) container listening on port 1433:::
+Use the following to create and start a SQL Server 2025 (developer edition) container listening on port 1433:::
 
-    docker pull mcr.microsoft.com/mssql/server:2019-latest
-    docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=Password12!' --rm -p 1433:1433 --name geotools -h geotools -d mcr.microsoft.com/mssql/server:2019-latest
+    docker pull mcr.microsoft.com/mssql/server:2025-latest
+    docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=Password12!' --rm -p 1433:1433 --name geotools -h geotools -d mcr.microsoft.com/mssql/server:2025-latest
 
 Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
 to pull it next time, but you may want to preserve the container so you don't have to build a new one.
 
 Next create a ``geotools`` database to run the online tests::
 
-    docker exec -it geotools /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password12!" -Q 'CREATE DATABASE geotools' -d "master"
+    docker exec -it geotools /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "Password12!" -No -Q 'CREATE DATABASE geotools' -d "master"
 
 You can connect to the new database using the ``sa`` user.
 

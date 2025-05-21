@@ -59,8 +59,9 @@ public class RenderableFeatureTest {
         when(feature.getType()).thenReturn(type);
         Symbolizer symbolizer = Mockito.mock(Symbolizer.class);
         when(symbolizer.getGeometry()).thenReturn(null);
+        StreamingRenderer sr = new StreamingRenderer();
         StreamingRenderer.RenderableFeature rf =
-                new StreamingRenderer().new RenderableFeature("layerId", false) {
+                sr.new RenderableFeature("layerId", false) {
                     @Override
                     public LiteShape2 getShape(
                             Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)

@@ -31,8 +31,8 @@
 
   <licenses>
     <license>
-      <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <name>GNU Lesser General Public License, Version 2.1</name>
+      <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html</url>
       <distribution>repo</distribution>
     </license>
   </licenses>

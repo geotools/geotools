@@ -501,7 +501,7 @@
     <solrj.version>8.11.3</solrj.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
-    <maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
     <!-- surefire configuration -->
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
@@ -527,11 +527,11 @@
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <checkstyle.file>checkstyle.xml</checkstyle.file>
     <checkstyle.skip>false</checkstyle.skip>
-    <errorProne.version>2.31.0</errorProne.version>
+    <errorProne.version>2.38.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
-    <jacoco.version>0.8.7</jacoco.version>
+    <jacoco.version>0.8.13</jacoco.version>
     <lint>deprecation,unchecked</lint>
-    <maven.jacoco.plugin.version>0.8.10</maven.jacoco.plugin.version>
+    <maven.jacoco.plugin.version>0.8.13</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.24.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
     <pmd.version>7.13.0</pmd.version>
@@ -1620,7 +1620,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -1628,7 +1628,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -1727,12 +1727,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.14.0</version>
         <configuration>
-          <source>11</source>
-          <!-- The -source argument for the Java compiler. -->
-          <target>11</target>
-          <!-- The -target argument for the Java compiler. -->
+          <release>17</release>
           <debug>true</debug>
           <!-- Whether to include debugging information.   -->
           <encoding>UTF-8</encoding>
@@ -1743,6 +1740,40 @@
             <arg>-Xlint:${lint}</arg>
           </compilerArgs>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven-version</id>
+            <!-- Enforcing a minimum Maven version is crucial to ensure that:
+                 - Plugin version resolution works as expected: Different Maven versions
+                   may resolve plugin versions differently due to changes in the default
+                   lifecycle mappings, dependency resolution behavior, and plugin inheritance.
+                 - Features and bug fixes required by newer plugins are available: For example,
+                   some plugins (e.g., surefire-plugin 3.x) require Maven 3.6+ or 3.8+.
+                 - Consistent builds across environments: Without enforcing a Maven version,
+                   developers or CI/CD pipelines using different Maven versions may face
+                   unexpected build failures or inconsistencies.
+            -->
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>[3.8,4.0)</version>
+                  <message>You must use Maven 3.8 or higher to build this project.</message>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>[17,)</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- ======================================================= -->
@@ -1934,9 +1965,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-
         <configuration>
-          <source>11</source>
+          <release>17</release>
+          <!-- Force non-modular mode for projects without module-info.java -->
+          <legacyMode>true</legacyMode>
           <!-- JavaEE links does not use modules, remove when updating to Jakarta -->
           <detectJavaApiLink>false</detectJavaApiLink>
           <!-- Specifies whether or not the version text is included.-->
@@ -2008,7 +2040,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
 
@@ -2142,10 +2174,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
-          <source>11</source>
+          <release>17</release>
+          <!-- Force non-modular mode for projects without module-info.java -->
+          <legacyMode>true</legacyMode>
           <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -2214,7 +2247,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>https://docs.oracle.com/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
@@ -2298,8 +2331,8 @@
         <version>${jacoco.version}</version>
         <configuration>
           <formats>
-            <format>html</format>
-            <format>xml</format>
+            <format>HTML</format>
+            <format>XML</format>
           </formats>
         </configuration>
       </plugin>
@@ -2477,11 +2510,19 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
+            <version>3.14.0</version>
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.* -Xep:BanJNDI:WARN -Xep:SelfAssertion:OFF ${errorProneFlags}</arg>
+                <arg>--should-stop=ifError=FLOW</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.*  \
+                -Xep:DeadException:WARN \
+                -Xep:GuardedBy:OFF \
+                -Xep:BanJNDI:WARN -Xep:SelfAssertion:OFF \
+                -Xep:InvalidBlockTag:OFF \
+                -Xep:InvalidLink:OFF \
+                -Xep:UnrecognisedJavadocTag:OFF \
+                ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
                 <arg>-Xmaxwarns</arg>

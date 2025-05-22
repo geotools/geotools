@@ -20,4 +20,18 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>*.ecore</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 </project>

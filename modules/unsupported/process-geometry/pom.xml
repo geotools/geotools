@@ -69,14 +69,12 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-process</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-graph</artifactId>
-      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

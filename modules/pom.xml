@@ -47,11 +47,24 @@
   <!-- =========================================================== -->
   <!--     Dependencies to be inherited by all modules.            -->
   <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import the GeoTools BOM to get consistent dependency versions -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-bom</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <!-- The version number is managed through the gt-platform-dependencies BOM -->
     </dependency>
   </dependencies>
 

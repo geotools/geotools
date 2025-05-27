@@ -24,23 +24,13 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRenderedImage;
 import java.awt.image.renderable.RenderableImage;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import javax.measure.Unit;
 import javax.media.jai.Interpolation;
 import javax.media.jai.OperationNode;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedImageAdapter;
-import javax.media.jai.remote.SerializableRenderedImage;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
@@ -55,8 +45,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.LoggingKeys;
-import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
 
@@ -72,18 +60,6 @@ import org.geotools.util.factory.Hints;
  * <strong>must</strong> have a {@linkplain GeneralGridRange#getLength size} not greater than 1. In other words, a
  * {@code GridCoverage2D} can be a slice in a 3 dimensional grid coverage. Each slice can have an arbitrary width and
  * height (like any two-dimensional images), but only 1 voxel depth (a "voxel" is a three-dimensional pixel).
- *
- * <p><strong>Serialization note:</strong><br>
- * Because it is serializable, {@code GridCoverage2D} can be included as method argument or as return type in
- * <cite>Remote Method Invocation</cite> (RMI). However, the pixel data are not sent during serialization. Instead, the
- * image data are transmitted "on-demand" using socket communications. This mechanism is implemented using JAI
- * {@link SerializableRenderedImage} class. While serialization (usually on server side) should work on J2SE 1.4 and
- * above, deserialization (usually on client side) of {@code GridCoverage2D} instances requires J2SE 1.5.
- *
- * <p><strong>Serialization warning:</strong><br>
- * Deserialization of the {@link SerializableRenderedImage} class is inherently insecure which makes deserialization of
- * {@code GridCoverage2D} instances insecure. This feature should only be used in cases where it can be guaranteed that
- * the {@code GridCoverage2D} instances being deserialized come from trusted sources.
  *
  * @since 2.1
  * @version $Id$
@@ -102,12 +78,6 @@ public class GridCoverage2D extends AbstractGridCoverage {
     /** The raster data. */
     protected final transient PlanarImage image;
 
-    /**
-     * The serialized image, as an instance of {@link SerializableRenderedImage}. This image will be created only when
-     * first needed during serialization.
-     */
-    private RenderedImage serializedImage;
-
     /** The grid geometry. */
     protected final GridGeometry2D gridGeometry;
 
@@ -122,12 +92,6 @@ public class GridCoverage2D extends AbstractGridCoverage {
     final GridSampleDimension[] sampleDimensions;
 
     /**
-     * The preferred encoding to use for serialization using the {@code writeObject} method, or {@code null} for the
-     * default encoding. This value is set by {@link GridCoverageFactory} according the hints provided to the factory.
-     */
-    transient String tileEncoding;
-
-    /**
      * Constructs a new grid coverage with the same parameter than the specified coverage. This constructor is useful
      * when creating a coverage with identical data, but in which some method has been overridden in order to process
      * data differently (e.g. interpolating them).
@@ -140,7 +104,6 @@ public class GridCoverage2D extends AbstractGridCoverage {
         image = coverage.image;
         gridGeometry = coverage.gridGeometry;
         sampleDimensions = coverage.sampleDimensions;
-        tileEncoding = coverage.tileEncoding;
         // Do not share the views, since subclasses will create different instances.
     }
 
@@ -715,57 +678,6 @@ public class GridCoverage2D extends AbstractGridCoverage {
         if (tileIndices != null) {
             image.prefetchTiles(tileIndices);
         }
-    }
-
-    /** Constructs the {@link PlanarImage} from the {@linkplain SerializableRenderedImage} after deserialization. */
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        try {
-            /*
-             * Set the 'image' field using reflection, because this field is final.
-             * This is a legal usage for deserialization according Field.set(...)
-             * documentation in J2SE 1.5.
-             */
-            final Field field = GridCoverage2D.class.getDeclaredField("image");
-            field.setAccessible(true);
-            field.set(this, PlanarImage.wrapRenderedImage(serializedImage));
-        } catch (NoSuchFieldException cause) {
-            InvalidClassException e = new InvalidClassException(cause.getLocalizedMessage());
-            e.initCause(cause);
-            throw e;
-        } catch (IllegalAccessException cause) {
-            InvalidObjectException e = new InvalidObjectException(cause.getLocalizedMessage());
-            e.initCause(cause);
-            throw e;
-        }
-    }
-
-    /**
-     * Serializes this grid coverage. Before serialization, a {@linkplain SerializableRenderedImage serializable
-     * rendered image} is created if it was not already done.
-     */
-    private void writeObject(final ObjectOutputStream out) throws IOException {
-        if (serializedImage == null) {
-            RenderedImage source = image;
-            while (source instanceof RenderedImageAdapter) {
-                source = ((RenderedImageAdapter) source).getWrappedImage();
-            }
-            if (source instanceof SerializableRenderedImage) {
-                serializedImage = source;
-            } else {
-                if (tileEncoding == null) {
-                    tileEncoding = "gzip";
-                }
-                serializedImage = new SerializableRenderedImage(source, false, null, tileEncoding, null, null);
-                final LogRecord record =
-                        Loggings.format(Level.FINE, LoggingKeys.CREATED_SERIALIZABLE_IMAGE_$2, getName(), tileEncoding);
-                record.setSourceClassName(GridCoverage2D.class.getName());
-                record.setSourceMethodName("writeObject");
-                record.setLoggerName(LOGGER.getName());
-                LOGGER.log(record);
-            }
-        }
-        out.defaultWriteObject();
     }
 
     /**

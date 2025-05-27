@@ -18,20 +18,16 @@ package org.geotools.coverage.grid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.net.InetAddress;
 import javax.imageio.ImageReadParam;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -42,19 +38,6 @@ import org.junit.Test;
  */
 public final class GridCoverageTest extends GridCoverageTestBase {
 
-    /** Used to avoid errors if building on a system where hostname is not defined */
-    private boolean hostnameDefined;
-
-    @Before
-    public void setup() {
-        try {
-            InetAddress.getLocalHost();
-            hostnameDefined = true;
-        } catch (Exception ex) {
-            hostnameDefined = false;
-        }
-    }
-
     /** Tests a grid coverage filled with random values. */
     @Test
     public void testRandomCoverage() {
@@ -63,25 +46,6 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         assertRasterEquals(coverage, coverage); // Actually a test of assertEqualRasters(...).
         assertSame(
                 coverage.getRenderedImage(), coverage.getRenderableImage(0, 1).createDefaultRendering());
-    }
-
-    /**
-     * Tests the serialization of a grid coverage.
-     *
-     * @throws IOException if an I/O operation was needed and failed.
-     * @throws ClassNotFoundException Should never happen.
-     */
-    @Test
-    public void testSerialization() throws IOException, ClassNotFoundException {
-        // will fail on GitHub linux build, due to TCP port opening by SerializableRenderedImage
-        Assume.assumeFalse(Boolean.getBoolean("linux-github-build"));
-        if (hostnameDefined) {
-            GridCoverage2D coverage = EXAMPLES.get(0);
-            GridCoverage2D serial = serialize(coverage);
-            assertNotSame(coverage, serial);
-            assertEquals(GridCoverage2D.class, serial.getClass());
-            assertRasterEquals(coverage, serial);
-        }
     }
 
     @Test

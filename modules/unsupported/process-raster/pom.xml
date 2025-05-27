@@ -104,20 +104,14 @@
       <version>${jt.version}</version>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.jaiext.jiffle</groupId>
-      <artifactId>jt-jiffle-op</artifactId>
-      <version>${jaiext.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.vividsolutions</groupId>
-          <artifactId>jts</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>jiffle-op</artifactId>
+      <version>${imagen.version}</version>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.jaiext.classbreaks</groupId>
-      <artifactId>jt-classbreaks</artifactId>
-      <version>${jaiext.version}</version>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>classbreaks</artifactId>
+      <version>${imagen.version}</version>
     </dependency>
 
     <!-- Test dependencies -->

@@ -89,22 +89,13 @@
       <artifactId>jt-utils</artifactId>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.jaiext.jiffle</groupId>
-      <artifactId>jt-jiffle-op</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.vividsolutions</groupId>
-          <artifactId>jts</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>jiffle-op</artifactId>
+      <version>${imagen.version}</version>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.jaiext.classbreaks</groupId>
-      <artifactId>jt-classbreaks</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>it.geosolutions.jaiext.stats</groupId>
-      <artifactId>jt-stats</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>classbreaks</artifactId>
     </dependency>
 
     <!-- Test dependencies -->

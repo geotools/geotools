@@ -192,13 +192,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- Required for ImageParameterDescriptor test. -->
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>net.sourceforge.javacsv</groupId>
       <artifactId>javacsv</artifactId>
       <scope>test</scope>

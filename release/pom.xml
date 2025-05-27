@@ -57,18 +57,9 @@
 
     <!-- these jars are only available from osgeo repo -->
     <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_core</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>imagen-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
-    </dependency>
-
     <!-- Check that dependences listed here are included in binaryDistDependencies.xml -->
     <!-- This ensures that transitive dependences are packaged up in libs/ folder.     -->
     <dependency>

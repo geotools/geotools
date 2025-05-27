@@ -46,7 +46,7 @@
     <jai-core.version>1.1.3</jai-core.version>
     <jai-codec.version>${jai-core.version}</jai-codec.version>
     <jai-imageio.version>1.1</jai-imageio.version>
-    <jaiext.version>1.1.31</jaiext.version>
+    <imagen.version>0.4-SNAPSHOT</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <java-mail.version>1.4.7</java-mail.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
@@ -581,179 +581,179 @@
 
       <!-- JAIExt additional -->
       <dependency>
-        <groupId>it.geosolutions.jaiext.jiffle</groupId>
-        <artifactId>jt-jiffle-op</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>jiffle-op</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.classbreaks</groupId>
-        <artifactId>jt-classbreaks</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>classbreaks</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.affine</groupId>
-        <artifactId>jt-affine</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>affine</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.algebra</groupId>
-        <artifactId>jt-algebra</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>algebra</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.bandmerge</groupId>
-        <artifactId>jt-bandmerge</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>bandmerge</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.bandselect</groupId>
-        <artifactId>jt-bandselect</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>bandselect</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.bandcombine</groupId>
-        <artifactId>jt-bandcombine</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>bandcombine</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.border</groupId>
-        <artifactId>jt-border</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>border</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.buffer</groupId>
-        <artifactId>jt-buffer</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>buffer</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.crop</groupId>
-        <artifactId>jt-crop</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>crop</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.iterators</groupId>
-        <artifactId>jt-iterators</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>iterators</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.lookup</groupId>
-        <artifactId>jt-lookup</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>lookup</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.mosaic</groupId>
-        <artifactId>jt-mosaic</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>mosaic</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.nullop</groupId>
-        <artifactId>jt-nullop</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>nullop</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.rescale</groupId>
-        <artifactId>jt-rescale</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>rescale</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.scale</groupId>
-        <artifactId>jt-scale</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>scale</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.scale2</groupId>
-        <artifactId>jt-scale2</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>scale2</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.stats</groupId>
-        <artifactId>jt-stats</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>stats</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.translate</groupId>
-        <artifactId>jt-translate</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>translate</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.utilities</groupId>
-        <artifactId>jt-utilities</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>utilities</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.warp</groupId>
-        <artifactId>jt-warp</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>warp</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.zonal</groupId>
-        <artifactId>jt-zonal</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>zonal</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.binarize</groupId>
-        <artifactId>jt-binarize</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>binarize</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.format</groupId>
-        <artifactId>jt-format</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>format</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.colorconvert</groupId>
-        <artifactId>jt-colorconvert</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>colorconvert</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.errordiffusion</groupId>
-        <artifactId>jt-errordiffusion</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>errordiffusion</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.orderdither</groupId>
-        <artifactId>jt-orderdither</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>orderdither</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.colorindexer</groupId>
-        <artifactId>jt-colorindexer</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>colorindexer</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.imagefunction</groupId>
-        <artifactId>jt-imagefunction</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>imagefunction</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.piecewise</groupId>
-        <artifactId>jt-piecewise</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>piecewise</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.classifier</groupId>
-        <artifactId>jt-classifier</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>classifier</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.rlookup</groupId>
-        <artifactId>jt-rlookup</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>rlookup</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.vectorbin</groupId>
-        <artifactId>jt-vectorbin</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>vectorbin</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.shadedrelief</groupId>
-        <artifactId>jt-shadedrelief</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>shadedrelief</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
       <dependency>
-        <groupId>it.geosolutions.jaiext.concurrent-tile-cache</groupId>
-        <artifactId>jt-concurrent-tile-cache</artifactId>
-        <version>${jaiext.version}</version>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>concurrent-tile-cache</artifactId>
+        <version>${imagen.version}</version>
       </dependency>
 
       <!-- EMF -->

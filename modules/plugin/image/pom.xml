@@ -81,18 +81,6 @@
       <artifactId>gt-sample-data</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>

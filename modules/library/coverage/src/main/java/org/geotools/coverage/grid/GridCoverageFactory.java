@@ -108,20 +108,7 @@ public class GridCoverageFactory extends AbstractFactory {
      *
      * @param userHints An optional set of hints to use for coverage constructions.
      */
-    public GridCoverageFactory(final Hints userHints) {
-        String tileEncoding = null;
-        if (userHints != null) {
-
-            tileEncoding = (String) userHints.get(Hints.TILE_ENCODING);
-            if (tileEncoding != null) {
-                tileEncoding = tileEncoding.trim();
-                if (tileEncoding.length() == 0) {
-                    tileEncoding = null;
-                }
-            }
-        }
-        hints.put(Hints.TILE_ENCODING, tileEncoding);
-    }
+    public GridCoverageFactory(final Hints userHints) {}
 
     /**
      * Returns the default coordinate reference system to use when no CRS were explicitly specified by the user. If a
@@ -537,7 +524,6 @@ public class GridCoverageFactory extends AbstractFactory {
         }
         final GridCoverage2D coverage = new GridCoverage2D(
                 name, PlanarImage.wrapRenderedImage(image), gridGeometry, bands, sources, properties, userHints);
-        coverage.tileEncoding = (String) hints.get(Hints.TILE_ENCODING);
         return coverage;
     }
 }

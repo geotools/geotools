@@ -71,7 +71,6 @@ import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
-import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -1439,31 +1438,6 @@ public class Utils {
                 if (object instanceof SampleImage) {
                     SampleImage si = (SampleImage) object;
                     return si.toBufferedImage();
-                } else if (object instanceof SerializableRenderedImage) {
-                    SerializableRenderedImage sri = (SerializableRenderedImage) object;
-                    // SerializableRenderedImage is both insecure and a finalization thread killer, try to replace
-                    // it with SampleImage on disk instead
-                    if (sampleImageFile.canWrite()) {
-                        try {
-                            storeSampleImage(sampleImageFile, sri.getSampleModel(), sri.getColorModel());
-                            LOGGER.info(
-                                    () -> "Upgraded sample image to new storage format for path " + sampleImageFile);
-                        } catch (Exception e) {
-                            LOGGER.log(
-                                    Level.WARNING,
-                                    e,
-                                    () -> "Failed to upgrade sample image to new storage format for path "
-                                            + sampleImageFile);
-                        }
-                    } else {
-                        LOGGER.warning(
-                                () -> "Insuffient permissions to upgrade sample image to new storage format for path "
-                                        + sampleImageFile);
-                    }
-                    // note, disposing the SerializableRenderedImage here is not done on purpose,
-                    // as it will hang, timeout and fail, and then on finalize
-                    // it will do it again, so there is really no point in doing that
-                    return new SampleImage(sri.getSampleModel(), sri.getColorModel()).toBufferedImage();
                 } else {
                     LOGGER.warning(() -> "Unrecognized sample image content '"
                             + object.getClass().getName() + "' for path " + sampleImageFile);

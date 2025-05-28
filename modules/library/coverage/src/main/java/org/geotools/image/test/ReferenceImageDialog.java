@@ -16,7 +16,9 @@
  */
 package org.geotools.image.test;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.RenderedImage;
 import javax.swing.JButton;
@@ -29,7 +31,6 @@ class ReferenceImageDialog extends JDialog {
 
     boolean accept = false;
 
-    @SuppressWarnings("deprecation")
     public ReferenceImageDialog(RenderedImage image) {
         JPanel content = new JPanel(new BorderLayout());
         this.setContentPane(content);
@@ -37,7 +38,10 @@ class ReferenceImageDialog extends JDialog {
         final JLabel topLabel = new JLabel("<html><body>Reference image file is missing.<br>"
                 + "This is the result, do you want to make it the referecence?</html></body>");
         content.add(topLabel, BorderLayout.NORTH);
-        content.add(new javax.media.jai.widget.ScrollingImagePanel(image, 400, 400));
+        ImageViewer viewer = new ImageViewer();
+        viewer.setImage(image);
+        viewer.setMinimumSize(new Dimension(400, 400));
+        content.add(viewer);
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton accept = new JButton("Accept as reference");
         accept.addActionListener(e -> {

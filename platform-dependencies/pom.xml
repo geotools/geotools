@@ -755,6 +755,11 @@
         <artifactId>concurrent-tile-cache</artifactId>
         <version>${imagen.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>rendered-image-browser</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
 
       <!-- EMF -->
       <dependency>

@@ -1346,6 +1346,11 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
+        <artifactId>rendered-image-browser</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
         <artifactId>warp</artifactId>
         <version>${imagen.version}</version>
       </dependency>

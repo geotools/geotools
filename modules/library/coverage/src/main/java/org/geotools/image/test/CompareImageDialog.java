@@ -16,6 +16,7 @@
  */
 package org.geotools.image.test;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -121,17 +122,15 @@ class CompareImageDialog extends JDialog {
         pack();
     }
 
-    @SuppressWarnings("deprecation")
-    private Component titledImagePanel(String string, RenderedImage expected) {
+    private Component titledImagePanel(String string, RenderedImage image) {
         JPanel panel = new JPanel(new BorderLayout());
         final JLabel title = new JLabel(string);
         title.setAlignmentX(0.5f);
         title.setBorder(new LineBorder(Color.BLACK));
         panel.add(title, BorderLayout.NORTH);
-        panel.add(
-                new javax.media.jai.widget.ScrollingImagePanel(
-                        expected, Math.min(400, expected.getWidth()), Math.min(400, expected.getHeight())),
-                BorderLayout.CENTER);
+        ImageViewer viewer = new ImageViewer();
+        viewer.setImage(image);
+        panel.add(viewer, BorderLayout.CENTER);
         return panel;
     }
 

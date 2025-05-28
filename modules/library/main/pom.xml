@@ -263,6 +263,14 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>utilities</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>rendered-image-browser</artifactId>
+    </dependency>
   </dependencies>
 
   <!-- =========================================================== -->

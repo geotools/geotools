@@ -16,6 +16,7 @@
  */
 package org.geotools.coverageio.gdal;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,7 +38,6 @@ import org.junit.Before;
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Base testing class initializing JAI properties to be used during tests.
  */
-@SuppressWarnings("deprecation")
 public class GDALTestCase {
 
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GDALTestCase.class);
@@ -48,7 +48,10 @@ public class GDALTestCase {
         if (TestData.isInteractiveTest()) {
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new javax.media.jai.widget.ScrollingImagePanel(gc.getRenderedImage(), 800, 800));
+            ImageViewer viewer = new ImageViewer();
+            viewer.setImage(gc.getRenderedImage());
+            viewer.setSize(800, 800);
+            frame.getContentPane().add(viewer);
             frame.pack();
             SwingUtilities.invokeLater(() -> frame.setVisible(true));
         } else {

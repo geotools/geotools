@@ -16,19 +16,16 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
-      <version>${project.version}</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -40,7 +37,6 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-geopkg</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -54,7 +50,6 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>jjtree-javacc</artifactId>
-        <version>${project.version}</version>
 
         <configuration>
           <nodePackage>org.geotools.filter.text.cql_2.parsers</nodePackage>

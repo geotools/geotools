@@ -151,10 +151,16 @@ The modules/unsupported/ directory is there to welcome your experimental work; t
    * updating your pom.xml
    * creating a test profile
    * using git ignore on your "target" directory
+   * understanding dependency management with the BOM (see :doc:`bom`)
 
    In addition to answering most of the questions a new developer might have---its what we use to answer our own questions.
 
    Beyond that, there are the mailing lists for users and for developers.
+   
+   .. note:: 
+      When adding dependencies to your new module, you don't need to specify versions for GeoTools modules 
+      or for third-party libraries that are already managed in the ``gt-platform-dependencies`` BOM. 
+      See :doc:`bom` for more information on how dependency management works in GeoTools.
 
 Include your Module in the Build
 --------------------------------

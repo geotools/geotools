@@ -60,17 +60,14 @@
         <dependency>
           <groupId>org.geotools</groupId>
           <artifactId>gt-main</artifactId>
-          <version>${project.version}</version>
         </dependency>
 	<dependency>
           <groupId>org.geotools.xsd</groupId>
           <artifactId>gt-xsd-core</artifactId>
-          <version>${project.version}</version>
         </dependency>
 	<dependency>
           <groupId>org.geotools.xsd</groupId>
           <artifactId>gt-xsd-kml</artifactId>
-          <version>${project.version}</version>
         </dependency>
     </dependencies>
 

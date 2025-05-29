@@ -29,6 +29,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -311,5 +312,32 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
+    }
+
+    @Test
+    public void testNumberIsCastToText() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+
+        testAttribute("testByte", "*12", "WHERE testByte::text LIKE '*12'");
+
+        testAttribute("testShort", "*123", "WHERE testShort::text LIKE '*123'");
+
+        testAttribute("testInteger", "123*", "WHERE testInteger::text LIKE '123*'");
+
+        testAttribute("testLong", "*123*", "WHERE testLong::text LIKE '*123*'");
+
+        testAttribute("testFloat", "1234*", "WHERE testFloat::text LIKE '1234*'");
+
+        testAttribute("testDouble", "1234", "WHERE testDouble::text LIKE '1234'");
+    }
+
+    private void testAttribute(String attributeName, String pattern, String expectedExpression)
+            throws FilterToSQLException {
+        Filter filter = ff.like(ff.property(attributeName), pattern, "%", "-", "\\", true);
+        filterToSql.encode(filter);
+
+        Assert.assertEquals(expectedExpression, writer.toString());
+        // Clear the buffer to reuse it
+        writer.getBuffer().setLength(0);
     }
 }

@@ -1,7 +1,7 @@
 Upgrade
 =======
 
-With a library as old as GeoTools you will occasionally run into a project from ten years ago that
+With a library as experienced as GeoTools you will occasionally run into a project from ten years ago that
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundamental changes with code examples showing how to upgrade your code.
 
@@ -31,6 +31,45 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 
 .. _update32:
 
+GeoTools 34.x
+-------------
+
+Removal of JAI Tools
+^^^^^^^^^^^^^^^^^^^^
+
+The functionality of JAI Tools has largely been migrated to the JAI-Ext project.
+This update of GeoTools completes the process.
+
+Use of RangeLookupTable and Range
+'''''''''''''''''''''''''''''''''
+
+BEFORE:
+
+.. code-block:: java
+
+   import org.jaitools.numeric.Range;
+   import org.jaitools.media.jai.rangelookup.RangeLookupTable;
+   
+   
+   Range<T> span1 = Range.create(0.0f,true,10.0f,false);
+   Range<T> span2 = Range.create(10.0f,true,null,true);
+   
+   RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
+   PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+
+AFTER:
+
+.. code-block:: java
+
+   import it.geosolutions.jaiext.range.Range;
+   import it.geosolutions.jaiext.range.RangeFactory;
+   import it.geosolutions.jaiext.rlookup.RangeLookupTable;
+   
+   Range span = RangeFactory.create(0.0f,true,10.0f,false);
+   Range span = RangeFactory.create(10.0f,true,null,true);
+   RangeLookupTable lookup = CoverageUtilities.getLookupTable(List.of(span1,span2),-1.0f);
+   PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+   
 GeoTools 32.x
 -------------
 

@@ -41,10 +41,12 @@ import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -53,6 +55,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
     private SimpleFeatureType curveSchema;
+
+    private SimpleFeatureType numberFType;
 
     private static FilterFactory ff;
 
@@ -78,6 +82,11 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
         curveSchema = DataUtilities.createType(
                 "curveIntersection", "name:String,testGeometry:org.geotools.geometry.jts.MultiSurface");
+
+        SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("testFeatureType");
+        ftb.add("testAttr", Number.class);
+        numberFType = ftb.buildFeatureType();
     }
 
     /**
@@ -449,5 +458,15 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         assertEquals(
                 "WHERE testGeometry && ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry)) AND ST_Distance(testGeometry, ST_GeomFromText('POLYGON ((0 0, 0 1, 1 1, 1 0, 0 0))', ST_SRID(testGeometry))) = 0",
                 writer.toString());
+    }
+
+    @Test
+    public void testNumberIsCastToText() throws Exception {
+        Filter filter = ff.like(ff.property("testAttr"), "123*", "%", "-", "\\", true);
+
+        filterToSql.setFeatureType(numberFType);
+        filterToSql.encode(filter);
+
+        Assert.assertEquals("WHERE testAttr::text LIKE '123*'", writer.toString());
     }
 }

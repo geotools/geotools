@@ -80,16 +80,6 @@
 
     <dependency>
       <groupId>org.jaitools</groupId>
-      <artifactId>jt-zonalstats</artifactId>
-      <version>${jt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-rangelookup</artifactId>
-      <version>${jt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jaitools</groupId>
       <artifactId>jt-contour</artifactId>
       <version>${jt.version}</version>
     </dependency>
@@ -117,6 +107,11 @@
     <dependency>
       <groupId>it.geosolutions.jaiext.classbreaks</groupId>
       <artifactId>jt-classbreaks</artifactId>
+      <version>${jaiext.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.jaiext.stats</groupId>
+      <artifactId>jt-stats</artifactId>
       <version>${jaiext.version}</version>
     </dependency>
 

@@ -17,6 +17,7 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.range.Range;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.jaitools.media.jai.vectorize.VectorizeDescriptor;
 import org.jaitools.media.jai.vectorize.VectorizeRIF;
-import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;

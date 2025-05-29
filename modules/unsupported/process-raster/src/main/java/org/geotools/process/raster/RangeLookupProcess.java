@@ -21,6 +21,7 @@ package org.geotools.process.raster;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
@@ -43,7 +44,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.factory.GeoTools;
-import org.jaitools.numeric.Range;
+// import org.jaitools.numeric.Range;
 
 /**
  * A raster reclassified process
@@ -56,7 +57,7 @@ import org.jaitools.numeric.Range;
  */
 @DescribeProcess(
         title = "Reclassify",
-        description = "Reclassifies a continous raster into integer values defined by a set of ranges")
+        description = "Reclassifies a continuous raster into integer values defined by a set of ranges")
 public class RangeLookupProcess implements RasterProcess {
 
     private static final double DEFAULT_NODATA = 0d;
@@ -141,23 +142,20 @@ public class RangeLookupProcess implements RasterProcess {
         final int size = classificationRanges.size();
         int transferType = ColorUtilities.getTransferType(size);
         if (JAIExt.isJAIExtOperation("RLookup")) {
-            lookupTable = CoverageUtilities.getRangeLookupTableJAIEXT(
-                    classificationRanges, outputPixelValues, nd, transferType);
+            lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, nd, transferType);
         } else {
             // Builds the range lookup table
             // final RangeLookupTable lookupTable;
 
             switch (transferType) {
                 case DataBuffer.TYPE_BYTE:
-                    lookupTable =
-                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd);
+                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, (byte) nd);
                     break;
                 case DataBuffer.TYPE_USHORT:
-                    lookupTable =
-                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd);
+                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, (short) nd);
                     break;
                 case DataBuffer.TYPE_INT:
-                    lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd);
+                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, nd);
                     break;
                 default:
                     throw new IllegalArgumentException(

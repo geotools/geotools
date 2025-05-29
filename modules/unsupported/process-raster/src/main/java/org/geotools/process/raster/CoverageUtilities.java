@@ -17,6 +17,7 @@
 package org.geotools.process.raster;
 
 import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.rlookup.RangeLookupTable;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -52,15 +53,15 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.ClassChanger;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.jaitools.media.jai.rangelookup.RangeLookupTable;
-import org.jaitools.numeric.Range;
+// import org.jaitools.media.jai.rangelookup.RangeLookupTable;
+// import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
- * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous; must of them should
+ * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous; many of them should
  * be seen as temporary implementations.
  *
  * @author Simone Giannecchini, GeoSolutions
@@ -188,25 +189,126 @@ public class CoverageUtilities {
         return ftBuilder.buildFeatureType();
     }
 
+    /**
+     * Static create method. This just relieves the tedium of having to call create RangeFactory create method.
+     *
+     * @param <T> value type
+     * @param minValue the lower bound; passing null for this parameter means an open lower bound; for Float or Double
+     *     types, the relevant NEGATIVE_INFINITY value can also be used.
+     * @param minIncluded true if the lower bound is to be included in the range; false to exclude the lower bound;
+     *     overridden to be false if the lower bound is open
+     * @param maxValue the upper bound; passing null for this parameter means an open upper bound; for Float or Double
+     *     types, the relevant NEGATIVE_INFINITY value can also be used.
+     * @param maxIncluded true if the upper bound is to be included in the range; false to exclude the upper bound;
+     *     overridden to be false if the upper bound is open
+     * @return the new instance
+     */
+    public static <T extends Number> it.geosolutions.jaiext.range.Range createRange(
+            T minValue, boolean minIncluded, T maxValue, boolean maxIncluded) {
+        Class<?> minType = minValue != null ? minValue.getClass() : null;
+        Class<?> maxType = minValue != null ? maxValue.getClass() : null;
+
+        // step 1: determine type
+        if (minType != null && maxType != null && !minType.equals(maxType)) {
+            throw new IllegalArgumentException("minValue and maxValue must be of the same type");
+        }
+        if (minType == null && maxType != null) {
+            minType = maxType;
+        } else if (maxType == null && minType != null) {
+            maxType = minType;
+        }
+        if (minValue == null && maxValue == null) {
+            throw new IllegalArgumentException(
+                    "RangeType could not be determined as both minValue and maxValue were null");
+        }
+
+        // step 2: create range using factory
+        if (minType.isAssignableFrom(Double.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.doubleValue() : Double.NEGATIVE_INFINITY,
+                    minIncluded,
+                    maxValue != null ? maxValue.doubleValue() : Double.POSITIVE_INFINITY,
+                    maxIncluded);
+        } else if (minType.isAssignableFrom(Float.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.floatValue() : Float.NEGATIVE_INFINITY,
+                    minIncluded,
+                    maxValue != null ? maxValue.floatValue() : Float.POSITIVE_INFINITY,
+                    maxIncluded);
+        } else if (minType.isAssignableFrom(Long.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.longValue() : Long.MIN_VALUE,
+                    minIncluded,
+                    maxValue != null ? maxValue.longValue() : Long.MAX_VALUE,
+                    maxIncluded);
+        } else if (minType.isAssignableFrom(Integer.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.intValue() : Integer.MIN_VALUE,
+                    minIncluded,
+                    maxValue != null ? maxValue.intValue() : Integer.MAX_VALUE,
+                    maxIncluded);
+        } else if (minType.isAssignableFrom(Short.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.shortValue() : Short.MIN_VALUE,
+                    minIncluded,
+                    maxValue != null ? maxValue.shortValue() : Short.MAX_VALUE,
+                    maxIncluded);
+        } else if (minType.isAssignableFrom(Byte.class)) {
+            return RangeFactory.create(
+                    minValue != null ? minValue.byteValue() : Byte.MIN_VALUE,
+                    minIncluded,
+                    maxValue != null ? maxValue.byteValue() : Byte.MAX_VALUE,
+                    maxIncluded);
+        } else {
+            throw new UnsupportedOperationException(
+                    "Class " + minType + " not supported by it.geosolutions.jaiext.range.RangeFactory");
+        }
+    }
+
+    public static RangeLookupTable getLookupTable(
+            final List<it.geosolutions.jaiext.range.Range> classificationRanges, final Number noDataValue) {
+
+        return getLookupTable(classificationRanges, noDataValue, noDataValue.getClass());
+    }
+
+    @Deprecated
     public static RangeLookupTable getRangeLookupTable(
-            final List<Range> classificationRanges, final Number noDataValue) {
+            final List<org.jaitools.numeric.Range> classificationRanges, final Number noDataValue) {
 
         return getRangeLookupTable(classificationRanges, noDataValue, noDataValue.getClass());
     }
 
+    public static RangeLookupTable getLookupTable(
+            final List<it.geosolutions.jaiext.range.Range> classificationRanges,
+            final Number noDataValue,
+            final Class clazz) {
+        return getLookupTable(classificationRanges, null, noDataValue, noDataValue.getClass());
+    }
+
+    @Deprecated
     public static RangeLookupTable getRangeLookupTable(
-            final List<Range> classificationRanges, final Number noDataValue, final Class clazz) {
+            final List<org.jaitools.numeric.Range> classificationRanges, final Number noDataValue, final Class clazz) {
         return getRangeLookupTable(classificationRanges, null, noDataValue, noDataValue.getClass());
     }
 
+    public static RangeLookupTable getLookupTable(
+            final List<it.geosolutions.jaiext.range.Range> classificationRanges,
+            final int[] outputPixelValues,
+            final Number noDataValue) {
+        return getLookupTable(classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
+    }
+
+    @Deprecated
     public static RangeLookupTable getRangeLookupTable(
-            final List<Range> classificationRanges, final int[] outputPixelValues, final Number noDataValue) {
+            final List<org.jaitools.numeric.Range> classificationRanges,
+            final int[] outputPixelValues,
+            final Number noDataValue) {
         return getRangeLookupTable(classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
     }
 
     @SuppressWarnings("unchecked")
-    public static RangeLookupTable getRangeLookupTable(
-            List<Range> classificationRanges,
+    public static RangeLookupTable getLookupTable(
+            List<it.geosolutions.jaiext.range.Range> classificationRanges,
             final int[] outputPixelValues,
             final Number noDataValue,
             final Class<? extends Number> clazz) {
@@ -217,8 +319,8 @@ public class CoverageUtilities {
         Class<? extends Number> widestClass = noDataValue.getClass();
 
         for (int i = 0; i < size; i++) {
-            final Range range = classificationRanges.get(i);
-            final Class<? extends Number> rangeClass = range.getMin().getClass();
+            final it.geosolutions.jaiext.range.Range range = classificationRanges.get(i);
+            final Class<? extends Number> rangeClass = range.getDataType().getClassValue();
 
             if (widestClass != rangeClass) {
                 widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
@@ -230,14 +332,59 @@ public class CoverageUtilities {
         }
 
         // Add the largest range that contains the no data value
-        rltBuilder.add(new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
+        rltBuilder.add(
+                createRange(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
 
         return rltBuilder.build();
     }
 
     @SuppressWarnings("unchecked")
-    public static it.geosolutions.jaiext.rlookup.RangeLookupTable getRangeLookupTableJAIEXT(
-            List<Range> classificationRanges,
+    @Deprecated
+    public static RangeLookupTable getRangeLookupTable(
+            List<org.jaitools.numeric.Range> classificationRanges,
+            final int[] outputPixelValues,
+            final Number noDataValue,
+            final Class<? extends Number> clazz) {
+        final RangeLookupTable.Builder rltBuilder = new RangeLookupTable.Builder();
+        final int size = classificationRanges.size();
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
+
+        Class<? extends Number> widestClass = noDataValue.getClass();
+
+        for (int i = 0; i < size; i++) {
+            final org.jaitools.numeric.Range range = classificationRanges.get(i);
+            final it.geosolutions.jaiext.range.Range range2 =
+                    createRange(range.getMin(), range.isMinIncluded(), range.getMax(), range.isMaxIncluded());
+            final Class<? extends Number> rangeClass = range2.getDataType().getClassValue();
+
+            if (widestClass != rangeClass) {
+                widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
+            }
+
+            final int reference = useCustomOutputPixelValues ? outputPixelValues[i] : i + 1;
+
+            rltBuilder.add(range2, convert(reference, noDataValue.getClass()));
+        }
+
+        // Add the largest range that contains the no data value
+        rltBuilder.add(
+                createRange(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
+
+        return rltBuilder.build();
+    }
+
+    /**
+     * Setup lookup table from classification ranges.
+     *
+     * @param classificationRanges
+     * @param outputPixelValues
+     * @param noDataValue
+     * @param transferType
+     * @return lookup table
+     */
+    @SuppressWarnings("unchecked")
+    public static it.geosolutions.jaiext.rlookup.RangeLookupTable getLookupTable(
+            List<it.geosolutions.jaiext.range.Range> classificationRanges,
             final int[] outputPixelValues,
             final Number noDataValue,
             final int transferType) {
@@ -250,7 +397,54 @@ public class CoverageUtilities {
 
         Class<? extends Number> widestClass = noDataClass;
         for (int i = 0; i < size; i++) {
-            final Range range = classificationRanges.get(i);
+            final it.geosolutions.jaiext.range.Range range = classificationRanges.get(i);
+            final Class<? extends Number> rangeClass = range.getDataType().getClassValue();
+
+            if (widestClass != rangeClass) {
+                widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
+            }
+            int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(rangeClass);
+
+            final int reference = useCustomOutputPixelValues ? outputPixelValues[i] : i + 1;
+            it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                    RangeFactory.create(
+                            range.getMin().doubleValue(),
+                            range.isMinIncluded(),
+                            range.getMax().doubleValue(),
+                            range.isMaxIncluded()),
+                    rangeType);
+            rltBuilder.add(rangeJaiext, convert(reference, noDataClass));
+        }
+
+        // Add the largest range that contains the no data value
+        int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(widestClass);
+        it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                RangeFactory.create(
+                        getClassMinimum(widestClass).doubleValue(),
+                        getClassMaximum(widestClass).doubleValue()),
+                rangeType);
+        rltBuilder.add(rangeJaiext, noDataValue);
+
+        return rltBuilder.build();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Deprecated
+    public static it.geosolutions.jaiext.rlookup.RangeLookupTable getRangeLookupTableJAIEXT(
+            List<org.jaitools.numeric.Range> classificationRanges,
+            final int[] outputPixelValues,
+            final Number noDataValue,
+            final int transferType) {
+        final it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder rltBuilder =
+                new it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder();
+        final int size = classificationRanges.size();
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
+
+        Class<? extends Number> noDataClass = it.geosolutions.jaiext.range.Range.DataType.classFromType(transferType);
+
+        Class<? extends Number> widestClass = noDataClass;
+        for (int i = 0; i < size; i++) {
+            final org.jaitools.numeric.Range range = classificationRanges.get(i);
             final Class<? extends Number> rangeClass = range.getMin().getClass();
 
             if (widestClass != rangeClass) {
@@ -402,8 +596,8 @@ public class CoverageUtilities {
      * @param coverage the grid coverage to extract nodata ranges from
      * @return a list of no data ranges, or null if no nodata ranges are found
      */
-    public static List<Range<Double>> getNoDataAsList(GridCoverage2D coverage) {
-        List<Range<Double>> noDataValueRangeList = null;
+    public static List<org.jaitools.numeric.Range<Double>> getNoDataAsList(GridCoverage2D coverage) {
+        List<org.jaitools.numeric.Range<Double>> noDataValueRangeList = null;
         GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
         List<Category> categories = sampleDimension.getCategories();
 
@@ -416,7 +610,8 @@ public class CoverageUtilities {
                     double max = category.getRange().getMaximum();
                     if (!Double.isNaN(min) && !Double.isNaN(max)) {
                         // we have to filter those out
-                        Range<Double> novalueRange = new Range<>(min, true, max, true);
+                        org.jaitools.numeric.Range<Double> novalueRange =
+                                new org.jaitools.numeric.Range<>(min, true, max, true);
                         noDataValueRangeList = new ArrayList<>();
                         noDataValueRangeList.add(novalueRange);
                     }

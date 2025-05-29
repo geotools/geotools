@@ -120,7 +120,7 @@ public class PolygonExtractionProcess implements RasterProcess {
                                     "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
                             collectionType = Range.class,
                             min = 0)
-                    List<Range> classificationRanges,
+                    List<it.geosolutions.jaiext.range.Range> classificationRanges,
             ProgressListener progressListener)
             throws ProcessException {
 

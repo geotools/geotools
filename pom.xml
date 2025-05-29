@@ -1419,6 +1419,11 @@
         <artifactId>shadedrelief</artifactId>
         <version>${imagen.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>imageread</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
 
       <!-- Third-party -->
       <dependency>

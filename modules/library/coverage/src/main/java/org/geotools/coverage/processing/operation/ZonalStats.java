@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
+import it.geosolutions.jaiext.zonal.ZonalStatsRIF;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;
 import java.util.Collections;
@@ -33,9 +35,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.util.logging.Logging;
-import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
-import org.jaitools.media.jai.zonalstats.ZonalStatsRIF;
-import org.jaitools.numeric.Statistic;
 
 /**
  * This operation simply wraps Jai-tools Zonalstats operations described by {@link ZonalStatsDescriptor} inside a
@@ -64,23 +63,24 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
     public static final Logger LOGGER = Logging.getLogger(ZonalStats.class);
 
     /** {@link String} key for getting the min vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MIN = Statistic.MIN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MIN = "min"; // Statistic.MIN.toString();
     /** {@link String} key for getting the max vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MAX = Statistic.MAX.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MAX = "max"; // Statistic.MAX.toString();
     /** {@link String} key for getting the mean vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MEAN = Statistic.MEAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MEAN = "mean"; // Statistic.MEAN.toString();
     /** {@link String} key for getting the variance vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_VAR = Statistic.VARIANCE.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_VAR = "variance"; // Statistic.VARIANCE.toString();
     /** {@link String} key for getting the standard deviation vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_SDEV = Statistic.SDEV.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_SDEV = "sdev"; // Statistic.SDEV.toString();
     /** {@link String} key for getting the range vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_RANGE = Statistic.RANGE.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_RANGE = "range"; // Statistic.RANGE.toString();
     /** {@link String} key for getting the median vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MEDIAN = Statistic.MEDIAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MEDIAN = "median"; // Statistic.MEDIAN.toString();
     /** {@link String} key for getting the approx median vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_APPROX_MEDIAN = Statistic.APPROX_MEDIAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_APPROX_MEDIAN =
+            "approx. median"; // Statistic.APPROX_MEDIAN.toString();
     /** {@link String} key for getting the sum vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_SUM = Statistic.SUM.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_SUM = "sum"; // Statistic.SUM.toString();
 
     /** Constructs a default {@code "ZonalStats"} operation. */
     public ZonalStats() throws OperationNotFoundException {

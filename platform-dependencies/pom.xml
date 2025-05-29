@@ -579,7 +579,12 @@
         <version>${commons-digester.version}</version>
       </dependency>
 
-      <!-- JAIExt additional -->
+      <!-- ImageN additional -->
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>imagen-core</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
         <artifactId>jiffle-op</artifactId>
@@ -758,6 +763,11 @@
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
         <artifactId>rendered-image-browser</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>imageread</artifactId>
         <version>${imagen.version}</version>
       </dependency>
 
@@ -1060,10 +1070,10 @@
     <plugins>
       <plugin>
         <!--
-        flatten plugin configured to install a BOM pom, though not using flattenMode=bom because it doesn't resolve
-        version properties and adds properties defined in the root pom.
-        See https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode
-        -->
+                flatten plugin configured to install a BOM pom, though not using flattenMode=bom because it doesn't resolve
+                version properties and adds properties defined in the root pom.
+                See https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode
+                -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
         <configuration>
@@ -1071,9 +1081,9 @@
           <flattenMode>ossrh</flattenMode>
           <pomElements>
             <!--
-            Take the element from the interpolated POM (original POM with variables interpolated).
-            This avoids adding dependencies defined in the root pom (e.g. junit) 
-            -->
+                        Take the element from the interpolated POM (original POM with variables interpolated).
+                        This avoids adding dependencies defined in the root pom (e.g. junit)
+                        -->
             <dependencyManagement>interpolate</dependencyManagement>
           </pomElements>
         </configuration>

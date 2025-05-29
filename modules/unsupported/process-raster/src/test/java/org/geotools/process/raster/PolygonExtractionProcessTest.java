@@ -20,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
@@ -42,7 +44,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.Process;
 import org.geotools.process.Processors;
-import org.jaitools.numeric.Range;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -285,8 +286,8 @@ public class PolygonExtractionProcessTest {
         GridCoverage2D cov = covFactory.create("coverage", DATA, new ReferencedEnvelope(0, width, 0, height, null));
 
         List<Range> classificationRanges = new ArrayList<>();
-        Range<Integer> r1 = Range.create(1, true, 4, true);
-        Range<Integer> r2 = Range.create(5, true, 8, true);
+        Range r1 = RangeFactory.create(1, true, 4, true);
+        Range r2 = RangeFactory.create(5, true, 8, true);
         classificationRanges.add(r1);
         classificationRanges.add(r2);
 
@@ -425,7 +426,8 @@ public class PolygonExtractionProcessTest {
 
         Map<String, Object> inputs = new HashMap<>();
         inputs.put("data", buildSmallCoverage());
-        inputs.put("ranges", Arrays.asList(new Range<>(0, true, 1, true), new Range<>(2, true, 3, true)));
+        inputs.put(
+                "ranges", Arrays.asList(RangeFactory.create(0, true, 1, true), RangeFactory.create(2, true, 3, true)));
         Map<String, Object> results = process.execute(inputs, null);
         Object result = results.get("result");
         assertTrue(result instanceof SimpleFeatureCollection);

@@ -262,4 +262,23 @@ public class PostgisFilterToSQL extends FilterToSQL {
         }
         return result;
     }
+
+    @Override
+    protected void processLikeLeftOperand(Object extraData, boolean matchCase, Expression att, Class attributeType)
+            throws IOException {
+        if (!matchCase) {
+            out.write(" UPPER(");
+        }
+
+        att.accept(this, extraData);
+
+        if (attributeType != null && Number.class.isAssignableFrom(attributeType)) {
+            out.write("::text");
+        }
+        if (!matchCase) {
+            out.write(") LIKE ");
+        } else {
+            out.write(" LIKE ");
+        }
+    }
 }

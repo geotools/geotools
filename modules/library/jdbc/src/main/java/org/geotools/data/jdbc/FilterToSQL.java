@@ -512,23 +512,28 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         String pattern = LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal, false);
 
         try {
-            if (!matchCase) {
-                out.write(" UPPER(");
-            }
-
-            att.accept(this, extraData);
-
-            if (!matchCase) {
-                out.write(") LIKE ");
-            } else {
-                out.write(" LIKE ");
-            }
+            processLikeLeftOperand(extraData, matchCase, att, attributeType);
 
             writeLiteral(pattern);
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
         return extraData;
+    }
+
+    protected void processLikeLeftOperand(Object extraData, boolean matchCase, Expression att, Class attributeType)
+            throws IOException {
+        if (!matchCase) {
+            out.write(" UPPER(");
+        }
+
+        att.accept(this, extraData);
+
+        if (!matchCase) {
+            out.write(") LIKE ");
+        } else {
+            out.write(" LIKE ");
+        }
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.range.Range;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.jaitools.media.jai.vectorize.VectorizeDescriptor;
 import org.jaitools.media.jai.vectorize.VectorizeRIF;
-import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
@@ -120,7 +120,7 @@ public class PolygonExtractionProcess implements RasterProcess {
                                     "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
                             collectionType = Range.class,
                             min = 0)
-                    List<it.geosolutions.jaiext.range.Range> classificationRanges,
+                    List<Range> classificationRanges,
             ProgressListener progressListener)
             throws ProcessException {
 

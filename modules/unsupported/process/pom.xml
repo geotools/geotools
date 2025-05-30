@@ -25,8 +25,8 @@
   <name>Process</name>
 
   <description>An API for creating custom processes/operations plus a
-      collection of pre-written processes including vector/raster
-      conversion.</description>
+        collection of pre-written processes including vector/raster
+        conversion.</description>
 
   <licenses>
     <license>
@@ -67,11 +67,6 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-utils</artifactId>
-      <version>${jt.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
@@ -86,6 +81,10 @@
       <groupId>javax.media</groupId>
       <artifactId>jai_imageio</artifactId>
       <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.jaiext.stats</groupId>
+      <artifactId>jt-stats</artifactId>
     </dependency>
 
     <!-- Test dependencies -->

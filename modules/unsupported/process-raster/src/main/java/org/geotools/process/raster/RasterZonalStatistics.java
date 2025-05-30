@@ -17,11 +17,20 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeDouble;
+import it.geosolutions.jaiext.stats.Statistics;
+import it.geosolutions.jaiext.stats.Statistics.StatsType;
+import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
+import it.geosolutions.jaiext.zonal.ZoneGeometry;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedOp;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -46,11 +55,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
-import org.jaitools.media.jai.zonalstats.ZonalStats;
-import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
-import org.jaitools.media.jai.zonalstats.ZonalStatsOpImage;
-import org.jaitools.numeric.Range;
-import org.jaitools.numeric.Statistic;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
@@ -220,20 +224,36 @@ public class RasterZonalStatistics implements RasterProcess {
                         zoneGeom = JTS.transform(zoneGeom, CRS.findMathTransform(zonesCrs, dataCrs, true));
                     }
 
-                    // gather the statistics
-                    ZonalStats stats = processStatistics(zoneGeom);
+                    // gather the statistics (should be only one, we invoked the process with a single zone)
+                    List<ZoneGeometry> zoneGeometries = processStatistics(zoneGeom);
 
                     // build the resulting feature
-                    if (stats != null) {
+                    if (zoneGeometries != null && !zoneGeometries.isEmpty()) {
+                        ZoneGeometry zg = zoneGeometries.get(0);
                         if (classificationRaster != null) {
-                            // if zonal stats we're going to build
-                            for (Integer classZoneId : stats.getZones()) {
+                            Map<Integer, Map<Range, Statistics[]>> statsPerBand = zg.getStatsPerBand(band);
+                            statsPerBand.entrySet().forEach(entry -> {
+                                Integer classValue = entry.getKey();
+                                Map<Range, Statistics[]> statsMap = entry.getValue();
+                                // we did not provide a set of classification ranges, so only one range is expected
+                                Statistics[] stats =
+                                        statsMap.values().iterator().next();
                                 builder.addAll(zone.getAttributes());
-                                builder.add(classZoneId);
-                                addStatsToFeature(stats.zone(classZoneId));
+                                builder.add(classValue);
+                                if (stats != null) {
+                                    addStatsToFeature(stats);
+                                }
                                 features.add(builder.buildFeature(zone.getID()));
-                            }
+                            });
                         } else {
+                            // no classification raster, only one set of stats expected
+                            Statistics[] stats = zg.getStatsPerBand(0)
+                                    .values()
+                                    .iterator()
+                                    .next()
+                                    .values()
+                                    .iterator()
+                                    .next();
                             builder.addAll(zone.getAttributes());
                             addStatsToFeature(stats);
                             features.add(builder.buildFeature(zone.getID()));
@@ -252,19 +272,24 @@ public class RasterZonalStatistics implements RasterProcess {
         }
 
         /** Add the statistics to the feature builder */
-        void addStatsToFeature(ZonalStats stats) {
-            double sum = stats.statistic(Statistic.SUM).results().get(0).getValue();
-            double avg = stats.statistic(Statistic.MEAN).results().get(0).getValue();
-            double count = stats.statistic(Statistic.MEAN).results().get(0).getNumAccepted();
+        void addStatsToFeature(Statistics[] stats) {
+            // the statistics are returned in the order of the requested stats, for reference:
+            // {StatsType.EXTREMA, StatsType.MEAN, StatsType.DEV_STD, StatsType.SUM};
+            double[] minMax = (double[]) stats[0].getResult();
+            double count = stats[0].getNumSamples().doubleValue();
+            double avg = ((Number) stats[1].getResult()).doubleValue();
+            double stdDev = ((Number) stats[2].getResult()).doubleValue();
+            double sum = ((Number) stats[3].getResult()).doubleValue();
             builder.add(count); // count
-            builder.add(stats.statistic(Statistic.MIN).results().get(0).getValue());
-            builder.add(stats.statistic(Statistic.MAX).results().get(0).getValue());
+            builder.add(minMax[0]);
+            builder.add(minMax[1]);
             builder.add(sum);
             builder.add(avg);
-            builder.add(stats.statistic(Statistic.SDEV).results().get(0).getValue());
+            builder.add(stdDev);
         }
 
-        private ZonalStats processStatistics(Geometry geometry) throws TransformException {
+        @SuppressWarnings("unchecked")
+        private List<ZoneGeometry> processStatistics(Geometry geometry) throws TransformException {
             GridCoverage2D cropped = null;
             try {
                 // first off, cut the geometry around the coverage bounds if necessary
@@ -283,31 +308,32 @@ public class RasterZonalStatistics implements RasterProcess {
                 }
 
                 // check if the novalue is != from NaN
-                List<Range<Double>> noDataValueRangeList = CoverageUtilities.getNoDataAsList(dataCoverage);
+                List<RangeDouble> noDataValueRangeList = CoverageUtilities.getNoDataAsList(dataCoverage);
+                RangeDouble noData = noDataValueRangeList == null || noDataValueRangeList.isEmpty()
+                        ? null
+                        : noDataValueRangeList.get(0);
 
                 /*
                  * crop on region of interest
                  */
                 cropped = CoverageUtilities.crop(dataCoverage, geometryEnvelope);
                 ROI roi = CoverageUtilities.getSimplifiedRoiGeometry(dataCoverage, geometry);
-                // run the stats via JAI
-                Statistic[] reqStatsArr = {
-                    Statistic.MAX, Statistic.MIN, Statistic.RANGE, Statistic.MEAN, Statistic.SDEV, Statistic.SUM
-                };
-                final ZonalStatsOpImage zsOp = new ZonalStatsOpImage(
+                StatsType[] reqStatsTypes = {StatsType.EXTREMA, StatsType.MEAN, StatsType.DEV_STD, StatsType.SUM};
+
+                RenderedOp op = ZonalStatsDescriptor.create(
                         cropped.getRenderedImage(),
                         classificationRaster,
                         null,
-                        null,
-                        reqStatsArr,
-                        new Integer[] {band},
-                        roi,
-                        null,
-                        null,
+                        Arrays.asList(roi),
+                        noData,
                         null,
                         false,
-                        noDataValueRangeList);
-                return (ZonalStats) zsOp.getProperty(ZonalStatsDescriptor.ZONAL_STATS_PROPERTY);
+                        new int[] {band},
+                        reqStatsTypes,
+                        null,
+                        false,
+                        null);
+                return (List<ZoneGeometry>) op.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
             } finally {
                 // dispose coverages
                 if (cropped != null) {

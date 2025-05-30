@@ -63,24 +63,23 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
     public static final Logger LOGGER = Logging.getLogger(ZonalStats.class);
 
     /** {@link String} key for getting the min vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MIN = "min"; // Statistic.MIN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MIN = "min";
     /** {@link String} key for getting the max vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MAX = "max"; // Statistic.MAX.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MAX = "max";
     /** {@link String} key for getting the mean vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MEAN = "mean"; // Statistic.MEAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MEAN = "mean";
     /** {@link String} key for getting the variance vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_VAR = "variance"; // Statistic.VARIANCE.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_VAR = "variance";
     /** {@link String} key for getting the standard deviation vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_SDEV = "sdev"; // Statistic.SDEV.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_SDEV = "sdev";
     /** {@link String} key for getting the range vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_RANGE = "range"; // Statistic.RANGE.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_RANGE = "range";
     /** {@link String} key for getting the median vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_MEDIAN = "median"; // Statistic.MEDIAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_MEDIAN = "median";
     /** {@link String} key for getting the approx median vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_APPROX_MEDIAN =
-            "approx. median"; // Statistic.APPROX_MEDIAN.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_APPROX_MEDIAN = "approx. median";
     /** {@link String} key for getting the sum vector. */
-    public static final String GT_SYNTHETIC_PROPERTY_SUM = "sum"; // Statistic.SUM.toString();
+    public static final String GT_SYNTHETIC_PROPERTY_SUM = "sum";
 
     /** Constructs a default {@code "ZonalStats"} operation. */
     public ZonalStats() throws OperationNotFoundException {

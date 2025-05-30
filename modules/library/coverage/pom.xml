@@ -120,16 +120,6 @@
       <!-- The version number is specified in the parent POM. -->
     </dependency>
 
-    <!--  JAI Tools -->
-    <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-zonalstats</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-utils</artifactId>
-    </dependency>
-
     <!-- JAIExt -->
     <dependency>
       <groupId>it.geosolutions.jaiext.affine</groupId>
@@ -264,6 +254,10 @@
           <artifactId>jts</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.jaiext.stats</groupId>
+      <artifactId>jt-stats</artifactId>
     </dependency>
 
     <!-- Test dependencies -->

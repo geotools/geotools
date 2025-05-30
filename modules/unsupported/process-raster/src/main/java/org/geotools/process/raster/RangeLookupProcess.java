@@ -44,7 +44,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.factory.GeoTools;
-// import org.jaitools.numeric.Range;
 
 /**
  * A raster reclassified process
@@ -142,20 +141,23 @@ public class RangeLookupProcess implements RasterProcess {
         final int size = classificationRanges.size();
         int transferType = ColorUtilities.getTransferType(size);
         if (JAIExt.isJAIExtOperation("RLookup")) {
-            lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, nd, transferType);
+            lookupTable =
+                    CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd, transferType);
         } else {
             // Builds the range lookup table
             // final RangeLookupTable lookupTable;
 
             switch (transferType) {
                 case DataBuffer.TYPE_BYTE:
-                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, (byte) nd);
+                    lookupTable =
+                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd);
                     break;
                 case DataBuffer.TYPE_USHORT:
-                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, (short) nd);
+                    lookupTable =
+                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd);
                     break;
                 case DataBuffer.TYPE_INT:
-                    lookupTable = CoverageUtilities.getLookupTable(classificationRanges, outputPixelValues, nd);
+                    lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd);
                     break;
                 default:
                     throw new IllegalArgumentException(

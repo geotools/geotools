@@ -255,10 +255,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>it.geosolutions.jaiext.stats</groupId>
-      <artifactId>jt-stats</artifactId>
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

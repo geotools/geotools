@@ -47,13 +47,18 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.datum.DefaultEngineeringDatum;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.jaitools.imageutils.ImageUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CoverageClassStatsTest {
 
-    // forces jai-ext initialization, to be removed
-    private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final double EPS = 0d;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        // forces jai-ext initialization, to be removed once ImageN migration is done
+        CoverageProcessor.getInstance();
+    }
 
     @Test
     public void testEqualInterval() throws Exception {

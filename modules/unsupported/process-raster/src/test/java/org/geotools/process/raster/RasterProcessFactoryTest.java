@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.range.Range;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +19,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.factory.FactoryIteratorProvider;
 import org.geotools.util.factory.GeoTools;
-import org.jaitools.numeric.Range;
 import org.junit.Test;
 
 public class RasterProcessFactoryTest {

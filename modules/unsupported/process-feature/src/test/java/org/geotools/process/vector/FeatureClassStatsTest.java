@@ -19,16 +19,15 @@ package org.geotools.process.vector;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.vector.FeatureClassStats.Results;
-import org.jaitools.numeric.Statistic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,7 +83,7 @@ public class FeatureClassStatsTest {
                 .execute(
                         features,
                         "valu",
-                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        Arrays.asList(StatsType.MEAN, StatsType.SUM),
                         4,
                         ClassificationMethod.EQUAL_INTERVAL,
                         null,
@@ -95,8 +94,8 @@ public class FeatureClassStatsTest {
                 4,
                 new Number[][] {{1, 14}, {14, 27}, {27, 40}, {40, 53}},
                 /* count */ new Integer[] {9, 5, 0, 2},
-                /* sum */ new Number[] {46d, 106d, Double.NaN, 98d},
-                /* average */ new Number[] {5.1, 21.2, Double.NaN, 49.0});
+                /* sum */ new Number[] {46d, 106d, 0, 98d},
+                /* average */ new Number[] {5.1, 21.2, 0, 49.0});
     }
 
     @Test
@@ -105,7 +104,7 @@ public class FeatureClassStatsTest {
                 .execute(
                         features,
                         "valu",
-                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        Arrays.asList(StatsType.MEAN, StatsType.SUM),
                         4,
                         ClassificationMethod.QUANTILE,
                         null,
@@ -126,7 +125,7 @@ public class FeatureClassStatsTest {
                 .execute(
                         features,
                         "valu",
-                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        Arrays.asList(StatsType.MEAN, StatsType.SUM),
                         4,
                         ClassificationMethod.NATURAL_BREAKS,
                         null,
@@ -150,24 +149,24 @@ public class FeatureClassStatsTest {
             Number min = result.range(i).getMin();
             Number max = result.range(i).getMax();
 
-            assertNumbersEqual(ranges[i][0], min);
-            assertNumbersEqual(ranges[i][1], max);
+            assertNumbersEqual("Range min " + i, ranges[i][0], min);
+            assertNumbersEqual("Range max " + i, ranges[i][1], max);
 
-            assertNumbersEqual(counts[i], result.count(i));
+            assertNumbersEqual("Count " + i, counts[i], result.count(i));
             if (sums != null) {
-                assertNumbersEqual(sums[i], result.value(i, Statistic.SUM));
+                assertNumbersEqual("Sum " + i, sums[i], result.value(i, StatsType.SUM));
             }
             if (averages != null) {
-                assertNumbersEqual(averages[i], result.value(i, Statistic.MEAN));
+                assertNumbersEqual("Averages " + i, averages[i], result.value(i, StatsType.MEAN));
             }
         }
     }
 
-    void assertNumbersEqual(Number expected, Number actual) {
+    void assertNumbersEqual(String context, Number expected, Number actual) {
         if (expected == null) {
-            assertNull(actual);
+            assertNull(context, actual);
         } else {
-            assertEquals(expected.doubleValue(), actual.doubleValue(), 0.1);
+            assertEquals(context, expected.doubleValue(), actual.doubleValue(), 0.1);
         }
     }
 }

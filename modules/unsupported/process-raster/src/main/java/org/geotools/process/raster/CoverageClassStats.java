@@ -261,8 +261,11 @@ public class CoverageClassStats implements RasterProcess {
 
         @Override
         public Long count(int i) {
-            // return zonalStats.statistic(firstStat).results().get(i).getNumAccepted();
-            return null;
+            // there is no classification raster, so 0 is the index for the only "raster classification value"
+            Map<Range, Statistics[]> rangeMap = zonalStats.getStatsPerBand(0).get(0);
+            Statistics[] zonalStats = rangeMap.get(range(i));
+
+            return zonalStats[0].getNumSamples();
         }
 
         ZoneGeometry getZonalStats() {

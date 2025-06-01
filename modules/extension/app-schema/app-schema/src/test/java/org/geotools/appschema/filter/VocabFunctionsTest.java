@@ -195,7 +195,6 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     /** Test VocabFunction in a mapping file with the <code>${config.parent}</code> interpolation property. */
     @Test
     public void testVocabFunctionInMappingFileWithConfigParent() {
-        @SuppressWarnings("serial")
         final Map<String, String> expectedValues = Map.ofEntries(
                 entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
                 entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),

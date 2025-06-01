@@ -46,7 +46,6 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-@SuppressWarnings("serial")
 public class Viewer extends JPanel {
     /** The image to display. */
     private final RenderedImage image;

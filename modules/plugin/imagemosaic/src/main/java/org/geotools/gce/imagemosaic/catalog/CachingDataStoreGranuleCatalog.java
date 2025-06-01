@@ -238,7 +238,6 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int removeGranules(Query query) {
         return this.removeGranules(query, Transaction.AUTO_COMMIT);
     }

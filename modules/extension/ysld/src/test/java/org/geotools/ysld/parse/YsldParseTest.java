@@ -477,7 +477,6 @@ public class YsldParseTest {
         assertNotNull(yaml);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomSimple() throws IOException {
         String yaml = "grid:\n"
@@ -520,7 +519,6 @@ public class YsldParseTest {
         assertThat(r, not(appliesToScale(5000000 / 8))); // Z=3
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomSimpleWithDifferentInitial() throws IOException {
         String yaml = "grid:\n"
@@ -552,7 +550,6 @@ public class YsldParseTest {
                                 not(appliesToScale(5000000 * 2 * 8)))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomList() throws IOException {
         String yaml = "grid:\n"
@@ -581,7 +578,6 @@ public class YsldParseTest {
                         allOf(appliesToScale(1000000d), not(appliesToScale(2000000d)), not(appliesToScale(500000d)))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomListWithInitial() throws IOException {
         String yaml = "grid:\n"
@@ -611,7 +607,6 @@ public class YsldParseTest {
                         allOf(appliesToScale(1000000d), not(appliesToScale(2000000d)), not(appliesToScale(500000d)))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomListWithRanges() throws IOException {
         String yaml = "grid:\n"
@@ -664,7 +659,6 @@ public class YsldParseTest {
                                 appliesToScale(100000d))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomListWithMinMaxKeywords() throws IOException {
         String yaml = "grid:\n"
@@ -717,7 +711,6 @@ public class YsldParseTest {
                                 appliesToScale(100000d))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testScaleWithMinMaxKeywords() throws IOException {
         String yaml = "feature-styles: \n"
@@ -762,7 +755,6 @@ public class YsldParseTest {
                                 appliesToScale(100000d))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testScaleWithNull() throws IOException {
         String yaml = "feature-styles: \n"
@@ -1086,7 +1078,6 @@ public class YsldParseTest {
         assertThat(last, allOf(appliesToScale(WGS84_SCALE_DENOMS[20]), not(appliesToScale(WGS84_SCALE_DENOMS[19]))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testNamedWithFinder() throws IOException {
         String yaml = "grid:\n"
@@ -1139,7 +1130,6 @@ public class YsldParseTest {
         verify(finder);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testCustomFinderOverridesWellKnown() throws IOException {
         String yaml = "grid:\n"

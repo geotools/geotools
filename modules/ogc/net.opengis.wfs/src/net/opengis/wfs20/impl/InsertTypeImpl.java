@@ -227,7 +227,6 @@ public class InsertTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
-    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {

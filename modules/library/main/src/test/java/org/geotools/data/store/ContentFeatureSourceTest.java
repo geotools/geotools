@@ -101,7 +101,6 @@ public class ContentFeatureSourceTest {
                 namespaceURI = TYPE.getName().getNamespaceURI();
             }
 
-            @SuppressWarnings("serial")
             @Override
             protected List<Name> createTypeNames() throws IOException {
                 return List.of(TYPENAME);

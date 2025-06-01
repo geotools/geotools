@@ -38,7 +38,6 @@ import org.junit.Test;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
-@SuppressWarnings("unchecked")
 public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSplitterTests {
 
     private Capabilities simpleLogicalCaps = new Capabilities();

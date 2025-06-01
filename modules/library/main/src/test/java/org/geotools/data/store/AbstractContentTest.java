@@ -46,7 +46,6 @@ public abstract class AbstractContentTest {
     protected static final SimpleFeatureType TYPE = buildType();
 
     /** The list of features on which paging is tested. */
-    @SuppressWarnings("serial")
     List<SimpleFeature> FEATURES = Stream.of(buildFeature("mock.3"), buildFeature("mock.1"), buildFeature("mock.2"))
             .collect(Collectors.toList());
 
@@ -73,7 +72,6 @@ public abstract class AbstractContentTest {
         }
 
         /** @see org.geotools.data.store.ContentDataStore#createTypeNames() */
-        @SuppressWarnings("serial")
         @Override
         protected List<Name> createTypeNames() throws IOException {
             return List.of(TYPENAME);

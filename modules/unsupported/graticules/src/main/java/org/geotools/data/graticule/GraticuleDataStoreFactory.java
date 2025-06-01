@@ -143,7 +143,7 @@ public class GraticuleDataStoreFactory implements DataStoreFactorySpi {
         return true;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         List<Double> steps = (List<Double>) STEPS.lookUp(params);
